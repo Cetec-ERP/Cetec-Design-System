@@ -17,7 +17,7 @@ import { textRecipe } from './src/recipes/text';
 const theme = {
   tokens: defineTokens({
     aspectRatios: { ...pandaPandaPreset.theme.tokens.aspectRatios },
-    shadows: { ...pandaPandaPreset.theme.tokens.shadows },
+    shadows: { ...tokens.shadows },
     easings: { ...pandaPandaPreset.theme.tokens.easings },
     durations: { ...pandaPandaPreset.theme.tokens.durations },
     letterSpacings: { ...pandaPandaPreset.theme.tokens.letterSpacings },

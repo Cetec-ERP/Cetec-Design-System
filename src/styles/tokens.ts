@@ -1,7 +1,5 @@
 export const colors = {
   transparent: { value: 'transparent' },
-  black: { value: '#000000' },
-  white: { value: '#FFFFFF' },
   current: { value: 'currentColor' },
   slate: {
     0: { value: '#FFFFFF' },
@@ -15,23 +13,27 @@ export const colors = {
     30: { value: '#AFADAB' },
     40: { value: '#939190' },
     50: { value: '#767675' },
-    60: { value: '#5f5f5e' },
+    60: { value: '#5F5F5E' },
     70: { value: '#474747' },
-    80: { value: '#2e2e2e' },
-    90: { value: '#1e1e1e' },
+    80: { value: '#2E2E2E' },
+    90: { value: '#1E1E1E' },
     100: { value: '#000000' },
   },
   gold: {
-    5: { value: '#fcf5e1' },
-    10: { value: '#FEF0C8' },
-    20: { value: '#FFE396' },
-    30: { value: '#FFBE2E' },
-    40: { value: '#E5A000' },
-    50: { value: '#C2850C' },
-    60: { value: '#936F38' },
-    70: { value: '#7A591A' },
-    80: { value: '#5C410A' },
-    90: { value: '#3B2B15' },
+    1: { value: '#FFFCF4' },
+    2: { value: '#FFF9E9' },
+    3: { value: '#FEF6DE' },
+    4: { value: '#FEF3D3' },
+    5: { value: '#FEF0C8' },
+    10: { value: '#FFE396' },
+    20: { value: '#FFBE2E' },
+    30: { value: '#E5A000' },
+    40: { value: '#C2850C' },
+    50: { value: '#936F38' },
+    60: { value: '#7A591A' },
+    70: { value: '#5C410A' },
+    80: { value: '#3B2B15' },
+    90: { value: '#1E1100' },
   },
   orange: {
     5: { value: '#FFF3F2' },
@@ -57,7 +59,35 @@ export const colors = {
     80: { value: '#322D26' },
     90: { value: '#191714' },
   },
+  cyan: {
+    5: { value: '#E7F6F8' },
+    10: { value: '#CCECF2' },
+    20: { value: '#99DEEA' },
+    30: { value: '#5DC0D1' },
+    40: { value: '#449DAC' },
+    50: { value: '#168092' },
+    60: { value: '#2A646D' },
+    70: { value: '#2C4A4E' },
+    80: { value: '#203133' },
+    90: { value: '#111819' },
+  },
+  blue: {
+    5: { value: '#EFF6FB' },
+    10: { value: '#D9E8F6' },
+    20: { value: '#AACDEC' },
+    30: { value: '#73B3E7' },
+    40: { value: '#4F97D1' },
+    50: { value: '#2378C3' },
+    60: { value: '#2C608A' },
+    70: { value: '#274863' },
+    80: { value: '#1F303E' },
+    90: { value: '#11181D' },
+  },
   green: {
+    1: { value: '#F8FEF4' },
+    2: { value: '#F1FDE9' },
+    3: { value: '#EBFBDD' },
+    4: { value: '#E4FAD2' },
     5: { value: '#DDF9C7' },
     10: { value: '#C5EE93' },
     20: { value: '#98D035' },
@@ -70,6 +100,10 @@ export const colors = {
     90: { value: '#0D1400' },
   },
   yellow: {
+    1: { value: '#FFFDF3' },
+    2: { value: '#FFFBE7' },
+    3: { value: '#FFF9DA' },
+    4: { value: '#FFF7CE' },
     5: { value: '#FFF5C2' },
     10: { value: '#FEE685' },
     20: { value: '#FACE00' },
@@ -82,6 +116,10 @@ export const colors = {
     90: { value: '#1C0B00' },
   },
   red: {
+    1: { value: '#FFF9FA' },
+    2: { value: '#FFF3F5' },
+    3: { value: '#FFEEF0' },
+    4: { value: '#FFE8EB' },
     5: { value: '#FFE2E6' },
     10: { value: '#FFB1B8' },
     20: { value: '#FF7F8A' },
@@ -92,6 +130,36 @@ export const colors = {
     70: { value: '#810009' },
     80: { value: '#4F0004' },
     90: { value: '#200000' },
+  },
+  brand: {
+    slate: { value: 'slate.90' },
+    gold: { value: 'gold.20' },
+  },
+  status: {
+    success: {
+      lighter: { value: 'green.2' },
+      light: { value: 'green.10' },
+      base: { value: 'green.40' },
+      dark: { value: 'green.60' },
+      darker: { value: 'green.70' },
+    },
+    warning: {
+      lighter: { value: 'yellow.2' },
+      light: { value: 'yellow.10' },
+      base: { value: 'yellow.40' },
+      dark: { value: 'yellow.60' },
+      darker: { value: 'yellow.70' },
+    },
+    danger: {
+      lighter: { value: 'red.2' },
+      light: { value: 'red.10' },
+      base: { value: 'red.50' },
+      dark: { value: 'red.60' },
+      darker: { value: 'red.70' },
+    },
+  },
+  utility: {
+    shadowColor: { value: 'rgba(slate.90, 0.2)' },
   },
 };
 
@@ -109,6 +177,7 @@ export const fontWeights = {
   normal: { value: 400 },
   medium: { value: 500 },
   bold: { value: 700 },
+  black: { value: 900 },
 };
 
 export const sizes = {
@@ -121,6 +190,7 @@ export const sizes = {
   6: { value: '0.375rem' },
   7: { value: '0.4375rem' },
   8: { value: '0.5rem' },
+  9: { value: '0.5625rem' },
   10: { value: '0.625rem' },
   12: { value: '0.75rem' },
   14: { value: '0.875rem' },
@@ -170,19 +240,40 @@ export const fontSizes = {
 };
 
 export const lineHeights = {
-  12: { value: '0.75rem' },
-  14: { value: '0.875rem' },
-  16: { value: '1rem' },
-  20: { value: '1.25rem' },
-  24: { value: '1.5rem' },
-  32: { value: '2rem' },
-  40: { value: '2.5rem' },
-  48: { value: '3rem' },
-  64: { value: '4rem' },
-  72: { value: '4.5rem' },
-  80: { value: '5rem' },
-  96: { value: '6rem' },
+  none: {
+    value: '1',
+  },
+  tighter: {
+    value: '1em + 0.125rem',
+  },
+  tight: {
+    value: '1em + 0.25rem',
+  },
+  default: {
+    value: '1em + 0.5rem',
+  },
+  loose: {
+    value: '1em + 0.75rem',
+  },
+  looser: {
+    value: '1em + 0.875rem',
+  },
 };
+
+// export const lineHeights = {
+//   12: { value: '0.75rem' },
+//   14: { value: '0.875rem' },
+//   16: { value: '1rem' },
+//   20: { value: '1.25rem' },
+//   24: { value: '1.5rem' },
+//   32: { value: '2rem' },
+//   40: { value: '2.5rem' },
+//   48: { value: '3rem' },
+//   64: { value: '4rem' },
+//   72: { value: '4.5rem' },
+//   80: { value: '5rem' },
+//   96: { value: '6rem' },
+// };
 
 export const radii = {
   0: { value: '0' },
@@ -194,26 +285,41 @@ export const radii = {
   100: { value: '100%' },
 };
 
-const baseHeadingStyles = {
-  fontFamily: 'heading',
-  fontWeight: 'bold',
-  color: 'slate.90',
-  _osDark: { color: 'slate.5' },
-};
+export const shadows = {
+  low: {
+    value: 'Opx 1px 1px shadowColor, Opx 2px 2px shadowColor'
+  },
+  medium: {
+    value: 'Opx 2px 2px shadowColor, Opx 4px 4px shadowColor, Opx 8px 8px rgba shadowColor'
+  },
+  high: {
+    value: 'Opx 2px 2px shadowColor, Opx 4px 4px shadowColor, Opx 8px 8px shadowColor, Opx 16px 16px shadowColor'
+  },
+  inset: {
+    value: 'inset Opx 2px 1px shadowColor, inset Opx 3px 2px shadowColor'
+  }
+}
 
-const baseBodyTextStyles = {
-  fontFamily: 'sans',
-  fontWeight: 'normal',
-  color: 'slate.70',
-  _osDark: { color: 'slate.20' },
-};
+// const baseHeadingStyles = {
+//   fontFamily: 'heading',
+//   fontWeight: 'bold',
+//   color: 'slate.90',
+//   _osDark: { color: 'slate.5' },
+// };
 
-const baseMonoStyles = {
-  fontFamily: 'mono',
-  fontWeight: 'normal',
-  color: 'slate.70',
-  _osDark: { color: 'slate.20' },
-};
+// const baseBodyTextStyles = {
+//   fontFamily: 'sans',
+//   fontWeight: 'normal',
+//   color: 'slate.70',
+//   _osDark: { color: 'slate.20' },
+// };
+
+// const baseMonoStyles = {
+//   fontFamily: 'mono',
+//   fontWeight: 'normal',
+//   color: 'slate.70',
+//   _osDark: { color: 'slate.20' },
+// };
 
 // export const textStyles = {
 //   display: {
