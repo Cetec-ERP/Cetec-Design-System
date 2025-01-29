@@ -34,10 +34,11 @@ const theme = {
   }),
   semanticTokens: defineSemanticTokens({
     colors: {
-      primary: tokens.colors.gold[30],
-      success: tokens.colors.green[40],
-      warning: tokens.colors.yellow[30],
-      danger: tokens.colors.red[50],
+      brand: tokens.colors.brand,
+      success: tokens.colors.status.success,
+      warning: tokens.colors.status.warning,
+      danger: tokens.colors.status.danger,
+      utility: tokens.colors.utility,
     },
   }),
 };
@@ -122,6 +123,9 @@ export default defineConfig({
   },
 
   conditions: {
+    light: '[data-color-mode=light] &',
+    dark: '[data-color-mode=dark] &',
+    win95: '[data-theme=win95] &',
     checked:
       '&:is(:checked, [data-checked], [aria-checked=true], [data-state=checked])',
     indeterminate:
@@ -137,6 +141,7 @@ export default defineConfig({
     containerSmall: '@container (max-width: 560px)',
     containerMedium: '@container (min-width: 561px) and (max-width: 999px)',
     containerLarge: '@container (min-width: 1000px)',
+    selected: '&:is([data-selected])',
   },
 
   // The output directory for your css system

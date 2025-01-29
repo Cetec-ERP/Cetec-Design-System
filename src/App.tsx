@@ -6,6 +6,8 @@ import { Button } from '~/components/Button';
 import { IconButton } from '~/components/IconButton';
 import { Icon, IconNames, type IconNamesList } from '~/components/Icon';
 import { Pre } from '~/components/Code';
+import { ThemeProvider } from '~/contexts/ThemeContext';
+import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -17,12 +19,9 @@ function IconList() {
       gridTemplateColumns={'repeat(auto-fill, minmax(200px, 1fr))'}
     >
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
-        <HStack key={icon}>
+        <HStack key={icon} color={'gold.30'}>
           <Icon
             name={icon}
-            className={css({
-              fill: 'gold.30',
-            })}
           />
           <Text>{icon}</Text>
         </HStack>
@@ -39,7 +38,7 @@ const Section = ({ children }: { children?: ReactNode }) => {
       gap={'40'}
       w={'full'}
       borderTop={'1px solid pink'}
-      borderColor={{ base: 'slate.10', _osDark: 'slate.80' }}
+      borderColor={{ base: 'slate.10', _dark: 'slate.80' }}
       py={'24'}
       pb={'96'}
     >
@@ -48,17 +47,20 @@ const Section = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-export default function App() {
+function AppContent() {
   return (
     <VStack>
       <Flex
         w="full"
         py={'24'}
-        bg={{ base: 'slate.10', _osDark: 'slate.80' }}
+        bg={{ base: 'slate.10', _dark: 'slate.80', _win95: 'tan.50' }}
         mb={'56'}
       >
         <Container maxW={'5xl'}>
-          <Text as="h1">Cetec Components</Text>
+          <HStack justify={'space-between'}>
+            <Text as="h1">Cetec Components</Text>
+            <ThemeSwitcher />
+          </HStack>
         </Container>
       </Flex>
       <Container maxW={'5xl'}>
@@ -76,7 +78,7 @@ export default function App() {
               </HStack>
               <HStack>
                 <IconButton variant="ghost">
-                  <Icon name="close" />
+                  <Icon name="x" />
                 </IconButton>
                 <IconButton>
                   <Icon name="arrow-left" />
@@ -97,18 +99,9 @@ export default function App() {
                 alignItems={'center'}
               >
                 <Box gridColumn={'1 / -1'}>
-                  <Text as="h4" color={'gold.30'} p={'8'} bg={'slate.100'}>
+                  <Text as="h4" color={'gold.40'}>
                     Text styles
                   </Text>
-                  <Box
-                    as="span"
-                    m={'8'}
-                    bg={'slate.100'}
-                    p={'8'}
-                    color={'gold.30'}
-                  >
-                    pizza
-                  </Box>
                 </Box>
                 <VStack gap={'16'}>
                   <Text>
@@ -140,7 +133,7 @@ export default function App() {
                 </Text>
                 <Pre>{`<Text font="mono">...</Text>`}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Text as="h4" className={css({ color: 'gold.30' })}>
+                  <Text as="h4" color={'gold.40'}>
                     Headings
                   </Text>
                 </Box>
@@ -178,5 +171,13 @@ export default function App() {
         </VStack>
       </Container>
     </VStack>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }

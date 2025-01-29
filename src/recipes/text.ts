@@ -3,22 +3,19 @@ import { defineRecipe } from '@pandacss/dev';
 const baseHeadingStyles = {
   fontFamily: 'heading',
   fontWeight: 'bold',
-  color: 'slate.90',
-  _osDark: { color: 'slate.5' },
+  color: { base: 'slate.90', _dark: 'slate.5', _win95: 'slate.90' },
 };
 
 const baseBodyTextStyles = {
   fontFamily: 'sans',
   fontWeight: 'normal',
-  color: 'slate.70',
-  _osDark: { color: 'slate.20' },
+  color: { base: 'slate.70', _dark: 'slate.20', _win95: 'slate.70' },
 };
 
 const baseMonoStyles = {
   fontFamily: 'mono',
   fontWeight: 'normal',
-  color: 'slate.70',
-  _osDark: { color: 'slate.20' },
+  color: { base: 'slate.70', _dark: 'slate.20', _win95: 'slate.70' },
 };
 
 export const textStyles = {
@@ -27,28 +24,28 @@ export const textStyles = {
       value: {
         ...baseHeadingStyles,
         fontSize: '72',
-        lineHeight: '64',
+        // lineHeight: '64',
       },
     },
     md: {
       value: {
         ...baseHeadingStyles,
         fontSize: '64',
-        lineHeight: '64',
+        // lineHeight: '64',
       },
     },
     sm: {
       value: {
         ...baseHeadingStyles,
         fontSize: '56',
-        lineHeight: '56',
+        // lineHeight: '56',
       },
     },
     xs: {
       value: {
         ...baseHeadingStyles,
         fontSize: '48',
-        lineHeight: '56',
+        // lineHeight: '56',
       },
     },
   },
@@ -56,27 +53,27 @@ export const textStyles = {
     lg: {
       ...baseHeadingStyles,
       fontSize: '40',
-      lineHeight: '40',
+      // lineHeight: '40',
     },
     md: {
       value: {
         ...baseHeadingStyles,
         fontSize: '32',
-        lineHeight: '32',
+        // lineHeight: '32',
       },
     },
     sm: {
       value: {
         ...baseHeadingStyles,
         fontSize: '24',
-        lineHeight: '24',
+        // lineHeight: '24',
       },
     },
     xs: {
       value: {
         ...baseHeadingStyles,
         fontSize: '20',
-        lineHeight: '24',
+        // lineHeight: '24',
       },
     },
   },
@@ -85,28 +82,28 @@ export const textStyles = {
       value: {
         ...baseBodyTextStyles,
         fontSize: '20',
-        lineHeight: '24',
+        // lineHeight: '24',
       },
     },
     md: {
       value: {
         ...baseBodyTextStyles,
         fontSize: '16',
-        lineHeight: '20',
+        // lineHeight: '20',
       },
     },
     sm: {
       value: {
         ...baseBodyTextStyles,
         fontSize: '14',
-        lineHeight: '20',
+        // lineHeight: '20',
       },
     },
     xs: {
       ...baseBodyTextStyles,
       value: {
         fontSize: '12',
-        lineHeight: '16',
+        // lineHeight: '16',
       },
     },
   },
@@ -115,28 +112,28 @@ export const textStyles = {
       value: {
         ...baseMonoStyles,
         fontSize: '20',
-        lineHeight: '24',
+        // lineHeight: '24',
       },
     },
     md: {
       value: {
         ...baseMonoStyles,
         fontSize: '16',
-        lineHeight: '20',
+        // lineHeight: '20',
       },
     },
     sm: {
       value: {
         ...baseMonoStyles,
         fontSize: '14',
-        lineHeight: '20',
+        // lineHeight: '20',
       },
     },
     xs: {
       value: {
         ...baseMonoStyles,
         fontSize: '12',
-        lineHeight: '16',
+        // lineHeight: '16',
       },
     },
   },
@@ -147,9 +144,9 @@ export const textRecipe = defineRecipe({
   jsx: ['Text'],
   base: {
     margin: '0',
-    lineHeight: 'normal',
+    lineHeight: 'default',
     fontWeight: 'normal',
-    color: { base: 'slate.70', _osDark: 'slate.20' },
+    color: { base: 'slate.70', _dark: 'slate.20', _win95: 'slate.70' },
   },
   variants: {
     as: {

@@ -1,5 +1,5 @@
 {
-  "name": "Cetec Components",
+  "name": "cetec-components",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-sprite": "node src/components/Icon/utils/generate-sprite.js"
+    "generate-sprite": "node src/utils/generate-sprite.js"
   },
   "dependencies": {
     "@fontsource-variable/fira-code": "^5.1.1",

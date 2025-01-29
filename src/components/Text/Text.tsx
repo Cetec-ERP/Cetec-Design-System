@@ -1,23 +1,23 @@
 // SOURCE
 // https://www.adebayosegun.com/blog/typography-component-with-panda-css-recipes
 
+import { Box } from '../Box/Box';
 import { text, type TextVariantProps } from '@styled-system/recipes';
 import { cx, css } from '@styled-system/css';
 import type { SystemStyleObject } from '@styled-system/types';
 
 type TextElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
 type TextProps = TextVariantProps &
-  React.HTMLAttributes<HTMLElement> & {
-    as?: TextElement;
-    className?: string;
-    font?: string;
-    italic?: boolean;
-    bold?: boolean;
-    underline?: boolean;
-  } & SystemStyleObject;
+  Omit<React.ComponentProps<typeof Box>, 'as'> & {
+  as?: TextElement; // Restrict 'as' prop to only text elements
+  font?: string;
+  italic?: boolean;
+  bold?: boolean;
+  underline?: boolean;
+} & SystemStyleObject;
 
 export function Text({
-  as: Component = 'p',
+  as = 'p',
   className,
   font,
   italic,
@@ -29,14 +29,15 @@ export function Text({
   const styleProps: SystemStyleObject = { ...restProps };
 
   return (
-    <Component
+    <Box
+      as={as}
       className={cx(
-        text({ font, italic, bold, underline, as: Component }),
+        text({ font, italic, bold, underline, as }),
         css(styleProps),
         className,
       )}
     >
       {children}
-    </Component>
+    </Box>
   );
 }

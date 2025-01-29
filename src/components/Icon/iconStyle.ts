@@ -2,7 +2,7 @@ import { cva, type RecipeVariantProps } from '@styled-system/css';
 
 export const iconStyle = cva({
   base: {
-    // fill: 'current',
+    fill: 'currentColor',
     width: '24',
     height: '24',
   },

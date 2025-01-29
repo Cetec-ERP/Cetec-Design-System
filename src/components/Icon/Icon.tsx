@@ -1,6 +1,6 @@
 import { cx } from '@styled-system/css';
 import { iconStyle } from './iconStyle';
-import { IconNamesList } from './utils/icons';
+import { IconNamesList } from './icons';
 import { type HTMLStyledProps } from '@styled-system/types';
 
 type IconProps = HTMLStyledProps<'svg'> & {
