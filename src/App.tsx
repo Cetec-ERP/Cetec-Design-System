@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { css } from '@styled-system/css';
 import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
 import { Text } from '~/components/Text';
 import { Button } from '~/components/Button';
@@ -8,7 +7,8 @@ import { Icon, IconNames, type IconNamesList } from '~/components/Icon';
 import { Pre } from '~/components/Code';
 import { ThemeProvider } from '~/contexts/ThemeContext';
 import { ThemeSwitcher } from '~/components/ThemeSwitcher';
-import { Heading } from './components/Heading';
+import { Heading } from '~/components/Heading';
+import { Link } from '~/components/Link';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -146,6 +146,16 @@ function AppContent() {
                 <Pre>{'<Heading as="h3">Hamburgefonstiv</Heading>'}</Pre>
                 <Heading as="h4">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h4">Hamburgefonstiv</Heading>'}</Pre>
+                <Box gridColumn={'1 / -1'} mt={'32'}>
+                  <Heading as="h4" color={'gold.40'}>
+                    Links
+                  </Heading>
+                </Box>
+                <Link href="https://cetecerp.com">Cetec ERP</Link>
+                <Pre>{'<Link href="https://cetecerp.com">Cetec ERP</Link>'}</Pre>
+                <Link href="https://cetecerp.com" external>Cetec ERP</Link>
+                <Pre>{'<Link href="https://cetecerp.com" external>Cetec ERP</Link>'}</Pre>
+                <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
               </Grid>
             </VStack>
           </Section>

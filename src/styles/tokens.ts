@@ -74,15 +74,15 @@ export const colors = {
     90: { value: '#111819' },
   },
   blue: {
-    5: { value: '#EFF6FB' },
-    10: { value: '#D9E8F6' },
-    20: { value: '#AACDEC' },
-    30: { value: '#73B3E7' },
-    40: { value: '#4F97D1' },
-    50: { value: '#2378C3' },
-    60: { value: '#2C608A' },
-    70: { value: '#274863' },
-    80: { value: '#1F303E' },
+    5: { value: '#E8F5FF' },
+    10: { value: '#CFE8FF' },
+    20: { value: '#A1D3FF' },
+    30: { value: '#58B4FF' },
+    40: { value: '#2491FF' },
+    50: { value: '#0076DA' },
+    60: { value: '#005EA2' },
+    70: { value: '#0B4778' },
+    80: { value: '#112F4E' },
     90: { value: '#11181D' },
   },
   green: {
@@ -305,7 +305,7 @@ export const shadows = {
 const baseHeadingStyles = {
   value: {
     fontFamily: 'heading',
-    fontWeight: 'bold',
+    fontWeight: 'black',
     color: { base: 'slate.90', _dark: 'slate.5' },
     lineHeight: 'default',
   }

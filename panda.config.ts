@@ -10,7 +10,7 @@ import { globalCss } from './src/styles/globalStyle';
 import { buttonRecipe, iconButtonRecipe } from './src/recipes/button';
 import { inputRecipe } from './src/recipes/input';
 import { textareaRecipe } from './src/recipes/textarea';
-import { textRecipe, headingRecipe } from './src/recipes/typography';
+import { textRecipe, headingRecipe, linkRecipe } from './src/recipes/typography';
 
 // using pandas methods to define type-safe tokens
 const theme = {
@@ -85,6 +85,7 @@ export default defineConfig({
       recipes: {
         text: textRecipe,
         heading: headingRecipe,
+        link: linkRecipe,
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
         input: inputRecipe,
