@@ -34,7 +34,6 @@ function IconList() {
 
 const Section = ({ children }: { children?: ReactNode }) => {
   return (
-    // This is a Flex component
     <Grid
       gridTemplateColumns={'10rem 1fr'}
       gap={'40'}
@@ -54,20 +53,30 @@ function AppContent() {
     <VStack>
       <Flex
         w="full"
-        py={'24'}
+        py={'4'}
         bg={{ base: 'slate.10', _dark: 'slate.80' }}
         mb={'56'}
+        position={'sticky'}
+        top={'0'}
+        zIndex={'100'}
+        boxShadow={'medium'}
       >
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
-            <Heading as="h1">Cetec Components</Heading>
+            <Text 
+              level={20} 
+              font="mono" 
+              textTransform={'uppercase'} 
+              letterSpacing={'0.15em'} 
+              fontWeight={'bold'}
+              color={{ base: 'slate.90', _dark: 'slate.10' }}
+            >Cetec Components</Text>
             <ThemeSwitcher />
           </HStack>
         </Container>
       </Flex>
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
-          <Spinner />
           <Section>
             <Heading as="h2">Buttons</Heading>
             <VStack alignItems={'flex-start'} gap={'24'}>
@@ -160,6 +169,23 @@ function AppContent() {
                 <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
               </Grid>
             </VStack>
+          </Section>
+          <Section>
+            <Heading as="h2">Spinner</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <VStack>
+                <Spinner size="small" />
+                <Text>Small</Text>
+              </VStack>
+              <VStack>
+                <Spinner />
+                <Text>Standard</Text>
+              </VStack>
+              <VStack>
+                <Spinner size="large" />
+                <Text>Large</Text>
+              </VStack>
+            </HStack>
           </Section>
           <Section>
             <Heading as="h2">Icons</Heading>

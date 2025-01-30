@@ -37,7 +37,14 @@ const theme = {
       success: tokens.colors.status.success,
       warning: tokens.colors.status.warning,
       danger: tokens.colors.status.danger,
-      utility: tokens.colors.utility,
+      utility: {
+        shadowColor: {
+          value: {
+            base: '{colors.slate.90/10}',
+            _dark: '{colors.slate.100/10}'
+          }
+        }
+      },
     },
   }),
 };

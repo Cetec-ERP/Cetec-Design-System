@@ -160,9 +160,6 @@ export const colors = {
       darker: { value: 'red.70' },
     },
   },
-  utility: {
-    shadowColor: { value: 'rgba(slate.90, 0.2)' },
-  },
 };
 
 export const fonts = {
@@ -289,18 +286,18 @@ export const radii = {
 
 export const shadows = {
   low: {
-    value: 'Opx 1px 1px shadowColor, Opx 2px 2px shadowColor'
+    value: '0px 1px 1px {colors.utility.shadowColor}, 0px 2px 2px {colors.utility.shadowColor}'
   },
   medium: {
-    value: 'Opx 2px 2px shadowColor, Opx 4px 4px shadowColor, Opx 8px 8px rgba shadowColor'
+    value: '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}'
   },
   high: {
-    value: 'Opx 2px 2px shadowColor, Opx 4px 4px shadowColor, Opx 8px 8px shadowColor, Opx 16px 16px shadowColor'
+    value: '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}, 0px 16px 16px {colors.utility.shadowColor}'
   },
   inset: {
-    value: 'inset Opx 2px 1px shadowColor, inset Opx 3px 2px shadowColor'
+    value: 'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}'
   }
-}
+};
 
 const baseHeadingStyles = {
   value: {
