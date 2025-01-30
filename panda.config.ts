@@ -8,10 +8,9 @@ import * as tokens from './src/styles/tokens';
 import { globalCss } from './src/styles/globalStyle';
 
 import { buttonRecipe, iconButtonRecipe } from './src/recipes/button';
-// import { iconButton } from './src/recipes/icon-button';
 import { inputRecipe } from './src/recipes/input';
 import { textareaRecipe } from './src/recipes/textarea';
-import { textRecipe } from './src/recipes/text';
+import { textRecipe, headingRecipe } from './src/recipes/typography';
 
 // using pandas methods to define type-safe tokens
 const theme = {
@@ -55,7 +54,6 @@ export default defineConfig({
   strictTokens: true,
 
   theme: {
-    textStyles: { ...pandaPandaPreset.theme.textStyles },
     containerSizes: { ...pandaPandaPreset.theme.containerSizes },
     keyframes: { ...pandaPandaPreset.theme.keyframes },
     tokens: {
@@ -79,12 +77,14 @@ export default defineConfig({
       colors: theme.semanticTokens.colors,
     },
     extend: {
+      textStyles: tokens.textStyles,
       breakpoints: {
         ...pandaPandaPreset.theme.breakpoints,
         xs: '480px',
       },
       recipes: {
         text: textRecipe,
+        heading: headingRecipe,
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
         input: inputRecipe,

@@ -8,6 +8,7 @@ import { Icon, IconNames, type IconNamesList } from '~/components/Icon';
 import { Pre } from '~/components/Code';
 import { ThemeProvider } from '~/contexts/ThemeContext';
 import { ThemeSwitcher } from '~/components/ThemeSwitcher';
+import { Heading } from './components/Heading';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -19,11 +20,11 @@ function IconList() {
       gridTemplateColumns={'repeat(auto-fill, minmax(200px, 1fr))'}
     >
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
-        <HStack key={icon} color={'gold.30'}>
+        <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
           <Icon
             name={icon}
           />
-          <Text>{icon}</Text>
+          <Text font="mono" level={14}>{icon}</Text>
         </HStack>
       ))}
     </Grid>
@@ -58,7 +59,7 @@ function AppContent() {
       >
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
-            <Text as="h1">Cetec Components</Text>
+            <Heading as="h1">Cetec Components</Heading>
             <ThemeSwitcher />
           </HStack>
         </Container>
@@ -66,7 +67,7 @@ function AppContent() {
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
           <Section>
-            <Text as="h2">Buttons</Text>
+            <Heading as="h2">Buttons</Heading>
             <VStack alignItems={'flex-start'} gap={'24'}>
               <HStack>
                 <Button variant="primary">Primary</Button>
@@ -90,7 +91,7 @@ function AppContent() {
             </VStack>
           </Section>
           <Section>
-            <Text as="h2">Text</Text>
+            <Heading as="h2">Text</Heading>
             <VStack alignItems={'flex-start'}>
               <Grid
                 gridTemplateColumns={'minmax(auto, 1fr) 1fr'}
@@ -99,9 +100,9 @@ function AppContent() {
                 alignItems={'center'}
               >
                 <Box gridColumn={'1 / -1'}>
-                  <Text as="h4" color={'gold.40'}>
+                  <Heading as="h4" color={'gold.40'}>
                     Text styles
-                  </Text>
+                  </Heading>
                 </Box>
                 <VStack gap={'16'}>
                   <Text>
@@ -133,23 +134,23 @@ function AppContent() {
                 </Text>
                 <Pre>{`<Text font="mono">...</Text>`}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Text as="h4" color={'gold.40'}>
+                  <Heading as="h4" color={'gold.40'}>
                     Headings
-                  </Text>
+                  </Heading>
                 </Box>
-                <Text as="h1">Hamburgefonstiv</Text>
-                <Pre>{'<Text as="h1">Hamburgefonstiv</Text>'}</Pre>
-                <Text as="h2">Hamburgefonstiv</Text>
-                <Pre>{'<Text as="h2">Hamburgefonstiv</Text>'}</Pre>
-                <Text as="h3">Hamburgefonstiv</Text>
-                <Pre>{'<Text as="h3">Hamburgefonstiv</Text>'}</Pre>
-                <Text as="h4">Hamburgefonstiv</Text>
-                <Pre>{'<Text as="h4">Hamburgefonstiv</Text>'}</Pre>
+                <Heading as="h1">Hamburgefonstiv</Heading>
+                <Pre>{'<Heading as="h1">Hamburgefonstiv</Heading>'}</Pre>
+                <Heading>Hamburgefonstiv</Heading>
+                <Pre>{'<Heading>Hamburgefonstiv</Heading>'}</Pre>
+                <Heading as="h3">Hamburgefonstiv</Heading>
+                <Pre>{'<Heading as="h3">Hamburgefonstiv</Heading>'}</Pre>
+                <Heading as="h4">Hamburgefonstiv</Heading>
+                <Pre>{'<Heading as="h4">Hamburgefonstiv</Heading>'}</Pre>
               </Grid>
             </VStack>
           </Section>
           <Section>
-            <Text as="h2">Icons</Text>
+            <Heading as="h2">Icons</Heading>
             <IconList />
           </Section>
           {/* <Section>

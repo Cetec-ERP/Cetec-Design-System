@@ -6,10 +6,11 @@ import { text, type TextVariantProps } from '@styled-system/recipes';
 import { cx, css } from '@styled-system/css';
 import type { SystemStyleObject } from '@styled-system/types';
 
-type TextElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
+type TextElement = 'p' | 'span';
 type TextProps = TextVariantProps &
   Omit<React.ComponentProps<typeof Box>, 'as'> & {
   as?: TextElement; // Restrict 'as' prop to only text elements
+  level?: number;
   font?: string;
   italic?: boolean;
   bold?: boolean;
@@ -18,11 +19,12 @@ type TextProps = TextVariantProps &
 
 export function Text({
   as = 'p',
-  className,
   font,
+  level,
   italic,
   bold,
   underline,
+  className,
   ...props
 }: TextProps) {
   const { children, ...restProps } = props;
@@ -32,7 +34,7 @@ export function Text({
     <Box
       as={as}
       className={cx(
-        text({ font, italic, bold, underline, as }),
+        text({ font, italic, bold, underline, as, level }),
         css(styleProps),
         className,
       )}

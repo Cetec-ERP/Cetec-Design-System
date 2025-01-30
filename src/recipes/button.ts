@@ -90,6 +90,7 @@ const buttonVariants = {
       color: { base: 'slate.80', _dark: 'slate.5' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
+        borderColor: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
         bg: { base: 'slate.20', _dark: 'slate.100' },
@@ -127,18 +128,18 @@ const buttonVariants = {
       },
     },
     cta: {
-      bg: { base: 'gold.30', _dark: 'gold.20' },
+      bg: { base: 'gold.20', _dark: 'gold.30' },
       color: { base: 'slate.90', _dark: 'slate.90' },
       _hover: {
-        bg: { base: 'gold.20', _dark: 'gold.10' },
+        bg: { base: 'gold.10', _dark: 'gold.20' },
       },
       _active: {
-        bg: { base: 'gold.40', _dark: 'gold.30' },
+        bg: { base: 'gold.30', _dark: 'gold.40' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'gold.30', _dark: 'gold.20' },
+          bg: { base: 'gold.20', _dark: 'gold.30' },
         },
       },
     },

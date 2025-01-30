@@ -1,17 +1,32 @@
-import { ComponentProps } from 'react';
-import { styled } from '@styled-system/jsx';
-import type { StyledComponent } from '@styled-system/jsx';
-import { headingStyle, type HeadingVariantProps } from './headingStyle';
+import { Box } from '../Box/Box';
+import { heading, type HeadingVariantProps } from '@styled-system/recipes';
+import { cx, css } from '@styled-system/css';
+import type { SystemStyleObject } from '@styled-system/types';
 
 type HeadingElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+type HeadingProps = HeadingVariantProps &
+  Omit<React.ComponentProps<typeof Box>, 'as'> & {
+  as?: HeadingElement; // Restrict 'as' prop to only heading elements
+} & SystemStyleObject;
 
-type HeadingProps = ComponentProps<'h2'> &
-  HeadingVariantProps & { as?: HeadingElement } & {
-    [key: string]: any;
-    level?: number;
-  };
+export function Heading({
+  as = 'h2',
+  className,
+  ...props
+}: HeadingProps) {
+  const { children, ...restProps } = props;
+  const styleProps: SystemStyleObject = { ...restProps };
 
-export const Heading = styled('h2', headingStyle) as StyledComponent<
-  'h2',
-  HeadingProps
->;
+  return (
+    <Box
+      as={as}
+      className={cx(
+        heading({ as }),
+        css(styleProps),
+        className,
+      )}
+    >
+      {children}
+    </Box>
+  );
+}

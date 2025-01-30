@@ -1,3 +1,5 @@
+import { defineTextStyles } from '@pandacss/dev'
+
 export const colors = {
   transparent: { value: 'transparent' },
   current: { value: 'currentColor' },
@@ -300,225 +302,139 @@ export const shadows = {
   }
 }
 
-// const baseHeadingStyles = {
-//   fontFamily: 'heading',
-//   fontWeight: 'bold',
-//   color: 'slate.90',
-//   _osDark: { color: 'slate.5' },
-// };
+const baseHeadingStyles = {
+  value: {
+    fontFamily: 'heading',
+    fontWeight: 'bold',
+    color: { base: 'slate.90', _dark: 'slate.5' },
+    lineHeight: 'default',
+  }
+};
 
-// const baseBodyTextStyles = {
-//   fontFamily: 'sans',
-//   fontWeight: 'normal',
-//   color: 'slate.70',
-//   _osDark: { color: 'slate.20' },
-// };
+const baseBodyTextStyles = {
+  value: {
+    fontFamily: 'sans',
+    fontWeight: 'normal',
+    color: { base: 'slate.60', _dark: 'slate.20' },
+    lineHeight: 'default',
+  }
+};
 
-// const baseMonoStyles = {
-//   fontFamily: 'mono',
-//   fontWeight: 'normal',
-//   color: 'slate.70',
-//   _osDark: { color: 'slate.20' },
-// };
+const baseMonoStyles = {
+  value: {
+    fontFamily: 'mono',
+    fontWeight: 'normal',
+    color: { base: 'slate.60', _dark: 'slate.20' },
+    lineHeight: 'default',
+  }
+};
 
-// export const textStyles = {
-//   display: {
-//     lg: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '72',
-//         lineHeight: '64',
-//       },
-//     },
-//     md: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '64',
-//         lineHeight: '64',
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '56',
-//         lineHeight: '56',
-//       },
-//     },
-//     xs: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '48',
-//         lineHeight: '56',
-//       },
-//     },
-//   },
-//   heading: {
-//     lg: {
-//       ...baseHeadingStyles,
-//       fontSize: sizes[40],
-//       lineHeight: sizes[40],
-//     },
-//     md: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: sizes[32],
-//         lineHeight: sizes[32],
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: sizes[24],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//     xs: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: sizes[20],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//   },
-//   body: {
-//     lg: {
-//       value: {
-//         ...baseBodyTextStyles,
-//         fontSize: sizes[20],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//     md: {
-//       value: {
-//         ...baseBodyTextStyles,
-//         fontSize: sizes[16],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseBodyTextStyles,
-//         fontSize: sizes[14],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     xs: {
-//       ...baseBodyTextStyles,
-//       value: {
-//         fontSize: sizes[12],
-//         lineHeight: sizes[16],
-//       },
-//     },
-//   },
-//   mono: {
-//     lg: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[20],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//     md: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[16],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[14],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     xs: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[12],
-//         lineHeight: sizes[16],
-//       },
-//     },
-//   },
-//   //   xs: {
-//   //     value: {
-//   //       fontSize: '0.75rem',
-//   //       lineHeight: '1rem',
-//   //     },
-//   //   },
-//   //   sm: {
-//   //     value: {
-//   //       fontSize: '0.875rem',
-//   //       lineHeight: '1.25rem',
-//   //     },
-//   //   },
-//   //   md: {
-//   //     value: {
-//   //       fontSize: '1rem',
-//   //       lineHeight: '1.5rem',
-//   //     },
-//   //   },
-//   //   lg: {
-//   //     value: {
-//   //       fontSize: '1.125rem',
-//   //       lineHeight: '1.75rem',
-//   //     },
-//   //   },
-//   //   xl: {
-//   //     value: {
-//   //       fontSize: '1.25rem',
-//   //       lineHeight: '1.75rem',
-//   //     },
-//   //   },
-//   //   '2xl': {
-//   //     value: {
-//   //       fontSize: '1.5rem',
-//   //       lineHeight: '2rem',
-//   //     },
-//   //   },
-//   //   '3xl': {
-//   //     value: {
-//   //       fontSize: '1.875rem',
-//   //       lineHeight: '2.25rem',
-//   //     },
-//   //   },
-//   //   '4xl': {
-//   //     value: {
-//   //       fontSize: '2.25rem',
-//   //       lineHeight: '2.5rem',
-//   //     },
-//   //   },
-//   //   '5xl': {
-//   //     value: {
-//   //       fontSize: '3rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '6xl': {
-//   //     value: {
-//   //       fontSize: '3.75rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '7xl': {
-//   //     value: {
-//   //       fontSize: '4.5rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '8xl': {
-//   //     value: {
-//   //       fontSize: '6rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '9xl': {
-//   //     value: {
-//   //       fontSize: '8rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-// };
+export const textStyles = defineTextStyles({
+  display: {
+    lg: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '72',
+      },
+    },
+    md: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '64',
+      },
+    },
+    sm: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '56',
+      },
+    },
+    xs: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '48',
+      },
+    },
+  },
+  heading: {
+    lg: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '40',
+      },
+    },
+    md: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '32',
+      },
+    },
+    sm: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '24',
+      },
+    },
+    xs: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '20',
+      },
+    },
+  },
+  body: {
+    lg: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '20',
+      },
+    },
+    md: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '16',
+      },
+    },
+    sm: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '14',
+      },
+    },
+    xs: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '12',
+      },
+    },
+  },
+  mono: {
+    lg: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '20',
+      },
+    },
+    md: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '16',
+      },
+    },
+    sm: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '14',
+      },
+    },
+    xs: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '12',
+      },
+    },
+  },
+});
 
 // https://github.com/chakra-ui/panda/tree/4b70f29a14e98d9a0b450273704d2565e3f2d0bd/packages/preset-panda/src
 
