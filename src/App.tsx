@@ -9,6 +9,7 @@ import { ThemeProvider } from '~/contexts/ThemeContext';
 import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
+import { Spinner } from '~/components/Spinner';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -66,6 +67,7 @@ function AppContent() {
       </Flex>
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
+          <Spinner />
           <Section>
             <Heading as="h2">Buttons</Heading>
             <VStack alignItems={'flex-start'} gap={'24'}>
@@ -151,9 +153,9 @@ function AppContent() {
                     Links
                   </Heading>
                 </Box>
-                <Link href="https://cetecerp.com">Cetec ERP</Link>
+                <Text>Internal:&emsp;<Link href="https://cetecerp.com">Cetec ERP</Link></Text>
                 <Pre>{'<Link href="https://cetecerp.com">Cetec ERP</Link>'}</Pre>
-                <Link href="https://cetecerp.com" external>Cetec ERP</Link>
+                <Text>External:&emsp;<Link href="https://cetecerp.com" external>Cetec ERP</Link></Text>
                 <Pre>{'<Link href="https://cetecerp.com" external>Cetec ERP</Link>'}</Pre>
                 <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
               </Grid>
