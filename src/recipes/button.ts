@@ -31,7 +31,7 @@ const baseButtonStyles = {
       cursor: 'not-allowed',
     },
     _focusVisible: {
-      outlineColor: { base: 'slate.80', _dark: 'slate.5', _win95: 'slate.90' },
+      outlineColor: { base: 'slate.80', _dark: 'slate.5' },
     },
     '& svg': {
       fill: 'current',
@@ -43,56 +43,56 @@ const baseButtonStyles = {
 const buttonVariants = {
   variant: {
     primary: {
-      bg: { base: 'slate.90', _dark: 'slate.5', _win95: 'tan.30' },
-      color: { base: 'slate.5', _dark: 'slate.90', _win95: 'tan.90' },
+      bg: { base: 'slate.90', _dark: 'slate.5' },
+      color: { base: 'slate.5', _dark: 'slate.90' },
       _hover: {
-        bg: { base: 'slate.70', _dark: 'slate.20', _win95: 'tan.40' },
+        bg: { base: 'slate.70', _dark: 'slate.20' },
       },
       _active: {
-        bg: { base: 'slate.100', _dark: 'slate.30', _win95: 'tan.50' },
+        bg: { base: 'slate.100', _dark: 'slate.30' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'slate.90', _dark: 'slate.5', _win95: 'tan.30' },
+          bg: { base: 'slate.90', _dark: 'slate.5' },
         },
       },
       _selected: {
-        bg: { base: 'slate.5', _dark: 'slate.90', _win95: 'tan.80' },
-        color: { base: 'slate.90', _dark: 'slate.5', _win95: 'tan.90' },
+        bg: { base: 'slate.5', _dark: 'slate.90' },
+        color: { base: 'slate.90', _dark: 'slate.5' },
         borderColor: 'transparent',
       },
     },
     standard: {
-      bg: { base: 'slate.5', _dark: 'slate.70', _win95: 'tan.10' },
-      color: { base: 'slate.80', _dark: 'slate.5', _win95: 'slate.90' },
+      bg: { base: 'slate.5', _dark: 'slate.70' },
+      color: { base: 'slate.80', _dark: 'slate.5' },
       _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60', _win95: 'tan.20' },
+        bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
-        bg: { base: 'slate.20', _dark: 'slate.100', _win95: 'tan.30' },
+        bg: { base: 'slate.20', _dark: 'slate.100' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'slate.5', _dark: 'slate.70', _win95: 'tan.10' },
+          bg: { base: 'slate.5', _dark: 'slate.70' },
         },
       },
       _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5', _win95: 'tan.30' },
-        color: { base: 'slate.5', _dark: 'slate.90', _win95: 'tan.90' },
+        bg: { base: 'slate.90', _dark: 'slate.5' },
+        color: { base: 'slate.5', _dark: 'slate.90' },
         borderColor: 'transparent',
       },
     },
     hollow: {
       bg: 'transparent',
-      borderColor: { base: 'slate.30', _dark: 'slate.60', _win95: 'tan.30' },
-      color: { base: 'slate.80', _dark: 'slate.5', _win95: 'slate.90' },
+      borderColor: { base: 'slate.30', _dark: 'slate.60' },
+      color: { base: 'slate.80', _dark: 'slate.5' },
       _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60', _win95: 'tan.10' },
+        bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
-        bg: { base: 'slate.20', _dark: 'slate.100', _win95: 'tan.20' },
+        bg: { base: 'slate.20', _dark: 'slate.100' },
       },
       _disabled: {
         _hover: {
@@ -100,19 +100,19 @@ const buttonVariants = {
         },
       },
       _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5', _win95: 'tan.30' },
-        color: { base: 'slate.5', _dark: 'slate.90', _win95: 'tan.90' },
+        bg: { base: 'slate.90', _dark: 'slate.5' },
+        color: { base: 'slate.5', _dark: 'slate.90' },
         borderColor: 'transparent',
       },
     },
     ghost: {
       bg: 'transparent',
-      color: { base: 'slate.90', _dark: 'slate.5', _win95: 'slate.90' },
+      color: { base: 'slate.90', _dark: 'slate.5' },
       _hover: {
-        bg: { base: 'slate.20', _dark: 'slate.70', _win95: 'tan.10' },
+        bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
-        bg: { base: 'slate.30', _dark: 'slate.60', _win95: 'tan.20' },
+        bg: { base: 'slate.30', _dark: 'slate.60' },
         borderColor: 'transparent',
       },
       _disabled: {
@@ -121,40 +121,40 @@ const buttonVariants = {
         },
       },
       _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5', _win95: 'tan.30' },
-        color: { base: 'slate.5', _dark: 'slate.90', _win95: 'tan.90' },
+        bg: { base: 'slate.90', _dark: 'slate.5' },
+        color: { base: 'slate.5', _dark: 'slate.90' },
         borderColor: 'transparent',
       },
     },
     cta: {
-      bg: { base: 'gold.30', _dark: 'gold.20', _win95: 'blue.30' },
-      color: { base: 'slate.90', _dark: 'slate.90', _win95: 'slate.90' },
+      bg: { base: 'gold.30', _dark: 'gold.20' },
+      color: { base: 'slate.90', _dark: 'slate.90' },
       _hover: {
-        bg: { base: 'gold.20', _dark: 'gold.10', _win95: 'blue.20' },
+        bg: { base: 'gold.20', _dark: 'gold.10' },
       },
       _active: {
-        bg: { base: 'gold.40', _dark: 'gold.30', _win95: 'blue.40' },
+        bg: { base: 'gold.40', _dark: 'gold.30' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'gold.30', _dark: 'gold.20', _win95: 'blue.30' },
+          bg: { base: 'gold.30', _dark: 'gold.20' },
         },
       },
     },
     danger: {
-      bg: { base: 'red.50', _dark: 'red.40', _win95: 'red.10' },
-      color: { base: 'slate.0', _dark: 'slate.0', _win95: 'slate.90' },
+      bg: { base: 'red.50', _dark: 'red.40' },
+      color: { base: 'slate.0', _dark: 'slate.0' },
       _hover: {
-        bg: { base: 'red.40', _dark: 'red.30', _win95: 'red.5' },
+        bg: { base: 'red.40', _dark: 'red.30' },
       },
       _active: {
-        bg: { base: 'red.60', _dark: 'red.50', _win95: 'red.20' },
+        bg: { base: 'red.60', _dark: 'red.50' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'red.50', _dark: 'red.40', _win95: 'red.10' },
+          bg: { base: 'red.50', _dark: 'red.40' },
         },
       },
     },

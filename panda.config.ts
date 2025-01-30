@@ -125,7 +125,7 @@ export default defineConfig({
   conditions: {
     light: '[data-color-mode=light] &',
     dark: '[data-color-mode=dark] &',
-    win95: '[data-theme=win95] &',
+    // win95: '[data-theme=win95] &',
     checked:
       '&:is(:checked, [data-checked], [aria-checked=true], [data-state=checked])',
     indeterminate:

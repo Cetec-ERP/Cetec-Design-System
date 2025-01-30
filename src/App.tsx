@@ -53,7 +53,7 @@ function AppContent() {
       <Flex
         w="full"
         py={'24'}
-        bg={{ base: 'slate.10', _dark: 'slate.80', _win95: 'tan.50' }}
+        bg={{ base: 'slate.10', _dark: 'slate.80' }}
         mb={'56'}
       >
         <Container maxW={'5xl'}>

@@ -1,4 +1,3 @@
-import { HStack } from '@styled-system/jsx';
 import { IconButton } from '~/components/IconButton';
 import { Icon } from '~/components/Icon';
 import { useTheme } from '~/contexts/ThemeContext';
@@ -6,32 +5,17 @@ import { useTheme } from '~/contexts/ThemeContext';
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
   
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
   return (
-    <HStack>
-      <IconButton 
-        variant="ghost" 
-        onClick={() => setTheme('light')}
-        {...(theme === 'light' && { 'data-selected': '' })}
-        aria-label="Light theme"
-      >
-        <Icon name="sun-filled" />
-      </IconButton>
-      <IconButton 
-        variant="ghost"
-        onClick={() => setTheme('dark')}
-        {...(theme === 'dark' && { 'data-selected': '' })}
-        aria-label="Dark theme"
-      >
-        <Icon name="moon-filled" />
-      </IconButton>
-      <IconButton 
-        variant="ghost"
-        onClick={() => setTheme('win95')}
-        {...(theme === 'win95' && { 'data-selected': '' })}
-        aria-label="Windows 95 theme"
-      >
-        <Icon name="windows" />
-      </IconButton>
-    </HStack>
+    <IconButton 
+      variant="ghost" 
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+    >
+      <Icon name={theme === 'light' ? 'moon-filled' : 'sun-filled'} />
+    </IconButton>
   );
 } 

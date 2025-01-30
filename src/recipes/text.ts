@@ -3,19 +3,19 @@ import { defineRecipe } from '@pandacss/dev';
 const baseHeadingStyles = {
   fontFamily: 'heading',
   fontWeight: 'bold',
-  color: { base: 'slate.90', _dark: 'slate.5', _win95: 'slate.90' },
+  color: { base: 'slate.90', _dark: 'slate.5' },
 };
 
 const baseBodyTextStyles = {
   fontFamily: 'sans',
   fontWeight: 'normal',
-  color: { base: 'slate.70', _dark: 'slate.20', _win95: 'slate.70' },
+  color: { base: 'slate.70', _dark: 'slate.20' },
 };
 
 const baseMonoStyles = {
   fontFamily: 'mono',
   fontWeight: 'normal',
-  color: { base: 'slate.70', _dark: 'slate.20', _win95: 'slate.70' },
+  color: { base: 'slate.70', _dark: 'slate.20' },
 };
 
 export const textStyles = {
@@ -146,7 +146,7 @@ export const textRecipe = defineRecipe({
     margin: '0',
     lineHeight: 'default',
     fontWeight: 'normal',
-    color: { base: 'slate.70', _dark: 'slate.20', _win95: 'slate.70' },
+    color: { base: 'slate.70', _dark: 'slate.20' },
   },
   variants: {
     as: {
