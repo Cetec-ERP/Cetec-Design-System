@@ -8,16 +8,15 @@ import * as tokens from './src/styles/tokens';
 import { globalCss } from './src/styles/globalStyle';
 
 import { buttonRecipe, iconButtonRecipe } from './src/recipes/button';
-// import { iconButton } from './src/recipes/icon-button';
 import { inputRecipe } from './src/recipes/input';
 import { textareaRecipe } from './src/recipes/textarea';
-import { textRecipe } from './src/recipes/text';
+import { textRecipe, headingRecipe, linkRecipe } from './src/recipes/typography';
 
 // using pandas methods to define type-safe tokens
 const theme = {
   tokens: defineTokens({
     aspectRatios: { ...pandaPandaPreset.theme.tokens.aspectRatios },
-    shadows: { ...pandaPandaPreset.theme.tokens.shadows },
+    shadows: { ...tokens.shadows },
     easings: { ...pandaPandaPreset.theme.tokens.easings },
     durations: { ...pandaPandaPreset.theme.tokens.durations },
     letterSpacings: { ...pandaPandaPreset.theme.tokens.letterSpacings },
@@ -34,10 +33,18 @@ const theme = {
   }),
   semanticTokens: defineSemanticTokens({
     colors: {
-      primary: tokens.colors.gold[30],
-      success: tokens.colors.green[40],
-      warning: tokens.colors.yellow[30],
-      danger: tokens.colors.red[50],
+      brand: tokens.colors.brand,
+      success: tokens.colors.status.success,
+      warning: tokens.colors.status.warning,
+      danger: tokens.colors.status.danger,
+      utility: {
+        shadowColor: {
+          value: {
+            base: '{colors.slate.90/10}',
+            _dark: '{colors.slate.100/10}'
+          }
+        }
+      },
     },
   }),
 };
@@ -54,7 +61,6 @@ export default defineConfig({
   strictTokens: true,
 
   theme: {
-    textStyles: { ...pandaPandaPreset.theme.textStyles },
     containerSizes: { ...pandaPandaPreset.theme.containerSizes },
     keyframes: { ...pandaPandaPreset.theme.keyframes },
     tokens: {
@@ -78,12 +84,15 @@ export default defineConfig({
       colors: theme.semanticTokens.colors,
     },
     extend: {
+      textStyles: tokens.textStyles,
       breakpoints: {
         ...pandaPandaPreset.theme.breakpoints,
         xs: '480px',
       },
       recipes: {
         text: textRecipe,
+        heading: headingRecipe,
+        link: linkRecipe,
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
         input: inputRecipe,
@@ -122,6 +131,9 @@ export default defineConfig({
   },
 
   conditions: {
+    light: '[data-color-mode=light] &',
+    dark: '[data-color-mode=dark] &',
+    // win95: '[data-theme=win95] &',
     checked:
       '&:is(:checked, [data-checked], [aria-checked=true], [data-state=checked])',
     indeterminate:
@@ -137,6 +149,7 @@ export default defineConfig({
     containerSmall: '@container (max-width: 560px)',
     containerMedium: '@container (min-width: 561px) and (max-width: 999px)',
     containerLarge: '@container (min-width: 1000px)',
+    selected: '&:is([data-selected])',
   },
 
   // The output directory for your css system

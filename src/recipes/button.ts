@@ -1,7 +1,6 @@
 import { defineRecipe } from '@pandacss/dev';
 
-const buttonBase = {
-  base: {
+const baseButtonStyles = {
     appearance: 'none',
     minWidth: 0,
     transitionDuration: 'fast',
@@ -15,7 +14,7 @@ const buttonBase = {
     fontFamily: 'sans',
     fontSize: 16,
     fontWeight: 'medium',
-    lineHeight: 24,
+    lineHeight: 'default',
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: 'transparent',
@@ -32,74 +31,90 @@ const buttonBase = {
       cursor: 'not-allowed',
     },
     _focusVisible: {
-      outlineColor: { base: 'slate.80', _osDark: 'slate.5' },
+      outlineColor: { base: 'slate.80', _dark: 'slate.5' },
     },
     '& svg': {
       fill: 'current',
       width: 24,
       height: 24,
     },
-  },
-};
+  };
 
 const buttonVariants = {
   variant: {
     primary: {
-      bg: { base: 'slate.90', _osDark: 'slate.5' },
-      color: { base: 'slate.5', _osDark: 'slate.90' },
+      bg: { base: 'slate.90', _dark: 'slate.5' },
+      color: { base: 'slate.5', _dark: 'slate.90' },
       _hover: {
-        bg: { base: 'slate.70', _osDark: 'slate.20' },
+        bg: { base: 'slate.70', _dark: 'slate.20' },
       },
       _active: {
-        bg: { base: 'slate.100', _osDark: 'slate.30' },
+        bg: { base: 'slate.100', _dark: 'slate.30' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'slate.90', _osDark: 'slate.5' },
+          bg: { base: 'slate.90', _dark: 'slate.5' },
         },
+      },
+      _selected: {
+        bg: { base: 'slate.5', _dark: 'slate.90' },
+        color: { base: 'slate.90', _dark: 'slate.5' },
+        borderColor: 'transparent',
       },
     },
     standard: {
-      bg: { base: 'slate.5', _osDark: 'slate.70' },
-      color: { base: 'slate.80', _osDark: 'slate.5' },
+      bg: { base: 'slate.5', _dark: 'slate.70' },
+      color: { base: 'slate.80', _dark: 'slate.5' },
       _hover: {
-        bg: { base: 'slate.10', _osDark: 'slate.60' },
+        bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
-        bg: { base: 'slate.20', _osDark: 'slate.100' },
+        bg: { base: 'slate.20', _dark: 'slate.80' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'slate.5', _osDark: 'slate.70' },
+          bg: { base: 'slate.5', _dark: 'slate.70' },
         },
+      },
+      _selected: {
+        bg: { base: 'slate.90', _dark: 'slate.5' },
+        color: { base: 'slate.5', _dark: 'slate.90' },
+        borderColor: 'transparent',
       },
     },
     hollow: {
       bg: 'transparent',
-      borderColor: { base: 'slate.30', _osDark: 'slate.60' },
-      color: { base: 'slate.80', _osDark: 'slate.5' },
+      borderColor: { base: 'slate.30', _dark: 'slate.60' },
+      color: { base: 'slate.80', _dark: 'slate.5' },
       _hover: {
-        bg: { base: 'slate.10', _osDark: 'slate.60' },
+        bg: { base: 'slate.10', _dark: 'slate.60' },
+        borderColor: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
-        bg: { base: 'slate.20', _osDark: 'slate.100' },
+        bg: { base: 'slate.20', _dark: 'slate.70' },
+        borderColor: { base: 'slate.20', _dark: 'slate.70' },
       },
       _disabled: {
         _hover: {
           bg: 'transparent',
         },
+      },
+      _selected: {
+        bg: { base: 'slate.90', _dark: 'slate.5' },
+        color: { base: 'slate.5', _dark: 'slate.90' },
+        borderColor: 'transparent',
       },
     },
     ghost: {
       bg: 'transparent',
-      color: { base: 'slate.90', _osDark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.5' },
       _hover: {
-        bg: { base: 'slate.20', _osDark: 'slate.70' },
+        bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
-        bg: { base: 'slate.30', _osDark: 'slate.60' },
+        bg: { base: 'slate.20', _dark: 'slate.70' },
         borderColor: 'transparent',
       },
       _disabled: {
@@ -107,36 +122,41 @@ const buttonVariants = {
           bg: 'transparent',
         },
       },
+      _selected: {
+        bg: { base: 'slate.90', _dark: 'slate.5' },
+        color: { base: 'slate.5', _dark: 'slate.90' },
+        borderColor: 'transparent',
+      },
     },
     cta: {
-      bg: 'gold.30',
-      color: 'slate.90',
+      bg: { base: 'gold.20', _dark: 'gold.30' },
+      color: { base: 'slate.90', _dark: 'slate.90' },
       _hover: {
-        bg: 'gold.20',
+        bg: { base: 'gold.10', _dark: 'gold.20' },
       },
       _active: {
-        bg: 'gold.40',
+        bg: { base: 'gold.30', _dark: 'gold.40' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: 'gold.30',
+          bg: { base: 'gold.20', _dark: 'gold.30' },
         },
       },
     },
     danger: {
-      bg: 'red.50',
-      color: 'slate.0',
+      bg: { base: 'red.50', _dark: 'red.40' },
+      color: { base: 'slate.0', _dark: 'slate.0' },
       _hover: {
-        bg: 'red.40',
+        bg: { base: 'red.40', _dark: 'red.30' },
       },
       _active: {
-        bg: 'red.60',
+        bg: { base: 'red.60', _dark: 'red.50' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: 'red.50',
+          bg: { base: 'red.50', _dark: 'red.40' },
         },
       },
     },
@@ -146,7 +166,7 @@ const buttonVariants = {
 export const buttonRecipe = defineRecipe({
   className: 'button',
   jsx: ['Button'],
-  ...buttonBase,
+  base: baseButtonStyles,
   variants: {
     ...buttonVariants,
     size: {
@@ -176,7 +196,7 @@ export const buttonRecipe = defineRecipe({
 export const iconButtonRecipe = defineRecipe({
   className: 'icon-button',
   jsx: ['IconButton'],
-  ...buttonBase,
+  base: baseButtonStyles,
   variants: {
     ...buttonVariants,
     size: {

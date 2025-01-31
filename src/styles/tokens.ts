@@ -1,7 +1,7 @@
+import { defineTextStyles } from '@pandacss/dev'
+
 export const colors = {
   transparent: { value: 'transparent' },
-  black: { value: '#000000' },
-  white: { value: '#FFFFFF' },
   current: { value: 'currentColor' },
   slate: {
     0: { value: '#FFFFFF' },
@@ -15,23 +15,27 @@ export const colors = {
     30: { value: '#AFADAB' },
     40: { value: '#939190' },
     50: { value: '#767675' },
-    60: { value: '#5f5f5e' },
+    60: { value: '#5F5F5E' },
     70: { value: '#474747' },
-    80: { value: '#2e2e2e' },
-    90: { value: '#1e1e1e' },
+    80: { value: '#2E2E2E' },
+    90: { value: '#1E1E1E' },
     100: { value: '#000000' },
   },
   gold: {
-    5: { value: '#fcf5e1' },
-    10: { value: '#FEF0C8' },
-    20: { value: '#FFE396' },
-    30: { value: '#FFBE2E' },
-    40: { value: '#E5A000' },
-    50: { value: '#C2850C' },
-    60: { value: '#936F38' },
-    70: { value: '#7A591A' },
-    80: { value: '#5C410A' },
-    90: { value: '#3B2B15' },
+    1: { value: '#FFFCF4' },
+    2: { value: '#FFF9E9' },
+    3: { value: '#FEF6DE' },
+    4: { value: '#FEF3D3' },
+    5: { value: '#FEF0C8' },
+    10: { value: '#FFE396' },
+    20: { value: '#FFBE2E' },
+    30: { value: '#E5A000' },
+    40: { value: '#C2850C' },
+    50: { value: '#936F38' },
+    60: { value: '#7A591A' },
+    70: { value: '#5C410A' },
+    80: { value: '#3B2B15' },
+    90: { value: '#1E1100' },
   },
   orange: {
     5: { value: '#FFF3F2' },
@@ -57,7 +61,35 @@ export const colors = {
     80: { value: '#322D26' },
     90: { value: '#191714' },
   },
+  cyan: {
+    5: { value: '#E7F6F8' },
+    10: { value: '#CCECF2' },
+    20: { value: '#99DEEA' },
+    30: { value: '#5DC0D1' },
+    40: { value: '#449DAC' },
+    50: { value: '#168092' },
+    60: { value: '#2A646D' },
+    70: { value: '#2C4A4E' },
+    80: { value: '#203133' },
+    90: { value: '#111819' },
+  },
+  blue: {
+    5: { value: '#E8F5FF' },
+    10: { value: '#CFE8FF' },
+    20: { value: '#A1D3FF' },
+    30: { value: '#58B4FF' },
+    40: { value: '#2491FF' },
+    50: { value: '#0076DA' },
+    60: { value: '#005EA2' },
+    70: { value: '#0B4778' },
+    80: { value: '#112F4E' },
+    90: { value: '#11181D' },
+  },
   green: {
+    1: { value: '#F8FEF4' },
+    2: { value: '#F1FDE9' },
+    3: { value: '#EBFBDD' },
+    4: { value: '#E4FAD2' },
     5: { value: '#DDF9C7' },
     10: { value: '#C5EE93' },
     20: { value: '#98D035' },
@@ -70,6 +102,10 @@ export const colors = {
     90: { value: '#0D1400' },
   },
   yellow: {
+    1: { value: '#FFFDF3' },
+    2: { value: '#FFFBE7' },
+    3: { value: '#FFF9DA' },
+    4: { value: '#FFF7CE' },
     5: { value: '#FFF5C2' },
     10: { value: '#FEE685' },
     20: { value: '#FACE00' },
@@ -82,6 +118,10 @@ export const colors = {
     90: { value: '#1C0B00' },
   },
   red: {
+    1: { value: '#FFF9FA' },
+    2: { value: '#FFF3F5' },
+    3: { value: '#FFEEF0' },
+    4: { value: '#FFE8EB' },
     5: { value: '#FFE2E6' },
     10: { value: '#FFB1B8' },
     20: { value: '#FF7F8A' },
@@ -92,6 +132,33 @@ export const colors = {
     70: { value: '#810009' },
     80: { value: '#4F0004' },
     90: { value: '#200000' },
+  },
+  brand: {
+    slate: { value: 'slate.90' },
+    gold: { value: 'gold.20' },
+  },
+  status: {
+    success: {
+      lighter: { value: 'green.2' },
+      light: { value: 'green.10' },
+      base: { value: 'green.40' },
+      dark: { value: 'green.60' },
+      darker: { value: 'green.70' },
+    },
+    warning: {
+      lighter: { value: 'yellow.2' },
+      light: { value: 'yellow.10' },
+      base: { value: 'yellow.40' },
+      dark: { value: 'yellow.60' },
+      darker: { value: 'yellow.70' },
+    },
+    danger: {
+      lighter: { value: 'red.2' },
+      light: { value: 'red.10' },
+      base: { value: 'red.50' },
+      dark: { value: 'red.60' },
+      darker: { value: 'red.70' },
+    },
   },
 };
 
@@ -109,6 +176,7 @@ export const fontWeights = {
   normal: { value: 400 },
   medium: { value: 500 },
   bold: { value: 700 },
+  black: { value: 900 },
 };
 
 export const sizes = {
@@ -121,6 +189,7 @@ export const sizes = {
   6: { value: '0.375rem' },
   7: { value: '0.4375rem' },
   8: { value: '0.5rem' },
+  9: { value: '0.5625rem' },
   10: { value: '0.625rem' },
   12: { value: '0.75rem' },
   14: { value: '0.875rem' },
@@ -170,19 +239,40 @@ export const fontSizes = {
 };
 
 export const lineHeights = {
-  12: { value: '0.75rem' },
-  14: { value: '0.875rem' },
-  16: { value: '1rem' },
-  20: { value: '1.25rem' },
-  24: { value: '1.5rem' },
-  32: { value: '2rem' },
-  40: { value: '2.5rem' },
-  48: { value: '3rem' },
-  64: { value: '4rem' },
-  72: { value: '4.5rem' },
-  80: { value: '5rem' },
-  96: { value: '6rem' },
+  none: {
+    value: '1',
+  },
+  tighter: {
+    value: '1em + 0.125rem',
+  },
+  tight: {
+    value: '1em + 0.25rem',
+  },
+  default: {
+    value: '1em + 0.5rem',
+  },
+  loose: {
+    value: '1em + 0.75rem',
+  },
+  looser: {
+    value: '1em + 0.875rem',
+  },
 };
+
+// export const lineHeights = {
+//   12: { value: '0.75rem' },
+//   14: { value: '0.875rem' },
+//   16: { value: '1rem' },
+//   20: { value: '1.25rem' },
+//   24: { value: '1.5rem' },
+//   32: { value: '2rem' },
+//   40: { value: '2.5rem' },
+//   48: { value: '3rem' },
+//   64: { value: '4rem' },
+//   72: { value: '4.5rem' },
+//   80: { value: '5rem' },
+//   96: { value: '6rem' },
+// };
 
 export const radii = {
   0: { value: '0' },
@@ -194,225 +284,154 @@ export const radii = {
   100: { value: '100%' },
 };
 
+export const shadows = {
+  low: {
+    value: '0px 1px 1px {colors.utility.shadowColor}, 0px 2px 2px {colors.utility.shadowColor}'
+  },
+  medium: {
+    value: '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}'
+  },
+  high: {
+    value: '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}, 0px 16px 16px {colors.utility.shadowColor}'
+  },
+  inset: {
+    value: 'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}'
+  }
+};
+
 const baseHeadingStyles = {
-  fontFamily: 'heading',
-  fontWeight: 'bold',
-  color: 'slate.90',
-  _osDark: { color: 'slate.5' },
+  value: {
+    fontFamily: 'heading',
+    fontWeight: 'black',
+    color: { base: 'slate.90', _dark: 'slate.5' },
+    lineHeight: 'default',
+  }
 };
 
 const baseBodyTextStyles = {
-  fontFamily: 'sans',
-  fontWeight: 'normal',
-  color: 'slate.70',
-  _osDark: { color: 'slate.20' },
+  value: {
+    fontFamily: 'sans',
+    fontWeight: 'normal',
+    color: { base: 'slate.60', _dark: 'slate.20' },
+    lineHeight: 'default',
+  }
 };
 
 const baseMonoStyles = {
-  fontFamily: 'mono',
-  fontWeight: 'normal',
-  color: 'slate.70',
-  _osDark: { color: 'slate.20' },
+  value: {
+    fontFamily: 'mono',
+    fontWeight: 'normal',
+    color: { base: 'slate.60', _dark: 'slate.20' },
+    lineHeight: 'default',
+  }
 };
 
-// export const textStyles = {
-//   display: {
-//     lg: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '72',
-//         lineHeight: '64',
-//       },
-//     },
-//     md: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '64',
-//         lineHeight: '64',
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '56',
-//         lineHeight: '56',
-//       },
-//     },
-//     xs: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: '48',
-//         lineHeight: '56',
-//       },
-//     },
-//   },
-//   heading: {
-//     lg: {
-//       ...baseHeadingStyles,
-//       fontSize: sizes[40],
-//       lineHeight: sizes[40],
-//     },
-//     md: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: sizes[32],
-//         lineHeight: sizes[32],
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: sizes[24],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//     xs: {
-//       value: {
-//         ...baseHeadingStyles,
-//         fontSize: sizes[20],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//   },
-//   body: {
-//     lg: {
-//       value: {
-//         ...baseBodyTextStyles,
-//         fontSize: sizes[20],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//     md: {
-//       value: {
-//         ...baseBodyTextStyles,
-//         fontSize: sizes[16],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseBodyTextStyles,
-//         fontSize: sizes[14],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     xs: {
-//       ...baseBodyTextStyles,
-//       value: {
-//         fontSize: sizes[12],
-//         lineHeight: sizes[16],
-//       },
-//     },
-//   },
-//   mono: {
-//     lg: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[20],
-//         lineHeight: sizes[24],
-//       },
-//     },
-//     md: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[16],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     sm: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[14],
-//         lineHeight: sizes[20],
-//       },
-//     },
-//     xs: {
-//       value: {
-//         ...baseMonoStyles,
-//         fontSize: sizes[12],
-//         lineHeight: sizes[16],
-//       },
-//     },
-//   },
-//   //   xs: {
-//   //     value: {
-//   //       fontSize: '0.75rem',
-//   //       lineHeight: '1rem',
-//   //     },
-//   //   },
-//   //   sm: {
-//   //     value: {
-//   //       fontSize: '0.875rem',
-//   //       lineHeight: '1.25rem',
-//   //     },
-//   //   },
-//   //   md: {
-//   //     value: {
-//   //       fontSize: '1rem',
-//   //       lineHeight: '1.5rem',
-//   //     },
-//   //   },
-//   //   lg: {
-//   //     value: {
-//   //       fontSize: '1.125rem',
-//   //       lineHeight: '1.75rem',
-//   //     },
-//   //   },
-//   //   xl: {
-//   //     value: {
-//   //       fontSize: '1.25rem',
-//   //       lineHeight: '1.75rem',
-//   //     },
-//   //   },
-//   //   '2xl': {
-//   //     value: {
-//   //       fontSize: '1.5rem',
-//   //       lineHeight: '2rem',
-//   //     },
-//   //   },
-//   //   '3xl': {
-//   //     value: {
-//   //       fontSize: '1.875rem',
-//   //       lineHeight: '2.25rem',
-//   //     },
-//   //   },
-//   //   '4xl': {
-//   //     value: {
-//   //       fontSize: '2.25rem',
-//   //       lineHeight: '2.5rem',
-//   //     },
-//   //   },
-//   //   '5xl': {
-//   //     value: {
-//   //       fontSize: '3rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '6xl': {
-//   //     value: {
-//   //       fontSize: '3.75rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '7xl': {
-//   //     value: {
-//   //       fontSize: '4.5rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '8xl': {
-//   //     value: {
-//   //       fontSize: '6rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-//   //   '9xl': {
-//   //     value: {
-//   //       fontSize: '8rem',
-//   //       lineHeight: '1',
-//   //     },
-//   //   },
-// };
+export const textStyles = defineTextStyles({
+  display: {
+    lg: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '72',
+      },
+    },
+    md: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '64',
+      },
+    },
+    sm: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '56',
+      },
+    },
+    xs: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '48',
+      },
+    },
+  },
+  heading: {
+    lg: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '40',
+      },
+    },
+    md: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '32',
+      },
+    },
+    sm: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '24',
+      },
+    },
+    xs: {
+      value: {
+        ...baseHeadingStyles.value,
+        fontSize: '20',
+      },
+    },
+  },
+  body: {
+    lg: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '20',
+      },
+    },
+    md: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '16',
+      },
+    },
+    sm: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '14',
+      },
+    },
+    xs: {
+      value: {
+        ...baseBodyTextStyles.value,
+        fontSize: '12',
+      },
+    },
+  },
+  mono: {
+    lg: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '20',
+      },
+    },
+    md: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '16',
+      },
+    },
+    sm: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '14',
+      },
+    },
+    xs: {
+      value: {
+        ...baseMonoStyles.value,
+        fontSize: '12',
+      },
+    },
+  },
+});
 
 // https://github.com/chakra-ui/panda/tree/4b70f29a14e98d9a0b450273704d2565e3f2d0bd/packages/preset-panda/src
 
