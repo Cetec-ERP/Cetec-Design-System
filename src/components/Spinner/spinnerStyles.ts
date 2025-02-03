@@ -2,8 +2,8 @@ import { cva, type RecipeVariantProps } from '@styled-system/css';
 
 export const spinnerStyle = cva({
   base: {
-    aspectRatio: '1/1',
-    borderRadius: '50%',
+    aspectRatio: 'square',
+    rounded: '100',
     borderWidth: '3',
     borderStyle: 'solid',
     borderColor: 'transparent',
@@ -17,8 +17,8 @@ export const spinnerStyle = cva({
   variants: {
     size: {
       standard: {
-        height: '24',
-        minHeight: '24',
+        height: '20',
+        minHeight: '20',
       },
       small: {
         height: '16',

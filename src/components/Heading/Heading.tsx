@@ -1,13 +1,16 @@
-import { Box } from '../Box/Box';
+import { Text, type TextProps } from '../Text';
 import { heading, type HeadingVariantProps } from '@styled-system/recipes';
 import { cx, css } from '@styled-system/css';
 import type { SystemStyleObject } from '@styled-system/types';
 
-type HeadingElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-type HeadingProps = HeadingVariantProps &
-  Omit<React.ComponentProps<typeof Box>, 'as'> & {
-  as?: HeadingElement; // Restrict 'as' prop to only heading elements
-} & SystemStyleObject;
+ // Restrict 'as' prop to only heading elements
+type HeadingElement = 'h1' | 'h2' | 'h3' | 'h4';
+
+export interface HeadingProps
+  extends Omit<TextProps, 'as' | 'level' | 'font' | 'italic' | 'bold' | 'underline'>,
+    HeadingVariantProps {
+  as?: HeadingElement;
+}
 
 export function Heading({
   as = 'h2',
@@ -18,7 +21,7 @@ export function Heading({
   const styleProps: SystemStyleObject = { ...restProps };
 
   return (
-    <Box
+    <Text
       as={as}
       className={cx(
         heading({ as }),
@@ -27,6 +30,6 @@ export function Heading({
       )}
     >
       {children}
-    </Box>
+    </Text>
   );
 }

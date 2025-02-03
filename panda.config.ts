@@ -3,7 +3,7 @@ import {
   defineTokens,
   defineSemanticTokens,
 } from '@pandacss/dev';
-import pandaPandaPreset from '@pandacss/preset-panda';
+// import pandaPandaPreset from '@pandacss/preset-panda';
 import * as tokens from './src/styles/tokens';
 import { globalCss } from './src/styles/globalStyle';
 
@@ -15,14 +15,15 @@ import { textRecipe, headingRecipe, linkRecipe } from './src/recipes/typography'
 // using pandas methods to define type-safe tokens
 const theme = {
   tokens: defineTokens({
-    aspectRatios: { ...pandaPandaPreset.theme.tokens.aspectRatios },
-    shadows: { ...tokens.shadows },
-    easings: { ...pandaPandaPreset.theme.tokens.easings },
-    durations: { ...pandaPandaPreset.theme.tokens.durations },
-    letterSpacings: { ...pandaPandaPreset.theme.tokens.letterSpacings },
-    lineHeights: { ...tokens.lineHeights },
-    blurs: { ...pandaPandaPreset.theme.tokens.blurs },
-    animations: { ...pandaPandaPreset.theme.tokens.animations },
+    aspectRatios: tokens.aspectRatios,
+    borders: tokens.borders,
+    shadows: tokens.shadows,
+    easings: tokens.easings,
+    durations: tokens.durations,
+    letterSpacings: tokens.letterSpacings,
+    lineHeights: tokens.lineHeights,
+    blurs: tokens.blurs,
+    animations: tokens.animations,
     colors: tokens.colors,
     fonts: tokens.fonts,
     fontSizes: tokens.sizes,
@@ -30,6 +31,10 @@ const theme = {
     sizes: tokens.sizes,
     spacing: tokens.sizes,
     radii: tokens.radii,
+    filters: tokens.filters,
+    keyframes: tokens.keyframes,
+    containerSizes: tokens.containerSizes,
+    breakpoints: tokens.breakpoints,
   }),
   semanticTokens: defineSemanticTokens({
     colors: {
@@ -61,10 +66,11 @@ export default defineConfig({
   strictTokens: true,
 
   theme: {
-    containerSizes: { ...pandaPandaPreset.theme.containerSizes },
-    keyframes: { ...pandaPandaPreset.theme.keyframes },
+    containerSizes: tokens.containerSizes,
+    keyframes: tokens.keyframes,
     tokens: {
       aspectRatios: theme.tokens.aspectRatios,
+      borders: theme.tokens.borders,
       shadows: theme.tokens.shadows,
       easings: theme.tokens.easings,
       durations: theme.tokens.durations,
@@ -84,11 +90,8 @@ export default defineConfig({
       colors: theme.semanticTokens.colors,
     },
     extend: {
+      breakpoints: theme.tokens.breakpoints,
       textStyles: tokens.textStyles,
-      breakpoints: {
-        ...pandaPandaPreset.theme.breakpoints,
-        xs: '480px',
-      },
       recipes: {
         text: textRecipe,
         heading: headingRecipe,

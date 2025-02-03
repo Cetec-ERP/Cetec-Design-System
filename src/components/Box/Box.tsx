@@ -21,7 +21,7 @@ type PolymorphicComponentProp<
 
 type BoxComponentProps = PandaBoxProps;
 
-type BoxProps<T extends React.ElementType> = PolymorphicComponentProp<
+export type BoxProps<T extends React.ElementType> = PolymorphicComponentProp<
   T,
   BoxComponentProps
 >;

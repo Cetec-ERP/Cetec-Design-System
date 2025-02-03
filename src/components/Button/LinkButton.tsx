@@ -1,37 +1,32 @@
 import * as React from 'react';
-import { cx } from '@styled-system/css';
-import { Box, BoxProps } from '../Box';
+import { styled } from '@styled-system/jsx';
 import { button } from '@styled-system/recipes';
 import { Spinner } from '~/components/Spinner';
 import { css } from '@styled-system/css';
+import { Box } from '../Box';
 
-export interface ButtonProps extends BoxProps<'button'> {
+const StyledAnchor = styled('a', button);
+
+export interface LinkButtonProps extends React.ComponentProps<typeof StyledAnchor> {
   variant?: 'primary' | 'standard' | 'hollow' | 'ghost' | 'cta' | 'danger';
   size?: 'standard' | 'small' | 'large';
-  href?: string;
+  href: string;
   className?: string;
   children?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
+  external?: boolean;
 }
 
-const ButtonContent = ({
-  loading,
-  children,
-}: {
-  loading: boolean;
-  children: React.ReactNode;
-}) => {
+const ButtonContent = ({ loading, children }: { loading: boolean; children: React.ReactNode }) => {
   return (
     <>
-      <Box
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '2',
-          opacity: loading ? 0 : 1,
-        })}
-      >
+      <Box className={css({
+        display: 'flex',
+        alignItems: 'center',
+        gap: '2',
+        opacity: loading ? 0 : 1,
+      })}>
         {children}
       </Box>
       {loading && (
@@ -54,15 +49,13 @@ const ButtonContent = ({
   );
 };
 
-export const Button = React.forwardRef<
-  HTMLButtonElement | HTMLAnchorElement,
-  ButtonProps
->(
+export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
   (
     {
       variant = 'standard',
       size = 'standard',
       href,
+      external,
       className,
       children,
       loading,
@@ -72,20 +65,23 @@ export const Button = React.forwardRef<
     ref,
   ) => {
     const trulyDisabled = loading || disabled;
-    const Component = href ? 'a' : 'button';
-
+    
     return (
-      <Box
-        ref={ref as React.Ref<HTMLButtonElement | HTMLAnchorElement>}
-        as={Component}
+      <StyledAnchor
+        ref={ref}
         href={href}
-        disabled={trulyDisabled}
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener noreferrer' : undefined}
         aria-disabled={trulyDisabled}
-        className={cx(button({ variant, size }), className)}
+        className={className}
+        variant={variant}
+        size={size}
         {...props}
       >
-        <ButtonContent loading={loading || false}>{children}</ButtonContent>
-      </Box>
+        <ButtonContent loading={loading || false}>
+          {children}
+        </ButtonContent>
+      </StyledAnchor>
     );
   },
-);
+); 

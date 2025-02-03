@@ -1,4 +1,5 @@
 import { defineRecipe } from '@pandacss/dev';
+import { fontSizes, fonts } from '~/styles/tokens';
 
 const textBase = {
   margin: '0',
@@ -8,25 +9,8 @@ const textBase = {
 };
 
 const textVariants = {
-  level: {
-    12: { fontSize: 12 },
-    14: { fontSize: 14 },
-    16: { fontSize: 16 },
-    20: { fontSize: 20 },
-    24: { fontSize: 24 },
-    32: { fontSize: 32 },
-    40: { fontSize: 40 },
-    48: { fontSize: 48 },
-    64: { fontSize: 64 },
-    72: { fontSize: 72 },
-    80: { fontSize: 80 },
-    96: { fontSize: 96 },
-  },
-  font: {
-    heading: { fontFamily: 'heading' },
-    sans: { fontFamily: 'sans' },
-    mono: { fontFamily: 'mono' },
-  },
+  level: { ...fontSizes },
+  font: { ...fonts },
   bold: {
     true: {
       fontWeight: 'bold',
@@ -80,7 +64,7 @@ const linkBase = {
 
 const linkVariants = {
   ...textVariants,
-  disabled: {
+  _disabled: {
     true: {
       cursor: 'not-allowed',
       opacity: 0.7,
@@ -93,7 +77,7 @@ export const textRecipe = defineRecipe({
   className: 'text',
   jsx: ['Text'],
   base: textBase,
-  variants: textVariants,
+  variants: { ...textVariants },
   defaultVariants: {
     level: 16,
     font: 'sans',
@@ -120,5 +104,3 @@ export const linkRecipe = defineRecipe({
     font: 'sans',
   },
 });
-
-// export type TextVariantProps = typeof text.variantProps;

@@ -25,7 +25,7 @@ function IconList() {
           <Icon
             name={icon}
           />
-          <Text font="mono" level={14}>{icon}</Text>
+          <Text font="mono" level={'14'}>{icon}</Text>
         </HStack>
       ))}
     </Grid>
@@ -38,7 +38,8 @@ const Section = ({ children }: { children?: ReactNode }) => {
       gridTemplateColumns={'10rem 1fr'}
       gap={'40'}
       w={'full'}
-      borderTop={'1px solid pink'}
+      borderTopWidth={'1'}
+      borderTopStyle={'solid'}
       borderColor={{ base: 'slate.10', _dark: 'slate.80' }}
       py={'24'}
       pb={'96'}
@@ -64,10 +65,10 @@ function AppContent() {
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
             <Text 
-              level={20} 
+              level={'20'} 
               font="mono" 
               textTransform={'uppercase'} 
-              letterSpacing={'0.15em'} 
+              letterSpacing={'widest'}
               fontWeight={'bold'}
               color={{ base: 'slate.90', _dark: 'slate.10' }}
             >Cetec Components</Text>
@@ -97,6 +98,13 @@ function AppContent() {
                 </IconButton>
                 <IconButton variant="primary" size="large">
                   <Icon name="arrow-right" />
+                </IconButton>
+              </HStack>
+              <HStack>
+                <Button variant="primary" loading>Pepperoni</Button>
+                <Button loading>Loading</Button>
+                <IconButton variant="primary" loading>
+                  <Icon name="x" />
                 </IconButton>
               </HStack>
             </VStack>

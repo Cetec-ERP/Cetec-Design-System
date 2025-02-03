@@ -1,21 +1,21 @@
-import { Box } from '../Box/Box';
+import { Box } from '../Box';
 import { link, type LinkVariantProps } from '@styled-system/recipes';
 import { cx, css } from '@styled-system/css';
 import type { SystemStyleObject } from '@styled-system/types';
+import { fontSizes, fonts } from '~/styles/tokens';
 import { Icon } from '../Icon/Icon';
 
-type LinkProps = LinkVariantProps &
-  Omit<React.ComponentProps<typeof Box>, 'as'> & {
-    href: string;
-    external?: boolean;
-    disabled?: boolean;
-    level?: number;
-    font?: string;
-    italic?: boolean;
-    bold?: boolean;
-    underline?: boolean;
-    className?: string;
-  } & SystemStyleObject;
+export interface LinkProps extends Omit<SystemStyleObject, keyof LinkVariantProps> {
+  href: string;
+  external?: boolean;
+  disabled?: boolean;
+  level?: keyof typeof fontSizes;
+  font?: keyof typeof fonts;
+  italic?: boolean;
+  bold?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}
 
 export function Link({
   href,
@@ -24,16 +24,12 @@ export function Link({
   children,
   level,
   font,
-  weight,
   italic,
   bold,
-  underline,
   className,
   ...props
 }: LinkProps) {
-  const styles = {
-    ...props,
-  };
+  const styleProps: SystemStyleObject = { ...props };
 
   return (
     <Box
@@ -42,18 +38,14 @@ export function Link({
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
       aria-disabled={disabled}
-      disabled={disabled}
-      level={level}
-      font={font}
-      weight={weight}
       className={cx(
-        link({ font, italic, bold, underline, level }),
-        css(styles),
-        className
+        link({ font, italic, bold, level }),
+        css(styleProps),
+        className,
       )}
     >
       {children}
       {external && <Icon name="arrow-square-out" size={20} />}
     </Box>
   );
-} 
+}
