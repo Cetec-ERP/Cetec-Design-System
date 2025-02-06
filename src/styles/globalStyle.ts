@@ -74,4 +74,9 @@ export const globalCss = defineGlobalStyles({
   summary: {
     display: 'list-item',
   },
+  'input, [type="checkbox"]': {
+    position: 'absolute',
+    appearance: 'none',
+    '-webkit-appearance': 'none',
+  }
 });
