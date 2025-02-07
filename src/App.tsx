@@ -66,7 +66,7 @@ function AppContent() {
           <HStack justify={'space-between'}>
             <Text 
               level={'20'} 
-              font="mono" 
+              font={'mono'} 
               textTransform={'uppercase'} 
               letterSpacing={'widest'}
               fontWeight={'bold'}
@@ -82,7 +82,7 @@ function AppContent() {
             <Heading as="h2">Buttons</Heading>
             <VStack alignItems={'flex-start'} gap={'24'}>
               <HStack>
-                <Button variant="primary">Primary</Button>
+                <Button variant="primary" onClick={() => alert('clicked')} bg="red.50">Primary</Button>
                 <Button>Standard</Button>
                 <Button variant="hollow">Hollow</Button>
                 <Button variant="ghost">Ghost</Button>
@@ -174,7 +174,9 @@ function AppContent() {
                 <Pre>{'<Link href="https://cetecerp.com">Cetec ERP</Link>'}</Pre>
                 <Text>External:&emsp;<Link href="https://cetecerp.com" external>Cetec ERP</Link></Text>
                 <Pre>{'<Link href="https://cetecerp.com" external>Cetec ERP</Link>'}</Pre>
-                <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+                <Box gridColumn={'1 / -1'}>
+                <Text>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+                </Box>
               </Grid>
             </VStack>
           </Section>

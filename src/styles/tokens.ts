@@ -510,24 +510,19 @@ export const durations = {
 };
 
 export const letterSpacings = {
-  tighter: {
-    value: '-0.05em',
-  },
-  tight: {
-    value: '-0.025em',
-  },
-  normal: {
-    value: '0em',
-  },
-  wide: {
-    value: '0.025em',
-  },
-  wider: {
-    value: '0.05em',
-  },
-  widest: {
-    value: '0.1em',
-  },
+  tighter: { value: '-0.05em' },
+  tight: { value: '-0.025em' },
+  normal: { value: '0' },
+  wide: { value: '0.025em' },
+  wider: { value: '0.05em' },
+  widest: { value: '0.1em' }
+};
+
+export const textTransform = {
+  uppercase: { value: 'uppercase' },
+  lowercase: { value: 'lowercase' },
+  capitalize: { value: 'capitalize' },
+  none: { value: 'none' }
 };
 
 export const blurs = {

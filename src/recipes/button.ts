@@ -66,7 +66,7 @@ const buttonVariants = {
     },
     standard: {
       bg: { base: 'slate.5', _dark: 'slate.70' },
-      color: { base: 'slate.80', _dark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.5' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
       },
@@ -88,7 +88,7 @@ const buttonVariants = {
     hollow: {
       bg: 'transparent',
       borderColor: { base: 'slate.30', _dark: 'slate.60' },
-      color: { base: 'slate.80', _dark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.5' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
         borderColor: { base: 'slate.10', _dark: 'slate.60' },
@@ -146,18 +146,18 @@ const buttonVariants = {
       },
     },
     danger: {
-      bg: { base: 'red.50', _dark: 'red.40' },
+      bg: { base: 'red.50', _dark: 'red.50' },
       color: { base: 'slate.0', _dark: 'slate.0' },
       _hover: {
-        bg: { base: 'red.40', _dark: 'red.30' },
+        bg: { base: 'red.40', _dark: 'red.40' },
       },
       _active: {
-        bg: { base: 'red.60', _dark: 'red.50' },
+        bg: { base: 'red.60', _dark: 'red.60' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'red.50', _dark: 'red.40' },
+          bg: { base: 'red.50', _dark: 'red.50' },
         },
       },
     },
