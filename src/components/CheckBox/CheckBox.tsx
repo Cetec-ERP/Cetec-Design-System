@@ -19,7 +19,7 @@ export function CheckBox({
     const iconName: IconNamesList | undefined = variantIcon[variant as keyof typeof variantIcon] ?? undefined;
 
     return (
-        <Box onClick={(prev) => !prev}>
+        <Box>
           <Box as="input" type="checkbox" />
           <Box className={checkbox({ variant })}>
             {iconName && <Icon size={12} {...iconName && {name: iconName}} viewBox="0 0 12 12"/>}
