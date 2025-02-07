@@ -1,5 +1,5 @@
 import { defineRecipe } from '@pandacss/dev';
-import { fontSizes, fonts, letterSpacings, textTransform } from '~/styles/tokens';
+import { fontSizes, fonts } from '~/styles/tokens';
 
 const textBase = {
   margin: '0',
@@ -9,25 +9,8 @@ const textBase = {
 };
 
 const textVariants = {
-  level: {
-    '12': { fontSize: fontSizes['12'].value },
-    '14': { fontSize: fontSizes['14'].value },
-    '16': { fontSize: fontSizes['16'].value },
-    '20': { fontSize: fontSizes['20'].value },
-    '24': { fontSize: fontSizes['24'].value },
-    '32': { fontSize: fontSizes['32'].value },
-    '40': { fontSize: fontSizes['40'].value },
-    '48': { fontSize: fontSizes['48'].value },
-    '64': { fontSize: fontSizes['64'].value },
-    '72': { fontSize: fontSizes['72'].value },
-    '80': { fontSize: fontSizes['80'].value },
-    '96': { fontSize: fontSizes['96'].value },
-  },
-  font: {
-    heading: { fontFamily: fonts.heading.value },
-    body: { fontFamily: fonts.sans.value },
-    mono: { fontFamily: fonts.mono.value },
-  },
+  level: { ...fontSizes },
+  font: { ...fonts },
   bold: {
     true: {
       fontWeight: 'bold',
@@ -42,20 +25,6 @@ const textVariants = {
     true: {
       textDecoration: 'underline',
     },
-  },
-  letterSpacing: {
-    tighter: { letterSpacing: letterSpacings.tighter.value },
-    tight: { letterSpacing: letterSpacings.tight.value },
-    normal: { letterSpacing: letterSpacings.normal.value },
-    wide: { letterSpacing: letterSpacings.wide.value },
-    wider: { letterSpacing: letterSpacings.wider.value },
-    widest: { letterSpacing: letterSpacings.widest.value }
-  },
-  textTransform: {
-    uppercase: { textTransform: textTransform.uppercase.value },
-    lowercase: { textTransform: textTransform.lowercase.value },
-    capitalize: { textTransform: textTransform.capitalize.value },
-    none: { textTransform: textTransform.none.value }
   },
 }
 
@@ -110,7 +79,7 @@ export const textRecipe = defineRecipe({
   base: textBase,
   variants: { ...textVariants },
   defaultVariants: {
-    level: '16',
+    level: 16,
     font: 'sans',
   },
 });
@@ -131,7 +100,7 @@ export const linkRecipe = defineRecipe({
   base: linkBase,
   variants: linkVariants,
   defaultVariants: {
-    level: '16',
+    level: 16,
     font: 'sans',
   },
 });

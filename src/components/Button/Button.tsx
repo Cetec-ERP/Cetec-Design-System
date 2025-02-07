@@ -69,8 +69,8 @@ export const Button = React.forwardRef<
 >(
   (
     {
-      variant = 'standard',
-      size = 'standard',
+      variant,
+      size,
       href,
       className,
       children,

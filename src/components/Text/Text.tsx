@@ -2,15 +2,13 @@ import { Box, BoxProps } from '../Box';
 import { text, type TextVariantProps } from '@styled-system/recipes';
 import { cx, css } from '@styled-system/css';
 import type { SystemStyleObject } from '@styled-system/types';
-import { fontSizes, fonts, letterSpacings, textTransform } from '~/styles/tokens';
+import { fontSizes, fonts } from '~/styles/tokens';
 
 export interface TextProps extends BoxProps<'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4'>, Omit<SystemStyleObject, keyof TextVariantProps> {
   variants?: TextVariantProps;
   as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4';
   level?: keyof typeof fontSizes;
   font?: keyof typeof fonts;
-  letterSpacing?: keyof typeof letterSpacings;
-  textTransform?: keyof typeof textTransform;
   italic?: boolean;
   bold?: boolean;
   underline?: boolean;
@@ -24,8 +22,6 @@ export function Text({
   italic,
   bold,
   underline,
-  letterSpacing,
-  textTransform,
   className,
   children,
   ...props
@@ -34,7 +30,7 @@ export function Text({
     <Box
       as={as}
       className={cx(
-        text({ font, italic, bold, underline, level, letterSpacing, textTransform }),
+        text({ font, italic, bold, underline, level }),
         css(props),
         className,
       )}

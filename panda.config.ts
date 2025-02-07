@@ -65,26 +65,6 @@ export default defineConfig({
   exclude: [],
   strictTokens: true,
 
-  // Add utilities configuration
-  utilities: {
-    extend: {
-      textTransform: {
-        shorthand: 'textTransform',
-        className: 'transform',
-        values: 'properties'
-      },
-      letterSpacing: {
-        shorthand: 'letterSpacing',
-        className: 'tracking',
-        values: 'letterSpacings'
-      },
-      gridColumn: {
-        shorthand: 'gridColumn',
-        values: 'properties'
-      }
-    }
-  },
-
   theme: {
     containerSizes: tokens.containerSizes,
     keyframes: tokens.keyframes,
