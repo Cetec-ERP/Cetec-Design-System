@@ -10,6 +10,7 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
+import { CheckBox } from './components/CheckBox';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -190,6 +191,16 @@ function AppContent() {
           <Section>
             <Heading as="h2">Icons</Heading>
             <IconList />
+          </Section>
+          <Section>
+            <Heading as="h2">Checkboxes</Heading>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <CheckBox />
+                <CheckBox variant="checked" />
+                <CheckBox variant="indeterminate" />
+                <CheckBox variant="disabled" />
+                <CheckBox variant="error" />
+              </HStack>
           </Section>
           {/* <Section>
             <Text as="h2">
