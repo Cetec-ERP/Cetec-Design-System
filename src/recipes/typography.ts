@@ -9,8 +9,8 @@ const textBase = {
 };
 
 const textVariants = {
-  level: { ...fontSizes },
-  font: { ...fonts },
+  family: { ...fonts },
+  fontSize: { ...fontSizes },
   bold: {
     true: {
       fontWeight: 'bold',
@@ -79,8 +79,8 @@ export const textRecipe = defineRecipe({
   base: textBase,
   variants: { ...textVariants },
   defaultVariants: {
-    level: 16,
-    font: 'sans',
+    fontSize: '16',
+    family: 'sans',
   },
 });
 
@@ -100,7 +100,7 @@ export const linkRecipe = defineRecipe({
   base: linkBase,
   variants: linkVariants,
   defaultVariants: {
-    level: 16,
-    font: 'sans',
+    fontSize: '16',
+    family: 'sans',
   },
 });

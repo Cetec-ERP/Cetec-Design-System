@@ -259,21 +259,6 @@ export const lineHeights = {
   },
 };
 
-// export const lineHeights = {
-//   12: { value: '0.75rem' },
-//   14: { value: '0.875rem' },
-//   16: { value: '1rem' },
-//   20: { value: '1.25rem' },
-//   24: { value: '1.5rem' },
-//   32: { value: '2rem' },
-//   40: { value: '2.5rem' },
-//   48: { value: '3rem' },
-//   64: { value: '4rem' },
-//   72: { value: '4.5rem' },
-//   80: { value: '5rem' },
-//   96: { value: '6rem' },
-// };
-
 export const radii = {
   '0': { value: '0' },
   '1': { value: '0.0625rem' },
@@ -530,12 +515,12 @@ export const letterSpacings = {
   },
 };
 
-export const textTransform = {
-  uppercase: { value: 'uppercase' },
-  lowercase: { value: 'lowercase' },
-  capitalize: { value: 'capitalize' },
-  none: { value: 'none' },
-};
+// export const textTransform = {
+//   uppercase: { value: 'uppercase' },
+//   lowercase: { value: 'lowercase' },
+//   capitalize: { value: 'capitalize' },
+//   none: { value: 'none' },
+// };
 
 export const blurs = {
   sm: {

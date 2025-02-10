@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Box, BoxProps } from '../Box';
 import { text, type TextVariantProps } from '@styled-system/recipes';
 import { cx, css } from '@styled-system/css';
@@ -5,32 +6,33 @@ import type { SystemStyleObject } from '@styled-system/types';
 import { fontSizes, fonts } from '~/styles/tokens';
 
 export interface TextProps extends BoxProps<'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4'>, Omit<SystemStyleObject, keyof TextVariantProps> {
-  variants?: TextVariantProps;
-  as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4';
-  level?: keyof typeof fontSizes;
-  font?: keyof typeof fonts;
-  italic?: boolean;
+  family?: keyof typeof fonts;
+  fontSize?: keyof typeof fontSizes;
   bold?: boolean;
+  italic?: boolean;
   underline?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }
 
-export function Text({
-  as = 'p',
-  font,
-  level,
-  italic,
-  bold,
-  underline,
+export const Text = React.forwardRef<HTMLParagraphElement | HTMLSpanElement | HTMLHeadingElement, TextProps>(
+  ({
+    as = 'p',
+    family,
+    fontSize,
+    bold,
+    italic,
+    underline,
   className,
   children,
   ...props
-}: TextProps) {
+}, ref) => {
   return (
     <Box
+      ref={ref}
       as={as}
       className={cx(
-        text({ font, italic, bold, underline, level }),
+        text({ family, italic, bold, underline, fontSize }),
         css(props),
         className,
       )}
@@ -39,4 +41,4 @@ export function Text({
       {children}
     </Box>
   );
-}
+});

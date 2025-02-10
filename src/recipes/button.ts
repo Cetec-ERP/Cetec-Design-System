@@ -172,19 +172,19 @@ export const buttonRecipe = defineRecipe({
     ...buttonVariants,
     size: {
       standard: {
-        fontSize: 16,
-        py: 3,
-        px: 12,
+        fontSize: '16',
+        py: '3',
+        px: '12',
       },
       large: {
-        fontSize: 16,
-        py: 7,
-        px: 14,
+        fontSize: '16',
+        py: '7',
+        px: '14',
       },
       small: {
-        fontSize: 14,
-        py: 1,
-        px: 8,
+        fontSize: '14',
+        py: '1',
+        px: '8',
       },
     },
   },

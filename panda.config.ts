@@ -26,7 +26,7 @@ const theme = {
     animations: tokens.animations,
     colors: tokens.colors,
     fonts: tokens.fonts,
-    fontSizes: tokens.sizes,
+    fontSizes: tokens.fontSizes,
     fontWeights: tokens.fontWeights,
     sizes: tokens.sizes,
     spacing: tokens.sizes,
@@ -128,7 +128,7 @@ export default defineConfig({
     ...globalCss,
     html: {
       '--global-font-heading': 'fonts.heading',
-      '--global-font-body': 'fonts.sans',
+      '--global-font-body': 'fonts.body',
       '--global-font-mono': 'fonts.mono',
     },
   },

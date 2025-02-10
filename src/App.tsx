@@ -25,7 +25,7 @@ function IconList() {
           <Icon
             name={icon}
           />
-          <Text font="mono" level={'14'}>{icon}</Text>
+          <Text family="mono" fontSize={'14'}>{icon}</Text>
         </HStack>
       ))}
     </Grid>
@@ -65,12 +65,13 @@ function AppContent() {
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
             <Text 
-              level={'20'} 
-              font={'mono'} 
-              textTransform={'uppercase'} 
-              letterSpacing={'widest'}
+              fontSize={'20'} 
+              family={'mono'} 
+              // textTransform={'uppercase'} 
+              // letterSpacing={'widest'}
               fontWeight={'bold'}
               color={{ base: 'slate.90', _dark: 'slate.10' }}
+              onClick={() => alert('clicked')}
             >Cetec Components</Text>
             <ThemeSwitcher />
           </HStack>
@@ -147,11 +148,11 @@ function AppContent() {
 	<Text as="span" bold>replenish</Text>
 	<Text as="span" underline>whales</Text>
 </Text>`}</Pre>
-                <Text font="mono">
+                <Text family="mono">
                   Signs night have sixth hath that likeness us fill you're
                   subdue fowl.
                 </Text>
-                <Pre>{`<Text font="mono">...</Text>`}</Pre>
+                <Pre>{`<Text family="mono">...</Text>`}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
                   <Heading as="h4" color={'gold.40'}>
                     Headings

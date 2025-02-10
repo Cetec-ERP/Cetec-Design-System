@@ -9,8 +9,8 @@ export interface LinkProps extends Omit<SystemStyleObject, keyof LinkVariantProp
   href: string;
   external?: boolean;
   disabled?: boolean;
-  level?: keyof typeof fontSizes;
-  font?: keyof typeof fonts;
+  size?: keyof typeof fontSizes;
+  family?: keyof typeof fonts;
   italic?: boolean;
   bold?: boolean;
   className?: string;
@@ -22,8 +22,8 @@ export function Link({
   external,
   disabled,
   children,
-  level,
-  font,
+  size,
+  family,
   italic,
   bold,
   className,
@@ -39,7 +39,7 @@ export function Link({
       rel={external ? 'noopener noreferrer' : undefined}
       aria-disabled={disabled}
       className={cx(
-        link({ font, italic, bold, level }),
+        link({ family, italic, bold, size }),
         css(styleProps),
         className,
       )}

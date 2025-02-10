@@ -7,7 +7,7 @@ import type { SystemStyleObject } from '@styled-system/types';
 type HeadingElement = 'h1' | 'h2' | 'h3' | 'h4';
 
 export interface HeadingProps
-  extends Omit<TextProps, 'as' | 'level' | 'font' | 'italic' | 'bold' | 'underline'>,
+  extends Omit<TextProps, 'as' | 'size' | 'family' | 'italic' | 'bold' | 'underline'>,
     HeadingVariantProps {
   as?: HeadingElement;
 }
