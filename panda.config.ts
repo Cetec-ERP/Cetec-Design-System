@@ -129,7 +129,6 @@ export default defineConfig({
       '--global-font-mono': 'fonts.mono',
     },
   },
-
   conditions: {
     light: '[data-color-mode=light] &',
     dark: '[data-color-mode=dark] &',
