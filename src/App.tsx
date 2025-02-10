@@ -13,7 +13,7 @@ import { Spinner } from '~/components/Spinner';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
-function IconList() {
+export function IconList() {
   return (
     <Grid
       gap="16"
@@ -32,7 +32,7 @@ function IconList() {
   );
 }
 
-const Section = ({ children }: { children?: ReactNode }) => {
+export const Section = ({ children }: { children?: ReactNode }) => {
   return (
     <Grid
       gridTemplateColumns={'10rem 1fr'}
@@ -67,7 +67,6 @@ function AppContent() {
               level={20} 
               font="mono" 
               textTransform={'uppercase'} 
-              letterSpacing={'0.15em'} 
               fontWeight={'bold'}
               color={{ base: 'slate.90', _dark: 'slate.10' }}
             >Cetec Components</Text>

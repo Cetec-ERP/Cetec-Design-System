@@ -1,0 +1,155 @@
+import { Meta, ColorPalette, ColorItem, Unstyled } from '@storybook/blocks';
+import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
+import ColorSwatches from '../storybook/components/Colors';
+import { Heading } from '../components/Heading';
+import { Text } from '../components/Text';
+import { IconList, Section } from '~/App';
+import { Link } from '~/components/Link';
+import { Pre } from '~/components/Code';
+import * as tokens from '../styles/tokens';
+
+<Meta title="Tokens" />
+
+# Color Tokens
+<Unstyled>
+<Heading>Slate</Heading>
+  <ColorSwatches color={'slate'} tokens={tokens.colors.slate} />
+<Heading>Blue</Heading>
+  <ColorSwatches color={'blue'} tokens={tokens.colors.blue} />
+<Heading>Gold</Heading>
+  <ColorSwatches color={'gold'} tokens={tokens.colors.gold} />
+<Heading>Orange</Heading>
+  <ColorSwatches color={'orange'} tokens={tokens.colors.orange} />
+<Heading>Tan</Heading>
+  <ColorSwatches color={'tan'} tokens={tokens.colors.tan} />
+<Heading>Cyan</Heading>
+  <ColorSwatches color={'cyan'} tokens={tokens.colors.cyan} />
+<Heading>Green</Heading>
+  <ColorSwatches color={'green'} tokens={tokens.colors.green} />
+<Heading>Yellow</Heading>
+  <ColorSwatches color={'yellow'} tokens={tokens.colors.yellow} />
+<Heading>Red</Heading>
+  <ColorSwatches color={'red'} tokens={tokens.colors.red} />
+
+<ColorPalette>
+  <ColorItem
+    title="Brand"
+    subtitle=""
+    colors={{
+      Slate: tokens.colors.slate['90'].value,
+      Gold: tokens.colors.gold['20'].value
+    }}
+  />
+
+  <ColorItem
+    title="Status"
+    subtitle="Success"
+    colors={{
+      Lighter: tokens.colors.green['2'].value,
+      Light: tokens.colors.green['10'].value,
+      Base: tokens.colors.green['40'].value,
+      Dark: tokens.colors.green['60'].value,
+      Darker: tokens.colors.green['70'].value,
+    }}
+  />
+
+  <ColorItem
+    title="Status"
+    subtitle="Warning"
+    colors={{
+      Lighter: tokens.colors.yellow['2'].value,
+      Light: tokens.colors.yellow['10'].value,
+      Base: tokens.colors.yellow['40'].value,
+      Dark: tokens.colors.yellow['60'].value,
+      Darker: tokens.colors.yellow['70'].value,
+    }}
+  />
+
+  <ColorItem
+    title="Status"
+    subtitle="Danger"
+    colors={{
+      Lighter: tokens.colors.red['2'].value,
+      Light: tokens.colors.red['10'].value,
+      Base: tokens.colors.red['40'].value,
+      Dark: tokens.colors.red['60'].value,
+      Darker: tokens.colors.red['70'].value,
+    }}
+  />
+</ColorPalette>
+
+# Typography
+
+<Section>
+  <Heading as="h2">Text</Heading>
+  <VStack alignItems={'flex-start'}>
+    <Grid
+      gridTemplateColumns={'minmax(auto, 1fr) 1fr'}
+      w={'full'}
+      gap={'24'}
+      alignItems={'center'}
+    >
+      <Box gridColumn={'1 / -1'}>
+        <Heading as="h4" color={'gold.40'}>
+          Text styles
+        </Heading>
+      </Box>
+      <VStack gap={'16'}>
+        <Text>
+          Place appear green. Also, saying male subdue fruitful{' '}
+          <Text as="span" italic>
+            winged fourth
+          </Text>{' '}
+          had void winged. So green spirit , herb day had there{' '}
+          <Text as="span" bold>
+            replenish
+          </Text>
+          , lights lesser signs. Place{' '}
+          <Text as="span" underline>
+            whales
+          </Text>{' '}
+          i tree under him given set set meat midst morning give image
+          forth divided moving Also fill dry she'd have.
+        </Text>
+      </VStack>
+      <Pre>{`<Text>
+...
+<Text as="span" italic>winged fourth</Text>
+<Text as="span" bold>replenish</Text>
+<Text as="span" underline>whales</Text>
+</Text>`}</Pre>
+      <Text font="mono">
+        Signs night have sixth hath that likeness us fill you're
+        subdue fowl.
+      </Text>
+      <Pre>{`<Text font="mono">...</Text>`}</Pre>
+      <Box gridColumn={'1 / -1'} mt={'32'}>
+        <Heading as="h4" color={'gold.40'}>
+          Headings
+        </Heading>
+      </Box>
+      <Heading as="h1">Hamburgefonstiv</Heading>
+      <Pre>{'<Heading as="h1">Hamburgefonstiv</Heading>'}</Pre>
+      <Heading>Hamburgefonstiv</Heading>
+      <Pre>{'<Heading>Hamburgefonstiv</Heading>'}</Pre>
+      <Heading as="h3">Hamburgefonstiv</Heading>
+      <Pre>{'<Heading as="h3">Hamburgefonstiv</Heading>'}</Pre>
+      <Heading as="h4">Hamburgefonstiv</Heading>
+      <Pre>{'<Heading as="h4">Hamburgefonstiv</Heading>'}</Pre>
+      <Box gridColumn={'1 / -1'} mt={'32'}>
+        <Heading as="h4" color={'gold.40'}>
+          Links
+        </Heading>
+      </Box>
+      <Text>Internal:&emsp;<Link href="https://cetecerp.com">Cetec ERP</Link></Text>
+      <Pre>{'<Link href="https://cetecerp.com">Cetec ERP</Link>'}</Pre>
+      <Text>External:&emsp;<Link href="https://cetecerp.com" external>Cetec ERP</Link></Text>
+      <Pre>{'<Link href="https://cetecerp.com" external>Cetec ERP</Link>'}</Pre>
+      <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Grid>
+  </VStack>
+</Section>
+# Icons
+<IconList />
+
+</Unstyled>
