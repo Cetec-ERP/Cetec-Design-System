@@ -11,6 +11,7 @@ import { buttonRecipe, iconButtonRecipe } from './src/recipes/button';
 import { inputRecipe } from './src/recipes/input';
 import { textareaRecipe } from './src/recipes/textarea';
 import { textRecipe, headingRecipe, linkRecipe } from './src/recipes/typography';
+import { checkBoxRecipe } from "./src/recipes/checkbox"
 
 // using pandas methods to define type-safe tokens
 const theme = {
@@ -100,6 +101,7 @@ export default defineConfig({
         iconButton: iconButtonRecipe,
         input: inputRecipe,
         textarea: textareaRecipe,
+        checkbox: checkBoxRecipe
       },
       slotRecipes: {},
     },
@@ -132,7 +134,6 @@ export default defineConfig({
       '--global-font-mono': 'fonts.mono',
     },
   },
-
   conditions: {
     light: '[data-color-mode=light] &',
     dark: '[data-color-mode=dark] &',
