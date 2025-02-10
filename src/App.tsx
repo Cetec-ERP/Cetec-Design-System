@@ -24,7 +24,7 @@ export function IconList() {
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
           <Icon name={icon} />
-          <Text family="mono" fontSize={'14'}>
+          <Text family={'mono'} fontSize={'14'}>
             {icon}
           </Text>
         </HStack>
@@ -159,7 +159,7 @@ function AppContent() {
 	<Text as="span" bold>replenish</Text>
 	<Text as="span" underline>whales</Text>
 </Text>`}</Pre>
-                <Text family="mono">
+                <Text family={'mono'}>
                   Signs night have sixth hath that likeness us fill you're
                   subdue fowl.
                 </Text>

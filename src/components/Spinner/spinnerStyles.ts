@@ -9,7 +9,8 @@ export const spinnerStyle = cva({
     borderColor: 'transparent',
     borderTopColor: 'slate.90',
     borderBottomColor: 'slate.90',
-    animation: 'spin 1s infinite linear',
+    animation: 'spin',
+    // @ts-ignore
     filter: 'invert(1)',
     mixBlendMode: 'difference',
     isolation: 'isolate',

@@ -1,5 +1,5 @@
 import { defineRecipe } from '@pandacss/dev';
-import { fontSizes, fonts } from '~/styles/tokens';
+import { fonts, fontSizes } from '~/styles/tokens';
 
 const textBase = {
   margin: '0',
@@ -7,6 +7,9 @@ const textBase = {
   fontWeight: 'normal',
   color: { base: 'slate.70', _dark: 'slate.20' },
 };
+
+// const safeFonts = fonts as Record<string, string>;
+// const safeFontSizes = fontSizes as Record<string, string>;
 
 const textVariants = {
   family: { ...fonts },
@@ -26,13 +29,13 @@ const textVariants = {
       textDecoration: 'underline',
     },
   },
-}
+};
 
 const headingBase = {
   fontFamily: 'heading',
   fontWeight: 'black',
   color: { base: 'slate.90', _dark: 'slate.5' },
-}
+};
 
 const headingVariants = {
   as: {
@@ -41,7 +44,7 @@ const headingVariants = {
     h3: { textStyle: 'heading.sm' },
     h4: { textStyle: 'heading.xs' },
   },
-}
+};
 
 const linkBase = {
   display: 'inline-flex',
@@ -60,7 +63,7 @@ const linkBase = {
     color: { base: 'blue.40', _dark: 'blue.30' },
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
   },
-}
+};
 
 const linkVariants = {
   ...textVariants,
@@ -71,13 +74,13 @@ const linkVariants = {
       pointerEvents: 'none'
     }
   }
-}
+};
 
 export const textRecipe = defineRecipe({
   className: 'text',
   jsx: ['Text'],
   base: textBase,
-  variants: { ...textVariants },
+  variants: textVariants,
   defaultVariants: {
     fontSize: '16',
     family: 'sans',

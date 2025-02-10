@@ -1,6 +1,6 @@
-import { defineRecipe } from '@pandacss/dev';
+import { defineRecipe, defineStyles } from '@pandacss/dev';
 
-const baseButtonStyles = {
+const baseButtonStyles = defineStyles({
   position: 'relative',
   appearance: 'none',
   minWidth: 0,
@@ -36,12 +36,10 @@ const baseButtonStyles = {
   },
   '& svg': {
     fill: 'current',
-    width: 24,
-    height: 24,
   },
-};
+});
 
-const buttonVariants = {
+const buttonVariants = defineStyles({
   variant: {
     primary: {
       bg: { base: 'slate.90', _dark: 'slate.5' },
@@ -162,7 +160,7 @@ const buttonVariants = {
       },
     },
   },
-};
+});
 
 export const buttonRecipe = defineRecipe({
   className: 'button',
