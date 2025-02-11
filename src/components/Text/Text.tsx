@@ -8,7 +8,7 @@ import forwardRefWithAs, { PolymorphicRef } from '~/utils/forwardRefWithAs';
 /**
  * TextProps extends BoxProps, which includes the necessary style props (from HTMLStyledProps<E>)
  */
-// Interfaces in TypeScript can only extend object types with statically known members. Since BoxProps<E> is a generic type alias, you can’t extend it with an interface directly. Instead, using a type alias with an intersection (&) works perfectly.
+// Interfaces in TypeScript can only extend object types with statically known members. Since BoxProps<E> is a generic type alias, you can't extend it with an interface directly. Instead, using a type alias with an intersection (&) works perfectly.
 export type TextProps<E extends React.ElementType = 'p'> = BoxProps<E> & {
   variants?: TextVariantProps;
   fontSize?: FontSizeToken;
@@ -34,6 +34,7 @@ const TextComponent = <E extends React.ElementType = 'p'>(
         text({ fontSize, family, italic, bold, underline, ...variants }),
         className,
       )}
+      // {...(props as BoxProps<E>)}
       {...props}
     >
       {children}
@@ -41,4 +42,4 @@ const TextComponent = <E extends React.ElementType = 'p'>(
   );
 };
 
-export const Text = forwardRefWithAs(TextComponent);
+export const Text = forwardRefWithAs<TextProps<'p'>, 'p'>(TextComponent);

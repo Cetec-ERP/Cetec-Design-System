@@ -134,6 +134,7 @@ function AppContent() {
                   <Heading as="h4" color={'gold.40'}>
                     Text styles
                   </Heading>
+                  <Text color={'gold.40'}>gold pizza</Text>
                 </Box>
                 <VStack gap={'16'}>
                   <Text>
