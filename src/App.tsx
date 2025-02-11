@@ -68,8 +68,8 @@ function AppContent() {
             <Text
               fontSize={'20'}
               family={'mono'}
-              // textTransform={'uppercase'}
-              // letterSpacing={'widest'}
+              textTransform={'uppercase'}
+              letterSpacing={'widest'}
               fontWeight={'bold'}
               color={{ base: 'slate.90', _dark: 'slate.10' }}
               onClick={() => alert('clicked')}

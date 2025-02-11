@@ -2,10 +2,10 @@ import React, { forwardRef } from 'react';
 // Import Panda's default Box component and its prop types
 import {
   Box as PandaBox,
-  type BoxProps as PandaBoxProps,
+  // type BoxProps as PandaBoxProps,
+  splitCssProps, // Panda's runtime helper to split style props from others
+  type HTMLStyledProps,
 } from '@styled-system/jsx';
-// Import Panda's runtime helper to split style props from others
-import { splitCssProps } from '@styled-system/jsx';
 import { css } from '@styled-system/css';
 
 /**
@@ -24,13 +24,15 @@ type PolymorphicComponentProps<E extends React.ElementType, P = {}> = P &
  * This type alias uses PandaBoxProps which is generated based on your theme and config.
  */
 export type BoxProps<E extends React.ElementType = 'div'> =
-  PolymorphicComponentProps<E, PandaBoxProps>;
+  PolymorphicComponentProps<E, HTMLStyledProps<E>>;
 
 // Refine the ref type for intrinsic elements
-type PolymorphicRef<E extends React.ElementType> =
-  E extends keyof HTMLElementTagNameMap
-    ? React.Ref<HTMLElementTagNameMap[keyof HTMLElementTagNameMap]>
-    : React.ComponentPropsWithRef<E>['ref'];
+// type PolymorphicRef<E extends React.ElementType> =
+//   E extends keyof HTMLElementTagNameMap
+//     ? React.Ref<HTMLElementTagNameMap[keyof HTMLElementTagNameMap]>
+//     : React.ComponentPropsWithRef<E>['ref'];
+
+type PolymorphicRef<E extends React.ElementType> = React.ComponentPropsWithRef<E>['ref'];
 
 /**
  * BoxInner implements:
@@ -56,7 +58,7 @@ const BoxInner = <E extends React.ElementType = 'div'>(
   return (
     <PandaBox
       as={Component}
-      ref={ref as React.Ref<any>}
+      ref={ref}
       className={className}
       {...otherProps}
     />
@@ -67,8 +69,6 @@ const BoxInner = <E extends React.ElementType = 'div'>(
  * Wrap BoxInner with React.forwardRef to enable ref forwarding.
  */
 // @ts-ignore
-export const Box = forwardRef(BoxInner) as <
-  E extends React.ElementType = 'div',
->(
-  props: BoxProps<E> & { ref?: PolymorphicRef<E> },
+export const Box = forwardRef(BoxInner) as <E extends React.ElementType = 'div'>(
+  props: BoxProps<E> & { ref?: React.Ref<any> },
 ) => JSX.Element;

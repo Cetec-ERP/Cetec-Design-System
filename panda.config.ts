@@ -59,7 +59,7 @@ export default defineConfig({
   gitignore: true,
   jsxFramework: 'react',
   jsxStyleProps: 'all',
-  jsxFactory: 'panda',
+  jsxFactory: 'styled',
   watch: true,
   include: ['./src/**/*.{js,jsx,ts,tsx}', './pages/**/*.{js,jsx,ts,tsx}'],
   preflight: true,
