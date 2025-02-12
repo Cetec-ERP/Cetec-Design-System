@@ -11,6 +11,7 @@ import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
 import { CheckBox } from './components/CheckBox';
+import { type FontSizeToken } from '@styled-system/tokens';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -66,16 +67,16 @@ function AppContent() {
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
             <Text
-              fontSize={'20'}
               family={'mono'}
-              textTransform={'uppercase'}
+              color={'red.50'}
+              fontSize={'16'}
               letterSpacing={'widest'}
               fontWeight={'bold'}
-              color={{ base: 'slate.90', _dark: 'slate.10' }}
               onClick={() => alert('clicked')}
             >
               Cetec Components
             </Text>
+            <Box color={{ base: 'blue.50', _dark: 'red.80' }}>Hello</Box>
             <ThemeSwitcher />
           </HStack>
         </Container>

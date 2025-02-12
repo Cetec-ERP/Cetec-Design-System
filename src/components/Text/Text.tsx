@@ -1,45 +1,42 @@
-import React from 'react';
-import { Box, type BoxProps } from '~/components/Box';
-import { text, type TextVariantProps } from '@styled-system/recipes';
-import { cx } from '@styled-system/css';
-import type { FontSizeToken, FontToken } from '@styled-system/tokens';
-import forwardRefWithAs, { PolymorphicRef } from '~/utils/forwardRefWithAs';
+import React, {
+  type ElementType,
+  type AllHTMLAttributes,
+} from 'react';
+//import { Box, BoxProps } from '~/components/Box';
+import { text } from '@styled-system/recipes';
+import { type FontToken } from '@styled-system/tokens';
+import { splitCssProps } from '@styled-system/jsx';
+import { cx, css } from '@styled-system/css';
 
-/**
- * TextProps extends BoxProps, which includes the necessary style props (from HTMLStyledProps<E>)
- */
-// Interfaces in TypeScript can only extend object types with statically known members. Since BoxProps<E> is a generic type alias, you can't extend it with an interface directly. Instead, using a type alias with an intersection (&) works perfectly.
-export type TextProps<E extends React.ElementType = 'p'> = BoxProps<E> & {
-  variants?: TextVariantProps;
-  fontSize?: FontSizeToken;
-  family?: FontToken;
+export interface TextProps extends Omit<AllHTMLAttributes<HTMLElement>, 'as'> {
   italic?: boolean;
+  family?: FontToken;
   bold?: boolean;
   underline?: boolean;
+  children?: string | React.ReactNode;
+  as?: ElementType;
   className?: string;
-  children?: React.ReactNode;
 };
 
-const TextComponent = <E extends React.ElementType = 'p'>(
-  { as, fontSize, family, italic, bold, underline, className, children, variants, ...props }: TextProps<E>,
-  ref: PolymorphicRef<E>,
+export const Text: React.FC<TextProps> = ( 
+  { as, italic, family, bold, underline, children, ...props }: TextProps,
 ) => {
-  const Component = as || 'p';
+//  const Component = as ?? 'p';
+
+  const [cssProps, otherProps] = splitCssProps(props);
+  const { css: cssProp, ...styleProps } = cssProps;
+  const className = css(cssProp, styleProps);
 
   return (
-    <Box
-      as={Component}
-      ref={ref}
+    <p
+//      as={Component}
       className={cx(
-        text({ fontSize, family, italic, bold, underline, ...variants }),
-        className,
+          text({ family, bold, underline, italic }),
+          className,
       )}
-      // {...(props as BoxProps<E>)}
-      {...props}
+      {...otherProps}
     >
       {children}
-    </Box>
+    </p>
   );
 };
-
-export const Text = forwardRefWithAs<TextProps<'p'>, 'p'>(TextComponent);

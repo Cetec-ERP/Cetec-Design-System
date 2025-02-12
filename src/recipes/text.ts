@@ -1,10 +1,10 @@
 import { defineRecipe } from '@pandacss/dev';
-import { fonts, fontSizes } from '~/styles/tokens';
 
 const textBase = {
   margin: '0',
   lineHeight: 'default',
   fontWeight: 'normal',
+  fontSize: '16',
   color: { base: 'slate.70', _dark: 'slate.20' },
 };
 
@@ -12,8 +12,11 @@ const textBase = {
 // const safeFontSizes = fontSizes as Record<string, string>;
 
 const textVariants = {
-  family: { ...fonts },
-  fontSize: { ...fontSizes },
+  family: {  
+    heading: { fontFamily: 'heading' },
+    sans: { fontFamily: 'sans' },
+    mono: { fontFamily: 'mono' },
+  },
   bold: {
     true: {
       fontWeight: 'bold',
@@ -82,7 +85,6 @@ export const textRecipe = defineRecipe({
   base: textBase,
   variants: textVariants,
   defaultVariants: {
-    fontSize: '16',
     family: 'sans',
   },
 });
@@ -103,7 +105,6 @@ export const linkRecipe = defineRecipe({
   base: linkBase,
   variants: linkVariants,
   defaultVariants: {
-    fontSize: '16',
     family: 'sans',
   },
 });

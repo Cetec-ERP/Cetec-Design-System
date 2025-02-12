@@ -162,16 +162,14 @@ export const colors = {
       darker: { value: 'red.70' },
     },
   },
-} as const;
+};
 
 export const fonts = {
   heading: { value: "'Ruda Variable', Open Sans, Source Sans, sans-serif;" },
   sans: { value: "'Open Sans Variable', Geneva, Tahoma, Verdana, sans-serif" },
-  mono: {
-    value:
-      "'Fira Code Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace",
+  mono: { value: "'Fira Code Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace",
   },
-} as const;
+};
 
 export const fontWeights = {
   light: { value: 300 },
@@ -179,7 +177,7 @@ export const fontWeights = {
   medium: { value: 500 },
   bold: { value: 700 },
   black: { value: 900 },
-} as const;
+};
 
 export const sizes = {
   '0': { value: '0' },
@@ -224,7 +222,7 @@ export const sizes = {
   '7xl': { value: '80rem' }, // 1280px
   '8xl': { value: '90rem' }, // 1440px
   prose: { value: '65ch' }, // 1040px
-} as const;
+};
 
 export const fontSizes = {
   '12': { value: '0.75rem' },
@@ -239,7 +237,7 @@ export const fontSizes = {
   '72': { value: '4.5rem' },
   '80': { value: '5rem' },
   '96': { value: '6rem' },
-} as const;
+};
 
 export const lineHeights = {
   none: {
@@ -260,7 +258,7 @@ export const lineHeights = {
   looser: {
     value: '1em + 0.875rem',
   },
-} as const;
+};
 
 export const radii = {
   '0': { value: '0' },
@@ -270,7 +268,7 @@ export const radii = {
   '8': { value: '0.5rem' },
   '16': { value: '1rem' },
   '100': { value: '100%' },
-} as const;
+};
 
 export const shadows = {
   low: {
@@ -285,13 +283,13 @@ export const shadows = {
   inset: {
     value: 'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}',
   },
-} as const;
+};
 
 export const borders = {
   none: {
     value: 'none',
   },
-} as const;
+};
 
 export const aspectRatios = {
   square: {
@@ -312,7 +310,7 @@ export const aspectRatios = {
   golden: {
     value: '1.618 / 1',
   },
-} as const;
+};
 
 export const easings = {
   default: {
@@ -330,7 +328,7 @@ export const easings = {
   'in-out': {
     value: 'cubic-bezier(0.4, 0, 0.2, 1)',
   },
-} as const;
+};
 
 export const durations = {
   fastest: {
@@ -354,7 +352,7 @@ export const durations = {
   slowest: {
     value: '500ms',
   },
-} as const;
+};
 
 export const letterSpacings = {
   tighter: {
@@ -375,7 +373,7 @@ export const letterSpacings = {
   widest: {
     value: '0.1em',
   },
-} as const;
+};
 
 export const blurs = {
   sm: {
@@ -399,7 +397,7 @@ export const blurs = {
   '3xl': {
     value: '64px',
   },
-} as const;
+};
 
 export const animations = {
   spin: {
@@ -414,7 +412,7 @@ export const animations = {
   bounce: {
     value: 'bounce 1s infinite',
   },
-} as const;
+};
 
 export const containerSizes = {
   xs: '320px',
@@ -429,7 +427,7 @@ export const containerSizes = {
   '6xl': '1152px',
   '7xl': '1280px',
   '8xl': '1440px',
-} as const;
+};
 
 export const keyframes = {
   spin: {
@@ -458,7 +456,7 @@ export const keyframes = {
       animationTimingFunction: 'cubic-bezier(0,0,0.2,1)',
     },
   },
-} as const;
+};
 
 export const breakpoints = {
   xs: '480px',
@@ -467,7 +465,7 @@ export const breakpoints = {
   lg: '1024px',
   xl: '1280px',
   '2xl': '1536px',
-} as const;
+};
 
 // export const filters = {
 //   invert: { value: 'invert(1)' },
@@ -512,25 +510,25 @@ export const textStyles = defineTextStyles({
   display: {
     lg: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '72',
       },
     },
     md: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '64',
       },
     },
     sm: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '56',
       },
     },
     xs: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '48',
       },
     },
@@ -538,25 +536,25 @@ export const textStyles = defineTextStyles({
   heading: {
     lg: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '40',
       },
     },
     md: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '32',
       },
     },
     sm: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '24',
       },
     },
     xs: {
       value: {
-        ...baseHeadingStyles.value,
+        ...baseHeadingStyles,
         fontSize: '20',
       },
     },
@@ -564,25 +562,25 @@ export const textStyles = defineTextStyles({
   body: {
     lg: {
       value: {
-        ...baseBodyTextStyles.value,
+        ...baseBodyTextStyles,
         fontSize: '20',
       },
     },
     md: {
       value: {
-        ...baseBodyTextStyles.value,
+        ...baseBodyTextStyles,
         fontSize: '16',
       },
     },
     sm: {
       value: {
-        ...baseBodyTextStyles.value,
+        ...baseBodyTextStyles,
         fontSize: '14',
       },
     },
     xs: {
       value: {
-        ...baseBodyTextStyles.value,
+        ...baseBodyTextStyles,
         fontSize: '12',
       },
     },
@@ -590,25 +588,25 @@ export const textStyles = defineTextStyles({
   mono: {
     lg: {
       value: {
-        ...baseMonoStyles.value,
+        ...baseMonoStyles,
         fontSize: '20',
       },
     },
     md: {
       value: {
-        ...baseMonoStyles.value,
+        ...baseMonoStyles,
         fontSize: '16',
       },
     },
     sm: {
       value: {
-        ...baseMonoStyles.value,
+        ...baseMonoStyles,
         fontSize: '14',
       },
     },
     xs: {
       value: {
-        ...baseMonoStyles.value,
+        ...baseMonoStyles,
         fontSize: '12',
       },
     },

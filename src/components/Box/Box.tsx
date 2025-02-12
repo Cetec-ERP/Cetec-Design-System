@@ -1,74 +1,30 @@
-import React, { forwardRef } from 'react';
-// Import Panda's default Box component and its prop types
+import React, { 
+  type ElementType,
+  type AllHTMLAttributes,
+  createElement,
+  } from 'react';
 import {
-  Box as PandaBox,
-  // type BoxProps as PandaBoxProps,
   splitCssProps, // Panda's runtime helper to split style props from others
-  type HTMLStyledProps,
+  styled,
 } from '@styled-system/jsx';
 import { css } from '@styled-system/css';
 
-/**
- * Polymorphic Type Helpers
- */
-type AsProp<E extends React.ElementType> = {
-  as?: E;
-};
+export interface BoxProps extends Omit<AllHTMLAttributes<HTMLElement>, 'as'> {
+  as?: ElementType;
+}
 
-type PolymorphicComponentProps<E extends React.ElementType, P = {}> = P &
-  Omit<React.ComponentPropsWithoutRef<E>, keyof P | 'as'> &
-  AsProp<E>;
-
-/**
- * Use Panda's built‑in prop types for style props.
- * This type alias uses PandaBoxProps which is generated based on your theme and config.
- */
-export type BoxProps<E extends React.ElementType = 'div'> =
-  PolymorphicComponentProps<E, HTMLStyledProps<E>>;
-
-// Refine the ref type for intrinsic elements
-// type PolymorphicRef<E extends React.ElementType> =
-//   E extends keyof HTMLElementTagNameMap
-//     ? React.Ref<HTMLElementTagNameMap[keyof HTMLElementTagNameMap]>
-//     : React.ComponentPropsWithRef<E>['ref'];
-
-type PolymorphicRef<E extends React.ElementType> = React.ComponentPropsWithRef<E>['ref'];
-
-/**
- * BoxInner implements:
- *  - Defaulting the `as` prop to 'div'
- *  - Splitting the incoming props using Panda's built-in splitCssProps,
- *    so that style props are handled by Panda and the remaining props
- *    (like event handlers) are forwarded to the underlying element.
- */
-const BoxInner = <E extends React.ElementType = 'div'>(
-  props: BoxProps<E>,
-  ref: PolymorphicRef<E>,
-) => {
-  const { as, ...rest } = props;
-  const Component = as || 'div';
-
-  // Use Panda's splitCssProps to automatically separate style props from others.
-  const [cssProps, otherProps] = splitCssProps(rest);
+export const Box: React.FC<BoxProps> = ({ as = "div", ...props}) => {
+  as = typeof as === "string" && as.length > 0 ? as : 'div';
+  const [cssProps, otherProps] = splitCssProps(props);
   const { css: cssProp, ...styleProps } = cssProps;
-  const className = css(styleProps, cssProp);
+  const className = css(cssProp, styleProps);
 
-  // Forward the style props to PandaBox, which knows how to handle them,
-  // and all other props to the rendered element.
   return (
-    <PandaBox
-      as={Component}
-      ref={ref}
-      className={className}
-      {...otherProps}
-    />
+    createElement(as, {
+      className: {className},
+      ...otherProps
+    })
   );
 };
-
-/**
- * Wrap BoxInner with React.forwardRef to enable ref forwarding.
- */
-// @ts-ignore
-export const Box = forwardRef(BoxInner) as <E extends React.ElementType = 'div'>(
-  props: BoxProps<E> & { ref?: React.Ref<any> },
-) => JSX.Element;
+ 
+export default styled(Box);
