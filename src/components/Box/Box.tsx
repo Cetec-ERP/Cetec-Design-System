@@ -7,9 +7,10 @@ import {
   splitCssProps, // Panda's runtime helper to split style props from others
   styled,
 } from '@styled-system/jsx';
+import { type SystemStyleObject } from '@styled-system/types';
 import { css } from '@styled-system/css';
 
-export interface BoxProps extends Omit<AllHTMLAttributes<HTMLElement>, 'as'> {
+export type BoxProps = Omit<AllHTMLAttributes<HTMLElement>, 'as'> & SystemStyleObject & {
   as?: ElementType;
 }
 

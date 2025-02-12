@@ -1,14 +1,14 @@
 import React, {
   type ElementType,
-  type AllHTMLAttributes,
+//  type AllHTMLAttributes,
 } from 'react';
-//import { Box, BoxProps } from '~/components/Box';
+import { Box, type BoxProps } from '~/components/Box';
 import { text } from '@styled-system/recipes';
 import { type FontToken } from '@styled-system/tokens';
 import { splitCssProps } from '@styled-system/jsx';
 import { cx, css } from '@styled-system/css';
 
-export interface TextProps extends Omit<AllHTMLAttributes<HTMLElement>, 'as'> {
+export type TextProps = BoxProps & {
   italic?: boolean;
   family?: FontToken;
   bold?: boolean;
@@ -21,15 +21,14 @@ export interface TextProps extends Omit<AllHTMLAttributes<HTMLElement>, 'as'> {
 export const Text: React.FC<TextProps> = ( 
   { as, italic, family, bold, underline, children, ...props }: TextProps,
 ) => {
-//  const Component = as ?? 'p';
-
+  const Component = as ?? 'p';
   const [cssProps, otherProps] = splitCssProps(props);
   const { css: cssProp, ...styleProps } = cssProps;
   const className = css(cssProp, styleProps);
 
   return (
-    <p
-//      as={Component}
+    <Box
+      as={Component}
       className={cx(
           text({ family, bold, underline, italic }),
           className,
@@ -37,6 +36,6 @@ export const Text: React.FC<TextProps> = (
       {...otherProps}
     >
       {children}
-    </p>
+    </Box>
   );
 };

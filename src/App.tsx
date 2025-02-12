@@ -11,7 +11,6 @@ import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
 import { CheckBox } from './components/CheckBox';
-import { type FontSizeToken } from '@styled-system/tokens';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -67,6 +66,7 @@ function AppContent() {
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
             <Text
+              as={"div"}
               family={'mono'}
               color={'red.50'}
               fontSize={'16'}
