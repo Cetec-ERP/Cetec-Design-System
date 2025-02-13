@@ -1,12 +1,11 @@
 import React, {
   type ElementType,
-//  type AllHTMLAttributes,
 } from 'react';
 import { Box, type BoxProps } from '~/components/Box';
-import { text } from '@styled-system/recipes';
-import { type FontToken } from '@styled-system/tokens';
 import { splitCssProps } from '@styled-system/jsx';
 import { cx, css } from '@styled-system/css';
+import { text } from '@styled-system/recipes';
+import { type FontToken } from '@styled-system/tokens';
 
 export type TextProps = BoxProps & {
   italic?: boolean;
@@ -18,7 +17,7 @@ export type TextProps = BoxProps & {
   className?: string;
 };
 
-export const Text: React.FC<TextProps> = ( 
+export const Text: React.FC<TextProps> = (
   { as, italic, family, bold, underline, children, ...props }: TextProps,
 ) => {
   const Component = as ?? 'p';
@@ -30,8 +29,8 @@ export const Text: React.FC<TextProps> = (
     <Box
       as={Component}
       className={cx(
-          text({ family, bold, underline, italic }),
-          className,
+        text({ family, bold, underline, italic }),
+        className,
       )}
       {...otherProps}
     >

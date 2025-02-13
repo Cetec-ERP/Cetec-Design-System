@@ -36,7 +36,7 @@ export function IconList() {
 export const Section = ({ children }: { children?: ReactNode }) => {
   return (
     <Grid
-      gridTemplateColumns={'10rem 1fr'}
+      gridTemplateColumns={'1fr 3fr'}
       gap={'40'}
       w={'full'}
       borderTopWidth={'1'}
@@ -68,15 +68,13 @@ function AppContent() {
             <Text
               as={"div"}
               family={'mono'}
-              color={'red.50'}
               fontSize={'16'}
               letterSpacing={'widest'}
+              textTransform={'uppercase'}
               fontWeight={'bold'}
-              onClick={() => alert('clicked')}
             >
               Cetec Components
             </Text>
-            <Box color={{ base: 'blue.50', _dark: 'red.80' }}>Hello</Box>
             <ThemeSwitcher />
           </HStack>
         </Container>
@@ -132,10 +130,9 @@ function AppContent() {
                 alignItems={'center'}
               >
                 <Box gridColumn={'1 / -1'}>
-                  <Heading as="h4" color={'gold.40'}>
+                  <Heading as="h4">
                     Text styles
                   </Heading>
-                  <Text color={'gold.40'}>gold pizza</Text>
                 </Box>
                 <VStack gap={'16'}>
                   <Text>

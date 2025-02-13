@@ -167,7 +167,8 @@ export const colors = {
 export const fonts = {
   heading: { value: "'Ruda Variable', Open Sans, Source Sans, sans-serif;" },
   sans: { value: "'Open Sans Variable', Geneva, Tahoma, Verdana, sans-serif" },
-  mono: { value: "'Fira Code Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace",
+  mono: {
+    value: "'Fira Code Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace",
   },
 };
 
@@ -179,7 +180,7 @@ export const fontWeights = {
   black: { value: 900 },
 };
 
-export const sizes = {
+export const numericSizes = {
   '0': { value: '0' },
   '1': { value: '0.0625rem' },
   '2': { value: '0.125rem' },
@@ -205,6 +206,10 @@ export const sizes = {
   '72': { value: '4.5rem' },
   '80': { value: '5rem' },
   '96': { value: '6rem' },
+}
+
+export const sizes = {
+  ...numericSizes,
   full: { value: '100%' },
   min: { value: 'min-content' },
   max: { value: 'max-content' },

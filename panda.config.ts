@@ -110,6 +110,21 @@ export default defineConfig({
   },
 
   patterns: {
+    icon: {
+      properties: {
+        size: {
+          type: 'enum', value: Object.keys(tokens.sizes)
+        },
+      },
+      transform(props) {
+        const { size, ...rest } = props;
+        return {
+          width: size,
+          height: size,
+          ...rest
+        };
+      },
+    },
     extend: {
       container: {
         transform(props) {
@@ -141,7 +156,7 @@ export default defineConfig({
     ...conditions,
 
     // Themes moved to conditions.tx
-    
+
     // States
     indeterminate:
       '&:is(:indeterminate, [data-indeterminate], [aria-checked=mixed], [data-state=indeterminate])',
