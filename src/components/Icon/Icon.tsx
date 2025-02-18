@@ -10,11 +10,11 @@ type IconProps = HTMLStyledProps<'svg'> & {
   size?: number;
 };
 
-export function Icon({ name, className, size = 24, viewBox = "0 0 24 24", ...props }: IconProps) {
+export function Icon({ name, className, size = 24, ...props }: IconProps) {
   return (
     <Box
       as="svg"
-      viewBox={viewBox}
+      viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
