@@ -98,9 +98,10 @@ export default defineConfig({
         iconButton: iconButtonRecipe,
         input: inputRecipe,
         textarea: textareaRecipe,
+      },
+      slotRecipes: {
         checkbox: checkBoxRecipe
       },
-      slotRecipes: {},
     },
   },
 

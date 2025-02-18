@@ -1,29 +1,55 @@
 import { Box } from "../Box";
 import type { SystemStyleObject } from '@styled-system/types';
-import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
-import { Icon, IconNamesList } from "../Icon";
+import { useEffect, useRef } from "react";
+import { checkbox, type CheckboxVariantProps } from "@styled-system/recipes";
+import { Icon } from "../Icon";
+
 
 type CheckBoxProps = CheckboxVariantProps &
     Omit<React.ComponentProps<typeof Box>, 'as'> & {
-        variant?: string;
+        indeterminate?: boolean;
+        checked: boolean;
+        onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+        disabled?: boolean;
+        error?: boolean;
     } & SystemStyleObject;
 
-const variantIcon: Record<'checked' | 'indeterminate', IconNamesList> = {
-    checked: "check",
-    indeterminate: "minus"
-}
-
 export function CheckBox({
-    variant = 'default',
+    indeterminate = false,
+    checked = false,
+    onChange = () => { },
+    disabled = false,
+    error = false,
+    ...props
 }: CheckBoxProps) {
-    const iconName: IconNamesList | undefined = variantIcon[variant as keyof typeof variantIcon] ?? undefined;
+    const checkBoxRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (!checkBoxRef.current) return;
+        checkBoxRef.current.indeterminate = indeterminate;
+    }, [indeterminate])
+
+    const effectiveChecked: boolean = !indeterminate && !disabled && !error ? checked : false;
+
+    const { container, input, indicator} = checkbox({ checked: effectiveChecked, indeterminate, error, disabled });
 
     return (
-        <Box>
-          <Box as="input" type="checkbox" />
-          <Box className={checkbox({ variant })}>
-            {iconName && <Icon size={12} {...iconName && {name: iconName}} viewBox="0 0 12 12"/>}
-          </Box>
+        <Box as="label" className={container}>
+            <Box
+                as="input"
+                type="checkbox"
+                ref={checkBoxRef}
+                className={input}
+                checked={checked}
+                onChange={onChange}
+                {...props}
+            />
+            <Box as="div" className={indicator}>
+                {(checked || indeterminate) && (
+                    <Icon name={indeterminate ? 'minus' : 'check'} size={14} />
+                )}
+            </Box>
         </Box>
     );
+
 }

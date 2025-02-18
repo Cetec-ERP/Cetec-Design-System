@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
 import { Text } from '~/components/Text';
 import { Button } from '~/components/Button';
@@ -49,6 +49,20 @@ export const Section = ({ children }: { children?: ReactNode }) => {
   );
 };
 
+const CheckBoxSection: React.FC = () => (
+    <Section>
+      <Heading as="h2">Checkboxes</Heading>
+      <HStack gap={'40'} alignItems={'flex-end'}>
+        <CheckBox checked={false} />
+        <CheckBox checked={true} />
+        <CheckBox checked={false} indeterminate />
+        <CheckBox checked={false} disabled />
+        <CheckBox checked={false} error />
+      </HStack>
+    </Section>
+  )
+
+
 function AppContent() {
   return (
     <VStack>
@@ -64,10 +78,10 @@ function AppContent() {
       >
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
-            <Text 
-              level={20} 
-              font="mono" 
-              textTransform={'uppercase'} 
+            <Text
+              level={20}
+              font="mono"
+              textTransform={'uppercase'}
               fontWeight={'bold'}
               color={{ base: 'slate.90', _dark: 'slate.10' }}
             >Cetec Components</Text>
@@ -191,16 +205,7 @@ function AppContent() {
             <Heading as="h2">Icons</Heading>
             <IconList />
           </Section>
-          <Section>
-            <Heading as="h2">Checkboxes</Heading>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <CheckBox />
-                <CheckBox variant="checked" />
-                <CheckBox variant="indeterminate" />
-                <CheckBox variant="disabled" />
-                <CheckBox variant="error" />
-              </HStack>
-          </Section>
+          <CheckBoxSection />
           {/* <Section>
             <Text as="h2">
               Inputs
