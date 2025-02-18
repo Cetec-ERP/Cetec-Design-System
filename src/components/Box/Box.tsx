@@ -26,11 +26,10 @@ type BoxProps<T extends React.ElementType> = PolymorphicComponentProp<
   BoxComponentProps
 >;
 
-export function Box<T extends React.ElementType = 'div'>({
-  as,
-  children,
-  ...props
-}: BoxProps<T>) {
+export const Box = React.forwardRef(function Box<T extends React.ElementType = 'div'>(
+  { as, children, ...props }: BoxProps<T>,
+  ref: React.Ref<Element>
+) {
   const Component = as || 'div';
-  return <Component {...props}>{children}</Component>;
-}
+  return <Component {...props} ref={ref}>{children}</Component>;
+});
