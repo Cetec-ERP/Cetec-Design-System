@@ -1,4 +1,5 @@
 import { defineRecipe } from '@pandacss/dev';
+import { fontSizes, fontWeights } from '~/styles/tokens';
 
 const textBase = {
   margin: '0',
@@ -32,21 +33,28 @@ const textVariants = {
       textDecoration: 'underline',
     },
   },
+  size: {
+   ...fontSizes, 
+  },
+  weight: {
+    ...fontWeights,
+  }
 };
 
 const headingBase = {
   fontFamily: 'heading',
   fontWeight: 'black',
   color: { base: 'slate.90', _dark: 'slate.5' },
+  lineHeight: 'default',
 };
 
 const headingVariants = {
-  as: {
+  level: {
     h1: { textStyle: 'heading.lg' },
     h2: { textStyle: 'heading.md' },
     h3: { textStyle: 'heading.sm' },
     h4: { textStyle: 'heading.xs' },
-  },
+  }
 };
 
 const linkBase = {
@@ -79,6 +87,27 @@ const linkVariants = {
   }
 };
 
+const labelBase = {
+  fontSize: '14',
+  fontWeight: 'normal',
+  lineHeight: 'normal',
+  cursor: 'default',
+};
+
+//Copied linkvarients, don't have styles defined for this yet
+const labelVariants = {
+  ...textVariants,
+  _disabled: {
+    true: {
+      cursor: 'not-allowed',
+      opacity: 0.7,
+      pointerEvents: 'none'
+    }
+  }
+};
+
+
+
 export const textRecipe = defineRecipe({
   className: 'text',
   jsx: ['Text'],
@@ -95,7 +124,7 @@ export const headingRecipe = defineRecipe({
   base: headingBase,
   variants: headingVariants,
   defaultVariants: {
-    as: 'h2',
+   level: 'h2',
   },
 });
 
@@ -108,3 +137,14 @@ export const linkRecipe = defineRecipe({
     family: 'sans',
   },
 });
+
+export const labelRecipe = defineRecipe({
+  className: 'label',
+  jsx: ['Label'],
+  base: labelBase,
+  variants: labelVariants,
+  defaultVariants: {
+    family: 'sans',
+  },
+});
+

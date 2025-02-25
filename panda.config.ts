@@ -10,8 +10,11 @@ import { globalCss } from './src/styles/globalStyle';
 import { buttonRecipe, iconButtonRecipe } from './src/recipes/button';
 import { inputRecipe } from './src/recipes/input';
 import { textareaRecipe } from './src/recipes/textarea';
-import { textRecipe, headingRecipe, linkRecipe } from './src/recipes/text';
+import { textRecipe, headingRecipe, linkRecipe, labelRecipe } from './src/recipes/text';
 import { checkBoxRecipe } from "./src/recipes/checkbox"
+import { spinnerRecipe } from "./src/recipes/spinner"
+import { preRecipe, codeRecipe } from "./src/recipes/code"
+import { boxRecipe } from './src/recipes/box';
 import { conditions } from "./src/styles/conditions"
 // using pandas methods to define type-safe tokens
 const theme = {
@@ -99,11 +102,17 @@ export default defineConfig({
         text: textRecipe,
         heading: headingRecipe,
         link: linkRecipe,
+        label: labelRecipe,
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
         input: inputRecipe,
         textarea: textareaRecipe,
-        checkbox: checkBoxRecipe
+        checkbox: checkBoxRecipe,
+        code: codeRecipe,
+        pre: preRecipe,
+        spinner: spinnerRecipe,
+        //Panda might not like this since they already have a box
+        box: boxRecipe,
       },
       slotRecipes: {},
     },

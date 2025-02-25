@@ -10,7 +10,7 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { CheckBox } from './components/CheckBox';
+//import { CheckBox } from './components/CheckBox';
 // import { Input } from '~/components/Input';
 // import { Textarea } from '~/components/Textarea';
 
@@ -72,6 +72,7 @@ function AppContent() {
               letterSpacing={'widest'}
               textTransform={'uppercase'}
               fontWeight={'bold'}
+              onClick={() => alert('clicked')}
             >
               Cetec Components
             </Text>
@@ -82,7 +83,7 @@ function AppContent() {
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
           <Section>
-            <Heading as="h2">Buttons</Heading>
+            <Heading>Buttons</Heading>
             <VStack alignItems={'flex-start'} gap={'24'}>
               <HStack>
                 <Button
@@ -121,7 +122,8 @@ function AppContent() {
             </VStack>
           </Section>
           <Section>
-            <Heading as="h2">Text</Heading>
+            <Heading level="h2">Text</Heading>
+
             <VStack alignItems={'flex-start'}>
               <Grid
                 gridTemplateColumns={'minmax(auto, 1fr) 1fr'}
@@ -130,7 +132,7 @@ function AppContent() {
                 alignItems={'center'}
               >
                 <Box gridColumn={'1 / -1'}>
-                  <Heading as="h4">
+                  <Heading level="h4">
                     Text styles
                   </Heading>
                 </Box>
@@ -162,22 +164,27 @@ function AppContent() {
                   Signs night have sixth hath that likeness us fill you're
                   subdue fowl.
                 </Text>
-                <Pre>{`<Text family="mono">...</Text>`}</Pre>
+                <Pre>
+                  {
+                    `<Text family="mono">...</Text>
+                    `
+                  }
+                </Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Heading as="h4" color={'gold.40'}>
+                  <Heading color={'gold.40'}>
                     Headings
                   </Heading>
                 </Box>
-                <Heading as="h1">Hamburgefonstiv</Heading>
+                <Heading level="h1">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h1">Hamburgefonstiv</Heading>'}</Pre>
                 <Heading>Hamburgefonstiv</Heading>
                 <Pre>{'<Heading>Hamburgefonstiv</Heading>'}</Pre>
-                <Heading as="h3">Hamburgefonstiv</Heading>
+                <Heading level="h3">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h3">Hamburgefonstiv</Heading>'}</Pre>
-                <Heading as="h4">Hamburgefonstiv</Heading>
+                <Heading level="h4">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h4">Hamburgefonstiv</Heading>'}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Heading as="h4" color={'gold.40'}>
+                  <Heading level="h4" color={'gold.40'}>
                     Links
                   </Heading>
                 </Box>
@@ -213,10 +220,10 @@ function AppContent() {
             </VStack>
           </Section>
           <Section>
-            <Heading as="h2">Spinner</Heading>
+            <Heading level="h2">Spinner</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <VStack>
-                <Spinner size="small" />
+                <Spinner size='small' />
                 <Text>Small</Text>
               </VStack>
               <VStack>
@@ -230,17 +237,19 @@ function AppContent() {
             </HStack>
           </Section>
           <Section>
-            <Heading as="h2">Icons</Heading>
+            <Heading level="h2">Icons</Heading>
             <IconList />
           </Section>
           <Section>
-            <Heading as="h2">Checkboxes</Heading>
+            <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
+            {/*
               <CheckBox />
               <CheckBox variant="checked" />
               <CheckBox variant="indeterminate" />
               <CheckBox variant="disabled" />
               <CheckBox variant="error" />
+              */}
             </HStack>
           </Section>
           {/* <Section>

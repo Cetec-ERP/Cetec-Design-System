@@ -483,7 +483,7 @@ export const breakpoints = {
 //   capitalize: { value: 'capitalize' },
 //   none: { value: 'none' },
 // };
-
+// Why are we using this?
 const baseHeadingStyles = defineStyles({
   value: {
     fontFamily: 'heading',

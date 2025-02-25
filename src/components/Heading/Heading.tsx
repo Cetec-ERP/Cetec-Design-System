@@ -1,29 +1,33 @@
-import React from 'react';
-import { Box, type BoxProps } from '~/components/Box';
+import { Text, type TextProps } from '~/components/Text';
 import { heading, type HeadingVariantProps } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
-import forwardRefWithAs, { PolymorphicRef } from '~/utils/forwardRefWithAs';
+import { splitProps } from '~/utils/splitProps';
 
-export type HeadingProps<E extends React.ElementType = 'h2'> = BoxProps<E> & {
-  variants?: HeadingVariantProps;
-  className?: string;
-  children?: React.ReactNode;
+export type HeadingProps = Omit<TextProps, keyof HeadingVariantProps> & HeadingVariantProps & {
+  children?: string | React.ReactNode;
+  level?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 };
 
-const HeadingComponent = <E extends React.ElementType = 'h2'>(
-  { as, className, children, variants, ...props }: HeadingProps<E>,
-  ref: PolymorphicRef<E>
+export const Heading: React.FC<HeadingProps> = (
+  { 
+    level='h2', 
+    children, 
+    ...props 
+  }: HeadingProps,
 ) => {
+
+  const [ className, otherProps ] = splitProps(props);
   return (
-    <Box
-      as={as}
-      ref={ref}
-      className={cx(heading({ ...variants }), className)}
-      {...props}
+    <Text
+      as={level}
+      className={cx(
+        heading({ level }), 
+        className as string,
+      )}
+      {...otherProps}
     >
       {children}
-    </Box>
+    </Text>
   );
 };
 
-export const Heading = forwardRefWithAs(HeadingComponent);
