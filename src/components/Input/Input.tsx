@@ -1,4 +1,4 @@
-import { Text, TextProps } from '~/components/Text';
+import { Text, type TextProps } from '~/components/Text';
 import { Box, type BoxProps } from '~/components/Box';
 import { Label } from '~/components/Label';
 import { input, type InputVariantProps } from '@styled-system/recipes';
