@@ -1,4 +1,4 @@
-import { Text, TextProps } from '../Text';
+import { Text, type TextProps } from '../Text';
 import { label, type LabelVariantProps } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
