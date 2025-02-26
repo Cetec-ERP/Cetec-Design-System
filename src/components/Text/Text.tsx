@@ -2,7 +2,7 @@ import React, {
   type ElementType,
 } from 'react';
 import { Box, type BoxProps } from '~/components/Box';
-import { type FontToken, type FontSizeToken, type FontWeightToken } from '@styled-system/tokens';
+import type { FontToken, FontSizeToken, FontWeightToken } from '@styled-system/tokens';
 import { text, type TextVariantProps } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
