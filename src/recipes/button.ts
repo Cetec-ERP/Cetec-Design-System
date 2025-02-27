@@ -1,44 +1,43 @@
 import { defineRecipe } from '@pandacss/dev';
 
-const baseButtonStyles = {
-    appearance: 'none',
-    minWidth: 0,
-    transitionDuration: 'fast',
-    transitionProperty: 'background, border-color, color, box-shadow',
-    transitionTimingFunction: 'default',
-    userSelect: 'none',
-    verticalAlign: 'middle',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 4,
-    fontFamily: 'sans',
-    fontSize: 16,
-    fontWeight: 'medium',
-    lineHeight: 'default',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: 'transparent',
-    borderRadius: 4,
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-    outlineColor: 'transparent',
-    outlineOffset: 1,
-    textDecoration: 'none',
-    whiteSpace: 'nowrap',
-    cursor: 'pointer',
-    _disabled: {
-      opacity: 0.4,
-      cursor: 'not-allowed',
-    },
-    _focusVisible: {
-      outlineColor: { base: 'slate.80', _dark: 'slate.5' },
-    },
-    '& svg': {
-      fill: 'current',
-      width: 24,
-      height: 24,
-    },
-  };
+const buttonBase = {
+  position: 'relative',
+  appearance: 'none',
+  minWidth: 0,
+  transitionDuration: 'fast',
+  transitionProperty: 'background, border-color, color, box-shadow',
+  transitionTimingFunction: 'default',
+  userSelect: 'none',
+  verticalAlign: 'middle',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 4,
+  fontFamily: 'sans',
+  fontSize: 16,
+  fontWeight: 'medium',
+  lineHeight: 'default',
+  borderWidth: 1,
+  borderStyle: 'solid',
+  borderColor: 'transparent',
+  borderRadius: 4,
+  outlineWidth: 2,
+  outlineStyle: 'solid',
+  outlineColor: 'transparent',
+  outlineOffset: 1,
+  textDecoration: 'none',
+  whiteSpace: 'nowrap',
+  cursor: 'pointer',
+  _disabled: {
+    opacity: 0.4,
+    cursor: 'not-allowed',
+  },
+  _focusVisible: {
+    outlineColor: { base: 'slate.80', _dark: 'slate.5' },
+  },
+  '& svg': {
+    fill: 'current',
+  },
+};
 
 const buttonVariants = {
   variant: {
@@ -65,7 +64,7 @@ const buttonVariants = {
     },
     standard: {
       bg: { base: 'slate.5', _dark: 'slate.70' },
-      color: { base: 'slate.80', _dark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.5' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
       },
@@ -87,7 +86,7 @@ const buttonVariants = {
     hollow: {
       bg: 'transparent',
       borderColor: { base: 'slate.30', _dark: 'slate.60' },
-      color: { base: 'slate.80', _dark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.5' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
         borderColor: { base: 'slate.10', _dark: 'slate.60' },
@@ -145,18 +144,18 @@ const buttonVariants = {
       },
     },
     danger: {
-      bg: { base: 'red.50', _dark: 'red.40' },
+      bg: { base: 'red.50', _dark: 'red.50' },
       color: { base: 'slate.0', _dark: 'slate.0' },
       _hover: {
-        bg: { base: 'red.40', _dark: 'red.30' },
+        bg: { base: 'red.40', _dark: 'red.40' },
       },
       _active: {
-        bg: { base: 'red.60', _dark: 'red.50' },
+        bg: { base: 'red.60', _dark: 'red.60' },
         borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'red.50', _dark: 'red.40' },
+          bg: { base: 'red.50', _dark: 'red.50' },
         },
       },
     },
@@ -166,24 +165,24 @@ const buttonVariants = {
 export const buttonRecipe = defineRecipe({
   className: 'button',
   jsx: ['Button'],
-  base: baseButtonStyles,
+  base: buttonBase,
   variants: {
     ...buttonVariants,
     size: {
       standard: {
-        fontSize: 16,
-        py: 3,
-        px: 12,
+        fontSize: '16',
+        py: '3',
+        px: '12',
       },
       large: {
-        fontSize: 16,
-        py: 7,
-        px: 14,
+        fontSize: '16',
+        py: '7',
+        px: '14',
       },
       small: {
-        fontSize: 14,
-        py: 1,
-        px: 8,
+        fontSize: '14',
+        py: '1',
+        px: '8',
       },
     },
   },
@@ -196,7 +195,7 @@ export const buttonRecipe = defineRecipe({
 export const iconButtonRecipe = defineRecipe({
   className: 'icon-button',
   jsx: ['IconButton'],
-  base: baseButtonStyles,
+  base: buttonBase,
   variants: {
     ...buttonVariants,
     size: {

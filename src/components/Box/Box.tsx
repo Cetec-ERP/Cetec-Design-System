@@ -1,36 +1,32 @@
-import * as React from 'react';
-import { type BoxProps as PandaBoxProps } from '@styled-system/jsx';
-
-// Allows specifying which HTML element to render as
-type AsProp<T extends React.ElementType> = {
-  as?: T;
-};
-
-// Helper type to handle prop conflicts
-type PropsToOmit<T extends React.ElementType, P> = keyof (AsProp<T> & P);
-
-// The main polymorphic type that:
-// - Accepts children
-// - Handles the 'as' prop
-// - Manages proper HTML attributes based on the element type
-type PolymorphicComponentProp<
-  T extends React.ElementType,
-  Props = {},
-> = React.PropsWithChildren<Props & AsProp<T>> &
-  Omit<React.ComponentPropsWithoutRef<T>, PropsToOmit<T, Props>>;
-
-type BoxComponentProps = PandaBoxProps;
-
-type BoxProps<T extends React.ElementType> = PolymorphicComponentProp<
-  T,
-  BoxComponentProps
->;
-
-export function Box<T extends React.ElementType = 'div'>({
-  as,
-  children,
-  ...props
-}: BoxProps<T>) {
-  const Component = as || 'div';
-  return <Component {...props}>{children}</Component>;
+import React, { 
+  type ElementType,
+  type AllHTMLAttributes,
+  createElement,
+  } from 'react';
+import { box, type BoxVariantProps } from '@styled-system/recipes';
+import type { SystemStyleObject } from '@styled-system/types';
+import { cx } from '@styled-system/css';
+import { splitProps } from '~/utils/splitProps';
+/*
+ * Imports from recipes are placeholders for if we want to add some kind of styling to Box
+ */
+export type BoxProps = Omit<AllHTMLAttributes<HTMLElement>, 'as'> & SystemStyleObject & BoxVariantProps & {
+  as?: ElementType;
 }
+
+export const Box: React.FC<BoxProps> = (
+  { 
+    as = "div", 
+    ...props
+  }
+) => {
+  as = typeof as === "string" && as.length > 0 ? as : 'div';
+  const [ className, otherProps ] = splitProps(props);
+  const comboClassName = cx(box({}), className as string);
+  return (
+    createElement(as, {
+      className: {comboClassName},
+      ...otherProps
+    })
+  );
+};

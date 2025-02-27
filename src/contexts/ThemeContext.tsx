@@ -1,9 +1,6 @@
-/// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
-
 import { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'win95';
+type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
@@ -45,12 +42,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.removeAttribute('data-color-mode');
     document.documentElement.removeAttribute('data-theme');
 
-    // Apply new theme
-    if (theme === 'win95') {
-      document.documentElement.setAttribute('data-theme', 'win95');
-    } else {
-      document.documentElement.setAttribute('data-color-mode', theme);
-    }
+    document.documentElement.setAttribute('data-color-mode', theme);
   }, [theme]);
 
   // Listen for system theme changes
