@@ -2,9 +2,9 @@ import { IconButton } from '~/components/IconButton';
 import { Icon } from '~/components/Icon';
 import { useTheme } from '~/contexts/ThemeContext';
 
-export function ThemeSwitcher() {
+export const ThemeSwitcher: React.FC = ({}) => { 
+
   const { theme, setTheme } = useTheme();
-  
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
@@ -18,4 +18,4 @@ export function ThemeSwitcher() {
       <Icon name={theme === 'light' ? 'moon-filled' : 'sun-filled'} />
     </IconButton>
   );
-} 
+}; 

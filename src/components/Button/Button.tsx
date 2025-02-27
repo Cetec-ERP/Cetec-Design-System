@@ -1,54 +1,52 @@
 import * as React from 'react';
-import { styled } from '@styled-system/jsx';
-import { button } from '@styled-system/recipes';
+import { cx } from '@styled-system/css';
+import { Box, type BoxProps } from '~/components/Box';
+import { button, type ButtonVariantProps } from '@styled-system/recipes';
+import { ButtonContent } from './ButtonContent';
 
-export const StyledButton = styled('button', button);
-
-export interface StyledButtonProps
-  extends React.ComponentProps<typeof StyledButton> {}
-
-interface ButtonLoadingProps {
-  loading?: boolean;
-  loadingText?: React.ReactNode;
-}
-
-export interface ButtonProps extends StyledButtonProps, ButtonLoadingProps {
+export type ButtonProps = BoxProps & ButtonVariantProps & {
   variant?: 'primary' | 'standard' | 'hollow' | 'ghost' | 'cta' | 'danger';
-  size?: 'standard' | 'small' | 'large';
-  to?: string;
-  className?: string;
-  children?: React.ReactNode;
-  disabled?: boolean;
+  href?: string;
   loading?: boolean;
-  loadingText?: string;
-}
+  className?: string;
+  children?: string | React.ReactNode;
+  disabled?: boolean;
+};
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
+export const Button: React.FC<ButtonProps> = (
     {
-      variant = 'standard',
-      size = 'standard',
+      variant='primary',
+      size,
+      href,
       className,
+      children,
       loading,
       disabled,
-      loadingText,
-      children,
-      ...rest
-    },
-    ref,
+      as,
+      ...props
+    }: ButtonProps,
   ) => {
     const trulyDisabled = loading || disabled;
+    const asComponent = href ? 'a' : 'button';
+    const Component = as ?? 'button';
     return (
-      <StyledButton
-        ref={ref}
-        variant={variant}
-        size={size}
+      <Box
+        as={Component}
+        href={href}
         disabled={trulyDisabled}
-        className={className}
-        {...rest}
+        aria-disabled={trulyDisabled}
+        className={cx(
+          button({ variant, size }), 
+          className
+        )}
+        type={asComponent === 'button' ? 'button' : undefined}
+        {...props}
       >
-        {loading ? loadingText : children}
-      </StyledButton>
+        <>
+          <ButtonContent loading={!!loading}>{children}</ButtonContent>
+        </>
+      </Box>
     );
-  },
-);
+  };
+
+export default Button;

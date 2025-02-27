@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
 import { Text } from '~/components/Text';
 import { Button } from '~/components/Button';
@@ -11,8 +11,8 @@ import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
 import { CheckBox } from './components/CheckBox';
-// import { Input } from '~/components/Input';
-// import { Textarea } from '~/components/Textarea';
+import { Input } from '~/components/Input';
+import { Textarea } from '~/components/Textarea';
 
 export function IconList() {
   return (
@@ -23,10 +23,10 @@ export function IconList() {
     >
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
-          <Icon
-            name={icon}
-          />
-          <Text font="mono" level={14}>{icon}</Text>
+          <Icon name={icon} />
+          <Text family={'mono'} fontSize={'14'}>
+            {icon}
+          </Text>
         </HStack>
       ))}
     </Grid>
@@ -36,10 +36,11 @@ export function IconList() {
 export const Section = ({ children }: { children?: ReactNode }) => {
   return (
     <Grid
-      gridTemplateColumns={'10rem 1fr'}
+      gridTemplateColumns={'1fr 3fr'}
       gap={'40'}
       w={'full'}
-      borderTop={'1px solid pink'}
+      borderTopWidth={'1'}
+      borderTopStyle={'solid'}
       borderColor={{ base: 'slate.10', _dark: 'slate.80' }}
       py={'24'}
       pb={'96'}
@@ -81,10 +82,16 @@ function AppContent() {
             <Text
               level={20}
               font="mono"
+              as={"div"}
+              family={'mono'}
+              fontSize={'16'}
+              letterSpacing={'widest'}
               textTransform={'uppercase'}
               fontWeight={'bold'}
-              color={{ base: 'slate.90', _dark: 'slate.10' }}
-            >Cetec Components</Text>
+              onClick={() => alert('clicked')}
+            >
+              Cetec Components
+            </Text>
             <ThemeSwitcher />
           </HStack>
         </Container>
@@ -92,10 +99,16 @@ function AppContent() {
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
           <Section>
-            <Heading as="h2">Buttons</Heading>
+            <Heading>Buttons</Heading>
             <VStack alignItems={'flex-start'} gap={'24'}>
               <HStack>
-                <Button variant="primary">Primary</Button>
+                <Button
+                  variant="primary"
+                  onClick={() => alert('clicked')}
+                  bg="red.50"
+                >
+                  Primary
+                </Button>
                 <Button>Standard</Button>
                 <Button variant="hollow">Hollow</Button>
                 <Button variant="ghost">Ghost</Button>
@@ -113,10 +126,20 @@ function AppContent() {
                   <Icon name="arrow-right" />
                 </IconButton>
               </HStack>
+              <HStack>
+                <Button variant="primary" loading>
+                  Pepperoni
+                </Button>
+                <Button loading>Loading</Button>
+                <IconButton variant="primary" loading>
+                  <Icon name="x" />
+                </IconButton>
+              </HStack>
             </VStack>
           </Section>
           <Section>
-            <Heading as="h2">Text</Heading>
+            <Heading level="h2">Text</Heading>
+
             <VStack alignItems={'flex-start'}>
               <Grid
                 gridTemplateColumns={'minmax(auto, 1fr) 1fr'}
@@ -125,7 +148,7 @@ function AppContent() {
                 alignItems={'center'}
               >
                 <Box gridColumn={'1 / -1'}>
-                  <Heading as="h4" color={'gold.40'}>
+                  <Heading level="h4">
                     Text styles
                   </Heading>
                 </Box>
@@ -153,42 +176,70 @@ function AppContent() {
 	<Text as="span" bold>replenish</Text>
 	<Text as="span" underline>whales</Text>
 </Text>`}</Pre>
-                <Text font="mono">
+                <Text family={'mono'}>
                   Signs night have sixth hath that likeness us fill you're
                   subdue fowl.
                 </Text>
-                <Pre>{`<Text font="mono">...</Text>`}</Pre>
+                <Pre>
+                  {
+                    `<Text family="mono">...</Text>
+                    `
+                  }
+                </Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Heading as="h4" color={'gold.40'}>
+                  <Heading color={'gold.40'}>
                     Headings
                   </Heading>
                 </Box>
-                <Heading as="h1">Hamburgefonstiv</Heading>
+                <Heading level="h1">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h1">Hamburgefonstiv</Heading>'}</Pre>
                 <Heading>Hamburgefonstiv</Heading>
                 <Pre>{'<Heading>Hamburgefonstiv</Heading>'}</Pre>
-                <Heading as="h3">Hamburgefonstiv</Heading>
+                <Heading level="h3">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h3">Hamburgefonstiv</Heading>'}</Pre>
-                <Heading as="h4">Hamburgefonstiv</Heading>
+                <Heading level="h4">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h4">Hamburgefonstiv</Heading>'}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Heading as="h4" color={'gold.40'}>
+                  <Heading level="h4" color={'gold.40'}>
                     Links
                   </Heading>
                 </Box>
-                <Text>Internal:&emsp;<Link href="https://cetecerp.com">Cetec ERP</Link></Text>
-                <Pre>{'<Link href="https://cetecerp.com">Cetec ERP</Link>'}</Pre>
-                <Text>External:&emsp;<Link href="https://cetecerp.com" external>Cetec ERP</Link></Text>
-                <Pre>{'<Link href="https://cetecerp.com" external>Cetec ERP</Link>'}</Pre>
-                <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+                <Text>
+                  Internal:&emsp;
+                  <Link href="https://cetecerp.com">Cetec ERP</Link>
+                </Text>
+                <Pre>
+                  {'<Link href="https://cetecerp.com">Cetec ERP</Link>'}
+                </Pre>
+                <Text>
+                  External:&emsp;
+                  <Link href="https://cetecerp.com" external>
+                    Cetec ERP
+                  </Link>
+                </Text>
+                <Pre>
+                  {
+                    '<Link href="https://cetecerp.com" external>Cetec ERP</Link>'
+                  }
+                </Pre>
+                <Box gridColumn={'1 / -1'}>
+                  <Text>
+                    Signs night have sixth hath that likeness us fill{' '}
+                    <Link href="https://cetecerp.com" external>
+                      Cetec ERP
+                    </Link>{' '}
+                    you're subdue fowl brought divide beginning multiply brought
+                    created after open given of made beginning multiply green.
+                  </Text>
+                </Box>
               </Grid>
             </VStack>
           </Section>
           <Section>
-            <Heading as="h2">Spinner</Heading>
+            <Heading level="h2">Spinner</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <VStack>
-                <Spinner size="small" />
+                <Spinner size='small' />
                 <Text>Small</Text>
               </VStack>
               <VStack>
@@ -202,11 +253,20 @@ function AppContent() {
             </HStack>
           </Section>
           <Section>
-            <Heading as="h2">Icons</Heading>
+            <Heading level="h2">Icons</Heading>
             <IconList />
           </Section>
-          <CheckBoxSection />
-          {/* <Section>
+          <Section>
+            <Heading level="h2">Checkboxes</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <CheckBox />
+              <CheckBox variant="checked" />
+              <CheckBox variant="indeterminate" />
+              <CheckBox variant="disabled" />
+              <CheckBox variant="error" />
+            </HStack>
+          </Section>
+          <Section>
             <Text as="h2">
               Inputs
             </Text>
@@ -218,10 +278,10 @@ function AppContent() {
               </HStack>
               <HStack gap={'24'}>
                 <Input label="Phone" type="tel" stacked={false} />
-                <Textarea label="Message" autoGrow={true} />
+                <Textarea label="Message" variant={'autoGrow'} >asdf</Textarea>
               </HStack>
             </VStack>
-          </Section> */}
+          </Section>
         </VStack>
       </Container>
     </VStack>

@@ -1,51 +1,48 @@
-import * as React from 'react';
-import { textarea } from '@styled-system/recipes';
-import { Label } from '~/components/Label';
-import { Text } from '~/components/Text';
+import { Box, type BoxProps } from '~/components/Box';
+import { Text, type TextProps } from '~/components/Text';
+import { Label, type LabelProps } from '~/components/Label';
+import { textarea, type TextareaVariantProps } from '@styled-system/recipes';
+import { cx } from '@styled-system/css';
+import { splitProps } from '~/utils/splitProps';
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export type TextareaProps = Omit<BoxProps, keyof TextProps | keyof TextareaVariantProps | keyof LabelProps> & TextareaVariantProps & TextProps & LabelProps & {
+  variant?: 'autoGrow' | 'stacked' | 'internalLabel';
   label?: string;
-  stacked?: boolean;
-  internalLabel?: boolean;
-  autoGrow?: boolean;
+  children?: string | React.ReactNode;
 }
 
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  (
+export const Textarea: React.FC<TextareaProps> = (
     {
+      variant,
       label,
-      className,
-      stacked = true,
-      internalLabel = false,
-      autoGrow = false,
+      children,
       ...props
-    },
-    ref,
-  ) => {
-    return (
-      <Label
-        className={textarea()}
-        stacked={stacked}
-        internalLabel={internalLabel}
-        autoGrow={autoGrow}
+    }: TextareaProps,
+) => {
+
+  const [ className, otherProps ] = splitProps(props);
+  return (
+    <Label>
+      <Text as='span'>{label}</Text>
+      <Box
+        as="textarea"
+        id={props.id}
         htmlFor={props.id || ''}
+        className={cx(
+          textarea({ variant }),
+          className as string,
+        )}
+        onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
+          const target = e.currentTarget;
+          const parent = target.parentNode as HTMLElement;
+          parent.dataset.value = target.value || '';
+        }}
+        {...otherProps}
       >
-        {label && <Text as="span">{label}</Text>}
-        <textarea
-          id={props.id}
-          ref={ref}
-          className={className}
-          onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-            const target = e.currentTarget;
-            const parent = target.parentNode as HTMLElement;
-            parent.dataset.value = target.value || '';
-          }}
-          {...props}
-        />
-      </Label>
-    );
-  },
-);
+        <Text>{children}</Text>
+      </Box>
+    </Label>
+  );
+};
 
 Textarea.displayName = 'Textarea';
