@@ -1,6 +1,6 @@
 // https://github.com/chakra-ui/panda/tree/4b70f29a14e98d9a0b450273704d2565e3f2d0bd/packages/preset-panda/src
 
-import { defineTextStyles, defineStyles } from '@pandacss/dev'
+import { defineTextStyles, defineStyles } from '@pandacss/dev';
 
 export const colors = {
   transparent: { value: 'transparent' },
@@ -164,11 +164,16 @@ export const colors = {
   },
 };
 
+// font-variation-settings: '"CRSV" 0, "CASL" 0, "MONO" 0, "slnt" 0, "wght" 0';
+
 export const fonts = {
-  heading: { value: "'Ruda Variable', Open Sans, Source Sans, sans-serif;" },
-  sans: { value: "'Open Sans Variable', Geneva, Tahoma, Verdana, sans-serif" },
+  heading: {
+    value: "'Ruda Variable', Source Sans, Geneva, Tahoma, Verdana, sans-serif;",
+  },
+  sans: { value: "'Recursive Variable', Geneva, Tahoma, Verdana, sans-serif;" },
   mono: {
-    value: "'Fira Code Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace",
+    value:
+      "'Recursive Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace;",
   },
 };
 
@@ -206,7 +211,7 @@ export const numericSizes = {
   '72': { value: '4.5rem' },
   '80': { value: '5rem' },
   '96': { value: '6rem' },
-}
+};
 
 export const sizes = {
   ...numericSizes,
@@ -277,16 +282,20 @@ export const radii = {
 
 export const shadows = {
   low: {
-    value: '0px 1px 1px {colors.utility.shadowColor}, 0px 2px 2px {colors.utility.shadowColor}',
+    value:
+      '0px 1px 1px {colors.utility.shadowColor}, 0px 2px 2px {colors.utility.shadowColor}',
   },
   medium: {
-    value: '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}',
+    value:
+      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}',
   },
   high: {
-    value: '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}, 0px 16px 16px {colors.utility.shadowColor}',
+    value:
+      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}, 0px 16px 16px {colors.utility.shadowColor}',
   },
   inset: {
-    value: 'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}',
+    value:
+      'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}',
   },
 };
 
@@ -490,7 +499,7 @@ const baseHeadingStyles = defineStyles({
     fontWeight: 'black',
     color: { base: 'slate.90', _dark: 'slate.5' },
     lineHeight: 'default',
-  }
+  },
 });
 
 const baseBodyTextStyles = defineStyles({
@@ -499,7 +508,7 @@ const baseBodyTextStyles = defineStyles({
     fontWeight: 'normal',
     color: { base: 'slate.60', _dark: 'slate.20' },
     lineHeight: 'default',
-  }
+  },
 });
 
 const baseMonoStyles = defineStyles({
@@ -508,7 +517,7 @@ const baseMonoStyles = defineStyles({
     fontWeight: 'normal',
     color: { base: 'slate.60', _dark: 'slate.20' },
     lineHeight: 'default',
-  }
+  },
 });
 
 export const textStyles = defineTextStyles({

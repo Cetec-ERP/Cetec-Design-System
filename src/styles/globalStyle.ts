@@ -20,6 +20,7 @@ export const globalCss = defineGlobalStyles({
   },
   body: {
     fontFamily: 'body',
+    fontVariationSettings: '"CRSV" 0, "CASL" 0',
     bg: { base: 'slate.0', _dark: 'slate.90' },
     color: { base: 'slate.60', _dark: 'slate.20' },
     fontWeight: 'normal',
@@ -33,7 +34,14 @@ export const globalCss = defineGlobalStyles({
     marginBottom: '0.5rem',
   },
   'b, strong': {
-    fontWeight: 'bolder',
+    fontWeight: 'bold',
+  },
+  'i, em': {
+    fontStyle: 'italic',
+    fontVariationSettings: '"CRSV" 0, "CASL" 0, "slnt" -15',
+  },
+  u: {
+    textDecoration: 'underline',
   },
   'code, kbd, samp, pre': {
     fontFamily: 'mono',
