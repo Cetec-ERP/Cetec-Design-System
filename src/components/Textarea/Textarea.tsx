@@ -8,14 +8,12 @@ import { splitProps } from '~/utils/splitProps';
 export type TextareaProps = Omit<BoxProps, keyof TextProps | keyof TextareaVariantProps | keyof LabelProps> & TextareaVariantProps & TextProps & LabelProps & {
   variant?: 'autoGrow' | 'stacked' | 'internalLabel';
   label?: string;
-  children?: string | React.ReactNode;
 }
 
 export const Textarea: React.FC<TextareaProps> = (
     {
       variant,
       label,
-      children,
       ...props
     }: TextareaProps,
 ) => {
@@ -39,7 +37,7 @@ export const Textarea: React.FC<TextareaProps> = (
         }}
         {...otherProps}
       >
-        <Text>{children}</Text>
+        <Text>{props.value}</Text>
       </Box>
     </Label>
   );

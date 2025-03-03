@@ -62,62 +62,53 @@ export const checkBoxRecipe = defineSlotRecipe({
             padding: "0",
             zIndex: 1,
             cursor: "inherit",
+            _checked: {
+              "& + [name=checkbox-checked]": {
+                display: "inline-grid",
+                fill: { base: "slate.90", _dark: "slate.0" },
+              },
+              "& + [name=checkbox]": {
+                display: "none",
+              },
+            },
+            _indeterminate: {
+              "& + [name=checkbox-indeterminate]": {
+                display: "inline-grid",
+                fill: { base: "slate.90", _dark: "slate.0" },
+              },
+              "& + [name=checkbox]": {
+                display: "none",
+              },
+            },
+            _disabled: {
+              display: "inline-grid",
+              opacity: 0.4,
+              pointerEvents: 'none',
+              cursor: 'none',
+            },
+            _error: {
+              display: "inline-grid",
+              "& + svg": {
+                fill: "red.50",
+              }
+            },
         },
         indicator: {
-            display: "inline-grid",
             placeContent: "center",
-            width: 14,
-            height: 14,
-            bg: { base: "slate.0", _dark: "slate.90" },
-            borderColor: "slate.20",
-            borderRadius: 3,
-            borderWidth: 1,
-            color: { base: "slate.90", _dark: "slate.0" },
+            display: 'none',
             _focusVisible: {
                 outlineColor: { base: 'slate.80', _dark: 'slate.5' },
-            }
+                borderRadius: 3,
+                borderWidth: 1,
+            },
+            "&:is([name=checkbox])": {
+              display: "inline-grid",
+              fill: "slate.20",
+            },
         },
     },
     variants: {
-        checked: {
-            true: {
-                indicator: {
-                    bg: { base: "slate.90", _dark: "slate.0" },
-                    borderColor: { base: "slate.90", _dark: "slate.0" },
-                    color: { base: "slate.0", _dark: "slate.90" },
-                },
-            },
-        },
-        indeterminate: {
-            true: {
-                indicator: {
-                    bg: { base: "slate.90", _dark: "slate.0" },
-                    borderColor: { base: "slate.90", _dark: "slate.0" },
-                    color: { base: "slate.0", _dark: "slate.90" },
-                },
-            },
-        },
-        disabled: {
-            true: {
-                indicator: {
-                    opacity: 0.4,
-                    pointerEvents: 'none',
-                    cursor: 'none',
-                },
-            },
-        },
-        error: {
-            true: {
-                indicator: {
-                    borderColor: "red.50",
-                },
-            },
-        },
     },
     defaultVariants: {
-        checked: false,
-        indeterminate: false,
-        error: false,
-        disabled: false,
     },
 });

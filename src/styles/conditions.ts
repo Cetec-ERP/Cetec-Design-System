@@ -11,6 +11,7 @@ export const conditions = {
   readWrite: '&:read-write',
   empty: '&:is(:empty, [data-empty])',
   checked: '&:is(:checked, [data-checked], [aria-checked=true], [data-state="checked"])',
+//  checked: '&:has(+ input[type=checkbox]:checked)',
   enabled: '&:enabled',
   expanded: '&:is([aria-expanded=true], [data-expanded], [data-state="expanded"])',
   highlighted: '&[data-highlighted]',

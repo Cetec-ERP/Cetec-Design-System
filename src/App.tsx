@@ -50,18 +50,6 @@ export const Section = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-const CheckBoxSection: React.FC = () => (
-    <Section>
-      <Heading as="h2">Checkboxes</Heading>
-      <HStack gap={'40'} alignItems={'flex-end'}>
-        <CheckBox checked={false} />
-        <CheckBox checked={true} />
-        <CheckBox checked={false} indeterminate />
-        <CheckBox checked={false} disabled />
-        <CheckBox checked={false} error />
-      </HStack>
-    </Section>
-  )
 
 
 function AppContent() {
@@ -80,7 +68,6 @@ function AppContent() {
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
             <Text
-              level={20}
               font="mono"
               as={"div"}
               family={'mono'}
@@ -260,10 +247,12 @@ function AppContent() {
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <CheckBox />
-              <CheckBox variant="checked" />
-              <CheckBox variant="indeterminate" />
-              <CheckBox variant="disabled" />
-              <CheckBox variant="error" />
+              {/*
+              <CheckBox checked />
+              <CheckBox indeterminate />
+              <CheckBox disabled />
+              <CheckBox error />
+              */}
             </HStack>
           </Section>
           <Section>
@@ -274,11 +263,12 @@ function AppContent() {
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
                 <Input label="Last" type="text" />
-                <Input label="Email" type="email" internalLabel={true} />
+                <Input label="Email" type="email" variant={'internalLabel'} />
               </HStack>
               <HStack gap={'24'}>
-                <Input label="Phone" type="tel" stacked={false} />
-                <Textarea label="Message" variant={'autoGrow'} >asdf</Textarea>
+                <Input label="Phone" type="tel" />
+                //TODO Fix Textarea
+                <Textarea label="Message" variant={'autoGrow'} value="TEXT area Value"/>
               </HStack>
             </VStack>
           </Section>
