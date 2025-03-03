@@ -13,10 +13,13 @@ const textBase = {
 // const safeFontSizes = fontSizes as Record<string, string>;
 
 const textVariants = {
-  family: {  
+  family: {
     heading: { fontFamily: 'heading' },
     sans: { fontFamily: 'sans' },
-    mono: { fontFamily: 'mono' },
+    mono: {
+      fontFamily: 'mono',
+      fontVariationSettings: '"CRSV" 0, "CASL" 0, "MONO" 1',
+    },
   },
   bold: {
     true: {
@@ -26,6 +29,7 @@ const textVariants = {
   italic: {
     true: {
       fontStyle: 'italic',
+      fontVariationSettings: '"CRSV" 0, "CASL" 0, "slnt" -15',
     },
   },
   underline: {
@@ -34,11 +38,11 @@ const textVariants = {
     },
   },
   size: {
-   ...fontSizes, 
+    ...fontSizes,
   },
   weight: {
     ...fontWeights,
-  }
+  },
 };
 
 const headingBase = {
@@ -54,7 +58,7 @@ const headingVariants = {
     h2: { textStyle: 'heading.md' },
     h3: { textStyle: 'heading.sm' },
     h4: { textStyle: 'heading.xs' },
-  }
+  },
 };
 
 const linkBase = {
@@ -70,7 +74,7 @@ const linkBase = {
   backgroundPositionY: '100%',
   width: 'fit-content',
   cursor: 'pointer',
-  _hover: { 
+  _hover: {
     color: { base: 'blue.40', _dark: 'blue.30' },
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
   },
@@ -82,9 +86,9 @@ const linkVariants = {
     true: {
       cursor: 'not-allowed',
       opacity: 0.7,
-      pointerEvents: 'none'
-    }
-  }
+      pointerEvents: 'none',
+    },
+  },
 };
 
 const labelBase = {
@@ -101,12 +105,10 @@ const labelVariants = {
     true: {
       cursor: 'not-allowed',
       opacity: 0.7,
-      pointerEvents: 'none'
-    }
-  }
+      pointerEvents: 'none',
+    },
+  },
 };
-
-
 
 export const textRecipe = defineRecipe({
   className: 'text',
@@ -124,7 +126,7 @@ export const headingRecipe = defineRecipe({
   base: headingBase,
   variants: headingVariants,
   defaultVariants: {
-   level: 'h2',
+    level: 'h2',
   },
 });
 
@@ -147,4 +149,3 @@ export const labelRecipe = defineRecipe({
     family: 'sans',
   },
 });
-

@@ -68,8 +68,7 @@ function AppContent() {
         <Container maxW={'5xl'}>
           <HStack justify={'space-between'}>
             <Text
-              font="mono"
-              as={"div"}
+              as={'div'}
               family={'mono'}
               fontSize={'16'}
               letterSpacing={'widest'}
@@ -135,21 +134,25 @@ function AppContent() {
                 alignItems={'center'}
               >
                 <Box gridColumn={'1 / -1'}>
-                  <Heading level="h4">
+                  <Heading
+                    level="h3"
+                    color={{ base: 'gold.40', _dark: 'gold.30' }}
+                  >
                     Text styles
                   </Heading>
                 </Box>
                 <VStack gap={'16'}>
                   <Text>
-                    Place appear green. Also, saying male subdue fruitful{' '}
+                    Place appear green. <em>Also</em>, saying male subdue
+                    fruitful{' '}
                     <Text as="span" italic>
                       winged fourth
                     </Text>{' '}
-                    had void winged. So green spirit , herb day had there{' '}
+                    had void winged. So <b>green spirit</b> , herb day had there{' '}
                     <Text as="span" bold>
                       replenish
                     </Text>
-                    , lights lesser signs. Place{' '}
+                    , lights <u>lesser signs</u>. Place{' '}
                     <Text as="span" underline>
                       whales
                     </Text>{' '}
@@ -168,13 +171,14 @@ function AppContent() {
                   subdue fowl.
                 </Text>
                 <Pre>
-                  {
-                    `<Text family="mono">...</Text>
-                    `
-                  }
+                  {`<Text family="mono">...</Text>
+                    `}
                 </Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Heading color={'gold.40'}>
+                  <Heading
+                    level="h3"
+                    color={{ base: 'gold.40', _dark: 'gold.30' }}
+                  >
                     Headings
                   </Heading>
                 </Box>
@@ -187,7 +191,10 @@ function AppContent() {
                 <Heading level="h4">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h4">Hamburgefonstiv</Heading>'}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
-                  <Heading level="h4" color={'gold.40'}>
+                  <Heading
+                    level="h3"
+                    color={{ base: 'gold.40', _dark: 'gold.30' }}
+                  >
                     Links
                   </Heading>
                 </Box>
@@ -226,7 +233,7 @@ function AppContent() {
             <Heading level="h2">Spinner</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <VStack>
-                <Spinner size='small' />
+                <Spinner size="small" />
                 <Text>Small</Text>
               </VStack>
               <VStack>
@@ -246,8 +253,8 @@ function AppContent() {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox />
               {/*
+              <CheckBox />
               <CheckBox checked />
               <CheckBox indeterminate />
               <CheckBox disabled />
