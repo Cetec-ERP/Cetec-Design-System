@@ -253,13 +253,11 @@ function AppContent() {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              {/*
-              <CheckBox />
-              <CheckBox checked />
-              <CheckBox indeterminate />
+              <CheckBox>asdf</CheckBox>
+              <CheckBox defaultChecked={true} />
+              <CheckBox data-indeterminate={true} />
               <CheckBox disabled />
-              <CheckBox error />
-              */}
+              <CheckBox data-error={true} />
             </HStack>
           </Section>
           <Section>

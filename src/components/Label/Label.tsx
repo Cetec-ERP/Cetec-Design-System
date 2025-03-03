@@ -6,7 +6,7 @@ import { splitProps } from '~/utils/splitProps';
 
 export type LabelProps = Omit<BoxProps, keyof LabelVariantProps> & LabelVariantProps & {
   htmlFor?: string;
-  children: string | React.ReactNode;
+  children?: string | React.ReactNode;
 }
 
 export const Label: React.FC<LabelProps> = (

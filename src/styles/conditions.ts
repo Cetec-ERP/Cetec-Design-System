@@ -4,6 +4,7 @@ export const conditions = {
   focusWithin: '&:focus-within',
   focusVisible: '&:is(:focus-visible, [data-focus-visible])',
   disabled: '&:is(:disabled, [disabled], [data-disabled])',
+  error: '&:is([data-error], [error])',
   active: '&:is(:active, [data-active])',
   visited: '&:visited',
   target: '&:target',

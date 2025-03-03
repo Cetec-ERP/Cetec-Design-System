@@ -1,37 +1,37 @@
 import { Box, type BoxProps } from "../Box";
+import { ReactNode } from 'react';
+import { Label } from "../Label";
 import { checkbox, type CheckboxVariantProps } from "@styled-system/recipes";
 import { Icon } from "../Icon";
 
 export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps > & CheckboxVariantProps & 
     {
-        checked?: boolean;
         indeterminate?: boolean;
-        disabled?: boolean;
         error?: boolean;
+        children?: Omit<ReactNode, keyof HTMLInputElement> | string;
     };
 
 export const CheckBox: React.FC<CheckBoxProps> = (
   {
-    disabled = false,
     error = false,
     indeterminate = false,
-    checked = false,
+    children,
     ...props
 }: CheckBoxProps, 
 ) => {
     const { container, input, indicator } = checkbox({});
     return (
-        <Box as="label" className={container} >
+        <Label className={container}>
             <Box
                 as="input"
                 type="checkbox"
                 className={input}
-                disabled={disabled || indeterminate}
                 {...props}
             />
             <Icon className={indicator} name={'checkbox'} />
             <Icon className={indicator} name={'checkbox-checked'} />
             <Icon className={indicator} name={'checkbox-indeterminate'} />
-        </Box>
+            {children}
+        </Label>
     );
 }
