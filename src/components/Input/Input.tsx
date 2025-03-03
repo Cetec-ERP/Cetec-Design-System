@@ -7,6 +7,7 @@ import { splitProps } from '~/utils/splitProps';
 
 export type InputProps = Omit<BoxProps, keyof InputVariantProps | keyof TextProps> & TextProps & InputVariantProps & {
   label?: string;
+  type?: string | HTMLInputElement;
   variant?: 'stacked' | 'internalLabel';
   children?: string | React.ReactNode;
 };
@@ -15,6 +16,7 @@ export const Input: React.FC<InputProps> = (
   { 
     label, 
     variant,
+    type,
     children,
     ...props 
   }: InputProps,
@@ -26,15 +28,14 @@ export const Input: React.FC<InputProps> = (
       <Text as='span'>{label}</Text>
       <Box
         as="input"
+        type={type}
         className={cx(
           input({ variant }),
           className as string,
         )}
         htmlFor={props.id || ''}
         {...otherProps}
-      >
-        <Text>{children}</Text>
-      </Box>
+      />
     </Label>
   );
 };

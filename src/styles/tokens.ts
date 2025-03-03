@@ -274,6 +274,7 @@ export const radii = {
   '0': { value: '0' },
   '1': { value: '0.0625rem' },
   '2': { value: '0.125rem' },
+  '3': { value: '0.188rem' },
   '4': { value: '0.25rem' },
   '8': { value: '0.5rem' },
   '16': { value: '1rem' },

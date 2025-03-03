@@ -1,29 +1,37 @@
-import { Box } from "../Box";
-import type { SystemStyleObject } from '@styled-system/types';
-import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
-import { Icon, IconNamesList } from "../Icon";
+import { Box, type BoxProps } from "../Box";
+import { ReactNode } from 'react';
+import { Label } from "../Label";
+import { checkbox, type CheckboxVariantProps } from "@styled-system/recipes";
+import { Icon } from "../Icon";
 
-type CheckBoxProps = CheckboxVariantProps &
-    Omit<React.ComponentProps<typeof Box>, 'as'> & {
-        variant?: string;
-    } & SystemStyleObject;
+export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps > & CheckboxVariantProps & 
+    {
+        indeterminate?: boolean;
+        error?: boolean;
+        children?: Omit<ReactNode, keyof HTMLInputElement> | string;
+    };
 
-const variantIcon: Record<'checked' | 'indeterminate', IconNamesList> = {
-    checked: "check",
-    indeterminate: "minus"
-}
-
-export function CheckBox({
-    variant = 'default',
-}: CheckBoxProps) {
-    const iconName: IconNamesList | undefined = variantIcon[variant as keyof typeof variantIcon] ?? undefined;
-
+export const CheckBox: React.FC<CheckBoxProps> = (
+  {
+    error = false,
+    indeterminate = false,
+    children,
+    ...props
+}: CheckBoxProps, 
+) => {
+    const { container, input, indicator } = checkbox({});
     return (
-        <Box>
-          <Box as="input" type="checkbox" />
-          <Box className={checkbox({ variant })}>
-            {iconName && <Icon size={12} {...iconName && {name: iconName}} viewBox="0 0 12 12"/>}
-          </Box>
-        </Box>
+        <Label className={container}>
+            <Box
+                as="input"
+                type="checkbox"
+                className={input}
+                {...props}
+            />
+            <Icon className={indicator} name={'checkbox'} />
+            <Icon className={indicator} name={'checkbox-checked'} />
+            <Icon className={indicator} name={'checkbox-indeterminate'} />
+            {children}
+        </Label>
     );
 }

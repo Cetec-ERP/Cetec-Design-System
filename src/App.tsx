@@ -10,9 +10,9 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-//import { CheckBox } from './components/CheckBox';
-// import { Input } from '~/components/Input';
-// import { Textarea } from '~/components/Textarea';
+import { CheckBox } from './components/CheckBox';
+import { Input } from '~/components/Input';
+import { Textarea } from '~/components/Textarea';
 
 export function IconList() {
   return (
@@ -49,6 +49,8 @@ export const Section = ({ children }: { children?: ReactNode }) => {
     </Grid>
   );
 };
+
+
 
 function AppContent() {
   return (
@@ -251,16 +253,14 @@ function AppContent() {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              {/*
-              <CheckBox />
-              <CheckBox variant="checked" />
-              <CheckBox variant="indeterminate" />
-              <CheckBox variant="disabled" />
-              <CheckBox variant="error" />
-              */}
+              <CheckBox>asdf</CheckBox>
+              <CheckBox defaultChecked={true} />
+              <CheckBox data-indeterminate={true} />
+              <CheckBox disabled />
+              <CheckBox data-error={true} />
             </HStack>
           </Section>
-          {/* <Section>
+          <Section>
             <Text as="h2">
               Inputs
             </Text>
@@ -268,14 +268,15 @@ function AppContent() {
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
                 <Input label="Last" type="text" />
-                <Input label="Email" type="email" internalLabel={true} />
+                <Input label="Email" type="email" variant={'internalLabel'} />
               </HStack>
               <HStack gap={'24'}>
-                <Input label="Phone" type="tel" stacked={false} />
-                <Textarea label="Message" autoGrow={true} />
+                <Input label="Phone" type="tel" />
+                //TODO Fix Textarea
+                <Textarea label="Message" variant={'autoGrow'} value="TEXT area Value"/>
               </HStack>
             </VStack>
-          </Section> */}
+          </Section>
         </VStack>
       </Container>
     </VStack>
