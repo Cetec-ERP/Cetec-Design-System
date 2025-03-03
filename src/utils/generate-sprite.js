@@ -90,6 +90,8 @@ function optimizeSVGs(sourceFiles) {
 }
 
 function generateTypeDefinitions(files) {
+  files.sort((a, b) => a.localeCompare(b));
+
   const iconNamesList = files.map((file) => path.basename(file, '.svg'));
 
   // Generate IconNamesList type definition
