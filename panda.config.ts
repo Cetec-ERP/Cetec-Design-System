@@ -114,14 +114,15 @@ export default defineConfig({
         iconButton: iconButtonRecipe,
         input: inputRecipe,
         textarea: textareaRecipe,
-        checkbox: checkBoxRecipe,
         code: codeRecipe,
         pre: preRecipe,
         spinner: spinnerRecipe,
         //Panda might not like this since they already have a box
         box: boxRecipe,
       },
-      slotRecipes: {},
+      slotRecipes: {
+        checkbox: checkBoxRecipe
+      },
     },
   },
 

@@ -1,8 +1,7 @@
-import React, { SVGAttributes } from 'react';
+import { SVGAttributes } from 'react';
 import { Box, type BoxProps } from '~/components/Box';
 import { splitCssProps } from '@styled-system/jsx';
 import { cx, css } from '@styled-system/css';
-// import { type ColorToken } from '@styled-system/tokens';
 import { IconNamesList } from './icons';
 import { icon } from '@styled-system/patterns';
 import { numericSizes } from '~/styles/tokens';
@@ -33,6 +32,7 @@ export const Icon: React.FC<IconProps> = ({
   return (
     <Box
       as={'svg'}
+      name={name}
       viewBox='0 0 24 24'
       xmlns="http://www.w3.org/2000/svg"
       className={cx(icon({ size: size as AllowedIconSizes, fill }), className)}
