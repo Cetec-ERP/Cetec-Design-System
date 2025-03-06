@@ -1,4 +1,5 @@
 export const IconNames = {
+  'aa-placeholder': 'aa-placeholder',
   'alarm': 'alarm',
   'apps': 'apps',
   'arrow-down': 'arrow-down',
@@ -136,7 +137,6 @@ export const IconNames = {
   'pause': 'pause',
   'pencil': 'pencil',
   'percent': 'percent',
-  'placeholder': 'placeholder',
   'plan': 'plan',
   'play-pause': 'play-pause',
   'play': 'play',
