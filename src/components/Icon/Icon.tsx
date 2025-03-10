@@ -1,10 +1,10 @@
 import { SVGAttributes } from 'react';
 import { Box, type BoxProps } from '~/components/Box';
-import { splitCssProps } from '@styled-system/jsx';
-import { cx, css } from '@styled-system/css';
+import { cx } from '@styled-system/css';
 import { IconNamesList } from './icons';
 import { icon } from '@styled-system/patterns';
 import { numericSizes } from '~/styles/tokens';
+import { splitProps } from '~/utils/splitProps';
 
 /* 
  * Using the size prop in this way cannot handle non-numeric sizes,
@@ -24,10 +24,7 @@ export const Icon: React.FC<IconProps> = ({
   fill = 'current',
   ...props
 }: IconProps) => {
-
-  const [cssProps, otherProps] = splitCssProps(props);
-  const { css: cssProp, ...styleProps } = cssProps;
-  const className = css(cssProp, styleProps);
+  const [className, otherProps] = splitProps(props);
 
   return (
     <Box
