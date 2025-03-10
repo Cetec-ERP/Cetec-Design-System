@@ -22,7 +22,7 @@ export const Box: React.FC<BoxProps> = (
 ) => {
   as = typeof as === "string" && as.length > 0 ? as : 'div';
   const [ className, otherProps ] = splitProps(props);
-  const comboClassName = cx(box({}), className as string);
+  const comboClassName = cx(box({}), className);
   return (
     createElement(as, {
       className: {comboClassName},

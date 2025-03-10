@@ -31,7 +31,7 @@ export const Input: React.FC<InputProps> = (
         type={type}
         className={cx(
           input({ variant }),
-          className as string,
+          className,
         )}
         htmlFor={props.id || ''}
         {...otherProps}

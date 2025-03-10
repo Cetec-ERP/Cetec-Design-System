@@ -43,7 +43,7 @@ export const Link: React.FC<LinkProps> = (
       aria-disabled={disabled}
       className={cx(
         link({ family, italic, bold, size, weight }),
-        className as string,
+        className,
       )}
       {...otherProps}
     >

@@ -21,7 +21,7 @@ export const Spinner: React.FC<SpinnerProps> = (
       as="div"
       className={cx(
         spinner({ size }), 
-        className as string,
+        className,
       )}
       {...otherProps}
     />

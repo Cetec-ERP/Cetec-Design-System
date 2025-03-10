@@ -23,7 +23,7 @@ export const Label: React.FC<LabelProps> = (
       as="label" 
       className={cx(
         label({}),
-        className as string,
+        className,
       )} 
       {...otherProps}
     >
