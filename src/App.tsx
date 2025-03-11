@@ -14,7 +14,7 @@ import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 
-export function IconList() {
+export const IconList = () => {
   return (
     <Grid
       gap="16"
@@ -31,7 +31,51 @@ export function IconList() {
       ))}
     </Grid>
   );
-}
+};
+
+const ButtonSection = () => {
+  return (
+    <Section>
+      <Heading>Buttons</Heading>
+      <VStack alignItems={'flex-start'} gap={'24'}>
+        <HStack>
+          <Button
+            variant="primary"
+            onClick={() => alert('clicked')}
+            bg="red.50"
+          >
+            Primary
+          </Button>
+          <Button>Standard</Button>
+          <Button variant="hollow">Hollow</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="cta">CTA</Button>
+          <Button variant="danger">Danger</Button>
+        </HStack>
+        <HStack>
+          <IconButton variant="ghost">
+            <Icon name="x" />
+          </IconButton>
+          <IconButton>
+            <Icon name="arrow-left" />
+          </IconButton>
+          <IconButton variant="primary" size="large">
+            <Icon name="arrow-right" />
+          </IconButton>
+        </HStack>
+        <HStack>
+          <Button variant="primary" loading>
+            Pepperoni
+          </Button>
+          <Button loading>Loading</Button>
+          <IconButton variant="primary" loading>
+            <Icon name="x" />
+          </IconButton>
+        </HStack>
+      </VStack>
+    </Section>
+  );
+};
 
 export const Section = ({ children }: { children?: ReactNode }) => {
   return (
@@ -50,9 +94,7 @@ export const Section = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-
-
-function AppContent() {
+const AppContent = () => {
   return (
     <VStack>
       <Flex
@@ -84,45 +126,7 @@ function AppContent() {
       </Flex>
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
-          <Section>
-            <Heading>Buttons</Heading>
-            <VStack alignItems={'flex-start'} gap={'24'}>
-              <HStack>
-                <Button
-                  variant="primary"
-                  onClick={() => alert('clicked')}
-                  bg="red.50"
-                >
-                  Primary
-                </Button>
-                <Button>Standard</Button>
-                <Button variant="hollow">Hollow</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button variant="cta">CTA</Button>
-                <Button variant="danger">Danger</Button>
-              </HStack>
-              <HStack>
-                <IconButton variant="ghost">
-                  <Icon name="x" />
-                </IconButton>
-                <IconButton>
-                  <Icon name="arrow-left" />
-                </IconButton>
-                <IconButton variant="primary" size="large">
-                  <Icon name="arrow-right" />
-                </IconButton>
-              </HStack>
-              <HStack>
-                <Button variant="primary" loading>
-                  Pepperoni
-                </Button>
-                <Button loading>Loading</Button>
-                <IconButton variant="primary" loading>
-                  <Icon name="x" />
-                </IconButton>
-              </HStack>
-            </VStack>
-          </Section>
+          <ButtonSection />
           <Section>
             <Heading level="h2">Text</Heading>
 
@@ -261,9 +265,7 @@ function AppContent() {
             </HStack>
           </Section>
           <Section>
-            <Text as="h2">
-              Inputs
-            </Text>
+            <Text as="h2">Inputs</Text>
             <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
@@ -273,7 +275,11 @@ function AppContent() {
               <HStack gap={'24'}>
                 <Input label="Phone" type="tel" />
                 //TODO Fix Textarea
-                <Textarea label="Message" variant={'autoGrow'} value="TEXT area Value"/>
+                <Textarea
+                  label="Message"
+                  variant={'autoGrow'}
+                  value="TEXT area Value"
+                />
               </HStack>
             </VStack>
           </Section>
@@ -281,7 +287,7 @@ function AppContent() {
       </Container>
     </VStack>
   );
-}
+};
 
 export default function App() {
   return (
