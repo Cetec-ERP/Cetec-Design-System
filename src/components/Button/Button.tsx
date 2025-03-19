@@ -3,6 +3,7 @@ import { cx } from '@styled-system/css';
 import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
 import { ButtonContent } from './ButtonContent';
+import { splitProps } from '~/utils/splitProps';
 
 type buttonVariants =
   | 'primary'
@@ -29,15 +30,15 @@ export const Button: FC<ButtonProps> = ({
   variant = 'primary',
   size,
   href,
-  className,
   children,
   loading = false,
   disabled,
-  as,
   type,
   ...props
 }: ButtonProps) => {
   const trulyDisabled = loading || disabled;
+
+  const [className, otherProps] = splitProps(props);
 
   return (
     <Box
@@ -47,7 +48,7 @@ export const Button: FC<ButtonProps> = ({
       className={cx(button({ variant, size }), className)}
       {...(href && { href })}
       {...(!href && { type: type || 'button' })}
-      {...props}
+      {...otherProps}
     >
       <ButtonContent loading={!!loading}>{children}</ButtonContent>
     </Box>
