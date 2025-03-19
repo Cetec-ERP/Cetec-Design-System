@@ -44,7 +44,7 @@ export const Button: FC<ButtonProps> = ({
       as={href ? 'a' : 'button'}
       disabled={trulyDisabled}
       aria-disabled={trulyDisabled}
-      className={cx(button(), className)}
+      className={cx(button({ variant, size }), className)}
       {...(href && { href })}
       {...(!href && { type: type || 'button' })}
       {...props}
