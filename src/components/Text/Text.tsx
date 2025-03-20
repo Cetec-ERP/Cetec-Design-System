@@ -39,7 +39,7 @@ export const Text: React.FC<TextProps> = (
       as={as}
       className={cx(
         text({ family, bold, underline, italic, size, weight }),
-        className as string,
+        className,
       )}
       {...otherProps}
     >

@@ -28,7 +28,7 @@ export const Textarea: React.FC<TextareaProps> = (
         htmlFor={props.id || ''}
         className={cx(
           textarea({ variant }),
-          className as string,
+          className,
         )}
         onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
           const target = e.currentTarget;

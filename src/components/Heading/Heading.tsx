@@ -22,7 +22,7 @@ export const Heading: React.FC<HeadingProps> = (
       as={level}
       className={cx(
         heading({ level }), 
-        className as string,
+        className,
       )}
       {...otherProps}
     >

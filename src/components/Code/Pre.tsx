@@ -23,7 +23,7 @@ export const Pre: React.FC<PreProps> = (
       as="pre"
       className={cx(
         pre({}),
-        className as string,
+        className,
       )}
       {...otherProps}
     >

@@ -22,7 +22,7 @@ export const Code: React.FC<CodeProps> = (
       as="code"
       className={cx(
         code({}),
-        className as string,
+        className,
       )}
       lang={lang}
       {...otherProps}
