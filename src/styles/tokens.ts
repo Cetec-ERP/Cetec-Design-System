@@ -250,24 +250,7 @@ export const fontSizes = {
 };
 
 export const lineHeights = {
-  none: {
-    value: '1',
-  },
-  tighter: {
-    value: '1em + 0.125rem',
-  },
-  tight: {
-    value: '1em + 0.25rem',
-  },
-  default: {
-    value: '1em + 0.5rem',
-  },
-  loose: {
-    value: '1em + 0.75rem',
-  },
-  looser: {
-    value: '1em + 0.875rem',
-  },
+  ...numericSizes
 };
 
 export const radii = {
