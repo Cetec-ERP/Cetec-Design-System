@@ -46,8 +46,7 @@ export const Button: FC<ButtonProps> = ({
       disabled={trulyDisabled}
       aria-disabled={trulyDisabled}
       className={cx(button({ variant, size }), className)}
-      {...(href && { href })}
-      {...(!href && { type: type || 'button' })}
+      {...(href ? { href } : { type: type || 'button' })}
       {...otherProps}
     >
       <ButtonContent loading={!!loading}>{children}</ButtonContent>
