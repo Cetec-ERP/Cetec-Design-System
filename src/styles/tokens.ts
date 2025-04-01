@@ -250,24 +250,7 @@ export const fontSizes = {
 };
 
 export const lineHeights = {
-  none: {
-    value: '1',
-  },
-  tighter: {
-    value: '1em + 0.125rem',
-  },
-  tight: {
-    value: '1em + 0.25rem',
-  },
-  default: {
-    value: '1em + 0.5rem',
-  },
-  loose: {
-    value: '1em + 0.75rem',
-  },
-  looser: {
-    value: '1em + 0.875rem',
-  },
+  ...numericSizes
 };
 
 export const radii = {
@@ -370,22 +353,22 @@ export const durations = {
 };
 
 export const letterSpacings = {
-  tighter: {
+  '-0.05%': {
     value: '-0.05em',
   },
-  tight: {
+  '-0.025%': {
     value: '-0.025em',
   },
-  normal: {
+  '0%': {
     value: '0em',
   },
-  wide: {
+  '0.025%': {
     value: '0.025em',
   },
-  wider: {
+  '0.05%': {
     value: '0.05em',
   },
-  widest: {
+  '0.1%': {
     value: '0.1em',
   },
 };
