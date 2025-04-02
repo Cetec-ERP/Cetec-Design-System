@@ -39,11 +39,7 @@ const ButtonSection = () => {
       <Heading>Buttons</Heading>
       <VStack alignItems={'flex-start'} gap={'24'}>
         <HStack>
-          <Button
-            variant="primary"
-            onClick={() => alert('clicked')}
-            bg="red.50"
-          >
+          <Button variant="primary" onClick={() => alert('clicked')}>
             Primary
           </Button>
           <Button>Standard</Button>
