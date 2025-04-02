@@ -8,6 +8,10 @@ import {
 import { ButtonContent } from '~/components/Button/ButtonContent';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { splitProps } from '~/utils/splitProps';
+import { HStack } from '@styled-system/jsx';
+import { AllowedIconSizes } from '../Icon/Icon';
+
+type IconPositions = 'left' | 'right';
 
 /**
  * We've added a new optional prop 'iconName'. When provided (and if no children
@@ -22,7 +26,34 @@ export type IconButtonProps = BoxProps &
     disabled?: boolean;
     className?: string;
     iconName?: IconNamesList;
+    buttonText?: string;
+    iconPosition?: IconPositions | undefined;
   };
+
+type IconButtonComponent = {
+  buttonText?: string;
+  iconName: IconNamesList;
+  iconPosition: IconPositions;
+  size: AllowedIconSizes;
+};
+const IconButtonComponent: FC<IconButtonComponent> = ({
+  buttonText,
+  iconName,
+  iconPosition,
+  size,
+}) => {
+  return (
+    <HStack
+      gap="8"
+      flexDirection={iconPosition === 'right' ? 'row' : 'row-reverse'}
+    >
+      <Box as="span" {...(!buttonText && { display: 'none' })}>
+        {buttonText}
+      </Box>
+      <Icon name={iconName} size={size} />
+    </HStack>
+  );
+};
 
 /**
  * The IconButton component builds on Box.
@@ -41,37 +72,38 @@ export const IconButton: FC<IconButtonProps> = ({
   disabled,
   iconName,
   type,
+  buttonText,
+  iconPosition = 'right',
   ...props
 }: IconButtonProps) => {
   const trulyDisabled = loading || disabled;
+  const isChildrenExists = children !== undefined;
 
   const [className, otherProps] = splitProps(props);
 
   const containsIcon = useMemo(() => {
+    if (!isChildrenExists) return false;
+
     let isThereIconInChild = false;
 
-    Children.forEach(children, (child) => {
+    Children?.forEach(children, (child) => {
       if (isValidElement(child) && child.type === Icon) {
         isThereIconInChild = true;
       }
     });
 
     return isThereIconInChild;
-  }, [children]);
+  }, [isChildrenExists, children]);
 
-  if (!containsIcon) {
-    alert('IconButton requires at least one Icon component in children.');
-    throw new Error(
-      'IconButton requires at least one Icon component in children.',
+  if (
+    (isChildrenExists && !containsIcon) ||
+    (!isChildrenExists && iconName === undefined)
+  ) {
+    alert(
+      'Please provide IconButton with at least one Icon component in children or proper iconName',
     );
+    return null;
   }
-
-  // If no children are provided and an iconName is specified, render the Icon automatically.
-  const content =
-    children ??
-    (iconName ? (
-      <Icon name={iconName} size={size === 'small' ? '22' : '24'} />
-    ) : null);
 
   return (
     <Box
@@ -82,7 +114,20 @@ export const IconButton: FC<IconButtonProps> = ({
       {...(href ? { href } : { type: type || 'button' })}
       {...otherProps}
     >
-      <ButtonContent loading={!!loading}>{content}</ButtonContent>
+      <ButtonContent loading={!!loading}>
+        <ButtonContent loading={!!loading}>
+          {isChildrenExists ? (
+            children
+          ) : (
+            <IconButtonComponent
+              buttonText={buttonText}
+              iconName={iconName!}
+              iconPosition={iconPosition}
+              size={size === 'small' ? '22' : '24'}
+            />
+          )}
+        </ButtonContent>
+      </ButtonContent>
     </Box>
   );
 };

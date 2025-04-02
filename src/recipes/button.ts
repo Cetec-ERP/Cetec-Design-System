@@ -161,33 +161,31 @@ const buttonVariants = {
       },
     },
   },
+  size: {
+    medium: {
+      fontSize: '16',
+      py: '4',
+      px: '12',
+    },
+    large: {
+      fontSize: '16',
+      py: '8',
+      px: '16',
+    },
+    small: {
+      fontSize: '14',
+      py: '1',
+      px: '8',
+      lineHeight: '22',
+    },
+  },
 };
 
 export const buttonRecipe = defineRecipe({
   className: 'button',
   jsx: ['Button'],
   base: buttonBase,
-  variants: {
-    ...buttonVariants,
-    size: {
-      medium: {
-        fontSize: '16',
-        py: '4',
-        px: '12',
-      },
-      large: {
-        fontSize: '16',
-        py: '8',
-        px: '16',
-      },
-      small: {
-        fontSize: '14',
-        py: '1',
-        px: '8',
-        lineHeight: '22',
-      },
-    },
-  },
+  variants: buttonVariants,
   defaultVariants: {
     variant: 'standard',
     size: 'medium',
@@ -198,23 +196,7 @@ export const iconButtonRecipe = defineRecipe({
   className: 'icon-button',
   jsx: ['IconButton'],
   base: buttonBase,
-  variants: {
-    ...buttonVariants,
-    size: {
-      medium: {
-        fontSize: '16',
-        p: '3',
-      },
-      large: {
-        fontSize: '16',
-        p: '7',
-      },
-      small: {
-        fontSize: '14',
-        p: '1',
-      },
-    },
-  },
+  variants: buttonVariants,
   defaultVariants: {
     variant: 'standard',
     size: 'medium',

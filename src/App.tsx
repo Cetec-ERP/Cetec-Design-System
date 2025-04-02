@@ -62,6 +62,16 @@ const ButtonSection = () => {
           <IconButton variant="primary" size="large">
             <Icon name="arrow-right" />
           </IconButton>
+          <IconButton
+            iconName="arrow-left"
+            buttonText="Button"
+            iconPosition="left"
+          />
+          <IconButton
+            iconName="arrow-right"
+            buttonText="Button"
+            iconPosition="right"
+          />
         </HStack>
         <HStack>
           <Button variant="primary" loading>
