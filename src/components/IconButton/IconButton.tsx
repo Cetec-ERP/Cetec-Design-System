@@ -99,7 +99,7 @@ export const IconButton: FC<IconButtonProps> = ({
     (isChildrenExists && !containsIcon) ||
     (!isChildrenExists && iconName === undefined)
   ) {
-    alert(
+    console.error(
       'Please provide IconButton with at least one Icon component in children or proper iconName',
     );
     return null;
