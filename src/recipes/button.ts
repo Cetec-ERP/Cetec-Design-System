@@ -27,7 +27,6 @@ const buttonBase = {
   textDecoration: 'none',
   whiteSpace: 'nowrap',
   cursor: 'pointer',
-  letterSpacing: '0%',
   _disabled: {
     opacity: 0.4,
     cursor: 'not-allowed',
