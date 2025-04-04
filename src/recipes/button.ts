@@ -49,7 +49,6 @@ const buttonVariants = {
       },
       _active: {
         bg: { base: 'slate.100', _dark: 'slate.20' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -59,7 +58,6 @@ const buttonVariants = {
       _selected: {
         bg: { base: 'slate.5', _dark: 'slate.90' },
         color: { base: 'slate.90', _dark: 'slate.0' },
-        borderColor: 'transparent',
       },
     },
     standard: {
@@ -70,7 +68,6 @@ const buttonVariants = {
       },
       _active: {
         bg: { base: 'slate.20', _dark: 'slate.80' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -80,7 +77,6 @@ const buttonVariants = {
       _selected: {
         bg: { base: 'slate.90', _dark: 'slate.5' },
         color: { base: 'slate.0', _dark: 'slate.90' },
-        borderColor: 'transparent',
       },
     },
     hollow: {
@@ -108,14 +104,12 @@ const buttonVariants = {
     },
     ghost: {
       bg: 'transparent',
-      borderColor: 'transparent',
       color: { base: 'slate.90', _dark: 'slate.0' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
         bg: { base: 'slate.20', _dark: 'slate.70' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -135,7 +129,6 @@ const buttonVariants = {
       },
       _active: {
         bg: { base: 'gold.30', _dark: 'gold.40' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -151,7 +144,6 @@ const buttonVariants = {
       },
       _active: {
         bg: 'red.60',
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
