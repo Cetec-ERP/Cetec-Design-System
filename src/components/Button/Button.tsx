@@ -27,7 +27,7 @@ export type ButtonProps = BoxProps &
   };
 
 export const Button: FC<ButtonProps> = ({
-  variant = 'primary',
+  variant = 'standard',
   size,
   href,
   children,
