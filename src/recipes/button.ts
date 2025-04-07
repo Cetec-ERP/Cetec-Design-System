@@ -15,7 +15,7 @@ const buttonBase = {
   fontFamily: 'sans',
   fontSize: '16',
   fontWeight: 'medium',
-  lineHeight: '24',
+  lineHeight: 'default',
   borderWidth: '1',
   borderStyle: 'solid',
   borderColor: 'transparent',
