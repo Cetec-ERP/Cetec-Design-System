@@ -163,7 +163,7 @@ export const buttonRecipe = defineRecipe({
     size: {
       medium: {
         fontSize: '16',
-        py: '4',
+        py: '3',
         px: '12',
       },
       large: {
