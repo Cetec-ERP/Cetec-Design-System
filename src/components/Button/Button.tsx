@@ -31,7 +31,7 @@ export const Button: FC<ButtonProps> = ({
   size,
   href,
   children,
-  loading = false,
+  loading,
   disabled,
   type,
   ...props
