@@ -6,7 +6,7 @@ const textareaBase = {
     verticalAlign: 'top',
     alignItems: 'center',
     padding: '0',
-    fontFamily: 'sans',
+    fontFamily: 'body',
     fontSize: '16',
     fontWeight: 'normal',
     lineHeight: 'normal',

@@ -14,7 +14,7 @@ import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 
-export const IconList = () => {
+export const IconList: React.FC = () => {
   return (
     <Grid
       gap="16"
@@ -24,7 +24,7 @@ export const IconList = () => {
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
           <Icon name={icon} />
-          <Text family={'mono'} fontSize={'14'}>
+          <Text family={'mono'} size="sm">
             {icon}
           </Text>
         </HStack>
@@ -33,7 +33,7 @@ export const IconList = () => {
   );
 };
 
-const ButtonSection = () => {
+const ButtonSection: React.FC = () => {
   return (
     <Section>
       <Heading>Buttons</Heading>
@@ -83,7 +83,11 @@ const ButtonSection = () => {
   );
 };
 
-export const Section = ({ children }: { children?: ReactNode }) => {
+interface SectionProps {
+  children?: ReactNode;
+}
+
+export const Section: React.FC<SectionProps> = ({ children }) => {
   return (
     <Grid
       gridTemplateColumns={'1fr 3fr'}
@@ -100,36 +104,42 @@ export const Section = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-const AppContent = () => {
+const Header: React.FC = () => {
+  return (
+    <Flex
+      w="full"
+      py={'4'}
+      bg={{ base: 'slate.10', _dark: 'slate.80' }}
+      mb={'56'}
+      position={'sticky'}
+      top={'0'}
+      zIndex={'100'}
+      boxShadow={'medium'}
+    >
+      <Container maxW={'5xl'}>
+        <HStack justify={'space-between'}>
+          <Text
+            as={'div'}
+            family="body"
+            size="md"
+            letterSpacing={'widest'}
+            textTransform={'uppercase'}
+            fontWeight={'bold'}
+            onClick={() => alert('clicked')}
+          >
+            Cetec Components
+          </Text>
+          <ThemeSwitcher />
+        </HStack>
+      </Container>
+    </Flex>
+  );
+};
+
+const AppContent: React.FC = () => {
   return (
     <VStack>
-      <Flex
-        w="full"
-        py={'4'}
-        bg={{ base: 'slate.10', _dark: 'slate.80' }}
-        mb={'56'}
-        position={'sticky'}
-        top={'0'}
-        zIndex={'100'}
-        boxShadow={'medium'}
-      >
-        <Container maxW={'5xl'}>
-          <HStack justify={'space-between'}>
-            <Text
-              as={'div'}
-              family={'mono'}
-              fontSize={'16'}
-              letterSpacing={'widest'}
-              textTransform={'uppercase'}
-              fontWeight={'bold'}
-              onClick={() => alert('clicked')}
-            >
-              Cetec Components
-            </Text>
-            <ThemeSwitcher />
-          </HStack>
-        </Container>
-      </Flex>
+      <Header />
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
           <ButtonSection />
@@ -170,20 +180,19 @@ const AppContent = () => {
                     forth divided moving Also fill dry she'd have.
                   </Text>
                 </VStack>
-                <Pre>{`<Text>
-	...
-	<Text as="span" italic>winged fourth</Text>
-	<Text as="span" bold>replenish</Text>
-	<Text as="span" underline>whales</Text>
-</Text>`}</Pre>
-                <Text family={'mono'}>
+                <Pre>
+                  {`<Text>
+    ...
+  <Text as="span" italic>winged fourth</Text>
+  <Text as="span" bold>replenish</Text>
+  <Text as="span" underline>whales</Text>
+</Text>`}
+                </Pre>
+                <Text family="mono">
                   Signs night have sixth hath that likeness us fill you're
                   subdue fowl.
                 </Text>
-                <Pre>
-                  {`<Text family="mono">...</Text>
-                    `}
-                </Pre>
+                <Pre>{`<Text family="mono">...</Text>`}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
                   <Heading
                     level="h3"
@@ -271,7 +280,7 @@ const AppContent = () => {
             </HStack>
           </Section>
           <Section>
-            <Text as="h2">Inputs</Text>
+            <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />

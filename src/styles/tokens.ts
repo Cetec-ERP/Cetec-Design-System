@@ -170,7 +170,7 @@ export const fonts = {
   heading: {
     value: "'Ruda Variable', Source Sans, Geneva, Tahoma, Verdana, sans-serif;",
   },
-  sans: { value: "'Recursive Variable', Geneva, Tahoma, Verdana, sans-serif;" },
+  body: { value: "'Recursive Variable', Geneva, Tahoma, Verdana, sans-serif;" },
   mono: {
     value:
       "'Recursive Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace;",
@@ -505,7 +505,7 @@ const baseHeadingStyles = defineStyles({
 
 const baseBodyTextStyles = defineStyles({
   value: {
-    fontFamily: 'sans',
+    fontFamily: 'body',
     fontWeight: 'normal',
     color: { base: 'slate.60', _dark: 'slate.20' },
     lineHeight: 'default',

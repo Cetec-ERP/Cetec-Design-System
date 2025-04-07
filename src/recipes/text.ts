@@ -1,5 +1,5 @@
-import { defineRecipe } from '@pandacss/dev';
-import { fontSizes, fontWeights } from '~/styles/tokens';
+import { defineRecipe, SystemStyleObject } from '@pandacss/dev';
+import { OneOrMore } from '@styled-system/types';
 
 const textBase = {
   margin: '0',
@@ -9,13 +9,10 @@ const textBase = {
   color: { base: 'slate.70', _dark: 'slate.20' },
 };
 
-// const safeFonts = fonts as Record<string, string>;
-// const safeFontSizes = fontSizes as Record<string, string>;
-
 const textVariants = {
   family: {
     heading: { fontFamily: 'heading' },
-    sans: { fontFamily: 'sans' },
+    body: { fontFamily: 'body' },
     mono: {
       fontFamily: 'mono',
       fontVariationSettings: '"CRSV" 0, "CASL" 0, "MONO" 1',
@@ -38,12 +35,71 @@ const textVariants = {
     },
   },
   size: {
-    ...fontSizes,
-  },
-  weight: {
-    ...fontWeights,
+    lg: {},
+    md: {},
+    sm: {},
+    xs: {},
   },
 };
+
+export type TextSizes = "lg" | "md" | "sm" | "xs"
+
+type TextCompoundVariants = {
+  family?: OneOrMore<"heading" | "mono" | "body">;
+  size?: OneOrMore<TextSizes>;
+  css: SystemStyleObject;
+};
+
+const textCompoundVariants: TextCompoundVariants[] = [
+  {
+    family: 'heading',
+    size: 'lg',
+    css: { 
+      fontWeight: 'black', 
+      fontSize: '40',
+      lineHeight: '48', 
+      color: { 
+        base: 'slate.90', 
+        _dark: 'slate.5'
+      } 
+    },
+  },
+  {
+    family: 'heading' ,
+    size: 'md',
+    css: { fontWeight: "black", fontSize: '32' },
+  },
+  {
+    family: 'heading',
+    size: 'sm',
+    css: { fontWeight: "black", fontSize: '24' },
+  },
+  {
+    family: 'heading',
+    size: 'xs',
+    css: { fontWeight: "black", fontSize: '20' },
+  },
+  {
+    family: 'body',
+    size: 'lg',
+    css: { fontWeight: "normal", fontSize: '20' },
+  },
+  {
+    family: 'body',
+    size: 'md',
+    css: { fontWeight: "normal", fontSize: '16' },
+  },
+  {
+    family: ['body','mono'],
+    size: 'sm',
+    css: { fontWeight: "normal", fontSize: '14' },
+  },
+  {
+    family: 'mono',
+    size: 'xs',
+    css: { fontWeight: "normal", fontSize: '12' },
+  },
+]
 
 const headingBase = {
   fontFamily: 'heading',
@@ -115,8 +171,10 @@ export const textRecipe = defineRecipe({
   jsx: ['Text'],
   base: textBase,
   variants: textVariants,
+  compoundVariants: textCompoundVariants,
   defaultVariants: {
-    family: 'sans',
+    family: 'body',
+    size: 'md'
   },
 });
 
@@ -136,7 +194,7 @@ export const linkRecipe = defineRecipe({
   base: linkBase,
   variants: linkVariants,
   defaultVariants: {
-    family: 'sans',
+    family: 'body',
   },
 });
 
@@ -146,6 +204,7 @@ export const labelRecipe = defineRecipe({
   base: labelBase,
   variants: labelVariants,
   defaultVariants: {
-    family: 'sans',
+    family: 'body',
   },
 });
+

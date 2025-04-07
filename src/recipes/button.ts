@@ -12,7 +12,7 @@ const buttonBase = {
   display: 'flex',
   alignItems: 'center',
   gap: '4',
-  fontFamily: 'sans',
+  fontFamily: 'body',
   fontSize: '16',
   fontWeight: 'medium',
   lineHeight: 'default',
