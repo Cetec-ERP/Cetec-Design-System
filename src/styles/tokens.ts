@@ -353,22 +353,22 @@ export const durations = {
 };
 
 export const letterSpacings = {
-  '-0.05%': {
+  tighter: {
     value: '-0.05em',
   },
-  '-0.025%': {
+  tight: {
     value: '-0.025em',
   },
-  '0%': {
+  normal: {
     value: '0em',
   },
-  '0.025%': {
+  wide: {
     value: '0.025em',
   },
-  '0.05%': {
+  wider: {
     value: '0.05em',
   },
-  '0.1%': {
+  widest: {
     value: '0.1em',
   },
 };
