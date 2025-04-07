@@ -175,7 +175,6 @@ export const buttonRecipe = defineRecipe({
         fontSize: '14',
         py: '1',
         px: '8',
-        lineHeight: '22',
       },
     },
   },
