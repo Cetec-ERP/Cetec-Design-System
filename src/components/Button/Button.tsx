@@ -27,11 +27,11 @@ export type ButtonProps = BoxProps &
   };
 
 export const Button: FC<ButtonProps> = ({
-  variant = 'primary',
+  variant,
   size,
   href,
   children,
-  loading = false,
+  loading,
   disabled,
   type,
   ...props

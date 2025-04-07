@@ -15,7 +15,7 @@ const buttonBase = {
   fontFamily: 'sans',
   fontSize: '16',
   fontWeight: 'medium',
-  lineHeight: '24',
+  lineHeight: 'default',
   borderWidth: '1',
   borderStyle: 'solid',
   borderColor: 'transparent',
@@ -27,7 +27,6 @@ const buttonBase = {
   textDecoration: 'none',
   whiteSpace: 'nowrap',
   cursor: 'pointer',
-  letterSpacing: '0%',
   _disabled: {
     opacity: 0.4,
     cursor: 'not-allowed',
@@ -50,7 +49,6 @@ const buttonVariants = {
       },
       _active: {
         bg: { base: 'slate.100', _dark: 'slate.20' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -60,7 +58,6 @@ const buttonVariants = {
       _selected: {
         bg: { base: 'slate.5', _dark: 'slate.90' },
         color: { base: 'slate.90', _dark: 'slate.0' },
-        borderColor: 'transparent',
       },
     },
     standard: {
@@ -71,7 +68,6 @@ const buttonVariants = {
       },
       _active: {
         bg: { base: 'slate.20', _dark: 'slate.80' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -81,7 +77,6 @@ const buttonVariants = {
       _selected: {
         bg: { base: 'slate.90', _dark: 'slate.5' },
         color: { base: 'slate.0', _dark: 'slate.90' },
-        borderColor: 'transparent',
       },
     },
     hollow: {
@@ -109,14 +104,12 @@ const buttonVariants = {
     },
     ghost: {
       bg: 'transparent',
-      borderColor: 'transparent',
       color: { base: 'slate.90', _dark: 'slate.0' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
         bg: { base: 'slate.20', _dark: 'slate.70' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -136,7 +129,6 @@ const buttonVariants = {
       },
       _active: {
         bg: { base: 'gold.30', _dark: 'gold.40' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -152,7 +144,6 @@ const buttonVariants = {
       },
       _active: {
         bg: 'red.60',
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -164,7 +155,7 @@ const buttonVariants = {
   size: {
     medium: {
       fontSize: '16',
-      py: '4',
+      py: '3',
       px: '12',
     },
     large: {
@@ -176,7 +167,6 @@ const buttonVariants = {
       fontSize: '14',
       py: '1',
       px: '8',
-      lineHeight: '22',
     },
   },
 };
