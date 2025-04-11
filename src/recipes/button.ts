@@ -164,19 +164,19 @@ export const buttonRecipe = defineRecipe({
       medium: {
         fontSize: '16',
         py: '3',
-        px: '12',
+        px: '10',
       },
       large: {
         fontSize: '16',
-        py: '8',
-        px: '16',
+        py: '7',
+        px: '12',
       },
       small: {
         fontSize: '14',
-        py: '1',
+        py: '0',
         px: '8',
-      },
-    },
+      }
+    }
   },
   defaultVariants: {
     variant: 'standard',
@@ -201,9 +201,9 @@ export const iconButtonRecipe = defineRecipe({
       },
       small: {
         fontSize: '14',
-        p: '1',
+        p: '0',
       },
-    },
+    }
   },
   defaultVariants: {
     variant: 'standard',
