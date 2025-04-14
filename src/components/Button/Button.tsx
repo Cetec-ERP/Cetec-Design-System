@@ -1,52 +1,57 @@
-import * as React from 'react';
+import { FC, ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
 import { ButtonContent } from './ButtonContent';
+import { splitProps } from '~/utils/splitProps';
 
-export type ButtonProps = BoxProps & ButtonVariantProps & {
-  variant?: 'primary' | 'standard' | 'hollow' | 'ghost' | 'cta' | 'danger';
-  href?: string;
-  loading?: boolean;
-  className?: string;
-  children?: string | React.ReactNode;
-  disabled?: boolean;
-};
+type buttonVariants =
+  | 'primary'
+  | 'standard'
+  | 'hollow'
+  | 'ghost'
+  | 'cta'
+  | 'danger';
 
-export const Button: React.FC<ButtonProps> = (
-    {
-      variant='primary',
-      size,
-      href,
-      className,
-      children,
-      loading,
-      disabled,
-      as,
-      ...props
-    }: ButtonProps,
-  ) => {
-    const trulyDisabled = loading || disabled;
-    const asComponent = href ? 'a' : 'button';
-    const Component = as ?? 'button';
-    return (
-      <Box
-        as={Component}
-        href={href}
-        disabled={trulyDisabled}
-        aria-disabled={trulyDisabled}
-        className={cx(
-          button({ variant, size }), 
-          className
-        )}
-        type={asComponent === 'button' ? 'button' : undefined}
-        {...props}
-      >
-        <>
-          <ButtonContent loading={!!loading}>{children}</ButtonContent>
-        </>
-      </Box>
-    );
+type buttonTypes = 'submit' | 'reset' | 'button';
+
+export type ButtonProps = BoxProps &
+  ButtonVariantProps & {
+    variant?: buttonVariants;
+    href?: string;
+    loading?: boolean;
+    className?: string;
+    children?: string | ReactNode;
+    disabled?: boolean;
+    type?: buttonTypes;
   };
+
+export const Button: FC<ButtonProps> = ({
+  variant,
+  size,
+  href,
+  children,
+  loading,
+  disabled,
+  type,
+  ...props
+}: ButtonProps) => {
+  const trulyDisabled = loading || disabled;
+
+  const [className, otherProps] = splitProps(props);
+
+  return (
+    <Box
+      as={href ? 'a' : 'button'}
+      disabled={trulyDisabled}
+      aria-disabled={trulyDisabled}
+      className={cx(button({ variant, size }), className)}
+      {...(href ? { href } : { type: type || 'button' })}
+      {...otherProps}
+    >
+      <ButtonContent loading={!!loading}>{children}</ButtonContent>
+    </Box>
+  );
+};
 
 export default Button;

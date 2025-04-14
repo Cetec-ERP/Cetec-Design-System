@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Grid, HStack } from '@styled-system/jsx';
 import { Spinner } from '~/components/Spinner';
 
@@ -5,11 +6,11 @@ import { Spinner } from '~/components/Spinner';
  * ButtonContent handles rendering the children alongside an optional Spinner.
  */
 export const ButtonContent = ({
-  loading,
+  loading = false,
   children,
 }: {
   loading: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 }) => (
   <>
     <HStack gap="2" opacity={loading ? 0 : 1}>

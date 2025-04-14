@@ -3,7 +3,7 @@ import { defineRecipe } from '@pandacss/dev';
 const buttonBase = {
   position: 'relative',
   appearance: 'none',
-  minWidth: 0,
+  minWidth: '0',
   transitionDuration: 'fast',
   transitionProperty: 'background, border-color, color, box-shadow',
   transitionTimingFunction: 'default',
@@ -11,19 +11,19 @@ const buttonBase = {
   verticalAlign: 'middle',
   display: 'flex',
   alignItems: 'center',
-  gap: 4,
+  gap: '4',
   fontFamily: 'sans',
-  fontSize: 16,
+  fontSize: '16',
   fontWeight: 'medium',
   lineHeight: 'default',
-  borderWidth: 1,
+  borderWidth: '1',
   borderStyle: 'solid',
   borderColor: 'transparent',
-  borderRadius: 4,
-  outlineWidth: 2,
+  borderRadius: '4',
+  outlineWidth: '2',
   outlineStyle: 'solid',
   outlineColor: 'transparent',
-  outlineOffset: 1,
+  outlineOffset: '1',
   textDecoration: 'none',
   whiteSpace: 'nowrap',
   cursor: 'pointer',
@@ -43,13 +43,12 @@ const buttonVariants = {
   variant: {
     primary: {
       bg: { base: 'slate.90', _dark: 'slate.5' },
-      color: { base: 'slate.5', _dark: 'slate.90' },
+      color: { base: 'slate.0', _dark: 'slate.90' },
       _hover: {
-        bg: { base: 'slate.70', _dark: 'slate.20' },
+        bg: { base: 'slate.70', _dark: 'slate.10' },
       },
       _active: {
-        bg: { base: 'slate.100', _dark: 'slate.30' },
-        borderColor: 'transparent',
+        bg: { base: 'slate.100', _dark: 'slate.20' },
       },
       _disabled: {
         _hover: {
@@ -58,19 +57,17 @@ const buttonVariants = {
       },
       _selected: {
         bg: { base: 'slate.5', _dark: 'slate.90' },
-        color: { base: 'slate.90', _dark: 'slate.5' },
-        borderColor: 'transparent',
+        color: { base: 'slate.90', _dark: 'slate.0' },
       },
     },
     standard: {
       bg: { base: 'slate.5', _dark: 'slate.70' },
-      color: { base: 'slate.90', _dark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.0' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
         bg: { base: 'slate.20', _dark: 'slate.80' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -79,21 +76,20 @@ const buttonVariants = {
       },
       _selected: {
         bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.5', _dark: 'slate.90' },
-        borderColor: 'transparent',
+        color: { base: 'slate.0', _dark: 'slate.90' },
       },
     },
     hollow: {
       bg: 'transparent',
       borderColor: { base: 'slate.30', _dark: 'slate.60' },
-      color: { base: 'slate.90', _dark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.0' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
         borderColor: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
-        bg: { base: 'slate.20', _dark: 'slate.70' },
-        borderColor: { base: 'slate.20', _dark: 'slate.70' },
+        bg: { base: 'slate.20', _dark: 'slate.80' },
+        borderColor: { base: 'slate.20', _dark: 'slate.80' },
       },
       _disabled: {
         _hover: {
@@ -102,19 +98,18 @@ const buttonVariants = {
       },
       _selected: {
         bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.5', _dark: 'slate.90' },
+        color: { base: 'slate.0', _dark: 'slate.90' },
         borderColor: 'transparent',
       },
     },
     ghost: {
       bg: 'transparent',
-      color: { base: 'slate.90', _dark: 'slate.5' },
+      color: { base: 'slate.90', _dark: 'slate.0' },
       _hover: {
         bg: { base: 'slate.10', _dark: 'slate.60' },
       },
       _active: {
         bg: { base: 'slate.20', _dark: 'slate.70' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -123,19 +118,17 @@ const buttonVariants = {
       },
       _selected: {
         bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.5', _dark: 'slate.90' },
-        borderColor: 'transparent',
+        color: { base: 'slate.0', _dark: 'slate.90' },
       },
     },
     cta: {
       bg: { base: 'gold.20', _dark: 'gold.30' },
-      color: { base: 'slate.90', _dark: 'slate.90' },
+      color: 'slate.90',
       _hover: {
         bg: { base: 'gold.10', _dark: 'gold.20' },
       },
       _active: {
         bg: { base: 'gold.30', _dark: 'gold.40' },
-        borderColor: 'transparent',
       },
       _disabled: {
         _hover: {
@@ -144,18 +137,17 @@ const buttonVariants = {
       },
     },
     danger: {
-      bg: { base: 'red.50', _dark: 'red.50' },
-      color: { base: 'slate.0', _dark: 'slate.0' },
+      bg: 'red.50',
+      color:  'slate.0',
       _hover: {
-        bg: { base: 'red.40', _dark: 'red.40' },
+        bg: 'red.40',
       },
       _active: {
-        bg: { base: 'red.60', _dark: 'red.60' },
-        borderColor: 'transparent',
+        bg: 'red.60',
       },
       _disabled: {
         _hover: {
-          bg: { base: 'red.50', _dark: 'red.50' },
+          bg: 'red.50',
         },
       },
     },
@@ -169,26 +161,26 @@ export const buttonRecipe = defineRecipe({
   variants: {
     ...buttonVariants,
     size: {
-      standard: {
+      medium: {
         fontSize: '16',
         py: '3',
-        px: '12',
+        px: '10',
       },
       large: {
         fontSize: '16',
         py: '7',
-        px: '14',
+        px: '12',
       },
       small: {
         fontSize: '14',
-        py: '1',
+        py: '0',
         px: '8',
-      },
-    },
+      }
+    }
   },
   defaultVariants: {
     variant: 'standard',
-    size: 'standard',
+    size: 'medium',
   },
 });
 
@@ -199,7 +191,7 @@ export const iconButtonRecipe = defineRecipe({
   variants: {
     ...buttonVariants,
     size: {
-      standard: {
+      medium: {
         fontSize: '16',
         p: '3',
       },
@@ -209,12 +201,12 @@ export const iconButtonRecipe = defineRecipe({
       },
       small: {
         fontSize: '14',
-        p: '1',
+        p: '0',
       },
-    },
+    }
   },
   defaultVariants: {
     variant: 'standard',
-    size: 'standard',
+    size: 'medium',
   },
 });

@@ -10,22 +10,17 @@ import { splitProps } from '~/utils/splitProps';
 /*
  * Imports from recipes are placeholders for if we want to add some kind of styling to Box
  */
-export type BoxProps = Omit<ComponentPropsWithoutRef<ElementType>, 'as'> & SystemStyleObject & BoxVariantProps & {
-  as?: ElementType;
-}
+export type BoxProps = Omit<ComponentPropsWithoutRef<ElementType>, 'as'> &
+  SystemStyleObject &
+  BoxVariantProps & {
+    as?: ElementType;
+  };
 
-export const Box: React.FC<BoxProps> = (
-  {
-    as = "div",
-    ...props
-  }
-) => {
+export const Box: React.FC<BoxProps> = ({ as = 'div', ...props }) => {
   const [className, otherProps] = splitProps(props);
   const comboClassName = cx(box({}), className);
-  return (
-    createElement(as, {
-      className: { comboClassName },
-      ...otherProps
-    })
-  );
+  return createElement(as, {
+    className: comboClassName,
+    ...otherProps,
+  });
 };
