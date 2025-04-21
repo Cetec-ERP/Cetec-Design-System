@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
 import { Text } from '~/components/Text';
 import { Button } from '~/components/Button';
@@ -133,6 +133,34 @@ const Header: React.FC = () => {
         </HStack>
       </Container>
     </Flex>
+  );
+};
+
+// This approach is created to show actuall working of checkbox in react page.
+// This is a very basic example created to show how indeterminate or error state
+// can be removed once checkbox is created.
+// but in real life scenario the isPropertyRequired state can be replaced with
+// some other states or props or combination of both which will allow us
+// reappearance of states
+const ExtraPropertyCheckBox: React.FC<{ property: string }> = ({
+  property,
+}) => {
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isPropertyRequired, setIsPropertyRequiered] = useState<boolean>(true);
+
+  const handleChange = () => {
+    if (isPropertyRequired) setIsPropertyRequiered(false);
+    setIsChecked((prev) => !prev);
+  };
+
+  return (
+    <CheckBox
+      checked={isChecked}
+      // there will be some conditions based on states and/or props which will dynamically add or remove the prop
+      // and which in turn will make error or indeterminate state active or deactive
+      {...(isPropertyRequired && { [property]: true })}
+      onClick={handleChange}
+    />
   );
 };
 
@@ -274,9 +302,9 @@ const AppContent: React.FC = () => {
             <HStack gap={'40'} alignItems={'flex-end'}>
               <CheckBox>asdf</CheckBox>
               <CheckBox defaultChecked={true} />
-              <CheckBox data-indeterminate={true} />
+              <ExtraPropertyCheckBox property="data-indeterminate" />
               <CheckBox disabled />
-              <CheckBox data-error={true} />
+              <ExtraPropertyCheckBox property="data-error" />
             </HStack>
           </Section>
           <Section>
