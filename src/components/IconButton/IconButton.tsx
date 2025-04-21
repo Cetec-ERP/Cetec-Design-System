@@ -47,9 +47,7 @@ const IconButtonComponent: FC<IconButtonComponent> = ({
       gap="8"
       flexDirection={iconPosition === 'right' ? 'row' : 'row-reverse'}
     >
-      <Box as="span" {...(!buttonText && { display: 'none' })}>
-        {buttonText}
-      </Box>
+      {!!buttonText && <Box as="span">{buttonText}</Box>}
       <Icon name={iconName} size={size} />
     </HStack>
   );
