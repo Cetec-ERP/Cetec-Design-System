@@ -76,7 +76,7 @@ export const IconButton: FC<IconButtonProps> = ({
   iconPosition = 'right',
   ...props
 }: IconButtonProps) => {
-  const trulyDisabled = loading || disabled;
+  const isDisabled = loading || disabled;
   const isChildrenExists = children !== undefined;
 
   const [className, otherProps] = splitProps(props);
@@ -108,8 +108,8 @@ export const IconButton: FC<IconButtonProps> = ({
   return (
     <Box
       as={href ? 'a' : 'button'}
-      disabled={trulyDisabled}
-      aria-disabled={trulyDisabled}
+      disabled={isDisabled}
+      aria-disabled={isDisabled}
       className={cx(iconButton({ variant, size }), className)}
       {...(href ? { href } : { type: type || 'button' })}
       {...otherProps}
