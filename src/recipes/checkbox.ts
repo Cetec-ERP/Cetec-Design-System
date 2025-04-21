@@ -81,8 +81,4 @@ export const checkBoxRecipe = defineSlotRecipe({
             },
         },
     },
-    variants: {
-    },
-    defaultVariants: {
-    },
 });
