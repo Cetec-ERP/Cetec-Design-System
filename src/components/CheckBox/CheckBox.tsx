@@ -4,17 +4,11 @@ import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
 import { Icon } from '../Icon';
 
 export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
-  CheckboxVariantProps & {
-    indeterminate?: boolean;
-    error?: boolean;
-  };
+  CheckboxVariantProps;
 
-export const CheckBox: React.FC<CheckBoxProps> = ({
-  error = false,
-  indeterminate = false,
-  ...props
-}: CheckBoxProps) => {
+export const CheckBox: React.FC<CheckBoxProps> = (props: CheckBoxProps) => {
   const { container, input, indicator } = checkbox({});
+
   return (
     <Label className={container}>
       <Box as="input" type="checkbox" className={input} {...props} />
