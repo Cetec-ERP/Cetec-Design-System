@@ -45,6 +45,7 @@ const theme = {
     keyframes: tokens.keyframes,
     containerSizes: tokens.containerSizes,
     breakpoints: tokens.breakpoints,
+    opacity: tokens.opacity,
   }),
   semanticTokens: defineSemanticTokens({
     colors: {
@@ -98,6 +99,7 @@ export default defineConfig({
       sizes: theme.tokens.sizes,
       spacing: theme.tokens.sizes,
       radii: theme.tokens.radii,
+      opacity: theme.tokens.opacity
     },
     semanticTokens: {
       colors: theme.semanticTokens.colors,

@@ -14,7 +14,7 @@ export const ButtonContent = ({
   children: ReactNode;
 }) => (
   <>
-    <HStack gap="2" opacity={loading ? 0 : 1}>
+    <HStack gap="2" opacity={loading ? '0' : '1'}>
       {children}
     </HStack>
     <Box
