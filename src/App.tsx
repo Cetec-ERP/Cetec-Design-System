@@ -300,7 +300,7 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox>asdf</CheckBox>
+              <CheckBox />
               <CheckBox defaultChecked={true} />
               <ExtraPropertyCheckBox property="data-indeterminate" />
               <CheckBox disabled />
