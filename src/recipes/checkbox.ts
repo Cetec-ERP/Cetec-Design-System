@@ -16,7 +16,7 @@ export const checkBoxRecipe = defineSlotRecipe({
         },
         input: {
             position: "absolute",
-            opacity: 0,
+            opacity: '0',
             width: "full",
             height: "full",
             margin: "0",
@@ -48,7 +48,7 @@ export const checkBoxRecipe = defineSlotRecipe({
             },
             _disabled: {
               "& ~ svg": {
-                opacity: 0.4,
+                opacity: '0.4',
                 pointerEvents: 'none',
                 cursor: 'none',
               },
@@ -57,15 +57,15 @@ export const checkBoxRecipe = defineSlotRecipe({
             _error: {
               display: "inline-grid",
               "& ~ svg": {
-                fill: "red.50",
+                fill: { base: 'red.50', _dark: 'red.50' },
               }
             },
             _focusVisible: {
               "& ~ svg": {
                 outlineColor: { base: 'slate.80', _dark: 'slate.5' },
-                outlineOffset: -3,
-                borderRadius: 5,
-                outlineWidth: 1,
+                outlineOffset: -3.5,
+                borderRadius: "4",
+                outlineWidth: 2,
                 outlineStyle: 'solid',
               },
             },
@@ -77,7 +77,7 @@ export const checkBoxRecipe = defineSlotRecipe({
             height: 24,
             "&:is([name='checkbox'])": {
               display: "inline-grid",
-              fill: "slate.20",
+              fill:{ base: 'slate.30', _dark: 'slate.20' },
             },
         },
     },
