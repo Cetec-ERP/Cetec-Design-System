@@ -4,20 +4,10 @@ import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
 import { ButtonContent } from './ButtonContent';
 import { splitProps } from '~/utils/splitProps';
-
-type buttonVariants =
-  | 'primary'
-  | 'standard'
-  | 'hollow'
-  | 'ghost'
-  | 'cta'
-  | 'danger';
-
-type buttonTypes = 'submit' | 'reset' | 'button';
+import { buttonTypes } from '~/recipes/button';
 
 export type ButtonProps = BoxProps &
   ButtonVariantProps & {
-    variant?: buttonVariants;
     href?: string;
     loading?: boolean;
     className?: string;

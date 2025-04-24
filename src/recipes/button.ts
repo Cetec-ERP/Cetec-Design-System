@@ -1,5 +1,7 @@
 import { defineRecipe } from '@pandacss/dev';
 
+export type buttonTypes = 'submit' | 'reset' | 'button';
+
 const buttonBase = {
   position: 'relative',
   appearance: 'none',
