@@ -175,6 +175,10 @@ export const buttonRecipe = defineRecipe({
         fontSize: '14',
         py: '0',
         px: '8',
+        '& svg': {
+          mt: '-1',
+          mb: '-1'
+        }
       }
     }
   },
