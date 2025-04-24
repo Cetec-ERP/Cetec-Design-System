@@ -30,6 +30,7 @@ export const Button: FC<ButtonProps> = ({
   variant,
   size,
   href,
+  className: customeClassName = '',
   children,
   loading,
   disabled,
@@ -45,7 +46,7 @@ export const Button: FC<ButtonProps> = ({
       as={href ? 'a' : 'button'}
       disabled={trulyDisabled}
       aria-disabled={trulyDisabled}
-      className={cx(button({ variant, size }), className)}
+      className={cx(button({ variant, size }), className, customeClassName)}
       {...(href ? { href } : { type: type || 'button' })}
       {...otherProps}
     >
