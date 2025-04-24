@@ -194,7 +194,27 @@ export const iconButtonRecipe = defineRecipe({
   className: 'icon-button',
   jsx: ['IconButton'],
   base: buttonBase,
-  variants: buttonVariants,
+  variants: {
+    ...buttonVariants,
+    size: {
+      medium: {
+        fontSize: '16',
+        p: '3'
+      },
+      large: {
+        fontSize: '16',
+        p: '7'
+      },
+      small: {
+        fontSize: '14',
+        p: '0',
+        '& svg': {
+          mt: '-1',
+          mb: '-1'
+        }
+      }
+    }
+  },
   defaultVariants: {
     variant: 'standard',
     size: 'medium',
