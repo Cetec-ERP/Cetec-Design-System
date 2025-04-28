@@ -138,7 +138,7 @@ const buttonVariants = {
     },
     danger: {
       bg: 'red.50',
-      color:  'slate.0',
+      color: 'slate.0',
       _hover: {
         bg: 'red.40',
       },
@@ -175,8 +175,12 @@ export const buttonRecipe = defineRecipe({
         fontSize: '14',
         py: '0',
         px: '8',
-      }
-    }
+        '& svg': {
+          mt: '-1',
+          mb: '-1',
+        },
+      },
+    },
   },
   defaultVariants: {
     variant: 'standard',
@@ -203,7 +207,7 @@ export const iconButtonRecipe = defineRecipe({
         fontSize: '14',
         p: '0',
       },
-    }
+    },
   },
   defaultVariants: {
     variant: 'standard',

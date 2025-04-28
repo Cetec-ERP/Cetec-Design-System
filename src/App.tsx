@@ -49,6 +49,20 @@ const ButtonSection = () => {
           <Button variant="danger">Danger</Button>
         </HStack>
         <HStack>
+          <Button size="small">
+            Standard
+            <Icon name="caret-down" />
+          </Button>
+          <Button variant="primary">
+            Standard
+            <Icon name="caret-down" />
+          </Button>
+          <Button size="large">
+            Standard
+            <Icon name="caret-down" />
+          </Button>
+        </HStack>
+        <HStack>
           <IconButton variant="ghost">
             <Icon name="x" />
           </IconButton>
