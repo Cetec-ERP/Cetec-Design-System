@@ -8,7 +8,6 @@ import {
 import { ButtonContent } from '~/components/Button/ButtonContent';
 import { Icon } from '~/components/Icon';
 import { splitProps } from '~/utils/splitProps';
-import { buttonTypes } from '~/recipes/button';
 
 /**
  * The IconButton component builds on Box.
@@ -24,7 +23,7 @@ export type IconButtonProps = BoxProps &
     className?: string;
     children: ReactElement<typeof Icon>;
     disabled?: boolean;
-    type?: buttonTypes;
+    type?: 'submit' | 'reset' | 'button';
   };
 
 export const IconButton: FC<IconButtonProps> = ({
@@ -35,7 +34,7 @@ export const IconButton: FC<IconButtonProps> = ({
   children,
   loading,
   disabled,
-  type,
+  type = 'button',
   ...props
 }: IconButtonProps) => {
   const isDisabled = loading || disabled;
@@ -47,7 +46,7 @@ export const IconButton: FC<IconButtonProps> = ({
       disabled={isDisabled}
       aria-disabled={isDisabled}
       className={cx(iconButton({ variant, size }), className, customClassName)}
-      {...(href ? { href } : { type: type || 'button' })}
+      {...(href ? { href } : { type })}
       {...otherProps}
       {...(isDisabled &&
         href && {
