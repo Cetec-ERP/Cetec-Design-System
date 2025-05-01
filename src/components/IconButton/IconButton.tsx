@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  Children,
-  isValidElement,
-  ReactElement,
-  ReactNode,
-} from 'react';
+import React, { FC, ReactElement } from 'react';
 import { cx } from '@styled-system/css';
 import { Box, type BoxProps } from '~/components/Box';
 import {
@@ -33,13 +27,6 @@ export type IconButtonProps = BoxProps &
     type?: buttonTypes;
   };
 
-const isInvalidIconButton = (children: ReactNode): boolean => {
-  if (children == null) return true;
-  if (Children.count(children) !== 1) return true;
-  const onlyChild = Children.only(children);
-  return !(isValidElement(onlyChild) && onlyChild.type === Icon);
-};
-
 export const IconButton: FC<IconButtonProps> = ({
   variant,
   size,
@@ -53,15 +40,6 @@ export const IconButton: FC<IconButtonProps> = ({
 }: IconButtonProps) => {
   const isDisabled = loading || disabled;
   const [className, otherProps] = splitProps(props);
-
-  const isInvalidElement = isInvalidIconButton(children);
-
-  if (isInvalidElement) {
-    console.error(
-      'IconButton: expected a single <Icon> child but received invalid children.',
-    );
-    return null;
-  }
 
   return (
     <Box
