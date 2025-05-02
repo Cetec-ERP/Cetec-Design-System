@@ -6,12 +6,19 @@ const textBase = {
   lineHeight: 'default',
   fontWeight: 'normal',
   fontSize: '16',
-  color: { base: 'slate.70', _dark: 'slate.20' },
+  color: { base: 'slate.60', _dark: 'slate.30' },
 };
 
 const textVariants = {
   family: {
-    heading: { fontFamily: 'heading' },
+    heading: { 
+      fontFamily: 'heading',
+      fontWeight: "black",
+      color: { 
+        base: 'slate.90', 
+        _dark: 'slate.5'
+      }, 
+    },
     body: { fontFamily: 'body' },
     mono: {
       fontFamily: 'mono',
@@ -54,50 +61,42 @@ const textCompoundVariants: TextCompoundVariants[] = [
   {
     family: 'heading',
     size: 'lg',
-    css: { 
-      fontWeight: 'black', 
-      fontSize: '40',
-      lineHeight: '48', 
-      color: { 
-        base: 'slate.90', 
-        _dark: 'slate.5'
-      } 
-    },
+    css: { fontSize: '40' },
   },
   {
     family: 'heading' ,
     size: 'md',
-    css: { fontWeight: "black", fontSize: '32' },
+    css: { fontSize: '32' },
   },
   {
     family: 'heading',
     size: 'sm',
-    css: { fontWeight: "black", fontSize: '24' },
+    css: { fontSize: '24' },
   },
   {
     family: 'heading',
     size: 'xs',
-    css: { fontWeight: "black", fontSize: '20' },
+    css: { fontSize: '20' },
   },
   {
     family: 'body',
     size: 'lg',
-    css: { fontWeight: "normal", fontSize: '20' },
+    css: { fontSize: '20' },
   },
   {
     family: 'body',
     size: 'md',
-    css: { fontWeight: "normal", fontSize: '16' },
+    css: { fontSize: '16' },
   },
   {
     family: ['body','mono'],
     size: 'sm',
-    css: { fontWeight: "normal", fontSize: '14' },
+    css: { fontSize: '14' },
   },
   {
     family: 'mono',
     size: 'xs',
-    css: { fontWeight: "normal", fontSize: '12' },
+    css: { fontSize: '12' },
   },
 ]
 
