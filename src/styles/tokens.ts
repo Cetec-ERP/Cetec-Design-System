@@ -253,20 +253,14 @@ export const lineHeights = {
   none: {
     value: '1',
   },
-  tighter: {
-    value: '1em + 0.125rem',
-  },
   tight: {
-    value: '1em + 0.25rem',
+    value: '1em + 0.25rem', // 4
   },
   default: {
-    value: '1em + 0.5rem',
+    value: '1em + 0.5rem', // 8
   },
   loose: {
-    value: '1em + 0.75rem',
-  },
-  looser: {
-    value: '1em + 0.875rem',
+    value: '1em + 0.75rem', // 12
   },
 };
 
