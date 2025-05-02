@@ -152,8 +152,10 @@ They might well be outsourced to an external stylesheet of course.
  .svg-check-thick-dims { width: 24px; height: 24px; }
  .svg-checkbox-dims { width: 24px; height: 24px; }
  .svg-checkbox-checked-dims { width: 24px; height: 24px; }
+ .svg-checkbox-focus-dims { width: 24px; height: 24px; }
  .svg-checkbox-indeterminate-dims { width: 24px; height: 24px; }
  .svg-circle-dims { width: 24px; height: 24px; }
+ .svg-circle-check-dims { width: 24px; height: 24px; }
  .svg-circles-add-dims { width: 24px; height: 24px; }
  .svg-clipboard-dims { width: 24px; height: 24px; }
  .svg-clock-dims { width: 24px; height: 24px; }
@@ -170,6 +172,7 @@ They might well be outsourced to an external stylesheet of course.
  .svg-dots-dims { width: 24px; height: 24px; }
  .svg-download-dims { width: 24px; height: 24px; }
  .svg-download-cloud-dims { width: 24px; height: 24px; }
+ .svg-dragger-dims { width: 24px; height: 24px; }
  .svg-edit-dims { width: 24px; height: 24px; }
  .svg-encrypted-dims { width: 24px; height: 24px; }
  .svg-envelope-dims { width: 24px; height: 24px; }
@@ -254,6 +257,7 @@ They might well be outsourced to an external stylesheet of course.
  .svg-quote-dims { width: 24px; height: 24px; }
  .svg-radio-dims { width: 24px; height: 24px; }
  .svg-radio-checked-dims { width: 24px; height: 24px; }
+ .svg-radio-focus-dims { width: 24px; height: 24px; }
  .svg-receipt-dims { width: 24px; height: 24px; }
  .svg-refresh-dims { width: 24px; height: 24px; }
  .svg-repeat-dims { width: 24px; height: 24px; }
@@ -386,8 +390,10 @@ for further details on how to create this embeddable sprite variant.
      <symbol viewBox="0 0 24 24" id="check-thick" xmlns="http://www.w3.org/2000/svg"><path d="m17.439 6.388-7.64 7.65-3.57-3.57-2.26 2.27 5.83 5.82 9.9-9.91z"/></symbol>
      <symbol viewBox="0 0 24 24" id="checkbox" xmlns="http://www.w3.org/2000/svg"><path d="M6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49zm0-1.667h11.666V6.167H6.167z"/></symbol>
      <symbol viewBox="0 0 24 24" id="checkbox-checked" xmlns="http://www.w3.org/2000/svg"><path d="m10.833 15.5 5.875-5.875-1.166-1.167-4.709 4.709-2.375-2.375-1.166 1.166zm-4.666 4q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49z"/></symbol>
+     <symbol viewBox="0 0 24 24" id="checkbox-focus" xmlns="http://www.w3.org/2000/svg"><path d="M17.838 3.501c.71 0 1.38.28 1.88.78.51.51.791 1.18.791 1.891v11.676c0 .71-.28 1.38-.78 1.88-.51.51-1.18.791-1.891.791H6.172c-.71 0-1.38-.28-1.88-.78a2.658 2.658 0 0 1-.791-1.891V6.172c0-.71.28-1.38.78-1.88.51-.51 1.18-.791 1.891-.791h11.676m-.01-2.001H6.172c-1.24 0-2.41.49-3.301 1.37A4.62 4.62 0 0 0 1.51 6.163v11.676c0 1.24.49 2.41 1.37 3.301a4.629 4.629 0 0 0 3.292 1.361h11.676c1.24 0 2.41-.49 3.301-1.37a4.629 4.629 0 0 0 1.361-3.292V6.172c0-1.24-.49-2.41-1.37-3.301a4.62 4.62 0 0 0-3.292-1.361z"/></symbol>
      <symbol viewBox="0 0 24 24" id="checkbox-indeterminate" xmlns="http://www.w3.org/2000/svg"><path d="M7.833 12.833h8.334v-1.666H7.833zM6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49z"/></symbol>
-     <symbol viewBox="0 0 24 24" id="circle" xmlns="http://www.w3.org/2000/svg"><path d="M12 20.333a8.1 8.1 0 0 1-3.25-.656 8.4 8.4 0 0 1-2.646-1.781 8.4 8.4 0 0 1-1.781-2.646A8.1 8.1 0 0 1 3.667 12q0-1.73.656-3.25a8.4 8.4 0 0 1 1.781-2.646A8.4 8.4 0 0 1 8.75 4.323 8.1 8.1 0 0 1 12 3.667q1.73 0 3.25.656a8.4 8.4 0 0 1 2.646 1.781 8.4 8.4 0 0 1 1.781 2.646 8.1 8.1 0 0 1 .656 3.25 8.1 8.1 0 0 1-.656 3.25 8.4 8.4 0 0 1-1.781 2.646 8.4 8.4 0 0 1-2.646 1.781 8.1 8.1 0 0 1-3.25.656"/></symbol>
+     <symbol viewBox="0 0 24 24" id="circle" xmlns="http://www.w3.org/2000/svg"><path d="M12 20a7.8 7.8 0 0 1-3.12-.63 8.1 8.1 0 0 1-2.54-1.71 8.1 8.1 0 0 1-1.71-2.54A7.8 7.8 0 0 1 4 12q0-1.66.63-3.12t1.71-2.54a8.1 8.1 0 0 1 2.54-1.71A7.8 7.8 0 0 1 12 4a7.8 7.8 0 0 1 3.12.63q1.46.63 2.54 1.71t1.71 2.54T20 12a7.8 7.8 0 0 1-.63 3.12 8.1 8.1 0 0 1-1.71 2.54 8.1 8.1 0 0 1-2.54 1.71A7.8 7.8 0 0 1 12 20"/></symbol>
+     <symbol viewBox="0 0 24 24" id="circle-check" xmlns="http://www.w3.org/2000/svg"><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8m-1.17 11.5-3.54-3.54 1.17-1.17 2.37 2.38 4.71-4.71 1.17 1.17-5.88 5.88z"/></symbol>
      <symbol viewBox="0 0 24 24" id="circles-add" xmlns="http://www.w3.org/2000/svg"><path d="M11.375 8.25a3.125 3.125 0 1 1-6.25 0 3.125 3.125 0 0 1 6.25 0m4.375 3.125a3.125 3.125 0 1 0 0-6.25 3.125 3.125 0 0 0 0 6.25m-7.5 1.25a3.125 3.125 0 1 0 0 6.25 3.125 3.125 0 0 0 0-6.25m10 2.5h-1.875V13.25a.624.624 0 1 0-1.25 0v1.875H13.25a.624.624 0 1 0 0 1.25h1.875v1.875a.624.624 0 1 0 1.25 0v-1.875h1.875a.624.624 0 1 0 0-1.25"/></symbol>
      <symbol viewBox="0 0 24 24" id="clipboard" xmlns="http://www.w3.org/2000/svg"><path d="M6.167 19.8q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.467q0-.688.49-1.177.489-.49 1.177-.49h3.479q.229-.729.896-1.198.666-.469 1.458-.469a2.5 2.5 0 0 1 1.49.47q.656.467.885 1.197h3.458q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49zm0-1.667h11.666V6.467h-1.666v2.5H7.833v-2.5H6.167zM12 6.467q.354 0 .594-.24t.24-.594a.8.8 0 0 0-.24-.593A.8.8 0 0 0 12 4.8a.8.8 0 0 0-.594.24.8.8 0 0 0-.24.593q0 .354.24.594t.594.24"/></symbol>
      <symbol viewBox="0 0 24 24" id="clock" xmlns="http://www.w3.org/2000/svg"><path d="m14.75 15.917 1.167-1.167-3.084-3.083V7.833h-1.666v4.5zM12 20.333a8.1 8.1 0 0 1-3.25-.656 8.4 8.4 0 0 1-2.646-1.781 8.4 8.4 0 0 1-1.781-2.646A8.1 8.1 0 0 1 3.667 12q0-1.73.656-3.25a8.4 8.4 0 0 1 1.781-2.646A8.4 8.4 0 0 1 8.75 4.323 8.1 8.1 0 0 1 12 3.667q1.73 0 3.25.656a8.4 8.4 0 0 1 2.646 1.781 8.4 8.4 0 0 1 1.781 2.646 8.1 8.1 0 0 1 .656 3.25 8.1 8.1 0 0 1-.656 3.25 8.4 8.4 0 0 1-1.781 2.646 8.4 8.4 0 0 1-2.646 1.781 8.1 8.1 0 0 1-3.25.656"/></symbol>
@@ -404,6 +410,7 @@ for further details on how to create this embeddable sprite variant.
      <symbol viewBox="0 0 24 24" id="dots" xmlns="http://www.w3.org/2000/svg"><path d="M7 13.667q-.687 0-1.177-.49A1.6 1.6 0 0 1 5.333 12q0-.687.49-1.177T7 10.333t1.177.49.49 1.177-.49 1.177-1.177.49m5 0q-.687 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49m5 0q-.687 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49"/></symbol>
      <symbol viewBox="0 0 24 24" id="download" xmlns="http://www.w3.org/2000/svg"><path d="m12 15.333-4.167-4.166L9 9.958l2.167 2.167V5.333h1.666v6.792L15 9.958l1.167 1.209zm-5 3.334q-.687 0-1.177-.49A1.6 1.6 0 0 1 5.333 17v-2.5H7V17h10v-2.5h1.667V17q0 .687-.49 1.177t-1.177.49z"/></symbol>
      <symbol viewBox="0 0 24 24" id="download-cloud" xmlns="http://www.w3.org/2000/svg"><path d="M7.417 18.636q-1.896 0-3.24-1.313t-1.344-3.208q0-1.626.98-2.896a4.33 4.33 0 0 1 2.562-1.625A5.8 5.8 0 0 1 8.156 6.76a5.7 5.7 0 0 1 3.01-1.395v6.729l-1.333-1.292-1.166 1.167L12 15.302l3.333-3.333-1.166-1.167-1.334 1.292v-6.73q2.146.292 3.573 1.928t1.427 3.844a3.64 3.64 0 0 1 2.386 1.239q.948 1.073.948 2.51 0 1.563-1.094 2.657-1.095 1.093-2.656 1.093z"/></symbol>
+     <symbol viewBox="0 0 24 24" id="dragger" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 18.667q-.687 0-1.177-.49A1.6 1.6 0 0 1 7.833 17q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49m5 0q-.687 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49m-5-5q-.687 0-1.177-.49A1.6 1.6 0 0 1 7.833 12q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49m5 0q-.687 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49m-5-5q-.687 0-1.177-.49A1.6 1.6 0 0 1 7.833 7q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49m5 0q-.687 0-1.177-.49A1.6 1.6 0 0 1 12.833 7q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49"/></symbol>
      <symbol viewBox="0 0 24 24" id="edit" xmlns="http://www.w3.org/2000/svg"><path d="M6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h7.437l-1.666 1.667H6.167v11.666h11.666v-5.791l1.667-1.667v7.458q0 .688-.49 1.177-.489.49-1.177.49zm3.333-5v-3.542l7.646-7.645q.25-.25.562-.376.313-.124.625-.124a1.65 1.65 0 0 1 1.188.5L20.687 4.5q.23.25.355.552.125.301.125.615 0 .312-.115.614a1.6 1.6 0 0 1-.364.552L13.042 14.5zm1.667-1.667h1.166L17.167 8l-.584-.583-.604-.584-4.812 4.813z"/></symbol>
      <symbol viewBox="0 0 24 24" id="encrypted" xmlns="http://www.w3.org/2000/svg"><path d="M10.75 14.833h2.5l-.48-2.687q.418-.209.657-.604.24-.396.24-.875 0-.688-.49-1.177A1.6 1.6 0 0 0 12 9q-.687 0-1.177.49-.49.489-.49 1.177 0 .479.24.875t.656.604zM12 20.667q-2.895-.73-4.781-3.323-1.886-2.595-1.886-5.76V6.5L12 4l6.667 2.5v5.083q0 3.167-1.886 5.76-1.885 2.595-4.781 3.324"/></symbol>
      <symbol viewBox="0 0 24 24" id="envelope" xmlns="http://www.w3.org/2000/svg"><path d="M5.333 18.667q-.687 0-1.177-.49A1.6 1.6 0 0 1 3.666 17V7q0-.687.49-1.177t1.177-.49h13.334q.687 0 1.177.49T20.334 7v10q0 .687-.49 1.177t-1.177.49zM12 12.833l6.667-4.166V7L12 11.167 5.333 7v1.667z"/></symbol>
@@ -486,8 +493,9 @@ for further details on how to create this embeddable sprite variant.
      <symbol viewBox="0 0 24 24" id="prohibit" xmlns="http://www.w3.org/2000/svg"><path d="M12 20.333a8.1 8.1 0 0 1-3.25-.656 8.4 8.4 0 0 1-2.646-1.781 8.4 8.4 0 0 1-1.781-2.646A8.1 8.1 0 0 1 3.667 12q0-1.73.656-3.25a8.4 8.4 0 0 1 1.781-2.646A8.4 8.4 0 0 1 8.75 4.323 8.1 8.1 0 0 1 12 3.667q1.73 0 3.25.656a8.4 8.4 0 0 1 2.646 1.781 8.4 8.4 0 0 1 1.781 2.646 8.1 8.1 0 0 1 .656 3.25 8.1 8.1 0 0 1-.656 3.25 8.4 8.4 0 0 1-1.781 2.646 8.4 8.4 0 0 1-2.646 1.781 8.1 8.1 0 0 1-3.25.656m0-1.666a6.5 6.5 0 0 0 2.167-.365 6.6 6.6 0 0 0 1.916-1.052L6.75 7.917a6.6 6.6 0 0 0-1.052 1.916A6.5 6.5 0 0 0 5.333 12q0 2.792 1.938 4.73Q9.208 18.665 12 18.666m5.25-2.584a6.6 6.6 0 0 0 1.052-1.916A6.5 6.5 0 0 0 18.667 12q0-2.792-1.938-4.73Q14.792 5.335 12 5.334q-1.125 0-2.167.365A6.6 6.6 0 0 0 7.917 6.75z"/></symbol>
      <symbol viewBox="0 0 24 24" id="question-mark" xmlns="http://www.w3.org/2000/svg"><path d="M10.833 14.917q0-1.687.303-2.427.301-.74 1.28-1.615.855-.75 1.303-1.302t.448-1.26q0-.855-.573-1.417T12 6.333q-1.062 0-1.614.646-.553.645-.782 1.313l-2.146-.917q.438-1.334 1.605-2.312 1.165-.98 2.937-.98 2.187 0 3.365 1.22 1.176 1.218 1.177 2.926 0 1.042-.448 1.782t-1.407 1.677q-1.02.978-1.239 1.49-.219.51-.219 1.739zm1.167 5q-.687 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177q0-.687.49-1.177t1.177-.49 1.177.49.49 1.177-.49 1.177-1.177.49"/></symbol>
      <symbol viewBox="0 0 24 24" id="quote" xmlns="http://www.w3.org/2000/svg"><path d="m6.333 17 1.917-3.333a3.2 3.2 0 0 1-2.354-.98 3.2 3.2 0 0 1-.98-2.354q0-1.374.98-2.354A3.2 3.2 0 0 1 8.25 7a3.2 3.2 0 0 1 2.354.98 3.2 3.2 0 0 1 .98 2.353q0 .48-.115.886t-.344.781L8.25 17zm7.5 0 1.917-3.333a3.2 3.2 0 0 1-2.354-.98 3.2 3.2 0 0 1-.98-2.354q0-1.374.98-2.354A3.2 3.2 0 0 1 15.75 7a3.2 3.2 0 0 1 2.354.98 3.2 3.2 0 0 1 .98 2.353q0 .48-.115.886t-.344.781l-2.875 5z"/></symbol>
-     <symbol viewBox="0 0 24 24" id="radio" xmlns="http://www.w3.org/2000/svg"><path d="M12 20.333a8.1 8.1 0 0 1-3.25-.656 8.4 8.4 0 0 1-2.646-1.781 8.4 8.4 0 0 1-1.781-2.646A8.1 8.1 0 0 1 3.667 12q0-1.73.656-3.25a8.4 8.4 0 0 1 1.781-2.646A8.4 8.4 0 0 1 8.75 4.323 8.1 8.1 0 0 1 12 3.667q1.73 0 3.25.656a8.4 8.4 0 0 1 2.646 1.781 8.4 8.4 0 0 1 1.781 2.646 8.1 8.1 0 0 1 .656 3.25 8.1 8.1 0 0 1-.656 3.25 8.4 8.4 0 0 1-1.781 2.646 8.4 8.4 0 0 1-2.646 1.781 8.1 8.1 0 0 1-3.25.656m0-1.666q2.792 0 4.73-1.938 1.936-1.937 1.937-4.729 0-2.791-1.938-4.73Q14.792 5.335 12 5.334q-2.791 0-4.73 1.938Q5.335 9.209 5.334 12q0 2.792 1.938 4.73Q9.209 18.665 12 18.666"/></symbol>
-     <symbol viewBox="0 0 24 24" id="radio-checked" xmlns="http://www.w3.org/2000/svg"><path d="M12 16.167q1.729 0 2.948-1.22Q16.167 13.73 16.167 12t-1.22-2.948T12 7.833t-2.948 1.22Q7.834 10.27 7.833 12q0 1.729 1.22 2.948Q10.27 16.167 12 16.167m0 4.166a8.1 8.1 0 0 1-3.25-.656 8.4 8.4 0 0 1-2.646-1.781 8.4 8.4 0 0 1-1.781-2.646A8.1 8.1 0 0 1 3.667 12q0-1.73.656-3.25a8.4 8.4 0 0 1 1.781-2.646A8.4 8.4 0 0 1 8.75 4.323 8.1 8.1 0 0 1 12 3.667q1.73 0 3.25.656a8.4 8.4 0 0 1 2.646 1.781 8.4 8.4 0 0 1 1.781 2.646 8.1 8.1 0 0 1 .656 3.25 8.1 8.1 0 0 1-.656 3.25 8.4 8.4 0 0 1-1.781 2.646 8.4 8.4 0 0 1-2.646 1.781 8.1 8.1 0 0 1-3.25.656m0-1.666q2.792 0 4.73-1.938 1.936-1.937 1.937-4.729 0-2.791-1.938-4.73Q14.792 5.335 12 5.334q-2.791 0-4.73 1.938Q5.335 9.209 5.334 12q0 2.792 1.938 4.73Q9.209 18.665 12 18.666"/></symbol>
+     <symbol viewBox="0 0 24 24" id="radio" xmlns="http://www.w3.org/2000/svg"><path d="M12 6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6 2.69-6 6-6m0-2c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8"/></symbol>
+     <symbol viewBox="0 0 24 24" id="radio-checked" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8"/><path fill-rule="evenodd" d="M12 4c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8 3.58-8 8-8m0 2c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6" clip-rule="evenodd"/></symbol>
+     <symbol viewBox="0 0 24 24" id="radio-focus" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c4.96 0 9 4.04 9 9s-4.04 9-9 9-9-4.04-9-9 4.04-9 9-9m0-2C5.92 1 1 5.92 1 12s4.92 11 11 11 11-4.92 11-11S18.08 1 12 1"/></symbol>
      <symbol viewBox="0 0 24 24" id="receipt" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M19.44 4.749c-.23-.23-.53-.35-.85-.35H5.39c-.32 0-.62.13-.85.35-.23.23-.35.53-.35.85v13.4a.63.63 0 0 0 .29.51c.09.05.19.08.29.09q.15 0 .3-.06l2.13-1.07 2.13 1.07a.63.63 0 0 0 .54 0l2.13-1.07 2.13 1.07a.63.63 0 0 0 .54 0l2.13-1.07 2.13 1.07q.135.075.3.06c.1 0 .2-.04.29-.09s.16-.13.21-.22.08-.19.08-.29v-13.4c0-.32-.13-.62-.35-.85zm-4.95 10.73h-7v-1.25h7zm2-3.25h-9v-1.25h9zm0-3.25h-9v-1.25h9z" clip-rule="evenodd"/></symbol>
      <symbol viewBox="0 0 24 24" id="refresh" xmlns="http://www.w3.org/2000/svg"><path d="M12 18.667q-2.792 0-4.73-1.938Q5.335 14.792 5.334 12q0-2.791 1.938-4.73Q9.208 5.335 12 5.334q1.437 0 2.75.594A6.35 6.35 0 0 1 17 7.625V5.333h1.667v5.834h-5.834V9.5h3.5a4.86 4.86 0 0 0-1.823-1.833A4.94 4.94 0 0 0 12 7Q9.916 7 8.458 8.458 7 9.917 7 12q0 2.084 1.458 3.542Q9.917 17 12 17q1.605 0 2.896-.917a4.84 4.84 0 0 0 1.812-2.416h1.75a6.58 6.58 0 0 1-2.375 3.604Q14.292 18.667 12 18.667"/></symbol>
      <symbol viewBox="0 0 24 24" id="repeat" xmlns="http://www.w3.org/2000/svg"><path d="M7.833 20.333 4.5 17l3.333-3.333L9 14.875l-1.292 1.292h8.459v-3.334h1.666v5H7.708L9 19.125zm-1.666-9.166v-5h10.125L15 4.875l1.167-1.208L19.5 7l-3.333 3.333L15 9.125l1.292-1.292H7.833v3.334z"/></symbol>
@@ -954,6 +962,14 @@ embedded above. They may be styled via CSS.
                     </div>
                     <h2>checkbox-checked, </h2>
                 </li>
+             <li title="checkbox-focus">
+                    <div class="icon-box">
+                        <svg class="svg-checkbox-focus-dims">
+                            <use xlink:href="#checkbox-focus"></use>
+                        </svg>
+                    </div>
+                    <h2>checkbox-focus, </h2>
+                </li>
              <li title="checkbox-indeterminate">
                     <div class="icon-box">
                         <svg class="svg-checkbox-indeterminate-dims">
@@ -969,6 +985,14 @@ embedded above. They may be styled via CSS.
                         </svg>
                     </div>
                     <h2>circle, </h2>
+                </li>
+             <li title="circle-check">
+                    <div class="icon-box">
+                        <svg class="svg-circle-check-dims">
+                            <use xlink:href="#circle-check"></use>
+                        </svg>
+                    </div>
+                    <h2>circle-check, </h2>
                 </li>
              <li title="circles-add">
                     <div class="icon-box">
@@ -1097,6 +1121,14 @@ embedded above. They may be styled via CSS.
                         </svg>
                     </div>
                     <h2>download-cloud, </h2>
+                </li>
+             <li title="dragger">
+                    <div class="icon-box">
+                        <svg class="svg-dragger-dims">
+                            <use xlink:href="#dragger"></use>
+                        </svg>
+                    </div>
+                    <h2>dragger, </h2>
                 </li>
              <li title="edit">
                     <div class="icon-box">
@@ -1769,6 +1801,14 @@ embedded above. They may be styled via CSS.
                         </svg>
                     </div>
                     <h2>radio-checked, </h2>
+                </li>
+             <li title="radio-focus">
+                    <div class="icon-box">
+                        <svg class="svg-radio-focus-dims">
+                            <use xlink:href="#radio-focus"></use>
+                        </svg>
+                    </div>
+                    <h2>radio-focus, </h2>
                 </li>
              <li title="receipt">
                     <div class="icon-box">
@@ -2677,6 +2717,14 @@ SVG sprite. They may be styled via CSS.
                     </div>
                     <h2>checkbox-checked</h2>
                 </li>
+             <li title="checkbox-focus">
+                    <div class="icon-box">
+                        <svg class="svg-checkbox-focus-dims">
+                            <use xlink:href="sprite.svg#checkbox-focus"></use>
+                        </svg>
+                    </div>
+                    <h2>checkbox-focus</h2>
+                </li>
              <li title="checkbox-indeterminate">
                     <div class="icon-box">
                         <svg class="svg-checkbox-indeterminate-dims">
@@ -2692,6 +2740,14 @@ SVG sprite. They may be styled via CSS.
                         </svg>
                     </div>
                     <h2>circle</h2>
+                </li>
+             <li title="circle-check">
+                    <div class="icon-box">
+                        <svg class="svg-circle-check-dims">
+                            <use xlink:href="sprite.svg#circle-check"></use>
+                        </svg>
+                    </div>
+                    <h2>circle-check</h2>
                 </li>
              <li title="circles-add">
                     <div class="icon-box">
@@ -2820,6 +2876,14 @@ SVG sprite. They may be styled via CSS.
                         </svg>
                     </div>
                     <h2>download-cloud</h2>
+                </li>
+             <li title="dragger">
+                    <div class="icon-box">
+                        <svg class="svg-dragger-dims">
+                            <use xlink:href="sprite.svg#dragger"></use>
+                        </svg>
+                    </div>
+                    <h2>dragger</h2>
                 </li>
              <li title="edit">
                     <div class="icon-box">
@@ -3493,6 +3557,14 @@ SVG sprite. They may be styled via CSS.
                     </div>
                     <h2>radio-checked</h2>
                 </li>
+             <li title="radio-focus">
+                    <div class="icon-box">
+                        <svg class="svg-radio-focus-dims">
+                            <use xlink:href="sprite.svg#radio-focus"></use>
+                        </svg>
+                    </div>
+                    <h2>radio-focus</h2>
+                </li>
              <li title="receipt">
                     <div class="icon-box">
                         <svg class="svg-receipt-dims">
@@ -4013,7 +4085,7 @@ SVG sprite. They may be styled via CSS.
 
         </section>
         <footer>
-            <p>Generated at Fri, 07 Mar 2025 20:56:15 GMT by <a href="https://github.com/svg-sprite/svg-sprite" target="_blank" rel="noopener noreferrer">svg-sprite</a>.</p>
+            <p>Generated at Mon, 28 Apr 2025 19:13:46 GMT by <a href="https://github.com/svg-sprite/svg-sprite" target="_blank" rel="noopener noreferrer">svg-sprite</a>.</p>
         </footer>
     </body>
 </html>
