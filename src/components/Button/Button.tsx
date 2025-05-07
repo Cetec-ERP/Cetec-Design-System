@@ -4,7 +4,6 @@ import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
 import { ButtonContent } from './ButtonContent';
 import { splitProps } from '~/utils/splitProps';
-import { buttonTypes } from '~/recipes/button';
 
 export type ButtonProps = BoxProps &
   ButtonVariantProps & {
@@ -13,18 +12,17 @@ export type ButtonProps = BoxProps &
     className?: string;
     children?: string | ReactNode;
     disabled?: boolean;
-    type?: buttonTypes;
+    type?: 'submit' | 'reset' | 'button';
   };
 
 export const Button: FC<ButtonProps> = ({
   variant,
   size,
   href,
-  className: customeClassName = '',
   children,
   loading,
   disabled,
-  type,
+  type = 'button',
   ...props
 }: ButtonProps) => {
   const trulyDisabled = loading || disabled;
@@ -36,8 +34,8 @@ export const Button: FC<ButtonProps> = ({
       as={href ? 'a' : 'button'}
       disabled={trulyDisabled}
       aria-disabled={trulyDisabled}
-      className={cx(button({ variant, size }), className, customeClassName)}
-      {...(href ? { href } : { type: type || 'button' })}
+      className={cx(button({ variant, size }), className)}
+      {...(href ? { href } : { type })}
       {...otherProps}
     >
       <ButtonContent loading={!!loading}>{children}</ButtonContent>
