@@ -9,7 +9,6 @@ export type ButtonProps = BoxProps &
   ButtonVariantProps & {
     href?: string;
     loading?: boolean;
-    className?: string;
     children?: string | ReactNode;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
