@@ -20,7 +20,7 @@ import {
   spinnerRecipe,
   preRecipe,
   codeRecipe,
-  boxRecipe
+  boxRecipe,
 } from './src/recipes/index';
 
 // using pandas methods to define type-safe tokens
@@ -55,10 +55,10 @@ const theme = {
       utility: {
         shadowColor: {
           value: {
-            base: '{colors.slate.90/10}',
-            _dark: '{colors.slate.100/10}'
-          }
-        }
+            base: '{colors.slate.90/20}',
+            _dark: '{colors.slate.100/40}',
+          },
+        },
       },
     },
   }),
@@ -121,7 +121,7 @@ export default defineConfig({
         box: boxRecipe,
       },
       slotRecipes: {
-        checkbox: checkBoxRecipe
+        checkbox: checkBoxRecipe,
       },
     },
   },
@@ -130,7 +130,8 @@ export default defineConfig({
     icon: {
       properties: {
         size: {
-          type: 'enum', value: Object.keys(tokens.sizes)
+          type: 'enum',
+          value: Object.keys(tokens.sizes),
         },
       },
       transform(props) {
@@ -138,7 +139,7 @@ export default defineConfig({
         return {
           width: size,
           height: size,
-          ...rest
+          ...rest,
         };
       },
     },
