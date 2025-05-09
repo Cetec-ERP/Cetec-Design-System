@@ -20,7 +20,6 @@ export type IconButtonProps = BoxProps &
   IconButtonVariantProps & {
     href?: string;
     loading?: boolean;
-    className?: string;
     children: ReactElement<typeof Icon>;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
