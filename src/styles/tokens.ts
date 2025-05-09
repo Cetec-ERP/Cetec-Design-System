@@ -253,20 +253,14 @@ export const lineHeights = {
   none: {
     value: '1',
   },
-  tighter: {
-    value: '1em + 0.125rem',
-  },
   tight: {
-    value: '1em + 0.25rem',
+    value: '1em + 0.25rem', // 4
   },
   default: {
-    value: '1em + 0.5rem',
+    value: '1em + 0.5rem', // 8
   },
   loose: {
-    value: '1em + 0.75rem',
-  },
-  looser: {
-    value: '1em + 0.875rem',
+    value: '1em + 0.75rem', // 12
   },
 };
 
@@ -284,19 +278,19 @@ export const radii = {
 export const shadows = {
   low: {
     value:
-      '0px 1px 1px {colors.utility.shadowColor}, 0px 2px 2px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 1px 1px {colors.utility.shadowColor}, 0 2px 3px {colors.utility.shadowColor}',
   },
   medium: {
     value:
-      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 2px 2px {colors.utility.shadowColor}, 0 4px 4px {colors.utility.shadowColor}, 0 8px 8px {colors.utility.shadowColor}',
   },
   high: {
     value:
-      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}, 0px 16px 16px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 2px 4px {colors.utility.shadowColor}, 0 6px 8px 1px {colors.utility.shadowColor}, 0 14px 16px 2px {colors.utility.shadowColor}',
   },
   inset: {
     value:
-      'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}',
+      'inset 0 0 2px {colors.utility.shadowColor}, inset 0 2px 1px {colors.utility.shadowColor}, inset 0 3px 2px {colors.utility.shadowColor}',
   },
 };
 
