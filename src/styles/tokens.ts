@@ -278,19 +278,19 @@ export const radii = {
 export const shadows = {
   low: {
     value:
-      '0px 1px 1px {colors.utility.shadowColor}, 0px 2px 2px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 1px 1px {colors.utility.shadowColor}, 0 2px 3px {colors.utility.shadowColor}',
   },
   medium: {
     value:
-      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 2px 2px {colors.utility.shadowColor}, 0 4px 4px {colors.utility.shadowColor}, 0 8px 8px {colors.utility.shadowColor}',
   },
   high: {
     value:
-      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}, 0px 16px 16px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 2px 4px {colors.utility.shadowColor}, 0 6px 8px 1px {colors.utility.shadowColor}, 0 14px 16px 2px {colors.utility.shadowColor}',
   },
   inset: {
     value:
-      'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}',
+      'inset 0 0 2px {colors.utility.shadowColor}, inset 0 2px 1px {colors.utility.shadowColor}, inset 0 3px 2px {colors.utility.shadowColor}',
   },
 };
 
