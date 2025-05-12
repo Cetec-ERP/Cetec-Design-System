@@ -59,7 +59,7 @@ const theme = {
       brand: tokens.colors.brand,
       success: tokens.colors.status.success,
       warning: tokens.colors.status.warning,
-      danger: tokens.colors.status.danger,
+      error: tokens.colors.status.error,
       utility: {
         shadowColor: {
           value: {

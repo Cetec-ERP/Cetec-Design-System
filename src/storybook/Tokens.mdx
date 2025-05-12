@@ -11,6 +11,7 @@ import * as tokens from '../styles/tokens';
 <Meta title="Tokens" />
 
 # Color Tokens
+
 <Unstyled>
 <Heading>Slate</Heading>
   <ColorSwatches color={'slate'} tokens={tokens.colors.slate} />
@@ -41,33 +42,33 @@ import * as tokens from '../styles/tokens';
     }}
   />
 
-  <ColorItem
-    title="Status"
-    subtitle="Success"
-    colors={{
-      Lighter: tokens.colors.green['2'].value,
-      Light: tokens.colors.green['10'].value,
-      Base: tokens.colors.green['40'].value,
-      Dark: tokens.colors.green['60'].value,
-      Darker: tokens.colors.green['70'].value,
-    }}
-  />
+<ColorItem
+  title="Status"
+  subtitle="Success"
+  colors={{
+    Lighter: tokens.colors.green['2'].value,
+    Light: tokens.colors.green['10'].value,
+    Base: tokens.colors.green['40'].value,
+    Dark: tokens.colors.green['60'].value,
+    Darker: tokens.colors.green['70'].value,
+  }}
+/>
+
+<ColorItem
+  title="Status"
+  subtitle="Warning"
+  colors={{
+    Lighter: tokens.colors.yellow['2'].value,
+    Light: tokens.colors.yellow['10'].value,
+    Base: tokens.colors.yellow['40'].value,
+    Dark: tokens.colors.yellow['60'].value,
+    Darker: tokens.colors.yellow['70'].value,
+  }}
+/>
 
   <ColorItem
     title="Status"
-    subtitle="Warning"
-    colors={{
-      Lighter: tokens.colors.yellow['2'].value,
-      Light: tokens.colors.yellow['10'].value,
-      Base: tokens.colors.yellow['40'].value,
-      Dark: tokens.colors.yellow['60'].value,
-      Darker: tokens.colors.yellow['70'].value,
-    }}
-  />
-
-  <ColorItem
-    title="Status"
-    subtitle="Danger"
+    subtitle="error"
     colors={{
       Lighter: tokens.colors.red['2'].value,
       Light: tokens.colors.red['10'].value,
@@ -108,8 +109,8 @@ import * as tokens from '../styles/tokens';
           <Text as="span" underline>
             whales
           </Text>{' '}
-          i tree under him given set set meat midst morning give image
-          forth divided moving Also fill dry she'd have.
+          i tree under him given set set meat midst morning give image forth
+          divided moving Also fill dry she'd have.
         </Text>
       </VStack>
       <Pre>{`<Text>
@@ -119,8 +120,7 @@ import * as tokens from '../styles/tokens';
 <Text as="span" underline>whales</Text>
 </Text>`}</Pre>
       <Text font="mono">
-        Signs night have sixth hath that likeness us fill you're
-        subdue fowl.
+        Signs night have sixth hath that likeness us fill you're subdue fowl.
       </Text>
       <Pre>{`<Text font="mono">...</Text>`}</Pre>
       <Box gridColumn={'1 / -1'} mt={'32'}>
@@ -141,11 +141,25 @@ import * as tokens from '../styles/tokens';
           Links
         </Heading>
       </Box>
-      <Text>Internal:&emsp;<Link href="https://cetecerp.com">Cetec ERP</Link></Text>
+      <Text>
+        Internal:&emsp;<Link href="https://cetecerp.com">Cetec ERP</Link>
+      </Text>
       <Pre>{'<Link href="https://cetecerp.com">Cetec ERP</Link>'}</Pre>
-      <Text>External:&emsp;<Link href="https://cetecerp.com" external>Cetec ERP</Link></Text>
+      <Text>
+        External:&emsp;
+        <Link href="https://cetecerp.com" external>
+          Cetec ERP
+        </Link>
+      </Text>
       <Pre>{'<Link href="https://cetecerp.com" external>Cetec ERP</Link>'}</Pre>
-      <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+      <Text gridColumn={'1 / -1'}>
+        Signs night have sixth hath that likeness us fill{' '}
+        <Link href="https://cetecerp.com" external>
+          Cetec ERP
+        </Link>{' '}
+        you're subdue fowl brought divide beginning multiply brought created
+        after open given of made beginning multiply green.
+      </Text>
     </Grid>
   </VStack>
 </Section>
