@@ -3,7 +3,8 @@ import {
   defineTokens,
   defineSemanticTokens,
 } from '@pandacss/dev';
-// import pandaPandaPreset from '@pandacss/preset-panda';
+import pandaBasePreset from '@pandacss/preset-base';
+
 import * as tokens from './src/styles/tokens';
 import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
@@ -20,8 +21,15 @@ import {
   spinnerRecipe,
   preRecipe,
   codeRecipe,
-  boxRecipe
+  boxRecipe,
 } from './src/recipes/index';
+
+// https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
+// omit default patterns here
+const { box, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
+const pandaBasePresetConditions = pandaBasePreset.conditions;
+const pandaBasePresetUtilities = pandaBasePreset.utilities;
+const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
 // using pandas methods to define type-safe tokens
 const theme = {
@@ -57,16 +65,17 @@ const theme = {
         shadowColor: {
           value: {
             base: '{colors.slate.90/10}',
-            _dark: '{colors.slate.100/10}'
-          }
-        }
+            _dark: '{colors.slate.100/10}',
+          },
+        },
       },
     },
   }),
 };
 
 export default defineConfig({
-  presets: ['@pandacss/dev/presets', '@pandacss/preset-base'],
+  presets: ['@pandacss/dev/presets'],
+  eject: true,
   gitignore: true,
   jsxFramework: 'react',
   jsxStyleProps: 'all',
@@ -123,16 +132,21 @@ export default defineConfig({
         box: boxRecipe,
       },
       slotRecipes: {
-        checkbox: checkBoxRecipe
+        checkbox: checkBoxRecipe,
       },
     },
+  },
+
+  utilities: {
+    ...pandaBasePresetUtilities,
   },
 
   patterns: {
     icon: {
       properties: {
         size: {
-          type: 'enum', value: Object.keys(tokens.sizes)
+          type: 'enum',
+          value: Object.keys(tokens.sizes),
         },
       },
       transform(props) {
@@ -140,11 +154,12 @@ export default defineConfig({
         return {
           width: size,
           height: size,
-          ...rest
+          ...rest,
         };
       },
     },
     extend: {
+      ...pandaBasePresetPatterns,
       container: {
         transform(props) {
           return Object.assign(
@@ -163,6 +178,7 @@ export default defineConfig({
   },
 
   globalCss: {
+    ...pandaBasePresetGlobalCss,
     ...globalCss,
     html: {
       '--global-font-heading': 'fonts.heading',
@@ -171,6 +187,7 @@ export default defineConfig({
     },
   },
   conditions: {
+    ...pandaBasePresetConditions,
     // Core conditions pulled from panda preset-base package
     ...conditions,
 

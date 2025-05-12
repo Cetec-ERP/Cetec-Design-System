@@ -4,10 +4,7 @@ import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
 
 export type SpinnerProps = Omit<BoxProps, keyof SpinnerVariantProps> &
-  SpinnerVariantProps & {
-    size?: 'medium' | 'small' | 'large';
-    className?: string;
-  };
+  SpinnerVariantProps;
 
 export const Spinner: React.FC<SpinnerProps> = ({
   size,

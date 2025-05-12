@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react';
-import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
+import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
+import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
 import { Button } from '~/components/Button';
 import { IconButton } from '~/components/IconButton';
@@ -47,6 +48,12 @@ const ButtonSection: React.FC = () => {
           <Button variant="ghost">Ghost</Button>
           <Button variant="cta">CTA</Button>
           <Button variant="danger">Danger</Button>
+          <Button size="large">
+            <Icon name="arrow-left" /> Button
+          </Button>
+          <Button size="small">
+            Button <Icon name="arrow-right" />
+          </Button>
         </HStack>
         <HStack>
           <IconButton variant="ghost">
@@ -58,16 +65,6 @@ const ButtonSection: React.FC = () => {
           <IconButton variant="primary" size="large">
             <Icon name="arrow-right" />
           </IconButton>
-          <IconButton
-            iconName="arrow-left"
-            buttonText="Button"
-            iconPosition="left"
-          />
-          <IconButton
-            iconName="arrow-right"
-            buttonText="Button"
-            iconPosition="right"
-          />
         </HStack>
         <HStack>
           <Button variant="primary" loading>
