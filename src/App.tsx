@@ -11,6 +11,7 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
+import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
@@ -252,6 +253,20 @@ const AppContent = () => {
                 <Text>Large</Text>
               </VStack>
             </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Divider</Heading>
+              <VStack>
+                <VStack width='100%'>
+                  <Divider direction={'horizontal'}/>
+                  <Text>Horizontal (default)</Text>
+                </VStack>
+                <HStack height='100px'>
+                  <Divider direction={'vertical'} />
+                  {/* <Divider height="100%" direction="vertical" color={{ base: 'blue.40', _dark: 'blue.30' }} /> */}
+                  <Text>Vertical</Text>
+                </HStack>
+              </VStack>
           </Section>
           <Section>
             <Heading level="h2">Icons</Heading>
