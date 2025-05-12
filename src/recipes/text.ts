@@ -173,7 +173,10 @@ export const textRecipe = defineRecipe({
   compoundVariants: textCompoundVariants,
   defaultVariants: {
     family: 'body',
-    size: 'md'
+    bold: false,
+    italic: false,
+    underline: false,
+    size: 'md',
   },
 });
 
