@@ -2,9 +2,7 @@
 
 import { defineTextStyles, defineStyles } from '@pandacss/dev';
 
-
-// don't delete or change baseColor directly they maybe used in colors const later on
-const baseColors = {
+export const colors = {
   transparent: { value: 'transparent' },
   current: { value: 'currentColor' },
   slate: {
@@ -137,46 +135,13 @@ const baseColors = {
     '80': { value: '#4F0004' },
     '90': { value: '#200000' },
   },
-}
-
-export const colors = {
-  ...baseColors,
-  brand: {
-    slate: baseColors.slate['90'],
-    gold: baseColors.gold['20'],
-  },
-  status: {
-    success: {
-      lighter: baseColors.green['2'],
-      light: baseColors.green['10'],
-      base: baseColors.green['40'],
-      dark: baseColors.green['60'],
-      darker: baseColors.green['70'],
-    },
-    warning: {
-      lighter: baseColors.yellow['2'],
-      light: baseColors.yellow['10'],
-      base: baseColors.yellow['40'],
-      dark: baseColors.yellow['60'],
-      darker: baseColors.yellow['70'],
-    },
-    error: {
-      lighter: baseColors.red['2'],
-      light: baseColors.red['10'],
-      base: baseColors.red['50'],
-      dark: baseColors.red['60'],
-      darker: baseColors.red['70'],
-    },
-  },
 };
-
-// font-variation-settings: '"CRSV" 0, "CASL" 0, "MONO" 0, "slnt" 0, "wght" 0';
 
 export const fonts = {
   heading: {
     value: "'Ruda Variable', Source Sans, Geneva, Tahoma, Verdana, sans-serif;",
   },
-  sans: { value: "'Recursive Variable', Geneva, Tahoma, Verdana, sans-serif;" },
+  body: { value: "'Recursive Variable', Geneva, Tahoma, Verdana, sans-serif;" },
   mono: {
     value:
       "'Recursive Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace;",
@@ -505,7 +470,7 @@ const baseHeadingStyles = defineStyles({
 
 const baseBodyTextStyles = defineStyles({
   value: {
-    fontFamily: 'sans',
+    fontFamily: 'body',
     fontWeight: 'normal',
     color: { base: 'slate.60', _dark: 'slate.20' },
     lineHeight: 'default',
