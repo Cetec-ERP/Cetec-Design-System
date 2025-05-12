@@ -13,9 +13,9 @@ export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
 export const Text: React.FC<TextProps> = ({
   as = 'p',
   family,
-  italic = false,
-  bold = false,
-  underline = false,
+  italic,
+  bold,
+  underline,
   size,
   children,
   ...props
