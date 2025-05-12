@@ -357,25 +357,25 @@ export const letterSpacings = {
 
 export const blurs = {
   sm: {
-    value: '4px',
+    value: '{sizes.4}',
   },
   base: {
-    value: '8px',
+    value: '{sizes.8}',
   },
   md: {
-    value: '12px',
+    value: '{sizes.12}',
   },
   lg: {
-    value: '16px',
+    value: '{sizes.16}',
   },
   xl: {
-    value: '24px',
+    value: '{sizes.24}',
   },
   '2xl': {
-    value: '40px',
+    value: '{sizes.40}',
   },
   '3xl': {
-    value: '64px',
+    value: '{sizes.64}',
   },
 };
 
@@ -447,18 +447,11 @@ export const breakpoints = {
   '2xl': '1536px',
 };
 
-// export const filters = {
-//   invert: { value: 'invert(1)' },
-//   none: { value: 'none' },
-// };
+export const filters = {
+  invert: { value: 'invert(1)' },
+  none: { value: 'none' },
+};
 
-// export const textTransform = {
-//   uppercase: { value: 'uppercase' },
-//   lowercase: { value: 'lowercase' },
-//   capitalize: { value: 'capitalize' },
-//   none: { value: 'none' },
-// };
-// Why are we using this?
 const baseHeadingStyles = defineStyles({
   value: {
     fontFamily: 'heading',
