@@ -6,7 +6,7 @@ import { splitProps } from '~/utils/splitProps';
 
 export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
   TextVariantProps & {
-    children?: string | ReactNode;
+    children: string | ReactNode;
     as?: ElementType;
   };
 
