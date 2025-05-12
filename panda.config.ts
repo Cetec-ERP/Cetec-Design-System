@@ -63,8 +63,8 @@ const theme = {
       utility: {
         shadowColor: {
           value: {
-            base: '{colors.slate.90/10}',
-            _dark: '{colors.slate.100/10}',
+            base: '{colors.slate.90/20}',
+            _dark: '{colors.slate.100/40}',
           },
         },
       },
