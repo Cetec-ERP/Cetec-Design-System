@@ -57,7 +57,7 @@ export const checkBoxRecipe = defineSlotRecipe({
             _error: {
               display: "inline-grid",
               "& ~ svg": {
-                fill: { base: 'red.50', _dark: 'red.50' },
+                fill: 'status.error.default',
               }
             },
             _focusVisible: {
