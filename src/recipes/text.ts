@@ -11,6 +11,14 @@ const textBase = {
 
 const textVariants = {
   family: {
+    display: {
+      fontFamily: 'heading',
+      fontWeight: "black",
+      color: { 
+        base: 'slate.90', 
+        _dark: 'slate.5'
+      }, 
+    },
     heading: { 
       fontFamily: 'heading',
       fontWeight: "black",
@@ -52,12 +60,32 @@ const textVariants = {
 export type TextSizes = "lg" | "md" | "sm" | "xs"
 
 type TextCompoundVariants = {
-  family?: OneOrMore<"heading" | "mono" | "body">;
+  family?: OneOrMore<"display" |"heading" | "mono" | "body">;
   size?: OneOrMore<TextSizes>;
   css: SystemStyleObject;
 };
 
 const textCompoundVariants: TextCompoundVariants[] = [
+    {
+    family: 'display',
+    size: 'lg',
+    css: { fontSize: '72' },
+  },
+  {
+    family: 'display' ,
+    size: 'md',
+    css: { fontSize: '64' },
+  },
+  {
+    family: 'display',
+    size: 'sm',
+    css: { fontSize: '56' },
+  },
+  {
+    family: 'display',
+    size: 'xs',
+    css: { fontSize: '48' },
+  },
   {
     family: 'heading',
     size: 'lg',
@@ -79,12 +107,12 @@ const textCompoundVariants: TextCompoundVariants[] = [
     css: { fontSize: '20' },
   },
   {
-    family: 'body',
+    family: ['body','mono'],
     size: 'lg',
     css: { fontSize: '20' },
   },
   {
-    family: 'body',
+    family: ['body','mono'],
     size: 'md',
     css: { fontSize: '16' },
   },
@@ -94,7 +122,7 @@ const textCompoundVariants: TextCompoundVariants[] = [
     css: { fontSize: '14' },
   },
   {
-    family: 'mono',
+    family: ['body','mono'],
     size: 'xs',
     css: { fontSize: '12' },
   },
