@@ -22,6 +22,7 @@ import {
   preRecipe,
   codeRecipe,
   boxRecipe,
+  radioRecipe
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -131,6 +132,7 @@ export default defineConfig({
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
+        radio: radioRecipe,
       },
     },
   },

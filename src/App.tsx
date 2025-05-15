@@ -15,6 +15,7 @@ import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
+import { Radio } from './components/Radio';
 
 export const IconList = () => {
   return (
@@ -325,6 +326,15 @@ const AppContent = () => {
               <CheckBox data-indeterminate={true} />
               <CheckBox disabled />
               <CheckBox data-error={true} />
+            </HStack>
+          </Section>
+          <Section >
+            <Heading level="h2">Radio</Heading>
+            <HStack gap={'40'} alignItems={'center'}>
+              <Radio> Default</Radio>
+              <Radio defaultChecked={true}> Checked </Radio>
+              <Radio disabled> Disabled </Radio>
+              <Radio data-error={true}> Error </Radio> 
             </HStack>
           </Section>
           <Section>
