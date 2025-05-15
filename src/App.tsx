@@ -151,12 +151,14 @@ const ExtraPropertyCheckBox: React.FC<{ property: string }> = ({
     setIsChecked((prev) => !prev);
   };
 
+  const propertyProps = { [property]: isPropertyRequired };
+
   return (
     <CheckBox
       checked={isChecked}
       // there will be some conditions based on states and/or props which will dynamically add or remove the prop
       // and which in turn will make error or indeterminate state active or deactive
-      {...(isPropertyRequired && { [property]: true })}
+      {...propertyProps}
       onClick={handleChange}
     />
   );
@@ -359,9 +361,9 @@ const AppContent: React.FC = () => {
             <HStack gap={'40'} alignItems={'flex-end'}>
               <CheckBox />
               <CheckBox defaultChecked={true} />
-              <ExtraPropertyCheckBox property="data-indeterminate" />
+              <ExtraPropertyCheckBox property="indeterminate" />
               <CheckBox disabled />
-              <ExtraPropertyCheckBox property="data-error" />
+              <ExtraPropertyCheckBox property="error" />
             </HStack>
           </Section>
           <Section>
