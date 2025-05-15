@@ -1,5 +1,8 @@
-import { defineRecipe, SystemStyleObject } from '@pandacss/dev';
-import { OneOrMore } from '@styled-system/types';
+import { defineRecipe } from '@pandacss/dev';
+import {
+  fontSizes as fontSizeTokens,
+  fontWeights as fontWeightTokens,
+} from '~/styles/tokens';
 
 const textBase = {
   margin: '0',
@@ -9,24 +12,47 @@ const textBase = {
   color: { base: 'slate.60', _dark: 'slate.30' },
 };
 
+type FontSizeKey = keyof typeof fontSizeTokens;
+const fontSizes = (Object.keys(fontSizeTokens) as FontSizeKey[]).reduce(
+  (accumulator, currentKey) => {
+    accumulator[currentKey] = { fontSize: fontSizeTokens[currentKey].value };
+    return accumulator;
+  },
+  {} as Record<FontSizeKey, Record<'fontSize', string>>,
+);
+
+type FontWeightKey = keyof typeof fontWeightTokens;
+const fontWeights = (Object.keys(fontWeightTokens) as FontWeightKey[]).reduce(
+  (accumulator, currentKey) => {
+    accumulator[currentKey] = {
+      fontWeight: fontWeightTokens[currentKey].value,
+    };
+    return accumulator;
+  },
+  {} as Record<FontWeightKey, Record<'fontWeight', number>>,
+);
+
 const textVariants = {
+  textStyle: {
+    'display-lg': { textStyle: 'display.lg' },
+    'display-md': { textStyle: 'display.md' },
+    'display-sm': { textStyle: 'display.sm' },
+    'display-xs': { textStyle: 'display.xs' },
+    'heading-lg': { textStyle: 'heading.lg' },
+    'heading-md': { textStyle: 'heading.md' },
+    'heading-sm': { textStyle: 'heading.sm' },
+    'heading-xs': { textStyle: 'heading.xs' },
+    'body-lg': { textStyle: 'body.lg' },
+    'body-md': { textStyle: 'body.md' },
+    'body-sm': { textStyle: 'body.sm' },
+    'body-xs': { textStyle: 'body.xs' },
+    'mono-lg': { textStyle: 'mono.lg' },
+    'mono-md': { textStyle: 'mono.md' },
+    'mono-sm': { textStyle: 'mono.sm' },
+    'mono-xs': { textStyle: 'mono.xs' },
+  },
   family: {
-    display: {
-      fontFamily: 'heading',
-      fontWeight: "black",
-      color: { 
-        base: 'slate.90', 
-        _dark: 'slate.5'
-      }, 
-    },
-    heading: { 
-      fontFamily: 'heading',
-      fontWeight: "black",
-      color: { 
-        base: 'slate.90', 
-        _dark: 'slate.5'
-      }, 
-    },
+    heading: { fontFamily: 'heading' },
     body: { fontFamily: 'body' },
     mono: {
       fontFamily: 'mono',
@@ -50,83 +76,12 @@ const textVariants = {
     },
   },
   size: {
-    lg: {},
-    md: {},
-    sm: {},
-    xs: {},
+    ...fontSizes,
+  },
+  weight: {
+    ...fontWeights,
   },
 };
-
-export type TextSizes = "lg" | "md" | "sm" | "xs"
-
-type TextCompoundVariants = {
-  family?: OneOrMore<"display" |"heading" | "mono" | "body">;
-  size?: OneOrMore<TextSizes>;
-  css: SystemStyleObject;
-};
-
-const textCompoundVariants: TextCompoundVariants[] = [
-    {
-    family: 'display',
-    size: 'lg',
-    css: { fontSize: '72' },
-  },
-  {
-    family: 'display' ,
-    size: 'md',
-    css: { fontSize: '64' },
-  },
-  {
-    family: 'display',
-    size: 'sm',
-    css: { fontSize: '56' },
-  },
-  {
-    family: 'display',
-    size: 'xs',
-    css: { fontSize: '48' },
-  },
-  {
-    family: 'heading',
-    size: 'lg',
-    css: { fontSize: '40' },
-  },
-  {
-    family: 'heading' ,
-    size: 'md',
-    css: { fontSize: '32' },
-  },
-  {
-    family: 'heading',
-    size: 'sm',
-    css: { fontSize: '24' },
-  },
-  {
-    family: 'heading',
-    size: 'xs',
-    css: { fontSize: '20' },
-  },
-  {
-    family: ['body','mono'],
-    size: 'lg',
-    css: { fontSize: '20' },
-  },
-  {
-    family: ['body','mono'],
-    size: 'md',
-    css: { fontSize: '16' },
-  },
-  {
-    family: ['body','mono'],
-    size: 'sm',
-    css: { fontSize: '14' },
-  },
-  {
-    family: ['body','mono'],
-    size: 'xs',
-    css: { fontSize: '12' },
-  },
-]
 
 const headingBase = {
   fontFamily: 'heading',
@@ -198,13 +153,8 @@ export const textRecipe = defineRecipe({
   jsx: ['Text'],
   base: textBase,
   variants: textVariants,
-  compoundVariants: textCompoundVariants,
   defaultVariants: {
-    family: 'body',
-    bold: false,
-    italic: false,
-    underline: false,
-    size: 'md',
+    textStyle: 'body-md',
   },
 });
 
@@ -237,4 +187,3 @@ export const labelRecipe = defineRecipe({
     family: 'body',
   },
 });
-
