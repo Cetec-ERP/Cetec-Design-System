@@ -26,9 +26,7 @@ export const IconList: React.FC = () => {
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
           <Icon name={icon} />
-          <Text family={'mono'} size="sm">
-            {icon}
-          </Text>
+          <Text textStyle="mono-sm">{icon}</Text>
         </HStack>
       ))}
     </Grid>
@@ -119,7 +117,7 @@ const Header: React.FC = () => {
           <Text
             as={'div'}
             family="body"
-            size="md"
+            size="16"
             letterSpacing={'widest'}
             textTransform={'uppercase'}
             fontWeight={'bold'}
