@@ -331,10 +331,10 @@ const AppContent = () => {
           <Section >
             <Heading level="h2">Radio</Heading>
             <HStack gap={'40'} alignItems={'center'}>
-              <Radio> Default</Radio>
-              <Radio defaultChecked={true}> Checked </Radio>
-              <Radio disabled> Disabled </Radio>
-              <Radio data-error={true}> Error </Radio> 
+              <Radio />
+              <Radio defaultChecked={true} />
+              <Radio disabled />
+              <Radio data-error={true} />
             </HStack>
           </Section>
           <Section>
