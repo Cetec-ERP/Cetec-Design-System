@@ -60,12 +60,10 @@ export const checkBoxRecipe = defineSlotRecipe({
         },
       },
       _focusVisible: {
-        '& ~ svg': {
-          outlineColor: { base: 'slate.80', _dark: 'slate.5' },
-          outlineOffset: -3.5,
-          borderRadius: '4',
-          outlineWidth: 2,
-          outlineStyle: 'solid',
+        "& ~ [name='checkbox-focus']": {
+          display: 'inline-grid',
+          position: 'absolute',
+          fill: { base: 'slate.90', _dark: 'slate.1' },
         },
       },
     },

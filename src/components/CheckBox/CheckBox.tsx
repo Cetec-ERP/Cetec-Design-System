@@ -30,6 +30,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
       <Icon className={indicator} name={'checkbox'} />
       <Icon className={indicator} name={'checkbox-checked'} />
       <Icon className={indicator} name={'checkbox-indeterminate'} />
+      <Icon className={indicator} name={'checkbox-focus'} />
     </Label>
   );
 };
