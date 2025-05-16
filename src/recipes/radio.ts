@@ -35,17 +35,6 @@ export const radioRecipe = defineSlotRecipe({
                 display: "none",
               },
             },
-            _indeterminate: {
-              "& ~ [name='radio-indeterminate']": {
-                display: "inline-grid",
-                fill: { base: "slate.90", _dark: "slate.0" },
-                _disabled: {
-                },
-              },
-              "& ~ [name='radio']": {
-                display: "inline-grid",
-              },
-            },
             _disabled: {
               "& ~ svg": {
                 opacity: 0.4,
