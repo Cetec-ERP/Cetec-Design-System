@@ -75,12 +75,8 @@ const textVariants = {
       textDecoration: 'underline',
     },
   },
-  size: {
-    ...fontSizes,
-  },
-  weight: {
-    ...fontWeights,
-  },
+  size: fontSizes,
+  weight: fontWeights,
 };
 
 const headingBase = {
