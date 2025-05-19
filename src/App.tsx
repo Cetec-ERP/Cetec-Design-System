@@ -14,6 +14,7 @@ import { Spinner } from '~/components/Spinner';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
+import { type ShadowToken } from '@styled-system/tokens';
 
 export const IconList: React.FC = () => {
   return (
@@ -133,6 +134,32 @@ const Header: React.FC = () => {
   );
 };
 
+const ShadowBox = ({
+  children,
+  shadow,
+  border = false,
+}: {
+  children: ReactNode;
+  shadow: ShadowToken;
+  border?: boolean;
+}) => {
+  return (
+    <Grid
+      placeContent={'center'}
+      width={'full'}
+      aspectRatio={'landscape'}
+      borderRadius={'4'}
+      shadow={shadow}
+      borderWidth={border ? '1' : undefined}
+      borderStyle={'solid'}
+      borderColor={{ base: 'slate.10', _dark: 'slate.90' }}
+      bg={{ base: 'slate.0', _dark: 'slate.80' }}
+    >
+      {children}
+    </Grid>
+  );
+};
+
 const AppContent: React.FC = () => {
   return (
     <VStack>
@@ -243,6 +270,39 @@ const AppContent: React.FC = () => {
                   </Text>
                 </Box>
               </Grid>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Shadows</Heading>
+            <VStack gap={'40'} alignItems={'flex-end'}>
+              <HStack width={'full'} gap={'40'} alignItems={'flex-end'}>
+                <ShadowBox shadow={'inset'}>
+                  <Text>Inset</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'low'}>
+                  <Text>Low</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'medium'}>
+                  <Text>Medium</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'high'}>
+                  <Text>High</Text>
+                </ShadowBox>
+              </HStack>
+              <HStack width={'full'} gap={'40'} alignItems={'flex-end'}>
+                <ShadowBox shadow={'inset'} border={true}>
+                  <Text>Inset</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'low'} border={true}>
+                  <Text>Low</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'medium'} border={true}>
+                  <Text>Medium</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'high'} border={true}>
+                  <Text>High</Text>
+                </ShadowBox>
+              </HStack>
             </VStack>
           </Section>
           <Section>

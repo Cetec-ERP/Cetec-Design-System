@@ -11,14 +11,7 @@ const textBase = {
 
 const textVariants = {
   family: {
-    heading: { 
-      fontFamily: 'heading',
-      fontWeight: "black",
-      color: { 
-        base: 'slate.90', 
-        _dark: 'slate.5'
-      }, 
-    },
+    heading: { fontFamily: 'heading' },
     body: { fontFamily: 'body' },
     mono: {
       fontFamily: 'mono',
@@ -49,10 +42,10 @@ const textVariants = {
   },
 };
 
-export type TextSizes = "lg" | "md" | "sm" | "xs"
+export type TextSizes = 'lg' | 'md' | 'sm' | 'xs';
 
 type TextCompoundVariants = {
-  family?: OneOrMore<"heading" | "mono" | "body">;
+  family?: OneOrMore<'heading' | 'mono' | 'body'>;
   size?: OneOrMore<TextSizes>;
   css: SystemStyleObject;
 };
@@ -64,7 +57,7 @@ const textCompoundVariants: TextCompoundVariants[] = [
     css: { fontSize: '40' },
   },
   {
-    family: 'heading' ,
+    family: 'heading',
     size: 'md',
     css: { fontSize: '32' },
   },
@@ -89,7 +82,7 @@ const textCompoundVariants: TextCompoundVariants[] = [
     css: { fontSize: '16' },
   },
   {
-    family: ['body','mono'],
+    family: ['body', 'mono'],
     size: 'sm',
     css: { fontSize: '14' },
   },
@@ -98,7 +91,7 @@ const textCompoundVariants: TextCompoundVariants[] = [
     size: 'xs',
     css: { fontSize: '12' },
   },
-]
+];
 
 const headingBase = {
   fontFamily: 'heading',
@@ -173,10 +166,6 @@ export const textRecipe = defineRecipe({
   compoundVariants: textCompoundVariants,
   defaultVariants: {
     family: 'body',
-    bold: false,
-    italic: false,
-    underline: false,
-    size: 'md',
   },
 });
 
@@ -209,4 +198,3 @@ export const labelRecipe = defineRecipe({
     family: 'body',
   },
 });
-
