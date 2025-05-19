@@ -7,12 +7,11 @@ import { cx } from '@styled-system/css';
 export type TextInputProps = Omit<BoxProps, keyof TextinputVariantProps> & TextinputVariantProps &{
     disabled?: boolean,
     error?: boolean
-
 }
 
 export const TextInput: React.FC<TextInputProps> = (
     {
-        size,
+        error,
         ...props
     }: TextInputProps
 ) => {
@@ -22,7 +21,7 @@ export const TextInput: React.FC<TextInputProps> = (
         <Box
         as="input"
         className={cx(
-            textinput({size}),
+            textinput({}),
             className
         )}
         {...otherProps}
