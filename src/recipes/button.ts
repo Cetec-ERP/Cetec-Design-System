@@ -12,7 +12,7 @@ const buttonBase = {
   display: 'flex',
   alignItems: 'center',
   gap: '4',
-  fontFamily: 'sans',
+  fontFamily: 'body',
   fontSize: '16',
   fontWeight: 'medium',
   lineHeight: 'default',
@@ -138,7 +138,7 @@ const buttonVariants = {
     },
     danger: {
       bg: 'red.50',
-      color:  'slate.0',
+      color: 'slate.0',
       _hover: {
         bg: 'red.40',
       },
@@ -177,10 +177,10 @@ export const buttonRecipe = defineRecipe({
         px: '8',
         '& svg': {
           mt: '-1',
-          mb: '-1'
-        }
-      }
-    }
+          mb: '-1',
+        },
+      },
+    },
   },
   defaultVariants: {
     variant: 'standard',
@@ -197,21 +197,21 @@ export const iconButtonRecipe = defineRecipe({
     size: {
       medium: {
         fontSize: '16',
-        p: '3'
+        p: '3',
       },
       large: {
         fontSize: '16',
-        p: '7'
+        p: '7',
       },
       small: {
         fontSize: '14',
         p: '0',
         '& svg': {
           mt: '-1',
-          mb: '-1'
-        }
-      }
-    }
+          mb: '-1',
+        },
+      },
+    },
   },
   defaultVariants: {
     variant: 'standard',
