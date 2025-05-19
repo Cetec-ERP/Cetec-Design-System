@@ -50,12 +50,10 @@ export const radioRecipe = defineSlotRecipe({
               }
             },
             _focusVisible: {
-              "& ~ svg": {
-                outlineColor: { base: 'slate.80', _dark: 'slate.5' },
-                outlineOffset: -3,
-                borderRadius: 50,
-                outlineWidth: 1,
-                outlineStyle: 'solid',
+              "& ~ [name='radio-focus']": {
+                display: 'inline-grid',
+                position: 'absolute',
+                fill: { base: 'slate.90', _dark: 'slate.1' },
               },
             },
         },
