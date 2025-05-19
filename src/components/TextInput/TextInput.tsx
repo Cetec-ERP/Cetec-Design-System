@@ -11,6 +11,7 @@ export type TextInputProps = Omit<BoxProps, keyof TextinputVariantProps> & Texti
 
 export const TextInput: React.FC<TextInputProps> = (
     {
+        size,
         error,
         ...props
     }: TextInputProps
@@ -21,7 +22,7 @@ export const TextInput: React.FC<TextInputProps> = (
         <Box
         as="input"
         className={cx(
-            textinput({}),
+            textinput({size}),
             className
         )}
         {...otherProps}
