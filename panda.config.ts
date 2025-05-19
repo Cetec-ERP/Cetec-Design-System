@@ -6,6 +6,7 @@ import {
 import pandaBasePreset from '@pandacss/preset-base';
 
 import * as tokens from './src/styles/tokens';
+import * as semanticTokens from "./src/styles/semanticTokens";
 import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
 import {
@@ -55,20 +56,7 @@ const theme = {
     breakpoints: tokens.breakpoints,
   }),
   semanticTokens: defineSemanticTokens({
-    colors: {
-      brand: tokens.colors.brand,
-      success: tokens.colors.status.success,
-      warning: tokens.colors.status.warning,
-      danger: tokens.colors.status.danger,
-      utility: {
-        shadowColor: {
-          value: {
-            base: '{colors.slate.90/20}',
-            _dark: '{colors.slate.100/40}',
-          },
-        },
-      },
-    },
+    colors: semanticTokens.colors,
   }),
 };
 
