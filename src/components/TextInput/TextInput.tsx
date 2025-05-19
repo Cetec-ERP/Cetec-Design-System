@@ -5,8 +5,9 @@ import { cx } from '@styled-system/css';
 
 
 export type TextInputProps = Omit<BoxProps, keyof TextinputVariantProps> & TextinputVariantProps &{
-    size?: 'small' | 'medium' | 'large';
-    className?: string;
+    disabled?: boolean,
+    error?: boolean
+
 }
 
 export const TextInput: React.FC<TextInputProps> = (
