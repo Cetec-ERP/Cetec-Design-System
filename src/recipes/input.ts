@@ -41,8 +41,7 @@ const inputVariants = {
         borderColor: { base: 'slate.40', _osDark: 'slate.50' },
       },
     },
-    internalLabel: {
-    },
+    internalLabel: {},
   },
 };
 

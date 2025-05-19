@@ -135,36 +135,7 @@ export const colors = {
     '80': { value: '#4F0004' },
     '90': { value: '#200000' },
   },
-  brand: {
-    slate: { value: 'slate.90' },
-    gold: { value: 'gold.20' },
-  },
-  status: {
-    success: {
-      lighter: { value: 'green.2' },
-      light: { value: 'green.10' },
-      base: { value: 'green.40' },
-      dark: { value: 'green.60' },
-      darker: { value: 'green.70' },
-    },
-    warning: {
-      lighter: { value: 'yellow.2' },
-      light: { value: 'yellow.10' },
-      base: { value: 'yellow.40' },
-      dark: { value: 'yellow.60' },
-      darker: { value: 'yellow.70' },
-    },
-    danger: {
-      lighter: { value: 'red.2' },
-      light: { value: 'red.10' },
-      base: { value: 'red.50' },
-      dark: { value: 'red.60' },
-      darker: { value: 'red.70' },
-    },
-  },
 };
-
-// font-variation-settings: '"CRSV" 0, "CASL" 0, "MONO" 0, "slnt" 0, "wght" 0';
 
 export const fonts = {
   heading: {
@@ -386,25 +357,25 @@ export const letterSpacings = {
 
 export const blurs = {
   sm: {
-    value: '4px',
+    value: '{sizes.4}',
   },
   base: {
-    value: '8px',
+    value: '{sizes.8}',
   },
   md: {
-    value: '12px',
+    value: '{sizes.12}',
   },
   lg: {
-    value: '16px',
+    value: '{sizes.16}',
   },
   xl: {
-    value: '24px',
+    value: '{sizes.24}',
   },
   '2xl': {
-    value: '40px',
+    value: '{sizes.40}',
   },
   '3xl': {
-    value: '64px',
+    value: '{sizes.64}',
   },
 };
 
@@ -478,52 +449,45 @@ export const breakpoints = {
 
 export const opacity = {
   0: {
-    value: "0"
+    value: '0',
   },
   0.1: {
-    value: "0.1"
+    value: '0.1',
   },
   0.2: {
-    value: "0.2"
+    value: '0.2',
   },
   0.3: {
-    value: "0.3"
+    value: '0.3',
   },
   0.4: {
-    value: "0.4"
+    value: '0.4',
   },
   0.5: {
-    value: "0.5"
+    value: '0.5',
   },
   0.6: {
-    value: "0.6"
+    value: '0.6',
   },
   0.7: {
-    value: "0.7"
+    value: '0.7',
   },
   0.8: {
-    value: "0.8"
+    value: '0.8',
   },
   0.9: {
-    value: "0.9"
+    value: '0.9',
   },
   1: {
-    value: "1"
-  }
-}
+    value: '1',
+  },
+};
 
-// export const filters = {
-//   invert: { value: 'invert(1)' },
-//   none: { value: 'none' },
-// };
+export const filters = {
+  invert: { value: 'invert(1)' },
+  none: { value: 'none' },
+};
 
-// export const textTransform = {
-//   uppercase: { value: 'uppercase' },
-//   lowercase: { value: 'lowercase' },
-//   capitalize: { value: 'capitalize' },
-//   none: { value: 'none' },
-// };
-// Why are we using this?
 const baseHeadingStyles = defineStyles({
   value: {
     fontFamily: 'heading',
