@@ -330,12 +330,22 @@ const AppContent = () => {
           </Section>
           <Section >
             <Heading level="h2">Radio</Heading>
-            <HStack gap={'40'} alignItems={'center'}>
+            <VStack gap={'40'} alignItems={'start'}>
+              <HStack>
               <Radio />
               <Radio defaultChecked={true} />
               <Radio disabled />
               <Radio data-error={true} />
-            </HStack>
+              </HStack>
+              <HStack>
+                <HStack gap={'10'} alignItems={'center'}>
+                  <Heading level="h4">Gender</Heading>
+                  <Radio name="gender"></Radio> Male
+                  <Radio name="gender"></Radio> Female
+
+                </HStack>
+              </HStack>
+            </VStack>
           </Section>
           <Section>
             <Text as="h2">Inputs</Text>
