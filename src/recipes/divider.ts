@@ -1,44 +1,43 @@
 import { defineRecipe } from '@pandacss/dev';
 
 const dividerBase = {
-  borderWidth: '1',
+  '--divider-weight': '1',
   borderStyle: 'solid',
-  // height: '1',
-  // width: '100%',
-  color: { base: 'slate.70', _dark: 'slate.20' },
-  // Flex things...
+  color: { base: 'slate.20', _dark: 'slate.80' },
+  borderColor: 'current',
+  minWidth: '1',
+  minHeight: '1',
   flexGrow: 0,
-  flexShrink: 1,
-  flexBasis: '100%',
+  flexShrink: 0,
 };
 
 const dividerVariants = {
   direction: {
     horizontal: {
-      // orientation: 'horizontal',
       height: '1',
-      width: '100%',
+      width: 'full',
+      borderTopWidth: 'var(--divider-weight)',
     },
     vertical: {
-      // orientation: 'vertical',
-      height: '100%',
+      height: 'full',
       width: '1',
+      borderLeftWidth: 'var(--divider-weight)',
     },
   },
-  // weight: {
-  //   thin: { borderWidth: '1px' },
-  //   medium: { borderWidth: '2px' },
-  //   bold: { borderWidth: '4px' },
-  // }
+  weight: {
+    thin: { '--divider-weight': 'sizes.1' },
+    medium: { '--divider-weight': 'sizes.2' },
+    bold: { '--divider-weight': 'sizes.4' },
+  },
 };
 
 export const dividerRecipe = defineRecipe({
   className: 'divider',
-  jsx:['divider'],
+  jsx: ['Divider'],
   base: dividerBase,
   variants: dividerVariants,
   defaultVariants: {
     direction: 'horizontal',
-    // weight: 'thin',
+    weight: 'thin',
   },
 });

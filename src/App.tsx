@@ -256,17 +256,20 @@ const AppContent = () => {
           </Section>
           <Section>
             <Heading level="h2">Divider</Heading>
-              <VStack>
-                <VStack width='100%'>
-                  <Divider direction={'horizontal'}/>
-                  <Text>Horizontal (default)</Text>
-                </VStack>
-                <HStack height='100px'>
-                  <Divider direction={'vertical'} />
-                  {/* <Divider height="100%" direction="vertical" color={{ base: 'blue.40', _dark: 'blue.30' }} /> */}
-                  <Text>Vertical</Text>
-                </HStack>
+            <VStack>
+              <VStack width="full">
+                <Divider />
+                <Divider weight={'medium'} />
+                <Divider weight={'bold'} />
+                <Text>Horizontal (default)</Text>
               </VStack>
+              <HStack height="96">
+                <Divider direction={'vertical'} />
+                <Divider direction={'vertical'} weight={'medium'} />
+                <Divider direction={'vertical'} weight={'bold'} />
+                <Text>Vertical</Text>
+              </HStack>
+            </VStack>
           </Section>
           <Section>
             <Heading level="h2">Icons</Heading>

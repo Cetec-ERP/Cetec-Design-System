@@ -130,7 +130,6 @@ export default defineConfig({
         pre: preRecipe,
         spinner: spinnerRecipe,
         divider: dividerRecipe,
-        //Panda might not like this since they already have a box
         box: boxRecipe,
       },
       slotRecipes: {
