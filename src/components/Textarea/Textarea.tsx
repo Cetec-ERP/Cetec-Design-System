@@ -24,7 +24,7 @@ export const Textarea: React.FC<TextareaProps> = (
       <Text as='span'>{label}</Text>
       <Box
         as="textarea"
-        id={props.id  }
+        id={props.id}
         htmlFor={props.id || ''}
         className={cx(
           textarea({ variant }),

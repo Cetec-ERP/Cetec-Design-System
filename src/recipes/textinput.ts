@@ -1,6 +1,6 @@
 import { defineRecipe } from '@pandacss/dev';
 
-const textinputVariants = {
+const textInputVariants = {
   size: {
     medium: {
       py: 3,
@@ -20,7 +20,7 @@ const textinputVariants = {
   },
 };
 
-const textinputBase = {
+const textInputBase = {
   position: 'relative',
   borderWidth: '1',
   borderColor: 'slate.30',
@@ -50,7 +50,6 @@ const textinputBase = {
   },
   _focus: {
     borderColor: 'slate.90',
-    
   },  
   _error: {
     display: 'inline-grid',
@@ -61,8 +60,8 @@ const textinputBase = {
 export const textinputRecipe = defineRecipe({
   className: 'textinput',
   jsx: ['TextInput'],
-  base: textinputBase,
-  variants: textinputVariants,
+  base: textInputBase,
+  variants: textInputVariants,
   defaultVariants: {
     size: 'medium',
   },
