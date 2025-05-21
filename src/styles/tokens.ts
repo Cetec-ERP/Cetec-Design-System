@@ -457,25 +457,18 @@ const baseHeadingStyles = defineStyles({
     fontFamily: 'heading',
     fontWeight: 'black',
     color: { base: 'slate.90', _dark: 'slate.5' },
-    lineHeight: 'default',
   },
 });
 
 const baseBodyTextStyles = defineStyles({
   value: {
     fontFamily: 'body',
-    fontWeight: 'normal',
-    color: { base: 'slate.60', _dark: 'slate.20' },
-    lineHeight: 'default',
   },
 });
 
 const baseMonoStyles = defineStyles({
   value: {
     fontFamily: 'mono',
-    fontWeight: 'normal',
-    color: { base: 'slate.60', _dark: 'slate.20' },
-    lineHeight: 'default',
   },
 });
 
