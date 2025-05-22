@@ -358,8 +358,8 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Switch</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-                {/* <Switch /> */}
-                <Switch>AP </Switch>
+                <Switch />
+                
             </HStack>
           </Section>
           {/* <Section>
