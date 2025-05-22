@@ -369,9 +369,9 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          <Section>
+          {/* <Section>
             <Heading level="h2">Inputs</Heading>
-            {/* <VStack>
+            <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
                 <Input label="Last" type="text" />
@@ -380,8 +380,8 @@ const AppContent: React.FC = () => {
               <HStack gap={'24'}>
                 <Input label="Phone" type="tel" />
               </HStack>
-            </VStack> */}
-          </Section>
+            </VStack>
+          </Section> */}
           <Section>
             <Heading level="h2">Textarea</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
