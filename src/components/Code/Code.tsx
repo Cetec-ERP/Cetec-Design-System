@@ -27,7 +27,7 @@ export const Code: React.FC<CodeProps> = (
       lang={lang}
       {...otherProps}
     >
-      <Text>
+      <Text color="slate.0">
         {children}
       </Text>
     </Box>
