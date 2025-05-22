@@ -17,6 +17,7 @@ import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { TextInput } from './components/TextInput';
 
 export const IconList: React.FC = () => {
   return (
@@ -396,7 +397,41 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
-            <Heading level="h2">Inputs</Heading>
+            <Heading level="h2">Text Input</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <Text>Small</Text>
+                </VStack>
+                <VStack>
+                  <TextInput placeHolder={'Enter Text'} />
+                  <Text>Medium</Text>
+                </VStack>
+                <VStack>
+                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <Text>Large</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput value="entered text"/>
+                  <Text>Default - Filled</Text>
+                </VStack>
+                <VStack>
+                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <Text>Error</Text>
+                </VStack>
+                <VStack>
+                  <TextInput disabled placeHolder={'placeholder'} />
+                  <Text>Disabled</Text>
+                </VStack>
+              </HStack>
+            </VStack>
+          </Section>
+          {/* <Section>
+          <Heading level="h2">Inputs</Heading>
+            <Text as="h2">Inputs</Text>
             <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
@@ -413,7 +448,7 @@ const AppContent: React.FC = () => {
                 />
               </HStack>
             </VStack>
-          </Section>
+          </Section> */}
         </VStack>
       </Container>
     </VStack>
