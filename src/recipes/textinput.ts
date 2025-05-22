@@ -45,7 +45,7 @@ const textInputBase = {
     opacity: 0.4,
   },
   _focusVisible: {
-    outlineWidth: '1',
+    outlineWidth: '2',
     outlineColor: { base: 'slate.90', _dark: 'slate.0' },
   },
   _focus: {
