@@ -2,67 +2,53 @@ import { defineRecipe } from '@pandacss/dev';
 
 const textareaBase = {
   position: 'relative',
-  display: 'inline-grid',
-  verticalAlign: 'top',
-  alignItems: 'center',
-  padding: '0',
-  fontFamily: 'body',
-  fontSize: '16',
-  fontWeight: 'normal',
-  lineHeight: 'normal',
-  color: { base: 'slate.90', _osDark: 'slate.5' },
-  borderRadius: '8',
-  width: 'full',
-  '&::after, & textarea': {
-    width: 'auto',
-    minWidth: '16',
-    maxWidth: 'full',
-    font: 'inherit',
-    py: '4',
-    px: '8',
-    m: '0',
-    resize: 'none',
-    appearance: 'none',
-    borderWidth: '1',
-    borderStyle: 'solid',
-    borderRadius: '4',
-    borderColor: 'transparent',
-    background: { base: 'slate.0', _osDark: 'slate.90' },
-    _hover: {
-      borderColor: { base: 'slate.20', _osDark: 'slate.30' },
-    },
-    _focus: {
-      borderColor: { base: 'slate.90', _osDark: 'slate.5' },
+  color: { base: 'slate.90', _dark: 'slate.0' },
+  borderWidth: '1',
+  borderStyle: 'solid',
+  borderColor: 'slate.30',
+  borderRadius: '4',
+  outlineWidth: '2',
+  outlineStyle: 'solid',
+  outlineColor: 'transparent',
+  outlineOffset: '1',
+  _focusVisible: {
+    borderColor: 'slate.90',
+    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
+  },  
+  _error: {
+    display: 'inline-grid',
+    borderColor: 'red.50',
+  },
+  _placeholder: {
+    color: {
+      base: 'slate.50',
+      _dark: 'slate.40',
     },
   },
-  _after: {
-    content: 'attr(data-value) " "',
-    outline: '1px solid olive',
-    whiteSpace: 'pre-wrap',
-    transform: 'translate(4px, 4px)',
-    opacity: '0.3',
+  _disabled: {
+    opacity: 0.4,
   },
-  '& textarea': {},
-  gridTemplateColumns: 'auto 1fr',
 };
 
 const textareaVariants = {
-  variant: {
-    autoGrow: {
-      width: 'fit-content',
+  size:{
+    small:{
+      px:'8',
+      minHeight:'48',
+      fontSize:'14',
     },
-    stacked: {
-      gridTemplateRows: 'auto 1fr',
-      alignItems: 'stretch',
-      '&::after, & textarea': {
-        gridArea: '2 / 1',
-      },
-      '& textarea': {
-        background: { base: 'slate.0', _osDark: 'slate.90' },
-        borderColor: { base: 'slate.40', _osDark: 'slate.50' },
-      },
+    medium:{
+      py:'3',
+      px:'10',
+      fontSize:'16',
+      minHeight:'64',
     },
-    internalLabel: {},
+    large:{
+      py: '7',
+      px: '12',
+      fontSize: '16',
+      minHeight:'80',
+    }
   },
 };
 
@@ -72,6 +58,6 @@ export const textareaRecipe = defineRecipe({
   base: textareaBase,
   variants: textareaVariants,
   defaultVariants: {
-    variant: 'autoGrow',
+    size: 'medium',
   },
 });
