@@ -12,9 +12,12 @@ const textareaBase = {
   outlineColor: 'transparent',
   outlineOffset: '1',
   _focusVisible: {
-    borderColor: 'slate.90',
+    outlineWidth: '2',
     outlineColor: { base: 'slate.90', _dark: 'slate.0' },
-  },  
+  },
+  _focus: {
+    borderColor: 'slate.90',
+  },
   _error: {
     display: 'inline-grid',
     borderColor: 'red.50',
@@ -31,24 +34,24 @@ const textareaBase = {
 };
 
 const textareaVariants = {
-  size:{
-    small:{
-      px:'8',
-      minHeight:'48',
-      fontSize:'14',
+  size: {
+    small: {
+      px: '8',
+      minHeight: '48',
+      fontSize: '14',
     },
-    medium:{
-      py:'3',
-      px:'10',
-      fontSize:'16',
-      minHeight:'64',
+    medium: {
+      py: '3',
+      px: '10',
+      fontSize: '16',
+      minHeight: '64',
     },
-    large:{
+    large: {
       py: '7',
       px: '12',
       fontSize: '16',
-      minHeight:'80',
-    }
+      minHeight: '80',
+    },
   },
 };
 
