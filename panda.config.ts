@@ -23,7 +23,8 @@ import {
   preRecipe,
   codeRecipe,
   boxRecipe,
-  radioRecipe
+  radioRecipe,
+  switchRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -115,6 +116,7 @@ export default defineConfig({
         code: codeRecipe,
         pre: preRecipe,
         spinner: spinnerRecipe,
+        switchbox: switchRecipe,
         //Panda might not like this since they already have a box
         box: boxRecipe,
       },

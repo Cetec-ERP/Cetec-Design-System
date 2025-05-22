@@ -7,3 +7,5 @@ export { spinnerRecipe } from "./spinner"
 export { preRecipe, codeRecipe } from "./code"
 export { boxRecipe } from './box';
 export { radioRecipe } from './radio'; 
+export { switchRecipe } from './switch';
+
