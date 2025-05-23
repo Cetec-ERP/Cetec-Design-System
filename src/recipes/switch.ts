@@ -9,9 +9,15 @@ const switchBase = {
         width: "40",
         height: "24",
         borderRadius: "24",
-        _peerChecked: {
-            bg: { base: "slate.90", _dark: "slate.0" }, // ✅ works now
-          },
+      //   '*::before':{
+      //     position: 'absolute',
+      //     content: '',
+      //     width: '40',
+      //     height: '24',
+      //     borderRadius: '24',
+      //     opacity: 0,
+      //     bg:{base: 'slate.90', _dark: 'slate.0'},
+      // },
     },
     input:{
         position: "absolute",
@@ -24,7 +30,6 @@ const switchBase = {
         border: "none",
         zIndex: 0,
         cursor: "inherit",
-        peer: "",
         "& ~ [name='circle']": {
           display: "inline-grid",
         top: -2,
@@ -32,14 +37,6 @@ const switchBase = {
         position: 'absolute',
         },
         _checked: {
-            "&::after":{
-                position: 'absolute',
-                content: '',
-                width: '40',
-                height: '24',
-                borderRadius: '24',
-                bg:{base: 'slate.90', _dark: 'slate.0'},
-            },
           "& ~ [name='circle-check']": {
             display: "inline-grid",
             filter: {base: 'invert(100%)', _dark: 'invert(0%)'},
@@ -78,6 +75,7 @@ const switchBase = {
           },
         },
     },
+
     indicator:{
         // placeContent: "center",
         display: 'none',
