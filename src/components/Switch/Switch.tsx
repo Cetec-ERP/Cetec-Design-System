@@ -2,6 +2,7 @@ import { Box, type BoxProps } from "../Box";
 import {switchbox, type SwitchboxVariantProps} from "@styled-system/recipes";
 import { Icon } from "../Icon";
 import { Label } from "../Label";
+import React from "react";
 
 
 export type SwitchBoxProps = Omit<BoxProps, keyof SwitchboxVariantProps > & SwitchboxVariantProps &
@@ -17,13 +18,17 @@ export const Switch: React.FC<SwitchBoxProps> = (
         ...props
     }: SwitchBoxProps,
 ) => {
+    const [checked, setChecked] = React.useState(false)
     const { container, input, indicator} = switchbox({});
     return(
-        <Label className={container}>
+        <Label className={container} 
+        data-checked={checked ? 'true' : undefined}
+        >
             <Box
                 as="input"
                 type="checkbox"
                 className={input}
+                onChange={(e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => setChecked(e.target.checked)}
                 {...props}
                 {...(error && { 'data-error': true})}
                 />

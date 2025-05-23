@@ -359,7 +359,8 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Switch</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
                 <Switch />
-                
+                <Switch checked={true}/>
+                <Switch autoFocus={true}/>
             </HStack>
           </Section>
           {/* <Section>
