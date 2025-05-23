@@ -18,6 +18,8 @@ export const Text: React.FC<TextProps> = ({
   underline,
   size,
   children,
+  textStyle,
+  weight,
   ...props
 }: TextProps) => {
   const [className, otherProps] = splitProps(props);
@@ -25,7 +27,10 @@ export const Text: React.FC<TextProps> = ({
   return (
     <Box
       as={as}
-      className={cx(text({ family, bold, underline, italic, size }), className)}
+      className={cx(
+        text({ textStyle, family, bold, underline, italic, size, weight }),
+        className,
+      )}
       {...otherProps}
     >
       {children}

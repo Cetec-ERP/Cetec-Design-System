@@ -15,6 +15,7 @@ import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
+import { Radio } from './components/Radio';
 
 export const IconList: React.FC = () => {
   return (
@@ -26,9 +27,7 @@ export const IconList: React.FC = () => {
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
           <Icon name={icon} />
-          <Text family={'mono'} size="sm">
-            {icon}
-          </Text>
+          <Text textStyle="mono-sm">{icon}</Text>
         </HStack>
       ))}
     </Grid>
@@ -119,7 +118,7 @@ const Header: React.FC = () => {
           <Text
             as={'div'}
             family="body"
-            size="md"
+            size="16"
             letterSpacing={'widest'}
             textTransform={'uppercase'}
             fontWeight={'bold'}
@@ -365,6 +364,24 @@ const AppContent: React.FC = () => {
               <CheckBox disabled />
               <ExtraPropertyCheckBox property="error" />
             </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Radio</Heading>
+            <VStack gap={'40'} alignItems={'start'}>
+              <HStack>
+                <Radio />
+                <Radio defaultChecked={true} />
+                <Radio disabled />
+                <Radio data-error={true} />
+              </HStack>
+              <HStack>
+                <HStack gap={'10'} alignItems={'center'}>
+                  <Heading level="h4">Gender</Heading>
+                  <Radio name="gender"></Radio> Male
+                  <Radio name="gender"></Radio> Female
+                </HStack>
+              </HStack>
+            </VStack>
           </Section>
           <Section>
             <Heading level="h2">Inputs</Heading>
