@@ -257,17 +257,40 @@ const AppContent = () => {
           <Section>
             <Heading level="h2">Divider</Heading>
             <VStack>
+              <Heading
+                level="h3"
+                color={{ base: 'gold.40', _dark: 'gold.30' }}
+              >
+                Horizontal (default)
+              </Heading>
               <VStack width="full">
                 <Divider />
+                <Text> Thin (default) </Text>
                 <Divider weight={'medium'} />
-                <Divider weight={'bold'} />
-                <Text>Horizontal (default)</Text>
+                <Text> Medium </Text>
+                <Divider weight={'thick'} />
+                <Text> Thick </Text>
+                <Divider
+                  weight={'thicker'}
+                  color={{ base: 'gold.40', _dark: 'gold.30' }}
+                />
+                <Text> Thicker </Text>
               </VStack>
+              <Heading
+                level="h3"
+                color={{ base: 'gold.40', _dark: 'gold.30' }}
+              >
+                Vertical
+              </Heading>
               <HStack height="96">
                 <Divider direction={'vertical'} />
                 <Divider direction={'vertical'} weight={'medium'} />
-                <Divider direction={'vertical'} weight={'bold'} />
-                <Text>Vertical</Text>
+                <Divider direction={'vertical'} weight={'thick'} />
+                <Divider
+                  direction={'vertical'}
+                  weight={'thicker'}
+                  color={{ base: 'gold.40', _dark: 'gold.30' }}
+                />
               </HStack>
             </VStack>
           </Section>
