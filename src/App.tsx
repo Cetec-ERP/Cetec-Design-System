@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -131,6 +131,36 @@ const Header: React.FC = () => {
         </HStack>
       </Container>
     </Flex>
+  );
+};
+
+// This approach is created to show actuall working of checkbox in react page.
+// This is a very basic example created to show how indeterminate or error state
+// can be removed once checkbox is clicked.
+// but in real life scenario the isPropertyRequired state will be replaced with
+// some other states or props or combination of both which will allow us
+// dynamic handling of states.
+const ExtraPropertyCheckBox: React.FC<{ property: string }> = ({
+  property,
+}) => {
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isPropertyRequired, setIsPropertyRequiered] = useState<boolean>(true);
+
+  const handleChange = () => {
+    if (isPropertyRequired) setIsPropertyRequiered(false);
+    setIsChecked((prev) => !prev);
+  };
+
+  const propertyProps = { [property]: isPropertyRequired };
+
+  return (
+    <CheckBox
+      checked={isChecked}
+      // there will be some conditions based on states and/or props which will dynamically add or remove the prop
+      // and which in turn will make error or indeterminate state active or deactive
+      {...propertyProps}
+      onClick={handleChange}
+    />
   );
 };
 
@@ -369,28 +399,27 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox>asdf</CheckBox>
+              <CheckBox />
               <CheckBox defaultChecked={true} />
-              <CheckBox data-indeterminate={true} />
+              <ExtraPropertyCheckBox property="indeterminate" />
               <CheckBox disabled />
-              <CheckBox data-error={true} />
+              <ExtraPropertyCheckBox property="error" />
             </HStack>
           </Section>
-          <Section >
+          <Section>
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <Radio />
-              <Radio defaultChecked={true} />
-              <Radio disabled />
-              <Radio data-error={true} />
+                <Radio />
+                <Radio defaultChecked={true} />
+                <Radio disabled />
+                <Radio data-error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
                   <Heading level="h4">Gender</Heading>
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
-
                 </HStack>
               </HStack>
             </VStack>
