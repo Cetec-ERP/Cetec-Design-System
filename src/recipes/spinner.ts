@@ -16,9 +16,9 @@ const spinnerBase = {
 
 const spinnerVariants = {
   size: {
-    standard: {
-      height: '20',
-      minHeight: '20',
+    medium: {
+      height: '24',
+      minHeight: '24',
     },
     small: {
       height: '16',
@@ -37,6 +37,6 @@ export const spinnerRecipe = defineRecipe({
   base: spinnerBase,
   variants: spinnerVariants,
   defaultVariants: {
-    size: 'standard',
+    size: 'medium',
   },
 });
