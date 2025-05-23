@@ -15,9 +15,6 @@ const textareaBase = {
     outlineWidth: '2',
     outlineColor: { base: 'slate.90', _dark: 'slate.0' },
   },
-  _focus: {
-    borderColor: 'slate.90',
-  },
   _error: {
     display: 'inline-grid',
     borderColor: 'red.50',
@@ -36,21 +33,25 @@ const textareaBase = {
 const textareaVariants = {
   size: {
     small: {
+      py: '3',
       px: '8',
       minHeight: '48',
       fontSize: '14',
+      lineHeights: '14',
     },
     medium: {
       py: '3',
       px: '10',
       fontSize: '16',
       minHeight: '64',
+      lineHeights: '16',
     },
     large: {
       py: '7',
       px: '12',
       fontSize: '16',
       minHeight: '80',
+      lineHeights: '16',
     },
   },
 };
