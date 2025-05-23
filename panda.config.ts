@@ -6,6 +6,7 @@ import {
 import pandaBasePreset from '@pandacss/preset-base';
 
 import * as tokens from './src/styles/tokens';
+import * as semanticTokens from "./src/styles/semanticTokens";
 import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
 import {
@@ -23,6 +24,7 @@ import {
   preRecipe,
   codeRecipe,
   boxRecipe,
+  radioRecipe
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -57,20 +59,7 @@ const theme = {
     breakpoints: tokens.breakpoints,
   }),
   semanticTokens: defineSemanticTokens({
-    colors: {
-      brand: tokens.colors.brand,
-      success: tokens.colors.status.success,
-      warning: tokens.colors.status.warning,
-      danger: tokens.colors.status.danger,
-      utility: {
-        shadowColor: {
-          value: {
-            base: '{colors.slate.90/10}',
-            _dark: '{colors.slate.100/10}',
-          },
-        },
-      },
-    },
+    colors: semanticTokens.colors,
   }),
 };
 
@@ -134,6 +123,7 @@ export default defineConfig({
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
+        radio: radioRecipe,
       },
     },
   },

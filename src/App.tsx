@@ -15,8 +15,10 @@ import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
+import { type ShadowToken } from '@styled-system/tokens';
+import { Radio } from './components/Radio';
 
-export const IconList = () => {
+export const IconList: React.FC = () => {
   return (
     <Grid
       gap="16"
@@ -26,16 +28,14 @@ export const IconList = () => {
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
           <Icon name={icon} />
-          <Text family={'mono'} fontSize={'14'}>
-            {icon}
-          </Text>
+          <Text textStyle="mono-sm">{icon}</Text>
         </HStack>
       ))}
     </Grid>
   );
 };
 
-const ButtonSection = () => {
+const ButtonSection: React.FC = () => {
   return (
     <Section>
       <Heading>Buttons</Heading>
@@ -81,7 +81,11 @@ const ButtonSection = () => {
   );
 };
 
-export const Section = ({ children }: { children?: ReactNode }) => {
+interface SectionProps {
+  children?: ReactNode;
+}
+
+export const Section: React.FC<SectionProps> = ({ children }) => {
   return (
     <Grid
       gridTemplateColumns={'1fr 3fr'}
@@ -98,36 +102,68 @@ export const Section = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-const AppContent = () => {
+const Header: React.FC = () => {
+  return (
+    <Flex
+      w="full"
+      py={'4'}
+      bg={{ base: 'slate.10', _dark: 'slate.80' }}
+      mb={'56'}
+      position={'sticky'}
+      top={'0'}
+      zIndex={'100'}
+      boxShadow={'medium'}
+    >
+      <Container maxW={'5xl'}>
+        <HStack justify={'space-between'}>
+          <Text
+            as={'div'}
+            family="body"
+            size="16"
+            letterSpacing={'widest'}
+            textTransform={'uppercase'}
+            fontWeight={'bold'}
+            onClick={() => alert('clicked')}
+          >
+            Cetec Components
+          </Text>
+          <ThemeSwitcher />
+        </HStack>
+      </Container>
+    </Flex>
+  );
+};
+
+const ShadowBox = ({
+  children,
+  shadow,
+  border = false,
+}: {
+  children: ReactNode;
+  shadow: ShadowToken;
+  border?: boolean;
+}) => {
+  return (
+    <Grid
+      placeContent={'center'}
+      width={'full'}
+      aspectRatio={'landscape'}
+      borderRadius={'4'}
+      shadow={shadow}
+      borderWidth={border ? '1' : undefined}
+      borderStyle={'solid'}
+      borderColor={{ base: 'slate.10', _dark: 'slate.90' }}
+      bg={{ base: 'slate.0', _dark: 'slate.80' }}
+    >
+      {children}
+    </Grid>
+  );
+};
+
+const AppContent: React.FC = () => {
   return (
     <VStack>
-      <Flex
-        w="full"
-        py={'4'}
-        bg={{ base: 'slate.10', _dark: 'slate.80' }}
-        mb={'56'}
-        position={'sticky'}
-        top={'0'}
-        zIndex={'100'}
-        boxShadow={'medium'}
-      >
-        <Container maxW={'5xl'}>
-          <HStack justify={'space-between'}>
-            <Text
-              as={'div'}
-              family={'mono'}
-              fontSize={'16'}
-              letterSpacing={'widest'}
-              textTransform={'uppercase'}
-              fontWeight={'bold'}
-              onClick={() => alert('clicked')}
-            >
-              Cetec Components
-            </Text>
-            <ThemeSwitcher />
-          </HStack>
-        </Container>
-      </Flex>
+      <Header />
       <Container maxW={'5xl'}>
         <VStack gap={'8'}>
           <ButtonSection />
@@ -168,20 +204,19 @@ const AppContent = () => {
                     forth divided moving Also fill dry she'd have.
                   </Text>
                 </VStack>
-                <Pre>{`<Text>
-	...
-	<Text as="span" italic>winged fourth</Text>
-	<Text as="span" bold>replenish</Text>
-	<Text as="span" underline>whales</Text>
-</Text>`}</Pre>
-                <Text family={'mono'}>
+                <Pre>
+                  {`<Text>
+    ...
+  <Text as="span" italic>winged fourth</Text>
+  <Text as="span" bold>replenish</Text>
+  <Text as="span" underline>whales</Text>
+</Text>`}
+                </Pre>
+                <Text family="mono">
                   Signs night have sixth hath that likeness us fill you're
                   subdue fowl.
                 </Text>
-                <Pre>
-                  {`<Text family="mono">...</Text>
-                    `}
-                </Pre>
+                <Pre>{`<Text family="mono">...</Text>`}</Pre>
                 <Box gridColumn={'1 / -1'} mt={'32'}>
                   <Heading
                     level="h3"
@@ -235,6 +270,39 @@ const AppContent = () => {
                   </Text>
                 </Box>
               </Grid>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Shadows</Heading>
+            <VStack gap={'40'} alignItems={'flex-end'}>
+              <HStack width={'full'} gap={'40'} alignItems={'flex-end'}>
+                <ShadowBox shadow={'inset'}>
+                  <Text>Inset</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'low'}>
+                  <Text>Low</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'medium'}>
+                  <Text>Medium</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'high'}>
+                  <Text>High</Text>
+                </ShadowBox>
+              </HStack>
+              <HStack width={'full'} gap={'40'} alignItems={'flex-end'}>
+                <ShadowBox shadow={'inset'} border={true}>
+                  <Text>Inset</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'low'} border={true}>
+                  <Text>Low</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'medium'} border={true}>
+                  <Text>Medium</Text>
+                </ShadowBox>
+                <ShadowBox shadow={'high'} border={true}>
+                  <Text>High</Text>
+                </ShadowBox>
+              </HStack>
             </VStack>
           </Section>
           <Section>
@@ -308,8 +376,27 @@ const AppContent = () => {
               <CheckBox data-error={true} />
             </HStack>
           </Section>
+          <Section >
+            <Heading level="h2">Radio</Heading>
+            <VStack gap={'40'} alignItems={'start'}>
+              <HStack>
+              <Radio />
+              <Radio defaultChecked={true} />
+              <Radio disabled />
+              <Radio data-error={true} />
+              </HStack>
+              <HStack>
+                <HStack gap={'10'} alignItems={'center'}>
+                  <Heading level="h4">Gender</Heading>
+                  <Radio name="gender"></Radio> Male
+                  <Radio name="gender"></Radio> Female
+
+                </HStack>
+              </HStack>
+            </VStack>
+          </Section>
           <Section>
-            <Text as="h2">Inputs</Text>
+            <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
