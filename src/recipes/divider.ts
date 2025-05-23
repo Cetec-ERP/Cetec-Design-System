@@ -26,7 +26,6 @@ const dividerVariants = {
     thick: { '--divider-weight': 'sizes.4' },
     thicker: { '--divider-weight': 'sizes.6' },
   },
-  color: {},
 };
 
 export const dividerRecipe = defineRecipe({
@@ -37,6 +36,5 @@ export const dividerRecipe = defineRecipe({
   defaultVariants: {
     direction: 'horizontal',
     weight: 'thin',
-    color: { base: 'slate.20', _dark: 'slate.80' },
   },
 });
