@@ -20,6 +20,7 @@ import {
   textRecipe,
   checkBoxRecipe,
   spinnerRecipe,
+  dividerRecipe,
   preRecipe,
   codeRecipe,
   boxRecipe,
@@ -28,7 +29,7 @@ import {
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
 // omit default patterns here
-const { box, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
+const { box, divider, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
 const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
@@ -50,6 +51,7 @@ const theme = {
     fontSizes: tokens.fontSizes,
     fontWeights: tokens.fontWeights,
     sizes: tokens.sizes,
+    numericSizes: tokens.numericSizes,
     spacing: tokens.sizes,
     radii: tokens.radii,
     keyframes: tokens.keyframes,
@@ -94,6 +96,7 @@ export default defineConfig({
       fontSizes: theme.tokens.fontSizes,
       fontWeights: theme.tokens.fontWeights,
       sizes: theme.tokens.sizes,
+      numericSizes: theme.tokens.numericSizes,
       spacing: theme.tokens.sizes,
       radii: theme.tokens.radii,
     },
@@ -115,7 +118,7 @@ export default defineConfig({
         code: codeRecipe,
         pre: preRecipe,
         spinner: spinnerRecipe,
-        //Panda might not like this since they already have a box
+        divider: dividerRecipe,
         box: boxRecipe,
       },
       slotRecipes: {
