@@ -14,9 +14,9 @@ import { Spinner } from '~/components/Spinner';
 import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
-import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { Textarea } from '~/components/Textarea';
 
 export const IconList: React.FC = () => {
   return (
@@ -396,6 +396,21 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
+            <Heading level="h2">Textarea</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Small" size="small" />
+                <Textarea placeholder="Medium" />
+                <Textarea placeholder="Large" size="large" />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="placeholder" value="Default – Filled"/>
+                <Textarea placeholder="Disabled" disabled />
+                <Textarea placeholder="Error" data-error={true} />
+              </HStack>
+            </VStack>
+          </Section>
+          {/* <Section>
             <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
@@ -405,12 +420,21 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'24'}>
                 <Input label="Phone" type="tel" />
-                //TODO Fix Textarea
-                <Textarea
-                  label="Message"
-                  variant={'autoGrow'}
-                  value="TEXT area Value"
-                />
+              </HStack>
+            </VStack>
+          </Section> */}
+          <Section>
+            <Heading level="h2">Textarea</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Small" size="small" />
+                <Textarea placeholder="Medium" />
+                <Textarea placeholder="Large" size="large" />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="placeholder" value="Default – Filled"/>
+                <Textarea placeholder="Disabled" disabled />
+                <Textarea placeholder="Error" data-error={true} />
               </HStack>
             </VStack>
           </Section>
