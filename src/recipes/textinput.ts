@@ -18,11 +18,11 @@ const textInputVariants = {
       fontSize: '16',
     },
   },
-  autoSize:{
+  autoSize: {
     true: {
-      fieldSizing: 'content'
-    }
-  }
+      fieldSizing: 'content',
+    },
+  },
 };
 
 const textInputBase = {
@@ -45,16 +45,16 @@ const textInputBase = {
   _disabled: {
     opacity: 0.4,
   },
-  
+
   _focus: {
-    borderColor: {base: 'slate.90', _dark: 'slate.0'},
-  },  
+    borderColor: { base: 'slate.90', _dark: 'slate.0' },
+  },
   _error: {
     display: 'inline-grid',
     borderColor: 'error.default',
-    _focus:{
+    _focus: {
       outlineColor: 'error.default',
-    }
+    },
   },
 };
 

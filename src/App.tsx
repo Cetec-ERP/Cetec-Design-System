@@ -326,10 +326,7 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Divider</Heading>
             <VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Horizontal (default)
               </Heading>
               <VStack width="full">
@@ -345,10 +342,7 @@ const AppContent: React.FC = () => {
                 />
                 <Text> Thicker </Text>
               </VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Vertical
               </Heading>
               <HStack height="96">
@@ -377,21 +371,20 @@ const AppContent: React.FC = () => {
               <CheckBox data-error={true} />
             </HStack>
           </Section>
-          <Section >
+          <Section>
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <Radio />
-              <Radio defaultChecked={true} />
-              <Radio disabled />
-              <Radio data-error={true} />
+                <Radio />
+                <Radio defaultChecked={true} />
+                <Radio disabled />
+                <Radio data-error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
                   <Heading level="h4">Gender</Heading>
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
-
                 </HStack>
               </HStack>
             </VStack>
@@ -415,7 +408,7 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput value="entered text"/>
+                  <TextInput value="entered text" />
                   <Text>Default - Filled</Text>
                 </VStack>
                 <VStack>
@@ -429,7 +422,7 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'}/>
+                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
                   <Text>Auto Size</Text>
                 </VStack>
               </HStack>
