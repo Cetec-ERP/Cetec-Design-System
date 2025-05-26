@@ -4,6 +4,7 @@ export { textareaRecipe } from './textarea';
 export { textRecipe, headingRecipe, linkRecipe, labelRecipe } from './text';
 export { checkBoxRecipe } from "./checkbox"
 export { spinnerRecipe } from "./spinner"
+export { dividerRecipe } from "./divider"
 export { preRecipe, codeRecipe } from "./code"
 export { boxRecipe } from './box';
 export { radioRecipe } from './radio'; 
