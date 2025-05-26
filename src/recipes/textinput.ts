@@ -52,9 +52,9 @@ const textInputBase = {
   _error: {
     display: 'inline-grid',
     borderColor: 'error.default',
-  },
-  '&[data-error]:focus': {
-    borderColor: 'error.default',
+    _focus:{
+      outlineColor: 'error.default',
+    }
   },
 };
 
