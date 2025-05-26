@@ -11,7 +11,6 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
@@ -324,46 +323,6 @@ const AppContent: React.FC = () => {
             </HStack>
           </Section>
           <Section>
-            <Heading level="h2">Divider</Heading>
-            <VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
-                Horizontal (default)
-              </Heading>
-              <VStack width="full">
-                <Divider />
-                <Text> Thin (default) </Text>
-                <Divider weight={'medium'} />
-                <Text> Medium </Text>
-                <Divider weight={'thick'} />
-                <Text> Thick </Text>
-                <Divider
-                  weight={'thicker'}
-                  color={{ base: 'gold.40', _dark: 'gold.30' }}
-                />
-                <Text> Thicker </Text>
-              </VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
-                Vertical
-              </Heading>
-              <HStack height="96">
-                <Divider direction={'vertical'} />
-                <Divider direction={'vertical'} weight={'medium'} />
-                <Divider direction={'vertical'} weight={'thick'} />
-                <Divider
-                  direction={'vertical'}
-                  weight={'thicker'}
-                  color={{ base: 'gold.40', _dark: 'gold.30' }}
-                />
-              </HStack>
-            </VStack>
-          </Section>
-          <Section>
             <Heading level="h2">Icons</Heading>
             <IconList />
           </Section>
@@ -384,7 +343,7 @@ const AppContent: React.FC = () => {
               <Radio />
               <Radio defaultChecked={true} />
               <Radio disabled />
-              <Radio data-error={true} />
+              <Radio error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
@@ -399,8 +358,11 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Switch</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-                {/* <Switch /> */}
-                <Switch>AP </Switch>
+                <Switch />
+                <Switch autoFocus={true}/>
+                <Switch disabled/>
+                <Switch error={true}/>
+                
             </HStack>
           </Section>
           {/* <Section>

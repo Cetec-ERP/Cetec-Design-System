@@ -1,8 +1,8 @@
 import { Box, type BoxProps } from "../Box";
 import {switchbox, type SwitchboxVariantProps} from "@styled-system/recipes";
 import { Icon } from "../Icon";
-import { splitProps } from "~/utils/splitProps";
-import { cx } from "@styled-system/css";
+import { Label } from "../Label";
+import React from "react";
 
 
 export type SwitchBoxProps = Omit<BoxProps, keyof SwitchboxVariantProps > & SwitchboxVariantProps &
@@ -13,19 +13,27 @@ export type SwitchBoxProps = Omit<BoxProps, keyof SwitchboxVariantProps > & Swit
 
 export const Switch: React.FC<SwitchBoxProps> = (
     {
-        variant,
+        error,
         ...props
     }: SwitchBoxProps,
 ) => {
-    const [ className, otherProps] =splitProps(props);
+    const [checked, setChecked] = React.useState(false)
+    const { container, input, indicator} = switchbox({});
     return(
-        <Box
-            as="input"
-            type="checkbox"
-            className={cx(switchbox({ variant }), className)}
-            {...otherProps}
-            >
-                
-            </Box>
+        <Label className={container} 
+        data-checked={checked ? true : undefined}
+        data-disabled={props.disabled}
+        {...(error && {'data-error' : true})}
+        >
+            <Box
+                as="input"
+                type="checkbox"
+                className={input}
+                onChange={(e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => setChecked(e.target.checked)}
+                {...props}
+                />
+                <Icon name={'circle'} className={indicator} />
+                <Icon name={'circle-check'} className={indicator} />
+        </Label>
     )
 }
