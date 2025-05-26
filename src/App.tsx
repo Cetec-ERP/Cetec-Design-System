@@ -427,6 +427,12 @@ const AppContent: React.FC = () => {
                   <Text>Disabled</Text>
                 </VStack>
               </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput autoSize={true} placeHolder={'Enter Text'}/>
+                  <Text>Auto Size</Text>
+                </VStack>
+              </HStack>
             </VStack>
           </Section>
           {/* <Section>

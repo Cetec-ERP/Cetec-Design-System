@@ -18,6 +18,11 @@ const textInputVariants = {
       fontSize: '16',
     },
   },
+  autoSize:{
+    true: {
+      fieldSizing: 'content'
+    }
+  }
 };
 
 const textInputBase = {
@@ -27,10 +32,6 @@ const textInputBase = {
   borderStyle: 'solid',
   borderRadius: '4',
   fontFamily: 'mono',
-  outlineWidth: '2',
-  outlineStyle: 'solid',
-  outlineColor: 'transparent',
-  outlineOffset: '1',
   color: {
     base: 'slate.90',
     _dark: 'slate.0',
@@ -44,16 +45,16 @@ const textInputBase = {
   _disabled: {
     opacity: 0.4,
   },
-  _focusVisible: {
-    outlineWidth: '2',
-    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
-  },
+  
   _focus: {
-    borderColor: 'slate.90',
+    borderColor: {base: 'slate.90', _dark: 'slate.0'},
   },  
   _error: {
     display: 'inline-grid',
-    borderColor: 'red.50',
+    borderColor: 'error.default',
+  },
+  '&[data-error]:focus': {
+    borderColor: 'error.default',
   },
 };
 
