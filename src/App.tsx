@@ -17,6 +17,7 @@ import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { Switch } from './components/Switch';
 
 export const IconList: React.FC = () => {
   return (
@@ -396,7 +397,14 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
-            <Heading level="h2">Inputs</Heading>
+            <Heading level="h2">Switch</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+                {/* <Switch /> */}
+                <Switch>AP </Switch>
+            </HStack>
+          </Section>
+          {/* <Section>
+            <Text as="h2">Inputs</Text>
             <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
@@ -413,7 +421,7 @@ const AppContent: React.FC = () => {
                 />
               </HStack>
             </VStack>
-          </Section>
+          </Section> */}
         </VStack>
       </Container>
     </VStack>
