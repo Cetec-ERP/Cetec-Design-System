@@ -7,14 +7,15 @@ const textareaBase = {
   borderStyle: 'solid',
   borderColor: 'slate.30',
   borderRadius: '4',
+  lineHeight: 'tight',
   _focus:{
-    borderColor: {base: 'slate.90', _dark: 'slate.0'}
+    borderColor: {base: 'slate.90', _dark: 'slate.0'},
   },
   _error: {
     display: 'inline-grid',
     borderColor: 'error.default',
     _focus:{
-      borderColor: 'error.default',
+      outlineColor: 'error.default',
     }
   },
   _placeholder: {
@@ -38,21 +39,18 @@ const textareaVariants = {
       px: '8',
       minHeight: '48',
       fontSize: '14',
-      lineHeight: 'tight',
     },
     medium: {
       py: '3',
       px: '10',
       fontSize: '16',
       minHeight: '64',
-      lineHeight: 'numericSizes.16',
     },
     large: {
       py: '7',
       px: '12',
       fontSize: '16',
       minHeight: '80',
-      lineHeight: 'numericSizes.16',
     },
   },
   autoSize: {
