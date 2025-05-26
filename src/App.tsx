@@ -408,6 +408,9 @@ const AppContent: React.FC = () => {
                 <Textarea placeholder="Disabled" disabled />
                 <Textarea placeholder="Error" data-error={true} />
               </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Auto Size" autoSize={true}/>
+              </HStack>
             </VStack>
           </Section>
           {/* <Section>
@@ -423,21 +426,6 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section> */}
-          <Section>
-            <Heading level="h2">Textarea</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Small" size="small" />
-                <Textarea placeholder="Medium" />
-                <Textarea placeholder="Large" size="large" />
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="placeholder" value="Default – Filled"/>
-                <Textarea placeholder="Disabled" disabled />
-                <Textarea placeholder="Error" data-error={true} />
-              </HStack>
-            </VStack>
-          </Section>
         </VStack>
       </Container>
     </VStack>

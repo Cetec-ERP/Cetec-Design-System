@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
 
 export type TextareaProps = Omit<BoxProps, keyof TextareaVariantProps > & TextareaVariantProps & {
+  autoSize?: boolean,
   error?: boolean,
   disabled?:boolean,
 }
@@ -12,6 +13,7 @@ export const Textarea: React.FC<TextareaProps> = (
     {
       size,
       error,
+      autoSize= false,
       ...props
     }: TextareaProps,
 ) => {
@@ -20,8 +22,9 @@ export const Textarea: React.FC<TextareaProps> = (
   return (
       <Box
         as="textarea"
+        data-error={error ? '' : undefined}
         className={cx(
-          textarea({ size }),
+          textarea({ size, autoSize }),
           className,
         )}
         // onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
