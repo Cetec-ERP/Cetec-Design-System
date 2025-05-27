@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "husky": "dotnet tool restore && dotnet husky install"
   },
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
