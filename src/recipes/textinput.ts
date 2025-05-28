@@ -27,11 +27,16 @@ const textInputVariants = {
 
 const textInputBase = {
   position: 'relative',
+  width: 'full',
   borderWidth: '1',
   borderColor: 'slate.30',
   borderStyle: 'solid',
   borderRadius: '4',
-  fontFamily: 'mono',
+  lineHeight: 'default',
+  fontFamily: 'body',
+  outlineWidth: '1',
+  outlineStyle: 'solid',
+  outlineColor: 'transparent',
   color: {
     base: 'slate.90',
     _dark: 'slate.0',
@@ -47,12 +52,14 @@ const textInputBase = {
   },
 
   _focus: {
+    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
     borderColor: { base: 'slate.90', _dark: 'slate.0' },
   },
-  _error: {
+  '&[data-error="true"]': {
     display: 'inline-grid',
     borderColor: 'error.default',
     _focus: {
+      borderColor: 'error.default',
       outlineColor: 'error.default',
     },
   },
