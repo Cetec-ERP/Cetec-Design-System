@@ -2,21 +2,27 @@ import { defineRecipe } from '@pandacss/dev';
 
 const textareaBase = {
   position: 'relative',
+  width: 'full',
   color: { base: 'slate.90', _dark: 'slate.0' },
   borderWidth: '1',
   borderStyle: 'solid',
   borderColor: 'slate.30',
   borderRadius: '4',
   lineHeight: 'tight',
-  _focus:{
-    borderColor: {base: 'slate.90', _dark: 'slate.0'},
+  outlineWidth: '1',
+  outlineStyle: 'solid',
+  outlineColor: 'transparent',
+  _focus: {
+    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
+    borderColor: { base: 'slate.90', _dark: 'slate.0' },
   },
-  _error: {
+  '&[data-error="true"]': {
     display: 'inline-grid',
     borderColor: 'error.default',
-    _focus:{
+    _focus: {
+      borderColor: 'error.default',
       outlineColor: 'error.default',
-    }
+    },
   },
   _placeholder: {
     color: {
@@ -55,9 +61,9 @@ const textareaVariants = {
   },
   autoSize: {
     true: {
-      fieldSizing: 'content'
-    }
-  }
+      fieldSizing: 'content',
+    },
+  },
 };
 
 export const textareaRecipe = defineRecipe({
