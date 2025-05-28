@@ -6,7 +6,7 @@ import {
 import pandaBasePreset from '@pandacss/preset-base';
 
 import * as tokens from './src/styles/tokens';
-import * as semanticTokens from "./src/styles/semanticTokens";
+import * as semanticTokens from './src/styles/semanticTokens';
 import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
 import {
@@ -24,7 +24,7 @@ import {
   preRecipe,
   codeRecipe,
   boxRecipe,
-  radioRecipe
+  radioRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -35,7 +35,7 @@ const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
 // using pandas methods to define type-safe tokens
-const theme = {
+export const theme = {
   tokens: defineTokens({
     aspectRatios: tokens.aspectRatios,
     borders: tokens.borders,
@@ -96,7 +96,7 @@ export default defineConfig({
       fontSizes: theme.tokens.fontSizes,
       fontWeights: theme.tokens.fontWeights,
       sizes: theme.tokens.sizes,
-      numericSizes: theme.tokens.numericSizes,
+      //numericSizes: theme.tokens.numericSizes,
       spacing: theme.tokens.sizes,
       radii: theme.tokens.radii,
     },

@@ -1,6 +1,5 @@
 {
   "name": "cetec-components",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -53,8 +52,18 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
-  }
+    "extends": ["plugin:storybook/recommended"]
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cetec-ERP/Cetec-Design-System.git"
+  },
+  "author": "Cetec-ERP",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cetec-ERP/Cetec-Design-System/issues"
+  },
+  "homepage": "https://github.com/Cetec-ERP/Cetec-Design-System#readme"
 }
