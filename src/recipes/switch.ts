@@ -70,8 +70,8 @@ const switchBase = {
       opacity: 1,
       transform: 'translateX(0)',
       transitionProperty: 'transform, opacity',
-transitionDuration: '200ms',
-transitionTimingFunction: 'ease-in-out',
+      transitionDuration: '200ms',
+      transitionTimingFunction: 'ease-in-out',
     },
 
     "& ~ [name='circle-check']": {
@@ -83,8 +83,8 @@ transitionTimingFunction: 'ease-in-out',
       opacity: 0,
       transform: 'translateX(0)',
       transitionProperty: 'transform, opacity',
-transitionDuration: '200ms',
-transitionTimingFunction: 'ease-in-out',
+      transitionDuration: '200ms',
+      transitionTimingFunction: 'ease-in-out',
     },
 
     _checked: {
