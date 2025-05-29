@@ -59,8 +59,8 @@ const textInputBase = {
     display: 'inline-grid',
     borderColor: 'error.default',
     _focus: {
-      borderColor: 'error.default',
-      outlineColor: 'error.default',
+      borderColor: { base: 'error.default', _dark: 'error.default' },
+      outlineColor: { base: 'error.default', _dark: 'error.default' },
     },
   },
 };

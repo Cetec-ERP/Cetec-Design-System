@@ -408,7 +408,7 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput value="entered text" />
+                  <TextInput defaultValue="entered text" />
                   <Text>Default - Filled</Text>
                 </VStack>
                 <VStack>
