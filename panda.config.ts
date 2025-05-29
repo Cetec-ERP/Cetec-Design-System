@@ -4,7 +4,7 @@ import {
   defineSemanticTokens,
 } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
-
+import cetecPreset from './src/index';
 import * as tokens from './src/styles/tokens';
 import * as semanticTokens from './src/styles/semanticTokens';
 import { globalCss } from './src/styles/globalStyle';
@@ -64,7 +64,7 @@ export const theme = {
 };
 
 export default defineConfig({
-  presets: ['@pandacss/dev/presets'],
+  presets: ['@pandacss/dev/presets', cetecPreset],
   eject: true,
   gitignore: true,
   jsxFramework: 'react',
@@ -76,8 +76,8 @@ export default defineConfig({
   exclude: [],
   strictTokens: true,
   importMap: '@styled-system',
-  outdir: 'styled-system',
-
+  outdir: './styled-system',
+  outExtension: 'js',
   theme: {
     containerSizes: tokens.containerSizes,
     keyframes: tokens.keyframes,

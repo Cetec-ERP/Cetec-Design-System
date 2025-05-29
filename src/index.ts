@@ -1,34 +1,64 @@
 import { definePreset } from '@pandacss/dev';
-import { theme } from '../panda.config';
 import * as tokens from './styles/tokens';
+import {
+  buttonRecipe,
+  iconButtonRecipe,
+  inputRecipe,
+  textareaRecipe,
+  headingRecipe,
+  linkRecipe,
+  labelRecipe,
+  textRecipe,
+  checkBoxRecipe,
+  spinnerRecipe,
+  dividerRecipe,
+  preRecipe,
+  codeRecipe,
+  boxRecipe,
+  radioRecipe,
+} from './recipes/index';
 
 export const cetecPreset = definePreset({
   name: 'cetec-preset',
   theme: {
-    tokens: {
-      aspectRatios: theme.tokens.aspectRatios,
-      borders: theme.tokens.borders,
-      shadows: theme.tokens.shadows,
-      easings: theme.tokens.easings,
-      durations: theme.tokens.durations,
-      letterSpacings: theme.tokens.letterSpacings,
-      lineHeights: theme.tokens.lineHeights,
-      blurs: theme.tokens.blurs,
-      animations: theme.tokens.animations,
-      colors: theme.tokens.colors,
-      fonts: theme.tokens.fonts,
-      fontSizes: theme.tokens.fontSizes,
-      fontWeights: theme.tokens.fontWeights,
-      sizes: theme.tokens.sizes,
-      //numericSizes: theme.tokens.numericSizes,
-      spacing: theme.tokens.sizes,
-      radii: theme.tokens.radii,
-    },
     extend: {
-      breakpoints: theme.tokens.breakpoints,
-      textStyles: tokens.textStyles,
+      recipes: {
+        text: textRecipe,
+        heading: headingRecipe,
+        link: linkRecipe,
+        label: labelRecipe,
+        button: buttonRecipe,
+        iconButton: iconButtonRecipe,
+        input: inputRecipe,
+        textarea: textareaRecipe,
+        code: codeRecipe,
+        pre: preRecipe,
+        spinner: spinnerRecipe,
+        divider: dividerRecipe,
+        box: boxRecipe,
+        radio: radioRecipe,
+        checkbox: checkBoxRecipe,
+      },
+      tokens: {
+        aspectRatios: tokens.aspectRatios,
+        borders: tokens.borders,
+        shadows: tokens.shadows,
+        easings: tokens.easings,
+        durations: tokens.durations,
+        letterSpacings: tokens.letterSpacings,
+        lineHeights: tokens.lineHeights,
+        blurs: tokens.blurs,
+        animations: tokens.animations,
+        colors: tokens.colors,
+        fonts: tokens.fonts,
+        fontSizes: tokens.fontSizes,
+        fontWeights: tokens.fontWeights,
+        sizes: tokens.sizes,
+        //numericSizes: tokens.numericSizes,
+        spacing: tokens.sizes,
+        radii: tokens.radii,
+      },
     },
   },
 });
-
-export * from './components/Text';
+export default cetecPreset;

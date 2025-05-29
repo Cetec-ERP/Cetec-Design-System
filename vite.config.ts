@@ -20,9 +20,9 @@ export default defineConfig({
     : {
         build: {
           lib: {
-            name: 'cetecComponents',
-            fileName: (format) => `cetec-components.${format}.js`,
-            entry: './src/main.tsx',
+            name: 'cetec-design-system',
+            fileName: (format) => `cetec-design-system.${format}.js`,
+            entry: './src/',
             formats: ['es'],
           },
           rollupOptions: {
