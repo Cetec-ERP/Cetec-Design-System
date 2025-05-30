@@ -12,7 +12,9 @@
     "./src/storybook/*",
     "./src/utils/*",
     "./public/*",
-    "./src/components/*"
+    "./src/components/*",
+    "./src/styles/*",
+    "./src/recipes/*"
   ],
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
@@ -64,9 +66,7 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",
