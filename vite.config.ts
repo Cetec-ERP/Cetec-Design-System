@@ -22,7 +22,7 @@ export default defineConfig({
           lib: {
             name: 'cetec-design-system',
             fileName: (format) => `cetec-design-system.${format}.js`,
-            entry: './src/components/',
+            entry: './src/',
             formats: ['es'],
           },
           rollupOptions: {
