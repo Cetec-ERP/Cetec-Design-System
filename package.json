@@ -2,6 +2,10 @@
   "name": "cetec-design-system",
   "version": "0.0.4",
   "type": "module",
+  "imports": {
+    "~/*": "./src/*",
+    "@styled-system/*": "./styled-system/*"
+  },
   "files": [
     "./styled-system/*",
     "./src/index.ts",
@@ -60,9 +64,7 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",
