@@ -106,11 +106,19 @@ const linkBase = {
   backgroundSize: '100% 1px',
   backgroundRepeat: 'no-repeat',
   backgroundPositionY: '100%',
+  outlineWidth: '2',
+  outlineStyle: 'solid',
+  outlineColor: 'transparent',
+  outlineOffset: '1',
   width: 'fit-content',
   cursor: 'pointer',
   _hover: {
     color: { base: 'blue.40', _dark: 'blue.30' },
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
+  },
+  _focus: {
+    borderRadius: '4',
+    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
   },
 };
 
@@ -119,7 +127,7 @@ const linkVariants = {
   _disabled: {
     true: {
       cursor: 'not-allowed',
-      opacity: 0.7,
+      opacity: 0.4,
       pointerEvents: 'none',
     },
   },
