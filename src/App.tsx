@@ -395,7 +395,7 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          <Section>
+          {/* <Section>
             <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
@@ -413,7 +413,7 @@ const AppContent: React.FC = () => {
                 />
               </HStack>
             </VStack>
-          </Section>
+          </Section> */}
         </VStack>
       </Container>
     </VStack>
