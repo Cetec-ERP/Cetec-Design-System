@@ -119,7 +119,7 @@ const linkVariants = {
   _disabled: {
     true: {
       cursor: 'not-allowed',
-      opacity: '0.7',
+      opacity: 0.7,
       pointerEvents: 'none',
     },
   },
@@ -138,7 +138,7 @@ const labelVariants = {
   _disabled: {
     true: {
       cursor: 'not-allowed',
-      opacity: '0.7',
+      opacity: 0.7,
       pointerEvents: 'none',
     },
   },

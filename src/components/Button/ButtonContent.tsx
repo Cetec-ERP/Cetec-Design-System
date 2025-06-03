@@ -13,7 +13,7 @@ export const ButtonContent = ({
   children: ReactNode;
 }) => (
   <>
-    <HStack gap="4" opacity={loading ? '0' : '1'}>
+    <HStack gap="4" opacity={loading ? 0 : 1}>
       {children}
     </HStack>
     {loading && (

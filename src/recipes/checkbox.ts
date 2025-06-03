@@ -16,7 +16,7 @@ export const checkBoxRecipe = defineSlotRecipe({
     },
     input: {
       position: 'absolute',
-      opacity: '0',
+      opacity: 0,
       width: 'full',
       height: 'full',
       margin: '0',
@@ -47,7 +47,7 @@ export const checkBoxRecipe = defineSlotRecipe({
       },
       _disabled: {
         '& ~ svg': {
-          opacity: '0.4',
+          opacity: 0.4,
           pointerEvents: 'none',
           cursor: 'none',
         },
