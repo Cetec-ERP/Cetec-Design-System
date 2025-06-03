@@ -5,41 +5,30 @@ const switchBase = {
     position: 'relative',
     w: '40',
     h: '24',
-    borderWidth: '2',
-    borderStyle: 'solid',
-    borderColor: { base: 'slate.20', _dark: 'slate.40' },
-    rounded: '24',
     cursor: 'pointer',
     transitionProperty: 'border-color, background-color',
     transitionDuration: '200ms',
     transitionTimingFunction: 'ease-in-out',
-
-    '&::before': {
-      content: "''",
-      position: 'absolute',
-      w: '36',
-      h: '20',
-      rounded: '24',
-      bg: { base: 'slate.0', _dark: 'slate.90' },
-      transitionProperty: 'border-color, background-color',
-      transitionDuration: '200ms',
-      transitionTimingFunction: 'ease-in-out',
-    },
-
-    _checked: {
-      borderColor: { base: 'slate.90', _dark: 'slate.0' },
-      '&::before': {
-        bg: { base: 'slate.90', _dark: 'slate.0' },
-      },
-    },
-
     _disabled: {
       opacity: 0.4,
       pointerEvents: 'none',
       cursor: 'none',
       display: 'inline-grid',
     },
+  },
 
+  background:{
+    position: 'absolute',
+    w: '40',
+    h: '24',
+    rounded: '24',
+    bg: { base: 'slate.0', _dark: 'slate.90' },
+    transitionProperty: 'border-color, background-color',
+    transitionDuration: '200ms',
+    transitionTimingFunction: 'ease-in-out',
+    borderWidth: '2',
+    borderStyle: 'solid',
+    borderColor: { base: 'slate.20', _dark: 'slate.40' },
     _error: {
       borderColor: 'error.default',
       _checked: {
@@ -59,14 +48,10 @@ const switchBase = {
     border: 'none',
     zIndex: 0,
     cursor: 'inherit',
-    top: '-2',
-    left: '-2',
 
     "& ~ [name='circle']": {
       display: 'inline-grid',
       position: 'absolute',
-      top: '-2',
-      left: '-2',
       opacity: 1,
       transform: 'translateX(0)',
       transitionProperty: 'transform, opacity',
@@ -77,8 +62,6 @@ const switchBase = {
     "& ~ [name='circle-check']": {
       display: 'inline-grid',
       position: 'absolute',
-      top: '-2',
-      left: '-2',
       filter: { base: 'invert(100%)', _dark: 'invert(0%)' },
       opacity: 0,
       transform: 'translateX(0)',
@@ -96,6 +79,10 @@ const switchBase = {
         opacity: 1,
         transform: 'translateX(16px)',
       },
+      "& ~ [name='switch-bg']":{
+        bg: { base: 'slate.90', _dark: 'slate.0' },
+        borderColor: { base: 'slate.90', _dark: 'slate.0' },
+      },
     },
 
     _focusVisible: {
@@ -108,8 +95,6 @@ const switchBase = {
       rounded: '24',
       w: '40',
       h: '24',
-      top: '-2',
-      left: '-2',
     },
   },
 
@@ -130,6 +115,6 @@ const switchBase = {
 export const switchRecipe = defineSlotRecipe({
   className: 'switchbox',
   jsx: ['switchbox'],
-  slots: ['container', 'input', 'indicator'],
+  slots: ['container', 'input', 'indicator', 'background'],
   base: switchBase,
 });
