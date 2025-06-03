@@ -6,9 +6,6 @@ const switchBase = {
     w: '40',
     h: '24',
     cursor: 'pointer',
-    transitionProperty: 'border-color, background-color',
-    transitionDuration: '200ms',
-    transitionTimingFunction: 'ease-in-out',
     _disabled: {
       opacity: 0.4,
       pointerEvents: 'none',
@@ -29,12 +26,6 @@ const switchBase = {
     borderWidth: '2',
     borderStyle: 'solid',
     borderColor: { base: 'slate.20', _dark: 'slate.40' },
-    _error: {
-      borderColor: 'error.default',
-      _checked: {
-        borderColor: { base: 'slate.90', _dark: 'slate.0' },
-      },
-    },
   },
 
   input: {
@@ -84,6 +75,14 @@ const switchBase = {
         borderColor: { base: 'slate.90', _dark: 'slate.0' },
       },
     },
+    _error:{
+      "& ~ [name='switch-bg']":{
+        borderColor: 'error.default',
+        _checked: {
+          borderColor: { base: 'slate.90', _dark: 'slate.0' },
+        },
+      },
+    },
 
     _focusVisible: {
       appearance: 'none',
@@ -105,7 +104,6 @@ const switchBase = {
     transitionProperty: 'border-color, background-color',
     transitionDuration: '200ms',
     transitionTimingFunction: 'ease-in-out',
-
     "&:is([name='circle'])": {
       fill: { base: 'slate.20', _dark: 'slate.40' },
     },

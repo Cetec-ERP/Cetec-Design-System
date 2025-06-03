@@ -28,13 +28,12 @@ export const Switch: React.FC<SwitchBoxProps> = ({
         className={input}
         {...props}
         data-checked={checked}
+        data-error={error}
       />
       <Box
         as="span"
         class={background}
-        data-checked={checked}
         name={'switch-bg'}
-        data-error={error}
       />
       <Icon name={'circle'} className={indicator} />
       <Icon name={'circle-check'} className={indicator} />
