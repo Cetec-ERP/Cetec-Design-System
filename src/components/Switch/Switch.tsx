@@ -26,9 +26,9 @@ export const Switch: React.FC<SwitchBoxProps> = ({
         as="input"
         type="checkbox"
         className={input}
-        {...props}
         data-checked={checked}
         data-error={error}
+        {...props}
       />
       <Box
         as="span"
