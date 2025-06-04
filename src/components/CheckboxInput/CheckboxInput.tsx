@@ -5,6 +5,7 @@ import { CheckBox } from '../CheckBox/CheckBox';
 
 export type CheckBoxInputProps = BoxProps & {
   error?: boolean;
+  indeterminate?: boolean;
   disabled?: boolean;
   children?: string | ReactNode;
 };
@@ -13,6 +14,7 @@ export const CheckBoxInput: FC<CheckBoxInputProps> = ({
   disabled,
   children,
   error,
+  indeterminate,
   ...props
 }: CheckBoxInputProps) => {
   return (
