@@ -140,29 +140,6 @@ const Header: React.FC = () => {
 // but in real life scenario the isPropertyRequired state will be replaced with
 // some other states or props or combination of both which will allow us
 // dynamic handling of states.
-const ExtraPropertyCheckBox: React.FC<{ property: string }> = ({
-  property,
-}) => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [isPropertyRequired, setIsPropertyRequiered] = useState<boolean>(true);
-
-  const handleChange = () => {
-    if (isPropertyRequired) setIsPropertyRequiered(false);
-    setIsChecked((prev) => !prev);
-  };
-
-  const propertyProps = { [property]: isPropertyRequired };
-
-  return (
-    <CheckBox
-      checked={isChecked}
-      // there will be some conditions based on states and/or props which will dynamically add or remove the prop
-      // and which in turn will make error or indeterminate state active or deactive
-      {...propertyProps}
-      onClick={handleChange}
-    />
-  );
-};
 
 const ShadowBox = ({
   children,
