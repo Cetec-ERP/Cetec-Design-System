@@ -55,7 +55,7 @@ const textInputBase = {
     outlineColor: { base: 'slate.90', _dark: 'slate.0' },
     borderColor: { base: 'slate.90', _dark: 'slate.0' },
   },
-  '&[data-error="true"]': {
+  _error: {
     display: 'inline-grid',
     borderColor: 'error.default',
     _focus: {
