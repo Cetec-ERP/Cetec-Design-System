@@ -20,14 +20,14 @@ export const Switch: React.FC<SwitchBoxProps> = ({
   return (
     <Label
       className={container}
-      data-disabled={disabled}
+      {...disabled && { 'data-disabled': true }}
     >
       <Box
         as="input"
         type="checkbox"
         className={input}
         data-checked={checked}
-        data-error={error}
+        {...error && { 'data-error': true }}
         {...props}
       />
       <Box
