@@ -11,12 +11,13 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { Switch } from './components/Switch';
+import { Divider } from './components/Divider';
 
 export const IconList: React.FC = () => {
   return (
@@ -383,7 +384,7 @@ const AppContent: React.FC = () => {
               <Radio />
               <Radio defaultChecked={true} />
               <Radio disabled />
-              <Radio data-error={true} />
+              <Radio error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
@@ -396,7 +397,17 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
-            <Heading level="h2">Inputs</Heading>
+            <Heading level="h2">Switch</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+                <Switch />
+                <Switch autoFocus={true}/>
+                <Switch disabled/>
+                <Switch error={true}/>
+                
+            </HStack>
+          </Section>
+          {/* <Section>
+            <Text as="h2">Inputs</Text>
             <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
@@ -413,7 +424,7 @@ const AppContent: React.FC = () => {
                 />
               </HStack>
             </VStack>
-          </Section>
+          </Section> */}
         </VStack>
       </Container>
     </VStack>
