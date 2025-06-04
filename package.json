@@ -1,6 +1,5 @@
 {
   "name": "cetec-design-system",
-  "private": true,
   "version": "0.0.7",
   "type": "module",
   "imports": {
