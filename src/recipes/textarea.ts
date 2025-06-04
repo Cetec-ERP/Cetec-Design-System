@@ -12,7 +12,7 @@ const textareaBase = {
   outlineWidth: '1',
   outlineStyle: 'solid',
   outlineColor: 'transparent',
-  resize:'both';
+  resize: 'both',
   _focus: {
     outlineColor: { base: 'slate.90', _dark: 'slate.0' },
     borderColor: { base: 'slate.90', _dark: 'slate.0' },

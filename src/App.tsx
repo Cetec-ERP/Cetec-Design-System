@@ -134,7 +134,6 @@ const Header: React.FC = () => {
   );
 };
 
-
 const ShadowBox = ({
   children,
   shadow,
@@ -326,10 +325,7 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Divider</Heading>
             <VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Horizontal (default)
               </Heading>
               <VStack width="full">
@@ -345,10 +341,7 @@ const AppContent: React.FC = () => {
                 />
                 <Text> Thicker </Text>
               </VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Vertical
               </Heading>
               <HStack height="96">
@@ -405,12 +398,15 @@ const AppContent: React.FC = () => {
                 <Textarea placeholder="Large" size="large" />
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="placeholder" value="Default – Filled"/>
+                <Textarea
+                  placeholder="placeholder"
+                  defaultValue="Default – Filled"
+                />
                 <Textarea placeholder="Disabled" disabled />
                 <Textarea placeholder="Error" data-error={true} />
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Auto Size" autoSize={true}/>
+                <Textarea placeholder="Auto Size" autoSize={true} />
               </HStack>
             </VStack>
           </Section>
