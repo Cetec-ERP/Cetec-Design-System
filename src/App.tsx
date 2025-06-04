@@ -16,6 +16,7 @@ import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { CheckBoxInput } from './components/CheckboxInput';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
 
@@ -370,6 +371,12 @@ const AppContent: React.FC = () => {
               <CheckBox error={true} />
               <CheckBox disabled />
               <CheckBox disabled />
+            </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Checkbox Input</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+             <CheckBoxInput><Text>Consequat ipsum ipsum adipisicing deserunt.</Text></CheckBoxInput>
             </HStack>
           </Section>
           <Section>
