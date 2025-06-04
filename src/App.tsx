@@ -134,12 +134,6 @@ const Header: React.FC = () => {
   );
 };
 
-// This approach is created to show actuall working of checkbox in react page.
-// This is a very basic example created to show how indeterminate or error state
-// can be removed once checkbox is clicked.
-// but in real life scenario the isPropertyRequired state will be replaced with
-// some other states or props or combination of both which will allow us
-// dynamic handling of states.
 
 const ShadowBox = ({
   children,
