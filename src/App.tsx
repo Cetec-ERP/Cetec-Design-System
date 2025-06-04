@@ -17,6 +17,7 @@ import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { CheckBoxInput } from './components/CheckboxInput';
 
 export const IconList: React.FC = () => {
   return (
@@ -376,6 +377,12 @@ const AppContent: React.FC = () => {
               <CheckBox data-error={true} />
             </HStack>
           </Section>
+          <Section>
+            <Heading level="h2">Checkbox Input</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+             <CheckBoxInput><Text>Consequat ipsum ipsum adipisicing deserunt.</Text></CheckBoxInput>
+            </HStack>
+          </Section>
           <Section >
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
@@ -395,7 +402,7 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          <Section>
+          {/* <Section>
             <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
@@ -413,7 +420,7 @@ const AppContent: React.FC = () => {
                 />
               </HStack>
             </VStack>
-          </Section>
+          </Section> */}
         </VStack>
       </Container>
     </VStack>
