@@ -14,9 +14,9 @@ import { Spinner } from '~/components/Spinner';
 import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
-import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { Textarea } from '~/components/Textarea';
 
 export const IconList: React.FC = () => {
   return (
@@ -133,7 +133,6 @@ const Header: React.FC = () => {
     </Flex>
   );
 };
-
 
 const ShadowBox = ({
   children,
@@ -326,10 +325,7 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Divider</Heading>
             <VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Horizontal (default)
               </Heading>
               <VStack width="full">
@@ -345,10 +341,7 @@ const AppContent: React.FC = () => {
                 />
                 <Text> Thicker </Text>
               </VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Vertical
               </Heading>
               <HStack height="96">
@@ -397,6 +390,27 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
+            <Heading level="h2">Textarea</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Small" size="small" />
+                <Textarea placeholder="Medium" />
+                <Textarea placeholder="Large" size="large" />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea
+                  placeholder="placeholder"
+                  defaultValue="Default – Filled"
+                />
+                <Textarea placeholder="Disabled" disabled />
+                <Textarea placeholder="Error" data-error={true} />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Auto Size" autoSize={true} />
+              </HStack>
+            </VStack>
+          </Section>
+          {/* <Section>
             <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
@@ -406,15 +420,9 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'24'}>
                 <Input label="Phone" type="tel" />
-                //TODO Fix Textarea
-                <Textarea
-                  label="Message"
-                  variant={'autoGrow'}
-                  value="TEXT area Value"
-                />
               </HStack>
             </VStack>
-          </Section>
+          </Section> */}
         </VStack>
       </Container>
     </VStack>
