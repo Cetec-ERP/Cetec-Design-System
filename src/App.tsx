@@ -373,7 +373,6 @@ const AppContent: React.FC = () => {
               <CheckBox />
               <CheckBox defaultChecked={true} />
               <CheckBox disabled />
-              <ExtraPropertyCheckBox property="error" />
             </HStack>
           </Section>
           <Section>
