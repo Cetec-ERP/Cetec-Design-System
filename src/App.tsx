@@ -17,6 +17,7 @@ import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { RadioInput } from './components/RadioInput';
 
 export const IconList: React.FC = () => {
   return (
@@ -395,7 +396,32 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          <Section>
+          <Section >
+            <Heading level="h2">Radio Input</Heading>
+            <VStack gap={'40'} alignItems={'start'}>
+              <HStack>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
+              </HStack>
+              <HStack>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
+              </HStack>
+            </VStack>
+          </Section>
+          {/* <Section>
             <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
@@ -413,7 +439,7 @@ const AppContent: React.FC = () => {
                 />
               </HStack>
             </VStack>
-          </Section>
+          </Section> */}
         </VStack>
       </Container>
     </VStack>
