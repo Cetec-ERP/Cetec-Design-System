@@ -17,6 +17,7 @@ import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { RadioInput } from './components/RadioInput/RadioInput';
 
 export const IconList: React.FC = () => {
   return (
@@ -392,6 +393,14 @@ const AppContent: React.FC = () => {
                   <Radio name="gender"></Radio> Female
 
                 </HStack>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section >
+            <Heading level="h2">Radio Input</Heading>
+            <VStack gap={'40'} alignItems={'start'}>
+              <HStack>
+              <RadioInput>Asnms</RadioInput>
               </HStack>
             </VStack>
           </Section>

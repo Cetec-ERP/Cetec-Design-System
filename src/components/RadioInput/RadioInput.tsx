@@ -13,11 +13,10 @@ export type RadioProps = RadioVariantProps & {
 export const RadioInput: React.FC<RadioProps> = ({ children }) => {
     return(
         <Label>
-            <Radio>
+            <Radio />
                 <Text>
                     {children}
                 </Text>
-            </Radio>
         </Label>
     )
 }
