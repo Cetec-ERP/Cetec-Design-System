@@ -34,3 +34,5 @@ export const RadioInput: FC<RadioInputProps> = ({
     </Label>
   );
 };
+
+export default RadioInput;

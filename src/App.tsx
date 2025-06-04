@@ -17,7 +17,7 @@ import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
-import { RadioInput } from './components/RadioInput/RadioInput';
+import { RadioInput } from './components/RadioInput';
 
 export const IconList: React.FC = () => {
   return (
