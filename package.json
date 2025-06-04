@@ -1,8 +1,13 @@
 {
-  "name": "cetec-components",
+  "name": "cetec-design-system",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.6",
   "type": "module",
+  "imports": {
+    "~/*": "./src/*",
+    "@styled-system/*": "./styled-system/*"
+  },
+  "files": ["./styled-system/*", "./dist/*"],
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
@@ -52,8 +57,18 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
-  }
+    "extends": ["plugin:storybook/recommended"]
+  },
+  "description": "Cetec-ERP Design System",
+  "main": "./src/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cetec-ERP/Cetec-Design-System.git"
+  },
+  "author": "Cetec-ERP",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cetec-ERP/Cetec-Design-System/issues"
+  },
+  "homepage": "https://github.com/Cetec-ERP/Cetec-Design-System#readme"
 }

@@ -72,7 +72,7 @@ export default defineConfig({
   jsxStyleProps: 'all',
   jsxFactory: 'styled',
   watch: true,
-  include: ['./src/**/*.{js,jsx,ts,tsx}', './pages/**/*.{js,jsx,ts,tsx}'],
+  include: ['./src/**/*.{js,jsx,ts,tsx}'],
   preflight: true,
   exclude: [],
   strictTokens: true,
