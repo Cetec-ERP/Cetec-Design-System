@@ -16,6 +16,7 @@ import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
 
 export const IconList: React.FC = () => {
@@ -386,6 +387,45 @@ const AppContent: React.FC = () => {
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
                 </HStack>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Text Input</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <Text>Small</Text>
+                </VStack>
+                <VStack>
+                  <TextInput placeHolder={'Enter Text'} />
+                  <Text>Medium</Text>
+                </VStack>
+                <VStack>
+                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <Text>Large</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput defaultValue="entered text" />
+                  <Text>Default - Filled</Text>
+                </VStack>
+                <VStack>
+                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <Text>Error</Text>
+                </VStack>
+                <VStack>
+                  <TextInput disabled placeHolder={'placeholder'} />
+                  <Text>Disabled</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <Text>Auto Size</Text>
+                </VStack>
               </HStack>
             </VStack>
           </Section>

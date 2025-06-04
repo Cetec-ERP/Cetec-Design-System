@@ -25,6 +25,7 @@ import {
   codeRecipe,
   boxRecipe,
   radioRecipe,
+  textinputRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -114,6 +115,7 @@ export default defineConfig({
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
         input: inputRecipe,
+        textinput: textinputRecipe,
         textarea: textareaRecipe,
         code: codeRecipe,
         pre: preRecipe,
