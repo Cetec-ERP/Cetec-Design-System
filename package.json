@@ -8,7 +8,7 @@
   },
   "files": [
     "./styled-system/*",
-    "./src/components/*"
+    "./src/"
   ],
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
