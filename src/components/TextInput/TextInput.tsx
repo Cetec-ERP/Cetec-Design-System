@@ -5,7 +5,6 @@ import { cx } from '@styled-system/css';
 
 
 export type TextInputProps = Omit<BoxProps, keyof TextinputVariantProps> & TextinputVariantProps &{
-    disabled?: boolean,
     error?: boolean,
 }
 
