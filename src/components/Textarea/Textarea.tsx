@@ -22,16 +22,11 @@ export const Textarea: React.FC<TextareaProps> = (
   return (
       <Box
         as="textarea"
-        data-error={error ? '' : undefined}
+        {...error && { 'data-error': true }}
         className={cx(
           textarea({ size, autoSize }),
           className,
         )}
-        // onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-        //   const target = e.currentTarget;
-        //   const parent = target.parentNode as HTMLElement;
-        //   parent.dataset.value = target.value || '';
-        // }}
         {...otherProps}
       >
       </Box>
