@@ -6,7 +6,7 @@ import {
 import pandaBasePreset from '@pandacss/preset-base';
 
 import * as tokens from './src/styles/tokens';
-import * as semanticTokens from "./src/styles/semanticTokens";
+import * as semanticTokens from './src/styles/semanticTokens';
 import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
 import {
@@ -24,7 +24,7 @@ import {
   preRecipe,
   codeRecipe,
   boxRecipe,
-  radioRecipe
+  radioRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets

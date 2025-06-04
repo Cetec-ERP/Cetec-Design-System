@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -133,6 +133,7 @@ const Header: React.FC = () => {
     </Flex>
   );
 };
+
 
 const ShadowBox = ({
   children,
@@ -369,28 +370,28 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox>asdf</CheckBox>
+              <CheckBox />
               <CheckBox defaultChecked={true} />
-              <CheckBox data-indeterminate={true} />
+              <CheckBox indeterminate={true} />
+              <CheckBox error={true} />
               <CheckBox disabled />
-              <CheckBox data-error={true} />
+              <CheckBox disabled />
             </HStack>
           </Section>
-          <Section >
+          <Section>
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <Radio />
-              <Radio defaultChecked={true} />
-              <Radio disabled />
-              <Radio data-error={true} />
+                <Radio />
+                <Radio defaultChecked={true} />
+                <Radio disabled />
+                <Radio data-error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
                   <Heading level="h4">Gender</Heading>
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
-
                 </HStack>
               </HStack>
             </VStack>
