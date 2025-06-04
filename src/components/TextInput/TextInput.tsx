@@ -22,7 +22,7 @@ export const TextInput: React.FC<TextInputProps> = (
     return(
         <Box
         as="input"
-        data-error={error ? '' : undefined} 
+        {...error && { 'data-error': true }}
         className={cx(
             textinput({size, autoSize}),
             className
