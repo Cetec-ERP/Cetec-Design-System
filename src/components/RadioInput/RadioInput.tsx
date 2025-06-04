@@ -1,22 +1,36 @@
-import { RadioVariantProps } from '@styled-system/recipes';
+import { splitProps } from '~/utils/splitProps';
 import { Label } from '../Label';
 import { Radio } from '../Radio/Radio';
-import { Text } from '../Text';
+import {
+  radioInput,
+  type RadioInputVariantProps,
+} from '@styled-system/recipes';
+import { cx } from '@styled-system/css';
+import { Box, type BoxProps } from '../Box';
+import { FC, ReactNode } from 'react';
 
-
-export type RadioProps = RadioVariantProps & {
-    disabled?: boolean;
+export type RadioInputProps = BoxProps &
+  RadioInputVariantProps & {
     error?: boolean;
-    children?: React.ReactNode;
-};
+    disabled?: boolean;
+    children?: string | ReactNode;
+  };
 
-export const RadioInput: React.FC<RadioProps> = ({ children }) => {
-    return(
-        <Label>
-            <Radio />
-                <Text>
-                    {children}
-                </Text>
-        </Label>
-    )
-}
+export const RadioInput: FC<RadioInputProps> = ({
+  variant,
+  children,
+  disabled,
+  error,
+  ...props
+}: RadioInputProps) => {
+  const [className, otherProps] = splitProps(props);
+  return (
+    <Label className={cx(radioInput({ variant }), className)} {...otherProps}>
+      <Radio
+        {...disabled && { 'data-disabled': true }}
+        {...error && { 'data-error': true }}
+        {...props}/>
+      {children && <Box as="div">{children}</Box>}
+    </Label>
+  );
+};

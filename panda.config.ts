@@ -24,7 +24,8 @@ import {
   preRecipe,
   codeRecipe,
   boxRecipe,
-  radioRecipe
+  radioRecipe,
+  radioInputRecipe
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -120,6 +121,7 @@ export default defineConfig({
         spinner: spinnerRecipe,
         divider: dividerRecipe,
         box: boxRecipe,
+        radioInput: radioInputRecipe,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,

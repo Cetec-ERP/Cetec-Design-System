@@ -400,7 +400,24 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Radio Input</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <RadioInput>Asnms</RadioInput>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
+              </HStack>
+              <HStack>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
               </HStack>
             </VStack>
           </Section>
