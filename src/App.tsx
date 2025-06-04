@@ -372,7 +372,6 @@ const AppContent: React.FC = () => {
             <HStack gap={'40'} alignItems={'flex-end'}>
               <CheckBox />
               <CheckBox defaultChecked={true} />
-              <ExtraPropertyCheckBox property="indeterminate" />
               <CheckBox disabled />
               <ExtraPropertyCheckBox property="error" />
             </HStack>
