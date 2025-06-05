@@ -122,10 +122,10 @@ export default defineConfig({
         divider: dividerRecipe,
         box: boxRecipe,
         radioInput: radioInputRecipe,
+        radio: radioRecipe,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
-        radio: radioRecipe,
       },
     },
   },

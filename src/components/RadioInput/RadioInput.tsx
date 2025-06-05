@@ -12,14 +12,12 @@ import { FC, ReactNode } from 'react';
 export type RadioInputProps = BoxProps &
   RadioInputVariantProps & {
     error?: boolean;
-    disabled?: boolean;
     children?: string | ReactNode;
   };
 
 export const RadioInput: FC<RadioInputProps> = ({
   variant,
   children,
-  disabled,
   error,
   ...props
 }: RadioInputProps) => {
@@ -27,7 +25,6 @@ export const RadioInput: FC<RadioInputProps> = ({
   return (
     <Label className={cx(radioInput({ variant }), className)} {...otherProps}>
       <Radio
-        {...disabled && { 'data-disabled': true }}
         {...error && { 'data-error': true }}
         {...props}/>
       {children && <Box as="div">{children}</Box>}
