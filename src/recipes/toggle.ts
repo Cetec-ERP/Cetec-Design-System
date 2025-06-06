@@ -1,6 +1,6 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
-const switchBase = {
+const toggleBase = {
   container: {
     position: 'relative',
     w: '40',
@@ -70,17 +70,14 @@ const switchBase = {
         opacity: 1,
         transform: 'translateX(16px)',
       },
-      "& ~ [name='switch-bg']":{
+      "& ~ [name='toggle-bg']":{
         bg: { base: 'slate.90', _dark: 'slate.0' },
-        borderColor: { base: 'slate.90', _dark: 'slate.0' },
+        borderColor: { base: 'slate.90 !important', _dark: 'slate.0 !important' },
       },
     },
     _error:{
-      "& ~ [name='switch-bg']":{
+      "& ~ [name='toggle-bg']":{
         borderColor: 'error.default',
-        _checked: {
-          borderColor: { base: 'slate.90', _dark: 'slate.0' },
-        },
       },
     },
 
@@ -110,9 +107,9 @@ const switchBase = {
   },
 };
 
-export const switchRecipe = defineSlotRecipe({
-  className: 'switchbox',
-  jsx: ['switchbox'],
+export const toggleRecipe = defineSlotRecipe({
+  className: 'toggle',
+  jsx: ['toggle'],
   slots: ['container', 'input', 'indicator', 'background'],
-  base: switchBase,
+  base: toggleBase,
 });

@@ -1,22 +1,22 @@
 import { Box, type BoxProps } from '../Box';
-import { switchbox, type SwitchboxVariantProps } from '@styled-system/recipes';
+import { toggle, type ToggleVariantProps } from '@styled-system/recipes';
 import { Icon } from '../Icon';
 import { Label } from '../Label';
 import React from 'react';
 
-export type SwitchBoxProps = Omit<BoxProps, keyof SwitchboxVariantProps> &
-  SwitchboxVariantProps & {
+export type ToggleProps = Omit<BoxProps, keyof ToggleVariantProps> &
+  ToggleVariantProps & {
     error?: boolean;
     disabled?: boolean;
   };
 
-export const Switch: React.FC<SwitchBoxProps> = ({
+export const Toggle: React.FC<ToggleProps> = ({
   error,
   disabled,
   checked,
   ...props
-}: SwitchBoxProps) => {
-  const { container, input, indicator, background } = switchbox({});
+}: ToggleProps) => {
+  const { container, input, indicator, background } = toggle({});
   return (
     <Label
       className={container}
@@ -33,7 +33,7 @@ export const Switch: React.FC<SwitchBoxProps> = ({
       <Box
         as="span"
         class={background}
-        name={'switch-bg'}
+        name={'toggle-bg'}
       />
       <Icon name={'circle'} className={indicator} />
       <Icon name={'circle-check'} className={indicator} />

@@ -1,1 +1,0 @@
-export { Switch, type SwitchBoxProps } from './Switch';

@@ -16,7 +16,7 @@ import { Input } from '~/components/Input';
 import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
-import { Switch } from './components/Switch';
+import { Toggle } from './components/Toggle';
 import { Divider } from './components/Divider';
 
 export const IconList: React.FC = () => {
@@ -399,10 +399,10 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Switch</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-                <Switch />
-                <Switch autoFocus={true}/>
-                <Switch disabled/>
-                <Switch error={true}/>
+                <Toggle />
+                <Toggle autoFocus={true}/>
+                <Toggle disabled/>
+                <Toggle error={true}/>
                 
             </HStack>
           </Section>

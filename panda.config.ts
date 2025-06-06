@@ -25,7 +25,7 @@ import {
   codeRecipe,
   boxRecipe,
   radioRecipe,
-  switchRecipe,
+  toggleRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -120,7 +120,7 @@ export default defineConfig({
         pre: preRecipe,
         spinner: spinnerRecipe,
         divider: dividerRecipe,
-        switchbox: switchRecipe,
+        toggle: toggleRecipe,
         box: boxRecipe,
       },
       slotRecipes: {
