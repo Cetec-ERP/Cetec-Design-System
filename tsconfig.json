@@ -8,7 +8,7 @@
     "noUncheckedIndexedAccess": true,
     "useDefineForClassFields": true,
     "lib": ["ESNext", "DOM", "DOM.iterable"],
-    "module": "preserve",
+    "module": "ESNext",
     "target": "ESNext",
 
     /* Bundler mode */
@@ -28,7 +28,8 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"],
-      "@styled-system/*": ["styled-system/*"]
+      "@styled-system/*": ["styled-system/*"],
+      "@components": ["src/components/*"]
     }
   },
   "include": ["src"],

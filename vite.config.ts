@@ -10,14 +10,17 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'cetec-design-system',
-      //      fileName: 'cetec-design-system',
-      fileName: 'cetec-design-system.js',
+      formats: ['es'],
+    },
+    rollupOptions: {
+      preserveEntrySignatures: 'exports-only',
     },
   },
   plugins: [react()],
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
       '@styled-system': path.resolve(__dirname, './styled-system'),
     },
     /*
