@@ -21,9 +21,14 @@
     ".": {
       "import": "./dist/cetec-design-system.es.js"
     },
-    "./style.css": "./dist/cetec-design-system.css"
+    "styled-system": "./styled-system/*"
   },
-  "files": ["./dist/", "./panda-preset.ts", "./panda.config.ts", "./styled-system"],
+  "files": [
+    "./dist/",
+    "./panda-preset.ts",
+    "./panda.config.ts",
+    "./styled-system"
+  ],
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource-variable/ruda": "^5.1.1",
