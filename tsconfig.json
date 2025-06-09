@@ -29,7 +29,7 @@
     "paths": {
       "~/*": ["src/*"],
       "@styled-system/*": ["styled-system/*"],
-      "@components": ["src/components/*"]
+      "@components/*": ["src/components/*"]
     }
   },
   "include": ["src"],

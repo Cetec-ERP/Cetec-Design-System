@@ -13,15 +13,6 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/components'),
       '@styled-system': path.resolve(__dirname, './styled-system'),
     },
-    /*
-    alias: [
-      { find: '~', replacement: path.resolve(__dirname, './src') },
-      {
-        find: '@styled-system',
-        replacement: path.resolve(__dirname, './styled-system'),
-      },
-    ],
-    */
   },
   base: '/',
   ...(process.env.GH_REPO
