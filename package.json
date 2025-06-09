@@ -19,7 +19,7 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/cetec-design-system.js"
+      "import": "./dist/cetec-design-system.es.js"
     },
     "./style.css": "./dist/cetec-design-system.css"
   },
