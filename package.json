@@ -26,7 +26,10 @@
     "./dist/",
     "./panda-preset.ts",
     "./panda.config.ts",
-    "./styled-system"
+    "./styled-system",
+    "./src/styles/*",
+    "./src/recipes/*",
+    "./src/tokens/*"
   ],
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
@@ -66,9 +69,7 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   },
   "description": "Cetec-ERP Design System",
   "main": "./dist/cetec-design-system.js",

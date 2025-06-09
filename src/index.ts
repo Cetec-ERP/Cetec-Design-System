@@ -14,4 +14,3 @@ export { CheckBox } from '@components/CheckBox';
 export { Radio } from '@components/Radio';
 export { TextInput } from '@components/TextInput';
 export { Textarea } from '@components/Textarea';
-export * as CetecPreset from '../panda-preset';
