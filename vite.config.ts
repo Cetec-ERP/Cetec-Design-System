@@ -5,13 +5,13 @@ import { fileURLToPath } from 'node:url';
 import * as path from 'path';
 
 // https://vitejs.dev/config/
-const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'cetec-design-system',
-      fileName: 'cetec-design-system',
+      //      fileName: 'cetec-design-system',
+      fileName: 'cetec-design-system.js',
     },
   },
   plugins: [react()],

@@ -19,13 +19,11 @@
   },
   "exports": {
     ".": {
-      "require": "./dist/cetec-design-system.es.js"
+      "import": "./dist/cetec-design-system.js"
     },
     "./style.css": "./dist/cetec-design-system.css"
   },
-  "files": [
-    "./dist/"
-  ],
+  "files": ["./dist/"],
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource-variable/ruda": "^5.1.1",
@@ -64,12 +62,10 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   },
   "description": "Cetec-ERP Design System",
-  "main": "./dist/cetec-design-system.umd.cjs",
+  "main": "./dist/cetec-design-system.js",
   "module": "./dist/cetec-design-system.js",
   "repository": {
     "type": "git",
