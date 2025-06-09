@@ -1,6 +1,6 @@
 {
   "name": "cetec-design-system",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
@@ -25,7 +25,9 @@
     },
     "./style.css": "./dist/cetec-design-system.css"
   },
-  "files": ["./dist/"],
+  "files": [
+    "./dist/"
+  ],
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource-variable/ruda": "^5.1.1",
@@ -64,7 +66,9 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": ["plugin:storybook/recommended"]
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   },
   "description": "Cetec-ERP Design System",
   "main": "./dist/cetec-design-system.umd.cjs",
