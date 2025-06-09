@@ -19,8 +19,7 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/cetec-design-system.js",
-      "require": "./dist/cetec-design-system.umd.cjs"
+      "require": "./dist/cetec-design-system.es.js"
     },
     "./style.css": "./dist/cetec-design-system.css"
   },
