@@ -28,13 +28,10 @@
 
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"],
-      "@styled-system/*": ["./styled-system/*"]
+      "~/*": ["src/*"],
+      "@styled-system/*": ["styled-system/*"]
     }
-    // "rootDir": "./src/",
-    // "outDir": "dist"
   },
   "include": ["src"],
-  //"declaration": true,
   "noEmit": true
 }

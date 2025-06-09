@@ -9,21 +9,18 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/main.js'),
+      entry: resolve(__dirname, 'src/index.ts'),
       name: 'cetec-design-system',
       fileName: 'cetec-design-system',
-    },
-    rollupOptions: {
-      external: ['react'],
-      output: {
-        globals: {
-          vue: 'react',
-        },
-      },
     },
   },
   plugins: [react()],
   resolve: {
+    alias: {
+      '~': path.resolve(__dirname, './src'),
+      '@styled-system': path.resolve(__dirname, './styled-system'),
+    },
+    /*
     alias: [
       { find: '~', replacement: path.resolve(__dirname, './src') },
       {
@@ -31,6 +28,7 @@ export default defineConfig({
         replacement: path.resolve(__dirname, './styled-system'),
       },
     ],
+    */
   },
   base: '/',
   ...(process.env.GH_REPO
