@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -13,7 +13,6 @@ import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
 import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
-import { Input } from '~/components/Input';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
 import { TextInput } from './components/TextInput';

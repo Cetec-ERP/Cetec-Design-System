@@ -1,15 +1,6 @@
 {
   "name": "cetec-design-system",
   "version": "0.0.10",
-  "type": "module",
-  "imports": {
-    "~/*": "./src/*",
-    "@styled-system/*": "./styled-system/*"
-  },
-  "files": [
-    "./styled-system/*",
-    "./src/"
-  ],
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
@@ -19,8 +10,22 @@
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "check-exports": "attw --pack ."
   },
+  "type": "module",
+  "imports": {
+    "~/*": "./src/*",
+    "@styled-system/*": "./styled-system/*"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/cetec-design-system.js",
+      "require": "./dist/cetec-design-system.umd.cjs"
+    },
+    "./style.css": "./dist/cetec-design-system.css"
+  },
+  "files": ["./dist/"],
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource-variable/ruda": "^5.1.1",
@@ -37,7 +42,7 @@
     "@storybook/react": "^8.5.2",
     "@storybook/react-vite": "^8.5.2",
     "@storybook/test": "^8.5.2",
-    "@types/node": "^22.7.7",
+    "@types/node": "^22.15.30",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
@@ -59,12 +64,11 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   },
   "description": "Cetec-ERP Design System",
-  "main": "./src/",
+  "main": "./dist/cetec-design-system.umd.cjs",
+  "module": "./dist/cetec-design-system.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cetec-ERP/Cetec-Design-System.git"
