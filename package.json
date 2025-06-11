@@ -5,7 +5,7 @@
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
     "dev": "npx panda codegen --watch & vite",
-    "build": "npx panda codegen && vite build && tsc",
+    "build": "npx panda codegen && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
@@ -13,19 +13,13 @@
     "build-storybook": "storybook build"
   },
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./src/"
-    }
-  },
   "files": [
     "./dist/",
     "./src/styles/*",
     "./src/recipes/*",
     "./src/tokens/*",
     "./src/utils/*",
-    "./src/contexts/*",
-    "./src/components/*"
+    "./styled-system/*"
   ],
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
@@ -62,14 +56,23 @@
     "svgo": "^3.0.2",
     "typescript": "~5.7.3",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vite-plugin-dts": "^4.5.4"
   },
   "eslintConfig": {
     "extends": ["plugin:storybook/recommended"]
   },
   "description": "Cetec-ERP Design System",
-  "main": "./dist/cetec-design-system.js",
-  "module": "./dist/cetec-design-system.js",
+  "main": "./dist/cetec-design-system.es.js",
+  "module": "./dist/cetec-design-system.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/cetec-design-system.es.js"
+    },
+    "./styled-system": {
+      "import": "./dist/styled-system"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cetec-ERP/Cetec-Design-System.git"

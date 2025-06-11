@@ -15,11 +15,8 @@
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": false,
+    "noEmit": true,
     "jsx": "react-jsx",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "outDir": "./dist",
 
     /* Linting */
     "strict": true,
@@ -39,7 +36,7 @@
     "src/styles",
     "src/recipes",
     "src/tokens",
-    "src/utils",
-    "src/contexts"
+    "src/contexts",
+    "styled-system"
   ]
 }
