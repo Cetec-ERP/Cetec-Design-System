@@ -15,7 +15,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/cetec-design-system.es.js"
+      "import": "./src/"
     }
   },
   "files": [
