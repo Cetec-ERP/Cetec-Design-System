@@ -15,7 +15,8 @@
   "type": "module",
   "imports": {
     "~/*": "./src/*",
-    "@styled-system/*": "./styled-system/*"
+    "@styled-system/*": "./styled-system/*",
+    "@components/*": "./src/components/*"
   },
   "exports": {
     ".": {
@@ -24,12 +25,11 @@
   },
   "files": [
     "./dist/",
-    "./panda-preset.ts",
-    "./panda.config.ts",
-    "./styled-system",
     "./src/styles/*",
     "./src/recipes/*",
-    "./src/tokens/*"
+    "./src/tokens/*",
+    "./src/utils/*",
+    "./src/contexts/*"
   ],
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
@@ -69,9 +69,7 @@
     "vite": "^6.0.5"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   },
   "description": "Cetec-ERP Design System",
   "main": "./dist/cetec-design-system.js",
