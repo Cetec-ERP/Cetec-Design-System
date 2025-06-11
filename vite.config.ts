@@ -10,7 +10,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
       '@styled-system': path.resolve(__dirname, './styled-system'),
     },
   },

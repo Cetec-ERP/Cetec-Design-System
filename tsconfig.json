@@ -17,6 +17,9 @@
     "moduleDetection": "force",
     "noEmit": false,
     "jsx": "react-jsx",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist",
 
     /* Linting */
     "strict": true,
@@ -28,10 +31,15 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"],
-      "@styled-system/*": ["styled-system/*"],
-      "@components/*": ["src/components/*"]
+      "@styled-system/*": ["styled-system/*"]
     }
   },
-  "include": ["src"],
-  "noEmit": true
+  "include": [
+    "src/components",
+    "src/styles",
+    "src/recipes",
+    "src/tokens",
+    "src/utils",
+    "src/contexts"
+  ]
 }
