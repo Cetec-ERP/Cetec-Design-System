@@ -59,9 +59,7 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   },
   "description": "Cetec-ERP Design System",
   "main": "./dist/cetec-design-system.es.js",
@@ -72,6 +70,9 @@
     },
     "./styled-system": {
       "import": "./dist/styled-system"
+    },
+    "./icons": {
+      "import": "./dist/sprite.svg"
     }
   },
   "repository": {
