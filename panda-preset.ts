@@ -1,10 +1,9 @@
 import {
-  defineConfig,
   defineTokens,
   defineSemanticTokens,
+  definePreset,
 } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
-
 import * as tokens from './src/styles/tokens';
 import * as semanticTokens from './src/styles/semanticTokens';
 import { globalCss } from './src/styles/globalStyle';
@@ -35,7 +34,6 @@ const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
-// using pandas methods to define type-safe tokens
 const theme = {
   tokens: defineTokens({
     aspectRatios: tokens.aspectRatios,
@@ -64,49 +62,35 @@ const theme = {
   }),
 };
 
-export default defineConfig({
-  presets: ['@pandacss/dev/presets'],
-  eject: true,
-  gitignore: true,
-  jsxFramework: 'react',
-  jsxStyleProps: 'all',
-  jsxFactory: 'styled',
-  watch: true,
-  include: ['./src/**/*.{js,jsx,ts,tsx}'],
-  preflight: true,
-  exclude: [],
-  strictTokens: true,
-  importMap: '@styled-system',
-  outdir: 'styled-system',
-
+export default definePreset({
   theme: {
-    containerSizes: tokens.containerSizes,
-    keyframes: tokens.keyframes,
-    tokens: {
-      aspectRatios: theme.tokens.aspectRatios,
-      borders: theme.tokens.borders,
-      shadows: theme.tokens.shadows,
-      easings: theme.tokens.easings,
-      durations: theme.tokens.durations,
-      letterSpacings: theme.tokens.letterSpacings,
-      lineHeights: theme.tokens.lineHeights,
-      blurs: theme.tokens.blurs,
-      animations: theme.tokens.animations,
-      colors: theme.tokens.colors,
-      fonts: theme.tokens.fonts,
-      fontSizes: theme.tokens.fontSizes,
-      fontWeights: theme.tokens.fontWeights,
-      sizes: theme.tokens.sizes,
-      numericSizes: theme.tokens.numericSizes,
-      spacing: theme.tokens.sizes,
-      radii: theme.tokens.radii,
-    },
-    semanticTokens: {
-      colors: theme.semanticTokens.colors,
-    },
     extend: {
-      breakpoints: theme.tokens.breakpoints,
-      textStyles: tokens.textStyles,
+      containerSizes: tokens.containerSizes,
+      keyframes: tokens.keyframes,
+      tokens: {
+        aspectRatios: theme.tokens.aspectRatios,
+        borders: theme.tokens.borders,
+        shadows: theme.tokens.shadows,
+        easings: theme.tokens.easings,
+        durations: theme.tokens.durations,
+        letterSpacings: theme.tokens.letterSpacings,
+        lineHeights: theme.tokens.lineHeights,
+        blurs: theme.tokens.blurs,
+        animations: theme.tokens.animations,
+        colors: theme.tokens.colors,
+        fonts: theme.tokens.fonts,
+        fontSizes: theme.tokens.fontSizes,
+        fontWeights: theme.tokens.fontWeights,
+        sizes: theme.tokens.sizes,
+        numericSizes: theme.tokens.numericSizes,
+        spacing: theme.tokens.sizes,
+        radii: theme.tokens.radii,
+        breakpoints: theme.tokens.breakpoints,
+        textStyles: tokens.textStyles,
+      },
+      semanticTokens: {
+        colors: theme.semanticTokens.colors,
+      },
       recipes: {
         text: textRecipe,
         heading: headingRecipe,
@@ -129,11 +113,9 @@ export default defineConfig({
       },
     },
   },
-
   utilities: {
     ...pandaBasePresetUtilities,
   },
-
   patterns: {
     icon: {
       properties: {
@@ -169,7 +151,6 @@ export default defineConfig({
       },
     },
   },
-
   globalCss: {
     ...pandaBasePresetGlobalCss,
     ...globalCss,
@@ -181,12 +162,7 @@ export default defineConfig({
   },
   conditions: {
     ...pandaBasePresetConditions,
-    // Core conditions pulled from panda preset-base package
     ...conditions,
-
-    // Themes moved to conditions.tx
-
-    // States
     indeterminate:
       '&:is(:indeterminate, [data-indeterminate], [aria-checked=mixed], [data-state=indeterminate])',
     hidden: '&:is([hidden])',
@@ -194,8 +170,6 @@ export default defineConfig({
     today: '&:is([data-today])',
     collapsed:
       '&:is([aria-collapsed=true], [data-collapsed], [data-state="collapsed"])',
-
-    // Containers
     containerSmall: '@container (max-width: 560px)',
     containerMedium: '@container (min-width: 561px) and (max-width: 999px)',
     containerLarge: '@container (min-width: 1000px)',
