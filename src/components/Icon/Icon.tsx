@@ -5,6 +5,7 @@ import { IconNamesList } from './icons';
 import { icon } from '@styled-system/patterns';
 import { numericSizes } from '~/styles/tokens';
 import { splitProps } from '~/utils/splitProps';
+import { getSvgUrl } from '~/utils/getSvgUrl';
 import { ConditionalValue } from '@styled-system/types';
 import { WithEscapeHatch } from '@styled-system/types/prop-type';
 import { ColorToken } from '@styled-system/tokens';
@@ -30,7 +31,7 @@ export const Icon: React.FC<IconProps> = ({
   ...props
 }: IconProps) => {
   const [className, otherProps] = splitProps(props);
-
+  const iconURL = getSvgUrl(name);
   return (
     <Box
       as="svg"
@@ -40,7 +41,7 @@ export const Icon: React.FC<IconProps> = ({
       className={cx(icon({ size: size, fill }), className)}
       {...otherProps}
     >
-      <use xlinkHref={`/sprite.svg#${name}`} />
+      <use xlinkHref={iconURL} />
     </Box>
   );
 };

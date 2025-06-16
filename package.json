@@ -63,16 +63,12 @@
   },
   "description": "Cetec-ERP Design System",
   "main": "./dist/cetec-design-system.es.js",
-  "module": "./dist/cetec-design-system.es.js",
   "exports": {
     ".": {
       "import": "./dist/cetec-design-system.es.js"
     },
     "./styled-system": {
       "import": "./dist/styled-system"
-    },
-    "./icons": {
-      "import": "./dist/sprite.svg"
     }
   },
   "repository": {
