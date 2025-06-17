@@ -123,6 +123,7 @@ export default defineConfig({
         spinner: spinnerRecipe,
         divider: dividerRecipe,
         box: boxRecipe,
+        radioInput: radioInputRecipe,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
