@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -13,11 +13,12 @@ import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
-import { Textarea } from '~/components/Textarea';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
 import { Toggle } from './components/Toggle';
 import { Divider } from './components/Divider';
+import { TextInput } from './components/TextInput';
+import { Textarea } from '~/components/Textarea';
 
 export const IconList: React.FC = () => {
   return (
@@ -326,10 +327,7 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Divider</Heading>
             <VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Horizontal (default)
               </Heading>
               <VStack width="full">
@@ -345,10 +343,7 @@ const AppContent: React.FC = () => {
                 />
                 <Text> Thicker </Text>
               </VStack>
-              <Heading
-                level="h3"
-                color={{ base: 'gold.40', _dark: 'gold.30' }}
-              >
+              <Heading level="h3" color={{ base: 'gold.40', _dark: 'gold.30' }}>
                 Vertical
               </Heading>
               <HStack height="96">
@@ -370,14 +365,15 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox>asdf</CheckBox>
+              <CheckBox />
               <CheckBox defaultChecked={true} />
-              <CheckBox data-indeterminate={true} />
+              <CheckBox indeterminate={true} />
+              <CheckBox error={true} />
               <CheckBox disabled />
-              <CheckBox data-error={true} />
+              <CheckBox disabled />
             </HStack>
           </Section>
-          <Section >
+          <Section>
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
@@ -391,7 +387,6 @@ const AppContent: React.FC = () => {
                   <Heading level="h4">Gender</Heading>
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
-
                 </HStack>
               </HStack>
             </VStack>
@@ -408,6 +403,67 @@ const AppContent: React.FC = () => {
           </Section>
           {/* <Section>
             <Text as="h2">Inputs</Text>
+            <Heading level="h2">Text Input</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <Text>Small</Text>
+                </VStack>
+                <VStack>
+                  <TextInput placeHolder={'Enter Text'} />
+                  <Text>Medium</Text>
+                </VStack>
+                <VStack>
+                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <Text>Large</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput defaultValue="entered text" />
+                  <Text>Default - Filled</Text>
+                </VStack>
+                <VStack>
+                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <Text>Error</Text>
+                </VStack>
+                <VStack>
+                  <TextInput disabled placeHolder={'placeholder'} />
+                  <Text>Disabled</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <Text>Auto Size</Text>
+                </VStack>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Textarea</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Small" size="small" />
+                <Textarea placeholder="Medium" />
+                <Textarea placeholder="Large" size="large" />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea
+                  placeholder="placeholder"
+                  defaultValue="Default – Filled"
+                />
+                <Textarea placeholder="Disabled" disabled />
+                <Textarea placeholder="Error" data-error={true} />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Auto Size" autoSize={true} />
+              </HStack>
+            </VStack>
+          </Section>
+          {/* <Section>
+            <Heading level="h2">Inputs</Heading>
             <VStack>
               <HStack gap={'24'}>
                 <Input label="First" type="text" />
@@ -416,12 +472,6 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'24'}>
                 <Input label="Phone" type="tel" />
-                //TODO Fix Textarea
-                <Textarea
-                  label="Message"
-                  variant={'autoGrow'}
-                  value="TEXT area Value"
-                />
               </HStack>
             </VStack>
           </Section> */}
