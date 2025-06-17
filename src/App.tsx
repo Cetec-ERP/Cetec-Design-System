@@ -11,11 +11,12 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { Toggle } from './components/Toggle';
+import { Divider } from './components/Divider';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
 
@@ -376,10 +377,10 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-                <Radio />
-                <Radio defaultChecked={true} />
-                <Radio disabled />
-                <Radio data-error={true} />
+              <Radio />
+              <Radio defaultChecked={true} />
+              <Radio disabled />
+              <Radio error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
@@ -391,6 +392,17 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
+            <Heading level="h2">Switch</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+                <Toggle />
+                <Toggle autoFocus={true}/>
+                <Toggle disabled/>
+                <Toggle error={true}/>
+                
+            </HStack>
+          </Section>
+          {/* <Section>
+            <Text as="h2">Inputs</Text>
             <Heading level="h2">Text Input</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>

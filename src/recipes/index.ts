@@ -8,5 +8,6 @@ export { dividerRecipe } from "./divider"
 export { preRecipe, codeRecipe } from "./code"
 export { boxRecipe } from './box';
 export { radioRecipe } from './radio'; 
+export { toggleRecipe } from './toggle';
 export { textinputRecipe } from './textinput';
 
