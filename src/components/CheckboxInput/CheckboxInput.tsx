@@ -11,6 +11,7 @@ export type CheckBoxInputProps = BoxProps & {
 export const CheckBoxInput: FC<CheckBoxInputProps> = ({
   children,
   error,
+  indeterminate,
   ...props
 }: CheckBoxInputProps) => {
   return (
