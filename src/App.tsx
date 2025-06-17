@@ -19,6 +19,7 @@ import { Toggle } from './components/Toggle';
 import { Divider } from './components/Divider';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
+import { CheckBoxInput } from './components/CheckboxInput';
 
 export const IconList: React.FC = () => {
   return (
@@ -371,6 +372,12 @@ const AppContent: React.FC = () => {
               <CheckBox error={true} />
               <CheckBox disabled />
               <CheckBox disabled />
+            </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Checkbox Input</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+             <CheckBoxInput><Text>Consequat ipsum ipsum adipisicing deserunt.</Text></CheckBoxInput>
             </HStack>
           </Section>
           <Section>
