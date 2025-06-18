@@ -368,26 +368,39 @@ const AppContent: React.FC = () => {
             <HStack gap={'40'} alignItems={'flex-end'}>
               <CheckBox />
               <CheckBox defaultChecked={true} />
-              <CheckBox indeterminate={true} />
-              <CheckBox error={true} />
-              <CheckBox disabled />
+              <CheckBox indeterminate />
+              <CheckBox error />
               <CheckBox disabled />
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Checkbox Input</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-             <CheckBoxInput><Text>Consequat ipsum ipsum adipisicing deserunt.</Text></CheckBoxInput>
+              <CheckBoxInput>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput defaultChecked={true}>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput indeterminate>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput error>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput disabled>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <Radio />
-              <Radio defaultChecked={true} />
-              <Radio disabled />
-              <Radio error={true} />
+                <Radio />
+                <Radio defaultChecked={true} />
+                <Radio disabled />
+                <Radio error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
@@ -401,11 +414,10 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Switch</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-                <Toggle />
-                <Toggle autoFocus={true}/>
-                <Toggle disabled/>
-                <Toggle error={true}/>
-                
+              <Toggle />
+              <Toggle autoFocus={true} />
+              <Toggle disabled />
+              <Toggle error={true} />
             </HStack>
           </Section>
           {/* <Section>
