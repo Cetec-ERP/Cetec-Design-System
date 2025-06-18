@@ -25,6 +25,7 @@ import {
   codeRecipe,
   boxRecipe,
   radioRecipe,
+  toggleRecipe,
   textinputRecipe,
   radioInputRecipe,
 } from './src/recipes/index';
@@ -122,6 +123,7 @@ export default defineConfig({
         pre: preRecipe,
         spinner: spinnerRecipe,
         divider: dividerRecipe,
+        toggle: toggleRecipe,
         box: boxRecipe,
       },
       slotRecipes: {

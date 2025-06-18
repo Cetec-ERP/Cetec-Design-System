@@ -11,14 +11,16 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { Input } from '~/components/Input';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { Toggle } from './components/Toggle';
+import { Divider } from './components/Divider';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
+import { CheckBoxInput } from './components/CheckboxInput';
 
 export const IconList: React.FC = () => {
   return (
@@ -367,10 +369,29 @@ const AppContent: React.FC = () => {
             <HStack gap={'40'} alignItems={'flex-end'}>
               <CheckBox />
               <CheckBox defaultChecked={true} />
-              <CheckBox indeterminate={true} />
-              <CheckBox error={true} />
+              <CheckBox indeterminate />
+              <CheckBox error />
               <CheckBox disabled />
-              <CheckBox disabled />
+            </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Checkbox Input</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <CheckBoxInput>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput defaultChecked={true}>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput indeterminate>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput error>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput disabled>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
             </HStack>
           </Section>
           <Section>
@@ -380,7 +401,7 @@ const AppContent: React.FC = () => {
                 <Radio />
                 <Radio defaultChecked={true} />
                 <Radio disabled />
-                <Radio data-error={true} />
+                <Radio error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
@@ -417,6 +438,16 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
+            <Heading level="h2">Switch</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <Toggle />
+              <Toggle autoFocus={true} />
+              <Toggle disabled />
+              <Toggle error={true} />
+            </HStack>
+          </Section>
+          {/* <Section>
+            <Text as="h2">Inputs</Text>
             <Heading level="h2">Text Input</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
