@@ -19,6 +19,7 @@ import { Toggle } from './components/Toggle';
 import { Divider } from './components/Divider';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
+import { RadioInput } from './components/RadioInput';
 import { CheckBoxInput } from './components/CheckboxInput';
 
 export const IconList: React.FC = () => {
@@ -408,6 +409,31 @@ const AppContent: React.FC = () => {
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
                 </HStack>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section >
+            <Heading level="h2">Radio Input</Heading>
+            <VStack gap={'40'} alignItems={'start'}>
+              <HStack>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
+              </HStack>
+              <HStack>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
               </HStack>
             </VStack>
           </Section>
