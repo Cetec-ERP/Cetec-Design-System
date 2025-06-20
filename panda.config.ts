@@ -28,6 +28,7 @@ import {
   toggleRecipe,
   textinputRecipe,
   radioInputRecipe,
+  toggleInputRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -124,6 +125,7 @@ export default defineConfig({
         spinner: spinnerRecipe,
         divider: dividerRecipe,
         toggle: toggleRecipe,
+        toggleInput: toggleInputRecipe,
         box: boxRecipe,
       },
       slotRecipes: {
