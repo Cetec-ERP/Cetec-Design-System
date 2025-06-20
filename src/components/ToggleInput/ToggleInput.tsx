@@ -24,7 +24,7 @@ export const ToggleInput: FC<ToggleInputProps> = ({
   return (
     <Label className={cx(toggleInput({}), className)} {...otherProps}>
       <Toggle {...(error && { 'data-error': true })} {...props} />
-      {children && <Box as="div">{children}</Box>}
+      {children && <div>{children}</div>}
     </Label>
   );
 };

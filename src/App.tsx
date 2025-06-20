@@ -458,6 +458,22 @@ const AppContent: React.FC = () => {
                   Deserunt proident officia nostrud. 
                 </Text>
               </ToggleInput>
+              <ToggleInput>
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </ToggleInput>
+              <ToggleInput>
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </ToggleInput>
             </HStack>
           </Section>
           <Section>
