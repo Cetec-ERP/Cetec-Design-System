@@ -7,7 +7,7 @@ import {
 import { splitProps } from '~/utils/splitProps';
 import { Label } from '../Label';
 import { cx } from '@styled-system/css';
-import { Toggle } from '../Toggle/Toggle';
+import { Toggle } from '../Toggle';
 
 export type ToggleInputProps = BoxProps &
   ToggleInputVariantProps & {
