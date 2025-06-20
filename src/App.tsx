@@ -21,7 +21,8 @@ import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
 import { CheckBoxInput } from './components/CheckboxInput';
-import ToggleInput from './components/ToggleInput/ToggleInput';
+import { ToggleInput } from './components/ToggleInput';
+
 
 export const IconList: React.FC = () => {
   return (
