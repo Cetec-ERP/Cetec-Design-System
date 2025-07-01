@@ -34,7 +34,7 @@ const tooltipBase = {
 };
 
 const tooltipVariants = {
-    position: {
+    placement: {
     top: {
       tooltipContent: {
         bottom: '100%',
@@ -150,12 +150,12 @@ const tooltipVariants = {
 };
 
 export const tooltipRecipe = defineSlotRecipe({
-  className: 'toggle',
-  jsx: ['toggle'],
-  slots: ['wrapper', 'tooltipContent', 'tooltipTriger'],
+  className: 'tooltip',
+  jsx: ['tooltip'],
+  slots: ['wrapper', 'tooltipContent'],
   base: tooltipBase,
   variants: tooltipVariants,
   defaultVariants: {
-    position: 'bottom',
+    placement: 'bottom',
   },
 });
