@@ -7,19 +7,7 @@ export type TooltipProps = Omit<BoxProps, keyof TooltipVariantProps> &
     text?: string;
     title?: string;
     caret?: boolean;
-    placement?:
-        'bottom'
-      | 'bottom-start'
-      | 'bottom-end'
-      | 'top'
-      | 'top-start'
-      | 'top-end'
-      | 'left'
-      | 'left-start'
-      | 'left-end'
-      | 'right'
-      | 'right-start'
-      | 'right-end';
+    placement?: TooltipVariantProps['placement']
     children?: string | ReactNode;
     trigger?: 'onHover' | 'onClick';
   };
@@ -30,10 +18,10 @@ export type TooltipProps = Omit<BoxProps, keyof TooltipVariantProps> &
     text,
     title,
     children,
-    placement = 'bottom', // ✅ Set default here
+    placement = 'bottom',
     ...props
   }) => {
-    const styles = tooltip({ position: placement }); // ✅ styles.tooltipContent is now based on placement
+    const styles = tooltip({ placement });
     const [show, setShow] = useState(false);
     const tooltipRef = useRef<HTMLDivElement>(null);
   
@@ -68,7 +56,6 @@ export type TooltipProps = Omit<BoxProps, keyof TooltipVariantProps> &
     return (
       <Box as="div" {...props} className={styles.wrapper} ref={tooltipRef}>
         <Box
-          className={styles.tooltipTriger}
           onMouseEnter={trigger === 'onHover' ? handleMouseEnter : undefined}
           onMouseLeave={trigger === 'onHover' ? handleMouseLeave : undefined}
           onClick={trigger === 'onClick' ? handleClick : undefined}
