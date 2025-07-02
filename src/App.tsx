@@ -539,10 +539,11 @@ const AppContent: React.FC = () => {
                   Bottom
                 </Tooltip>
                 <Tooltip
-                  title="Enter"
-                  text="You define me"
+                  title="Title"
+                  text="Details Content"
                   placement={'top'}
-                  trigger="onClick"
+                  trigger="onHover"
+                  caret={false}
                 >
                   Top
                 </Tooltip>
@@ -600,6 +601,45 @@ const AppContent: React.FC = () => {
                   trigger="onClick"
                 >
                   Right Start
+                </Tooltip>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'bottom-end'}
+                  trigger="onClick"
+                >
+                  Bottom End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'top-end'}
+                  trigger="onClick"
+                >
+                  Top End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left-end'}
+                  trigger="onClick"
+                >
+                  Left End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'right-end'}
+                  trigger="onClick"
+                >
+                  Right End
                 </Tooltip>
               </HStack>
             </VStack>
