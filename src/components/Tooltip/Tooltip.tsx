@@ -1,6 +1,7 @@
 import { Box, type BoxProps } from '../Box';
 import { tooltip, type TooltipVariantProps } from '@styled-system/recipes';
 import { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import { Text } from '../Text';
 
 export type TooltipProps = Omit<BoxProps, keyof TooltipVariantProps> &
   TooltipVariantProps & {
@@ -21,7 +22,7 @@ export const Tooltip: FC<TooltipProps> = ({
   placement = 'bottom',
   ...props
 }) => {
-  const { wrapper, tooltipContent } = tooltip({ placement });
+  const { wrapper, tooltipContent } = tooltip({ placement, caret });
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +55,7 @@ export const Tooltip: FC<TooltipProps> = ({
   };
 
   return (
-    <Box as="div" {...props} className={wrapper} ref={tooltipRef}>
+    <Box {...props} className={wrapper} ref={tooltipRef}>
       <Box
         onMouseEnter={trigger === 'onHover' ? handleMouseEnter : undefined}
         onMouseLeave={trigger === 'onHover' ? handleMouseLeave : undefined}
@@ -64,9 +65,9 @@ export const Tooltip: FC<TooltipProps> = ({
       </Box>
 
       {show && (
-        <Box as="span" className={tooltipContent}>
-          {title && <Box as="p">{title}</Box>}
-          {text && <Box as="span">{text}</Box>}
+        <Box className={tooltipContent}>
+          {title && <Text as="p" textStyle={"body-md"} bold color={{base:'slate.0', _dark: 'slate.90'}}>{title}</Text>}
+          {text && <Text as="span" textStyle={"body-sm"} color={{base:'slate.0', _dark: 'slate.90'}}>{text}</Text>}
         </Box>
       )}
     </Box>
