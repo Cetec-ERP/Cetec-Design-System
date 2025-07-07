@@ -528,7 +528,8 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Tooltip</Heading>
-            <VStack gap={'40'} alignContent={'flex-start'}>
+            <VStack gap={'40'} alignContent={'flex-start'} justifyContent={'flex-start'}>
+            <Heading level='h4' >With Caret</Heading>
               <HStack
                 gap={'40'}
                 alignItems={'flex-start'}
@@ -542,7 +543,7 @@ const AppContent: React.FC = () => {
                   title="Title"
                   text="Details Content"
                   placement={'top'}
-                  trigger="onHover"
+                  trigger="onClick"
                   caret={false}
                 >
                   Top
@@ -613,7 +614,6 @@ const AppContent: React.FC = () => {
                   title="Enter"
                   text="You define me"
                   placement={'bottom-end'}
-                  trigger="onClick"
                 >
                   Bottom End
                 </Tooltip>
@@ -621,7 +621,6 @@ const AppContent: React.FC = () => {
                   title="Enter"
                   text="You define me"
                   placement={'top-end'}
-                  trigger="onClick"
                 >
                   Top End
                 </Tooltip>
@@ -629,15 +628,136 @@ const AppContent: React.FC = () => {
                   title="Enter"
                   text="You define me"
                   placement={'left-end'}
-                  trigger="onClick"
                 >
                   Left End
                 </Tooltip>
                 <Tooltip
-                  title="Enter"
-                  text="You define me"
+                  text="Right End Tooltip"
                   placement={'right-end'}
                   trigger="onClick"
+                >
+                  Right End
+                </Tooltip>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'40'} alignContent={'flex-start'} justifyContent={'flex-start'}>
+            <Heading level='h4' >Without Caret</Heading>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip title="Enter" text="You define me" trigger="onClick" caret={false}>
+                  Bottom
+                </Tooltip>
+                <Tooltip
+                  title="Title"
+                  text="Details Content"
+                  placement={'top'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Top
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Left
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'right'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Right
+                </Tooltip>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'bottom-start'}
+                  trigger="onHover"
+                  caret={false}
+                >
+                  Bottom Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'top-start'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Top Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left-start'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Left Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'right-start'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Right Start
+                </Tooltip>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'bottom-end'}
+                  caret={false}
+                >
+                  Bottom End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'top-end'}
+                  caret={false}
+                >
+                  Top End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left-end'}
+                  caret={false}
+                >
+                  Left End
+                </Tooltip>
+                <Tooltip
+                  text="Right End Tooltip"
+                  placement={'right-end'}
+                  trigger="onClick"
+                  caret={false}
                 >
                   Right End
                 </Tooltip>
