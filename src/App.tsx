@@ -544,7 +544,6 @@ const AppContent: React.FC = () => {
                   text="Details Content"
                   placement={'top'}
                   trigger="onClick"
-                  caret={false}
                 >
                   Top
                 </Tooltip>
