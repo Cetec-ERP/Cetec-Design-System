@@ -528,8 +528,12 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Tooltip</Heading>
-            <VStack gap={'40'} alignContent={'flex-start'} justifyContent={'flex-start'}>
-            <Heading level='h4' >With Caret</Heading>
+            <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+              <Heading level="h4">With Caret</Heading>
               <HStack
                 gap={'40'}
                 alignItems={'flex-start'}
@@ -640,15 +644,24 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
             <Heading level="h2"></Heading>
-            <VStack gap={'40'} alignContent={'flex-start'} justifyContent={'flex-start'}>
-            <Heading level='h4' >Without Caret</Heading>
+            <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+              <Heading level="h4">Without Caret</Heading>
               <HStack
                 gap={'40'}
                 alignItems={'flex-start'}
                 justifyContent={'flex-start'}
                 width={'full'}
               >
-                <Tooltip title="Enter" text="You define me" trigger="onClick" caret={false}>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  trigger="onClick"
+                  caret={false}
+                >
                   Bottom
                 </Tooltip>
                 <Tooltip
@@ -762,81 +775,38 @@ const AppContent: React.FC = () => {
                 </Tooltip>
               </HStack>
             </VStack>
-          </Section>
-          {/* <Section>
-            <Text as="h2">Inputs</Text>
-            <Heading level="h2">Text Input</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput size={'small'} placeHolder={'Enter Text'} />
-                  <Text>Small</Text>
-                </VStack>
-                <VStack>
-                  <TextInput placeHolder={'Enter Text'} />
-                  <Text>Medium</Text>
-                </VStack>
-                <VStack>
-                  <TextInput size={'large'} placeHolder={'Enter Text'} />
-                  <Text>Large</Text>
-                </VStack>
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput defaultValue="entered text" />
-                  <Text>Default - Filled</Text>
-                </VStack>
-                <VStack>
-                  <TextInput data-error={true} placeHolder={'placeholder'} />
-                  <Text>Error</Text>
-                </VStack>
-                <VStack>
-                  <TextInput disabled placeHolder={'placeholder'} />
-                  <Text>Disabled</Text>
-                </VStack>
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
-                  <Text>Auto Size</Text>
-                </VStack>
+            <Heading gap={'40'}></Heading>
+            <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+              <Heading level="h4">Different Example</Heading>
+              <HStack
+                gap={'40'}
+                alignItems={'center'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip title="Enter" text="You define me">
+                  <Icon name="info" />
+                </Tooltip>
+                <Tooltip title="Title" text="Details Content">
+                  <IconButton variant="primary" size="large">
+                    <Icon name="aa-placeholder" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Title" text="Details Content" caret={false}>
+                  <IconButton variant="primary" size="large">
+                    <Icon name="aa-placeholder" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Title" text="Details Content">
+                  <Text as='u'>Text</Text>
+                </Tooltip>
               </HStack>
             </VStack>
           </Section>
-          <Section>
-            <Heading level="h2">Textarea</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Small" size="small" />
-                <Textarea placeholder="Medium" />
-                <Textarea placeholder="Large" size="large" />
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea
-                  placeholder="placeholder"
-                  defaultValue="Default – Filled"
-                />
-                <Textarea placeholder="Disabled" disabled />
-                <Textarea placeholder="Error" data-error={true} />
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Auto Size" autoSize={true} />
-              </HStack>
-            </VStack>
-          </Section>
-          {/* <Section>
-            <Heading level="h2">Inputs</Heading>
-            <VStack>
-              <HStack gap={'24'}>
-                <Input label="First" type="text" />
-                <Input label="Last" type="text" />
-                <Input label="Email" type="email" variant={'internalLabel'} />
-              </HStack>
-              <HStack gap={'24'}>
-                <Input label="Phone" type="tel" />
-              </HStack>
-            </VStack>
-          </Section> */}
         </VStack>
       </Container>
     </VStack>
