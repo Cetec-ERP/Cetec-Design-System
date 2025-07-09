@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -12,7 +12,6 @@ import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
 import { CheckBox } from './components/CheckBox';
-import { Input } from '~/components/Input';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
 import { Toggle } from './components/Toggle';
@@ -22,7 +21,7 @@ import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
 import { CheckBoxInput } from './components/CheckboxInput';
 import { ToggleInput } from './components/ToggleInput';
-
+import { Tooltip } from './components/Tooltip';
 
 export const IconList: React.FC = () => {
   return (
@@ -414,28 +413,24 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          <Section >
+          <Section>
             <Heading level="h2">Radio Input</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <RadioInput name="group">
-                <Text as="div" size='16' weight={'normal'}>
-                  Consequat ipsum ipsum adipisicing deserunt.
-                </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
-              </RadioInput>
+                <RadioInput name="group">
+                  <Text as="div" size="16" weight={'normal'}>
+                    Consequat ipsum ipsum adipisicing deserunt.
+                  </Text>
+                  <Text size="14">Deserunt proident officia nostrud.</Text>
+                </RadioInput>
               </HStack>
               <HStack>
-              <RadioInput name="group">
-                <Text as="div" size='16' weight={'normal'}>
-                  Consequat ipsum ipsum adipisicing deserunt.
-                </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
-              </RadioInput>
+                <RadioInput name="group">
+                  <Text as="div" size="16" weight={'normal'}>
+                    Consequat ipsum ipsum adipisicing deserunt.
+                  </Text>
+                  <Text size="14">Deserunt proident officia nostrud.</Text>
+                </RadioInput>
               </HStack>
             </VStack>
           </Section>
@@ -452,28 +447,22 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Toggle Input</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
             </HStack>
           </Section>
@@ -482,15 +471,15 @@ const AppContent: React.FC = () => {
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <TextInput size={'small'} placeholder={'Enter Text'} />
                   <Text>Small</Text>
                 </VStack>
                 <VStack>
-                  <TextInput placeHolder={'Enter Text'} />
+                  <TextInput placeholder={'Enter Text'} />
                   <Text>Medium</Text>
                 </VStack>
                 <VStack>
-                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <TextInput size={'large'} placeholder={'Enter Text'} />
                   <Text>Large</Text>
                 </VStack>
               </HStack>
@@ -500,17 +489,17 @@ const AppContent: React.FC = () => {
                   <Text>Default - Filled</Text>
                 </VStack>
                 <VStack>
-                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <TextInput data-error={true} placeholder={'placeholder'} />
                   <Text>Error</Text>
                 </VStack>
                 <VStack>
-                  <TextInput disabled placeHolder={'placeholder'} />
+                  <TextInput disabled placeholder={'placeholder'} />
                   <Text>Disabled</Text>
                 </VStack>
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <TextInput autoSize={true} placeholder={'Enter Text'} />
                   <Text>Auto Size</Text>
                 </VStack>
               </HStack>
@@ -537,80 +526,287 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          {/* <Section>
-            <Text as="h2">Inputs</Text>
-            <Heading level="h2">Text Input</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput size={'small'} placeHolder={'Enter Text'} />
-                  <Text>Small</Text>
-                </VStack>
-                <VStack>
-                  <TextInput placeHolder={'Enter Text'} />
-                  <Text>Medium</Text>
-                </VStack>
-                <VStack>
-                  <TextInput size={'large'} placeHolder={'Enter Text'} />
-                  <Text>Large</Text>
-                </VStack>
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput defaultValue="entered text" />
-                  <Text>Default - Filled</Text>
-                </VStack>
-                <VStack>
-                  <TextInput data-error={true} placeHolder={'placeholder'} />
-                  <Text>Error</Text>
-                </VStack>
-                <VStack>
-                  <TextInput disabled placeHolder={'placeholder'} />
-                  <Text>Disabled</Text>
-                </VStack>
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
-                  <Text>Auto Size</Text>
-                </VStack>
-              </HStack>
-            </VStack>
-          </Section>
           <Section>
-            <Heading level="h2">Textarea</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Small" size="small" />
-                <Textarea placeholder="Medium" />
-                <Textarea placeholder="Large" size="large" />
+            <Heading level="h2">Tooltip</Heading>
+            <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+              <Heading level="h4">With Caret</Heading>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip title="Enter" text="You define me" trigger="onClick">
+                  Bottom
+                </Tooltip>
+                <Tooltip
+                  title="Title"
+                  text="Details Content"
+                  placement={'top'}
+                  trigger="onClick"
+                >
+                  Top
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left'}
+                  trigger="onClick"
+                >
+                  Left
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'right'}
+                  trigger="onClick"
+                >
+                  Right
+                </Tooltip>
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea
-                  placeholder="placeholder"
-                  defaultValue="Default – Filled"
-                />
-                <Textarea placeholder="Disabled" disabled />
-                <Textarea placeholder="Error" data-error={true} />
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'bottom-start'}
+                  trigger="onClick"
+                >
+                  Bottom Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'top-start'}
+                  trigger="onClick"
+                >
+                  Top Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left-start'}
+                  trigger="onClick"
+                >
+                  Left Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'right-start'}
+                  trigger="onClick"
+                >
+                  Right Start
+                </Tooltip>
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Auto Size" autoSize={true} />
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'bottom-end'}
+                >
+                  Bottom End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'top-end'}
+                >
+                  Top End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left-end'}
+                >
+                  Left End
+                </Tooltip>
+                <Tooltip
+                  text="Right End Tooltip"
+                  placement={'right-end'}
+                  trigger="onClick"
+                >
+                  Right End
+                </Tooltip>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+              <Heading level="h4">Without Caret</Heading>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Bottom
+                </Tooltip>
+                <Tooltip
+                  title="Title"
+                  text="Details Content"
+                  placement={'top'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Top
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Left
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'right'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Right
+                </Tooltip>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'bottom-start'}
+                  trigger="onHover"
+                  caret={false}
+                >
+                  Bottom Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'top-start'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Top Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left-start'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Left Start
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'right-start'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Right Start
+                </Tooltip>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'bottom-end'}
+                  caret={false}
+                >
+                  Bottom End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'top-end'}
+                  caret={false}
+                >
+                  Top End
+                </Tooltip>
+                <Tooltip
+                  title="Enter"
+                  text="You define me"
+                  placement={'left-end'}
+                  caret={false}
+                >
+                  Left End
+                </Tooltip>
+                <Tooltip
+                  text="Right End Tooltip"
+                  placement={'right-end'}
+                  trigger="onClick"
+                  caret={false}
+                >
+                  Right End
+                </Tooltip>
+              </HStack>
+            </VStack>
+            <Heading gap={'40'}></Heading>
+            <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+              <Heading level="h4">Different Example</Heading>
+              <HStack
+                gap={'40'}
+                alignItems={'center'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Tooltip title="Enter" text="You define me">
+                  <Icon name="info" />
+                </Tooltip>
+                <Tooltip title="Title" text="Details Content">
+                  <IconButton variant="primary" size="large">
+                    <Icon name="aa-placeholder" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Title" text="Details Content" caret={false}>
+                  <IconButton variant="primary" size="large">
+                    <Icon name="aa-placeholder" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Title" text="Details Content">
+                  <Text as='u'>Text</Text>
+                </Tooltip>
               </HStack>
             </VStack>
           </Section>
-          {/* <Section>
-            <Heading level="h2">Inputs</Heading>
-            <VStack>
-              <HStack gap={'24'}>
-                <Input label="First" type="text" />
-                <Input label="Last" type="text" />
-                <Input label="Email" type="email" variant={'internalLabel'} />
-              </HStack>
-              <HStack gap={'24'}>
-                <Input label="Phone" type="tel" />
-              </HStack>
-            </VStack>
-          </Section> */}
         </VStack>
       </Container>
     </VStack>
