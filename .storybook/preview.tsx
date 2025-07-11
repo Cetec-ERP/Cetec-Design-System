@@ -3,6 +3,9 @@ import DocTemplate from '../src/storybook/doctemplate.mdx';
 import "../src/styles/index.css";
 
 const preview: Preview = {
+  initialGlobals: {
+    backgrounds: { value: 'light' },
+  },
   parameters: {
     backgrounds: {
       options: {
@@ -22,9 +25,7 @@ const preview: Preview = {
       toc: {},
     },
   },
-  initialGlobals: {
-    backgrounds: { value: 'light' },
-  },
+  tags: ['autodocs'],
 };
 
 export default preview;

@@ -4,40 +4,39 @@ import { create } from '@storybook/theming';
 // TODO: Implement Tokens or use DS colors
 
 export default create({
-  base: 'light',
+  brandTitle: 'Cetec ERP Design System',
+  brandImage: 'https://cetecerp.com/assets/img/cetec-logo.png',
+  brandTarget: '_self',
+  
   // Typography
   fontBase: '"Open Sans", sans-serif',
   fontCode: 'monospace',
- 
-  brandTitle: 'Cetec ERP Design System',
-  brandUrl: 'https://www.cetecerp.com',
-  brandImage: 'https://cetecerp.com/assets/img/cetec-logo.png',
-  brandTarget: '_self',
- 
+  
   //
+  base: 'light',
   colorPrimary: '#3A10E5',
   colorSecondary: '#585C6D',
  
-  // UI
-  appBg: '#ffffff',
-  appContentBg: '#ffffff',
-  appPreviewBg: '#ffffff',
-  appBorderColor: '#585C6D',
-  appBorderRadius: 4,
+  // // UI
+  // appBg: '#ffffff',
+  // appContentBg: '#ffffff',
+  // appPreviewBg: '#ffffff',
+  // appBorderColor: '#585C6D',
+  // appBorderRadius: 4,
  
-  // Text colors
-  textColor: '#10162F',
-  textInverseColor: '#ffffff',
+  // // Text colors
+  // textColor: '#10162F',
+  // textInverseColor: '#ffffff',
  
-  // Toolbar default and active colors
-  barTextColor: '#9E9E9E',
-  barSelectedColor: '#585C6D',
-  barHoverColor: '#585C6D',
-  barBg: '#ffffff',
+  // // Toolbar default and active colors
+  // barTextColor: '#9E9E9E',
+  // barSelectedColor: '#585C6D',
+  // barHoverColor: '#585C6D',
+  // barBg: '#ffffff',
  
-  // Form colors
-  inputBg: '#ffffff',
-  inputBorder: '#10162F',
-  inputTextColor: '#10162F',
-  inputBorderRadius: 2,
+  // // Form colors
+  // inputBg: '#ffffff',
+  // inputBorder: '#10162F',
+  // inputTextColor: '#10162F',
+  // inputBorderRadius: 2,
 });

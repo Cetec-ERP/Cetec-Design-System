@@ -17,6 +17,9 @@ const config: StorybookConfig = {
   features: {
     backgroundsStoryGlobals: true,
   },
+  docs: {
+    defaultName: 'Documentation',
+  },
 };
 
 export default config;
