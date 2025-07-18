@@ -89,6 +89,7 @@ module.exports = {
                                         'nesting-rules': true,
                                     },
                                 }),
+                                '@csstools/postcss-cascade-layers',
                             ],
                             },
                         },
