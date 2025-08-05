@@ -11,12 +11,17 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { Divider } from '~/components/Divider';
 import { CheckBox } from './components/CheckBox';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
+import { Toggle } from './components/Toggle';
+import { Divider } from './components/Divider';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
+import { RadioInput } from './components/RadioInput';
+import { CheckBoxInput } from './components/CheckboxInput';
+import { ToggleInput } from './components/ToggleInput';
+
 
 export const IconList: React.FC = () => {
   return (
@@ -365,10 +370,29 @@ const AppContent: React.FC = () => {
             <HStack gap={'40'} alignItems={'flex-end'}>
               <CheckBox />
               <CheckBox defaultChecked={true} />
-              <CheckBox indeterminate={true} />
-              <CheckBox error={true} />
+              <CheckBox indeterminate />
+              <CheckBox error />
               <CheckBox disabled />
-              <CheckBox disabled />
+            </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Checkbox Input</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <CheckBoxInput>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput defaultChecked={true}>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput indeterminate>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput error>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
+              <CheckBoxInput disabled>
+                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
+              </CheckBoxInput>
             </HStack>
           </Section>
           <Section>
@@ -378,7 +402,7 @@ const AppContent: React.FC = () => {
                 <Radio />
                 <Radio defaultChecked={true} />
                 <Radio disabled />
-                <Radio data-error={true} />
+                <Radio error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
@@ -389,7 +413,131 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
+          <Section >
+            <Heading level="h2">Radio Input</Heading>
+            <VStack gap={'40'} alignItems={'start'}>
+              <HStack>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
+              </HStack>
+              <HStack>
+              <RadioInput name="group">
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </RadioInput>
+              </HStack>
+            </VStack>
+          </Section>
           <Section>
+            <Heading level="h2">Toggle</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <Toggle />
+              <Toggle autoFocus={true} />
+              <Toggle disabled />
+              <Toggle error={true} />
+            </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Toggle Input</Heading>
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <ToggleInput>
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </ToggleInput>
+              <ToggleInput>
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </ToggleInput>
+              <ToggleInput>
+                <Text as="div" size='16' weight={'normal'}>
+                  Consequat ipsum ipsum adipisicing deserunt.
+                </Text>
+                <Text size='14'>
+                  Deserunt proident officia nostrud. 
+                </Text>
+              </ToggleInput>
+            </HStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Text Input</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <Text>Small</Text>
+                </VStack>
+                <VStack>
+                  <TextInput placeHolder={'Enter Text'} />
+                  <Text>Medium</Text>
+                </VStack>
+                <VStack>
+                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <Text>Large</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput defaultValue="entered text" />
+                  <Text>Default - Filled</Text>
+                </VStack>
+                <VStack>
+                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <Text>Error</Text>
+                </VStack>
+                <VStack>
+                  <TextInput disabled placeHolder={'placeholder'} />
+                  <Text>Disabled</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <Text>Auto Size</Text>
+                </VStack>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Textarea</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Small" size="small" />
+                <Textarea placeholder="Medium" />
+                <Textarea placeholder="Large" size="large" />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea
+                  placeholder="placeholder"
+                  defaultValue="Default – Filled"
+                />
+                <Textarea placeholder="Disabled" disabled />
+                <Textarea placeholder="Error" data-error={true} />
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Textarea placeholder="Auto Size" autoSize={true} />
+              </HStack>
+            </VStack>
+          </Section>
+          {/* <Section>
+            <Text as="h2">Inputs</Text>
             <Heading level="h2">Text Input</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
