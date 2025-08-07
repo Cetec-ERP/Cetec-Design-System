@@ -32,7 +32,7 @@ export const Toggle: React.FC<ToggleProps> = ({
       />
       <Box
         as="span"
-        class={background}
+        className={background}
         name={'toggle-bg'}
       />
       <Icon name={'circle'} className={indicator} />
