@@ -1,34 +1,24 @@
 import { Box, type BoxProps } from '../Box';
 import { tooltip, type TooltipVariantProps } from '@styled-system/recipes';
-import { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Text } from '../Text';
+
+export type Placement =
+  | 'top' | 'bottom' | 'left' | 'right'
+  | 'top-start' | 'bottom-start' | 'left-start' | 'right-start'
+  | 'top-end' | 'bottom-end' | 'left-end' | 'right-end';
 
 export type TooltipProps = Omit<BoxProps, keyof TooltipVariantProps> &
   TooltipVariantProps & {
     text?: string;
     title?: string;
     caret?: boolean;
-    placement?: TooltipVariantProps['placement'];
+    placement?: Placement;
     children?: string | ReactNode;
     trigger?: 'onHover' | 'onClick';
   };
 
-const allPlacements: TooltipVariantProps['placement'][] = [
-  'top',
-  'right',
-  'bottom',
-  'left',
-  'top-start',
-  'top-end',
-  'right-start',
-  'right-end',
-  'bottom-end',
-  'bottom-start',
-  'left-start',
-  'left-end',
-];
-
-export const Tooltip: FC<TooltipProps> = ({
+export const Tooltip: React.FC<TooltipProps> = ({
   trigger = 'onHover',
   caret = true,
   text,
@@ -48,28 +38,24 @@ export const Tooltip: FC<TooltipProps> = ({
   const resolvedPlacement =
     typeof placement === 'string' ? placement : 'bottom';
 
-    const placementFallbackMap: Record<Placement, Placement[]> = {
-      'bottom-start': ['bottom-end', 'bottom', 'top-start', 'right-start', 'left-start'],
-      'bottom-end': ['bottom-start', 'bottom', 'top-end', 'right-end', 'left-end'],
-      'bottom': ['bottom-start', 'bottom-end', 'top', 'left', 'right'],
-      'top-start': ['top-end', 'top', 'bottom-start', 'left-start', 'right-start'],
-      'top-end': ['top-start', 'top', 'bottom-end', 'left-end', 'right-end'],
-      'top': ['top-start', 'top-end', 'bottom', 'left', 'right'],
-      'left-start': ['left-end', 'left', 'right-start', 'top-start', 'bottom-start'],
-      'left-end': ['left-start', 'left', 'right-end', 'top-end', 'bottom-end'],
-      'left': ['left-start', 'left-end', 'right', 'top', 'bottom'],
-      'right-start': ['right-end', 'right', 'left-start', 'top-start', 'bottom-start'],
-      'right-end': ['right-start', 'right', 'left-end', 'top-end', 'bottom-end'],
-      'right': ['right-start', 'right-end', 'left', 'top', 'bottom'],
-    };
+    const clockWisePlacement : Placement[] = ['bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'top', 'top-start', 'top-end', 'right', 'right-start', 'right-end'];
 
+    function getClockwise(start: Placement): Placement[] {
+      const index = clockWisePlacement.indexOf(start);
+      if (index === -1) return clockWisePlacement;
+    
+      const reordered = [...clockWisePlacement.slice(index + 1), ...clockWisePlacement.slice(0, index)];
+      return reordered;
+    }
+  
+  
     const checkPlacement = () => {
       const tooltipPositioning = tooltipRef.current;
       const triggerPositioning = triggerRef.current;
       if (!tooltipPositioning || !triggerPositioning) return;
     
       const triggerRect = triggerPositioning.getBoundingClientRect();
-      const fallbacks = placementFallbackMap[resolvedPlacement];
+      const fallbacks = getClockwise(resolvedPlacement);
     
       for (const positioning of [resolvedPlacement, ...fallbacks]) {
         const tooltipRect = getSimulatedRect(
@@ -92,9 +78,6 @@ export const Tooltip: FC<TooltipProps> = ({
       }
       setCurrentPlacement(resolvedPlacement);
     };
-    
-
-  type Placement = 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'bottom-start' | 'left-start' | 'right-start' | 'top-end' | 'bottom-end' | 'left-end' | 'right-end'
 
   function getSimulatedRect(
     triggerRect: DOMRect,

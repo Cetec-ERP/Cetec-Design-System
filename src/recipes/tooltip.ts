@@ -25,6 +25,7 @@ const tooltipBase = {
     width: 'max-content',
     boxShadow: 'medium',
     zIndex: 1,
+    pointerEvents: 'none',
     _after: {
       content: "''",
       position: 'absolute',
@@ -44,7 +45,6 @@ const tooltipVariants = {
         bottom: '100%',
         left: '50%',
         transform: 'translateX(-50%)',
-        mb: '8',
         opacity: 1,
         _after: {
           top: '100%',
@@ -59,7 +59,6 @@ const tooltipVariants = {
         top: '100%',
         left: '50%',
         transform: 'translateX(-50%)',
-        mt: '8',
         _after: {
           bottom: '100%',
           left: '50%',
@@ -73,7 +72,6 @@ const tooltipVariants = {
         top: '50%',
         right: 'calc(100% - 0.75rem)',
         transform: 'translate(-10%, -50%)',
-        mr: '8',
         _after: {
           top: '50%',
           right: '-6%',
@@ -87,7 +85,6 @@ const tooltipVariants = {
         top: '50%',
         left: `calc(100% - 0.75rem)`,
         transform: 'translate(10%, -50%)',
-        ml: '8',
         _after: {
           top: '50%',
           left: '-6%',
@@ -100,7 +97,6 @@ const tooltipVariants = {
       tooltipContent: {
         bottom: '100%',
         left: '0',
-        mb: '8',
         _after: {
           top: '100%',
           left: '8',
@@ -114,7 +110,6 @@ const tooltipVariants = {
         top: '100%',
         left: '0',
         transform: 'translateX(0)',
-        mt: '8',
         _after: {
           bottom: '100%',
           left: '8',
@@ -128,7 +123,6 @@ const tooltipVariants = {
         top: '0',
         right: 'calc(100% - 0.75rem)',
         transform: 'translate(-10%, -0%)',
-        mr: '8',
         _after: {
           top: '8',
           right: '-6%',
@@ -142,7 +136,6 @@ const tooltipVariants = {
         top: '0',
         left: `calc(100% - 0.75rem)`,
         transform: 'translate(10%, 0%)',
-        ml: '8',
         _after: {
           top: '8',
           left: '-6%',
@@ -155,7 +148,6 @@ const tooltipVariants = {
       tooltipContent:{
         bottom: '100%',
         right: '0',
-        mb: '8',
         _after: {
           top: '100%',
           right: '8',
@@ -169,7 +161,6 @@ const tooltipVariants = {
         top: '100%',
         right: '0',
         transform: 'translateX(0)',
-        mt: '8',
         _after: {
           bottom: '100%',
           right: '8',
@@ -183,7 +174,6 @@ const tooltipVariants = {
         bottom: '0',
         right: 'calc(100% - 0.75rem)',
         transform: 'translate(-10%, -0%)',
-        mr: '8',
         _after: {
           bottom: '8',
           right: '-6%',
@@ -197,7 +187,6 @@ const tooltipVariants = {
         bottom: '0',
         left: `calc(100% - 0.75rem)`,
         transform: 'translate(10%, -0%)',
-        ml: '8',
         _after: {
           bottom: '8',
           left: '-5%',
@@ -221,12 +210,26 @@ export const tooltipRecipe = defineSlotRecipe({
           _after:{
             display: 'block',
           }
+        },
+        _placement:{
+          top:{
+            tooltipContent:{
+              mb: '12',
+            }
+          }
         }
       },
       false:{
         tooltipContent:{
           _after:{
             display: 'none',
+          }
+        },
+        _placement:{
+          top:{
+            tooltipContent:{
+              mb: '8'
+            }
           }
         }
       }
@@ -235,4 +238,78 @@ export const tooltipRecipe = defineSlotRecipe({
   defaultVariants: {
     placement: 'bottom',
   },
+  compoundVariants: [
+    {
+      placement: ['top', 'top-start', 'top-end'],
+      caret: true,
+      css: {
+        tooltipContent: {
+          mb: '12',
+        },
+      },
+    },
+    {
+      placement: ['top', 'top-start', 'top-end'],
+      caret: false,
+      css: {
+        tooltipContent: {
+          mb: '8',
+        },
+      },
+    },
+    {
+      placement: ['bottom', 'bottom-start', 'bottom-end'],
+      caret: true,
+      css: {
+        tooltipContent: {
+          mt: '12',
+        },
+      },
+    },
+    {
+      placement: ['bottom', 'bottom-start', 'bottom-end'],
+      caret: false,
+      css: {
+        tooltipContent: {
+          mt: '8',
+        },
+      },
+    },
+    {
+      placement: ['left', 'left-start', 'left-end'],
+      caret: true,
+      css: {
+        tooltipContent: {
+          mr: '12',
+        },
+      },
+    },
+    {
+      placement: ['left', 'left-start', 'left-end'],
+      caret: false,
+      css: {
+        tooltipContent: {
+          mr: '8',
+        },
+      },
+    },
+    {
+      placement: ['right', 'right-start', 'right-end'],
+      caret: true,
+      css: {
+        tooltipContent: {
+          ml: '12',
+        },
+      },
+    },
+    {
+      placement: ['right', 'right-start', 'right-end'],
+      caret: false,
+      css: {
+        tooltipContent: {
+          ml: '8',
+        },
+      },
+    },
+  ],
 });
