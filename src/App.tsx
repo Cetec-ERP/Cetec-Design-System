@@ -22,7 +22,7 @@ import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
 import { CheckBoxInput } from './components/CheckboxInput';
 import { ToggleInput } from './components/ToggleInput';
-
+import { FormField } from './components/FormField';
 
 export const IconList: React.FC = () => {
   return (
@@ -414,28 +414,24 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          <Section >
+          <Section>
             <Heading level="h2">Radio Input</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <RadioInput name="group">
-                <Text as="div" size='16' weight={'normal'}>
-                  Consequat ipsum ipsum adipisicing deserunt.
-                </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
-              </RadioInput>
+                <RadioInput name="group">
+                  <Text as="div" size="16" weight={'normal'}>
+                    Consequat ipsum ipsum adipisicing deserunt.
+                  </Text>
+                  <Text size="14">Deserunt proident officia nostrud.</Text>
+                </RadioInput>
               </HStack>
               <HStack>
-              <RadioInput name="group">
-                <Text as="div" size='16' weight={'normal'}>
-                  Consequat ipsum ipsum adipisicing deserunt.
-                </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
-              </RadioInput>
+                <RadioInput name="group">
+                  <Text as="div" size="16" weight={'normal'}>
+                    Consequat ipsum ipsum adipisicing deserunt.
+                  </Text>
+                  <Text size="14">Deserunt proident officia nostrud.</Text>
+                </RadioInput>
               </HStack>
             </VStack>
           </Section>
@@ -452,28 +448,22 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Toggle Input</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
             </HStack>
           </Section>
@@ -482,15 +472,15 @@ const AppContent: React.FC = () => {
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <TextInput size={'small'} placeholder={'Enter Text'} />
                   <Text>Small</Text>
                 </VStack>
                 <VStack>
-                  <TextInput placeHolder={'Enter Text'} />
+                  <TextInput placeholder={'Enter Text'} />
                   <Text>Medium</Text>
                 </VStack>
                 <VStack>
-                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <TextInput size={'large'} placeholder={'Enter Text'} />
                   <Text>Large</Text>
                 </VStack>
               </HStack>
@@ -500,17 +490,17 @@ const AppContent: React.FC = () => {
                   <Text>Default - Filled</Text>
                 </VStack>
                 <VStack>
-                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <TextInput data-error={true} placeholder={'placeholder'} />
                   <Text>Error</Text>
                 </VStack>
                 <VStack>
-                  <TextInput disabled placeHolder={'placeholder'} />
+                  <TextInput disabled placeholder={'placeholder'} />
                   <Text>Disabled</Text>
                 </VStack>
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <TextInput autoSize={true} placeholder={'Enter Text'} />
                   <Text>Auto Size</Text>
                 </VStack>
               </HStack>
@@ -537,21 +527,67 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
+          <Section>
+            <Heading level="h2">Form Field</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <Grid columns={3} columnGap={'40'}>
+                <FormField
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <TextInput placeholder={'Enter Text'} error />
+                </FormField>
+                <FormField
+                layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  helpText="Helpful explanation if needed"
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+              </Grid>
+              <HStack gap={'40'} alignItems={'flex-start'}></HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  helpText="Helpful explanation if needed"
+                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+              </HStack>
+            </VStack>
+          </Section>
+
           {/* <Section>
             <Text as="h2">Inputs</Text>
             <Heading level="h2">Text Input</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <TextInput size={'small'} placeholder={'Enter Text'} />
                   <Text>Small</Text>
                 </VStack>
                 <VStack>
-                  <TextInput placeHolder={'Enter Text'} />
+                  <TextInput placeholder={'Enter Text'} />
                   <Text>Medium</Text>
                 </VStack>
                 <VStack>
-                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <TextInput size={'large'} placeholder={'Enter Text'} />
                   <Text>Large</Text>
                 </VStack>
               </HStack>
@@ -561,17 +597,17 @@ const AppContent: React.FC = () => {
                   <Text>Default - Filled</Text>
                 </VStack>
                 <VStack>
-                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <TextInput data-error={true} placeholder={'placeholder'} />
                   <Text>Error</Text>
                 </VStack>
                 <VStack>
-                  <TextInput disabled placeHolder={'placeholder'} />
+                  <TextInput disabled placeholder={'placeholder'} />
                   <Text>Disabled</Text>
                 </VStack>
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <TextInput autoSize={true} placeholder={'Enter Text'} />
                   <Text>Auto Size</Text>
                 </VStack>
               </HStack>
