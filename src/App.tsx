@@ -22,6 +22,7 @@ import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
 import { CheckBoxInput } from './components/CheckboxInput';
 import { ToggleInput } from './components/ToggleInput';
+import { Breadcurmbs } from './components/Breadcrumbs';
 
 
 export const IconList: React.FC = () => {
@@ -534,6 +535,14 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
                 <Textarea placeholder="Auto Size" autoSize={true} />
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Breadcrumbs</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack>
+                <Breadcurmbs items={[{label: 'Home', href:'/'}, {label: 'Integrations', href:'/'}, {label: 'ShipEngine'}]}/>
               </HStack>
             </VStack>
           </Section>

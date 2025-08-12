@@ -12,4 +12,4 @@ export { toggleRecipe } from './toggle';
 export { textinputRecipe } from './textinput';
 export { radioInputRecipe } from './radioinput';
 export { toggleInputRecipe } from './toggleinput';
-
+export { breadcurmbsRecipe } from './breadcrumbs';
