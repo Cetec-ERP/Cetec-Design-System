@@ -29,6 +29,7 @@ import {
   textinputRecipe,
   radioInputRecipe,
   toggleInputRecipe,
+  formFieldRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -127,11 +128,12 @@ export default defineConfig({
         toggle: toggleRecipe,
         toggleInput: toggleInputRecipe,
         box: boxRecipe,
+        radioInput: radioInputRecipe,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
         radio: radioRecipe,
-        radioInput: radioInputRecipe,
+        formField: formFieldRecipe,
       },
     },
   },
