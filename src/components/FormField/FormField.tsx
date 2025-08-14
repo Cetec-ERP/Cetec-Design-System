@@ -4,7 +4,6 @@ import { Text } from '../Text';
 
 export type FormFieldProps = Omit<BoxProps, keyof FormFieldVariantProps> &
   FormFieldVariantProps & {
-    layout?: 'default' | 'inline',
     label?: string;
     helpText?: string;
     required?: boolean;
@@ -29,7 +28,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 }: FormFieldProps) => {
   
   const { formFeildContainer, contentWrapper, labelWrapper } = formField({
-    layout: layout === "inline" ? 'inline' : 'default'
+    layout: layout
   });
   return (
     <Box className={formFeildContainer} {...props}>
