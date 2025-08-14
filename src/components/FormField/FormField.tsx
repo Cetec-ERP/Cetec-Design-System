@@ -55,7 +55,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           </Text>
         )}
         {error && (
-          <Text as="span" textStyle={'body-xs'} color="red.50">
+          <Text as="span" textStyle={'body-xs'} color="error.default">
             {errorText}
           </Text>
         )}
