@@ -552,7 +552,7 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
             <Heading level="h2"></Heading>
-            <VStack gap={'10'} alignItems={'flex-start'}>
+            <VStack gap={'10'} alignItems={'flex-start'}> 
               <Heading level="h4">Flat</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
                 <Card grabbed variant="flat">
