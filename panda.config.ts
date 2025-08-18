@@ -81,6 +81,7 @@ export default defineConfig({
   strictTokens: true,
   importMap: '@styled-system',
   outdir: 'styled-system',
+  prefix: 'Cetec',
 
   theme: {
     containerSizes: tokens.containerSizes,
