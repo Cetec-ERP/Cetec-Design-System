@@ -533,18 +533,11 @@ const AppContent: React.FC = () => {
             <VStack gap={'10'} alignItems={'flex-start'}>
               <Heading level="h4">Default</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Card grabbed>
-                  <Box className={css({ p: '16', textAlign: 'left' })}>
-                    <Heading level="h4">Affordable</Heading>
-                    <Text>
-                      Forward thinking pricing model. Cetec ERP has broken
-                      ground with the way business platforms are delivered,
-                      making manufacturing ERP a platform and a commodity.
-                    </Text>
-                  </Box>
-                </Card>
                 <Card grabbed={false}>
                   <Box className={css({ p: '16' })}>Default</Box>
+                </Card>
+                <Card grabbed>
+                  <Box className={css({ p: '16' })}>Grabbed</Box>
                 </Card>
                 <Card disabled>
                   <Box className={css({ p: '16' })}>Disabled</Box>
@@ -552,12 +545,27 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
             <Heading level="h2"></Heading>
-            <VStack gap={'10'} alignItems={'flex-start'}> 
+            <VStack gap={'10'} alignItems={'flex-start'}>
               <Heading level="h4">Flat</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Card grabbed variant="flat">
+                <Card variant="flat">
+                  <Box className={css({ p: '16' })}>Default</Box>
+                </Card>
+                <Card variant="flat" grabbed>
+                  <Box className={css({ p: '16' })}>Grabbed</Box>
+                </Card>
+                <Card variant="flat" disabled>
+                  <Box className={css({ p: '16' })}>Disabled</Box>
+                </Card>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'10'} alignItems={'flex-start'}>
+              <Heading level="h4">Example</Heading>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+              <Card grabbed>
                   <Box className={css({ p: '16', textAlign: 'left' })}>
-                    <Heading level="h4">Affordable</Heading>
+                    <Heading level="h4">Affordable Default</Heading>
                     <Text>
                       Forward thinking pricing model. Cetec ERP has broken
                       ground with the way business platforms are delivered,
@@ -566,10 +574,14 @@ const AppContent: React.FC = () => {
                   </Box>
                 </Card>
                 <Card variant="flat">
-                  <Box className={css({ p: '16' })}>Default</Box>
-                </Card>
-                <Card variant="flat" disabled>
-                  <Box className={css({ p: '16' })}>Disabled</Box>
+                  <Box className={css({ p: '16', textAlign: 'left' })}>
+                    <Heading level="h4">Affordable Flat</Heading>
+                    <Text>
+                      Forward thinking pricing model. Cetec ERP has broken
+                      ground with the way business platforms are delivered,
+                      making manufacturing ERP a platform and a commodity.
+                    </Text>
+                  </Box>
                 </Card>
               </HStack>
             </VStack>
