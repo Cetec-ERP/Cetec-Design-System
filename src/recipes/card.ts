@@ -13,6 +13,8 @@ const cardVariant = {
   variant: {
     default: {
       boxShadow: 'low',
+      borderWidth: '1',
+      borderColor: 'transparent',
       _hover: {
         boxShadow: 'medium',
       },
