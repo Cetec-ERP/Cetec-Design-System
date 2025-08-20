@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { splitProps } from '~/utils/splitProps';
 import { cx } from '@styled-system/css';
 
-export type CardProps = BoxProps &
+export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
   CardVariantProps & {
     href?: string;
     children?: string | ReactNode;
