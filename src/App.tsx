@@ -22,7 +22,8 @@ import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
 import { CheckBoxInput } from './components/CheckboxInput';
 import { ToggleInput } from './components/ToggleInput';
-
+import { Card } from './components/Card';
+import { css } from '@styled-system/css';
 
 export const IconList: React.FC = () => {
   return (
@@ -414,28 +415,24 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          <Section >
+          <Section>
             <Heading level="h2">Radio Input</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-              <RadioInput name="group">
-                <Text as="div" size='16' weight={'normal'}>
-                  Consequat ipsum ipsum adipisicing deserunt.
-                </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
-              </RadioInput>
+                <RadioInput name="group">
+                  <Text as="div" size="16" weight={'normal'}>
+                    Consequat ipsum ipsum adipisicing deserunt.
+                  </Text>
+                  <Text size="14">Deserunt proident officia nostrud.</Text>
+                </RadioInput>
               </HStack>
               <HStack>
-              <RadioInput name="group">
-                <Text as="div" size='16' weight={'normal'}>
-                  Consequat ipsum ipsum adipisicing deserunt.
-                </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
-              </RadioInput>
+                <RadioInput name="group">
+                  <Text as="div" size="16" weight={'normal'}>
+                    Consequat ipsum ipsum adipisicing deserunt.
+                  </Text>
+                  <Text size="14">Deserunt proident officia nostrud.</Text>
+                </RadioInput>
               </HStack>
             </VStack>
           </Section>
@@ -452,28 +449,22 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Toggle Input</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput>
-                <Text as="div" size='16' weight={'normal'}>
+                <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
-                <Text size='14'>
-                  Deserunt proident officia nostrud. 
-                </Text>
+                <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
             </HStack>
           </Section>
@@ -534,6 +525,64 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
                 <Textarea placeholder="Auto Size" autoSize={true} />
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Card</Heading>
+            <VStack gap={'10'} alignItems={'flex-start'}>
+              <Heading level="h4">Default</Heading>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Card grabbed={false}>
+                  <Box className={css({ p: '16' })}>Default</Box>
+                </Card>
+                <Card grabbed>
+                  <Box className={css({ p: '16' })}>Grabbed</Box>
+                </Card>
+                <Card disabled>
+                  <Box className={css({ p: '16' })}>Disabled</Box>
+                </Card>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'10'} alignItems={'flex-start'}>
+              <Heading level="h4">Flat</Heading>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <Card variant="flat">
+                  <Box className={css({ p: '16' })}>Default</Box>
+                </Card>
+                <Card variant="flat" grabbed>
+                  <Box className={css({ p: '16' })}>Grabbed</Box>
+                </Card>
+                <Card variant="flat" disabled>
+                  <Box className={css({ p: '16' })}>Disabled</Box>
+                </Card>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'10'} alignItems={'flex-start'}>
+              <Heading level="h4">Example</Heading>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+              <Card grabbed>
+                  <Box className={css({ p: '16', textAlign: 'left' })}>
+                    <Heading level="h4">Affordable Default</Heading>
+                    <Text>
+                      Forward thinking pricing model. Cetec ERP has broken
+                      ground with the way business platforms are delivered,
+                      making manufacturing ERP a platform and a commodity.
+                    </Text>
+                  </Box>
+                </Card>
+                <Card variant="flat">
+                  <Box className={css({ p: '16', textAlign: 'left' })}>
+                    <Heading level="h4">Affordable Flat</Heading>
+                    <Text>
+                      Forward thinking pricing model. Cetec ERP has broken
+                      ground with the way business platforms are delivered,
+                      making manufacturing ERP a platform and a commodity.
+                    </Text>
+                  </Box>
+                </Card>
               </HStack>
             </VStack>
           </Section>
