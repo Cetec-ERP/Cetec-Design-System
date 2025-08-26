@@ -2,7 +2,7 @@ import { defineRecipe } from '@pandacss/dev';
 import {
   fontSizes as fontSizeTokens,
   fontWeights as fontWeightTokens,
-} from '~/styles/tokens';
+} from '../styles/tokens';
 
 const textBase = {
   margin: '0',

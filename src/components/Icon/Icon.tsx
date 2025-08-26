@@ -30,7 +30,6 @@ export const Icon: React.FC<IconProps> = ({
   ...props
 }: IconProps) => {
   const [className, otherProps] = splitProps(props);
-
   return (
     <Box
       as="svg"
