@@ -25,6 +25,9 @@ import {
   boxRecipe,
   radioRecipe,
   textinputRecipe,
+  cardRecipe,
+  toggleRecipe,
+  toggleInputRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -106,6 +109,9 @@ export default definePreset({
         spinner: spinnerRecipe,
         divider: dividerRecipe,
         box: boxRecipe,
+        card: cardRecipe,
+        toggle: toggleRecipe,
+        toggleInput: toggleInputRecipe,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
