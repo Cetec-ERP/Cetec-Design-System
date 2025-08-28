@@ -27,6 +27,7 @@ old_*
 *.sln
 *.sw?
 *.cursorrules
+*.cursor
 *storybook.log
 
 ## Panda
