@@ -146,6 +146,61 @@ const tooltipVariants = {
         },
       },
     },
+    'top-end':{
+      tooltipContent:{
+        bottom: '100%',
+        right: '0',
+        mb: '8',
+        _after: {
+          top: '100%',
+          right: '8',
+          transform: 'translate(0, 0)',
+          borderTopColor: { base: 'slate.90', _dark: 'slate.0' },
+        },
+      }
+    },
+    'bottom-end': {
+      tooltipContent: {
+        top: '100%',
+        right: '0',
+        transform: 'translateX(0)',
+        mt: '8',
+        _after: {
+          bottom: '100%',
+          right: '8',
+          transform: 'translate(0%, 0)',
+          borderBottomColor: { base: 'slate.90', _dark: 'slate.0' },
+        },
+      },
+    },
+    'left-end': {
+      tooltipContent: {
+        bottom: '0',
+        right: 'calc(100% - 0.75rem)',
+        transform: 'translate(-10%, -5%)',
+        mr: '8',
+        _after: {
+          bottom: '8',
+          right: '-6%',
+          transform: 'translate(50%, 0)',
+          borderLeftColor: { base: 'slate.90', _dark: 'slate.0' },
+        },
+      },
+    },
+    'right-end': {
+      tooltipContent: {
+        bottom: '0',
+        left: `calc(100% - 0.75rem)`,
+        transform: 'translate(10%, -5%)',
+        ml: '8',
+        _after: {
+          bottom: '8',
+          left: '-6%',
+          transform: 'translate(-50%, 0)',
+          borderRightColor: { base: 'slate.90', _dark: 'slate.0' },
+        },
+      },
+    },
   },
 };
 
@@ -154,7 +209,24 @@ export const tooltipRecipe = defineSlotRecipe({
   jsx: ['Tooltip'],
   slots: ['wrapper', 'tooltipContent'],
   base: tooltipBase,
-  variants: tooltipVariants,
+  variants: {...tooltipVariants,
+    caret:{
+      true:{
+        tooltipContent:{
+          _after:{
+            display: 'block',
+          }
+        }
+      },
+      false:{
+        tooltipContent:{
+          _after:{
+            display: 'none',
+          }
+        }
+      }
+    }
+  },
   defaultVariants: {
     placement: 'bottom',
   },
