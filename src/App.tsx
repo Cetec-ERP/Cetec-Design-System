@@ -699,8 +699,8 @@ const AppContent: React.FC = () => {
                   Left End
                 </Tooltip>
                 <Tooltip
-                  text="Right End Tooltip"
                   title="Enter"
+                  text="You define me"
                   placement={'right-end'}
                   trigger="onClick"
                 >
