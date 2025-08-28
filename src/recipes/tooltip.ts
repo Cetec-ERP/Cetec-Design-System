@@ -25,7 +25,6 @@ const tooltipBase = {
     width: 'max-content',
     boxShadow: 'medium',
     zIndex: 1,
-    transition: "opacity 0.5s ease",
     _after: {
       content: "''",
       position: 'absolute',
@@ -128,7 +127,7 @@ const tooltipVariants = {
       tooltipContent: {
         top: '0',
         right: 'calc(100% - 0.75rem)',
-        transform: 'translate(-10%, -5%)',
+        transform: 'translate(-10%, -0%)',
         mr: '8',
         _after: {
           top: '8',
@@ -142,7 +141,7 @@ const tooltipVariants = {
       tooltipContent: {
         top: '0',
         left: `calc(100% - 0.75rem)`,
-        transform: 'translate(10%, -5%)',
+        transform: 'translate(10%, 0%)',
         ml: '8',
         _after: {
           top: '8',
@@ -183,7 +182,7 @@ const tooltipVariants = {
       tooltipContent: {
         bottom: '0',
         right: 'calc(100% - 0.75rem)',
-        transform: 'translate(-10%, -5%)',
+        transform: 'translate(-10%, -0%)',
         mr: '8',
         _after: {
           bottom: '8',
@@ -197,7 +196,7 @@ const tooltipVariants = {
       tooltipContent: {
         bottom: '0',
         left: `calc(100% - 0.75rem)`,
-        transform: 'translate(10%, -10%)',
+        transform: 'translate(10%, -0%)',
         ml: '8',
         _after: {
           bottom: '8',
@@ -226,44 +225,6 @@ export const tooltipRecipe = defineSlotRecipe({
       },
       false:{
         tooltipContent:{
-          // placement:{
-          //   top: {
-          //     mb: '4 !important',
-          //   },
-          //   bottom: {
-          //     mt: '4 !important'
-          //   },
-          //   left: {
-          //     mr: '4 !important',
-          //   },
-          //   right: {
-          //     ml: '4 !important',
-          //   },
-          //   'top-start': {
-          //     mb: '4 !important',
-          //   },
-          //   'bottom-start': {
-          //     mt: '4 !important'
-          //   },
-          //   'left-start': {
-          //     mr: '4 !important',
-          //   },
-          //   'right-start': {
-          //     ml: '4 !important',
-          //   },
-          //   'top-end': {
-          //     mb: '4 !important',
-          //   },
-          //   'bottom-end': {
-          //     mt: '4 !important'
-          //   },
-          //   'left-end': {
-          //     mr: '4 !important',
-          //   },
-          //   'right-end': {
-          //     ml: '4 !important',
-          //   }
-          // },
           _after:{
             display: 'none',
           }
