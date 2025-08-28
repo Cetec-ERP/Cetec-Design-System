@@ -607,7 +607,8 @@ const AppContent: React.FC = () => {
                   title="Title"
                   text="Details Content"
                   placement={'top'}
-                  trigger="onClick"
+                  trigger="onHover"
+                  caret={false}
                 >
                   Top
                 </Tooltip>
@@ -677,6 +678,7 @@ const AppContent: React.FC = () => {
                   title="Enter"
                   text="You define me"
                   placement={'bottom-end'}
+                  trigger="onClick"
                 >
                   Bottom End
                 </Tooltip>
@@ -684,6 +686,7 @@ const AppContent: React.FC = () => {
                   title="Enter"
                   text="You define me"
                   placement={'top-end'}
+                  trigger="onClick"
                 >
                   Top End
                 </Tooltip>
@@ -691,11 +694,13 @@ const AppContent: React.FC = () => {
                   title="Enter"
                   text="You define me"
                   placement={'left-end'}
+                  trigger="onClick"
                 >
                   Left End
                 </Tooltip>
                 <Tooltip
                   text="Right End Tooltip"
+                  title="Enter"
                   placement={'right-end'}
                   trigger="onClick"
                 >
