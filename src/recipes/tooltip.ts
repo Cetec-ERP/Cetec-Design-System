@@ -1,13 +1,18 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { lineHeights } from '~/styles/tokens';
 
 const tooltipBase = {
   wrapper: {
     position: 'relative',
     width: 'fit-content',
     height: 'fit-content',
+    lineHeight: 'fit-content',
     cursor: 'default',
   },
   tooltipContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4',
     bg: { base: 'slate.90', _dark: 'slate.0' },
     color: { base: 'slate.0', _dark: 'slate.90' },
     py: '8',
@@ -191,11 +196,11 @@ const tooltipVariants = {
       tooltipContent: {
         bottom: '0',
         left: `calc(100% - 0.75rem)`,
-        transform: 'translate(10%, -5%)',
+        transform: 'translate(10%, -10%)',
         ml: '8',
         _after: {
           bottom: '8',
-          left: '-6%',
+          left: '-5%',
           transform: 'translate(-50%, 0)',
           borderRightColor: { base: 'slate.90', _dark: 'slate.0' },
         },
@@ -220,6 +225,44 @@ export const tooltipRecipe = defineSlotRecipe({
       },
       false:{
         tooltipContent:{
+          // placement:{
+          //   top: {
+          //     mb: '4 !important',
+          //   },
+          //   bottom: {
+          //     mt: '4 !important'
+          //   },
+          //   left: {
+          //     mr: '4 !important',
+          //   },
+          //   right: {
+          //     ml: '4 !important',
+          //   },
+          //   'top-start': {
+          //     mb: '4 !important',
+          //   },
+          //   'bottom-start': {
+          //     mt: '4 !important'
+          //   },
+          //   'left-start': {
+          //     mr: '4 !important',
+          //   },
+          //   'right-start': {
+          //     ml: '4 !important',
+          //   },
+          //   'top-end': {
+          //     mb: '4 !important',
+          //   },
+          //   'bottom-end': {
+          //     mt: '4 !important'
+          //   },
+          //   'left-end': {
+          //     mr: '4 !important',
+          //   },
+          //   'right-end': {
+          //     ml: '4 !important',
+          //   }
+          // },
           _after:{
             display: 'none',
           }
