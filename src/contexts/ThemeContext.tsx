@@ -7,17 +7,20 @@ interface ThemeContextType {
   setTheme: (theme: Theme) => void;
 }
 
-const THEME_STORAGE_KEY = 'cetec-theme-preference';
+//const THEME_STORAGE_KEY = 'cetec-theme-preference';
 
 function getInitialTheme(): Theme {
   // Check for stored preference
-  const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+  const storedTheme = ''; //localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
   if (storedTheme) {
     return storedTheme;
   }
 
   // Check for system preference
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  if (
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  ) {
     return 'dark';
   }
 
@@ -33,7 +36,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Update theme in both DOM and localStorage
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+    //localStorage.setItem(THEME_STORAGE_KEY, newTheme);
   };
 
   // Apply theme to DOM
@@ -48,9 +51,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Listen for system theme changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const handleChange = (e: MediaQueryListEvent) => {
-      const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      const storedTheme = ''; //localStorage.getItem(THEME_STORAGE_KEY);
       // Only update if user hasn't explicitly set a preference
       if (!storedTheme) {
         setThemeState(e.matches ? 'dark' : 'light');
@@ -74,4 +77,4 @@ export function useTheme() {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
-} 
+}
