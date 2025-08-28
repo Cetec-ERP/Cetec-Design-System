@@ -25,18 +25,14 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "~/*": ["src/*"],
       "@styled-system/*": ["styled-system/*"]
     }
   },
   "include": [
-    "src/components",
-    "src/styles",
-    "src/recipes",
-    "src/tokens",
-    "src/contexts",
+    "src",
     "styled-system"
   ]
 }
