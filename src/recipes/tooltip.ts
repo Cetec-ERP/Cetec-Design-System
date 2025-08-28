@@ -1,5 +1,4 @@
 import { defineSlotRecipe } from '@pandacss/dev';
-import { lineHeights } from '~/styles/tokens';
 
 const tooltipBase = {
   wrapper: {
@@ -26,6 +25,7 @@ const tooltipBase = {
     width: 'max-content',
     boxShadow: 'medium',
     zIndex: 1,
+    transition: "opacity 0.5s ease",
     _after: {
       content: "''",
       position: 'absolute',
@@ -46,6 +46,7 @@ const tooltipVariants = {
         left: '50%',
         transform: 'translateX(-50%)',
         mb: '8',
+        opacity: 1,
         _after: {
           top: '100%',
           left: '50%',

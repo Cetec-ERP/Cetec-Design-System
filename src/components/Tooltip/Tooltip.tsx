@@ -48,35 +48,51 @@ export const Tooltip: FC<TooltipProps> = ({
   const resolvedPlacement =
     typeof placement === 'string' ? placement : 'bottom';
 
-  const checkPlacement = () => {
-    const tooltipPostition = tooltipRef.current;
-    const trigger = triggerRef.current;
-    if (!tooltipPostition || !trigger) return;
+    const placementFallbackMap: Record<Placement, Placement[]> = {
+      'bottom-start': ['bottom-end', 'bottom', 'top-start', 'right-start', 'left-start'],
+      'bottom-end': ['bottom-start', 'bottom', 'top-end', 'right-end', 'left-end'],
+      'bottom': ['bottom-start', 'bottom-end', 'top', 'left', 'right'],
+      'top-start': ['top-end', 'top', 'bottom-start', 'left-start', 'right-start'],
+      'top-end': ['top-start', 'top', 'bottom-end', 'left-end', 'right-end'],
+      'top': ['top-start', 'top-end', 'bottom', 'left', 'right'],
+      'left-start': ['left-end', 'left', 'right-start', 'top-start', 'bottom-start'],
+      'left-end': ['left-start', 'left', 'right-end', 'top-end', 'bottom-end'],
+      'left': ['left-start', 'left-end', 'right', 'top', 'bottom'],
+      'right-start': ['right-end', 'right', 'left-start', 'top-start', 'bottom-start'],
+      'right-end': ['right-start', 'right', 'left-end', 'top-end', 'bottom-end'],
+      'right': ['right-start', 'right-end', 'left', 'top', 'bottom'],
+    };
 
-    const triggerRect = trigger.getBoundingClientRect();
-
-    for (const positioning of [
-      resolvedPlacement,
-      ...allPlacements.filter((pl) => pl !== resolvedPlacement),
-    ]) {
-      const tooltipRect = getSimulatedRect(
-        triggerRect,
-        tooltipPostition.offsetWidth,
-        tooltipPostition.offsetHeight,
-        positioning,
-      );
-      const fits =
-        tooltipRect.top >= 0 &&
-        tooltipRect.left >= 0 &&
-        tooltipRect.bottom <= window.innerHeight &&
-        tooltipRect.right <= window.innerWidth;
-      if (fits) {
-        setCurrentPlacement(positioning);
-        return;
+    const checkPlacement = () => {
+      const tooltipPositioning = tooltipRef.current;
+      const triggerPositioning = triggerRef.current;
+      if (!tooltipPositioning || !triggerPositioning) return;
+    
+      const triggerRect = triggerPositioning.getBoundingClientRect();
+      const fallbacks = placementFallbackMap[resolvedPlacement];
+    
+      for (const positioning of [resolvedPlacement, ...fallbacks]) {
+        const tooltipRect = getSimulatedRect(
+          triggerRect,
+          tooltipPositioning.offsetWidth,
+          tooltipPositioning.offsetHeight,
+          positioning,
+        );
+    
+        const fits =
+          tooltipRect.top >= 0 &&
+          tooltipRect.left >= 0 &&
+          tooltipRect.bottom <= window.innerHeight &&
+          tooltipRect.right <= window.innerWidth;
+    
+        if (fits) {
+          setCurrentPlacement(positioning);
+          return;
+        }
       }
-    }
-    setCurrentPlacement(placement);
-  };
+      setCurrentPlacement(resolvedPlacement);
+    };
+    
 
   type Placement = 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'bottom-start' | 'left-start' | 'right-start' | 'top-end' | 'bottom-end' | 'left-end' | 'right-end'
 
