@@ -50,37 +50,41 @@ const ButtonSection: React.FC = () => {
           <Button variant="primary" onClick={() => alert('clicked')}>
             Primary
           </Button>
-          <Button>Standard</Button>
+          <Button href="https://cetecerp.com" target="blank" rel="noreferrer">
+            Standard
+          </Button>
           <Button variant="hollow">Hollow</Button>
           <Button variant="ghost">Ghost</Button>
           <Button variant="cta">CTA</Button>
           <Button variant="danger">Danger</Button>
-          <Button size="large">
-            <Icon name="arrow-left" /> Button
+        </HStack>
+        <HStack>
+          <Button
+            iconEnd="caret-down"
+            onClick={() => alert('not working yet :/')}
+          >
+            Dropdown Button
           </Button>
-          <Button size="small">
-            Button <Icon name="arrow-right" />
+          <Button size="large" iconStart="arrow-left">
+            Go left
+          </Button>
+          <Button size="small" iconEnd="arrow-right">
+            Go right
           </Button>
         </HStack>
         <HStack>
-          <IconButton variant="ghost">
-            <Icon name="x" />
-          </IconButton>
-          <IconButton>
-            <Icon name="arrow-left" />
-          </IconButton>
-          <IconButton variant="primary" size="large">
-            <Icon name="arrow-right" />
-          </IconButton>
+          <IconButton variant="ghost" name="x" />
+          <IconButton name="arrow-left" />
+          <IconButton name="arrow-left" size="small" />
+          <IconButton variant="primary" size="large" name="arrow-right" />
         </HStack>
         <HStack>
-          <Button variant="primary" loading>
+          <Button size="small" variant="primary" loading>
             Pepperoni
           </Button>
           <Button loading>Loading</Button>
-          <IconButton variant="primary" loading>
-            <Icon name="x" />
-          </IconButton>
+          <IconButton size="small" name="arrow-left" loading />
+          <IconButton size="large" name="aa-placeholder" loading />
         </HStack>
       </VStack>
     </Section>
@@ -320,7 +324,7 @@ const AppContent: React.FC = () => {
               </VStack>
               <VStack>
                 <Spinner />
-                <Text>Standard</Text>
+                <Text>Medium</Text>
               </VStack>
               <VStack>
                 <Spinner size="large" />
@@ -562,7 +566,7 @@ const AppContent: React.FC = () => {
             <VStack gap={'10'} alignItems={'flex-start'}>
               <Heading level="h4">Example</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
-              <Card grabbed>
+                <Card grabbed>
                   <Box className={css({ p: '16', textAlign: 'left' })}>
                     <Heading level="h4">Affordable Default</Heading>
                     <Text>

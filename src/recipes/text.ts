@@ -116,7 +116,7 @@ const linkBase = {
     color: { base: 'blue.40', _dark: 'blue.30' },
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
   },
-  _focus: {
+  _focusVisible: {
     borderRadius: '4',
     outlineColor: { base: 'slate.90', _dark: 'slate.0' },
   },

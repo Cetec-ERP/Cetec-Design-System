@@ -3,7 +3,8 @@ export const conditions = {
   focus: '&:is(:focus, [data-focus])',
   focusWithin: '&:focus-within',
   focusVisible: '&:is(:focus-visible, [data-focus-visible])',
-  disabled: '&:is(:disabled, [disabled], [data-disabled])',
+  disabled:
+    '&:is(:disabled, [disabled], [data-disabled], [aria-disabled=true])',
   error: '&:is([data-error], [error])',
   active: '&:is(:active, [data-active])',
   visited: '&:visited',
