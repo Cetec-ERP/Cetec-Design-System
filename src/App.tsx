@@ -606,7 +606,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Title"
                   text="Details Content"
-                  placement={'top'}
+                  position={'top'}
                   trigger="onHover"
                   caret={false}
                 >
@@ -615,7 +615,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'left'}
+                  position={'left'}
                   trigger="onClick"
                 >
                   Left
@@ -623,7 +623,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'right'}
+                  position={'right'}
                   trigger="onClick"
                 >
                   Right
@@ -638,7 +638,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'bottom-start'}
+                  position={'bottom-start'}
                   trigger="onClick"
                 >
                   Bottom Start
@@ -646,7 +646,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'top-start'}
+                  position={'top-start'}
                   trigger="onClick"
                 >
                   Top Start
@@ -654,7 +654,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'left-start'}
+                  position={'left-start'}
                   trigger="onClick"
                 >
                   Left Start
@@ -662,7 +662,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'right-start'}
+                  position={'right-start'}
                   trigger="onClick"
                 >
                   Right Start
@@ -677,7 +677,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'bottom-end'}
+                  position={'bottom-end'}
                   trigger="onClick"
                 >
                   Bottom End
@@ -685,7 +685,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'top-end'}
+                  position={'top-end'}
                   trigger="onClick"
                 >
                   Top End
@@ -693,7 +693,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'left-end'}
+                  position={'left-end'}
                   trigger="onClick"
                 >
                   Left End
@@ -701,7 +701,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'right-end'}
+                  position={'right-end'}
                   trigger="onClick"
                 >
                   Right End
@@ -732,7 +732,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Title"
                   text="Details Content"
-                  placement={'top'}
+                  position={'top'}
                   trigger="onClick"
                   caret={false}
                 >
@@ -741,7 +741,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'left'}
+                  position={'left'}
                   trigger="onClick"
                   caret={false}
                 >
@@ -750,7 +750,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'right'}
+                  position={'right'}
                   trigger="onClick"
                   caret={false}
                 >
@@ -766,7 +766,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'bottom-start'}
+                  position={'bottom-start'}
                   trigger="onHover"
                   caret={false}
                 >
@@ -775,7 +775,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'top-start'}
+                  position={'top-start'}
                   trigger="onClick"
                   caret={false}
                 >
@@ -784,7 +784,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'left-start'}
+                  position={'left-start'}
                   trigger="onClick"
                   caret={false}
                 >
@@ -793,7 +793,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'right-start'}
+                  position={'right-start'}
                   trigger="onClick"
                   caret={false}
                 >
@@ -809,7 +809,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'bottom-end'}
+                  position={'bottom-end'}
                   caret={false}
                 >
                   Bottom End
@@ -817,7 +817,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'top-end'}
+                  position={'top-end'}
                   caret={false}
                 >
                   Top End
@@ -825,14 +825,14 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  placement={'left-end'}
+                  position={'left-end'}
                   caret={false}
                 >
                   Left End
                 </Tooltip>
                 <Tooltip
                   text="Right End Tooltip"
-                  placement={'right-end'}
+                  position={'right-end'}
                   trigger="onClick"
                   caret={false}
                 >

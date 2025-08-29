@@ -3,18 +3,18 @@ import { tooltip, type TooltipVariantProps } from '@styled-system/recipes';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Text } from '../Text';
 
-export type Placement =
+export type Position =
   | 'top' | 'bottom' | 'left' | 'right'
   | 'top-start' | 'bottom-start' | 'left-start' | 'right-start'
   | 'top-end' | 'bottom-end' | 'left-end' | 'right-end';
 
 export type TooltipProps = Omit<BoxProps, keyof TooltipVariantProps> &
   TooltipVariantProps & {
-    text?: string;
+    text: string;
     title?: string;
     caret?: boolean;
-    placement?: Placement;
-    children?: string | ReactNode;
+    position?: Position;
+    children?: ReactNode;
     trigger?: 'onHover' | 'onClick';
   };
 
@@ -24,23 +24,23 @@ export const Tooltip: React.FC<TooltipProps> = ({
   text,
   title,
   children,
-  placement = 'bottom',
+  position = 'bottom',
   ...props
 }) => {
-  const [currentPlacement, setCurrentPlacement] = useState(placement);
+  const [currentPlacement, setCurrentPlacement] = useState(position);
   const { wrapper, tooltipContent } = tooltip({
-    placement: currentPlacement,
+    position: currentPlacement,
     caret,
   });
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const resolvedPlacement =
-    typeof placement === 'string' ? placement : 'bottom';
+    typeof position === 'string' ? position : 'bottom';
 
-    const clockWisePlacement : Placement[] = ['bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'top', 'top-start', 'top-end', 'right', 'right-start', 'right-end'];
+    const clockWisePlacement : Position[] = ['bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'top', 'top-start', 'top-end', 'right', 'right-start', 'right-end'];
 
-    function getClockwise(start: Placement): Placement[] {
+    function getClockwise(start: Position): Position[] {
       const index = clockWisePlacement.indexOf(start);
       if (index === -1) return clockWisePlacement;
     
@@ -49,7 +49,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
   
   
-    const checkPlacement = () => {
+    const checkPosition = () => {
       const tooltipPositioning = tooltipRef.current;
       const triggerPositioning = triggerRef.current;
       if (!tooltipPositioning || !triggerPositioning) return;
@@ -83,7 +83,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     triggerRect: DOMRect,
     tooltipWidth: number,
     tooltipHeight: number,
-    place: Placement,
+    place: Position,
   ) {
     const gap = 8;
 
@@ -184,11 +184,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   useEffect(() => {
     if (show) {
-      checkPlacement();
-      window.addEventListener('resize', checkPlacement);
-      return () => window.removeEventListener('resize', checkPlacement);
+      checkPosition();
+      window.addEventListener('resize', checkPosition);
+      return () => window.removeEventListener('resize', checkPosition);
     }
-  }, [show, placement]);
+  }, [show, position]);
 
   useEffect(() => {
     if (trigger !== 'onClick') return;

@@ -31,7 +31,7 @@ const tooltipBase = {
       position: 'absolute',
       width: '0',
       height: '0',
-      borderWidth: '8',
+      borderWidth: '9',
       borderStyle: 'solid',
       borderColor: 'transparent',
     },
@@ -39,7 +39,7 @@ const tooltipBase = {
 };
 
 const tooltipVariants = {
-  placement: {
+  position: {
     top: {
       tooltipContent: {
         bottom: '100%',
@@ -49,7 +49,7 @@ const tooltipVariants = {
         _after: {
           top: '100%',
           left: '50%',
-          transform: 'translate(-50%, 0)',
+          transform: 'translate(-50%, -2%)',
           borderTopColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -62,7 +62,7 @@ const tooltipVariants = {
         _after: {
           bottom: '100%',
           left: '50%',
-          transform: 'translate(-50%, 0)',
+          transform: 'translate(-50%, 2%)',
           borderBottomColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -75,7 +75,7 @@ const tooltipVariants = {
         _after: {
           top: '50%',
           right: '-6%',
-          transform: 'translate(50%, -50%)',
+          transform: 'translate(48%, -50%)',
           borderLeftColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -88,7 +88,7 @@ const tooltipVariants = {
         _after: {
           top: '50%',
           left: '-6%',
-          transform: 'translate(-50%, -50%)',
+          transform: 'translate(-48%, -50%)',
           borderRightColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -100,7 +100,7 @@ const tooltipVariants = {
         _after: {
           top: '100%',
           left: '8',
-          transform: 'translate(0, 0)',
+          transform: 'translate(0, -2%)',
           borderTopColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -113,7 +113,7 @@ const tooltipVariants = {
         _after: {
           bottom: '100%',
           left: '8',
-          transform: 'translate(0%, 0)',
+          transform: 'translate(0%, 2%)',
           borderBottomColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -126,7 +126,7 @@ const tooltipVariants = {
         _after: {
           top: '8',
           right: '-6%',
-          transform: 'translate(50%, 0)',
+          transform: 'translate(48%, 0)',
           borderLeftColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -139,7 +139,7 @@ const tooltipVariants = {
         _after: {
           top: '8',
           left: '-6%',
-          transform: 'translate(-50%, 0)',
+          transform: 'translate(-48%, 0)',
           borderRightColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -151,7 +151,7 @@ const tooltipVariants = {
         _after: {
           top: '100%',
           right: '8',
-          transform: 'translate(0, 0)',
+          transform: 'translate(0, -2%)',
           borderTopColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       }
@@ -164,7 +164,7 @@ const tooltipVariants = {
         _after: {
           bottom: '100%',
           right: '8',
-          transform: 'translate(0%, 0)',
+          transform: 'translate(0%, 2%)',
           borderBottomColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -177,7 +177,7 @@ const tooltipVariants = {
         _after: {
           bottom: '8',
           right: '-6%',
-          transform: 'translate(50%, 0)',
+          transform: 'translate(48%, 0)',
           borderLeftColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -189,8 +189,8 @@ const tooltipVariants = {
         transform: 'translate(10%, -0%)',
         _after: {
           bottom: '8',
-          left: '-5%',
-          transform: 'translate(-50%, 0)',
+          left: '-6%',
+          transform: 'translate(-48%, 0)',
           borderRightColor: { base: 'slate.90', _dark: 'slate.0' },
         },
       },
@@ -211,7 +211,7 @@ export const tooltipRecipe = defineSlotRecipe({
             display: 'block',
           }
         },
-        _placement:{
+        _position:{
           top:{
             tooltipContent:{
               mb: '12',
@@ -225,7 +225,7 @@ export const tooltipRecipe = defineSlotRecipe({
             display: 'none',
           }
         },
-        _placement:{
+        _position:{
           top:{
             tooltipContent:{
               mb: '8'
@@ -236,11 +236,11 @@ export const tooltipRecipe = defineSlotRecipe({
     }
   },
   defaultVariants: {
-    placement: 'bottom',
+    position: 'bottom',
   },
   compoundVariants: [
     {
-      placement: ['top', 'top-start', 'top-end'],
+      position: ['top', 'top-start', 'top-end'],
       caret: true,
       css: {
         tooltipContent: {
@@ -249,7 +249,7 @@ export const tooltipRecipe = defineSlotRecipe({
       },
     },
     {
-      placement: ['top', 'top-start', 'top-end'],
+      position: ['top', 'top-start', 'top-end'],
       caret: false,
       css: {
         tooltipContent: {
@@ -258,7 +258,7 @@ export const tooltipRecipe = defineSlotRecipe({
       },
     },
     {
-      placement: ['bottom', 'bottom-start', 'bottom-end'],
+      position: ['bottom', 'bottom-start', 'bottom-end'],
       caret: true,
       css: {
         tooltipContent: {
@@ -267,7 +267,7 @@ export const tooltipRecipe = defineSlotRecipe({
       },
     },
     {
-      placement: ['bottom', 'bottom-start', 'bottom-end'],
+      position: ['bottom', 'bottom-start', 'bottom-end'],
       caret: false,
       css: {
         tooltipContent: {
@@ -276,7 +276,7 @@ export const tooltipRecipe = defineSlotRecipe({
       },
     },
     {
-      placement: ['left', 'left-start', 'left-end'],
+      position: ['left', 'left-start', 'left-end'],
       caret: true,
       css: {
         tooltipContent: {
@@ -285,7 +285,7 @@ export const tooltipRecipe = defineSlotRecipe({
       },
     },
     {
-      placement: ['left', 'left-start', 'left-end'],
+      position: ['left', 'left-start', 'left-end'],
       caret: false,
       css: {
         tooltipContent: {
@@ -294,7 +294,7 @@ export const tooltipRecipe = defineSlotRecipe({
       },
     },
     {
-      placement: ['right', 'right-start', 'right-end'],
+      position: ['right', 'right-start', 'right-end'],
       caret: true,
       css: {
         tooltipContent: {
@@ -303,7 +303,7 @@ export const tooltipRecipe = defineSlotRecipe({
       },
     },
     {
-      placement: ['right', 'right-start', 'right-end'],
+      position: ['right', 'right-start', 'right-end'],
       caret: false,
       css: {
         tooltipContent: {
