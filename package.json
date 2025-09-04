@@ -12,8 +12,9 @@
     "generate-sprite": "node src/utils/generate-sprite.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "playroom": "playroom start",
-    "build-playroom": "playroom build"
+    "playroom": "npm run build-playroom-css && playroom start",
+    "build-playroom": "npm run build-playroom-css && playroom build",
+    "build-playroom-css": "panda codegen && panda cssgen --outfile public/playroom.css"
   },
   "type": "module",
   "files": [

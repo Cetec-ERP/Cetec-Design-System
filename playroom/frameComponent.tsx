@@ -7,8 +7,11 @@ export default function FrameComponent({
   children: React.ReactNode;
 }) {
   return (
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
+    <>
+      <link rel="stylesheet" href="/playroom.css" />
+      <ThemeProvider>
+        {children}
+      </ThemeProvider>
+    </>
   );
 }

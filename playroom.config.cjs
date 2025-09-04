@@ -40,6 +40,26 @@ module.exports = {
             },
           },
         },
+        {
+          test: /\.css$/,
+          include: [
+            path.resolve(__dirname, 'src'),
+            path.resolve(__dirname, 'dist'),
+            path.resolve(__dirname, 'playroom')
+          ],
+          use: [
+            'style-loader',
+            'css-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  config: path.resolve(__dirname, 'postcss.config.cjs'),
+                },
+              },
+            },
+          ],
+        },
       ],
     },
   }),
