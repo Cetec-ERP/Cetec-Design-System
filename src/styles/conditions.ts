@@ -105,4 +105,5 @@ export const conditions = {
   vertical: '&[data-orientation=vertical]',
 
   starting: '@starting-style',
+  grabbed: "&[data-grabbed=true]",
 }

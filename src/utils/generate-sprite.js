@@ -4,6 +4,7 @@ import { glob } from 'glob';
 import path from 'path';
 import config from './sprite-config.js';
 import { optimize } from 'svgo';
+import { exec } from 'child_process';
 
 // Directory paths
 const dirs = {
@@ -164,6 +165,10 @@ async function main() {
     await generateSprite(spriter);
 
     console.log('SVG sprite generation completed successfully');
+
+    // log link to sprite.symbol.html using absolute path
+    const spritePath = path.resolve(dirs.spriteOutput, 'sprite.symbol.html');
+    exec(`open ${spritePath}`);
   } catch (error) {
     console.error('Error generating SVG sprite:', error);
     process.exit(1);
