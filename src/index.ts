@@ -12,5 +12,6 @@ export { CheckBox } from './components/CheckBox';
 export { Radio } from './components/Radio';
 export { TextInput } from './components/TextInput';
 export { Textarea } from './components/Textarea';
+export { Card } from './components/Card';
 export { ThemeSwitcher } from './components/ThemeSwitcher';
 export { ThemeProvider } from './contexts/ThemeContext';
