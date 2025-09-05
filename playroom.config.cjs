@@ -5,7 +5,8 @@ module.exports = {
   title: 'Cetec ERP Design System',
   components: './src/index.ts',
   outputPath: './dist/playroom',
-  widths: [320, 768, 1024],
+  widths: [320, 768, 1024, 'full'],
+  // themes: ['light', 'dark'],
   port: 9000,
   openBrowser: false,
   paramType: 'search', // default is 'hash'
@@ -15,7 +16,7 @@ module.exports = {
 				</Box>
     `,
   baseUrl: '/playroom/',
-  iframeSandbox: 'allow-scripts',
+  iframeSandbox: 'allow-scripts allow-same-origin',
   webpackConfig: () => ({
     resolve: {
       extensions: ['.js', '.ts', '.tsx', '.jsx'],
@@ -67,9 +68,12 @@ module.exports = {
   frameComponent: './playroom/frameComponent.tsx',
   defaultVisibleWidths: [
     // subset of widths to display on first load
+    'full',
   ],
   defaultVisibleThemes: [
     // subset of themes to display on first load
+    // 'light',
+    // 'dark',
   ],
   typeScriptFiles: ['src/components/**/*.{ts,tsx}', '!**/node_modules'],
   // propsParser: docgen.withDefaultConfig({

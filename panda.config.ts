@@ -83,6 +83,8 @@ export default defineConfig({
   importMap: '@styled-system',
   outdir: 'styled-system',
   prefix: 'Cetec',
+  separator: '_',
+  hash: false,
 
   theme: {
     containerSizes: tokens.containerSizes,
