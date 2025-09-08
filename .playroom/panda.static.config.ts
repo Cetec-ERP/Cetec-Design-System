@@ -2,9 +2,9 @@
 // It imports your base config and *only* adds `staticCss`.
 // Your normal Panda flow stays exactly as-is.
 
-import base from './panda.config'
+import base from '../panda.config.ts'
 import { defineConfig } from '@pandacss/dev'
-import * as tokens from './src/styles/tokens' // <-- you already import this in base
+import * as tokens from '../src/styles/tokens' // <-- you already import this in base
 import basePreset from '@pandacss/preset-base'
 
 // Some Panda presets export a factory function. Realize it so we can read .utilities

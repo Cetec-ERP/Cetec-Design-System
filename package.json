@@ -2,7 +2,6 @@
   "name": "cetec-design-system",
   "version": "0.0.27",
   "scripts": {
-    "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
     "dev": "npx panda codegen --watch & vite",
     "build": "npx panda codegen && vite build",
@@ -12,15 +11,9 @@
     "generate-sprite": "node src/utils/generate-sprite.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "playroom": "playroom start",
-    "build-playroom": "npm run build-playroom-css && playroom build",
-    "build-playroom-css": "panda codegen && panda cssgen --outfile public/playroom.css",
-    "css:static": "npx panda cssgen \"static\"    -c panda.static.config.ts -o public/utilities.css --minify",
-    "css:preflight": "npx panda cssgen \"preflight\" -c panda.static.config.ts -o public/preflight.css --minify",
-    "css:tokens": "npx panda cssgen \"tokens\"    -c panda.static.config.ts -o public/tokens.css --minify",
-    "css:keyframes": "npx panda cssgen \"keyframes\" -c panda.static.config.ts -o public/keyframes.css --minify",
-    "css:global": "npx panda cssgen \"global\"    -c panda.static.config.ts -o public/global.css --minify",
-    "css:all": "npm-run-all -s css:preflight css:tokens css:static css:keyframes css:global"
+    "playroom-dev": "node .playroom/playroom-dev.js",
+    "playroom-dev-css": "npx panda cssgen --config panda.static.config.ts --outfile public/playroom-static.css",
+    "playroom-build": "node .playroom/playroom-build.js"
   },
   "type": "module",
   "files": [

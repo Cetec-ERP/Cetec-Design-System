@@ -1,22 +1,49 @@
-const path = require('path');
-const { writeFileSync } = require('fs');
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default {
   title: 'Cetec ERP Design System',
   components: './src/index.ts',
+  frameComponent: './.playroom/frameComponent.tsx',
+  snippets: './.playroom/snippets.ts',
+  scope: './.playroom/scope.ts',
+  themes: './.playroom/themes.ts',
   outputPath: './dist/playroom',
-  widths: [320, 768, 1024, 'full'],
-  // themes: ['light', 'dark'],
+  baseUrl: '/playroom/',
+  widths: [320, 768, 1024, 1200],
+  defaultVisibleWidths: [1200],
   port: 9000,
   openBrowser: false,
   paramType: 'search', // default is 'hash'
-  exampleCode: `
-		<Box p="24" display="flex" flexDirection="column">
-        <Spinner />
-				</Box>
-    `,
-  baseUrl: '/playroom/',
   iframeSandbox: 'allow-scripts allow-same-origin',
+  exampleCode: `
+<Card maxWidth="xs">
+  <Flex
+    as="header"
+    px="12"
+    py="4"
+    justifyContent="space-between"
+    borderBottomWidth={'1'}
+    borderStyle={'solid'}
+    borderColor={{ base: 'slate.10', _dark: 'slate.80' }}
+  >
+    <Text textStyle="heading-xs" textAlign="left">Howdy</Text>
+    <IconButton variant="ghost">
+      <Icon name="menu" />
+    </IconButton>
+  </Flex>
+  <Flex p="12">
+    <Text>
+      Dolor sunt est qui incididunt ipsum esse esse do minim id officia
+      laboris culpa.
+    </Text>
+  </Flex>
+</Card>
+    `,
   webpackConfig: () => ({
     resolve: {
       extensions: ['.js', '.ts', '.tsx', '.jsx'],
@@ -31,7 +58,7 @@ module.exports = {
           test: /\.tsx?$/,
           include: [
             path.resolve(__dirname, 'src'),
-            path.resolve(__dirname, 'playroom')
+            path.resolve(__dirname, '.playroom')
           ],
           exclude: /node_modules/,
           use: {
@@ -46,7 +73,7 @@ module.exports = {
           include: [
             path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'dist'),
-            path.resolve(__dirname, 'playroom')
+            // path.resolve(__dirname, '.playroom')
           ],
           use: [
             'style-loader',
@@ -64,17 +91,6 @@ module.exports = {
       ],
     },
   }),
-  // Inject the dynamically generated Panda CSS into the iframe
-  frameComponent: './playroom/frameComponent.tsx',
-  defaultVisibleWidths: [
-    // subset of widths to display on first load
-    'full',
-  ],
-  defaultVisibleThemes: [
-    // subset of themes to display on first load
-    // 'light',
-    // 'dark',
-  ],
   typeScriptFiles: ['src/components/**/*.{ts,tsx}', '!**/node_modules'],
   // propsParser: docgen.withDefaultConfig({
   //     savePropValueAsString: true,

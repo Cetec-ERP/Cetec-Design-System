@@ -266,6 +266,10 @@ export const shadows = {
 };
 
 export const borders = {
+  default: {
+    base: { value: '1px solid slate.10' },
+    _dark: { value: '1px solid slate.80' },
+  },
   none: {
     value: 'none',
   },
