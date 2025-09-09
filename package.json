@@ -1,6 +1,6 @@
 {
   "name": "cetec-design-system",
-  "version": "0.0.27",
+  "version": "0.0.32",
   "scripts": {
     "prepare": "npx panda codegen",
     "dev": "npx panda codegen --watch & vite",
