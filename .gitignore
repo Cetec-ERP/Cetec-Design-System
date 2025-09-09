@@ -36,3 +36,4 @@ styled-system-studio
 public/playroom-static.css
 public/@fontsource-variable
 public/font-imports.css
+.playroom/exports.ts

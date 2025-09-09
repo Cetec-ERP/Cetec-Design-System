@@ -12,7 +12,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "playroom-dev": "node .playroom/playroom-dev.js",
-    "playroom-dev-css": "npx panda cssgen --config .playroom/panda.static.config.ts --outfile public/playroom-static.css",
+    "playroom-dev-css": "node .playroom/playroom-dev.js --css-only",
     "playroom-build": "node .playroom/playroom-build.js"
   },
   "type": "module",

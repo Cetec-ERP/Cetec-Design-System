@@ -7,7 +7,7 @@ const __dirname = dirname(__filename);
 
 export default {
   title: 'Cetec ERP Design System',
-  components: './src/index.ts',
+  components: './.playroom/exports.ts',
   frameComponent: './.playroom/frameComponent.tsx',
   snippets: './.playroom/snippets.ts',
   scope: './.playroom/scope.ts',
