@@ -234,18 +234,18 @@ export const sizes = {
 };
 
 export const fontSizes = {
-  '12': { value: numericSizes['12'].value },
-  '14': { value: numericSizes['14'].value },
-  '16': { value: numericSizes['16'].value },
-  '20': { value: numericSizes['20'].value },
-  '24': { value: numericSizes['24'].value },
-  '32': { value: numericSizes['32'].value },
-  '40': { value: numericSizes['40'].value },
-  '48': { value: numericSizes['48'].value },
-  '64': { value: numericSizes['64'].value },
-  '72': { value: numericSizes['72'].value },
-  '80': { value: numericSizes['80'].value },
-  '96': { value: numericSizes['96'].value },
+  '12': { value: '{sizes.12}' },
+  '14': { value: '{sizes.14}' },
+  '16': { value: '{sizes.16}' },
+  '20': { value: '{sizes.20}' },
+  '24': { value: '{sizes.24}' },
+  '32': { value: '{sizes.32}' },
+  '40': { value: '{sizes.40}' },
+  '48': { value: '{sizes.48}' },
+  '64': { value: '{sizes.64}' },
+  '72': { value: '{sizes.72}' },
+  '80': { value: '{sizes.80}' },
+  '96': { value: '{sizes.96}' },
 };
 
 export const lineHeights = {
@@ -264,14 +264,14 @@ export const lineHeights = {
 };
 
 export const radii = {
-  '0': { value: '0' },
-  '1': { value: '0.0625rem' },
-  '2': { value: '0.125rem' },
-  '3': { value: '0.188rem' },
-  '4': { value: '0.25rem' },
-  '8': { value: '0.5rem' },
-  '16': { value: '1rem' },
-  '100': { value: '100%' },
+  '0': { value: '{sizes.0}' },
+  '1': { value: '{sizes.1}' },
+  '2': { value: '{sizes.2}' },
+  '3': { value: '{sizes.3}' },
+  '4': { value: '{sizes.4}' },
+  '8': { value: '{sizes.8}' },
+  '16': { value: '{sizes.16}' },
+  '100': { value: utilitySizes['full'].value },
 };
 
 export const shadows = {

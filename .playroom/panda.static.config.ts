@@ -93,6 +93,65 @@ const outlineWidthsTokens = buildTokenAlias('sizes', true);
 const containerSizesTokens = buildContainerSizesTokens();
 const breakpointsTokens = buildBreakpointsTokens();
 
+// Build specific token sets for different property restrictions
+const numericSizesTokens = buildTokenAlias('numericSizes', true);
+const utilitySizesTokens = buildTokenAlias('utilitySizes', false);
+const allSizesTokens = buildTokenAlias('sizes', true);
+
+// Custom size values for specific properties
+const heightCustomSizes = {
+  ...numericSizesTokens,
+  ...utilitySizesTokens,
+  '100svh': { value: '100svh' },
+  '100lvh': { value: '100lvh' },
+  '100dvh': { value: '100dvh' },
+  '100vh': { value: '100vh' },
+};
+
+const widthCustomSizes = {
+  ...allSizesTokens,
+  ...containerSizesTokens,
+  '100vw': { value: '100vw' },
+  '80%': { value: '80%' },
+  '75%': { value: '75%' },
+  '66.666%': { value: '66.666%' },
+  '60%': { value: '60%' },
+  '40%': { value: '40%' },
+  '33.333%': { value: '33.333%' },
+  '25%': { value: '25%' },
+  '20%': { value: '20%' },
+};
+
+const marginCustomSizes = {
+  ...numericSizesTokens,
+  ...utilitySizesTokens,
+  // Add negative values for margins
+  '-1': { value: '-0.0625rem' },
+  '-2': { value: '-0.125rem' },
+  '-3': { value: '-0.1875rem' },
+  '-4': { value: '-0.25rem' },
+  '-5': { value: '-0.3125rem' },
+  '-6': { value: '-0.375rem' },
+  '-7': { value: '-0.4375rem' },
+  '-8': { value: '-0.5rem' },
+  '-9': { value: '-0.5625rem' },
+  '-10': { value: '-0.625rem' },
+  '-12': { value: '-0.75rem' },
+  '-14': { value: '-0.875rem' },
+  '-16': { value: '-1rem' },
+  '-20': { value: '-1.25rem' },
+  '-22': { value: '-1.375rem' },
+  '-24': { value: '-1.5rem' },
+  '-32': { value: '-2rem' },
+  '-40': { value: '-2.5rem' },
+  '-48': { value: '-3rem' },
+  '-56': { value: '-3.5rem' },
+  '-64': { value: '-4rem' },
+  '-72': { value: '-4.5rem' },
+  '-80': { value: '-5rem' },
+  '-96': { value: '-6rem' },
+};
+
 // ---- Value resolvers -------------------------------------------------------
 type UtilityInfo = {
   key: string;
@@ -216,27 +275,6 @@ const U_TEXT_ALIGN = getUtilityInfo('textAlign');
 const U_TEXT_TRANSFORM = getUtilityInfo('textTransform');
 const U_TEXT_DECORATION = getUtilityInfo('textDecoration');
 
-// const U_DISPLAY = ['block', 'inline', 'inline-block', 'flex', 'inline-flex', 'grid', 'inline-grid', 'contents', 'none',];
-// const U_POSITION = ['static', 'relative', 'absolute', 'fixed', 'sticky'];
-// const U_FLEX_DIRECTION = ['row', 'row-reverse', 'column', 'column-reverse'];
-// const U_FLEX_WRAP = ['nowrap', 'wrap', 'wrap-reverse'];
-// const U_JUSTIFY_CONTENT = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around', 'space-evenly', 'start', 'end', 'left', 'right',];
-// const U_ALIGN_ITEMS = ['stretch', 'flex-start', 'center', 'flex-end', 'baseline', 'start', 'end', 'self-start', 'self-end',];
-// const U_ALIGN_CONTENT = ['normal', 'flex-start', 'center', 'flex-end', 'space-between', 'space-around', 'space-evenly', 'stretch', 'start', 'end',];
-// const U_PLACE_ITEMS = ['start', 'center', 'end', 'stretch', 'baseline'];
-// const U_PLACE_CONTENT = ['start', 'center', 'end', 'space-between', 'space-around', 'space-evenly', 'stretch',];
-// const U_ALIGN_SELF = ['auto', 'stretch', 'flex-start', 'center', 'flex-end', 'baseline', 'start', 'end', 'self-start', 'self-end',];
-// const U_JUSTIFY_ITEMS = ['auto', 'normal', 'start', 'center', 'end', 'left', 'right', 'legacy', 'stretch',];
-// const U_JUSTIFY_SELF = ['auto', 'normal', 'start', 'center', 'end', 'left', 'right', 'stretch',];
-// const U_PLACE_SELF = ['auto', 'start', 'center', 'end', 'stretch'];
-// const U_VISIBILITY = ['visible', 'hidden', 'collapse'];
-// const U_OVERFLOW = ['visible', 'hidden', 'clip', 'scroll', 'auto'];
-// const U_OBJECT_FIT = ['contain', 'cover', 'fill', 'none', 'scale-down'];
-// const U_OBJECT_POSITION = ['center', 'top', 'bottom', 'left', 'right', 'left top', 'left center', 'left bottom', 'center top', 'center center', 'center bottom', 'right top'];
-// const U_TEXT_ALIGN = ['left', 'right', 'center',];
-// const U_TEXT_TRANSFORM = ['none', 'uppercase', 'lowercase'];
-// const U_TEXT_DECORATION = ['none', 'underline', 'line-through'];
-
 // Helper: shallow-merge presets if needed (base may export strings or actual presets)
 const mergedPresets = Array.isArray((base as any).presets)
   ? (base as any).presets
@@ -267,6 +305,12 @@ export default defineConfig({
         outlineWidths: outlineWidthsTokens,
         containerSizes: containerSizesTokens,
         breakpoints: breakpointsTokens,
+        // Custom restricted token sets
+        heightSizes: heightCustomSizes,
+        widthSizes: widthCustomSizes,
+        marginSizes: marginCustomSizes,
+        paddingSizes: numericSizesTokens,
+        strokeWidthSizes: numericSizesTokens,
       },
     },
   },
@@ -281,27 +325,83 @@ export default defineConfig({
       // Layout & display (keyword enums from preset)
       {
         properties: {
-          display: U_DISPLAY.values, visibility: U_VISIBILITY.values, position: U_POSITION.values, inset: ['*'], top: ['*'], right: ['*'], bottom: ['*'], left: ['*'], zIndex: ['*'],
+          display: U_DISPLAY.values,
+          visibility: U_VISIBILITY.values,
+          position: U_POSITION.values,
+          zIndex: ['*'],
         },
-        conditions: Object.keys(tokens.containerSizes),
         responsive: true,
       },
 
-      // Spacing (let Panda resolve token -> CSS var via the spacing alias)
+      // Height properties: numericSizes + utilitySizes + viewport units, no container/breakpoint sizes, no negatives
+      // with container/breakpoint conditions
       {
         properties: {
-          margin: ['*'], marginTop: ['*'], marginRight: ['*'], marginBottom: ['*'], marginLeft: ['*'], marginInline: ['*'], marginBlock: ['*'], padding: ['*'], paddingTop: ['*'], paddingRight: ['*'], paddingBottom: ['*'], paddingLeft: ['*'], paddingInline: ['*'], paddingBlock: ['*'], gap: ['*'], rowGap: ['*'], columnGap: ['*'],
+          height: Object.keys(heightCustomSizes),
+          minHeight: Object.keys(heightCustomSizes),
+          maxHeight: Object.keys(heightCustomSizes),
         },
-        conditions: Object.keys(tokens.containerSizes),
+        conditions: [...Object.keys(tokens.containerSizes), ...Object.keys(tokens.breakpoints)],
         responsive: true,
       },
 
-      // Sizing
+      // Width properties: all sizes + custom percentages + container sizes, no breakpoint sizes, no negatives
+      // with container/breakpoint conditions
       {
         properties: {
-          width: ['*'], minWidth: ['*'], maxWidth: ['*'], height: ['*'], minHeight: ['*'], maxHeight: ['*'],
+          width: Object.keys(widthCustomSizes),
+          minWidth: Object.keys(widthCustomSizes),
+          maxWidth: Object.keys(widthCustomSizes),
         },
-        conditions: Object.keys(tokens.containerSizes),
+        conditions: [...Object.keys(tokens.containerSizes), ...Object.keys(tokens.breakpoints)],
+        responsive: true,
+      },
+
+      // Padding/gap properties: numericSizes only, no container/breakpoint sizes, no negatives
+      // with container/breakpoint conditions
+      {
+        properties: {
+          padding: Object.keys(numericSizesTokens),
+          paddingTop: Object.keys(numericSizesTokens),
+          paddingRight: Object.keys(numericSizesTokens),
+          paddingBottom: Object.keys(numericSizesTokens),
+          paddingLeft: Object.keys(numericSizesTokens),
+          paddingInline: Object.keys(numericSizesTokens),
+          paddingBlock: Object.keys(numericSizesTokens),
+          paddingInlineStart: Object.keys(numericSizesTokens),
+          paddingInlineEnd: Object.keys(numericSizesTokens),
+          paddingBlockStart: Object.keys(numericSizesTokens),
+          paddingBlockEnd: Object.keys(numericSizesTokens),
+          gap: Object.keys(numericSizesTokens),
+          rowGap: Object.keys(numericSizesTokens),
+          columnGap: Object.keys(numericSizesTokens),
+        },
+        conditions: [...Object.keys(tokens.containerSizes), ...Object.keys(tokens.breakpoints)],
+        responsive: true,
+      },
+
+      // Margin/inset properties: numericSizes + utilitySizes, no container/breakpoint sizes, allow negatives
+      // with container/breakpoint conditions
+      {
+        properties: {
+          margin: Object.keys(marginCustomSizes),
+          marginTop: Object.keys(marginCustomSizes),
+          marginRight: Object.keys(marginCustomSizes),
+          marginBottom: Object.keys(marginCustomSizes),
+          marginLeft: Object.keys(marginCustomSizes),
+          marginInline: Object.keys(marginCustomSizes),
+          marginBlock: Object.keys(marginCustomSizes),
+          marginInlineStart: Object.keys(marginCustomSizes),
+          marginInlineEnd: Object.keys(marginCustomSizes),
+          marginBlockStart: Object.keys(marginCustomSizes),
+          marginBlockEnd: Object.keys(marginCustomSizes),
+          inset: Object.keys(marginCustomSizes),
+          top: Object.keys(marginCustomSizes),
+          bottom: Object.keys(marginCustomSizes),
+          left: Object.keys(marginCustomSizes),
+          right: Object.keys(marginCustomSizes),
+        },
+        conditions: [...Object.keys(tokens.containerSizes), ...Object.keys(tokens.breakpoints)],
         responsive: true,
       },
 
@@ -320,12 +420,13 @@ export default defineConfig({
         responsive: false,
       },
 
-      // Borders & Outline & Radius
+      // Border/outline width: numericSizes only, no conditions
       {
         properties: {
-          outlineWidth: ['*'], borderWidth: ['*']
+          outlineWidth: Object.keys(numericSizesTokens),
+          borderWidth: Object.keys(numericSizesTokens),
         },
-        responsive: true,
+        responsive: false,
       },
       {
         properties: {
@@ -388,13 +489,20 @@ export default defineConfig({
         responsive: false,
       },
 
-      // SVG
+      // SVG: stroke/fill with color tokens only, no breakpoint/container conditions, only themeAndStateConditions
       {
         properties: {
-          fill: ['*'], stroke: ['*'], strokeWidth: ['*']
+          fill: colorTokenValues,
+          stroke: colorTokenValues,
         },
         conditions: themeAndStateConditions,
-        responsive: true,
+        responsive: false,
+      },
+      {
+        properties: {
+          strokeWidth: Object.keys(numericSizesTokens),
+        },
+        responsive: false,
       },
     ],
 
