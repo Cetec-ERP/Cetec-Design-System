@@ -148,6 +148,28 @@ export const fonts = {
   },
 };
 
+const fv = {
+  'mono-off': '"MONO" 0',
+  'mono-on': '"MONO" 1',
+  'crsv-off': '"CRSV" 0',
+  'crsv-on': '"CRSV" 1',
+  'casl-off': '"CASL" 0',
+  'casl-on': '"CASL" 1',
+  'slnt-off': '"slnt" 0',
+  'slnt-on': '"slnt" -15',
+};
+
+export const fontVariants = {
+  'body': `${fv['mono-off']}, ${fv['crsv-off']}, ${fv['casl-off']}, ${fv['slnt-off']}`,
+  'body-italic': `${fv['mono-off']}, ${fv['crsv-on']}, ${fv['casl-off']}, ${fv['slnt-on']}`,
+  'body-casual': `${fv['mono-off']}, ${fv['crsv-on']}, ${fv['casl-on']}, ${fv['slnt-off']}`,
+  'body-casual-italic': `${fv['mono-off']}, ${fv['crsv-on']}, ${fv['casl-on']}, ${fv['slnt-on']}`,
+  'mono': `${fv['mono-on']}, ${fv['crsv-off']}, ${fv['casl-off']}, ${fv['slnt-off']}`,
+  'mono-italic': `${fv['mono-on']}, ${fv['crsv-on']}, ${fv['casl-off']}, ${fv['slnt-on']}`,
+  'mono-casual': `${fv['mono-on']}, ${fv['crsv-on']}, ${fv['casl-on']}, ${fv['slnt-off']}`,
+  'mono-casual-italic': `${fv['mono-on']}, ${fv['crsv-on']}, ${fv['casl-on']}, ${fv['slnt-on']}`,
+};
+
 export const fontWeights = {
   light: { value: 300 },
   normal: { value: 400 },
@@ -184,12 +206,19 @@ export const numericSizes = {
   '96': { value: '6rem' },
 };
 
-export const sizes = {
-  ...numericSizes,
+export const utilitySizes = {
   full: { value: '100%' },
+  half: { value: '50%' },
   min: { value: 'min-content' },
   max: { value: 'max-content' },
   fit: { value: 'fit-content' },
+  prose: { value: '65ch' },
+  auto: { value: 'auto' },
+};
+
+export const sizes = {
+  ...numericSizes,
+  ...utilitySizes,
   xs: { value: '20rem' }, // 320px
   sm: { value: '24rem' }, // 384px
   md: { value: '28rem' }, // 448px
@@ -202,22 +231,21 @@ export const sizes = {
   '6xl': { value: '72rem' }, // 1152px
   '7xl': { value: '80rem' }, // 1280px
   '8xl': { value: '90rem' }, // 1440px
-  prose: { value: '65ch' }, // 1040px
 };
 
 export const fontSizes = {
-  '12': { value: '0.75rem' },
-  '14': { value: '0.875rem' },
-  '16': { value: '1rem' },
-  '20': { value: '1.25rem' },
-  '24': { value: '1.5rem' },
-  '32': { value: '2rem' },
-  '40': { value: '2.5rem' },
-  '48': { value: '3rem' },
-  '64': { value: '4rem' },
-  '72': { value: '4.5rem' },
-  '80': { value: '5rem' },
-  '96': { value: '6rem' },
+  '12': { value: numericSizes['12'].value },
+  '14': { value: numericSizes['14'].value },
+  '16': { value: numericSizes['16'].value },
+  '20': { value: numericSizes['20'].value },
+  '24': { value: numericSizes['24'].value },
+  '32': { value: numericSizes['32'].value },
+  '40': { value: numericSizes['40'].value },
+  '48': { value: numericSizes['48'].value },
+  '64': { value: numericSizes['64'].value },
+  '72': { value: numericSizes['72'].value },
+  '80': { value: numericSizes['80'].value },
+  '96': { value: numericSizes['96'].value },
 };
 
 export const lineHeights = {
@@ -399,18 +427,18 @@ export const animations = {
 };
 
 export const containerSizes = {
-  xs: '320px',
-  sm: '384px',
-  md: '448px',
-  lg: '512px',
-  xl: '576px',
-  '2xl': '672px',
-  '3xl': '768px',
-  '4xl': '896px',
-  '5xl': '1024px',
-  '6xl': '1152px',
-  '7xl': '1280px',
-  '8xl': '1440px',
+  xs: sizes.xs.value,
+  sm: sizes.sm.value,
+  md: sizes.md.value,
+  lg: sizes.lg.value,
+  xl: sizes.xl.value,
+  '2xl': sizes['2xl'].value,
+  '3xl': sizes['3xl'].value,
+  '4xl': sizes['4xl'].value,
+  '5xl': sizes['5xl'].value,
+  '6xl': sizes['6xl'].value,
+  '7xl': sizes['7xl'].value,
+  '8xl': sizes['8xl'].value,
 };
 
 export const keyframes = {
@@ -467,12 +495,14 @@ const baseHeadingStyles = defineStyles({
 const baseBodyTextStyles = defineStyles({
   value: {
     fontFamily: 'body',
+    fontVariationSettings: fontVariants.body,
   },
 });
 
 const baseMonoStyles = defineStyles({
   value: {
     fontFamily: 'mono',
+    fontVariationSettings: fontVariants.mono,
   },
 });
 

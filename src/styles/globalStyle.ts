@@ -1,4 +1,5 @@
 import { defineGlobalStyles } from '@pandacss/dev';
+import { fontVariants } from './tokens';
 
 // includes some normalize styles from:
 // https://github.com/sindresorhus/modern-normalize/blob/main/modern-normalize.css
@@ -11,6 +12,11 @@ export const globalCss = defineGlobalStyles({
     _focusVisible: {
       outlineColor: { base: 'slate.90', _dark: 'slate.0' },
     },
+    _disabled: {
+      opacity: 0.4,
+      cursor: 'not-allowed',
+      pointerEvents: 'none',
+    },
   },
   html: {
     fontSize: '16',
@@ -20,7 +26,7 @@ export const globalCss = defineGlobalStyles({
   },
   body: {
     fontFamily: 'body',
-    fontVariationSettings: '"CRSV" 0, "CASL" 0',
+    fontVariationSettings: fontVariants.body,
     bg: { base: 'slate.0', _dark: 'slate.90' },
     color: { base: 'slate.60', _dark: 'slate.30' },
     fontWeight: 'normal',
@@ -38,7 +44,7 @@ export const globalCss = defineGlobalStyles({
   },
   'i, em': {
     fontStyle: 'italic',
-    fontVariationSettings: '"CRSV" 0, "CASL" 0, "slnt" -15',
+    fontVariationSettings: fontVariants['body-italic'],
   },
   u: {
     textDecoration: 'underline',
@@ -53,16 +59,11 @@ export const globalCss = defineGlobalStyles({
   'button, input, optgroup, select, textarea': {
     fontFamily: 'body',
     fontSize: '100%',
-    lineHeight: 'calc(1em + 0.5rem)',
+    lineHeight: 'lineHeights.default',
     margin: '0',
   },
   'button, [type="button"], [type="reset"], [type="submit"]': {
     '-webkit-appearance': 'button',
-  },
-  _disabled: {
-    opacity: 0.4,
-    cursor: 'not-allowed',
-    pointerEvents: 'none',
   },
   legend: {
     padding: '0',
