@@ -29,6 +29,7 @@ import {
   toggleRecipe,
   toggleInputRecipe,
   radioInputRecipe,
+  breadcrumbsRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -114,6 +115,7 @@ export default definePreset({
         toggle: toggleRecipe,
         toggleInput: toggleInputRecipe,
         card: cardRecipe,
+        breadcrumbs: breadcrumbsRecipe,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,

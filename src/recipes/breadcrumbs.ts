@@ -1,6 +1,6 @@
 import { defineRecipe } from '@pandacss/dev';
 
-const BreadcurmbsBase = {
+const BreadcrumbsBase = {
   display: 'flex',
   alignItems: 'center',
   '& li': {
@@ -19,8 +19,8 @@ const BreadcurmbsBase = {
   },
 };
 
-export const breadcurmbsRecipe = defineRecipe({
-  className: 'breadcurmbs',
-  jsx: ['Breadcurmbs'],
-  base: BreadcurmbsBase,
+export const breadcrumbsRecipe = defineRecipe({
+  className: 'breadcrumbs',
+  jsx: ['Breadcrumbs'],
+  base: BreadcrumbsBase,
 });
