@@ -2,6 +2,7 @@ import { defineRecipe } from '@pandacss/dev';
 import {
   fontSizes as fontSizeTokens,
   fontWeights as fontWeightTokens,
+  fontVariants,
 } from '../styles/tokens';
 
 const textBase = {
@@ -56,7 +57,7 @@ const textVariants = {
     body: { fontFamily: 'body' },
     mono: {
       fontFamily: 'mono',
-      fontVariationSettings: '"CRSV" 0, "CASL" 0, "MONO" 1',
+      fontVariationSettings: fontVariants.mono,
     },
   },
   bold: {
@@ -67,7 +68,7 @@ const textVariants = {
   italic: {
     true: {
       fontStyle: 'italic',
-      fontVariationSettings: '"CRSV" 0, "CASL" 0, "slnt" -15',
+      fontVariationSettings: fontVariants['body-italic'],
     },
   },
   underline: {
