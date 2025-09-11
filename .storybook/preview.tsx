@@ -1,18 +1,21 @@
-import type { Preview } from '@storybook/react';
+import { withThemeByClassName } from '@storybook/addon-themes'
+import type { Preview, ReactRenderer } from '@storybook/react'
 import DocTemplate from '../src/storybook/doctemplate.mdx';
 import "../src/styles/index.css";
 
 const preview: Preview = {
-  initialGlobals: {
-    backgrounds: { value: 'light' },
-  },
-  parameters: {
-    backgrounds: {
-      options: {
-        light: { name: 'Light', value: '#F9F8F6' },
-        dark: { name: 'Dark', value: '#2E2E2E' },
+  decorators: [
+    withThemeByClassName<ReactRenderer>({
+      themes: {
+        light: '',
+        dark: 'dark'
       },
-    },
+      defaultTheme: 'light'
+    })
+  ],
+  initialGlobals: {},
+  parameters: {
+    backgrounds: { disable: true },
     controls: {
       disableSaveFromUI: true,
       matchers: {
