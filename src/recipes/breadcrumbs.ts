@@ -9,6 +9,9 @@ const BreadcrumbsBase = {
   },
   '& a': {
     color: { base: 'slate.60', _dark: 'slate.60' },
+    _focusVisible: {
+      color: 'blue.50'
+    }
   },
   '& p': {
     color: { base: 'slate.90', _dark: 'slate.0' },
