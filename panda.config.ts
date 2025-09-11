@@ -57,7 +57,6 @@ const theme = {
     fontWeights: tokens.fontWeights,
     sizes: tokens.sizes,
     numericSizes: tokens.numericSizes,
-    utilitySizes: tokens.utilitySizes,
     spacing: tokens.sizes,
     radii: tokens.radii,
     keyframes: tokens.keyframes,
@@ -84,8 +83,6 @@ export default defineConfig({
   importMap: '@styled-system',
   outdir: 'styled-system',
   prefix: 'Cetec',
-  separator: '_',
-  hash: false,
 
   theme: {
     containerSizes: tokens.containerSizes,
@@ -106,7 +103,6 @@ export default defineConfig({
       fontWeights: theme.tokens.fontWeights,
       sizes: theme.tokens.sizes,
       numericSizes: theme.tokens.numericSizes,
-      utilitySizes: theme.tokens.utilitySizes,
       spacing: theme.tokens.sizes,
       radii: theme.tokens.radii,
     },
