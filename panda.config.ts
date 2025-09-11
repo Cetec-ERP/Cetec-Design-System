@@ -29,6 +29,7 @@ import {
   textinputRecipe,
   radioInputRecipe,
   toggleInputRecipe,
+  cardRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -85,6 +86,7 @@ export default defineConfig({
   strictTokens: true,
   importMap: '@styled-system',
   outdir: 'styled-system',
+  prefix: 'Cetec',
 
   theme: {
     containerSizes: tokens.containerSizes,
@@ -128,14 +130,15 @@ export default defineConfig({
         pre: preRecipe,
         spinner: spinnerRecipe,
         divider: dividerRecipe,
+        box: boxRecipe,
+        radioInput: radioInputRecipe,
         toggle: toggleRecipe,
         toggleInput: toggleInputRecipe,
-        box: boxRecipe,
+        card: cardRecipe,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
         radio: radioRecipe,
-        radioInput: radioInputRecipe,
       },
     },
   },
