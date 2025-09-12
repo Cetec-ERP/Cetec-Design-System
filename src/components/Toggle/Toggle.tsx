@@ -26,8 +26,8 @@ export const Toggle: React.FC<ToggleProps> = ({
         as="input"
         type="checkbox"
         className={input}
-        data-checked={checked}
-        {...error && { 'data-error': true }}
+        {...(checked ? { 'data-checked': true } : {})}
+        {...(error ? { 'data-error': true } : {})}
         {...props}
       />
       <Box
