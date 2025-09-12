@@ -23,6 +23,8 @@ import { CheckBoxInput } from './components/CheckboxInput';
 import { ToggleInput } from './components/ToggleInput';
 import { Card } from './components/Card';
 import { css } from '@styled-system/css';
+import { Breadcrumbs } from './components/Breadcrumbs';
+
 
 export const IconList: React.FC = () => {
   return (
@@ -582,6 +584,14 @@ const AppContent: React.FC = () => {
                     </Text>
                   </Box>
                 </Card>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+          <Heading level="h2">Breadcrumbs</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack>
+                <Breadcrumbs items={[{id: '1',label: 'Home', href:'/'}, {id: '2',label: 'Integrations', href:'/'}, {id: '3', label: 'ShipEngine'}]}/>
               </HStack>
             </VStack>
           </Section>
