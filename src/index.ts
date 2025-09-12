@@ -19,3 +19,4 @@ export { RadioInput } from './components/RadioInput';
 export { CheckBoxInput } from './components/CheckboxInput';
 export { ThemeSwitcher } from './components/ThemeSwitcher';
 export { ThemeProvider } from './contexts/ThemeContext';
+export { Tooltip } from './components/Tooltip';
