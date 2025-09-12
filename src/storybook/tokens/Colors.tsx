@@ -3,7 +3,7 @@ import { css } from '@styled-system/css';
 import { Text } from '~/components/Text';
 import { Box } from '~/components/Box';
 import { Grid } from '@styled-system/jsx';
-import '../../../styled-system/styles.css';
+// import '../../../styled-system/styles.css';
 
 interface ColorTokens {
   [key: number]: { value: object };
@@ -77,4 +77,5 @@ const ColorSwatches: React.FC<ColorSwatchesProps> = ({ color, tokens }) => {
     </div>
   );
 };
+
 export default ColorSwatches;

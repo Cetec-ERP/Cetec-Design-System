@@ -4,8 +4,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Text> = {
   title: 'Components/Text',
   component: Text,
-  tags: ['autodocs', '!dev'],
-
   parameters: {
     layout: 'padded',
     controls: {
@@ -73,21 +71,8 @@ const meta: Meta<typeof Text> = {
 export default meta;
 
 type Story = StoryObj<typeof Text>;
-export const Default: Story = { args: { children: 'Text Component' } };
 
-//export const AllSizes = {
-//  parameters: {
-//      controls:{ exclude: /.*/ },
-//  },
-//  render: (args: textProps) => (
-//    <>
-//      <Text {...args} lineHeight="body-lg" fontSize="body-lg" >Large Text</Text>
-//      <Text {...args} lineHeight="body-md" fontSize="body-md" >Medium Text</Text>
-//      <Text {...args} lineHeight="body-sm" fontSize="body-sm" >Small Text</Text>
-//      <Text {...args} lineHeight="body-xs" fontSize="body-xs" >Extra Small Text</Text>
-//    </>
-//  )
-//};
+export const Default: Story = { args: { children: 'Text Component' } };
 
 export const AllColors: Story = {
   render: (args: TextProps) => (
