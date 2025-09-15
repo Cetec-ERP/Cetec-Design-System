@@ -1,36 +1,17 @@
 import { Meta, ColorPalette, ColorItem, Unstyled } from '@storybook/blocks';
-import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
-import ColorSwatches from '../storybook/components/Colors';
-import { Heading } from '../components/Heading';
-import { Text } from '../components/Text';
+import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
+import { Box } from '../../components/Box';
+import ColorSwatches from './Colors';
+import { Heading } from '../../components/Heading';
+import { Text } from '../../components/Text';
 import { IconList, Section } from '~/App';
 import { Link } from '~/components/Link';
 import { Pre } from '~/components/Code';
-import * as tokens from '../styles/tokens';
+import * as tokens from '../../styles/tokens';
 
-<Meta title="Tokens" />
+<Meta title="Tokens/Colors" />
 
 # Color Tokens
-
-<Unstyled>
-<Heading>Slate</Heading>
-  <ColorSwatches color={'slate'} tokens={tokens.colors.slate} />
-<Heading>Blue</Heading>
-  <ColorSwatches color={'blue'} tokens={tokens.colors.blue} />
-<Heading>Gold</Heading>
-  <ColorSwatches color={'gold'} tokens={tokens.colors.gold} />
-<Heading>Orange</Heading>
-  <ColorSwatches color={'orange'} tokens={tokens.colors.orange} />
-<Heading>Tan</Heading>
-  <ColorSwatches color={'tan'} tokens={tokens.colors.tan} />
-<Heading>Cyan</Heading>
-  <ColorSwatches color={'cyan'} tokens={tokens.colors.cyan} />
-<Heading>Green</Heading>
-  <ColorSwatches color={'green'} tokens={tokens.colors.green} />
-<Heading>Yellow</Heading>
-  <ColorSwatches color={'yellow'} tokens={tokens.colors.yellow} />
-<Heading>Red</Heading>
-  <ColorSwatches color={'red'} tokens={tokens.colors.red} />
 
 <ColorPalette>
   <ColorItem
@@ -78,6 +59,28 @@ import * as tokens from '../styles/tokens';
     }}
   />
 </ColorPalette>
+
+<Heading>Slate</Heading>
+  <ColorSwatches color={'slate'} tokens={tokens.colors.slate} />
+<Heading>Blue</Heading>
+  <ColorSwatches color={'blue'} tokens={tokens.colors.blue} />
+<Heading>Gold</Heading>
+  <ColorSwatches color={'gold'} tokens={tokens.colors.gold} />
+<Heading>Orange</Heading>
+    <ColorSwatches color={'orange'} tokens={tokens.colors.orange} />
+<Heading>Tan</Heading>
+  <ColorSwatches color={'tan'} tokens={tokens.colors.tan} />
+<Heading>Cyan</Heading>
+  <ColorSwatches color={'cyan'} tokens={tokens.colors.cyan} />
+<Heading>Green</Heading>
+  <ColorSwatches color={'green'} tokens={tokens.colors.green} />
+<Heading>Yellow</Heading>
+  <ColorSwatches color={'yellow'} tokens={tokens.colors.yellow} />
+<Heading>Red</Heading>
+  <ColorSwatches color={'red'} tokens={tokens.colors.red} />
+
+
+{/* The rest of these need to be broken out to their own files
 
 # Typography
 
@@ -164,6 +167,4 @@ import * as tokens from '../styles/tokens';
   </VStack>
 </Section>
 # Icons
-<IconList />
-
-</Unstyled>
+<IconList /> */}

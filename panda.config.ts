@@ -77,7 +77,11 @@ export default defineConfig({
   jsxStyleProps: 'all',
   jsxFactory: 'styled',
   watch: true,
-  include: ['./src/**/*.{js,jsx,ts,tsx}'],
+  include: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    './pages/**/*.{js,jsx,ts,tsx}',
+    './src/components/*/*.stories.@(js|jsx|mjs|ts|tsx)'
+  ],
   preflight: true,
   exclude: [],
   strictTokens: true,
