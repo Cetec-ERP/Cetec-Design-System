@@ -30,6 +30,7 @@ import {
   radioInputRecipe,
   toggleInputRecipe,
   cardRecipe,
+  tooltipRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -139,6 +140,7 @@ export default defineConfig({
       slotRecipes: {
         checkbox: checkBoxRecipe,
         radio: radioRecipe,
+        tooltip: tooltipRecipe,
       },
     },
   },
