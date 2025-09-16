@@ -36,6 +36,7 @@ export const Button: FC<ButtonProps> = ({
       className={cx(button({ variant, size }), className)}
       {...(href ? { href } : { type })}
       {...otherProps}
+      aria-label={children}
     >
       <ButtonContent loading={!!loading}>{children}</ButtonContent>
     </Box>
