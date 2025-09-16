@@ -14,4 +14,5 @@ export { radioInputRecipe } from './radioinput';
 export { toggleInputRecipe } from './toggleinput';
 export { cardRecipe } from './card';
 export { tooltipRecipe } from './tooltip';
+export { formFieldRecipe } from './formFieldRecipe';
 
