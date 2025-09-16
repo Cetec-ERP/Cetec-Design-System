@@ -888,15 +888,15 @@ const AppContent: React.FC = () => {
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <TextInput size={'small'} placeholder={'Enter Text'} />
                   <Text>Small</Text>
                 </VStack>
                 <VStack>
-                  <TextInput placeHolder={'Enter Text'} />
+                  <TextInput placeholder={'Enter Text'} />
                   <Text>Medium</Text>
                 </VStack>
                 <VStack>
-                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <TextInput size={'large'} placeholder={'Enter Text'} />
                   <Text>Large</Text>
                 </VStack>
               </HStack>
@@ -906,17 +906,17 @@ const AppContent: React.FC = () => {
                   <Text>Default - Filled</Text>
                 </VStack>
                 <VStack>
-                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <TextInput data-error={true} placeholder={'placeholder'} />
                   <Text>Error</Text>
                 </VStack>
                 <VStack>
-                  <TextInput disabled placeHolder={'placeholder'} />
+                  <TextInput disabled placeholder={'placeholder'} />
                   <Text>Disabled</Text>
                 </VStack>
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <TextInput autoSize={true} placeholder={'Enter Text'} />
                   <Text>Auto Size</Text>
                 </VStack>
               </HStack>
