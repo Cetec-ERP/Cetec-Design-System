@@ -1,0 +1,1 @@
+export { Breadcurmbs, type BreadcurmbsProps } from './Breadcrumbs';

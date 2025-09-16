@@ -24,6 +24,8 @@ import { ToggleInput } from './components/ToggleInput';
 import { Card } from './components/Card';
 import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
+import { Breadcurmbs } from './components/Breadcrumbs';
+
 
 export const IconList: React.FC = () => {
   return (
@@ -872,6 +874,56 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
+          <Section>
+          <Heading level="h2">Breadcrumbs</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack>
+                <Breadcurmbs items={[{label: 'Home', href:'/'}, {label: 'Integrations', href:'/'}, {label: 'ShipEngine'}]}/>
+              </HStack>
+            </VStack>
+          </Section>
+          {/* <Section>
+            <Text as="h2">Inputs</Text>
+            <Heading level="h2">Text Input</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput size={'small'} placeHolder={'Enter Text'} />
+                  <Text>Small</Text>
+                </VStack>
+                <VStack>
+                  <TextInput placeHolder={'Enter Text'} />
+                  <Text>Medium</Text>
+                </VStack>
+                <VStack>
+                  <TextInput size={'large'} placeHolder={'Enter Text'} />
+                  <Text>Large</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput defaultValue="entered text" />
+                  <Text>Default - Filled</Text>
+                </VStack>
+                <VStack>
+                  <TextInput data-error={true} placeHolder={'placeholder'} />
+                  <Text>Error</Text>
+                </VStack>
+                <VStack>
+                  <TextInput disabled placeHolder={'placeholder'} />
+                  <Text>Disabled</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
+                  <Text>Auto Size</Text>
+                </VStack>
+              </HStack>
+            </VStack>
+          </Section>
+          */}
+          
         </VStack>
       </Container>
     </VStack>

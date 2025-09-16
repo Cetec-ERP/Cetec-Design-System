@@ -15,3 +15,4 @@ export { toggleInputRecipe } from './toggleinput';
 export { cardRecipe } from './card';
 export { tooltipRecipe } from './tooltip';
 
+export { breadcurmbsRecipe } from './breadcrumbs';
