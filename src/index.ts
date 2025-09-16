@@ -20,3 +20,4 @@ export { CheckBoxInput } from './components/CheckboxInput';
 export { ThemeSwitcher } from './components/ThemeSwitcher';
 export { ThemeProvider } from './contexts/ThemeContext';
 export { Tooltip } from './components/Tooltip';
+export { FormField } from './components/FormField';
