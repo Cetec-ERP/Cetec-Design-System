@@ -3,7 +3,7 @@ import { Box, type BoxProps } from '../Box';
 import { useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
-import { Icon } from '../Icon';
+import { Icon, type IconNamesList } from '../Icon';
 import { CheckBox } from '../CheckBox';
 import { Toggle } from '../Toggle';
 import { Link } from '../Link';
@@ -97,10 +97,7 @@ export const Menu: React.FC<MenuProps> = ({
           textStyle={{ base: 'body-lg', md: 'body-md' }}
           color={{ base: 'slate.90', _dark: 'slate.0' }}
         >
-          <Icon
-            name="caret-left"
-            fill={{ base: 'slate.90', _dark: 'slate.0' }}
-          />
+          <Icon name="caret-left" fill="slate.90" _dark={{ fill: 'slate.0' }} />
           {current?.parentLabel || 'Back'}
         </Text>
       )}
@@ -125,11 +122,19 @@ export const Menu: React.FC<MenuProps> = ({
                   data-selected={isSelected}
                   onClick={() =>
                     hasChildren
-                      ? handleOpenSubmenu(item?.children, item.label)
+                      ? handleOpenSubmenu(item?.children ?? [], item.label)
                       : handleSelect(item.id)
                   }
+                  onKeyDown={(e: { key: string; preventDefault: () => void; }) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      hasChildren
+                        ? handleOpenSubmenu(item?.children ?? [], item.label)
+                        : handleSelect(item.id);
+                    }
+                  }}
                 >
-                  {item?.icon && <Icon name={`${item?.icon}`} />}
+                  {item?.icon && <Icon name={item?.icon as IconNamesList} />}
                   {variant === 'multi-select' &&
                     multiSelectType === 'checkbox' && !section?.link && (
                       <CheckBox
@@ -163,13 +168,13 @@ export const Menu: React.FC<MenuProps> = ({
                     </Box>
                   }
                   {section?.link && 
-                    <Link href={`${item?.href}`} color={{base: 'slate.90', _dark: 'slate.0'}}>{item?.label} <Icon name='arrow-square-out' fill={{base:'slate.90', _dark: 'slate.0'}}/></Link>
+                    <Link href={`${item?.href}`} color={{base: 'slate.90', _dark: 'slate.0'}}>{item?.label} <Icon name='arrow-square-out' fill="slate.90" _dark={{ fill: 'slate.0' }} /></Link>
                   }
                   {hasChildren && (
                     <Box className={multiLevelIcon}>
                       <Icon
                         name="caret-right"
-                        fill={{ base: 'slate.90', _dark: 'slate.0' }}
+                        fill="slate.90" _dark={{ fill: 'slate.0' }}
                       />
                     </Box>
                   )}
@@ -179,7 +184,7 @@ export const Menu: React.FC<MenuProps> = ({
           </Box>
           {section?.divider && (
             <Box className={dividerSection}>
-              <Divider />
+              <Divider color={{base:"slate.10", _dark: "slate.60"}} />
             </Box>
           )}
           {section?.spacer && <Box className={spacerSection}></Box>}
