@@ -28,7 +28,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 }: FormFieldProps) => {
   
   const { formFeildContainer, contentWrapper, labelWrapper } = formField({
-    layout: layout
+    layout: layout === "inline" ? "inline" : "default"
   });
   return (
     <Box className={formFeildContainer} {...props}>
