@@ -24,6 +24,7 @@ import { ToggleInput } from './components/ToggleInput';
 import { Card } from './components/Card';
 import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
+import { Menu } from './components/Menu';
 
 export const IconList: React.FC = () => {
   return (
@@ -166,6 +167,162 @@ const ShadowBox = ({
     </Grid>
   );
 };
+
+const menuData = [
+  {
+    id: '1',
+    items: [
+      { id: "1", label: "Profile"},
+      { id: "2", label: "Settings"},
+      { id: "3", label: "Logout"},
+    ],
+  },
+];
+
+const menuWithIcon = [
+  {
+    id: '1',
+    items:[
+      {id: '1', label: 'Menu item label', icon: 'aa-placeholder'},
+      {id: '2', label: 'Menu item label', icon: 'aa-placeholder'},
+      {id: '3', label: 'Menu item label', icon: 'aa-placeholder'},
+      {id: '4', label: 'Menu item label', icon: 'aa-placeholder', disabled:true}, 
+    ]
+  }
+]
+
+const multiLevelCheckboxSection= [
+  {
+    id: '1',
+    items:[
+      {id: '1', label: 'Menu item label'},
+      {id: '2', label: 'Menu item label'},
+      {id: '3', label: 'Menu item label'},
+      {id: '4', label: 'Menu item label'}, 
+    ]
+  },
+]
+
+const multiLevelToggleSection = [
+  {
+    id: '1',
+    items:[
+      {id: '1', label: 'Menu item label'},
+      {id: '2', label: 'Menu item label'},
+      {id: '3', label: 'Menu item label'},
+      {id: '4', label: 'Menu item label'}, 
+    ]
+  },
+]
+
+const menuWithDescription = [
+  {
+    id: '2',
+    items:[
+      {id: '1', label: 'Menu item label', description: 'Description text goes here'},
+      {id: '2', label: 'Menu item label', description: 'Description text goes here'},
+      {id: '3', label: 'Menu item label', description: 'Description text goes here'},
+      {id: '4', label: 'Menu item label', description: 'Description text goes here', disabled:true}, 
+    ]
+  }
+]
+
+const menuWithChildren = [
+  {
+    id: "4",
+    items: [
+      {id: "1", label: "Print", children:[
+        {id: "4-1",
+          items:[
+            {id: "1-1", label: "License plate"},
+            {id: "1-2", label: "Part Pick List"},
+            {id: "1-3", label: "BOM Tree"},
+            {id: "1-4", label: "Serial List, Top & Component"}
+          ]
+        }
+      ]},
+      {
+        id: "2", label: "Add note",
+        children:[
+          {id: "4-1",
+            items:[
+              {id: "1-1", label: "License plate"},
+              {id: "1-2", label: "Part Pick List"},
+              {id: "1-3", label: "BOM Tree"},
+              {id: "1-4", label: "Serial List, Top & Component"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+
+const menuSectionTitleAndDivider= [
+  {
+    id: '1',
+    title: 'Section Title',
+    items:[
+      {id: '1', label: 'Menu item label'},
+      {id: '2', label: 'Menu item label'},
+      {id: '3', label: 'Menu item label'},
+      {id: '4', label: 'Menu item label'}, 
+    ],
+    divider: true,
+  },
+  {
+    id: '2',
+    title: 'Section Title Two',
+    items:[
+      {id: '5', label: 'Menu item label'},
+      {id: '6', label: 'Menu item label'},
+    ],
+  }
+]
+
+const menuWithSpacer= [
+  {
+    id: '1',
+    title: 'Section Title',
+    items:[
+      {id: '1', label: 'Menu item label'},
+      {id: '2', label: 'Menu item label'},
+      {id: '3', label: 'Menu item label'},
+      {id: '4', label: 'Menu item label'}, 
+    ],
+    spacer: true,
+  },
+  {
+    id: '2',
+    title: 'Section Title Two',
+    items:[
+      {id: '5', label: 'Menu item label'},
+      {id: '6', label: 'Menu item label'},
+    ],
+  }
+]
+
+const menuWithLink = [
+  {
+    id: '1',
+    title: 'Section Title',
+    items:[
+      {id: '1', label: 'Menu item label'},
+      {id: '2', label: 'Menu item label'},
+      {id: '3', label: 'Menu item label'},
+      {id: '4', label: 'Menu item label'}, 
+    ],
+    divider: true,
+  },
+  {
+    id: '3',
+    link: true,
+    items:[
+      {id: '7', label: 'Menu item label', href:"#"},
+      {id: '8', label: 'Menu item label', href:"#"}
+    ]
+  }
+]
 
 const AppContent: React.FC = () => {
   return (
@@ -869,6 +1026,83 @@ const AppContent: React.FC = () => {
                 <Tooltip title="Title" text="Details Content">
                   <Text as='u'>Text</Text>
                 </Tooltip>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+              <Heading level="h2">Menu</Heading>
+              <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+               <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box>
+                  <Text>Basic</Text>
+                  <Menu menuSection={menuData} variant='single-select' onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+                <Box>
+                  <Text>With Description</Text>
+                  <Menu menuSection={menuWithDescription} variant='single-select' onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+                <Box>
+                  <Text>Right Side Icon</Text>
+                  <Menu menuSection={menuWithIcon} variant='single-select' iconPlacement='right' onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box>
+                  <Text>Left Side Icon</Text>
+                  <Menu menuSection={menuWithIcon} variant='single-select' iconPlacement='left' onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+                <Box>
+                  <Text>Checkbox multi select checkbox</Text>
+                  <Menu menuSection={multiLevelCheckboxSection} iconPlacement='left' variant='multi-select' multiSelectType="checkbox" onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+                <Box>
+                  <Text>Checkbox multi select toggle</Text>
+                  <Menu menuSection={multiLevelToggleSection} iconPlacement='left' variant='multi-select' multiSelectType="toggle" onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box>
+                  <Text>With Links</Text>
+                  <Menu menuSection={menuWithLink} iconPlacement='left' variant='multi-select' multiSelectType="toggle" onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+                <Box>
+                  <Text>Section title & divider</Text>
+                  <Menu menuSection={menuSectionTitleAndDivider} iconPlacement='left' variant='single-select' onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+                <Box>
+                  <Text>With Spacer</Text>
+                  <Menu menuSection={menuWithSpacer} iconPlacement='left' variant='single-select' onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box>
+                  <Text>Multi Level Menu</Text>
+                  <Menu menuSection={menuWithChildren} iconPlacement='left' onChange={(val) =>  console.log("Selected", val)} />
+                </Box>
               </HStack>
             </VStack>
           </Section>

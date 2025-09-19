@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Icon, IconNames } from ".";
 import { Box } from "../Box";
-import { HStack, Wrap } from "@styled-system/jsx";
+import { Wrap } from "@styled-system/jsx";
 
 const meta = {
   title: "Components/Icon",
