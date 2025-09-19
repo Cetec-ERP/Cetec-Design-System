@@ -1,5 +1,5 @@
 import { breadcrumbs, BreadcrumbsVariantProps } from "@styled-system/recipes";
-import { Box, type BoxProps } from "../Box";
+import { type BoxProps } from "../Box";
 import { splitProps } from "~/utils/splitProps";
 import { cx } from "@styled-system/css";
 import { Text } from "../Text";
