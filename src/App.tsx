@@ -24,6 +24,7 @@ import { ToggleInput } from './components/ToggleInput';
 import { Card } from './components/Card';
 import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
+import { FormField } from './components/FormField';
 
 export const IconList: React.FC = () => {
   return (
@@ -872,6 +873,171 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
+          <Section>
+            <Heading level="h2">Form Field</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'} >
+            <Heading level="h4">TextInput</Heading>
+              <Grid columns={3} columnGap={'40'}>
+                <FormField
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <TextInput placeholder={'Enter Text'} error />
+                </FormField>
+                <FormField
+                layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  helpText="Helpful explanation if needed"
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+              </Grid>
+              <HStack gap={'40'} alignItems={'flex-start'}></HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  helpText="Helpful explanation if needed"
+                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+            <Heading level="h4">TextArea</Heading>
+              <Grid columns={3} columnGap={'40'}>
+                <FormField
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <Textarea placeholder="Enter Text" error/>
+                </FormField>
+                <FormField
+                layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  helpText="Helpful explanation if needed"
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+              </Grid>
+              <HStack gap={'40'} alignItems={'flex-start'}></HStack>
+              <HStack gap={'40'} alignItems={'flex-start'}>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  helpText="Helpful explanation if needed"
+                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <Grid columns={3} columnGap={'40'}>
+                <Box>
+                  <Heading level="h4">Radios</Heading>
+                  <FormField
+                    label="Label for field"
+                    required={true}
+                    error={true}
+                    errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
+                  >
+                    <RadioInput error><Text size="16" weight={'normal'}> Mehna Malesuada</Text></RadioInput>
+                    <RadioInput error><Text size="16" weight={'normal'}> Mehna Malesuada</Text></RadioInput>
+                  </FormField>
+                  
+                </Box>
+                <Box>
+                  <Heading level="h4">Toggles</Heading>
+                  <FormField
+                    label="Label for field"
+                    required={true}
+                  >
+                    <ToggleInput>
+                        <Text size="16" weight={'normal'}> Mehna Malesuada</Text>
+                    </ToggleInput>
+                    <ToggleInput>
+                        <Text size="16" weight={'normal'}> Mehna Malesuada</Text>
+                    </ToggleInput>
+                  </FormField>
+                </Box>
+              </Grid>
+            </VStack>
+          </Section>
+
+          {/* <Section>
+            <Text as="h2">Inputs</Text>
+            <Heading level="h2">Text Input</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput size={'small'} placeholder={'Enter Text'} />
+                  <Text>Small</Text>
+                </VStack>
+                <VStack>
+                  <TextInput placeholder={'Enter Text'} />
+                  <Text>Medium</Text>
+                </VStack>
+                <VStack>
+                  <TextInput size={'large'} placeholder={'Enter Text'} />
+                  <Text>Large</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput defaultValue="entered text" />
+                  <Text>Default - Filled</Text>
+                </VStack>
+                <VStack>
+                  <TextInput data-error={true} placeholder={'placeholder'} />
+                  <Text>Error</Text>
+                </VStack>
+                <VStack>
+                  <TextInput disabled placeholder={'placeholder'} />
+                  <Text>Disabled</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput autoSize={true} placeholder={'Enter Text'} />
+                  <Text>Auto Size</Text>
+                </VStack>
+              </HStack>
+            </VStack>
+          </Section>
+          */}
+          
         </VStack>
       </Container>
     </VStack>
