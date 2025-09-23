@@ -62,8 +62,14 @@ export const Menu: React.FC<MenuProps> = ({
 
   const handleSelect = (id: string) => {
     if (variant === 'single-select') {
-      setSelected([id]);
-      onChange?.(id);
+      if(selected.includes(id)){
+        setSelected([]);
+        onChange?.(null);
+      }
+      else{
+        setSelected([id]);
+        onChange?.(id);
+      }
     } else {
       setSelected((prev) =>
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],

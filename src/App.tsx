@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -325,6 +325,10 @@ const menuWithLink = [
 ]
 
 const AppContent: React.FC = () => {
+  const [menuShow, setMenuShow] = useState(false);
+const handleAction = () => {
+  setMenuShow(show => !show);
+}
   return (
     <VStack>
       <Header />
@@ -1101,7 +1105,10 @@ const AppContent: React.FC = () => {
               >
                 <Box>
                   <Text>Multi Level Menu</Text>
-                  <Menu menuSection={menuWithChildren} iconPlacement='left' onChange={(val) =>  console.log("Selected", val)} />
+                  <Button onClick={handleAction}>Action {menuShow ? <Icon name='caret-up' color={{base:'slate.90', _dark: 'slate.0'}} /> :<Icon name='caret-down' color={{base:'slate.90', _dark: 'slate.0'}} />}</Button>
+                  {menuShow && 
+                    <Menu menuSection={menuWithChildren} iconPlacement='left' onChange={(val) =>  console.log("Selected", val)} />
+                  }
                 </Box>
               </HStack>
             </VStack>
