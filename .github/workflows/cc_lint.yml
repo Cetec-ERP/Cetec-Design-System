@@ -71,7 +71,7 @@ jobs:
             config
             new
             change
-            \ticket-\
+            \ticket\-\d+\
           # Configure that a scope must always be provided.
           #          requireScope: true
           # Configure which scopes are disallowed in PR titles (newline-delimited).
