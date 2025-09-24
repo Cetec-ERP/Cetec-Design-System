@@ -105,3 +105,33 @@ jobs:
           # See: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser#headerpattern
           headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
           headerPatternCorrespondence: type, scope, subject
+  secondary:
+    name: Changelog
+    id: changelog
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: ardalanamini/auto-changelog@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-token: ${{ github.token }}
+          commit-types: |
+            feat    : New Features
+            fix     : Bug Fixes
+            build   : Build System & Dependencies
+            perf    : Performance Improvements
+            docs    : Documentation
+            test    : Tests
+            refactor: Refactors
+            chore   : Chores
+            ci      : CI
+            style   : Code Style
+            revert  : Reverts
+          default-commit-type: Other Changes
+          include-compare-link: true
+          include-pr-links: true
+          include-commit-links: true
+          semver: true
+          use-github-autolink: true
