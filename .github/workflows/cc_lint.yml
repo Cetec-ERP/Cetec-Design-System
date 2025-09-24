@@ -71,7 +71,7 @@ jobs:
             config
             new
             change
-            \ticket-\
+            \ticket\-\d+\
           # Configure that a scope must always be provided.
           #          requireScope: true
           # Configure which scopes are disallowed in PR titles (newline-delimited).
@@ -103,5 +103,5 @@ jobs:
           # subject. The `headerPattern` should contain a regex where the capturing groups in parentheses
           # correspond to the parts listed in `headerPatternCorrespondence`.
           # See: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser#headerpattern
-          headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\)|\(ticket\-\d+\))?: (.*)$'
+          headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\)|\ticket\-\d+\))?: (.*)$'
           headerPatternCorrespondence: type, scope, subject
