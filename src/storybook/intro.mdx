@@ -5,11 +5,29 @@ import '../styles/font-imports.css';
 
 <Meta title="Intro" />
 # Cetec-ERP Design System
-## Test h2
-### Tst h3
-<Unstyled>
-  <Text font={"mono"} as={"div"} color={"blue.50"} level={"20"}>AHHHH</Text>
-  <Text font={"mono"} color={"gold.50"}>Slate-90</Text>
-  <Text color={"gold.50"}>Gold-50</Text>
-  <Box background={"gold.50"} />
-</Unstyled>
+
+## General Info
+<Text>
+  - currently on 8.5.5
+  - story files live alongside components
+  - Can use React hooks as “advanced” cases, but recommend args
+  - May not be possible to have Docs in “tab” instead of side-nav since SB7
+</Text>
+
+## Using This Storybook
+
+## Formatting Story Files
+<Text>
+  - export default
+    - Describes the Component
+    - title: the story “folder” title
+    - component: from the imported component, what will be in the story
+    - export variable NAME where NAME == story inside of folder
+    - component proptypes = docs argos
+    - agrTypes will allow SB to deal with custom event props (e.g. “handleClick” instead of “onClick”)
+    - Use “ tags: ["autodocs"],” to generate documentation
+  - Named Export
+    - Describes the individual story/ies
+    - Will show in sidebar as Function name, but could also use “name” arg to rename, useful for special chars or restricted JS words
+    - Can build stories using other stories: https://storybook.js.org/docs/writing-stories#how-to-write-stories
+</Text>

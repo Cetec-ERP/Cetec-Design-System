@@ -12,7 +12,7 @@ const buttonBase = {
   display: 'flex',
   alignItems: 'center',
   gap: '4',
-  fontFamily: 'sans',
+  fontFamily: 'body',
   fontSize: '16',
   fontWeight: 'medium',
   lineHeight: 'default',
@@ -206,6 +206,10 @@ export const iconButtonRecipe = defineRecipe({
       small: {
         fontSize: '14',
         p: '0',
+        '& svg': {
+          mt: '-1',
+          mb: '-1',
+        },
       },
     },
   },

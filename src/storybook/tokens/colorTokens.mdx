@@ -1,35 +1,17 @@
 import { Meta, ColorPalette, ColorItem, Unstyled } from '@storybook/blocks';
-import { HStack, VStack, Container, Grid, Flex, Box } from '@styled-system/jsx';
-import ColorSwatches from '../storybook/components/Colors';
-import { Heading } from '../components/Heading';
-import { Text } from '../components/Text';
+import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
+import { Box } from '../../components/Box';
+import ColorSwatches from './Colors';
+import { Heading } from '../../components/Heading';
+import { Text } from '../../components/Text';
 import { IconList, Section } from '~/App';
 import { Link } from '~/components/Link';
 import { Pre } from '~/components/Code';
-import * as tokens from '../styles/tokens';
+import * as tokens from '../../styles/tokens';
 
-<Meta title="Tokens" />
+<Meta title="Tokens/Colors" />
 
 # Color Tokens
-<Unstyled>
-<Heading>Slate</Heading>
-  <ColorSwatches color={'slate'} tokens={tokens.colors.slate} />
-<Heading>Blue</Heading>
-  <ColorSwatches color={'blue'} tokens={tokens.colors.blue} />
-<Heading>Gold</Heading>
-  <ColorSwatches color={'gold'} tokens={tokens.colors.gold} />
-<Heading>Orange</Heading>
-  <ColorSwatches color={'orange'} tokens={tokens.colors.orange} />
-<Heading>Tan</Heading>
-  <ColorSwatches color={'tan'} tokens={tokens.colors.tan} />
-<Heading>Cyan</Heading>
-  <ColorSwatches color={'cyan'} tokens={tokens.colors.cyan} />
-<Heading>Green</Heading>
-  <ColorSwatches color={'green'} tokens={tokens.colors.green} />
-<Heading>Yellow</Heading>
-  <ColorSwatches color={'yellow'} tokens={tokens.colors.yellow} />
-<Heading>Red</Heading>
-  <ColorSwatches color={'red'} tokens={tokens.colors.red} />
 
 <ColorPalette>
   <ColorItem
@@ -41,33 +23,33 @@ import * as tokens from '../styles/tokens';
     }}
   />
 
-  <ColorItem
-    title="Status"
-    subtitle="Success"
-    colors={{
-      Lighter: tokens.colors.green['2'].value,
-      Light: tokens.colors.green['10'].value,
-      Base: tokens.colors.green['40'].value,
-      Dark: tokens.colors.green['60'].value,
-      Darker: tokens.colors.green['70'].value,
-    }}
-  />
+<ColorItem
+  title="Status"
+  subtitle="Success"
+  colors={{
+    Lighter: tokens.colors.green['2'].value,
+    Light: tokens.colors.green['10'].value,
+    Base: tokens.colors.green['40'].value,
+    Dark: tokens.colors.green['60'].value,
+    Darker: tokens.colors.green['70'].value,
+  }}
+/>
+
+<ColorItem
+  title="Status"
+  subtitle="Warning"
+  colors={{
+    Lighter: tokens.colors.yellow['2'].value,
+    Light: tokens.colors.yellow['10'].value,
+    Base: tokens.colors.yellow['40'].value,
+    Dark: tokens.colors.yellow['60'].value,
+    Darker: tokens.colors.yellow['70'].value,
+  }}
+/>
 
   <ColorItem
     title="Status"
-    subtitle="Warning"
-    colors={{
-      Lighter: tokens.colors.yellow['2'].value,
-      Light: tokens.colors.yellow['10'].value,
-      Base: tokens.colors.yellow['40'].value,
-      Dark: tokens.colors.yellow['60'].value,
-      Darker: tokens.colors.yellow['70'].value,
-    }}
-  />
-
-  <ColorItem
-    title="Status"
-    subtitle="Danger"
+    subtitle="error"
     colors={{
       Lighter: tokens.colors.red['2'].value,
       Light: tokens.colors.red['10'].value,
@@ -77,6 +59,28 @@ import * as tokens from '../styles/tokens';
     }}
   />
 </ColorPalette>
+
+<Heading>Slate</Heading>
+  <ColorSwatches color={'slate'} tokens={tokens.colors.slate} />
+<Heading>Blue</Heading>
+  <ColorSwatches color={'blue'} tokens={tokens.colors.blue} />
+<Heading>Gold</Heading>
+  <ColorSwatches color={'gold'} tokens={tokens.colors.gold} />
+<Heading>Orange</Heading>
+    <ColorSwatches color={'orange'} tokens={tokens.colors.orange} />
+<Heading>Tan</Heading>
+  <ColorSwatches color={'tan'} tokens={tokens.colors.tan} />
+<Heading>Cyan</Heading>
+  <ColorSwatches color={'cyan'} tokens={tokens.colors.cyan} />
+<Heading>Green</Heading>
+  <ColorSwatches color={'green'} tokens={tokens.colors.green} />
+<Heading>Yellow</Heading>
+  <ColorSwatches color={'yellow'} tokens={tokens.colors.yellow} />
+<Heading>Red</Heading>
+  <ColorSwatches color={'red'} tokens={tokens.colors.red} />
+
+
+{/* The rest of these need to be broken out to their own files
 
 # Typography
 
@@ -108,8 +112,8 @@ import * as tokens from '../styles/tokens';
           <Text as="span" underline>
             whales
           </Text>{' '}
-          i tree under him given set set meat midst morning give image
-          forth divided moving Also fill dry she'd have.
+          i tree under him given set set meat midst morning give image forth
+          divided moving Also fill dry she'd have.
         </Text>
       </VStack>
       <Pre>{`<Text>
@@ -119,8 +123,7 @@ import * as tokens from '../styles/tokens';
 <Text as="span" underline>whales</Text>
 </Text>`}</Pre>
       <Text font="mono">
-        Signs night have sixth hath that likeness us fill you're
-        subdue fowl.
+        Signs night have sixth hath that likeness us fill you're subdue fowl.
       </Text>
       <Pre>{`<Text font="mono">...</Text>`}</Pre>
       <Box gridColumn={'1 / -1'} mt={'32'}>
@@ -141,15 +144,27 @@ import * as tokens from '../styles/tokens';
           Links
         </Heading>
       </Box>
-      <Text>Internal:&emsp;<Link href="https://cetecerp.com">Cetec ERP</Link></Text>
+      <Text>
+        Internal:&emsp;<Link href="https://cetecerp.com">Cetec ERP</Link>
+      </Text>
       <Pre>{'<Link href="https://cetecerp.com">Cetec ERP</Link>'}</Pre>
-      <Text>External:&emsp;<Link href="https://cetecerp.com" external>Cetec ERP</Link></Text>
+      <Text>
+        External:&emsp;
+        <Link href="https://cetecerp.com" external>
+          Cetec ERP
+        </Link>
+      </Text>
       <Pre>{'<Link href="https://cetecerp.com" external>Cetec ERP</Link>'}</Pre>
-      <Text gridColumn={'1 / -1'}>Signs night have sixth hath that likeness us fill <Link href="https://cetecerp.com" external>Cetec ERP</Link> you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+      <Text gridColumn={'1 / -1'}>
+        Signs night have sixth hath that likeness us fill{' '}
+        <Link href="https://cetecerp.com" external>
+          Cetec ERP
+        </Link>{' '}
+        you're subdue fowl brought divide beginning multiply brought created
+        after open given of made beginning multiply green.
+      </Text>
     </Grid>
   </VStack>
 </Section>
 # Icons
-<IconList />
-
-</Unstyled>
+<IconList /> */}

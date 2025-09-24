@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": ["ESNext", "DOM"],
-    "module": "ESNext",
+    "esModuleInterop": true,
     "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
+    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM", "DOM.iterable"],
+    "module": "ESNext",
+    "target": "ESNext",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
@@ -23,11 +25,14 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "~/*": ["./src/*"],
-      "@styled-system/*": ["./styled-system/*"]
+      "~/*": ["src/*"],
+      "@styled-system/*": ["styled-system/*"]
     }
   },
-  "include": ["src", "styled-system"]
+  "include": [
+    "src",
+    "styled-system"
+  ]
 }

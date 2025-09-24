@@ -1,21 +1,59 @@
 import { defineRecipe } from '@pandacss/dev';
-import { fontSizes, fontWeights } from '~/styles/tokens';
+import {
+  fontSizes as fontSizeTokens,
+  fontWeights as fontWeightTokens,
+} from '../styles/tokens';
 
 const textBase = {
   margin: '0',
   lineHeight: 'default',
   fontWeight: 'normal',
   fontSize: '16',
-  color: { base: 'slate.70', _dark: 'slate.20' },
+  color: { base: 'slate.60', _dark: 'slate.30' },
 };
 
-// const safeFonts = fonts as Record<string, string>;
-// const safeFontSizes = fontSizes as Record<string, string>;
+type FontSizeKey = keyof typeof fontSizeTokens;
+const fontSizes = (Object.keys(fontSizeTokens) as FontSizeKey[]).reduce(
+  (accumulator, currentKey) => {
+    accumulator[currentKey] = { fontSize: fontSizeTokens[currentKey].value };
+    return accumulator;
+  },
+  {} as Record<FontSizeKey, Record<'fontSize', string>>,
+);
+
+type FontWeightKey = keyof typeof fontWeightTokens;
+const fontWeights = (Object.keys(fontWeightTokens) as FontWeightKey[]).reduce(
+  (accumulator, currentKey) => {
+    accumulator[currentKey] = {
+      fontWeight: fontWeightTokens[currentKey].value,
+    };
+    return accumulator;
+  },
+  {} as Record<FontWeightKey, Record<'fontWeight', number>>,
+);
 
 const textVariants = {
+  textStyle: {
+    'display-lg': { textStyle: 'display.lg' },
+    'display-md': { textStyle: 'display.md' },
+    'display-sm': { textStyle: 'display.sm' },
+    'display-xs': { textStyle: 'display.xs' },
+    'heading-lg': { textStyle: 'heading.lg' },
+    'heading-md': { textStyle: 'heading.md' },
+    'heading-sm': { textStyle: 'heading.sm' },
+    'heading-xs': { textStyle: 'heading.xs' },
+    'body-lg': { textStyle: 'body.lg' },
+    'body-md': { textStyle: 'body.md' },
+    'body-sm': { textStyle: 'body.sm' },
+    'body-xs': { textStyle: 'body.xs' },
+    'mono-lg': { textStyle: 'mono.lg' },
+    'mono-md': { textStyle: 'mono.md' },
+    'mono-sm': { textStyle: 'mono.sm' },
+    'mono-xs': { textStyle: 'mono.xs' },
+  },
   family: {
     heading: { fontFamily: 'heading' },
-    sans: { fontFamily: 'sans' },
+    body: { fontFamily: 'body' },
     mono: {
       fontFamily: 'mono',
       fontVariationSettings: '"CRSV" 0, "CASL" 0, "MONO" 1',
@@ -37,12 +75,8 @@ const textVariants = {
       textDecoration: 'underline',
     },
   },
-  size: {
-    ...fontSizes,
-  },
-  weight: {
-    ...fontWeights,
-  },
+  size: fontSizes,
+  weight: fontWeights,
 };
 
 const headingBase = {
@@ -72,11 +106,19 @@ const linkBase = {
   backgroundSize: '100% 1px',
   backgroundRepeat: 'no-repeat',
   backgroundPositionY: '100%',
+  outlineWidth: '2',
+  outlineStyle: 'solid',
+  outlineColor: 'transparent',
+  outlineOffset: '1',
   width: 'fit-content',
   cursor: 'pointer',
   _hover: {
     color: { base: 'blue.40', _dark: 'blue.30' },
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
+  },
+  _focus: {
+    borderRadius: '4',
+    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
   },
 };
 
@@ -85,7 +127,7 @@ const linkVariants = {
   _disabled: {
     true: {
       cursor: 'not-allowed',
-      opacity: 0.7,
+      opacity: 0.4,
       pointerEvents: 'none',
     },
   },
@@ -116,7 +158,7 @@ export const textRecipe = defineRecipe({
   base: textBase,
   variants: textVariants,
   defaultVariants: {
-    family: 'sans',
+    textStyle: 'body-md',
   },
 });
 
@@ -136,7 +178,7 @@ export const linkRecipe = defineRecipe({
   base: linkBase,
   variants: linkVariants,
   defaultVariants: {
-    family: 'sans',
+    family: 'body',
   },
 });
 
@@ -146,6 +188,6 @@ export const labelRecipe = defineRecipe({
   base: labelBase,
   variants: labelVariants,
   defaultVariants: {
-    family: 'sans',
+    family: 'body',
   },
 });

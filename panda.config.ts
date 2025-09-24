@@ -3,8 +3,10 @@ import {
   defineTokens,
   defineSemanticTokens,
 } from '@pandacss/dev';
-// import pandaPandaPreset from '@pandacss/preset-panda';
+import pandaBasePreset from '@pandacss/preset-base';
+
 import * as tokens from './src/styles/tokens';
+import * as semanticTokens from './src/styles/semanticTokens';
 import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
 import {
@@ -18,10 +20,25 @@ import {
   textRecipe,
   checkBoxRecipe,
   spinnerRecipe,
+  dividerRecipe,
   preRecipe,
   codeRecipe,
-  boxRecipe
+  boxRecipe,
+  radioRecipe,
+  toggleRecipe,
+  textinputRecipe,
+  radioInputRecipe,
+  toggleInputRecipe,
+  cardRecipe,
+  tooltipRecipe,
 } from './src/recipes/index';
+
+// https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
+// omit default patterns here
+const { box, divider, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
+const pandaBasePresetConditions = pandaBasePreset.conditions;
+const pandaBasePresetUtilities = pandaBasePreset.utilities;
+const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
 // using pandas methods to define type-safe tokens
 const theme = {
@@ -40,6 +57,7 @@ const theme = {
     fontSizes: tokens.fontSizes,
     fontWeights: tokens.fontWeights,
     sizes: tokens.sizes,
+    numericSizes: tokens.numericSizes,
     spacing: tokens.sizes,
     radii: tokens.radii,
     keyframes: tokens.keyframes,
@@ -47,36 +65,29 @@ const theme = {
     breakpoints: tokens.breakpoints,
   }),
   semanticTokens: defineSemanticTokens({
-    colors: {
-      brand: tokens.colors.brand,
-      success: tokens.colors.status.success,
-      warning: tokens.colors.status.warning,
-      danger: tokens.colors.status.danger,
-      utility: {
-        shadowColor: {
-          value: {
-            base: '{colors.slate.90/10}',
-            _dark: '{colors.slate.100/10}'
-          }
-        }
-      },
-    },
+    colors: semanticTokens.colors,
   }),
 };
 
 export default defineConfig({
-  presets: ['@pandacss/dev/presets', '@pandacss/preset-base'],
+  presets: ['@pandacss/dev/presets'],
+  eject: true,
   gitignore: true,
   jsxFramework: 'react',
   jsxStyleProps: 'all',
   jsxFactory: 'styled',
   watch: true,
-  include: ['./src/**/*.{js,jsx,ts,tsx}', './pages/**/*.{js,jsx,ts,tsx}'],
+  include: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    './pages/**/*.{js,jsx,ts,tsx}',
+    './src/components/*/*.stories.@(js|jsx|mjs|ts|tsx)'
+  ],
   preflight: true,
   exclude: [],
   strictTokens: true,
   importMap: '@styled-system',
   outdir: 'styled-system',
+  prefix: 'Cetec',
 
   theme: {
     containerSizes: tokens.containerSizes,
@@ -96,6 +107,7 @@ export default defineConfig({
       fontSizes: theme.tokens.fontSizes,
       fontWeights: theme.tokens.fontWeights,
       sizes: theme.tokens.sizes,
+      numericSizes: theme.tokens.numericSizes,
       spacing: theme.tokens.sizes,
       radii: theme.tokens.radii,
     },
@@ -113,24 +125,36 @@ export default defineConfig({
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
         input: inputRecipe,
+        textinput: textinputRecipe,
         textarea: textareaRecipe,
         code: codeRecipe,
         pre: preRecipe,
         spinner: spinnerRecipe,
-        //Panda might not like this since they already have a box
+        divider: dividerRecipe,
         box: boxRecipe,
+        radioInput: radioInputRecipe,
+        toggle: toggleRecipe,
+        toggleInput: toggleInputRecipe,
+        card: cardRecipe,
       },
       slotRecipes: {
-        checkbox: checkBoxRecipe
+        checkbox: checkBoxRecipe,
+        radio: radioRecipe,
+        tooltip: tooltipRecipe,
       },
     },
+  },
+
+  utilities: {
+    ...pandaBasePresetUtilities,
   },
 
   patterns: {
     icon: {
       properties: {
         size: {
-          type: 'enum', value: Object.keys(tokens.sizes)
+          type: 'enum',
+          value: Object.keys(tokens.sizes),
         },
       },
       transform(props) {
@@ -138,11 +162,12 @@ export default defineConfig({
         return {
           width: size,
           height: size,
-          ...rest
+          ...rest,
         };
       },
     },
     extend: {
+      ...pandaBasePresetPatterns,
       container: {
         transform(props) {
           return Object.assign(
@@ -161,6 +186,7 @@ export default defineConfig({
   },
 
   globalCss: {
+    ...pandaBasePresetGlobalCss,
     ...globalCss,
     html: {
       '--global-font-heading': 'fonts.heading',
@@ -169,6 +195,7 @@ export default defineConfig({
     },
   },
   conditions: {
+    ...pandaBasePresetConditions,
     // Core conditions pulled from panda preset-base package
     ...conditions,
 

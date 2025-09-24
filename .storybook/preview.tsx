@@ -1,10 +1,23 @@
-import type { Preview } from '@storybook/react';
+import { withThemeByClassName } from '@storybook/addon-themes'
+import type { Preview, ReactRenderer } from '@storybook/react'
 import DocTemplate from '../src/storybook/doctemplate.mdx';
-import '../styled-system/styles.css';
+import "../src/styles/index.css";
 
 const preview: Preview = {
+  decorators: [
+    withThemeByClassName<ReactRenderer>({
+      themes: {
+        light: '',
+        dark: 'dark'
+      },
+      defaultTheme: 'light'
+    })
+  ],
+  initialGlobals: {},
   parameters: {
+    backgrounds: { disable: true },
     controls: {
+      disableSaveFromUI: true,
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
@@ -12,10 +25,10 @@ const preview: Preview = {
     },
     docs: {
       page: DocTemplate,
-      toc: { 
-      },
+      toc: {},
     },
   },
+  tags: ['autodocs'],
 };
 
 export default preview;

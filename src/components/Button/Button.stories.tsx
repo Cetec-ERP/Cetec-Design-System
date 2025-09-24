@@ -1,129 +1,70 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { Button, IconButton } from "./Button";
-import { Icon } from "../Icon";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from './Button';
 
-const meta = {
-  title: "Components/Button",
+const meta: Meta<typeof Button> = {
+  title: 'Components/Button',
   component: Button,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
+  // Defines the controls, and descriptions for the Docs page
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["default", "primary", "danger", "hollow", "utility"],
+    as: {
+      table: {
+        disable: true,
+      },
+    },
+    href: {
+      control: false,
+      // description: 'Use this to make the button act as a link.',
+      table: {
+        defaultValue: { summary: undefined },
+        type: { summary: 'string' },
+      },
+    },
+    children: {
+      control: 'text',
+      table: {
+        defaultValue: { summary: undefined },
+        type: { summary: 'button label | react node' },
+      },
     },
     size: {
-      control: "select",
-      options: ["default", "small", "medium"],
+      control: 'select',
+      options: ['small','medium', 'large'],
+      table: {
+        defaultValue: { summary: 'medium' },
+        type: { summary: 'small | medium | large' },
+      },
     },
-    iconButton: {
-      control: "boolean",
+    type: {
+      control: 'select',
+      options: ['button', 'reset', 'submit'],
+      table: {
+        defaultValue: { summary: 'button' },
+        type: { summary: 'button | reset | submit' },
+      },
     },
-    isActive: {
-      control: "boolean",
+    variant: {
+      control: 'select',
+      options:  ['primary', 'standard', 'hollow', 'ghost', 'cta', 'danger'],
+      table: {
+        defaultValue: { summary: 'standard' },
+        type: { summary: 'primary | standard | hollow | ghost | cta | danger' },
+      },
     },
   },
-  args: { onClick: fn() },
-} satisfies Meta<typeof Button>;
+  // defines defauls for story
+  args: { 
+  },
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// export const Default: Story = {
-//   args: {
-//     children: "Default Button",
-//     variant: "default",
-//     size: "default",
-//   },
-// };
-
-// export const Primary: Story = {
-//   args: {
-//     children: "Primary Button",
-//     variant: "primary",
-//   },
-// };
-
-// export const Danger: Story = {
-//   args: {
-//     children: "Danger Button",
-//     variant: "danger",
-//   },
-// };
-
-// export const Hollow: Story = {
-//   args: {
-//     children: "Hollow Button",
-//     variant: "hollow",
-//   },
-// };
-
-// export const Utility: Story = {
-//   args: {
-//     children: "Utility Button",
-//     variant: "utility",
-//   },
-// };
-
-// export const Small: Story = {
-//   args: {
-//     children: "Small Button",
-//     size: "small",
-//   },
-// };
-
-// export const Medium: Story = {
-//   args: {
-//     children: "Medium Button",
-//     size: "medium",
-//   },
-// };
-
-// export const Active: Story = {
-//   args: {
-//     children: "Active Button",
-//     isActive: true,
-//   },
-// };
-
-export const AllVariants: Story = {
-  render: () => (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "16px",
-      }}
-    >
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-        <Button variant="default">Default</Button>
-        <Button variant="primary">Primary</Button>
-        <Button variant="danger">Danger</Button>
-        <Button variant="hollow">Hollow</Button>
-        <Button variant="utility">Utility</Button>
-      </div>
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-        <IconButton variant="default">
-          <Icon name="add" />
-        </IconButton>
-        <IconButton variant="primary">
-          <Icon name="add" />
-        </IconButton>
-        <IconButton variant="danger">
-          <Icon name="add" />
-        </IconButton>
-        <IconButton variant="hollow">
-          <Icon name="add" />
-        </IconButton>
-        <IconButton variant="utility">
-          <Icon name="add" />
-        </IconButton>
-      </div>
-    </div>
-  ),
+export const Default: Story = {
+  // Defines the defaults
+  args: {
+    children: 'Button',
+  },
 };

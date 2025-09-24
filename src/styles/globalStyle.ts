@@ -9,7 +9,7 @@ export const globalCss = defineGlobalStyles({
     margin: 0,
     padding: 0,
     _focusVisible: {
-      outlineColor: { base: 'slate.80', _dark: 'slate.5' },
+      outlineColor: { base: 'slate.90', _dark: 'slate.0' },
     },
   },
   html: {
@@ -22,7 +22,7 @@ export const globalCss = defineGlobalStyles({
     fontFamily: 'body',
     fontVariationSettings: '"CRSV" 0, "CASL" 0',
     bg: { base: 'slate.0', _dark: 'slate.90' },
-    color: { base: 'slate.60', _dark: 'slate.20' },
+    color: { base: 'slate.60', _dark: 'slate.30' },
     fontWeight: 'normal',
   },
   'h1, h2, h3, h4, h5, h6': {
@@ -51,13 +51,18 @@ export const globalCss = defineGlobalStyles({
     borderColor: 'currentcolor',
   },
   'button, input, optgroup, select, textarea': {
-    fontFamily: 'inherit',
+    fontFamily: 'body',
     fontSize: '100%',
-    lineHeight: '1.15',
+    lineHeight: 'calc(1em + 0.5rem)',
     margin: '0',
   },
   'button, [type="button"], [type="reset"], [type="submit"]': {
     '-webkit-appearance': 'button',
+  },
+  _disabled: {
+    opacity: 0.4,
+    cursor: 'not-allowed',
+    pointerEvents: 'none',
   },
   legend: {
     padding: '0',

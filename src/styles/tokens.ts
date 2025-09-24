@@ -135,42 +135,13 @@ export const colors = {
     '80': { value: '#4F0004' },
     '90': { value: '#200000' },
   },
-  brand: {
-    slate: { value: 'slate.90' },
-    gold: { value: 'gold.20' },
-  },
-  status: {
-    success: {
-      lighter: { value: 'green.2' },
-      light: { value: 'green.10' },
-      base: { value: 'green.40' },
-      dark: { value: 'green.60' },
-      darker: { value: 'green.70' },
-    },
-    warning: {
-      lighter: { value: 'yellow.2' },
-      light: { value: 'yellow.10' },
-      base: { value: 'yellow.40' },
-      dark: { value: 'yellow.60' },
-      darker: { value: 'yellow.70' },
-    },
-    danger: {
-      lighter: { value: 'red.2' },
-      light: { value: 'red.10' },
-      base: { value: 'red.50' },
-      dark: { value: 'red.60' },
-      darker: { value: 'red.70' },
-    },
-  },
 };
-
-// font-variation-settings: '"CRSV" 0, "CASL" 0, "MONO" 0, "slnt" 0, "wght" 0';
 
 export const fonts = {
   heading: {
     value: "'Ruda Variable', Source Sans, Geneva, Tahoma, Verdana, sans-serif;",
   },
-  sans: { value: "'Recursive Variable', Geneva, Tahoma, Verdana, sans-serif;" },
+  body: { value: "'Recursive Variable', Geneva, Tahoma, Verdana, sans-serif;" },
   mono: {
     value:
       "'Recursive Variable', Andale Mono, monaco, Consolas, Lucida Console, monospace;",
@@ -253,20 +224,14 @@ export const lineHeights = {
   none: {
     value: '1',
   },
-  tighter: {
-    value: '1em + 0.125rem',
-  },
   tight: {
-    value: '1em + 0.25rem',
+    value: '1em + 0.25rem', // 4
   },
   default: {
-    value: '1em + 0.5rem',
+    value: '1em + 0.5rem', // 8
   },
   loose: {
-    value: '1em + 0.75rem',
-  },
-  looser: {
-    value: '1em + 0.875rem',
+    value: '1em + 0.75rem', // 12
   },
 };
 
@@ -284,19 +249,19 @@ export const radii = {
 export const shadows = {
   low: {
     value:
-      '0px 1px 1px {colors.utility.shadowColor}, 0px 2px 2px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 1px 1px {colors.utility.shadowColor}, 0 2px 3px {colors.utility.shadowColor}',
   },
   medium: {
     value:
-      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 2px 2px {colors.utility.shadowColor}, 0 4px 4px {colors.utility.shadowColor}, 0 8px 8px {colors.utility.shadowColor}',
   },
   high: {
     value:
-      '0px 2px 2px {colors.utility.shadowColor}, 0px 4px 4px {colors.utility.shadowColor}, 0px 8px 8px {colors.utility.shadowColor}, 0px 16px 16px {colors.utility.shadowColor}',
+      '0 0 2px {colors.utility.shadowColor}, 0 2px 4px {colors.utility.shadowColor}, 0 6px 8px 1px {colors.utility.shadowColor}, 0 14px 16px 2px {colors.utility.shadowColor}',
   },
   inset: {
     value:
-      'inset 0px 2px 1px {colors.utility.shadowColor}, inset 0px 3px 2px {colors.utility.shadowColor}',
+      'inset 0 0 2px {colors.utility.shadowColor}, inset 0 2px 1px {colors.utility.shadowColor}, inset 0 3px 2px {colors.utility.shadowColor}',
   },
 };
 
@@ -392,25 +357,25 @@ export const letterSpacings = {
 
 export const blurs = {
   sm: {
-    value: '4px',
+    value: '{sizes.4}',
   },
   base: {
-    value: '8px',
+    value: '{sizes.8}',
   },
   md: {
-    value: '12px',
+    value: '{sizes.12}',
   },
   lg: {
-    value: '16px',
+    value: '{sizes.16}',
   },
   xl: {
-    value: '24px',
+    value: '{sizes.24}',
   },
   '2xl': {
-    value: '40px',
+    value: '{sizes.40}',
   },
   '3xl': {
-    value: '64px',
+    value: '{sizes.64}',
   },
 };
 
@@ -482,42 +447,28 @@ export const breakpoints = {
   '2xl': '1536px',
 };
 
-// export const filters = {
-//   invert: { value: 'invert(1)' },
-//   none: { value: 'none' },
-// };
+export const filters = {
+  invert: { value: 'invert(1)' },
+  none: { value: 'none' },
+};
 
-// export const textTransform = {
-//   uppercase: { value: 'uppercase' },
-//   lowercase: { value: 'lowercase' },
-//   capitalize: { value: 'capitalize' },
-//   none: { value: 'none' },
-// };
-// Why are we using this?
 const baseHeadingStyles = defineStyles({
   value: {
     fontFamily: 'heading',
     fontWeight: 'black',
     color: { base: 'slate.90', _dark: 'slate.5' },
-    lineHeight: 'default',
   },
 });
 
 const baseBodyTextStyles = defineStyles({
   value: {
-    fontFamily: 'sans',
-    fontWeight: 'normal',
-    color: { base: 'slate.60', _dark: 'slate.20' },
-    lineHeight: 'default',
+    fontFamily: 'body',
   },
 });
 
 const baseMonoStyles = defineStyles({
   value: {
     fontFamily: 'mono',
-    fontWeight: 'normal',
-    color: { base: 'slate.60', _dark: 'slate.20' },
-    lineHeight: 'default',
   },
 });
 

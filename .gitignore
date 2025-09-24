@@ -9,8 +9,12 @@ lerna-debug.log*
 
 node_modules
 dist
+package-lock.json
 dist-ssr
 *.local
+old_*
+*.tgz
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
@@ -23,8 +27,12 @@ dist-ssr
 *.sln
 *.sw?
 *.cursorrules
+*.cursor
 *storybook.log
 
 ## Panda
 styled-system
 styled-system-studio
+
+## Storybook
+storybook-static
