@@ -4,7 +4,6 @@ import { INpmConfig } from '@auto-it/npm';
 
 const npmOptions: INpmConfig = {
   exact: true,
-  canaryScope: '@auto-canary',
 };
 
 /** Auto configuration */
@@ -18,6 +17,6 @@ export default function rc(): AutoRc {
       prerelease: true,
     },
     versionBranches: false,
-    prereleaseBranches: ['develop'],
+    prereleaseBranches: ['main'],
   };
 }
