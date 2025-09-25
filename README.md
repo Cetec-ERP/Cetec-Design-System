@@ -236,3 +236,5 @@ import "@styled-system/styles.css";
 import * as icons from 'cetec-design-system/icons';
  from 'cetec-design-system/icons';
 ```
+
+Using Auto for package deploy! PR's must adhere to conventional commits standards in the title.
