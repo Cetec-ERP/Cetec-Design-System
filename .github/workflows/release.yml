@@ -33,6 +33,6 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm ci
-          npm run prepare
           npm run build
-          npx auto shipit -d
+          # shipit will only actually release if we've got the label and the PR merges to main
+          npx auto shipit
