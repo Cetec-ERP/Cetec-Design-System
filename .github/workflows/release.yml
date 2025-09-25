@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    brnches: -main
+    branches: -main
 
 jobs:
   release:
