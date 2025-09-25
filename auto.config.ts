@@ -5,6 +5,7 @@ import { INpmConfig } from '@auto-it/npm';
 const npmOptions: INpmConfig = {
   exact: true,
   setRcToken: false,
+  forcePublish: false,
 };
 
 /** Auto configuration */
