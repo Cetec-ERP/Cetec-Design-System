@@ -7,7 +7,6 @@ on:
       - edited
       - reopened
       - synchronize
-  push:
 jobs:
   main:
     name: Validate PR title
