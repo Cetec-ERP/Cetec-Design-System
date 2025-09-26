@@ -979,7 +979,7 @@ const AppContent: React.FC = () => {
                   <FormField
                     label="Label for field"
                     required={true}
-                    error={true}
+                    // error={true}
                     errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
                   >
                     <RadioInput name="label-field"><Text size="16" weight={'normal'}> Mehna Malesuada</Text></RadioInput>
