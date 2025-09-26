@@ -16,3 +16,4 @@ export { cardRecipe } from './card';
 export { tooltipRecipe } from './tooltip';
 
 export { breadcrumbsRecipe } from './breadcrumbs';
+export { menuRecipe } from './menu';
