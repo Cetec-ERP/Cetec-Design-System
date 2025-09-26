@@ -192,7 +192,19 @@ const menuWithIcon = [
   }
 ]
 
-const multiLevelSection= [
+const multiLevelCheckboxSection= [
+  {
+    id: '1',
+    items:[
+      {id: '1', label: 'Menu item label'},
+      {id: '2', label: 'Menu item label'},
+      {id: '3', label: 'Menu item label'},
+      {id: '4', label: 'Menu item label'}, 
+    ]
+  },
+]
+
+const multiLevelToggleSection = [
   {
     id: '1',
     items:[
@@ -1068,11 +1080,11 @@ const handleAction = () => {
                 </Box>
                 <Box>
                   <Text>Checkbox multi select checkbox</Text>
-                  <Menu menuSection={multiLevelSection} iconPlacement='left' variant='multi-select' multiSelectType="checkbox" onChange={(val) =>  console.log("Selected", val)} />
+                  <Menu menuSection={multiLevelCheckboxSection} iconPlacement='left' variant='multi-select' multiSelectType="checkbox" onChange={(val) =>  console.log("Selected", val)} />
                 </Box>
                 <Box>
                   <Text>Checkbox multi select toggle</Text>
-                  <Menu menuSection={multiLevelSection} iconPlacement='left' variant='multi-select' multiSelectType="toggle" onChange={(val) =>  console.log("Selected", val)} />
+                  <Menu menuSection={multiLevelToggleSection} iconPlacement='left' variant='multi-select' multiSelectType="toggle" onChange={(val) =>  console.log("Selected", val)} />
                 </Box>
               </HStack>
               <HStack

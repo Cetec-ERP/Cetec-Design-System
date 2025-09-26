@@ -3,7 +3,7 @@ import { Box, type BoxProps } from '../Box';
 import { useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
-import { Icon } from '../Icon';
+import { Icon, type IconNamesList } from '../Icon';
 import { CheckBox } from '../CheckBox';
 import { Toggle } from '../Toggle';
 import { Link } from '../Link';
@@ -63,8 +63,14 @@ export const Menu: React.FC<MenuProps> = ({
 
   const handleSelect = (id: string) => {
     if (variant === 'single-select') {
-      setSelected([id]);
-      onChange?.(id);
+      if(selected.includes(id)){
+        setSelected([]);
+        onChange?.(null);
+      }
+      else{
+        setSelected([id]);
+        onChange?.(id);
+      }
     } else {
       setSelected((prev) =>
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
