@@ -32,6 +32,7 @@ import {
   cardRecipe,
   tooltipRecipe,
   breadcrumbsRecipe,
+  formFieldRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -143,6 +144,7 @@ export default defineConfig({
         checkbox: checkBoxRecipe,
         radio: radioRecipe,
         tooltip: tooltipRecipe,
+        formField: formFieldRecipe,
       },
     },
   },
