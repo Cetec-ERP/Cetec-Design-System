@@ -42,6 +42,7 @@ export const Menu: React.FC<MenuProps> = ({
 }) => {
   const {
     wrapper,
+    wrapperInner,
     sectionTitle,
     menuItem,
     menuLabel,
@@ -90,101 +91,102 @@ export const Menu: React.FC<MenuProps> = ({
 
   return (
     <Box className={wrapper}>
-      {isChildren.length > 1 && (
-        <Text
-          onClick={handleBack}
-          className={parentLabel}
-          textStyle={{ base: 'body-lg', md: 'body-md' }}
-          color={{ base: 'slate.90', _dark: 'slate.0' }}
-        >
-          <Icon
-            name="caret-left"
-            fill={{ base: 'slate.90', _dark: 'slate.0' }}
-          />
-          {current?.parentLabel || 'Back'}
-        </Text>
-      )}
-      {current?.menu?.map((section) => (
-        <Box key={section.id}>
-          {section.title && (
-            <Box className={sectionTitle}>
-              <Text textStyle="body-xs">{section?.title}</Text>
-            </Box>
-          )}
-          <Box>
-            {section?.items?.map((item) => {
-              const hasChildren = !!item.children?.length;
-              const isSelected = selected.includes(item.id);
-              return (
-                <Box
-                  key={item?.id}
-                  className={menuItem}
-                  tabIndex={0}
-                  disabled={item?.disabled}
-                  aria-disabled={item?.disabled}
-                  data-selected={isSelected}
-                  onClick={() =>
-                    hasChildren
-                      ? handleOpenSubmenu(item?.children, item.label)
-                      : handleSelect(item.id)
-                  }
-                >
-                  {item?.icon && <Icon name={`${item?.icon}`} />}
-                  {variant === 'multi-select' &&
-                    multiSelectType === 'checkbox' && !section?.link && (
-                      <CheckBox
-                        checked={isSelected}
-                        onChange={() => handleSelect(item.id)}
-                      />
-                    )}
+        {isChildren.length > 1 && (
+          <Text
+            onClick={handleBack}
+            className={parentLabel}
+            textStyle={{ base: 'body-lg', md: 'body-md' }}
+            color={{ base: 'slate.90', _dark: 'slate.0' }}
+          >
+            <Icon
+              name="caret-left"
+              fill={{ base: 'slate.90', _dark: 'slate.0' }}
+            />
+            {current?.parentLabel || 'Back'}
+          </Text>
+        )}
 
-                  {variant === 'multi-select' &&
-                    multiSelectType === 'toggle' && !section?.link && (
-                      <Toggle
-                        checked={isSelected}
-                        onChange={() => handleSelect(item.id)}
-                      />
-                    )}
-                  {!section?.link
-                  &&
-                    <Box>
-                      <Text
-                        textStyle={{ base: 'body-lg', md: 'body-md' }}
-                        className={menuLabel}
-                        color={{ base: 'slate.90', _dark: 'slate.0' }}
-                      >
-                        {item?.label}
-                      </Text>
-                      {item?.description && (
-                        <Text textStyle="body-xs" className={menuDescription}>
-                          {item?.description}
-                        </Text>
+          {current?.menu?.map((section) => (
+            <Box key={section.id} className={wrapperInner} {...(section.items?.length ? { 'data-anim': 'slide-left' } : {})}>
+              {section.title && (
+                <Box className={sectionTitle}>
+                  <Text textStyle="body-xs">{section?.title}</Text>
+                </Box>
+              )}
+              <Box>
+                {section?.items?.map((item) => {
+                  const hasChildren = !!item.children?.length;
+                  const isSelected = selected.includes(item.id);
+                  return (
+                    <Box
+                      key={item?.id}
+                      className={menuItem}
+                      tabIndex={0}
+                      disabled={item?.disabled}
+                      aria-disabled={item?.disabled}
+                      data-selected={isSelected}
+                      onClick={() =>
+                        item?.children
+                          ? handleOpenSubmenu(item?.children, item.label)
+                          : handleSelect(item.id)
+                      }
+                    >
+                      {item?.icon && <Icon name={`${item?.icon}`} />}
+                      {variant === 'multi-select' &&
+                        multiSelectType === 'checkbox' && !section?.link && (
+                          <CheckBox
+                            checked={isSelected}
+                            onChange={() => handleSelect(item.id)}
+                          />
+                        )}
+
+                      {variant === 'multi-select' &&
+                        multiSelectType === 'toggle' && !section?.link && (
+                          <Toggle
+                            checked={isSelected}
+                            onChange={() => handleSelect(item.id)}
+                          />
+                        )}
+                      {!section?.link
+                      &&
+                        <Box>
+                          <Text
+                            textStyle={{ base: 'body-lg', md: 'body-md' }}
+                            className={menuLabel}
+                            color={{ base: 'slate.90', _dark: 'slate.0' }}
+                          >
+                            {item?.label}
+                          </Text>
+                          {item?.description && (
+                            <Text textStyle="body-xs" className={menuDescription}>
+                              {item?.description}
+                            </Text>
+                          )}
+                        </Box>
+                      }
+                      {section?.link && 
+                        <Link href={`${item?.href}`} color={{base: 'slate.90', _dark: 'slate.0'}}>{item?.label} <Icon name='arrow-square-out' fill={{base:'slate.90', _dark: 'slate.0'}}/></Link>
+                      }
+                      {hasChildren && (
+                        <Box className={multiLevelIcon}>
+                          <Icon
+                            name="caret-right"
+                            fill={{ base: 'slate.90', _dark: 'slate.0' }}
+                          />
+                        </Box>
                       )}
                     </Box>
-                  }
-                  {section?.link && 
-                    <Link href={`${item?.href}`} color={{base: 'slate.90', _dark: 'slate.0'}}>{item?.label} <Icon name='arrow-square-out' fill={{base:'slate.90', _dark: 'slate.0'}}/></Link>
-                  }
-                  {hasChildren && (
-                    <Box className={multiLevelIcon}>
-                      <Icon
-                        name="caret-right"
-                        fill={{ base: 'slate.90', _dark: 'slate.0' }}
-                      />
-                    </Box>
-                  )}
+                  );
+                })}
+              </Box>
+              {section?.divider && (
+                <Box className={dividerSection}>
+                  <Divider />
                 </Box>
-              );
-            })}
-          </Box>
-          {section?.divider && (
-            <Box className={dividerSection}>
-              <Divider />
+              )}
+              {section?.spacer && <Box className={spacerSection}></Box>}
             </Box>
-          )}
-          {section?.spacer && <Box className={spacerSection}></Box>}
-        </Box>
-      ))}
+          ))}
     </Box>
   );
 };

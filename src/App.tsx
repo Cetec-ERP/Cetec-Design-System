@@ -313,12 +313,11 @@ const menuWithLink = [
   }
 ]
 
+const AppContent: React.FC = () => {
 const [menuShow, setMenuShow] = useState(false);
 const handleAction = () => {
   setMenuShow(show => !show);
 }
-
-const AppContent: React.FC = () => {
   return (
     <VStack>
       <Header />
