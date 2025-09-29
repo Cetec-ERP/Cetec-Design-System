@@ -1,5 +1,5 @@
 {
-    plugins: ['released', ['npm', { exact: true, setRcToken: false, forcePublish: false} ]],
+    plugins: ['released', ['npm', { exact: true } ]],
     onlyPublishWithReleaseLabel: true,
     baseBranch: 'main',
     noVersionPrefix: true,
