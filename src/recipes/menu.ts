@@ -28,6 +28,8 @@ const menuBase = {
     zIndex: 1,
   },
   wrapperInner:{
+    display: 'flex',
+  flexDirection: 'column',
     '&[data-anim=slide-left]': {
       animation: 'slideLeft',
     },
