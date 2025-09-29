@@ -1,3 +1,26 @@
+# 0.0.35 (Mon Sep 29 2025)
+
+#### 🐛 Bug Fix
+
+- chore: change autorc [#110](https://github.com/Cetec-ERP/Cetec-Design-System/pull/110) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+- chore: update release.yml [#109](https://github.com/Cetec-ERP/Cetec-Design-System/pull/109) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+- chore: test release workflow [#108](https://github.com/Cetec-ERP/Cetec-Design-System/pull/108) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+- feat: breadcrumbs component [#95](https://github.com/Cetec-ERP/Cetec-Design-System/pull/95) (smitpatel@Smits-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- feat: testworkflow [#107](https://github.com/Cetec-ERP/Cetec-Design-System/pull/107) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of github.com:Cetec-ERP/Cetec-Design-System (ethanwiggins@ethans-air.lan)
+- fix: auto config file (ethanwiggins@ethans-air.lan)
+
+#### Authors: 3
+
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Ethan Wiggins (ethanwiggins@ethans-air.lan)
+- Smit Patel ([@smitjp150622](https://github.com/smitjp150622))
+
+---
+
 # v0.0.34 (Thu Sep 25 2025)
 
 #### 🐛 Bug Fix
