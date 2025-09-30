@@ -17,6 +17,7 @@ export const CheckBoxInput: FC<CheckBoxInputProps> = ({
   return (
     <Label>
       <CheckBox
+        error = {error}
         {...(error && { 'data-error': true })}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...props}
