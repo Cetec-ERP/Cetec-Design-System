@@ -12,7 +12,9 @@ export type RadioProps = Omit<BoxProps, keyof RadioVariantProps> &
 export const Radio: React.FC<RadioProps> = ({ error, ...props }) => {
   const { container, input, indicator } = radio({});
   return (
-    <Label className={container}>
+    <Label className={container} color={error
+      ? 'red.50'
+      : { base: 'slate.90', _dark: 'slate.0' }}>
       <Box
         as="input"
         type="radio"

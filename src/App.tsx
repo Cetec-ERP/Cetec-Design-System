@@ -890,7 +890,6 @@ const AppContent: React.FC = () => {
                 <FormField
                   label="Label for field"
                   required={true}
-                  error={true}
                 >
                   <TextInput placeholder={'Enter Text'} />
                 </FormField>
@@ -901,31 +900,55 @@ const AppContent: React.FC = () => {
                   error={true}
                   errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <TextInput placeholder={'Enter Text'} error />
+                  <TextInput placeholder={'Enter Text'} />
                 </FormField>
                 <FormField
                 layout={'default'}
                   label="Label for field"
                   required={true}
-                  error={true}
                   helpText="Helpful explanation if needed"
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                layout={'default'}
+                  label="Label for field"
+                  tooltip={true}
+                  tooltipCaret={true}
+                  tooltipTitle='Name Field'
+                  tooltipDescription='Details'
+                  helpText="Helpful explanation if needed"
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  disabled
                 >
                   <TextInput placeholder={'Enter Text'} />
                 </FormField>
               </Grid>
               <HStack gap={'40'} alignItems={'flex-start'}></HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
+              <Grid columns={2} gap={'40'} alignItems={'flex-start'}>
                 <FormField
                   layout={'inline'}
                   label="Label for field"
                   required={true}
-                  error={true}
                   helpText="Helpful explanation if needed"
-                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
                   <TextInput placeholder={'Enter Text'} />
                 </FormField>
-              </HStack>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  error
+                  errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+              </Grid>
             </VStack>
             <Heading level="h2"></Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
@@ -934,7 +957,6 @@ const AppContent: React.FC = () => {
                 <FormField
                   label="Label for field"
                   required={true}
-                  error={true}
                 >
                   <Textarea placeholder="Enter Text" />
                 </FormField>
@@ -945,31 +967,46 @@ const AppContent: React.FC = () => {
                   error={true}
                   errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <Textarea placeholder="Enter Text" error/>
+                  <Textarea placeholder="Enter Text"/>
                 </FormField>
                 <FormField
                 layout={'default'}
                   label="Label for field"
                   required={true}
-                  error={true}
                   helpText="Helpful explanation if needed"
                 >
                   <Textarea placeholder="Enter Text" />
                 </FormField>
               </Grid>
               <HStack gap={'40'} alignItems={'flex-start'}></HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
+              <Grid columns={2} gap={'40'} alignItems={'flex-start'}>
                 <FormField
                   layout={'inline'}
                   label="Label for field"
                   required={true}
-                  error={true}
                   helpText="Helpful explanation if needed"
                   // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
                   <Textarea placeholder="Enter Text" />
                 </FormField>
-              </HStack>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  disabled={true}
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+              </Grid>
             </VStack>
             <Heading level="h2"></Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
@@ -979,8 +1016,6 @@ const AppContent: React.FC = () => {
                   <FormField
                     label="Label for field"
                     required={true}
-                    // error={true}
-                    errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
                   >
                     <RadioInput name="label-field"><Text size="16" weight={'normal'}> Mehna Malesuada</Text></RadioInput>
                     <RadioInput name="label-field"><Text size="16" weight={'normal'}> Mehna Malesuada</Text></RadioInput>
