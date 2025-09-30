@@ -96,7 +96,7 @@ export const Menu: React.FC<MenuProps> = ({
   };
 
   return (
-    <Box className={wrapper} color={{ base: 'slate.90', _dark: 'slate.0' }}>
+    <Box className={wrapper}>
       {isChildren.length > 1 && (
         <Text
           onClick={handleBack}
@@ -206,7 +206,7 @@ export const Menu: React.FC<MenuProps> = ({
             </Box>
             {section?.divider && (
               <Box className={dividerSection}>
-                <Divider />
+                <Divider color={{base: 'slate.10', _dark: 'slate.60'}}/>
               </Box>
             )}
             {section?.spacer && <Box className={spacerSection}></Box>}
