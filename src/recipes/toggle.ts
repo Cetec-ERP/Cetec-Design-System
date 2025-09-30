@@ -59,6 +59,7 @@ const toggleBase = {
       transitionProperty: 'transform, opacity',
       transitionDuration: '200ms',
       transitionTimingFunction: 'ease-in-out',
+      // fill: {base: 'slate.90 !important', _dark: 'slate.0 !important'}
     },
 
     _checked: {
@@ -102,7 +103,7 @@ const toggleBase = {
     transitionDuration: '200ms',
     transitionTimingFunction: 'ease-in-out',
     "&:is([name='circle'])": {
-      fill: { base: 'slate.20', _dark: 'slate.40' },
+      fill: { base: 'slate.20 !important', _dark: 'slate.40 !important' },
     },
   },
 };
