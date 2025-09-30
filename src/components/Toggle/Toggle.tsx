@@ -21,7 +21,6 @@ export const Toggle: React.FC<ToggleProps> = ({
     <Label
       className={container}
       {...disabled && { 'data-disabled': true }}
-      color={{ base: 'slate.90', _dark: 'slate.0' }}
     >
       <Box
         as="input"
@@ -37,7 +36,7 @@ export const Toggle: React.FC<ToggleProps> = ({
         name={'toggle-bg'}
       />
       <Icon name={'circle'} className={indicator} />
-      <Icon name={'circle-check'} className={indicator} />
+      <Icon name={'circle-check'} className={indicator} fill={{ _dark: 'slate.90'}}/>
     </Label>
   );
 };
