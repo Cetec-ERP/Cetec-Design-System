@@ -372,29 +372,29 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox />
-              <CheckBox defaultChecked={true} />
-              <CheckBox indeterminate />
-              <CheckBox error />
-              <CheckBox disabled />
+              <CheckBox name="normal"/>
+              <CheckBox defaultChecked={true}  name="default-checked"/>
+              <CheckBox indeterminate name="indeterminate"/>
+              <CheckBox error name="error"/>
+              <CheckBox disabled name="disabled"/>
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Checkbox Input</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBoxInput>
+              <CheckBoxInput name="normal">
                 <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
               </CheckBoxInput>
-              <CheckBoxInput defaultChecked={true}>
+              <CheckBoxInput defaultChecked={true} name="default-checked">
                 <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
               </CheckBoxInput>
-              <CheckBoxInput indeterminate>
+              <CheckBoxInput indeterminate name="indeterminate">
                 <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
               </CheckBoxInput>
-              <CheckBoxInput error>
+              <CheckBoxInput error name="error">
                 <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
               </CheckBoxInput>
-              <CheckBoxInput disabled>
+              <CheckBoxInput disabled name="disabled">
                 <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
               </CheckBoxInput>
             </HStack>
@@ -403,10 +403,10 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-                <Radio />
-                <Radio defaultChecked={true} />
-                <Radio disabled />
-                <Radio error={true} />
+                <Radio name="normal" />
+                <Radio name='normal' defaultChecked={true} />
+                <Radio name='normal' disabled />
+                <Radio name='normal' error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
@@ -441,28 +441,28 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Toggle</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <Toggle />
-              <Toggle autoFocus={true} />
-              <Toggle disabled />
-              <Toggle error={true} />
+              <Toggle name="toggle-base"/>
+              <Toggle autoFocus={true} name="toggle-base"/>
+              <Toggle disabled name="toggle-base"/>
+              <Toggle error={true} name="toggle-base"/>
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Toggle Input</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <ToggleInput>
+              <ToggleInput name="toggle-base">
                 <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
                 <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
-              <ToggleInput>
+              <ToggleInput name="toggle-base">
                 <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
                 <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
-              <ToggleInput>
+              <ToggleInput name="toggle-base">
                 <Text as="div" size="16" weight={'normal'}>
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
@@ -475,36 +475,36 @@ const AppContent: React.FC = () => {
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput size={'small'} placeholder={'Enter Text'} />
-                  <Text>Small</Text>
+                  <TextInput size={'small'} placeholder={'Enter Text'} name="small" id="small" />
+                  <Text role='small'>Small</Text>
                 </VStack>
                 <VStack>
-                  <TextInput placeholder={'Enter Text'} />
-                  <Text>Medium</Text>
+                  <TextInput placeholder={'Enter Text'} name="medium" id="medium"/>
+                  <Text role='medium'>Medium</Text>
                 </VStack>
                 <VStack>
-                  <TextInput size={'large'} placeholder={'Enter Text'} />
-                  <Text>Large</Text>
-                </VStack>
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput defaultValue="entered text" />
-                  <Text>Default - Filled</Text>
-                </VStack>
-                <VStack>
-                  <TextInput data-error={true} placeholder={'placeholder'} />
-                  <Text>Error</Text>
-                </VStack>
-                <VStack>
-                  <TextInput disabled placeholder={'placeholder'} />
-                  <Text>Disabled</Text>
+                  <TextInput size={'large'} placeholder={'Enter Text'} name='large' id="large"/>
+                  <Text role='large'>Large</Text>
                 </VStack>
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput autoSize={true} placeholder={'Enter Text'} />
-                  <Text>Auto Size</Text>
+                  <TextInput defaultValue="entered text" name='default' id='default'/>
+                  <Text role="default">Default - Filled</Text>
+                </VStack>
+                <VStack>
+                  <TextInput data-error={true} placeholder={'placeholder'} name='error' id='error'/>
+                  <Text role="error">Error</Text>
+                </VStack>
+                <VStack>
+                  <TextInput disabled placeholder={'placeholder'} name='disabled' id='disabled'/>
+                  <Text role="disabled">Disabled</Text>
+                </VStack>
+              </HStack>
+              <HStack gap={'40'} alignItems={'flex-end'}>
+                <VStack>
+                  <TextInput autoSize={true} placeholder={'Enter Text'} name='auto' id='auto'/>
+                  <Text role="auto">Auto Size</Text>
                 </VStack>
               </HStack>
             </VStack>
@@ -513,20 +513,21 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Textarea</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Small" size="small" />
-                <Textarea placeholder="Medium" />
-                <Textarea placeholder="Large" size="large" />
+                <Textarea name='small' placeholder="Small" size="small" />
+                <Textarea name='medium' placeholder="Medium" />
+                <Textarea name='large' placeholder="Large" size="large" />
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
                 <Textarea
+                name='default'
                   placeholder="placeholder"
                   defaultValue="Default – Filled"
                 />
-                <Textarea placeholder="Disabled" disabled />
-                <Textarea placeholder="Error" data-error={true} />
+                <Textarea name='disabled' placeholder="Disabled" disabled />
+                <Textarea name='error' placeholder="Error" data-error={true} />
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea placeholder="Auto Size" autoSize={true} />
+                <Textarea name='auto' placeholder="Auto Size" autoSize={true} />
               </HStack>
             </VStack>
           </Section>

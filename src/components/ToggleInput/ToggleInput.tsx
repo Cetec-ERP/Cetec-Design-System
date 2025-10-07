@@ -11,11 +11,15 @@ import { Toggle } from '../Toggle';
 
 export type ToggleInputProps = BoxProps &
   ToggleInputVariantProps & {
+    name:string;
+    id?:string;
     error?: boolean;
     children?: string | ReactNode;
   };
 
 export const ToggleInput: FC<ToggleInputProps> = ({
+  name,
+  id,
   children,
   error,
   ...props
@@ -23,7 +27,7 @@ export const ToggleInput: FC<ToggleInputProps> = ({
   const [className, otherProps] = splitProps(props);
   return (
     <Label className={cx(toggleInput({}), className)} {...otherProps}>
-      <Toggle {...(error && { 'data-error': true })} {...props} />
+      <Toggle id={id} name={name} {...(error && { 'data-error': true })} {...props} />
       {children && <div>{children}</div>}
     </Label>
   );

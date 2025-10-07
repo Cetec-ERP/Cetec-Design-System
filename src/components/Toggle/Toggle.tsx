@@ -6,11 +6,15 @@ import React from 'react';
 
 export type ToggleProps = Omit<BoxProps, keyof ToggleVariantProps> &
   ToggleVariantProps & {
+    name: string;
+    id?:string;
     error?: boolean;
     disabled?: boolean;
   };
 
 export const Toggle: React.FC<ToggleProps> = ({
+  name,
+  id,
   error,
   disabled,
   checked,
@@ -25,6 +29,8 @@ export const Toggle: React.FC<ToggleProps> = ({
       <Box
         as="input"
         type="checkbox"
+        name={name}
+        id={id}
         className={input}
         {...(checked ? { 'data-checked': true } : {})}
         {...(error ? { 'data-error': true } : {})}
