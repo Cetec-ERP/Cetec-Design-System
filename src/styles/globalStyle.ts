@@ -1,6 +1,5 @@
 import { defineGlobalStyles } from '@pandacss/dev';
 import { fontVariants } from './tokens';
-import * as semTokens from './semanticTokens';
 
 // includes some normalize styles from:
 // https://github.com/sindresorhus/modern-normalize/blob/main/modern-normalize.css
@@ -29,11 +28,11 @@ export const globalCss = defineGlobalStyles({
     fontFamily: 'body',
     fontVariationSettings: fontVariants.body,
     bg: { base: 'slate.0', _dark: 'slate.90' },
-    color: semTokens.colors.utility.textColor,
+    color: { base: 'slate.60', _dark: 'slate.30' },
     fontWeight: 'normal',
   },
   'h1, h2, h3, h4, h5, h6': {
-    color: semTokens.colors.utility.headingColor,
+    color: { base: 'slate.90', _dark: 'slate.5' },
     fontWeight: 'black',
     lineHeight: 'calc(1em + 0.5rem)',
   },
@@ -56,7 +55,7 @@ export const globalCss = defineGlobalStyles({
     fontSize: '1em',
   },
   table: {
-    borderColor: semTokens.colors.utility.borderColor,
+    borderColor: { base: 'slate.10', _dark: 'slate.60' },
   },
   'button, input, optgroup, select, textarea': {
     fontFamily: 'body',

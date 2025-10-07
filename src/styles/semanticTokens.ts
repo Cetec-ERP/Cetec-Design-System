@@ -141,7 +141,7 @@ export const colors = {
 		headingColor: {
 			value: {
 				base: '{colors.slate.90}',
-				_dark: '{colors.slate.0}',
+				_dark: '{colors.slate.5}',
 			},
 		},
 		textColor: {

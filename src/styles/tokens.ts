@@ -642,7 +642,7 @@ const baseHeadingStyles = defineStyles({
   value: {
     fontFamily: 'heading',
     fontWeight: 'black',
-    color: '{colors.utility.headingColor}',
+    color: { base: 'slate.90', _dark: 'slate.5' },
   },
 });
 
