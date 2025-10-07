@@ -15,5 +15,5 @@ export { toggleInputRecipe } from './toggleinput';
 export { cardRecipe } from './card';
 export { tooltipRecipe } from './tooltip';
 export { formFieldRecipe } from './formFieldRecipe';
-
+export { checkboxInputRecipe } from './checkboxinput';
 export { breadcrumbsRecipe } from './breadcrumbs';
