@@ -187,7 +187,7 @@ const menuWithIcon = [
       {id: '1', label: 'Menu item label', icon: 'aa-placeholder'},
       {id: '2', label: 'Menu item label', icon: 'aa-placeholder'},
       {id: '3', label: 'Menu item label', icon: 'aa-placeholder'},
-      {id: '4', label: 'Menu item label', icon: 'aa-placeholder', disabled:true}, 
+      {id: '4', label: 'Menu item label', icon: 'aa-placeholder'}, 
     ]
   }
 ]
