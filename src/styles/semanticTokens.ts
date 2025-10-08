@@ -99,6 +99,38 @@ export const colors = {
       },
     },
   },
+  info: {
+    lighter: {
+      value: {
+        base: '{colors.blue.2}',
+        _dark: '{colors.blue.5}',
+      },
+    },
+    light: {
+      value: {
+        base: '{colors.blue.10}',
+        _dark: '{colors.blue.20}',
+      },
+    },
+    default: {
+      value: {
+        base: '{colors.blue.50}',
+        _dark: '{colors.blue.40}',
+      },
+    },
+    dark: {
+      value: {
+        base: '{colors.blue.60}',
+        _dark: '{colors.blue.60}',
+      },
+    },
+    darker: {
+      value: {
+        base: '{colors.blue.70}',
+        _dark: '{colors.blue.70}',
+      },
+    },
+  },
   utility: {
     shadowColor: {
       value: {
@@ -106,5 +138,23 @@ export const colors = {
         _dark: '{colors.slate.100/40}',
       },
     },
+		headingColor: {
+			value: {
+				base: '{colors.slate.90}',
+				_dark: '{colors.slate.5}',
+			},
+		},
+		textColor: {
+			value: {
+				base: '{colors.slate.60}',
+				_dark: '{colors.slate.30}',
+			},
+		},
+		borderColor: {
+			value: {
+				base: '{colors.slate.10}',
+				_dark: '{colors.slate.60}',
+			},
+		},
   },
 };
