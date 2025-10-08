@@ -25,6 +25,7 @@ import { Card } from './components/Card';
 import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
 import { Breadcrumbs } from './components/Breadcrumbs';
+import { Tag } from './components/Tag';
 
 
 export const IconList: React.FC = () => {
@@ -879,6 +880,122 @@ const AppContent: React.FC = () => {
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack>
                 <Breadcrumbs items={[{id: '1',label: 'Home', href:'/'}, {id: '2',label: 'Integrations', href:'/'}, {id: '3', label: 'ShipEngine'}]}/>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Tag</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack>
+                <Text>Default</Text>
+                <Tag>
+                  Tag
+                </Tag>
+                <Tag hue='tan'>
+                  Tag
+                </Tag>
+                <Tag hue='red'>
+                  Tag
+                </Tag>
+                <Tag hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag hue='green'>
+                  Tag
+                </Tag>
+                <Tag hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag hue='blue'>
+                  Tag
+                </Tag>
+              </HStack>
+              <HStack>
+                <Text>Bold</Text>
+                <Tag variant='bold'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='tan'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='red'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='green'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='blue'>
+                  Tag
+                </Tag>
+              </HStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack>
+                <Text>Default Tag Icon</Text>
+                <Tag iconName='aa-placeholder'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='tan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='red'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='green'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='blue'>
+                  Tag
+                </Tag>
+              </HStack>
+              <HStack>
+                <Text>Bold Tag Icon</Text>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' variant='bold' hue='tan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' variant='bold' hue='red'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' variant='bold' hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' variant='bold' hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' variant='bold' hue='green'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' variant='bold' hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' variant='bold' hue='blue'>
+                  Tag
+                </Tag>
               </HStack>
             </VStack>
           </Section>
