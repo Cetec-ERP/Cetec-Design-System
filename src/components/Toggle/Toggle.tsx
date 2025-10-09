@@ -36,7 +36,7 @@ export const Toggle: React.FC<ToggleProps> = ({
         name={'toggle-bg'}
       />
       <Icon name={'circle'} className={indicator} />
-      <Icon name={'circle-check'} className={indicator} />
+      <Icon name={'circle-check'} className={indicator} fill={{ _dark: 'slate.90'}}/>
     </Label>
   );
 };

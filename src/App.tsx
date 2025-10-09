@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -25,7 +25,7 @@ import { Card } from './components/Card';
 import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
 import { Breadcrumbs } from './components/Breadcrumbs';
-
+import { FormField } from './components/FormField';
 
 export const IconList: React.FC = () => {
   return (
@@ -170,6 +170,33 @@ const ShadowBox = ({
 };
 
 const AppContent: React.FC = () => {
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [errorFormField, setErrorFormField] = useState(true);
+  const [selectedToggleValue, setSelectedToggleValue] = useState<string[]>([]);
+  const [errorToggle, setErrorToggle] = useState(true);
+  const [selectedCheckbox, setCheckboxSelected] = useState<string[]>([]);
+  const [error, setError] = useState(true);
+
+  const handleFormFieldChange = (value: string) => {
+    setSelectedValue(value);
+    setErrorFormField(false);
+  };
+
+  const handleToggles = (value: string) => {
+    const newTogglesSelected = selectedToggleValue.includes(value) ? selectedToggleValue.filter((val) => val !== value) : [...selectedToggleValue, value]
+    setSelectedToggleValue(newTogglesSelected);
+    setErrorToggle(newTogglesSelected.length === 0);
+  };
+
+  const handleCheckboxChange = (value: string) => {
+    const newSelected = selectedCheckbox.includes(value)
+      ? selectedCheckbox.filter((v) => v !== value)
+      : [...selectedCheckbox, value];
+
+    setCheckboxSelected(newSelected);
+    setError(newSelected.length === 0);
+  };
+
   return (
     <VStack>
       <Header />
@@ -869,17 +896,231 @@ const AppContent: React.FC = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content">
-                  <Text as='u'>Text</Text>
+                  <Text as="u">Text</Text>
                 </Tooltip>
               </HStack>
             </VStack>
           </Section>
           <Section>
-          <Heading level="h2">Breadcrumbs</Heading>
+            <Heading level="h2">Breadcrumbs</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack>
-                <Breadcrumbs items={[{id: '1',label: 'Home', href:'/'}, {id: '2',label: 'Integrations', href:'/'}, {id: '3', label: 'ShipEngine'}]}/>
+                <Breadcrumbs
+                  items={[
+                    { id: '1', label: 'Home', href: '/' },
+                    { id: '2', label: 'Integrations', href: '/' },
+                    { id: '3', label: 'ShipEngine' },
+                  ]}
+                />
               </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Form Field</Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <Heading level="h4">TextInput</Heading>
+              <Grid columns={3} columnGap={'40'}>
+                <FormField label="Label for field" required={true}>
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  helpText="Helpful explanation if needed"
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  tooltip={true}
+                  tooltipCaret={true}
+                  tooltipTitle="Name Field"
+                  tooltipDescription="Details"
+                  helpText="Helpful explanation if needed"
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField layout={'default'} label="Label for field" disabled>
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+              </Grid>
+              <HStack gap={'40'} alignItems={'flex-start'}></HStack>
+              <Grid columns={2} gap={'40'} alignItems={'flex-start'}>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  helpText="Helpful explanation if needed"
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  error
+                  errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <TextInput placeholder={'Enter Text'} />
+                </FormField>
+              </Grid>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <Heading level="h4">TextArea</Heading>
+              <Grid columns={3} columnGap={'40'}>
+                <FormField label="Label for field" required={true}>
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+                <FormField
+                  layout={'default'}
+                  label="Label for field"
+                  required={true}
+                  helpText="Helpful explanation if needed"
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+              </Grid>
+              <HStack gap={'40'} alignItems={'flex-start'}></HStack>
+              <Grid columns={2} gap={'40'} alignItems={'flex-start'}>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  helpText="Helpful explanation if needed"
+                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  error={true}
+                  errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+                <FormField
+                  layout={'inline'}
+                  label="Label for field"
+                  required={true}
+                  disabled={true}
+                >
+                  <Textarea placeholder="Enter Text" />
+                </FormField>
+              </Grid>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <Grid columns={3} columnGap={'40'}>
+                <Box>
+                  <Heading level="h4">Radios</Heading>
+                  <FormField
+                    label="Label for field"
+                    required={true}
+                    error={errorFormField}
+                    errorText="Select any one option."
+                    helpText="Helpful explanation if needed"
+                  >
+                    <RadioInput
+                      name="label-field"
+                      checked={selectedValue === 'option1'}
+                      onChange={() => handleFormFieldChange('option1')}
+                    >
+                      <Text size="16" weight="normal">
+                        Mehna Malesuada
+                      </Text>
+                    </RadioInput>
+
+                    <RadioInput
+                      name="label-field"
+                      checked={selectedValue === 'option2'}
+                      onChange={() => handleFormFieldChange('option2')}
+                    >
+                      <Text size="16" weight="normal">
+                        Mehna Malesuada
+                      </Text>
+                    </RadioInput>
+                  </FormField>
+                </Box>
+                <Box>
+                  <Heading level="h4">Checkbox</Heading>
+                  <FormField
+                    label="Label for field"
+                    required
+                    error={error}
+                    errorText="Please select at least one option."
+                    helpText="Helpful explanation if needed"
+                  >
+                    <CheckBoxInput
+                      checked={selectedCheckbox.includes('option1')}
+                      onChange={() => handleCheckboxChange('option1')}
+                    >
+                      <Text size="16" weight="normal">
+                        Mehna Malesuada
+                      </Text>
+                    </CheckBoxInput>
+
+                    <CheckBoxInput
+                      checked={selectedCheckbox.includes('option2')}
+                      onChange={() => handleCheckboxChange('option2')}
+                    >
+                      <Text size="16" weight="normal">
+                        Mehna Malesuada
+                      </Text>
+                    </CheckBoxInput>
+                  </FormField>
+                </Box>
+                <Box>
+                  <Heading level="h4">Toggles</Heading>
+                  <FormField
+                    label="Label for field"
+                    required
+                    error={errorToggle}
+                    errorText="Please select at least one option."
+                    helpText="Helpful explanation if needed"
+                  >
+                    <ToggleInput
+                      checked={selectedToggleValue.includes('option1')}
+                      onChange={() => handleToggles('option1')}
+                    >
+                      <Text size="16" weight="normal">
+                        Mehna Malesuada
+                      </Text>
+                    </ToggleInput>
+
+                    <ToggleInput
+                      checked={selectedToggleValue.includes('option2')}
+                      onChange={() => handleToggles('option2')}
+                    >
+                      <Text size="16" weight="normal">
+                        Mehna Malesuada
+                      </Text>
+                    </ToggleInput>
+                  </FormField>
+                </Box>
+              </Grid>
             </VStack>
           </Section>
           {/* <Section>
@@ -923,7 +1164,6 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           */}
-          
         </VStack>
       </Container>
     </VStack>
