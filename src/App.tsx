@@ -884,10 +884,9 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           <Section>
-            <Heading level="h2">Tag</Heading>
+            <Heading level="h2">Tags</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack>
-                <Text>Default</Text>
                 <Tag>
                   Tag
                 </Tag>
@@ -900,10 +899,19 @@ const AppContent: React.FC = () => {
                 <Tag hue='tomato'>
                   Tag
                 </Tag>
+                <Tag hue='orange'>
+                  Tag
+                </Tag>
                 <Tag hue='yellow'>
                   Tag
                 </Tag>
                 <Tag hue='green'>
+                  Tag
+                </Tag>
+                <Tag hue='grass'>
+                  Tag
+                </Tag>
+                <Tag hue='mint'>
                   Tag
                 </Tag>
                 <Tag hue='cyan'>
@@ -912,9 +920,26 @@ const AppContent: React.FC = () => {
                 <Tag hue='blue'>
                   Tag
                 </Tag>
+                <Tag hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag hue='purple'>
+                  Tag
+                </Tag>
+                <Tag hue='violet'>
+                  Tag
+                </Tag>
+                <Tag hue='pink'>
+                  Tag
+                </Tag>
+                <Tag hue='rose'>
+                  Tag
+                </Tag>
+                <Tag hue='magenta'>
+                  Tag
+                </Tag>
               </HStack>
               <HStack>
-                <Text>Bold</Text>
                 <Tag variant='bold'>
                   Tag
                 </Tag>
@@ -927,10 +952,19 @@ const AppContent: React.FC = () => {
                 <Tag variant='bold' hue='tomato'>
                   Tag
                 </Tag>
+                <Tag variant='bold' hue='orange'>
+                  Tag
+                </Tag>
                 <Tag variant='bold' hue='yellow'>
                   Tag
                 </Tag>
                 <Tag variant='bold' hue='green'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='grass'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='mint'>
                   Tag
                 </Tag>
                 <Tag variant='bold' hue='cyan'>
@@ -939,12 +973,29 @@ const AppContent: React.FC = () => {
                 <Tag variant='bold' hue='blue'>
                   Tag
                 </Tag>
+                <Tag variant='bold' hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='purple'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='violet'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='pink'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='rose'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='magenta'>
+                  Tag
+                </Tag>
               </HStack>
             </VStack>
             <Heading level="h2"></Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack>
-                <Text>Default Tag Icon</Text>
                 <Tag iconName='aa-placeholder'>
                   Tag
                 </Tag>
@@ -957,10 +1008,19 @@ const AppContent: React.FC = () => {
                 <Tag iconName='aa-placeholder' hue='tomato'>
                   Tag
                 </Tag>
+                <Tag iconName='aa-placeholder' hue='orange'>
+                  Tag
+                </Tag>
                 <Tag iconName='aa-placeholder' hue='yellow'>
                   Tag
                 </Tag>
                 <Tag iconName='aa-placeholder' hue='green'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='grass'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='mint'>
                   Tag
                 </Tag>
                 <Tag iconName='aa-placeholder' hue='cyan'>
@@ -969,31 +1029,75 @@ const AppContent: React.FC = () => {
                 <Tag iconName='aa-placeholder' hue='blue'>
                   Tag
                 </Tag>
+                <Tag iconName='aa-placeholder' hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='purple'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='violet'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='pink'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='rose'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='magenta'>
+                  Tag
+                </Tag>
               </HStack>
               <HStack>
-                <Text>Bold Tag Icon</Text>
                 <Tag iconName='aa-placeholder' iconPosition='right' variant='bold'>
                   Tag
                 </Tag>
-                <Tag iconName='aa-placeholder' variant='bold' hue='tan'>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='tan'>
                   Tag
                 </Tag>
-                <Tag iconName='aa-placeholder' variant='bold' hue='red'>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='red'>
                   Tag
                 </Tag>
-                <Tag iconName='aa-placeholder' variant='bold' hue='tomato'>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='tomato'>
                   Tag
                 </Tag>
-                <Tag iconName='aa-placeholder' variant='bold' hue='yellow'>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='orange'>
                   Tag
                 </Tag>
-                <Tag iconName='aa-placeholder' variant='bold' hue='green'>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='yellow'>
                   Tag
                 </Tag>
-                <Tag iconName='aa-placeholder' variant='bold' hue='cyan'>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='green'>
                   Tag
                 </Tag>
-                <Tag iconName='aa-placeholder' variant='bold' hue='blue'>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='grass'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='mint'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='blue'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='purple'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='violet'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='pink'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='rose'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='magenta'>
                   Tag
                 </Tag>
               </HStack>
