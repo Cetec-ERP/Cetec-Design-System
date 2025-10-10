@@ -143,8 +143,8 @@ export const tagRecipe = defineRecipe({
       hue: 'orange',
       variant: 'bold',
       css: {
-        color: { base: 'slate.0', _dark: 'orange.80' },
-        bg: { base: 'orange.50', _dark: 'orange.20' },
+        color: { base: 'orange.5', _dark: 'orange.80' },
+        bg: { base: 'orange.60', _dark: 'orange.20' },
       },
     },
     {
@@ -183,7 +183,7 @@ export const tagRecipe = defineRecipe({
       hue: 'grass',
       variant: 'default',
       css: {
-        color: { base: 'grass.70', _dark: 'grass.20' },
+        color: { base: 'grass.70', _dark: 'grass.10' },
         bg: { base: 'grass.10', _dark: 'grass.70' },
       },
     },
