@@ -25,6 +25,7 @@ import { Card } from './components/Card';
 import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
 import { Breadcrumbs } from './components/Breadcrumbs';
+import { Tag } from './components/Tag';
 
 
 export const IconList: React.FC = () => {
@@ -882,48 +883,226 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
           </Section>
-          {/* <Section>
-            <Text as="h2">Inputs</Text>
-            <Heading level="h2">Text Input</Heading>
+          <Section>
+            <Heading level="h2">Tags</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput size={'small'} placeHolder={'Enter Text'} />
-                  <Text>Small</Text>
-                </VStack>
-                <VStack>
-                  <TextInput placeHolder={'Enter Text'} />
-                  <Text>Medium</Text>
-                </VStack>
-                <VStack>
-                  <TextInput size={'large'} placeHolder={'Enter Text'} />
-                  <Text>Large</Text>
-                </VStack>
+              <HStack>
+                <Tag>
+                  Tag
+                </Tag>
+                <Tag hue='tan'>
+                  Tag
+                </Tag>
+                <Tag hue='red'>
+                  Tag
+                </Tag>
+                <Tag hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag hue='orange'>
+                  Tag
+                </Tag>
+                <Tag hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag hue='green'>
+                  Tag
+                </Tag>
+                <Tag hue='grass'>
+                  Tag
+                </Tag>
+                <Tag hue='mint'>
+                  Tag
+                </Tag>
+                <Tag hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag hue='blue'>
+                  Tag
+                </Tag>
+                <Tag hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag hue='purple'>
+                  Tag
+                </Tag>
+                <Tag hue='violet'>
+                  Tag
+                </Tag>
+                <Tag hue='pink'>
+                  Tag
+                </Tag>
+                <Tag hue='rose'>
+                  Tag
+                </Tag>
+                <Tag hue='magenta'>
+                  Tag
+                </Tag>
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput defaultValue="entered text" />
-                  <Text>Default - Filled</Text>
-                </VStack>
-                <VStack>
-                  <TextInput data-error={true} placeHolder={'placeholder'} />
-                  <Text>Error</Text>
-                </VStack>
-                <VStack>
-                  <TextInput disabled placeHolder={'placeholder'} />
-                  <Text>Disabled</Text>
-                </VStack>
+              <HStack>
+                <Tag variant='bold'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='tan'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='red'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='orange'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='green'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='grass'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='mint'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='blue'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='purple'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='violet'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='pink'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='rose'>
+                  Tag
+                </Tag>
+                <Tag variant='bold' hue='magenta'>
+                  Tag
+                </Tag>
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput autoSize={true} placeHolder={'Enter Text'} />
-                  <Text>Auto Size</Text>
-                </VStack>
+            </VStack>
+            <Heading level="h2"></Heading>
+            <VStack gap={'40'} alignItems={'flex-start'}>
+              <HStack>
+                <Tag iconName='aa-placeholder'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='tan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='red'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='orange'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='green'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='grass'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='mint'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='blue'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='purple'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='violet'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='pink'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='rose'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' hue='magenta'>
+                  Tag
+                </Tag>
+              </HStack>
+              <HStack>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='tan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='red'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='tomato'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='orange'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='yellow'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='green'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='grass'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='mint'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='cyan'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='blue'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='indigo'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='purple'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='violet'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='pink'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='rose'>
+                  Tag
+                </Tag>
+                <Tag iconName='aa-placeholder' iconPosition='right' variant='bold' hue='magenta'>
+                  Tag
+                </Tag>
               </HStack>
             </VStack>
           </Section>
-          */}
-          
         </VStack>
       </Container>
     </VStack>
