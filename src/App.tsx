@@ -183,11 +183,12 @@ const menuData = [
 const menuWithIcon = [
   {
     id: '1',
+    icon: true,
     items:[
-      {id: '1', label: 'Menu item label', icon: 'aa-placeholder'},
-      {id: '2', label: 'Menu item label', icon: 'aa-placeholder'},
-      {id: '3', label: 'Menu item label', icon: 'aa-placeholder'},
-      {id: '4', label: 'Menu item label', icon: 'aa-placeholder'}, 
+      {id: '1', label: 'Menu item label', iconName: 'aa-placeholder'},
+      {id: '2', label: 'Menu item label', iconName: 'aa-placeholder'},
+      {id: '3', label: 'Menu item label', iconName: 'aa-placeholder'},
+      {id: '4', label: 'Menu item label', iconName: 'aa-placeholder'}, 
     ]
   }
 ]
@@ -1065,7 +1066,7 @@ const handleAction = () => {
                 </Box>
                 <Box>
                   <Text>Right Side Icon</Text>
-                  <Menu menuSection={menuWithIcon} variant='single-select' iconPlacement='right' onChange={(val) =>  console.log("Selected", val)} />
+                  <Menu menuSection={menuWithIcon} variant='single-select' iconPlacement='right' icon={true} onChange={(val) =>  console.log("Selected", val)} />
                 </Box>
               </HStack>
               <HStack

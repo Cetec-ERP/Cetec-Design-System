@@ -3,7 +3,7 @@ import { Box, type BoxProps } from '../Box';
 import { useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
-import { Icon } from '../Icon';
+import { Icon, type IconNamesList } from '../Icon';
 import { CheckBox } from '../CheckBox';
 import { Toggle } from '../Toggle';
 import { Link } from '../Link';
@@ -16,12 +16,13 @@ export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
       divider?: boolean;
       spacer?: boolean;
       link?: boolean;
+      icon?: boolean;
       items: {
         id: string;
         label: string;
         description?: string;
         value?: string;
-        icon?: string;
+        iconName?: string;
         children?: MenuProps['menuSection'];
         disabled?: boolean;
         href?: string;
@@ -51,8 +52,10 @@ export const Menu: React.FC<MenuProps> = ({
     multiLevelIcon,
     dividerSection,
     spacerSection,
+    iconSection
   } = menu({
     iconPlacement,
+    multiSelectType
   });
   const [selected, setSelected] = useState<string[]>([]);
   const [isChildren, setIsChildren] = useState([
@@ -153,7 +156,11 @@ export const Menu: React.FC<MenuProps> = ({
                     role="button"
                     aria-pressed={isSelected}
                   >
-                    {item?.icon && <Icon name={`${item?.icon}`} />}
+                    {section?.icon &&
+                      <Box className={iconSection}>
+                        {item?.iconName && <Icon name={`${item?.iconName as IconNamesList}`} />}
+                      </Box>
+                    }
                     {variant === 'multi-select' &&
                       multiSelectType === 'checkbox' && !section?.link && (
                         <CheckBox
