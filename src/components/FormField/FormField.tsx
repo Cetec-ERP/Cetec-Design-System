@@ -22,7 +22,7 @@ export type FormFieldProps = Omit<BoxProps, keyof FormFieldVariantProps> &
   };
 
 export const FormField: React.FC<FormFieldProps> = ({
-  layout = "default",
+  layout = 'default',
   label,
   helpText,
   required,
@@ -37,10 +37,10 @@ export const FormField: React.FC<FormFieldProps> = ({
   children,
   ...props
 }: FormFieldProps) => {
-  
-  const { formFeildContainer, contentWrapper, labelWrapper, headLabel } = formField({
-    layout: layout === "inline" ? "inline" : "default"
-  });
+  const { formFieldContainer, contentWrapper, labelWrapper, headLabel } =
+    formField({
+      layout: layout === 'inline' ? 'inline' : 'default',
+    });
   const enhancedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       const c = child as React.ReactElement<any>;
@@ -52,24 +52,26 @@ export const FormField: React.FC<FormFieldProps> = ({
     return child;
   });
   return (
-    <Box className={formFeildContainer} {...props} disabled={disabled}>
+    <Box className={formFieldContainer} {...props} disabled={disabled}>
       <Box className={labelWrapper}>
         <Box className={headLabel}>
-          <Text textStyle="body-md">
-            {label}{' '}
-          </Text>
-            {required && (
-              <Text as="span" color="red.50">
-                *
-              </Text>
-            )}
-            {tooltip && (
-              <Tooltip title={tooltipTitle} text={`${tooltipDescription}`} caret={tooltipCaret}>
-                <Icon name="info" fill='slate.50'/>
-              </Tooltip>
-            )}
+          <Text textStyle="body-md">{label} </Text>
+          {required && (
+            <Text as="span" color="red.50">
+              *
+            </Text>
+          )}
+          {tooltip && (
+            <Tooltip
+              title={tooltipTitle}
+              text={`${tooltipDescription}`}
+              caret={tooltipCaret}
+            >
+              <Icon name="info" fill="slate.50" />
+            </Tooltip>
+          )}
         </Box>
-        {layout === "default" && helpText && (
+        {layout === 'default' && helpText && (
           <Text as="span" textStyle="body-sm">
             {helpText}
           </Text>
@@ -77,11 +79,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       </Box>
       <Box className={contentWrapper}>
         {enhancedChildren}
-        {layout == 'inline' && (
-          <Text textStyle="body-sm">
-            {helpText}
-          </Text>
-        )}
+        {layout === 'inline' && <Text textStyle="body-sm">{helpText}</Text>}
         {error && (
           <Text as="span" textStyle={'body-xs'} color="error.default">
             {errorText}
