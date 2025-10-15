@@ -27,12 +27,17 @@ export const RadioInput: FC<RadioInputProps> = ({
 }: RadioInputProps) => {
   const [className, otherProps] = splitProps(props);
   return (
-    <Label className={cx(radioInput({ variant }), className)} {...otherProps}>
+    <Label
+      className={cx(radioInput({ variant }), className)}
+      {...otherProps}
+      htmlFor={id}
+    >
       <Radio
-      name={name}
-      id={id}
-        {...error && { 'data-error': true }}
-        {...props}/>
+        name={name}
+        id={id}
+        {...(error && { 'data-error': true })}
+        {...props}
+      />
       {children && <Box as="div">{children}</Box>}
     </Label>
   );

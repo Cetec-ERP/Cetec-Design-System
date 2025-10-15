@@ -19,7 +19,7 @@ export const CheckBoxInput: FC<CheckBoxInputProps> = ({
   ...props
 }: CheckBoxInputProps) => {
   return (
-    <Label>
+    <Label htmlFor={id}>
       <CheckBox
         id={id}
         name={name}

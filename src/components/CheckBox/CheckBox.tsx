@@ -5,7 +5,7 @@ import { Icon } from '../Icon';
 import { AriaAttributes } from 'react';
 
 export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
-CheckboxVariantProps & {
+  CheckboxVariantProps & {
     name: string;
     indeterminate?: boolean;
     disabled?: boolean;
@@ -23,13 +23,14 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   const { container, input, indicator } = checkbox({});
 
   return (
-    <Label className={container}>
+    <Label className={container} htmlFor={id}>
       <Box
         as="input"
         type="checkbox"
         className={input}
         name={name}
         id={id}
+        aria-label={name}
         {...props}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}

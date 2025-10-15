@@ -26,7 +26,6 @@ import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
 import { Breadcrumbs } from './components/Breadcrumbs';
 
-
 export const IconList: React.FC = () => {
   return (
     <Grid
@@ -372,11 +371,11 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox name="normal"/>
-              <CheckBox defaultChecked={true}  name="default-checked"/>
-              <CheckBox indeterminate name="indeterminate"/>
-              <CheckBox error name="error"/>
-              <CheckBox disabled name="disabled"/>
+              <CheckBox name="normal" />
+              <CheckBox defaultChecked={true} name="default-checked" />
+              <CheckBox indeterminate name="indeterminate" />
+              <CheckBox error name="error" />
+              <CheckBox disabled name="disabled" />
             </HStack>
           </Section>
           <Section>
@@ -404,13 +403,13 @@ const AppContent: React.FC = () => {
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
                 <Radio name="normal" />
-                <Radio name='normal' defaultChecked={true} />
-                <Radio name='normal' disabled />
-                <Radio name='normal' error={true} />
+                <Radio name="normal" defaultChecked={true} />
+                <Radio name="normal" disabled />
+                <Radio name="normal" error={true} />
               </HStack>
               <HStack>
                 <HStack gap={'10'} alignItems={'center'}>
-                  <Heading level="h4">Gender</Heading>
+                  <Heading level="h3">Gender</Heading>
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
                 </HStack>
@@ -441,10 +440,10 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Toggle</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <Toggle name="toggle-base"/>
-              <Toggle autoFocus={true} name="toggle-base"/>
-              <Toggle disabled name="toggle-base"/>
-              <Toggle error={true} name="toggle-base"/>
+              <Toggle name="toggle-base" />
+              <Toggle autoFocus={true} name="toggle-base" />
+              <Toggle disabled name="toggle-base" />
+              <Toggle error={true} name="toggle-base" />
             </HStack>
           </Section>
           <Section>
@@ -475,35 +474,68 @@ const AppContent: React.FC = () => {
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput size={'small'} placeholder={'Enter Text'} name="small" id="small" />
-                  <Text role='small'>Small</Text>
+                  <TextInput
+                    size={'small'}
+                    placeholder={'Enter Text'}
+                    name="small"
+                    id="small"
+                  />
+                  <Text role="small">Small</Text>
                 </VStack>
                 <VStack>
-                  <TextInput placeholder={'Enter Text'} name="medium" id="medium"/>
-                  <Text role='medium'>Medium</Text>
+                  <TextInput
+                    placeholder={'Enter Text'}
+                    name="medium"
+                    id="medium"
+                  />
+                  <Text role="medium">Medium</Text>
                 </VStack>
                 <VStack>
-                  <TextInput size={'large'} placeholder={'Enter Text'} name='large' id="large"/>
-                  <Text role='large'>Large</Text>
+                  <TextInput
+                    size={'large'}
+                    placeholder={'Enter Text'}
+                    name="large"
+                    id="large"
+                  />
+                  <Text role="large">Large</Text>
                 </VStack>
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput defaultValue="entered text" name='default' id='default'/>
+                  <TextInput
+                    defaultValue="entered text"
+                    name="default"
+                    id="default"
+                  />
                   <Text role="default">Default - Filled</Text>
                 </VStack>
                 <VStack>
-                  <TextInput data-error={true} placeholder={'placeholder'} name='error' id='error'/>
+                  <TextInput
+                    data-error={true}
+                    placeholder={'placeholder'}
+                    name="error"
+                    id="error"
+                  />
                   <Text role="error">Error</Text>
                 </VStack>
                 <VStack>
-                  <TextInput disabled placeholder={'placeholder'} name='disabled' id='disabled'/>
+                  <TextInput
+                    disabled
+                    placeholder={'placeholder'}
+                    name="disabled"
+                    id="disabled"
+                  />
                   <Text role="disabled">Disabled</Text>
                 </VStack>
               </HStack>
               <HStack gap={'40'} alignItems={'flex-end'}>
                 <VStack>
-                  <TextInput autoSize={true} placeholder={'Enter Text'} name='auto' id='auto'/>
+                  <TextInput
+                    autoSize={true}
+                    placeholder={'Enter Text'}
+                    name="auto"
+                    id="auto"
+                  />
                   <Text role="auto">Auto Size</Text>
                 </VStack>
               </HStack>
@@ -513,28 +545,28 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Textarea</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea name='small' placeholder="Small" size="small" />
-                <Textarea name='medium' placeholder="Medium" />
-                <Textarea name='large' placeholder="Large" size="large" />
+                <Textarea name="small" placeholder="Small" size="small" />
+                <Textarea name="medium" placeholder="Medium" />
+                <Textarea name="large" placeholder="Large" size="large" />
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
                 <Textarea
-                name='default'
+                  name="default"
                   placeholder="placeholder"
                   defaultValue="Default – Filled"
                 />
-                <Textarea name='disabled' placeholder="Disabled" disabled />
-                <Textarea name='error' placeholder="Error" data-error={true} />
+                <Textarea name="disabled" placeholder="Disabled" disabled />
+                <Textarea name="error" placeholder="Error" data-error={true} />
               </HStack>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea name='auto' placeholder="Auto Size" autoSize={true} />
+                <Textarea name="auto" placeholder="Auto Size" autoSize={true} />
               </HStack>
             </VStack>
           </Section>
           <Section>
             <Heading level="h2">Card</Heading>
             <VStack gap={'10'} alignItems={'flex-start'}>
-              <Heading level="h4">Default</Heading>
+              <Heading level="h3">Default</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
                 <Card grabbed={false}>
                   <Box className={css({ p: '16' })}>Default</Box>
@@ -549,7 +581,7 @@ const AppContent: React.FC = () => {
             </VStack>
             <Heading level="h2"></Heading>
             <VStack gap={'10'} alignItems={'flex-start'}>
-              <Heading level="h4">Flat</Heading>
+              <Heading level="h3">Flat</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
                 <Card variant="flat">
                   <Box className={css({ p: '16' })}>Default</Box>
@@ -564,9 +596,9 @@ const AppContent: React.FC = () => {
             </VStack>
             <Heading level="h2"></Heading>
             <VStack gap={'10'} alignItems={'flex-start'}>
-              <Heading level="h4">Example</Heading>
+              <Heading level="h3">Example</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
-              <Card grabbed>
+                <Card grabbed>
                   <Box className={css({ p: '16', textAlign: 'left' })}>
                     <Heading level="h4">Affordable Default</Heading>
                     <Text>
@@ -596,7 +628,7 @@ const AppContent: React.FC = () => {
               alignContent={'flex-start'}
               justifyContent={'flex-start'}
             >
-              <Heading level="h4">With Caret</Heading>
+              <Heading level="h3">With Caret</Heading>
               <HStack
                 gap={'40'}
                 alignItems={'flex-start'}
@@ -717,7 +749,7 @@ const AppContent: React.FC = () => {
               alignContent={'flex-start'}
               justifyContent={'flex-start'}
             >
-              <Heading level="h4">Without Caret</Heading>
+              <Heading level="h3">Without Caret</Heading>
               <HStack
                 gap={'40'}
                 alignItems={'flex-start'}
@@ -849,7 +881,7 @@ const AppContent: React.FC = () => {
               alignContent={'flex-start'}
               justifyContent={'flex-start'}
             >
-              <Heading level="h4">Different Example</Heading>
+              <Heading level="h3">Different Example</Heading>
               <HStack
                 gap={'40'}
                 alignItems={'center'}
@@ -870,16 +902,22 @@ const AppContent: React.FC = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content">
-                  <Text as='u'>Text</Text>
+                  <Text as="u">Text</Text>
                 </Tooltip>
               </HStack>
             </VStack>
           </Section>
           <Section>
-          <Heading level="h2">Breadcrumbs</Heading>
+            <Heading level="h2">Breadcrumbs</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
               <HStack>
-                <Breadcrumbs items={[{id: '1',label: 'Home', href:'/'}, {id: '2',label: 'Integrations', href:'/'}, {id: '3', label: 'ShipEngine'}]}/>
+                <Breadcrumbs
+                  items={[
+                    { id: '1', label: 'Home', href: '/' },
+                    { id: '2', label: 'Integrations', href: '/' },
+                    { id: '3', label: 'ShipEngine' },
+                  ]}
+                />
               </HStack>
             </VStack>
           </Section>
@@ -924,7 +962,6 @@ const AppContent: React.FC = () => {
             </VStack>
           </Section>
           */}
-          
         </VStack>
       </Container>
     </VStack>
