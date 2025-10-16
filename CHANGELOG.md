@@ -1,3 +1,29 @@
+# 0.0.35 (Thu Oct 16 2025)
+
+#### 🐛 Bug Fix
+
+- feat: tag component [#112](https://github.com/Cetec-ERP/Cetec-Design-System/pull/112) (smitpatel@Smits-MacBook-Air.local ethanwiggins@ethans-air.lan)
+- refactor: token changes in preparation for upcoming components (like Tags) [#111](https://github.com/Cetec-ERP/Cetec-Design-System/pull/111) ([@shaunrfox](https://github.com/shaunrfox))
+- chore: change autorc [#110](https://github.com/Cetec-ERP/Cetec-Design-System/pull/110) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+- chore: update release.yml [#109](https://github.com/Cetec-ERP/Cetec-Design-System/pull/109) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+- chore: test release workflow [#108](https://github.com/Cetec-ERP/Cetec-Design-System/pull/108) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+- feat: breadcrumbs component [#95](https://github.com/Cetec-ERP/Cetec-Design-System/pull/95) (smitpatel@Smits-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- feat: testworkflow [#107](https://github.com/Cetec-ERP/Cetec-Design-System/pull/107) (ethanwiggins@ethans-air.lan [@Etwigg](https://github.com/Etwigg))
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of github.com:Cetec-ERP/Cetec-Design-System (ethanwiggins@ethans-air.lan)
+- fix: auto config file (ethanwiggins@ethans-air.lan)
+
+#### Authors: 4
+
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Ethan Wiggins (ethanwiggins@ethans-air.lan)
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+- Smit Patel ([@smitjp150622](https://github.com/smitjp150622))
+
+---
+
 # 0.0.35 (Mon Sep 29 2025)
 
 #### 🐛 Bug Fix
