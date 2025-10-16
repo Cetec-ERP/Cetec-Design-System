@@ -21,3 +21,4 @@ export { ThemeSwitcher } from './components/ThemeSwitcher';
 export { ThemeProvider } from './contexts/ThemeContext';
 export { Tooltip } from './components/Tooltip';
 export { Breadcrumbs } from  './components/Breadcrumbs';
+export { Tag } from './components/Tag';
