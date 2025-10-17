@@ -198,7 +198,19 @@ const menuWithIcon = [
   },
 ];
 
-const multiLevelSection = [
+const multiLevelCheckboxSection = [
+  {
+    id: '1',
+    items: [
+      { id: '1', label: 'Menu item label' },
+      { id: '2', label: 'Menu item label' },
+      { id: '3', label: 'Menu item label' },
+      { id: '4', label: 'Menu item label' },
+    ],
+  },
+];
+
+const multiLevelToggleSection = [
   {
     id: '1',
     items: [
