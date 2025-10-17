@@ -126,7 +126,9 @@ export const Menu: React.FC<MenuProps> = ({
               {section?.items?.map((item) => {
                 const hasChildren = !!item.children?.length;
                 const isSelected = selected.includes(item.id);
+                const isDisabled = !!item?.disabled;
                 const activateItem = () => {
+                  if(isDisabled) return;
                   if (item?.children) {
                     handleOpenSubmenu(item.children, item.label);
                   } else {
@@ -137,7 +139,7 @@ export const Menu: React.FC<MenuProps> = ({
                   <Box
                     key={item?.id}
                     className={menuItem}
-                    tabIndex={0}
+                    tabIndex={isDisabled ? -1 : 0}
                     disabled={item?.disabled}
                     aria-disabled={item?.disabled}
                     data-selected={isSelected}
