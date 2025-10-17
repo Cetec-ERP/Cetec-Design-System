@@ -31,6 +31,7 @@ import {
   radioInputRecipe,
   tooltipRecipe,
   breadcrumbsRecipe,
+  menuRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -122,7 +123,7 @@ export default definePreset({
         checkbox: checkBoxRecipe,
         radio: radioRecipe,
         tooltip: tooltipRecipe,
-        
+        menu: menuRecipe,
       },
     },
   },
