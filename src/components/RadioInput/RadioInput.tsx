@@ -25,7 +25,7 @@ export const RadioInput: FC<RadioInputProps> = ({
   return (
     <Label className={cx(radioInput({ variant }), className)} {...otherProps}>
       <Radio
-        {...error && { 'data-error': true }}
+        error={error}
         {...props}/>
       {children && <Box as="div">{children}</Box>}
     </Label>

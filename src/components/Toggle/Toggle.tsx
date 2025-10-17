@@ -21,6 +21,7 @@ export const Toggle: React.FC<ToggleProps> = ({
     <Label
       className={container}
       {...disabled && { 'data-disabled': true }}
+      color={{ base: 'slate.90', _dark: 'slate.0' }}
     >
       <Box
         as="input"
