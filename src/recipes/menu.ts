@@ -67,6 +67,8 @@ const menuBase = {
       opacity: 0.4,
       _hover: {
         bg: 'transparent',
+        pointerEvents: 'none',
+        cursor: 'not-allowed'
       },
       _active: {
         bg: 'transparent',
