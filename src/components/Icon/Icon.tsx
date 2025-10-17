@@ -26,7 +26,7 @@ export type IconProps = Omit<BoxProps, 'size'> &
 export const Icon: React.FC<IconProps> = ({
   name,
   size = '24',
-  fill = 'current',
+  fill,
   ...props
 }: IconProps) => {
   const [className, otherProps] = splitProps(props);
