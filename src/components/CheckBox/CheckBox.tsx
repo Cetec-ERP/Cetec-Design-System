@@ -13,6 +13,7 @@ export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
 export const CheckBox: React.FC<CheckBoxProps> = ({
   indeterminate,
   error,
+  checked,
   ...props
 }) => {
   const { container, input, indicator } = checkbox({});
@@ -26,6 +27,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
         type="checkbox"
         className={input}
         {...props}
+        {...(checked ? { 'data-checked': true } : {})}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}
       />

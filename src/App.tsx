@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -172,6 +172,35 @@ const ShadowBox = ({
 };
 
 const AppContent: React.FC = () => {
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [errorFormField, setErrorFormField] = useState(true);
+  const [selectedToggleValue, setSelectedToggleValue] = useState<string[]>([]);
+  const [errorToggle, setErrorToggle] = useState(true);
+  const [selectedCheckbox, setCheckboxSelected] = useState<string[]>([]);
+  const [error, setError] = useState(true);
+
+  const handleFormFieldChange = (value: string) => {
+    setSelectedValue(value);
+    setErrorFormField(false);
+  };
+
+  const handleToggles = (value: string) => {
+    const newTogglesSelected = selectedToggleValue.includes(value)
+      ? selectedToggleValue.filter((val) => val !== value)
+      : [...selectedToggleValue, value];
+    setSelectedToggleValue(newTogglesSelected);
+    setErrorToggle(newTogglesSelected.length === 0);
+  };
+
+  const handleCheckboxChange = (value: string) => {
+    const newSelected = selectedCheckbox.includes(value)
+      ? selectedCheckbox.filter((v) => v !== value)
+      : [...selectedCheckbox, value];
+
+    setCheckboxSelected(newSelected);
+    setError(newSelected.length === 0);
+  };
+
   return (
     <VStack>
       <Header />
