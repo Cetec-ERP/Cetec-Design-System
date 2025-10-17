@@ -16,7 +16,6 @@ export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
       divider?: boolean;
       spacer?: boolean;
       link?: boolean;
-      icon?: boolean;
       items: {
         id: string;
         label: string;
@@ -161,8 +160,11 @@ export const Menu: React.FC<MenuProps> = ({
                     role="button"
                     aria-pressed={isSelected}
                   >
-                    {section?.icon && (
-                      <Box className={iconSection}>
+                    {(iconPlacement || item?.iconName) && (
+                      <Box
+                        className={iconSection}
+                        color={{ base: 'slate.90', _dark: 'slate.0' }}
+                      >
                         {item?.iconName && (
                           <Icon name={`${item?.iconName as IconNamesList}`} />
                         )}
@@ -209,7 +211,10 @@ export const Menu: React.FC<MenuProps> = ({
                       </Link>
                     )}
                     {hasChildren && (
-                      <Box className={multiLevelIcon}>
+                      <Box
+                        className={multiLevelIcon}
+                        color={{ base: 'slate.90', _dark: 'slate.0' }}
+                      >
                         <Icon name="caret-right" />
                       </Box>
                     )}
