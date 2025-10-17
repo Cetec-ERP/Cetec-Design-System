@@ -19,15 +19,15 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   const { container, input, indicator } = checkbox({});
 
   return (
-    <Label className={container} color={error
-      ? 'red.50'
-      : { base: 'slate.90', _dark: 'slate.0' }}>
+    <Label
+      className={container}
+      color={error ? 'red.50' : { base: 'slate.90', _dark: 'slate.0' }}
+    >
       <Box
         as="input"
         type="checkbox"
         className={input}
         {...props}
-        {...(checked ? { 'data-checked': true } : {})}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}
       />

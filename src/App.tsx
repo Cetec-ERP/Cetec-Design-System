@@ -1344,7 +1344,6 @@ const AppContent: React.FC = () => {
                     helpText="Helpful explanation if needed"
                   >
                     <CheckBoxInput
-                      checked={selectedCheckbox.includes('option1')}
                       onChange={() => handleCheckboxChange('option1')}
                     >
                       <Text size="16" weight="normal">
@@ -1353,7 +1352,6 @@ const AppContent: React.FC = () => {
                     </CheckBoxInput>
 
                     <CheckBoxInput
-                      checked={selectedCheckbox.includes('option2')}
                       onChange={() => handleCheckboxChange('option2')}
                     >
                       <Text size="16" weight="normal">
