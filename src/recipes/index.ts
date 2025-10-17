@@ -2,12 +2,12 @@ export { buttonRecipe, iconButtonRecipe } from './button';
 export { inputRecipe } from './input';
 export { textareaRecipe } from './textarea';
 export { textRecipe, headingRecipe, linkRecipe, labelRecipe } from './text';
-export { checkBoxRecipe } from "./checkbox"
-export { spinnerRecipe } from "./spinner"
-export { dividerRecipe } from "./divider"
-export { preRecipe, codeRecipe } from "./code"
+export { checkBoxRecipe } from './checkbox';
+export { spinnerRecipe } from './spinner';
+export { dividerRecipe } from './divider';
+export { preRecipe, codeRecipe } from './code';
 export { boxRecipe } from './box';
-export { radioRecipe } from './radio'; 
+export { radioRecipe } from './radio';
 export { toggleRecipe } from './toggle';
 export { textinputRecipe } from './textinput';
 export { radioInputRecipe } from './radioinput';
@@ -16,3 +16,4 @@ export { cardRecipe } from './card';
 export { tooltipRecipe } from './tooltip';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { tagRecipe } from './tag';
+export { menuRecipe } from './menu';

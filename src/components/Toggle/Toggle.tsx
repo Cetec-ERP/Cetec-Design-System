@@ -18,10 +18,7 @@ export const Toggle: React.FC<ToggleProps> = ({
 }: ToggleProps) => {
   const { container, input, indicator, background } = toggle({});
   return (
-    <Label
-      className={container}
-      {...disabled && { 'data-disabled': true }}
-    >
+    <Label className={container} {...(disabled && { 'data-disabled': true })}>
       <Box
         as="input"
         type="checkbox"
@@ -30,11 +27,7 @@ export const Toggle: React.FC<ToggleProps> = ({
         {...(error ? { 'data-error': true } : {})}
         {...props}
       />
-      <Box
-        as="span"
-        className={background}
-        name={'toggle-bg'}
-      />
+      <Box as="span" className={background} name={'toggle-bg'} />
       <Icon name={'circle'} className={indicator} />
       <Icon name={'circle-check'} className={indicator} />
     </Label>
