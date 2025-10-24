@@ -1,6 +1,6 @@
 {
   "name": "cetec-design-system",
-  "version": "0.0.36-0",
+  "version": "0.0.37-0",
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
