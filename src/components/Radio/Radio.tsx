@@ -5,17 +5,22 @@ import { Label } from '../Label';
 
 export type RadioProps = Omit<BoxProps, keyof RadioVariantProps> &
   RadioVariantProps & {
+    id?: string;
+    name: string;
     disabled?: boolean;
     error?: boolean;
   };
 
-export const Radio: React.FC<RadioProps> = ({ error, ...props }) => {
+export const Radio: React.FC<RadioProps> = ({ id, name, error, ...props }) => {
   const { container, input, indicator } = radio({});
   return (
-    <Label className={container}>
+    <Label className={container} htmlFor={id}>
       <Box
         as="input"
         type="radio"
+        id={id}
+        name={name}
+        aria-label={name}
         className={input}
         {...props}
         {...(error && { 'data-error': true })}

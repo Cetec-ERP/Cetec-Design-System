@@ -11,11 +11,15 @@ import { FC, ReactNode } from 'react';
 
 export type RadioInputProps = BoxProps &
   RadioInputVariantProps & {
+    name: string;
+    id?: string;
     error?: boolean;
     children?: string | ReactNode;
   };
 
 export const RadioInput: FC<RadioInputProps> = ({
+  id,
+  name,
   variant,
   children,
   error,
@@ -23,10 +27,17 @@ export const RadioInput: FC<RadioInputProps> = ({
 }: RadioInputProps) => {
   const [className, otherProps] = splitProps(props);
   return (
-    <Label className={cx(radioInput({ variant }), className)} {...otherProps}>
+    <Label
+      className={cx(radioInput({ variant }), className)}
+      {...otherProps}
+      htmlFor={id}
+    >
       <Radio
-        {...error && { 'data-error': true }}
-        {...props}/>
+        name={name}
+        id={id}
+        {...(error && { 'data-error': true })}
+        {...props}
+      />
       {children && <Box as="div">{children}</Box>}
     </Label>
   );

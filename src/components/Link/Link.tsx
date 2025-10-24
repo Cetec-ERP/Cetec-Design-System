@@ -34,6 +34,14 @@ export const Link: React.FC<LinkProps> = (
 ) => {
 
   const [ className, otherProps ] = splitProps(props);
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
   return (
     <Box
       as="a"
@@ -45,6 +53,7 @@ export const Link: React.FC<LinkProps> = (
         link({ family, italic, bold, size, weight }),
         className,
       )}
+      onClick={handleClick}
       {...otherProps}
     >
       {children}

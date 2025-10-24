@@ -43,6 +43,7 @@ export const IconButton: FC<IconButtonProps> = ({
       as={href ? 'a' : 'button'}
       disabled={isDisabled}
       aria-disabled={isDisabled}
+      aria-label={`icon-button`}
       className={cx(iconButton({ variant, size }), className)}
       {...(href ? { href } : { type })}
       {...otherProps}

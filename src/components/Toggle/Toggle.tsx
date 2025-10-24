@@ -6,11 +6,15 @@ import React from 'react';
 
 export type ToggleProps = Omit<BoxProps, keyof ToggleVariantProps> &
   ToggleVariantProps & {
+    name: string;
+    id?: string;
     error?: boolean;
     disabled?: boolean;
   };
 
 export const Toggle: React.FC<ToggleProps> = ({
+  name,
+  id,
   error,
   disabled,
   checked,
@@ -20,21 +24,21 @@ export const Toggle: React.FC<ToggleProps> = ({
   return (
     <Label
       className={container}
-      {...disabled && { 'data-disabled': true }}
+      {...(disabled && { 'data-disabled': true })}
+      htmlFor={id}
     >
       <Box
         as="input"
         type="checkbox"
+        name={name}
+        id={id}
+        aria-label={name}
         className={input}
         {...(checked ? { 'data-checked': true } : {})}
         {...(error ? { 'data-error': true } : {})}
         {...props}
       />
-      <Box
-        as="span"
-        className={background}
-        name={'toggle-bg'}
-      />
+      <Box as="span" className={background} name={'toggle-bg'} />
       <Icon name={'circle'} className={indicator} />
       <Icon name={'circle-check'} className={indicator} />
     </Label>
