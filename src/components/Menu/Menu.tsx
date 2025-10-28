@@ -52,10 +52,10 @@ export const Menu: React.FC<MenuProps> = ({
     multiLevelIcon,
     dividerSection,
     spacerSection,
-    iconSection
+    iconSection,
   } = menu({
     iconPlacement,
-    multiSelectType
+    multiSelectType,
   });
   const [selected, setSelected] = useState<string[]>([]);
   const [isChildren, setIsChildren] = useState([
@@ -66,11 +66,10 @@ export const Menu: React.FC<MenuProps> = ({
 
   const handleSelect = (id: string) => {
     if (variant === 'single-select') {
-      if(selected.includes(id)){
+      if (selected.includes(id)) {
         setSelected([]);
         onChange?.(null);
-      }
-      else{
+      } else {
         setSelected([id]);
         onChange?.(id);
       }
@@ -107,9 +106,7 @@ export const Menu: React.FC<MenuProps> = ({
           textStyle={{ base: 'body-lg', md: 'body-md' }}
           color={{ base: 'slate.90', _dark: 'slate.0' }}
         >
-          <Icon
-            name="caret-left"
-          />
+          <Icon name="caret-left" />
           {current?.parentLabel || 'Back'}
         </Text>
       )}
@@ -131,7 +128,7 @@ export const Menu: React.FC<MenuProps> = ({
                 const isSelected = selected.includes(item.id);
                 const isDisabled = !!item?.disabled;
                 const activateItem = () => {
-                  if(isDisabled) return;
+                  if (isDisabled) return;
                   if (item?.children) {
                     handleOpenSubmenu(item.children, item.label);
                   } else {
@@ -140,6 +137,7 @@ export const Menu: React.FC<MenuProps> = ({
                 };
                 return (
                   <Box
+                    color={{ base: 'slate.100', _dark: 'slate.90' }}
                     key={item?.id}
                     className={menuItem}
                     tabIndex={isDisabled ? -1 : 0}
@@ -147,29 +145,40 @@ export const Menu: React.FC<MenuProps> = ({
                     aria-disabled={item?.disabled}
                     data-selected={isSelected}
                     onClick={activateItem}
-                    onKeyDown={(e: { key: string; preventDefault: () => void; }) => {
-                      if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') {
-                        e.preventDefault(); 
+                    onKeyDown={(e: {
+                      key: string;
+                      preventDefault: () => void;
+                    }) => {
+                      if (
+                        e.key === ' ' ||
+                        e.key === 'Spacebar' ||
+                        e.key === 'Enter'
+                      ) {
+                        e.preventDefault();
                         activateItem();
                       }
                     }}
                     role="button"
                     aria-pressed={isSelected}
                   >
-                    {section?.icon &&
+                    {section?.icon && (
                       <Box className={iconSection}>
-                        {item?.iconName && <Icon name={`${item?.iconName as IconNamesList}`} />}
+                        {item?.iconName && (
+                          <Icon name={`${item?.iconName as IconNamesList}`} />
+                        )}
                       </Box>
-                    }
+                    )}
                     {variant === 'multi-select' &&
-                      multiSelectType === 'checkbox' && !section?.link && (
+                      multiSelectType === 'checkbox' &&
+                      !section?.link && (
                         <CheckBox
                           checked={isSelected}
                           onChange={() => handleSelect(item.id)}
                         />
                       )}
                     {variant === 'multi-select' &&
-                      multiSelectType === 'toggle' && !section?.link && (
+                      multiSelectType === 'toggle' &&
+                      !section?.link && (
                         <Toggle
                           checked={isSelected}
                           onChange={() => handleSelect(item.id)}
@@ -180,7 +189,7 @@ export const Menu: React.FC<MenuProps> = ({
                         <Text
                           textStyle={{ base: 'body-lg', md: 'body-md' }}
                           className={menuLabel}
-                          color={{ base: 'slate.90', _dark: 'slate.0' }}
+                          color={{ base: 'slate.90', _dark: 'slate.5' }}
                         >
                           {item?.label}
                         </Text>
@@ -196,17 +205,12 @@ export const Menu: React.FC<MenuProps> = ({
                         href={`${item?.href}`}
                         color={{ base: 'slate.90', _dark: 'slate.0' }}
                       >
-                        {item?.label}{' '}
-                        <Icon
-                          name="arrow-square-out"
-                        />
+                        {item?.label} <Icon name="arrow-square-out" />
                       </Link>
                     )}
                     {hasChildren && (
                       <Box className={multiLevelIcon}>
-                        <Icon
-                          name="caret-right"
-                        />
+                        <Icon name="caret-right" />
                       </Box>
                     )}
                   </Box>
@@ -215,7 +219,7 @@ export const Menu: React.FC<MenuProps> = ({
             </Box>
             {section?.divider && (
               <Box className={dividerSection}>
-                <Divider color={{base: 'slate.10', _dark: 'slate.60'}}/>
+                <Divider color={{ base: 'slate.10', _dark: 'slate.60' }} />
               </Box>
             )}
             {section?.spacer && <Box className={spacerSection}></Box>}
@@ -224,5 +228,4 @@ export const Menu: React.FC<MenuProps> = ({
       </Box>
     </Box>
   );
-  
 };

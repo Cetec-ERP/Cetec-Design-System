@@ -15,7 +15,7 @@ const menuBase = {
     },
     borderBottomLeftRadius: { base: '0', md: '4' },
     borderBottomRightRadius: { base: '0', md: '4' },
-    "& ~ [name='caret-left'], & ~ [name='caret-right'], & ~ svg": {
+    '& ~ svg': {
       fill: { base: 'slate.90', _dark: 'slate.0' },
       mr: 'auto',
     },
@@ -118,7 +118,7 @@ const menuVariants = {
       menuItem: { py: { base: '16', md: '6' }, gap: '12' },
     },
     checkbox: {
-      menuItem: { py: { base: '12', md: '4' }, },
+      menuItem: { py: { base: '12', md: '4' } },
     },
   },
 };
