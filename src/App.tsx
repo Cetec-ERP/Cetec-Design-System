@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
@@ -26,6 +26,7 @@ import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
 import { Breadcrumbs } from './components/Breadcrumbs';
 import { Tag } from './components/Tag';
+import { Menu } from './components/Menu';
 
 export const IconList: React.FC = () => {
   return (
@@ -169,7 +170,191 @@ const ShadowBox = ({
   );
 };
 
+const menuData = [
+  {
+    id: '1',
+    items: [
+      { id: '1', label: 'Profile' },
+      { id: '2', label: 'Settings' },
+      { id: '3', label: 'Logout' },
+    ],
+  },
+];
+
+const menuWithIcon = [
+  {
+    id: '1',
+    items: [
+      { id: '1', label: 'Menu item label', iconName: 'aa-placeholder' },
+      { id: '2', label: 'Menu item label' },
+      { id: '3', label: 'Menu item label' },
+      { id: '4', label: 'Menu item label' },
+    ],
+  },
+];
+
+const multiLevelCheckboxSection = [
+  {
+    id: '1',
+    items: [
+      { id: '1', label: 'Menu item label' },
+      { id: '2', label: 'Menu item label' },
+      { id: '3', label: 'Menu item label' },
+      { id: '4', label: 'Menu item label' },
+    ],
+  },
+];
+
+const multiLevelToggleSection = [
+  {
+    id: '1',
+    items: [
+      { id: '1', label: 'Menu item label' },
+      { id: '2', label: 'Menu item label' },
+      { id: '3', label: 'Menu item label' },
+      { id: '4', label: 'Menu item label' },
+    ],
+  },
+];
+
+const menuWithDescription = [
+  {
+    id: '2',
+    items: [
+      {
+        id: '1',
+        label: 'Menu item label',
+        description: 'Description text goes here',
+      },
+      {
+        id: '2',
+        label: 'Menu item label',
+        description: 'Description text goes here',
+      },
+      {
+        id: '3',
+        label: 'Menu item label',
+        description: 'Description text goes here',
+      },
+      {
+        id: '4',
+        label: 'Menu item label',
+        description: 'Description text goes here',
+        disabled: true,
+      },
+    ],
+  },
+];
+
+const menuWithChildren = [
+  {
+    id: '4',
+    items: [
+      {
+        id: '1',
+        label: 'Print',
+        children: [
+          {
+            id: '4-1',
+            items: [
+              { id: '1-1', label: 'License plate' },
+              { id: '1-2', label: 'Part Pick List' },
+              { id: '1-3', label: 'BOM Tree' },
+              { id: '1-4', label: 'Serial List, Top & Component' },
+            ],
+          },
+        ],
+      },
+      {
+        id: '2',
+        label: 'Add note',
+        children: [
+          {
+            id: '4-1',
+            items: [
+              { id: '1-1', label: 'License plate' },
+              { id: '1-2', label: 'Part Pick List' },
+              { id: '1-3', label: 'BOM Tree' },
+              { id: '1-4', label: 'Serial List, Top & Component' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const menuSectionTitleAndDivider = [
+  {
+    id: '1',
+    title: 'Section Title',
+    items: [
+      { id: '1', label: 'Menu item label' },
+      { id: '2', label: 'Menu item label' },
+      { id: '3', label: 'Menu item label' },
+      { id: '4', label: 'Menu item label' },
+    ],
+    divider: true,
+  },
+  {
+    id: '2',
+    title: 'Section Title Two',
+    items: [
+      { id: '5', label: 'Menu item label' },
+      { id: '6', label: 'Menu item label' },
+    ],
+  },
+];
+
+const menuWithSpacer = [
+  {
+    id: '1',
+    title: 'Section Title',
+    items: [
+      { id: '1', label: 'Menu item label' },
+      { id: '2', label: 'Menu item label' },
+      { id: '3', label: 'Menu item label' },
+      { id: '4', label: 'Menu item label' },
+    ],
+    spacer: true,
+  },
+  {
+    id: '2',
+    title: 'Section Title Two',
+    items: [
+      { id: '5', label: 'Menu item label' },
+      { id: '6', label: 'Menu item label' },
+    ],
+  },
+];
+
+const menuWithLink = [
+  {
+    id: '1',
+    title: 'Section Title',
+    items: [
+      { id: '1', label: 'Menu item label' },
+      { id: '2', label: 'Menu item label' },
+      { id: '3', label: 'Menu item label' },
+      { id: '4', label: 'Menu item label' },
+    ],
+    divider: true,
+  },
+  {
+    id: '3',
+    link: true,
+    items: [
+      { id: '7', label: 'Menu item label', href: '#' },
+      { id: '8', label: 'Menu item label', href: '#' },
+    ],
+  },
+];
+
 const AppContent: React.FC = () => {
+  const [menuShow, setMenuShow] = useState(false);
+  const handleAction = () => {
+    setMenuShow((show) => !show);
+  };
   return (
     <VStack>
       <Header />
@@ -925,44 +1110,6 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Tags</Heading>
             <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput size={'small'} placeholder={'Enter Text'} />
-                  <Text>Small</Text>
-                </VStack>
-                <VStack>
-                  <TextInput placeholder={'Enter Text'} />
-                  <Text>Medium</Text>
-                </VStack>
-                <VStack>
-                  <TextInput size={'large'} placeholder={'Enter Text'} />
-                  <Text>Large</Text>
-                </VStack>
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput defaultValue="entered text" />
-                  <Text>Default - Filled</Text>
-                </VStack>
-                <VStack>
-                  <TextInput data-error={true} placeholder={'placeholder'} />
-                  <Text>Error</Text>
-                </VStack>
-                <VStack>
-                  <TextInput disabled placeholder={'placeholder'} />
-                  <Text>Disabled</Text>
-                </VStack>
-              </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
-                <VStack>
-                  <TextInput autoSize={true} placeholder={'Enter Text'} />
-                  <Text>Auto Size</Text>
-                </VStack>
-              </HStack>
-            </VStack>
-          </Section>
-          <Section>
-            <VStack alignItems={'flex-start'}>
               <HStack>
                 <Tag>Tag</Tag>
                 <Tag hue="tan">Tag</Tag>
@@ -1033,6 +1180,7 @@ const AppContent: React.FC = () => {
                   Tag
                 </Tag>
               </HStack>
+
               <HStack>
                 <Tag iconName="aa-placeholder">Tag</Tag>
                 <Tag iconName="aa-placeholder" hue="tan">
@@ -1220,6 +1368,137 @@ const AppContent: React.FC = () => {
                 >
                   Tag
                 </Tag>
+              </HStack>
+            </VStack>
+          </Section>
+          <Section>
+            <Heading level="h2">Menu</Heading>
+            <VStack
+              gap={'40'}
+              alignContent={'flex-start'}
+              justifyContent={'flex-start'}
+            >
+              <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box>
+                  <Text>Basic</Text>
+                  <Menu
+                    menuSection={menuData}
+                    variant="single-select"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+                <Box>
+                  <Text>With Description</Text>
+                  <Menu
+                    menuSection={menuWithDescription}
+                    variant="single-select"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+                <Box>
+                  <Text>Right Side Icon</Text>
+                  <Menu
+                    menuSection={menuWithIcon}
+                    variant="single-select"
+                    iconPlacement="right"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box>
+                  <Text>Left Side Icon</Text>
+                  <Menu
+                    menuSection={menuWithIcon}
+                    variant="single-select"
+                    iconPlacement="left"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+                <Box>
+                  <Text>Checkbox multi select checkbox</Text>
+                  <Menu
+                    menuSection={multiLevelCheckboxSection}
+                    variant="multi-select"
+                    multiSelectType="checkbox"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+                <Box>
+                  <Text>Checkbox multi select toggle</Text>
+                  <Menu
+                    menuSection={multiLevelToggleSection}
+                    variant="multi-select"
+                    multiSelectType="toggle"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box>
+                  <Text>With Links</Text>
+                  <Menu
+                    menuSection={menuWithLink}
+                    variant="multi-select"
+                    multiSelectType="toggle"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+                <Box>
+                  <Text>Section title & divider</Text>
+                  <Menu
+                    menuSection={menuSectionTitleAndDivider}
+                    variant="single-select"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+                <Box>
+                  <Text>With Spacer</Text>
+                  <Menu
+                    menuSection={menuWithSpacer}
+                    variant="single-select"
+                    onChange={(val) => console.log('Selected', val)}
+                  />
+                </Box>
+              </HStack>
+              <HStack
+                gap={'40'}
+                alignItems={'start'}
+                justifyContent={'flex-start'}
+                width={'full'}
+              >
+                <Box color={{ base: 'slate.90', _dark: 'slate.0' }}>
+                  <Text>Multi Level Menu</Text>
+                  <Button onClick={handleAction}>
+                    Action{' '}
+                    {menuShow ? (
+                      <Icon name="caret-up" />
+                    ) : (
+                      <Icon name="caret-down" />
+                    )}
+                  </Button>
+                  {menuShow && (
+                    <Menu
+                      menuSection={menuWithChildren}
+                      onChange={(val) => console.log('Selected', val)}
+                    />
+                  )}
+                </Box>
               </HStack>
             </VStack>
           </Section>

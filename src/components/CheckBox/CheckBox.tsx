@@ -23,7 +23,10 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   const { container, input, indicator } = checkbox({});
 
   return (
-    <Label className={container} htmlFor={id}>
+    <Label
+      className={container}
+      color={error ? 'red.50' : { base: 'slate.90', _dark: 'slate.0' }}
+    >
       <Box
         as="input"
         type="checkbox"
