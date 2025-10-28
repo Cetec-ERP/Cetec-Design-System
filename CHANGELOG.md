@@ -1,3 +1,32 @@
+# 0.0.35 (Tue Oct 28 2025)
+
+#### 🐛 Bug Fix
+
+- feat: menu component [#102](https://github.com/Cetec-ERP/Cetec-Design-System/pull/102) (smitpatel@Smits-MacBook-Air.local)
+- feat: accessibility standards [#113](https://github.com/Cetec-ERP/Cetec-Design-System/pull/113) (smitpatel@Smits-MacBook-Air.local [@Etwigg](https://github.com/Etwigg) ethanwiggins@Ethans-MacBook-Air.local)
+- feat: tag component [#112](https://github.com/Cetec-ERP/Cetec-Design-System/pull/112) (smitpatel@Smits-MacBook-Air.local ethanwiggins@Ethans-MacBook-Air.local)
+- refactor: token changes in preparation for upcoming components (like Tags) [#111](https://github.com/Cetec-ERP/Cetec-Design-System/pull/111) ([@shaunrfox](https://github.com/shaunrfox))
+- chore: change autorc [#110](https://github.com/Cetec-ERP/Cetec-Design-System/pull/110) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- chore: update release.yml [#109](https://github.com/Cetec-ERP/Cetec-Design-System/pull/109) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- chore: test release workflow [#108](https://github.com/Cetec-ERP/Cetec-Design-System/pull/108) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- feat: breadcrumbs component [#95](https://github.com/Cetec-ERP/Cetec-Design-System/pull/95) (smitpatel@Smits-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- feat: testworkflow [#107](https://github.com/Cetec-ERP/Cetec-Design-System/pull/107) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of github.com:Cetec-ERP/Cetec-Design-System (ethanwiggins@Ethans-MacBook-Air.local)
+- fix: auto config file (ethanwiggins@Ethans-MacBook-Air.local)
+
+#### Authors: 5
+
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Ethan Wiggins (ethanwiggins@ethans-air.lan)
+- Ethan Wiggins (ethanwiggins@Ethans-MacBook-Air.local)
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+- Smit Patel ([@smitjp150622](https://github.com/smitjp150622))
+
+---
+
 # 0.0.35 (Fri Oct 24 2025)
 
 #### 🐛 Bug Fix
