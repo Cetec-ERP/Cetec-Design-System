@@ -3,7 +3,7 @@ import { Box, type BoxProps } from '../Box';
 import { useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
-import { Icon, type IconNamesList } from '../Icon';
+import { Icon } from '../Icon';
 import { CheckBox } from '../CheckBox';
 import { Toggle } from '../Toggle';
 import { Link } from '../Link';
@@ -96,7 +96,7 @@ export const Menu: React.FC<MenuProps> = ({
   };
 
   return (
-    <Box className={wrapper}>
+    <Box className={wrapper} color={{ base: 'slate.90', _dark: 'slate.0' }}>
       {isChildren.length > 1 && (
         <Text
           onClick={handleBack}
@@ -106,7 +106,6 @@ export const Menu: React.FC<MenuProps> = ({
         >
           <Icon
             name="caret-left"
-            fill={{ base: 'slate.90', _dark: 'slate.0' }}
           />
           {current?.parentLabel || 'Back'}
         </Text>
@@ -127,6 +126,13 @@ export const Menu: React.FC<MenuProps> = ({
               {section?.items?.map((item) => {
                 const hasChildren = !!item.children?.length;
                 const isSelected = selected.includes(item.id);
+                const activateItem = () => {
+                  if (item?.children) {
+                    handleOpenSubmenu(item.children, item.label);
+                  } else {
+                    handleSelect(item.id);
+                  }
+                };
                 return (
                   <Box
                     key={item?.id}
@@ -135,11 +141,15 @@ export const Menu: React.FC<MenuProps> = ({
                     disabled={item?.disabled}
                     aria-disabled={item?.disabled}
                     data-selected={isSelected}
-                    onClick={() =>
-                      item?.children
-                        ? handleOpenSubmenu(item?.children, item.label)
-                        : handleSelect(item.id)
-                    }
+                    onClick={activateItem}
+                    onKeyDown={(e: { key: string; preventDefault: () => void; }) => {
+                      if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') {
+                        e.preventDefault(); 
+                        activateItem();
+                      }
+                    }}
+                    role="button"
+                    aria-pressed={isSelected}
                   >
                     {item?.icon && <Icon name={`${item?.icon}`} />}
                     {variant === 'multi-select' &&
@@ -180,7 +190,6 @@ export const Menu: React.FC<MenuProps> = ({
                         {item?.label}{' '}
                         <Icon
                           name="arrow-square-out"
-                          fill={{ base: 'slate.90', _dark: 'slate.0' }}
                         />
                       </Link>
                     )}
@@ -188,7 +197,6 @@ export const Menu: React.FC<MenuProps> = ({
                       <Box className={multiLevelIcon}>
                         <Icon
                           name="caret-right"
-                          fill={{ base: 'slate.90', _dark: 'slate.0' }}
                         />
                       </Box>
                     )}

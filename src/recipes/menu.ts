@@ -61,6 +61,7 @@ const menuBase = {
     _focusVisible: {
       outlineColor: { base: 'slate.90', _dark: 'slate.0' },
       borderColor: { base: 'slate.90', _dark: 'slate.0' },
+      outlineOffset: '-2',
     },
     _disabled: {
       opacity: 0.4,
@@ -76,7 +77,7 @@ const menuBase = {
       },
     },
     "&[data-selected='true']": {
-      bg: { base: 'slate.5', _dark: 'slate.60' },
+      bg: { base: 'slate.10 ', _dark: 'slate.100' },
       _hover: { base: 'slate.2', _dark: 'slate.50' },
       _active: { base: 'slate.10', _dark: 'slate.100' },
     },
