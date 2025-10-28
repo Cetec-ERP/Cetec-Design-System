@@ -104,7 +104,11 @@ export default defineConfig({
       letterSpacings: theme.tokens.letterSpacings,
       lineHeights: theme.tokens.lineHeights,
       blurs: theme.tokens.blurs,
-      animations: theme.tokens.animations,
+      animations: {
+        ...theme.tokens.animations,
+        slideLeft: { value: 'slideLeft 0.3s ease forwards' },
+      slideRight: { value: 'slideRight 0.3s ease forwards' },
+      },
       colors: theme.tokens.colors,
       fonts: theme.tokens.fonts,
       fontSizes: theme.tokens.fontSizes,
@@ -148,7 +152,17 @@ export default defineConfig({
         tooltip: tooltipRecipe,
         menu: menuRecipe,
       },
-    },
+      keyframes: {
+        slideLeft: {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideRight: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+      },
+    },    
   },
 
   utilities: {

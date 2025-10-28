@@ -355,7 +355,6 @@ const AppContent: React.FC = () => {
   const handleAction = () => {
     setMenuShow((show) => !show);
   };
-
   return (
     <VStack>
       <Header />
