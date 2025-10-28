@@ -1180,10 +1180,7 @@ const AppContent: React.FC = () => {
                   Tag
                 </Tag>
               </HStack>
-            </VStack>
-          </Section>
-          <Section>
-            <VStack alignItems={'flex-start'}>
+
               <HStack>
                 <Tag iconName="aa-placeholder">Tag</Tag>
                 <Tag iconName="aa-placeholder" hue="tan">
