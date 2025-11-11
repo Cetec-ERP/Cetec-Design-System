@@ -6,8 +6,9 @@ import {
   type RadioInputVariantProps,
 } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
-import { Box, type BoxProps } from '../Box';
+import { type BoxProps } from '../Box';
 import { FC, ReactNode } from 'react';
+import { Text } from '../Text';
 
 export type RadioInputProps = BoxProps &
   RadioInputVariantProps & {
@@ -20,7 +21,6 @@ export type RadioInputProps = BoxProps &
 export const RadioInput: FC<RadioInputProps> = ({
   id,
   name,
-  variant,
   children,
   error,
   ...props
@@ -28,7 +28,7 @@ export const RadioInput: FC<RadioInputProps> = ({
   const [className, otherProps] = splitProps(props);
   return (
     <Label
-      className={cx(radioInput({ variant }), className)}
+      className={cx(radioInput(), className)}
       {...otherProps}
       htmlFor={id}
     >
@@ -38,7 +38,7 @@ export const RadioInput: FC<RadioInputProps> = ({
         {...(error && { 'data-error': true })}
         {...props}
       />
-      {children && <Box as="div">{children}</Box>}
+      {children && <Text as="span">{children}</Text>}
     </Label>
   );
 };
