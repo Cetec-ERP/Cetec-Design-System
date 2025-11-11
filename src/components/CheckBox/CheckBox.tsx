@@ -4,20 +4,22 @@ import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
 import { Icon } from '../Icon';
 import { AriaAttributes } from 'react';
 
-export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
+export type CheckboxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
   CheckboxVariantProps & {
     name: string;
     indeterminate?: boolean;
     disabled?: boolean;
     error?: boolean;
-    id?: string;
+		id?: string;
+		labelledby?: string;
   } & AriaAttributes;
 
-export const CheckBox: React.FC<CheckBoxProps> = ({
+export const Checkbox: React.FC<CheckboxProps> = ({
   indeterminate,
   error,
   id,
-  name,
+	name,
+	labelledby,
   ...props
 }) => {
   const { container, input, indicator } = checkbox({});
@@ -33,10 +35,11 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
         className={input}
         name={name}
         id={id}
-        aria-label={name}
-        {...props}
+				aria-label={name}
+				{...labelledby && { 'aria-labelledby': labelledby }}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}
+        {...props}
       />
       <Icon className={indicator} name={'checkbox'} />
       <Icon className={indicator} name={'checkbox-checked'} />

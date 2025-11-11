@@ -67,7 +67,7 @@ Components follow these patterns:
    - Recipe-based styling via Panda CSS (no inline styles or hard-coded values)
    - Export from `src/index.ts` for package consumers
 
-4. **Exported components**: Box, Text, Button, IconButton, Icon, Pre, Heading, Link, Spinner, Divider, CheckBox, Radio, TextInput, Textarea, Card, Toggle, ToggleInput, RadioInput, CheckBoxInput, ThemeSwitcher, Tooltip, Breadcrumbs, Tag, Menu
+4. **Exported components**: Box, Text, Button, IconButton, Icon, Pre, Heading, Link, Spinner, Divider, Checkbox, Radio, TextInput, Textarea, Card, Toggle, ToggleInput, RadioInput, CheckboxInput, ThemeSwitcher, Tooltip, Breadcrumbs, Tag, Menu
 
 ### Icon System
 

@@ -1,1 +1,1 @@
-export { CheckBoxInput, type  CheckBoxInputProps} from './CheckboxInput';
+export { CheckboxInput, type  CheckboxInputProps} from './CheckboxInput';
