@@ -10,7 +10,7 @@ import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
 import * as componentRecipes from './src/recipes/index';
 
-const { checkBoxRecipe, radioRecipe, tooltipRecipe, menuRecipe, ...regularRecipes } = componentRecipes;
+const { checkboxRecipe, radioRecipe, tooltipRecipe, menuRecipe, ...regularRecipes } = componentRecipes;
 
 // Transform recipe keys: remove 'Recipe' suffix to match component imports
 // e.g., { boxRecipe: {...} } becomes { box: {...} }
@@ -58,7 +58,7 @@ export const cetecPreset = definePreset({
         ...transformedRecipes,
       },
       slotRecipes: {
-        checkbox: checkBoxRecipe,
+        checkbox: checkboxRecipe,
 				radio: radioRecipe,
 				tooltip: tooltipRecipe,
 				menu: menuRecipe,

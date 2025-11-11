@@ -118,7 +118,7 @@ import {
   linkRecipe,
   labelRecipe,
   textRecipe,
-  checkBoxRecipe,
+  checkboxRecipe,
   spinnerRecipe,
   dividerRecipe,
   preRecipe,
@@ -226,7 +226,7 @@ export default defineConfig({
         box: boxRecipe,
       },
       slotRecipes: {
-        checkbox: checkBoxRecipe,
+        checkbox: checkboxRecipe,
         radio: radioRecipe,
       },
     },
@@ -342,7 +342,7 @@ function MyComponent() {
 
 ### Available Components
 
-Box, Text, Button, IconButton, Icon, Pre, Heading, Link, Spinner, Divider, CheckBox, Radio, TextInput, Textarea, Card, Toggle, ToggleInput, RadioInput, CheckBoxInput, ThemeSwitcher, Tooltip, Breadcrumbs, Tag, Menu
+Box, Text, Button, IconButton, Icon, Pre, Heading, Link, Spinner, Divider, Checkbox, Radio, TextInput, Textarea, Card, Toggle, ToggleInput, RadioInput, CheckboxInput, ThemeSwitcher, Tooltip, Breadcrumbs, Tag, Menu
 
 ## Release Process
 

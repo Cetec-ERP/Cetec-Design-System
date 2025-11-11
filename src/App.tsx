@@ -11,7 +11,7 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { CheckBox } from './components/CheckBox';
+import { Checkbox } from './components/Checkbox';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
 import { Toggle } from './components/Toggle';
@@ -19,7 +19,7 @@ import { Divider } from './components/Divider';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
-import { CheckBoxInput } from './components/CheckboxInput';
+import { CheckboxInput } from './components/CheckboxInput';
 import { ToggleInput } from './components/ToggleInput';
 import { Card } from './components/Card';
 import { css } from '@styled-system/css';
@@ -557,32 +557,30 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBox name="normal" />
-              <CheckBox defaultChecked={true} name="default-checked" />
-              <CheckBox indeterminate name="indeterminate" />
-              <CheckBox error name="error" />
-              <CheckBox disabled name="disabled" />
+              <Checkbox name="normal" />
+              <Checkbox defaultChecked={true} name="default-checked" />
+              <Checkbox indeterminate name="indeterminate" />
+              <Checkbox error name="error" />
+              <Checkbox disabled name="disabled" />
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Checkbox Input</Heading>
-            <HStack gap={'40'} alignItems={'flex-end'}>
-              <CheckBoxInput name="normal">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput defaultChecked={true} name="default-checked">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput indeterminate name="indeterminate">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput error name="error">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput disabled name="disabled">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-            </HStack>
+            <VStack gap={'8'} alignItems={'flex-start'} maxW={'280'}>
+              <CheckboxInput name="normal">Aliqua irure veniam</CheckboxInput>
+              <CheckboxInput defaultChecked={true} name="default-checked">
+                elit consectetur elit cillum non eu laborum aute
+              </CheckboxInput>
+              <CheckboxInput indeterminate name="indeterminate">
+                Ut fugiat tempor ullamco voluptate dolor labore amet magna irure reprehenderit est irure est anim eiusmod commodo tempor eu ut.
+              </CheckboxInput>
+              <CheckboxInput error name="error">
+                et qui sit
+              </CheckboxInput>
+              <CheckboxInput disabled name="disabled">
+                aliquip velit anim irure
+              </CheckboxInput>
+            </VStack>
           </Section>
           <Section>
             <Heading level="h2">Radio</Heading>
