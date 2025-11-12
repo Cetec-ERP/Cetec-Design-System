@@ -354,7 +354,8 @@ const AppContent: React.FC = () => {
   const [menuShow, setMenuShow] = useState(false);
   const handleAction = () => {
     setMenuShow((show) => !show);
-  };
+	};
+	const [checked, setChecked] = useState(false);
   return (
     <VStack>
       <Header />
@@ -557,28 +558,58 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
-              <Checkbox name="normal" />
-              <Checkbox defaultChecked={true} name="default-checked" />
-              <Checkbox indeterminate name="indeterminate" />
-              <Checkbox error name="error" />
-              <Checkbox disabled name="disabled" />
+              <Checkbox
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+                name="normal"
+              />
+              <Checkbox
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+                defaultChecked={true}
+                name="default-checked"
+              />
+              <Checkbox
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+                indeterminate
+                name="indeterminate"
+              />
+              <Checkbox
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+                error
+                name="error"
+              />
+              <Checkbox
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+                disabled
+                name="disabled"
+              />
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Checkbox Input</Heading>
             <VStack gap={'8'} alignItems={'flex-start'} maxW={'280'}>
-              <CheckboxInput name="normal">Aliqua irure veniam</CheckboxInput>
+              <CheckboxInput name="normal">
+                <Text>Aliqua irure veniam</Text>
+              </CheckboxInput>
               <CheckboxInput defaultChecked={true} name="default-checked">
-                elit consectetur elit cillum non eu laborum aute
+                <Text>elit consectetur elit cillum non eu laborum aute</Text>
               </CheckboxInput>
               <CheckboxInput indeterminate name="indeterminate">
-                Ut fugiat tempor ullamco voluptate dolor labore amet magna irure reprehenderit est irure est anim eiusmod commodo tempor eu ut.
+                <Text>
+                  Ut fugiat tempor ullamco voluptate dolor labore amet magna
+                  irure reprehenderit est irure est anim eiusmod commodo tempor
+                  eu ut.
+                </Text>
               </CheckboxInput>
               <CheckboxInput error name="error">
-                et qui sit
+                <Text>et qui sit</Text>
               </CheckboxInput>
               <CheckboxInput disabled name="disabled">
-                aliquip velit anim irure
+                <Text>aliquip velit anim irure</Text>
               </CheckboxInput>
             </VStack>
           </Section>

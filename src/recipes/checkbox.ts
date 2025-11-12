@@ -13,6 +13,10 @@ export const checkboxRecipe = defineSlotRecipe({
       alignItems: 'start',
       cursor: 'pointer',
       userSelect: 'none',
+      color: { base: 'slate.90', _dark: 'slate.0' },
+      _error: {
+        color: 'error.default',
+      },
     },
     input: {
       position: 'absolute',

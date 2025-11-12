@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { userEvent, within, expect } from '@storybook/test';
 import { CheckboxInput } from './CheckboxInput';
+import { CheckboxChangeHandler } from '../Checkbox';
 import { Box } from '../Box';
+import { Text } from '../Text';
 
 const meta: Meta<typeof CheckboxInput> = {
   title: 'Components/CheckboxInput',
@@ -78,10 +80,20 @@ type Story = StoryObj<typeof meta>;
 
 // 1. Default - Most common usage
 export const Default: Story = {
-  args: {
-    name: 'terms',
-    id: 'terms',
-    children: 'I accept the terms and conditions',
+  render: () => {
+    const [checked, setChecked] = useState(false);
+    const handleChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
+
+    return (
+      <CheckboxInput
+        name="terms"
+        id="terms"
+        checked={checked}
+        onChange={handleChange}
+      >
+        I accept the terms and conditions
+      </CheckboxInput>
+    );
   },
 };
 
@@ -90,23 +102,57 @@ export const AllStates: Story = {
   name: 'All States',
   render: () => (
     <Box display="flex" flexDirection="column" gap="16">
-      <CheckboxInput name="unchecked" id="unchecked">
-        Unchecked
+      <CheckboxInput
+        name="unchecked"
+        id="unchecked"
+        checked={false}
+        onChange={() => {}}
+      >
+        <Text>Unchecked</Text>
       </CheckboxInput>
-      <CheckboxInput name="checked" id="checked" checked>
-        Checked
+      <CheckboxInput
+        name="checked"
+        id="checked"
+        checked={true}
+        onChange={() => {}}
+      >
+        <Text>Checked</Text>
       </CheckboxInput>
-      <CheckboxInput name="indeterminate" id="indeterminate" indeterminate>
-        Indeterminate
+      <CheckboxInput
+        name="indeterminate"
+        id="indeterminate"
+        indeterminate
+        checked={false}
+        onChange={() => {}}
+      >
+        <Text>Indeterminate</Text>
       </CheckboxInput>
-      <CheckboxInput name="error" id="error" error>
-        Error state
+      <CheckboxInput
+        name="error"
+        id="error"
+        error
+        checked={false}
+        onChange={() => {}}
+      >
+        <Text>Error state</Text>
       </CheckboxInput>
-      <CheckboxInput name="disabled" id="disabled" disabled>
-        Disabled
+      <CheckboxInput
+        name="disabled"
+        id="disabled"
+        disabled
+        checked={false}
+        onChange={() => {}}
+      >
+        <Text>Disabled</Text>
       </CheckboxInput>
-      <CheckboxInput name="disabled-checked" id="disabled-checked" disabled checked>
-        Disabled + Checked
+      <CheckboxInput
+        name="disabled-checked"
+        id="disabled-checked"
+        disabled
+        checked={true}
+        onChange={() => {}}
+      >
+        <Text>Disabled + Checked</Text>
       </CheckboxInput>
     </Box>
   ),
@@ -274,10 +320,20 @@ export const ExFormIntegration: Story = {
 // 4. Accessibility Stories - Use "A11y:" prefix
 export const A11yAccessibilityCheck: Story = {
   name: 'A11y: Accessibility Check',
-  args: {
-    name: 'accessible',
-    id: 'accessible',
-    children: 'Accessible checkbox',
+  render: () => {
+    const [checked, setChecked] = useState(false);
+    const handleChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
+
+    return (
+      <CheckboxInput
+        name="accessible"
+        id="accessible"
+        checked={checked}
+        onChange={handleChange}
+      >
+        Accessible checkbox
+      </CheckboxInput>
+    );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -316,13 +372,28 @@ export const A11yKeyboardNavigation: Story = {
   name: 'A11y: Keyboard Navigation',
   render: () => (
     <Box display="flex" flexDirection="column" gap="12">
-      <CheckboxInput name="first" id="first">
+      <CheckboxInput
+        name="first"
+        id="first"
+        checked={false}
+        onChange={() => {}}
+      >
         First checkbox
       </CheckboxInput>
-      <CheckboxInput name="second" id="second">
+      <CheckboxInput
+        name="second"
+        id="second"
+        checked={false}
+        onChange={() => {}}
+      >
         Second checkbox
       </CheckboxInput>
-      <CheckboxInput name="third" id="third">
+      <CheckboxInput
+        name="third"
+        id="third"
+        checked={false}
+        onChange={() => {}}
+      >
         Third checkbox
       </CheckboxInput>
     </Box>

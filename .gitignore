@@ -38,3 +38,6 @@ styled-system-studio
 storybook-static
 
 .env
+.plugin-config
+.project-structure.md
+.session-summary.md
