@@ -1,23 +1,102 @@
->[!IMPORTANT]
->Currently a work in progress and may not be accurate.
-
 # Cetec-ERP Design System
 
-Contains components and styles for the Cetec-ERP application and marketing website.
+A React component library built with TypeScript and Panda CSS for the Cetec-ERP application and marketing website.
 
-- [Overview](#overview)
-- [Installation](#installation)
-- [Usage](#usage)
+- [Development](#development)
+- [Architecture](#architecture)
+- [Working with Components](#working-with-components)
+- [Working with Icons](#working-with-icons)
+- [Usage in Consumer Projects](#usage-in-consumer-projects)
+- [Release Process](#release-process)
 
-## Overview
-Components are bundled in /dist/cetec-design-system.es.js
-Type definitions are in src/components/
+## Development
 
-## Installation
-## Usage
+### Setup
 
-Copy the panda config from the repo (below) and change the paths to the imports to point to path of the package in node modules. 
-Set up the 'include' option to contain the paths in which you want panda to look when building styled-system and styles.css.
+```bash
+npm install
+```
+
+### Commands
+
+```bash
+# Development
+npm run dev                  # Start Vite dev server with Panda CSS watch mode
+npm run storybook           # Start Storybook on port 6006
+
+# Building
+npm run build               # Build for distribution (runs Panda codegen + Vite build)
+npm run build-storybook     # Build Storybook for deployment
+
+# Code Quality
+npm run lint                # Run ESLint
+npm run prepare             # Run Panda CSS codegen (runs automatically after npm install)
+
+# Icons
+npm run generate-sprite     # Generate SVG sprite from icon source files
+```
+
+## Architecture
+
+This design system is built on **Panda CSS** with a strict tokens-first approach:
+
+- **Tokens** (`src/styles/tokens.ts`) - Design tokens for colors, spacing, typography, shadows, etc.
+- **Semantic Tokens** (`src/styles/semanticTokens.ts`) - Theme-specific token aliases for light/dark modes
+- **Recipes** (`src/recipes/`) - Component style variants (button, input, text, etc.)
+- **Components** (`src/components/`) - React components using recipes and tokens
+- **Icons** (`src/utils/svgsSource/`) - SVG icons compiled into a sprite system
+
+### Key Principles
+
+1. **Tokens-first**: No hard-coded hex colors or pixel values - use design tokens only
+2. **Recipe-based styling**: Use existing recipes for components instead of ad-hoc CSS
+3. **Responsive by default**: Container queries + breakpoints for responsive design
+4. **Semantic HTML + Accessibility**: Proper elements, visible focus, keyboard navigation
+5. **Strict TypeScript**: Type-safe props and strict mode enabled
+
+## Working with Components
+
+### Adding a New Component
+
+1. Create component directory: `src/components/[ComponentName]/`
+2. Create a recipe in `src/recipes/[componentname].ts` defining style variants
+3. Export recipe from `src/recipes/index.ts`
+4. Register recipe in `panda.config.ts` under `theme.extend.recipes` (or `slotRecipes` for multi-part components)
+5. Run `npm run prepare` to regenerate Panda CSS types
+6. Implement component using the recipe
+7. Create Storybook story: `ComponentName.stories.tsx`
+8. Export from `src/index.ts`
+
+### Component Guidelines
+
+- Use function components only (React 19)
+- Type props with TypeScript strict mode
+- Use `forwardRefWithAs` utility for polymorphic components
+- Style with Panda recipes (no inline styles or hard-coded values)
+- Follow accessibility guidelines (semantic HTML, keyboard support, ARIA when needed)
+
+## Working with Icons
+
+### Adding Icons
+
+1. Add SVG file to `src/utils/svgsSource/`
+2. Run `npm run generate-sprite` to update the sprite
+3. Use the icon: `<Icon name="iconName" />`
+
+The icon system compiles individual SVGs into a sprite for optimal performance.
+
+## Usage in Consumer Projects
+
+### Installation
+
+```bash
+npm install cetec-design-system
+```
+
+### Panda CSS Configuration
+
+Copy the Panda config below and adjust the import paths to point to the package in `node_modules`.
+Set up the `include` option to contain the paths where Panda should look when building `styled-system` and `styles.css`.
 ```
 import {
   defineConfig,
@@ -225,19 +304,64 @@ export default defineConfig({
   },
 });
 ```
-At the root of your project you'll want to:
-- Import styles.css from the styled-system folder generated from panda codegen, usually at the root of the project: ./styled-system/styles.css
-- Import Icons from the cetec-design-system like so: import * as iconsimport Header from "../components/Header.astro"; - maybe you don't need to do this anymore?
 
-```
+### Using in Your Project
 
-import { ThemeProvider, Text, Spinner, Button, Icon } from "cetec-design-system";
+1. **Import the stylesheet** at the root of your project:
+```typescript
 import "@styled-system/styles.css";
-import * as icons from 'cetec-design-system/icons';
- from 'cetec-design-system/icons';
 ```
 
-Using Auto for package deploy!
-Insert links here
-PR's must adhere to conventional commits standards in the title.
-Testing Release Workflow!
+2. **Wrap your app with ThemeProvider**:
+```typescript
+import { ThemeProvider } from "cetec-design-system";
+
+function App() {
+  return (
+    <ThemeProvider>
+      {/* Your app */}
+    </ThemeProvider>
+  );
+}
+```
+
+3. **Import and use components**:
+```typescript
+import { Button, Text, Icon } from "cetec-design-system";
+
+function MyComponent() {
+  return (
+    <>
+      <Text>Hello World</Text>
+      <Button intent="primary">Click me</Button>
+      <Icon name="arrow-right" />
+    </>
+  );
+}
+```
+
+### Available Components
+
+Box, Text, Button, IconButton, Icon, Pre, Heading, Link, Spinner, Divider, CheckBox, Radio, TextInput, Textarea, Card, Toggle, ToggleInput, RadioInput, CheckBoxInput, ThemeSwitcher, Tooltip, Breadcrumbs, Tag, Menu
+
+## Release Process
+
+This project uses [Auto](https://intuit.github.io/auto/) for automated releases and changelog generation.
+
+### Contributing
+
+- **PR Titles**: Must follow [Conventional Commits](https://www.conventionalcommits.org/) format
+- **Release Labels**: PRs must have a release label (major, minor, patch, or release) to trigger a release
+- **Changelog**: Auto-generated based on PR labels and titles
+
+### Release Labels
+
+- `major` - Breaking changes (💥 Breaking Change)
+- `minor` - New features (🚀 Enhancement)
+- `patch` - Bug fixes (🐛 Bug Fix)
+- `skip-release` - No version bump
+- `internal` - Internal changes (🏠 Internal)
+- `documentation` - Documentation updates (📝 Documentation)
+- `performance` - Performance improvements (🏎 Performance)
+
+See `.autorc` for the complete configuration.
