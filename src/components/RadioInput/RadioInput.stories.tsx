@@ -268,10 +268,14 @@ export const ExRadioGroupWithValidation: Story = {
     const showError = submitted && !preference;
 
     return (
-      <Box as="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap="16">
-        <Text fontWeight="bold">
-          How did you hear about us? *
-        </Text>
+      <Box
+        as="form"
+        onSubmit={handleSubmit}
+        display="flex"
+        flexDirection="column"
+        gap="16"
+      >
+        <Text fontWeight="bold">How did you hear about us? *</Text>
 
         <RadioInput
           name="source"
@@ -341,7 +345,7 @@ export const ExFormIntegration: Story = {
       e.preventDefault();
       console.log('Form submitted:', formData);
       alert(
-        `Payment: ${formData.paymentMethod}\nShipping: ${formData.shippingSpeed}`
+        `Payment: ${formData.paymentMethod}\nShipping: ${formData.shippingSpeed}`,
       );
     };
 
@@ -472,7 +476,13 @@ export const A11yAccessibilityCheck: Story = {
     const handleChange: RadioChangeHandler = (e) => setSelected(e.target.value);
 
     return (
-      <Box display="flex" flexDirection="column" gap="12" role="radiogroup" aria-label="Options">
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap="12"
+        role="radiogroup"
+        aria-label="Options"
+      >
         <RadioInput
           name="accessible"
           value="option1"
@@ -535,7 +545,13 @@ export const A11yKeyboardNavigation: Story = {
     const [selected, setSelected] = useState('');
 
     return (
-      <Box display="flex" flexDirection="column" gap="12" role="radiogroup" aria-label="Sizes">
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap="12"
+        role="radiogroup"
+        aria-label="Sizes"
+      >
         <RadioInput
           name="size"
           value="small"
