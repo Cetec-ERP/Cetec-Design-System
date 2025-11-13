@@ -40,4 +40,6 @@ storybook-static
 .env
 .plugin-config
 .project-structure.md
+.pair-programming-session.md
 .session-summary.md
+.claude

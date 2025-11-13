@@ -31,7 +31,6 @@
     "@pandacss/dev": "^0.51.1",
     "@storybook/addon-essentials": "^8.5.2",
     "@storybook/addon-interactions": "^8.5.2",
-    "@storybook/addon-onboarding": "^8.5.2",
     "@storybook/addon-themes": "^8.6.14",
     "@storybook/blocks": "^8.5.2",
     "@storybook/react": "^8.5.2",

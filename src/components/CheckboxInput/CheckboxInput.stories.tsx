@@ -5,6 +5,7 @@ import { CheckboxInput } from './CheckboxInput';
 import { CheckboxChangeHandler } from '../Checkbox';
 import { Box } from '../Box';
 import { Text } from '../Text';
+import { Button } from '../Button';
 
 const meta: Meta<typeof CheckboxInput> = {
   title: 'Components/CheckboxInput',
@@ -82,7 +83,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => {
     const [checked, setChecked] = useState(false);
-    const handleChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
+    const handleChange: CheckboxChangeHandler = (e) =>
+      setChecked(e.target.checked);
 
     return (
       <CheckboxInput
@@ -196,7 +198,8 @@ export const ExCheckboxGroup: Story = {
     // Calculate if parent should be indeterminate
     const checkedCount = Object.values(selections).filter(Boolean).length;
     const allChecked = checkedCount === Object.keys(selections).length;
-    const someChecked = checkedCount > 0 && checkedCount < Object.keys(selections).length;
+    const someChecked =
+      checkedCount > 0 && checkedCount < Object.keys(selections).length;
 
     const handleSelectAll = (e: any) => {
       const newValue = e.target.checked;
@@ -271,18 +274,28 @@ export const ExFormIntegration: Story = {
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       console.log('Form submitted:', formData);
-      alert(`Form submitted:\nNewsletter: ${formData.newsletter}\nTerms: ${formData.terms}\nPrivacy: ${formData.privacy}`);
+      alert(
+        `Form submitted:\nNewsletter: ${formData.newsletter}\nTerms: ${formData.terms}\nPrivacy: ${formData.privacy}`,
+      );
     };
 
     const allAccepted = formData.terms && formData.privacy;
 
     return (
-      <Box as="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap="16">
+      <Box
+        as="form"
+        onSubmit={handleSubmit}
+        display="flex"
+        flexDirection="column"
+        gap="16"
+      >
         <CheckboxInput
           name="newsletter"
           id="newsletter"
           checked={formData.newsletter}
-          onChange={(e: any) => setFormData({ ...formData, newsletter: e.target.checked })}
+          onChange={(e: any) =>
+            setFormData({ ...formData, newsletter: e.target.checked })
+          }
         >
           Subscribe to newsletter (optional)
         </CheckboxInput>
@@ -291,7 +304,9 @@ export const ExFormIntegration: Story = {
           name="terms"
           id="terms"
           checked={formData.terms}
-          onChange={(e: any) => setFormData({ ...formData, terms: e.target.checked })}
+          onChange={(e: any) =>
+            setFormData({ ...formData, terms: e.target.checked })
+          }
           error={!formData.terms}
         >
           I accept the terms and conditions *
@@ -301,16 +316,18 @@ export const ExFormIntegration: Story = {
           name="privacy"
           id="privacy"
           checked={formData.privacy}
-          onChange={(e: any) => setFormData({ ...formData, privacy: e.target.checked })}
+          onChange={(e: any) =>
+            setFormData({ ...formData, privacy: e.target.checked })
+          }
           error={!formData.privacy}
         >
           I accept the privacy policy *
         </CheckboxInput>
 
         <Box mt="8">
-          <button type="submit" disabled={!allAccepted} style={{ padding: '8px 16px' }}>
+          <Button type="submit" disabled={!allAccepted}>
             Submit
-          </button>
+          </Button>
         </Box>
       </Box>
     );
@@ -322,7 +339,8 @@ export const A11yAccessibilityCheck: Story = {
   name: 'A11y: Accessibility Check',
   render: () => {
     const [checked, setChecked] = useState(false);
-    const handleChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
+    const handleChange: CheckboxChangeHandler = (e) =>
+      setChecked(e.target.checked);
 
     return (
       <CheckboxInput

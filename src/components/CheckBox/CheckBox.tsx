@@ -19,8 +19,7 @@ export type CheckboxProps = {
   /** Display error state */
   error?: boolean;
 } & Omit<BoxProps, 'checked' | 'onChange' | keyof CheckboxVariantProps> &
-  CheckboxVariantProps &
-	AriaAttributes;
+  CheckboxVariantProps;
 
 /**
  * Helper type for checkbox change events

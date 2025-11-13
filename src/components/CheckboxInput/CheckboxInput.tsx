@@ -1,5 +1,5 @@
 import { splitProps } from '~/utils/splitProps';
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { BoxProps } from '../Box';
 import { Label } from '../Label';
@@ -9,33 +9,31 @@ import {
   type CheckboxInputVariantProps,
 } from '@styled-system/recipes';
 
-export type CheckboxInputProps = BoxProps & CheckboxInputVariantProps & {
-	name: string;
-	id?: string;
-	error?: boolean;
-	children?: string | ReactNode;
-};
+export type CheckboxInputProps = BoxProps &
+  CheckboxInputVariantProps & {
+    name: string;
+    id?: string;
+    error?: boolean;
+    children?: string | ReactNode;
+  };
 
 export const CheckboxInput: FC<CheckboxInputProps> = ({
   id,
   name,
-	children,
+  children,
   error,
   indeterminate,
   ...props
 }: CheckboxInputProps) => {
-	const [className, otherProps] = splitProps(props);
-	const [checked, setChecked] = useState(false);
+  const [className, otherProps] = splitProps(props);
   return (
-    <Label className={cx(checkboxInput(), className)} {...otherProps}>
+    <Label className={cx(checkboxInput(), className)} {...otherProps} htmlFor={id}>
       <Checkbox
-        {...otherProps}
         id={id}
         name={name}
-        checked={checked}
-        onChange={(e) => setChecked(e.target.checked)}
         error={error}
         indeterminate={indeterminate}
+        {...props}
       />
       {children}
     </Label>

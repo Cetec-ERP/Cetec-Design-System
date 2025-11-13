@@ -354,8 +354,8 @@ const AppContent: React.FC = () => {
   const [menuShow, setMenuShow] = useState(false);
   const handleAction = () => {
     setMenuShow((show) => !show);
-	};
-	const [checked, setChecked] = useState(false);
+  };
+  const [checked, setChecked] = useState(false);
   return (
     <VStack>
       <Header />
@@ -591,7 +591,7 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Checkbox Input</Heading>
-            <VStack gap={'8'} alignItems={'flex-start'} maxW={'280'}>
+            <VStack gap={'8'} alignItems={'flex-start'} maxW={'xs'}>
               <CheckboxInput name="normal">
                 <Text>Aliqua irure veniam</Text>
               </CheckboxInput>
