@@ -2,12 +2,25 @@
 
 A React component library built with TypeScript and Panda CSS for the Cetec-ERP application and marketing website.
 
-- [Development](#development)
-- [Architecture](#architecture)
-- [Working with Components](#working-with-components)
-- [Working with Icons](#working-with-icons)
-- [Usage in Consumer Projects](#usage-in-consumer-projects)
-- [Release Process](#release-process)
+- [Cetec-ERP Design System](#cetec-erp-design-system)
+	- [Development](#development)
+		- [Setup](#setup)
+		- [Commands](#commands)
+	- [Architecture](#architecture)
+		- [Key Principles](#key-principles)
+	- [Working with Components](#working-with-components)
+		- [Adding a New Component](#adding-a-new-component)
+		- [Component Guidelines](#component-guidelines)
+	- [Working with Icons](#working-with-icons)
+		- [Adding Icons](#adding-icons)
+	- [Usage in Consumer Projects](#usage-in-consumer-projects)
+		- [Installation](#installation)
+		- [Panda CSS Configuration](#panda-css-configuration)
+		- [Using in Your Project](#using-in-your-project)
+		- [Available Components](#available-components)
+	- [Release Process](#release-process)
+		- [Contributing](#contributing)
+		- [Release Labels](#release-labels)
 
 ## Development
 
@@ -97,6 +110,7 @@ npm install cetec-design-system
 
 Copy the Panda config below and adjust the import paths to point to the package in `node_modules`.
 Set up the `include` option to contain the paths where Panda should look when building `styled-system` and `styles.css`.
+
 ```
 import {
   defineConfig,
@@ -308,11 +322,13 @@ export default defineConfig({
 ### Using in Your Project
 
 1. **Import the stylesheet** at the root of your project:
+
 ```typescript
-import "@styled-system/styles.css";
+import '@styled-system/styles.css';
 ```
 
 2. **Wrap your app with ThemeProvider**:
+
 ```typescript
 import { ThemeProvider } from "cetec-design-system";
 
@@ -326,6 +342,7 @@ function App() {
 ```
 
 3. **Import and use components**:
+
 ```typescript
 import { Button, Text, Icon } from "cetec-design-system";
 

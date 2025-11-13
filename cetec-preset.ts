@@ -10,15 +10,21 @@ import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
 import * as componentRecipes from './src/recipes/index';
 
-const { checkBoxRecipe, radioRecipe, tooltipRecipe, menuRecipe, ...regularRecipes } = componentRecipes;
+const {
+  checkBoxRecipe,
+  radioRecipe,
+  tooltipRecipe,
+  menuRecipe,
+  ...regularRecipes
+} = componentRecipes;
 
 // Transform recipe keys: remove 'Recipe' suffix to match component imports
 // e.g., { boxRecipe: {...} } becomes { box: {...} }
 const transformedRecipes = Object.fromEntries(
   Object.entries(regularRecipes).map(([key, value]) => [
     key.replace(/Recipe$/, ''),
-    value
-  ])
+    value,
+  ]),
 );
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -28,7 +34,8 @@ const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
-const { keyframes, breakpoints, containerSizes, fontVariants, ...baseTokens } = tokens;
+const { keyframes, breakpoints, containerSizes, fontVariants, ...baseTokens } =
+  tokens;
 
 const theme = {
   tokens: defineTokens({
@@ -36,13 +43,13 @@ const theme = {
     spacing: tokens.sizes, // Map spacing to our size scale for consistent sizing
   }),
   semanticTokens: defineSemanticTokens({
-    ...semanticTokens
+    ...semanticTokens,
   }),
 };
 
 export const cetecPreset = definePreset({
   name: 'cetecPreset',
-	theme: {
+  theme: {
     extend: {
       tokens: {
         ...theme.tokens,
@@ -53,15 +60,15 @@ export const cetecPreset = definePreset({
       containerSizes: tokens.containerSizes,
       keyframes: tokens.keyframes,
       textStyles: tokens.textStyles,
-			breakpoints: tokens.breakpoints,
+      breakpoints: tokens.breakpoints,
       recipes: {
         ...transformedRecipes,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
-				radio: radioRecipe,
-				tooltip: tooltipRecipe,
-				menu: menuRecipe,
+        radio: radioRecipe,
+        tooltip: tooltipRecipe,
+        menu: menuRecipe,
       },
     },
   },

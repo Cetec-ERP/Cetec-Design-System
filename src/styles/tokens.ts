@@ -391,8 +391,8 @@ const containerSizeTokens = {
 
 export const sizes = {
   ...numericSizes,
-	...utilitySizes,
-	...containerSizeTokens,
+  ...utilitySizes,
+  ...containerSizeTokens,
 };
 
 // Raw values for Panda containerSizes config (no value wrappers)
