@@ -352,6 +352,10 @@ const menuWithLink = [
 
 const AppContent: React.FC = () => {
   const [menuShow, setMenuShow] = useState(false);
+  const [radioDemo, setRadioDemo] = useState('normal');
+  const [genderDemo, setGenderDemo] = useState('male');
+  const [radioInputDemo, setRadioInputDemo] = useState('option1');
+
   const handleAction = () => {
     setMenuShow((show) => !show);
   };
@@ -588,39 +592,80 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Radio</Heading>
             <VStack gap={'40'} alignItems={'start'}>
               <HStack>
-                <Radio name="normal" />
-                <Radio name="normal" defaultChecked={true} />
-                <Radio name="normal" disabled />
-                <Radio name="normal" error={true} />
-              </HStack>
-              <HStack>
-                <HStack gap={'10'} alignItems={'center'}>
-                  <Heading level="h3">Gender</Heading>
-                  <Radio name="gender"></Radio> Male
-                  <Radio name="gender"></Radio> Female
-                </HStack>
+                <Radio
+                  name="demo"
+                  value="normal"
+                  checked={radioDemo === 'normal'}
+                  onChange={(e) => setRadioDemo(e.target.value)}
+                />
+                <Radio
+                  name="demo"
+                  value="checked"
+                  checked={radioDemo === 'checked'}
+                  onChange={(e) => setRadioDemo(e.target.value)}
+                />
+                <Radio
+                  name="demo"
+                  value="disabled"
+                  checked={radioDemo === 'disabled'}
+                  onChange={(e) => setRadioDemo(e.target.value)}
+                  disabled
+                />
+                <Radio
+                  name="demo"
+                  value="error"
+                  checked={radioDemo === 'error'}
+                  onChange={(e) => setRadioDemo(e.target.value)}
+                  error={true}
+                />
               </HStack>
             </VStack>
           </Section>
           <Section>
             <Heading level="h2">Radio Input</Heading>
-            <VStack gap={'40'} alignItems={'start'}>
-              <HStack>
-                <RadioInput name="group">
-                  <Text as="div" size="16" weight={'normal'}>
-                    Consequat ipsum ipsum adipisicing deserunt.
+            <VStack gap={'8'} alignItems={'start'}>
+              <RadioInput
+                name="group"
+                value="option1"
+                checked={radioInputDemo === 'option1'}
+                onChange={(e) => setRadioInputDemo(e.target.value)}
+              >
+                <Flex direction="column">
+                  <Text color={{ base: 'slate.90', _dark: 'slate.5' }}>
+                    Chocolate
                   </Text>
-                  <Text size="14">Deserunt proident officia nostrud.</Text>
-                </RadioInput>
-              </HStack>
-              <HStack>
-                <RadioInput name="group">
-                  <Text as="div" size="16" weight={'normal'}>
-                    Consequat ipsum ipsum adipisicing deserunt.
+                  <Text size="14">
+                    Cupidatat magna occaecat elit occaecat exercitation
+                    reprehenderit.
                   </Text>
-                  <Text size="14">Deserunt proident officia nostrud.</Text>
-                </RadioInput>
-              </HStack>
+                </Flex>
+              </RadioInput>
+              <RadioInput
+                name="group"
+                value="option2"
+                checked={radioInputDemo === 'option2'}
+                onChange={(e) => setRadioInputDemo(e.target.value)}
+              >
+                <Flex direction="column">
+                  <Text color={{ base: 'slate.90', _dark: 'slate.5' }}>
+                    Vanilla
+                  </Text>
+                  <Text size="14">Veniam exercitation labore velit.</Text>
+                </Flex>
+              </RadioInput>
+              <RadioInput
+                name="group"
+                value="option3"
+                checked={radioInputDemo === 'option3'}
+                onChange={(e) => setRadioInputDemo(e.target.value)}
+              >
+                <Flex direction="column">
+                  <Text color={{ base: 'slate.90', _dark: 'slate.5' }}>
+                    Cherry
+                  </Text>
+                  <Text size="14">Tempor irure ut quis in ea ipsum.</Text>
+                </Flex>
+              </RadioInput>
             </VStack>
           </Section>
           <Section>

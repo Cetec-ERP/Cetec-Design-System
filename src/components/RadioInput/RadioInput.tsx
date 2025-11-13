@@ -7,38 +7,48 @@ import {
 } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
 import { type BoxProps } from '../Box';
-import { FC, ReactNode } from 'react';
-import { Text } from '../Text';
+import { FC, ReactNode, ChangeEventHandler } from 'react';
 
 export type RadioInputProps = BoxProps &
   RadioInputVariantProps & {
     name: string;
+    /** Value for this radio option (REQUIRED) */
+    value: string;
+    /** Controlled checked state (REQUIRED) */
+    checked: boolean;
+    /** Change handler (REQUIRED) */
+    onChange: ChangeEventHandler<HTMLInputElement>;
     id?: string;
     error?: boolean;
+    disabled?: boolean;
     children?: string | ReactNode;
   };
 
 export const RadioInput: FC<RadioInputProps> = ({
   id,
   name,
+  value,
+  checked,
+  onChange,
   children,
   error,
+  disabled,
   ...props
 }: RadioInputProps) => {
   const [className, otherProps] = splitProps(props);
   return (
-    <Label
-      className={cx(radioInput(), className)}
-      {...otherProps}
-      htmlFor={id}
-    >
+    <Label className={cx(radioInput(), className)} {...otherProps}>
       <Radio
-        name={name}
+        {...otherProps}
         id={id}
-        {...(error && { 'data-error': true })}
-        {...props}
+        name={name}
+        value={value}
+        checked={checked}
+        onChange={onChange}
+        error={error}
+        disabled={disabled}
       />
-      {children && <Text as="span">{children}</Text>}
+      {children}
     </Label>
   );
 };

@@ -8,11 +8,15 @@ export const radioRecipe = defineSlotRecipe({
         container: {
             position: "relative",
             display: "inline-grid",
-            gridTemplateColumns: "auto 1fr",  
+            gridTemplateColumns: "auto 1fr",
             gap: 4,
             alignItems: "start",
             cursor: "pointer",
             userSelect: "none",
+            color: { base: 'slate.90', _dark: 'slate.0' },
+            _error: {
+                color: 'error.default',
+            },
         },
         input: {
             position: "absolute",
@@ -46,7 +50,7 @@ export const radioRecipe = defineSlotRecipe({
             _error: {
               display: "inline-grid",
               "& ~ svg": {
-                fill: "red.50",
+                fill: "error.default",
               }
             },
             _focusVisible: {
