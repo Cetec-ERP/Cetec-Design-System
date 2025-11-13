@@ -372,11 +372,10 @@ export const utilitySizes = {
   auto: { value: 'auto' },
 };
 
-export const sizes = {
-  ...numericSizes,
-  ...utilitySizes,
+// Container size tokens for the sizes scale (with value wrappers)
+const containerSizeTokens = {
   '2xs': { value: '16rem' }, // 256px
-	xs: { value: '20rem' }, // 320px
+  xs: { value: '20rem' }, // 320px
   sm: { value: '24rem' }, // 384px
   md: { value: '28rem' }, // 448px
   lg: { value: '32rem' }, // 512px
@@ -388,6 +387,39 @@ export const sizes = {
   '6xl': { value: '72rem' }, // 1152px
   '7xl': { value: '80rem' }, // 1280px
   '8xl': { value: '90rem' }, // 1440px
+};
+
+export const sizes = {
+  ...numericSizes,
+  ...utilitySizes,
+  ...containerSizeTokens,
+};
+
+// Raw values for Panda containerSizes config (no value wrappers)
+// Panda's setupContainers() expects raw strings it can call .match() on
+export const containerSizes = {
+  '2xs': '16rem',
+  xs: '20rem',
+  sm: '24rem',
+  md: '28rem',
+  lg: '32rem',
+  xl: '36rem',
+  '2xl': '42rem',
+  '3xl': '48rem',
+  '4xl': '56rem',
+  '5xl': '64rem',
+  '6xl': '72rem',
+  '7xl': '80rem',
+  '8xl': '90rem',
+};
+
+export const breakpoints = {
+  xs: '480px',
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
 };
 
 export const fontSizes = {
@@ -579,22 +611,6 @@ export const animations = {
   },
 };
 
-export const containerSizes = {
-  '2xs': sizes['2xs'].value,
-  xs: sizes.xs.value,
-  sm: sizes.sm.value,
-  md: sizes.md.value,
-  lg: sizes.lg.value,
-  xl: sizes.xl.value,
-  '2xl': sizes['2xl'].value,
-  '3xl': sizes['3xl'].value,
-  '4xl': sizes['4xl'].value,
-  '5xl': sizes['5xl'].value,
-  '6xl': sizes['6xl'].value,
-  '7xl': sizes['7xl'].value,
-  '8xl': sizes['8xl'].value,
-};
-
 export const keyframes = {
   spin: {
     to: {
@@ -622,15 +638,14 @@ export const keyframes = {
       animationTimingFunction: 'cubic-bezier(0,0,0.2,1)',
     },
   },
-};
-
-export const breakpoints = {
-  xs: '480px',
-  sm: '640px',
-  md: '768px',
-  lg: '1024px',
-  xl: '1280px',
-  '2xl': '1536px',
+  slideLeft: {
+    '0%': { transform: 'translateX(100%)', opacity: '0' },
+    '100%': { transform: 'translateX(0)', opacity: '1' },
+  },
+  slideRight: {
+    '0%': { transform: 'translateX(-100%)', opacity: '0' },
+    '100%': { transform: 'translateX(0)', opacity: '1' },
+  },
 };
 
 export const filters = {

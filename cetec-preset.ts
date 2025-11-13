@@ -8,31 +8,24 @@ import * as tokens from './src/styles/tokens';
 import * as semanticTokens from './src/styles/semanticTokens';
 import { globalCss } from './src/styles/globalStyle';
 import { conditions } from './src/styles/conditions';
-import {
-  buttonRecipe,
-  iconButtonRecipe,
-  inputRecipe,
-  textareaRecipe,
-  headingRecipe,
-  linkRecipe,
-  labelRecipe,
-  textRecipe,
+import * as componentRecipes from './src/recipes/index';
+
+const {
   checkBoxRecipe,
-  spinnerRecipe,
-  dividerRecipe,
-  preRecipe,
-  codeRecipe,
-  boxRecipe,
   radioRecipe,
-  textinputRecipe,
-  cardRecipe,
-  toggleRecipe,
-  toggleInputRecipe,
-  radioInputRecipe,
   tooltipRecipe,
-  breadcrumbsRecipe,
   menuRecipe,
-} from './src/recipes/index';
+  ...regularRecipes
+} = componentRecipes;
+
+// Transform recipe keys: remove 'Recipe' suffix to match component imports
+// e.g., { boxRecipe: {...} } becomes { box: {...} }
+const transformedRecipes = Object.fromEntries(
+  Object.entries(regularRecipes).map(([key, value]) => [
+    key.replace(/Recipe$/, ''),
+    value,
+  ]),
+);
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
 // omit default patterns here
@@ -41,83 +34,35 @@ const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
+const { keyframes, breakpoints, containerSizes, fontVariants, ...baseTokens } =
+  tokens;
+
 const theme = {
   tokens: defineTokens({
-    aspectRatios: tokens.aspectRatios,
-    borders: tokens.borders,
-    shadows: tokens.shadows,
-    easings: tokens.easings,
-    durations: tokens.durations,
-    letterSpacings: tokens.letterSpacings,
-    lineHeights: tokens.lineHeights,
-    blurs: tokens.blurs,
-    animations: tokens.animations,
-    colors: tokens.colors,
-    fonts: tokens.fonts,
-    fontSizes: tokens.fontSizes,
-    fontWeights: tokens.fontWeights,
-    sizes: tokens.sizes,
-    numericSizes: tokens.numericSizes,
-    spacing: tokens.sizes,
-    radii: tokens.radii,
-    keyframes: tokens.keyframes,
-    containerSizes: tokens.containerSizes,
-    breakpoints: tokens.breakpoints,
+    ...baseTokens,
+    spacing: tokens.sizes, // Map spacing to our size scale for consistent sizing
   }),
   semanticTokens: defineSemanticTokens({
-    colors: semanticTokens.colors,
+    ...semanticTokens,
   }),
 };
 
-export default definePreset({
+export const cetecPreset = definePreset({
+  name: 'cetecPreset',
   theme: {
     extend: {
-      containerSizes: tokens.containerSizes,
-      keyframes: tokens.keyframes,
       tokens: {
-        aspectRatios: theme.tokens.aspectRatios,
-        borders: theme.tokens.borders,
-        shadows: theme.tokens.shadows,
-        easings: theme.tokens.easings,
-        durations: theme.tokens.durations,
-        letterSpacings: theme.tokens.letterSpacings,
-        lineHeights: theme.tokens.lineHeights,
-        blurs: theme.tokens.blurs,
-        animations: theme.tokens.animations,
-        colors: theme.tokens.colors,
-        fonts: theme.tokens.fonts,
-        fontSizes: theme.tokens.fontSizes,
-        fontWeights: theme.tokens.fontWeights,
-        sizes: theme.tokens.sizes,
-        numericSizes: theme.tokens.numericSizes,
-        spacing: theme.tokens.sizes,
-        radii: theme.tokens.radii,
-        breakpoints: theme.tokens.breakpoints,
-        textStyles: tokens.textStyles,
+        ...theme.tokens,
       },
       semanticTokens: {
         colors: theme.semanticTokens.colors,
       },
+      containerSizes: tokens.containerSizes,
+      keyframes: tokens.keyframes,
+      textStyles: tokens.textStyles,
+      breakpoints: tokens.breakpoints,
       recipes: {
-        text: textRecipe,
-        heading: headingRecipe,
-        link: linkRecipe,
-        label: labelRecipe,
-        button: buttonRecipe,
-        iconButton: iconButtonRecipe,
-        input: inputRecipe,
-        textinput: textinputRecipe,
-        textarea: textareaRecipe,
-        code: codeRecipe,
-        pre: preRecipe,
-        spinner: spinnerRecipe,
-        divider: dividerRecipe,
-        box: boxRecipe,
-        radioInput: radioInputRecipe,
-        toggle: toggleRecipe,
-        toggleInput: toggleInputRecipe,
-        card: cardRecipe,
-        breadcrumbs: breadcrumbsRecipe,
+        ...transformedRecipes,
       },
       slotRecipes: {
         checkbox: checkBoxRecipe,
