@@ -34,6 +34,7 @@ import {
   breadcrumbsRecipe,
   tagRecipe,
   menuRecipe,
+  formFieldRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -107,7 +108,7 @@ export default defineConfig({
       animations: {
         ...theme.tokens.animations,
         slideLeft: { value: 'slideLeft 0.3s ease forwards' },
-      slideRight: { value: 'slideRight 0.3s ease forwards' },
+        slideRight: { value: 'slideRight 0.3s ease forwards' },
       },
       colors: theme.tokens.colors,
       fonts: theme.tokens.fonts,
@@ -151,6 +152,7 @@ export default defineConfig({
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
+        formField: formFieldRecipe,
       },
       keyframes: {
         slideLeft: {
@@ -162,7 +164,7 @@ export default defineConfig({
           '100%': { transform: 'translateX(0)', opacity: '1' },
         },
       },
-    },    
+    },
   },
 
   utilities: {
