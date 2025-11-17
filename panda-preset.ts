@@ -32,6 +32,7 @@ import {
   tooltipRecipe,
   breadcrumbsRecipe,
   menuRecipe,
+  formFieldRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -124,6 +125,7 @@ export default definePreset({
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
+        formField: formFieldRecipe,
       },
     },
   },

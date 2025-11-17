@@ -18,6 +18,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   error,
   id,
   name,
+  checked,
   ...props
 }) => {
   const { container, input, indicator } = checkbox({});
