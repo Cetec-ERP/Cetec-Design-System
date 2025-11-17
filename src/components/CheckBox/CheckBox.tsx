@@ -18,6 +18,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   error,
   id,
   name,
+  checked,
   ...props
 }) => {
   const { container, input, indicator } = checkbox({});
@@ -35,6 +36,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
         id={id}
         aria-label={name}
         {...props}
+        {...(checked ? { 'data-checked': true } : {})}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}
       />

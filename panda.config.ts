@@ -35,6 +35,7 @@ import {
   tagRecipe,
   menuRecipe,
   formFieldRecipe,
+  checkboxInputRecipe,
 } from './src/recipes/index';
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
@@ -141,6 +142,7 @@ export default defineConfig({
         divider: dividerRecipe,
         box: boxRecipe,
         radioInput: radioInputRecipe,
+        checkboxInput: checkboxInputRecipe,
         toggle: toggleRecipe,
         toggleInput: toggleInputRecipe,
         card: cardRecipe,

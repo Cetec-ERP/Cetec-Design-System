@@ -22,7 +22,7 @@ export type FormFieldProps = Omit<BoxProps, keyof FormFieldVariantProps> &
   };
 
 export const FormField: React.FC<FormFieldProps> = ({
-  layout,
+  layout = "default",
   label,
   helpText,
   required,
@@ -54,19 +54,21 @@ export const FormField: React.FC<FormFieldProps> = ({
   return (
     <Box className={formFeildContainer} {...props} disabled={disabled}>
       <Box className={labelWrapper}>
-        <Text textStyle="body-md" className={headLabel}>
-          {label}{' '}
-          {required && (
-            <Text as="span" color="red.50">
-              *
-            </Text>
-          )}
-          {tooltip && (
-            <Tooltip title={tooltipTitle} text={`${tooltipDescription}`} caret={tooltipCaret}>
-              <Icon name="info" fill='slate.50'/>
-            </Tooltip>
-          )}
-        </Text>
+        <Box className={headLabel}>
+          <Text textStyle="body-md">
+            {label}{' '}
+          </Text>
+            {required && (
+              <Text as="span" color="red.50">
+                *
+              </Text>
+            )}
+            {tooltip && (
+              <Tooltip title={tooltipTitle} text={`${tooltipDescription}`} caret={tooltipCaret}>
+                <Icon name="info" fill='slate.50'/>
+              </Tooltip>
+            )}
+        </Box>
         {layout === "default" && helpText && (
           <Text as="span" textStyle="body-sm">
             {helpText}
