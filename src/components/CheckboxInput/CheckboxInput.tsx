@@ -23,6 +23,7 @@ export const CheckBoxInput: FC<CheckBoxInputProps> = ({
       <CheckBox
         id={id}
         name={name}
+        error={error}
         {...(error && { 'data-error': true })}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...props}

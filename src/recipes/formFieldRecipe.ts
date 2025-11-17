@@ -1,9 +1,12 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
 const formFieldBase = {
-  // formFeildContainer:{
-  //   display: 'flex',
-  // },
+  formFeildContainer:{
+    _disabled:{
+      opacity: '0.4',
+      pointerEvents: 'none',
+    }
+  },
   contentWrapper:{
     display: 'flex',
     flexDirection: 'column',
@@ -15,6 +18,10 @@ const formFieldBase = {
       // display: 'flex',
       // gap: '4',
     }
+  },
+  headLabel:{
+    display: 'flex',
+    gap: '4'
   }
 };
 
@@ -41,7 +48,7 @@ const formFieldVariants = {
 export const formFieldRecipe = defineSlotRecipe({
   className: 'formfield',
   jsx: ['Formfield'],
-  slots: ['formFeildContainer', 'contentWrapper', 'labelWrapper'],
+  slots: ['formFeildContainer', 'contentWrapper', 'labelWrapper', 'headLabel'],
   base: formFieldBase,
   variants: formFieldVariants,
   defaultVariants: {
