@@ -24,7 +24,8 @@ jobs:
       - name: Get previous tag
         id: previousTag
         run: |
-          name=$(git --no-pager tag --sort=creatordate --merged ${{ github.head_ref }} | tail -2 | head -1)
+          #name=$(git --no-pager tag --sort=creatordate --merged ${{ github.head_ref }} | tail -2 | head -1)
+          name=v0.0.39-0
           echo "previousTag: $name"
           echo "previousTag=$name" >> $GITHUB_ENV
 
@@ -33,7 +34,7 @@ jobs:
         uses: requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
-          fromTag: ${{ github.head_ref }}
+          fromTag: ${{ env.previous_tag }}
           toTag: v[0-9]+.[0-9]+.01
           writeToFile: true
           useGitmojis: true
