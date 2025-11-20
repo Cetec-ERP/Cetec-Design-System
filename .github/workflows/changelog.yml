@@ -33,8 +33,10 @@ jobs:
         id: changelog
         uses: requarks/changelog-action@v1
         with:
-          token: ${{ github.token }}
-          fromTag: ${{ env.previous_tag }}
+          token:
+            ${{ github.token }}
+            #fromTag: ${{ env.previous_tag }}
+          fromTag: v0.0.39-0
           toTag: v0.0.3
           writeToFile: true
           useGitmojis: true
