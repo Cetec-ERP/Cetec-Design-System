@@ -12,36 +12,22 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
-  generate:
+  changelog:
+    name: Generate changelog
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Get previous tag
-        id: previousTag
-        run: |
-          #name=$(git --no-pager tag --sort=creatordate --merged ${{ github.head_ref }} | tail -2 | head -1)
-          name=v0.0.39-0
-          echo "previousTag: $name"
-          echo "previousTag=$name" >> $GITHUB_ENV
-
-      - name: Update CHANGELOG
-        id: changelog
-        uses: requarks/changelog-action@v1
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
         with:
-          token: ${{ github.token }}
-          fromTag: ${{ env.previousTag }}
-          toTag: v0.0.3
-          writeToFile: true
-          useGitmojis: true
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
 
-      - name: Commit CHANGELOG.md
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: workflow_test
-          commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
-          file_pattern: CHANGELOG.md
+      - name: Print the changelog
+        run: cat "${{ steps.git-cliff.outputs.changelog }}"
