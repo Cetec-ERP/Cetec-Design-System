@@ -25,9 +25,18 @@ jobs:
         uses: orhun/git-cliff-action@v4
         id: git-cliff
         with:
+          config: cliff.toml
           args: --verbose
+          github_token: ${{ github.token }}
         env:
           OUTPUT: CHANGELOG.md
 
       - name: Print the changelog
         run: cat "${{ steps.git-cliff.outputs.changelog }}"
+
+      - name: Commit CHANGELOG.md
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: workflow_test
+          commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
+          file_pattern: CHANGELOG.md
