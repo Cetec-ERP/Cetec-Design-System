@@ -38,3 +38,10 @@ jobs:
           toTag: v0.0.3
           writeToFile: true
           useGitmojis: true
+
+      - name: Commit CHANGELOG.md
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          branch: workflow_test
+          commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
+          file_pattern: CHANGELOG.md
