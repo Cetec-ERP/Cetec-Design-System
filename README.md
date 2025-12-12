@@ -76,8 +76,8 @@ This design system is built on **Panda CSS** with a strict tokens-first approach
 4. Standard `recipes` are registered automatically, but new `slotRecipes` need to be manually registered in `panda.config.ts` under `theme.extend.recipes`
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
-7. Create Storybook story: `ComponentName.stories.tsx`
-8. Export from `src/index.ts`
+7. Create Storybook story in component directory: `ComponentName.stories.tsx`
+8. Export component from `src/index.ts`
 
 ### Component Guidelines
 
