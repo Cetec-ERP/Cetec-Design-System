@@ -102,7 +102,7 @@ export const cetecPreset = definePreset({
               width: '100%',
               maxWidth: '7xl',
               mx: 'auto',
-              px: { base: '24', md: '20', sm: '16' },
+              px: { base: '24', md: '32', lg: '48' },
             },
             props,
           );
@@ -122,15 +122,5 @@ export const cetecPreset = definePreset({
   conditions: {
     ...pandaBasePresetConditions,
     ...conditions,
-    indeterminate:
-      '&:is(:indeterminate, [data-indeterminate], [aria-checked=mixed], [data-state=indeterminate])',
-    hidden: '&:is([hidden])',
-    current: '&:is([data-current])',
-    today: '&:is([data-today])',
-    collapsed:
-      '&:is([aria-collapsed=true], [data-collapsed], [data-state="collapsed"])',
-    containerSmall: '@container (max-width: 560px)',
-    containerMedium: '@container (min-width: 561px) and (max-width: 999px)',
-    containerLarge: '@container (min-width: 1000px)',
   },
 });

@@ -33,9 +33,9 @@ The design system is built on **Panda CSS** with a strict tokens-first approach:
 
 - **Tokens**: Design tokens defined in `src/styles/tokens.ts` (colors, spacing, typography, shadows, etc.)
 - **Semantic Tokens**: Theme-specific tokens in `src/styles/semanticTokens.ts` (color aliases for light/dark themes)
-- **Recipes**: Component style variants in `src/recipes/` (button, input, text, etc.) - use these instead of ad-hoc CSS
-- **Slot Recipes**: Multi-part component recipes (checkbox, radio, tooltip, menu)
-- **Conditions**: Custom responsive and state conditions in `src/styles/conditions.ts` and `panda.config.ts`
+- **Recipes**: Component style variants in `src/recipes/` (ex: button, input, text, etc.) - use these instead of ad-hoc CSS
+- **Slot Recipes**: Multi-part component recipes (ex: checkbox, radio, tooltip, menu)
+- **Conditions**: Custom responsive and state conditions in `src/styles/conditions.ts`
 
 #### Panda CSS Configuration
 
@@ -43,12 +43,12 @@ The design system is built on **Panda CSS** with a strict tokens-first approach:
 - **Output**: Generated to `styled-system/` directory (gitignored)
 - **Import map**: `@styled-system` alias for generated utilities
 - **Strict tokens**: `strictTokens: true` enforces token-only usage (no hard-coded values)
-- **Prefix**: `Cetec` prefix on generated CSS classes
+- **Prefix**: `cetec` prefix on generated CSS classes
 
 #### Custom Patterns
 
 - **icon**: Pattern for sizing icons consistently via tokens
-- **container**: Page container with responsive padding (base: 24, md: 20, sm: 16)
+- **container**: Page container with responsive padding
 
 ### Component Architecture
 
@@ -56,27 +56,26 @@ Components follow these patterns:
 
 1. **Location**: `src/components/[ComponentName]/`
 2. **Structure**:
+
    - `ComponentName.tsx` - Main component implementation
    - `index.tsx` - Public exports
    - `ComponentName.stories.tsx` - Storybook documentation
 
 3. **Implementation patterns**:
+
    - Function components only (React 19)
    - TypeScript strict mode with typed props
-   - Polymorphic components use `forwardRefWithAs` utility from `src/utils/forwardRefWithAs.ts`
    - Recipe-based styling via Panda CSS (no inline styles or hard-coded values)
    - Export from `src/index.ts` for package consumers
-
-4. **Exported components**: Box, Text, Button, IconButton, Icon, Pre, Heading, Link, Spinner, Divider, CheckBox, Radio, TextInput, Textarea, Card, Toggle, ToggleInput, RadioInput, CheckBoxInput, ThemeSwitcher, Tooltip, Breadcrumbs, Tag, Menu
 
 ### Icon System
 
 Icons are managed as an SVG sprite system:
 
-- **Source**: Individual SVG files in `src/components/Icon/svg/`
+- **Source**: Add new icon SVG files to `src/utils/svgsSource/`
 - **Generation**: `npm run generate-sprite` creates sprite files
 - **Usage**: `<Icon name="iconName" />` component references sprite symbols
-- **Sizing**: Use the `icon` Panda pattern for consistent sizing via tokens
+- **Sizing**: Defaults to `24` but you can pass in other `numericSizes`
 
 ### Theme System
 
@@ -105,7 +104,7 @@ Icons are managed as an SVG sprite system:
 
 - **Tokens-first**: All colors, spacing, radii, typography via design tokens (no hard-coded hex/px values)
 - **Recipes over ad-hoc CSS**: Use existing recipes for components; create new recipes for repeated patterns
-- **Responsive by default**: Use breakpoints AND container queries (`_containerSm`, `_containerMd`, `_containerLg`)
+- **Responsive by default**: Use breakpoints AND container queries
 - **Semantic HTML + baseline a11y**: Choose correct elements, visible focus, labels/focus management
 - **Flat selectors**: Prefer utilities/patterns over deep nesting
 
@@ -116,6 +115,7 @@ Icons are managed as an SVG sprite system:
 - **Strict TypeScript**: No ambient `any`; isolate escapes with TODO comments
 - **Composition > prop soup**: Small components that compose; avoid mega-props
 - **Function components only**: Hooks for state/effects; no legacy lifecycles
+- **Controlled components**: Use controlled components as the standard pattern for form inputs, including checkboxes, radios, text inputs, and other interactive elements.
 - **Props typing**: Use `React.ComponentProps<"element">` for intrinsic elements
 
 ### Git Conventions (from `.cursor/rules/git.mdc`)
@@ -123,7 +123,7 @@ Icons are managed as an SVG sprite system:
 - **Commit format**: Conventional commits `type(scope): summary`
 - **Types**: `feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `chore`, `build`, `ci`
 - **Branch naming**: `feat/<area>-<slug>`, `fix/<area>-<slug>`, `chore/<area>-<slug>`
-- **PR titles**: Must follow conventional commits format for Auto release automation
+- **PR Titles**: Must follow [Conventional Commits](https://www.conventionalcommits.org/) format for Auto release automation
 
 ## Release Process
 
@@ -154,7 +154,7 @@ Projects consuming this design system must:
 1. Create directory: `src/components/[ComponentName]/`
 2. Create recipe in `src/recipes/[componentname].ts` with variants
 3. Export recipe from `src/recipes/index.ts`
-4. Register recipe in `panda.config.ts` under `theme.extend.recipes` or `theme.extend.slotRecipes`
+4. Standard `recipes` are registered automatically, but new `slotRecipes` need to be manually registered in `panda.config.ts` under `theme.extend.recipes`
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
 7. Create Storybook stories
