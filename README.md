@@ -78,7 +78,7 @@ This design system is built on **Panda CSS** with a strict tokens-first approach
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
 7. Create Storybook story in component directory: `ComponentName.stories.tsx`
-8. Export from `src/index.ts`
+8. Export component from `src/index.ts`
 
 ### Component Guidelines
 
