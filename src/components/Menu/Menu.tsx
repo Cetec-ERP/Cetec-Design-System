@@ -7,9 +7,11 @@ import { Icon, type IconNamesList } from '../Icon';
 import { CheckBox } from '../CheckBox';
 import { Toggle } from '../Toggle';
 import { Link } from '../Link';
+import { Spinner } from '../Spinner';
 
 export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
   MenuVariantProps & {
+    loading?: boolean;
     menuSection: {
       id?: string;
       title?: string;
@@ -34,6 +36,7 @@ export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
   };
 
 export const Menu: React.FC<MenuProps> = ({
+  loading,
   menuSection,
   iconPlacement,
   variant,
@@ -114,122 +117,140 @@ export const Menu: React.FC<MenuProps> = ({
         data-anim={isChildren.length > 1 ? 'slide-left' : undefined}
         className={wrapperInner}
       >
-        {current?.menu?.map((section) => (
-          <Box key={section.id}>
-            {section.title && (
-              <Box className={sectionTitle}>
-                <Text textStyle="body-xs">{section?.title}</Text>
-              </Box>
-            )}
-            <Box>
-              {section?.items?.map((item) => {
-                const hasChildren = !!item.children?.length;
-                const isSelected = selected.includes(item.id);
-                const isDisabled = !!item?.disabled;
-                const activateItem = () => {
-                  if (isDisabled) return;
-                  if (item?.children) {
-                    handleOpenSubmenu(item.children, item.label);
-                  } else {
-                    handleSelect(item.id);
-                  }
-                };
-                return (
-                  <Box
-                    color={{ base: 'slate.100', _dark: 'slate.90' }}
-                    key={item?.id}
-                    className={menuItem}
-                    tabIndex={isDisabled ? -1 : 0}
-                    disabled={item?.disabled}
-                    aria-disabled={item?.disabled}
-                    data-selected={isSelected}
-                    onClick={activateItem}
-                    onKeyDown={(e: {
-                      key: string;
-                      preventDefault: () => void;
-                    }) => {
-                      if (
-                        e.key === ' ' ||
-                        e.key === 'Spacebar' ||
-                        e.key === 'Enter'
-                      ) {
-                        e.preventDefault();
-                        activateItem();
-                      }
-                    }}
-                    role="button"
-                    aria-pressed={isSelected}
-                  >
-                    {(iconPlacement || item?.iconName) && (
-                      <Box
-                        className={iconSection}
-                        color={{ base: 'slate.90', _dark: 'slate.0' }}
-                      >
-                        {item?.iconName && (
-                          <Icon name={`${item?.iconName as IconNamesList}`} />
-                        )}
-                      </Box>
-                    )}
-                    {variant === 'multi-select' &&
-                      multiSelectType === 'checkbox' &&
-                      !section?.link && (
-                        <CheckBox
-                          checked={isSelected}
-                          onChange={() => handleSelect(item.id)}
-                        />
-                      )}
-                    {variant === 'multi-select' &&
-                      multiSelectType === 'toggle' &&
-                      !section?.link && (
-                        <Toggle
-                          checked={isSelected}
-                          onChange={() => handleSelect(item.id)}
-                        />
-                      )}
-                    {!section?.link && (
-                      <Box>
-                        <Text
-                          textStyle={{ base: 'body-lg', md: 'body-md' }}
-                          className={menuLabel}
-                          color={{ base: 'slate.90', _dark: 'slate.5' }}
-                        >
-                          {item?.label}
-                        </Text>
-                        {item?.description && (
-                          <Text textStyle="body-xs" className={menuDescription}>
-                            {item?.description}
-                          </Text>
-                        )}
-                      </Box>
-                    )}
-                    {section?.link && (
-                      <Link
-                        href={`${item?.href}`}
-                        color={{ base: 'slate.90', _dark: 'slate.0' }}
-                      >
-                        {item?.label} <Icon name="arrow-square-out" />
-                      </Link>
-                    )}
-                    {hasChildren && (
-                      <Box
-                        className={multiLevelIcon}
-                        color={{ base: 'slate.90', _dark: 'slate.0' }}
-                      >
-                        <Icon name="caret-right" />
-                      </Box>
-                    )}
-                  </Box>
-                );
-              })}
-            </Box>
-            {section?.divider && (
-              <Box className={dividerSection}>
-                <Divider color={{ base: 'slate.10', _dark: 'slate.60' }} />
-              </Box>
-            )}
-            {section?.spacer && <Box className={spacerSection}></Box>}
+        {loading ? (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            py="4"
+          >
+            <Spinner size="medium" />
           </Box>
-        ))}
+        ) : (
+          current?.menu?.map((section) => (
+            <Box key={section.id}>
+              {section.title && (
+                <Box className={sectionTitle}>
+                  <Text textStyle="body-xs">{section?.title}</Text>
+                </Box>
+              )}
+              <Box>
+                {section?.items?.map((item) => {
+                  const hasChildren = !!item.children?.length;
+                  const isSelected = selected.includes(item.id);
+                  const isDisabled = !!item?.disabled;
+                  const activateItem = () => {
+                    if (isDisabled) return;
+                    if (item?.children) {
+                      handleOpenSubmenu(item.children, item.label);
+                    } else {
+                      handleSelect(item.id);
+                    }
+                  };
+                  return (
+                    <Box
+                      color={{ base: 'slate.100', _dark: 'slate.90' }}
+                      key={item?.id}
+                      className={menuItem}
+                      tabIndex={isDisabled ? -1 : 0}
+                      disabled={item?.disabled}
+                      aria-disabled={item?.disabled}
+                      data-selected={isSelected}
+                      onClick={activateItem}
+                      onKeyDown={(e: {
+                        key: string;
+                        preventDefault: () => void;
+                      }) => {
+                        if (
+                          e.key === ' ' ||
+                          e.key === 'Spacebar' ||
+                          e.key === 'Enter'
+                        ) {
+                          e.preventDefault();
+                          activateItem();
+                        }
+                      }}
+                      role="button"
+                      aria-pressed={isSelected}
+                    >
+                      {(iconPlacement || item?.iconName) && (
+                        <Box
+                          className={iconSection}
+                          color={{ base: 'slate.90', _dark: 'slate.0' }}
+                        >
+                          {item?.iconName && (
+                            <Icon name={`${item?.iconName as IconNamesList}`} />
+                          )}
+                        </Box>
+                      )}
+                      {variant === 'multi-select' &&
+                        multiSelectType === 'checkbox' &&
+                        !section?.link && (
+                          <CheckBox
+                            name={item.id}
+                            id={item.id}
+                            checked={isSelected}
+                            onChange={() => handleSelect(item.id)}
+                          />
+                        )}
+                      {variant === 'multi-select' &&
+                        multiSelectType === 'toggle' &&
+                        !section?.link && (
+                          <Toggle
+                            name={item.id}
+                            id={item.id}
+                            checked={isSelected}
+                            onChange={() => handleSelect(item.id)}
+                          />
+                        )}
+                      {!section?.link && (
+                        <Box>
+                          <Text
+                            textStyle={{ base: 'body-lg', md: 'body-md' }}
+                            className={menuLabel}
+                            color={{ base: 'slate.90', _dark: 'slate.5' }}
+                          >
+                            {item?.label}
+                          </Text>
+                          {item?.description && (
+                            <Text
+                              textStyle="body-xs"
+                              className={menuDescription}
+                            >
+                              {item?.description}
+                            </Text>
+                          )}
+                        </Box>
+                      )}
+                      {section?.link && (
+                        <Link
+                          href={`${item?.href}`}
+                          color={{ base: 'slate.90', _dark: 'slate.0' }}
+                        >
+                          {item?.label} <Icon name="arrow-square-out" />
+                        </Link>
+                      )}
+                      {hasChildren && (
+                        <Box
+                          className={multiLevelIcon}
+                          color={{ base: 'slate.90', _dark: 'slate.0' }}
+                        >
+                          <Icon name="caret-right" />
+                        </Box>
+                      )}
+                    </Box>
+                  );
+                })}
+              </Box>
+              {section?.divider && (
+                <Box className={dividerSection}>
+                  <Divider color={{ base: 'slate.10', _dark: 'slate.60' }} />
+                </Box>
+              )}
+              {section?.spacer && <Box className={spacerSection}></Box>}
+            </Box>
+          ))
+        )}
       </Box>
     </Box>
   );
