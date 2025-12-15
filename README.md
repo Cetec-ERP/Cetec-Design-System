@@ -153,10 +153,44 @@ This project uses [Auto](https://intuit.github.io/auto/) for automated releases 
 
 ### Contributing
 
-- **PR Titles**: Must follow [Conventional Commits](https://www.conventionalcommits.org/) format for Auto release automation
-- - **Types**: `feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `chore`, `build`, `ci`
 - **Release Labels**: PRs must have a release label (major, minor, patch, or release) to trigger a release
 - **Changelog**: Auto-generated based on PR labels and titles
+- **PR Titles**: Must follow our defined format for Auto release automation:
+
+> Conventional Commits Spec for PR Titles
+> PR titles should adhere to the following format:
+>
+> (scope):
+>
+> Examples:
+> fix: I fixed a bug
+> chore(minor): doin stuff and things
+> refactor(major)!: breaking stuff but not things
+>
+> Adding a '!' before the colon ‘:’ will flag the PR as a breaking change.
+> i.e. feat(major)!: breaking stuff
+>
+> Valid types are:
+> "feat" - new feature
+> "fix" - bug fix
+> "docs" - documentation only changes
+> "style" - purely CSS/formatting changes
+> "refactor" - neither fixes a bug nor adds a feature
+> "perf" - code change to improve performance
+> "test" - creating/deleting/changing tests only
+> "build" - changes affecting build process or changes to external dependencies
+> "ci" - changes to ci setup
+> "chore" - small changes that don't apply to other types
+> "revert" - reverting a commit
+>
+> Valid Scopes:
+> "major", "minor", "patch" - correspond to the potential impact of the change
+> "ticket" - fix pertaining to a ticket
+> "config" - changes to a config setting (add/remove/delete)
+> "script" - customer specific scripts that don't affect the greater codebase
+> "cypress" - pertaining to cypress tests only
+>
+> Use your best judgement when deciding what type and scope to use for the PR you’re creating.
 
 ### Release Labels
 
