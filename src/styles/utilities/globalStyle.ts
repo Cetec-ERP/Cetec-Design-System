@@ -1,5 +1,5 @@
 import { defineGlobalStyles } from '@pandacss/dev';
-import { fontVariants } from './tokens';
+import { fontVariants } from '.';
 
 // includes some normalize styles from:
 // https://github.com/sindresorhus/modern-normalize/blob/main/modern-normalize.css

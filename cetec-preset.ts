@@ -1,15 +1,26 @@
 import {
-  defineTokens,
-  defineSemanticTokens,
+  // defineTokens,
+  // defineSemanticTokens,
   definePreset,
 } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
-import * as tokens from './src/styles/tokens';
-import * as semanticTokens from './src/styles/semanticTokens';
-import { globalCss } from './src/styles/globalStyle';
-import { conditions } from './src/styles/conditions';
+import * as tokens from './src/styles/primitives';
+import * as semanticTokens from './src/styles/semantics';
+import {
+  breakpoints,
+  conditions,
+  containerSizes,
+  filtersProperty,
+  fontVariantsProperty,
+  globalCss,
+  keyframes,
+  layerStyles,
+  textStyles,
+  transitionProperty,
+} from './src/styles/utilities';
 import * as componentRecipes from './src/recipes/index';
 
+// Separate slotRecipes from regular recipes
 const {
   checkBoxRecipe,
   radioRecipe,
@@ -28,23 +39,19 @@ const transformedRecipes = Object.fromEntries(
 );
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
-// omit default patterns here
+// Omit default patterns here
 const { box, divider, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
 const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
-const { keyframes, breakpoints, containerSizes, fontVariants, ...baseTokens } =
-  tokens;
-
 const theme = {
-  tokens: defineTokens({
-    ...baseTokens,
-    spacing: tokens.sizes, // Map spacing to our size scale for consistent sizing
-  }),
-  semanticTokens: defineSemanticTokens({
+  tokens: {
+    ...tokens,
+  },
+  semanticTokens: {
     ...semanticTokens,
-  }),
+  },
 };
 
 export const cetecPreset = definePreset({
@@ -57,10 +64,11 @@ export const cetecPreset = definePreset({
       semanticTokens: {
         colors: theme.semanticTokens.colors,
       },
-      containerSizes: tokens.containerSizes,
-      keyframes: tokens.keyframes,
-      textStyles: tokens.textStyles,
-      breakpoints: tokens.breakpoints,
+      breakpoints: breakpoints,
+      containerSizes: containerSizes,
+      keyframes: keyframes,
+      layerStyles: layerStyles,
+      textStyles: textStyles,
       recipes: {
         ...transformedRecipes,
       },
@@ -74,6 +82,11 @@ export const cetecPreset = definePreset({
   },
   utilities: {
     ...pandaBasePresetUtilities,
+    // Custom utilities
+    // https://panda-css.com/docs/references/config#utilities
+    fontVariantsProperty,
+    filtersProperty,
+    transitionProperty,
   },
   patterns: {
     icon: {

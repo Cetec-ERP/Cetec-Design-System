@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "@pandacss/dev": "^0.51.1",
+    "@pandacss/dev": "^1.7.1",
     "@storybook/addon-essentials": "^8.5.2",
     "@storybook/addon-interactions": "^8.5.2",
     "@storybook/addon-onboarding": "^8.5.2",
@@ -84,5 +84,12 @@
   "bugs": {
     "url": "https://github.com/Cetec-ERP/Cetec-Design-System/issues"
   },
-  "homepage": "https://github.com/Cetec-ERP/Cetec-Design-System#readme"
+  "homepage": "https://github.com/Cetec-ERP/Cetec-Design-System#readme",
+  "overrides": {
+    "@pandacss/node": {
+      "package-manager-detector": "^0.2.11",
+      "quansync": "^0.2.11"
+    },
+    "package-manager-detector": "^0.2.11"
+  }
 }

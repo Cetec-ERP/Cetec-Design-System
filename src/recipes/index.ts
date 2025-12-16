@@ -13,9 +13,11 @@ export { cardRecipe } from './card';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { tagRecipe } from './tag';
 export { radioInputRecipe } from './radioinput';
+export { checkboxInputRecipe } from './checkboxInput';
 
 // Slot Recipes
 export { checkBoxRecipe } from './checkbox';
 export { radioRecipe } from './radio';
 export { tooltipRecipe } from './tooltip';
 export { menuRecipe } from './menu';
+export { formFieldRecipe } from './formField';
