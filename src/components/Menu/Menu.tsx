@@ -1,6 +1,6 @@
 import { menu, type MenuVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '../Box';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
 import { Icon, type IconNamesList } from '../Icon';
@@ -12,6 +12,7 @@ import { Spinner } from '../Spinner';
 export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
   MenuVariantProps & {
     loading?: boolean;
+    onClose?: () => void;
     menuSection: {
       id?: string;
       title?: string;
@@ -37,6 +38,7 @@ export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
 
 export const Menu: React.FC<MenuProps> = ({
   loading,
+  onClose,
   menuSection,
   iconPlacement,
   variant,
@@ -65,6 +67,36 @@ export const Menu: React.FC<MenuProps> = ({
   ]);
 
   const current = isChildren[isChildren.length - 1];
+
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!menuRef.current) return;
+
+      if (!menuRef.current.contains(event.target as Node)) {
+        onClose?.();
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose?.();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
   const handleSelect = (id: string) => {
     if (variant === 'single-select') {
@@ -100,7 +132,7 @@ export const Menu: React.FC<MenuProps> = ({
   };
 
   return (
-    <Box className={wrapper}>
+    <Box className={wrapper} ref={menuRef}>
       {isChildren.length > 1 && (
         <Text
           onClick={handleBack}
