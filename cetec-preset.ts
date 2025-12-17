@@ -50,7 +50,8 @@ const theme = {
     ...tokens,
   },
   semanticTokens: {
-    ...semanticTokens,
+    colors: semanticTokens.colors,
+    shadows: semanticTokens.shadows,
   },
 };
 
@@ -63,6 +64,7 @@ export const cetecPreset = definePreset({
       },
       semanticTokens: {
         colors: theme.semanticTokens.colors,
+        shadows: theme.semanticTokens.shadows,
       },
       breakpoints: breakpoints,
       containerSizes: containerSizes,
