@@ -1,6 +1,6 @@
 import { menu, type MenuVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '../Box';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
 import { Icon, type IconNamesList } from '../Icon';
@@ -58,6 +58,7 @@ export const Menu: React.FC<MenuProps> = ({
     dividerSection,
     spacerSection,
     iconSection,
+    loaderContainer,
   } = menu({
     iconPlacement,
     multiSelectType,
@@ -125,12 +126,7 @@ export const Menu: React.FC<MenuProps> = ({
         className={wrapperInner}
       >
         {loading ? (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            py="4"
-          >
+          <Box className={loaderContainer}>
             <Spinner size="medium" />
           </Box>
         ) : (
