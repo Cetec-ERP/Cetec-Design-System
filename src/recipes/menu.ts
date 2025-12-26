@@ -99,6 +99,13 @@ const menuBase = {
   iconSection: { w: '24' },
 
   toggleMenu: { py: '6' },
+
+  loaderContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '4',
+  },
 };
 
 const menuVariants = {
@@ -139,6 +146,7 @@ export const menuRecipe = defineSlotRecipe({
     'wrapperInner',
     'iconSection',
     'toggleMenu',
+    'loaderContainer',
   ],
   base: menuBase,
   variants: menuVariants,
