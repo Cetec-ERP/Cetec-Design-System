@@ -8,6 +8,7 @@ import { CheckBox } from '../CheckBox';
 import { Toggle } from '../Toggle';
 import { Link } from '../Link';
 import { Spinner } from '../Spinner';
+import { useOnClose } from '~/utils/useOnClose';
 
 export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
   MenuVariantProps & {
@@ -70,33 +71,7 @@ export const Menu: React.FC<MenuProps> = ({
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const handlePointerDown = (event: MouseEvent) => {
-      if (!menuRef.current) return;
-
-      if (!menuRef.current.contains(event.target as Node)) {
-        onClose?.();
-      }
-    };
-
-    document.addEventListener('mousedown', handlePointerDown);
-    return () => {
-      document.removeEventListener('mousedown', handlePointerDown);
-    };
-  }, [onClose]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose?.();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+  useOnClose(menuRef, onClose);
 
   const handleSelect = (id: string) => {
     if (variant === 'single-select') {
