@@ -31,8 +31,9 @@ export const Text: React.FC<TextProps> = ({
   return (
     <Box
       as={as}
+      textStyle={textStyle}
       className={cx(
-        text({ textStyle, family, bold, underline, italic, size, weight }),
+        text({ family, bold, underline, italic, size, weight }),
         className,
       )}
       {...otherProps}
