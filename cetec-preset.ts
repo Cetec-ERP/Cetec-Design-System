@@ -138,4 +138,31 @@ export const cetecPreset = definePreset({
     ...pandaBasePresetConditions,
     ...conditions,
   },
+  staticCss: {
+    css: [
+      {
+        properties: {
+          background: ['*'],
+          color: ['*'],
+          border: ['*'],
+          fill: ['*'],
+          boxShadow: ['*'],
+          width: ['*'],
+          height: ['*'],
+          minWidth: ['*'],
+          minHeight: ['*'],
+          maxWidth: ['*'],
+          maxHeight: ['*'],
+          borderRadius: ['*'],
+          textStyle: ['*'],
+          fontFamily: ['*'],
+          fontSize: ['*'],
+          fontWeight: ['*'],
+          lineHeight: ['*'],
+          letterSpacing: ['*'],
+        },
+        conditions: ['light', 'dark'],
+      },
+    ],
+  },
 });

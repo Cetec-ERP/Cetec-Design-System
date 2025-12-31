@@ -9,8 +9,17 @@ export const borders = defineTokens.borders({
   default: {
     value: '{borderWidths.1} solid {colors.border}',
   },
-  strong: {
+  bold: {
     value: '{borderWidths.2} solid {colors.border.bold}',
+  },
+  boldest: {
+    value: '{borderWidths.4} solid {colors.border.boldest}',
+  },
+  inverse: {
+    value: '{borderWidths.1} solid {colors.border.inverse}',
+  },
+  disabled: {
+    value: '{borderWidths.1} solid {colors.border.disabled}',
   },
   input: {
     value: '{borderWidths.1} solid {colors.border.input}',

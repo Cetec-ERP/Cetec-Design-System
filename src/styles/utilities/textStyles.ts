@@ -1,27 +1,23 @@
-import { defineTextStyles, defineStyles } from '@pandacss/dev';
+import { defineTextStyles } from '@pandacss/dev';
 import { fontVariants } from '.';
 
-const baseHeadingStyles = defineStyles({
-  value: {
-    fontFamily: 'heading',
-    fontWeight: 'black',
-    color: { base: 'slate.90', _dark: 'slate.5' },
-  },
-});
+export const baseHeadingStyles = {
+  fontFamily: 'heading',
+  fontWeight: 'black',
+  color: 'text',
+};
 
-const baseBodyTextStyles = defineStyles({
-  value: {
-    fontFamily: 'body',
-    fontVariationSettings: fontVariants.body,
-  },
-});
+export const baseBodyTextStyles = {
+  fontFamily: 'body',
+  fontVariationSettings: fontVariants.body,
+  color: 'text.subtlest',
+};
 
-const baseMonoStyles = defineStyles({
-  value: {
-    fontFamily: 'mono',
-    fontVariationSettings: fontVariants.mono,
-  },
-});
+export const baseMonoStyles = {
+  fontFamily: 'mono',
+  fontVariationSettings: fontVariants.mono,
+  color: 'text.subtlest',
+};
 
 export const textStyles = defineTextStyles({
   display: {

@@ -102,7 +102,7 @@ export const Menu: React.FC<MenuProps> = ({
         <Text
           onClick={handleBack}
           className={parentLabel}
-          textStyle={{ base: 'body-lg', md: 'body-md' }}
+          textStyle={{ base: 'body.lg', md: 'body.md' }}
           color={{ base: 'slate.90', _dark: 'slate.0' }}
         >
           <Icon name="caret-left" />
@@ -118,7 +118,7 @@ export const Menu: React.FC<MenuProps> = ({
           <Box key={section.id}>
             {section.title && (
               <Box className={sectionTitle}>
-                <Text textStyle="body-xs">{section?.title}</Text>
+                <Text textStyle="body.xs">{section?.title}</Text>
               </Box>
             )}
             <Box>
@@ -174,6 +174,7 @@ export const Menu: React.FC<MenuProps> = ({
                       multiSelectType === 'checkbox' &&
                       !section?.link && (
                         <CheckBox
+                          name={`menu-checkbox-${item.id}`}
                           checked={isSelected}
                           onChange={() => handleSelect(item.id)}
                         />
@@ -182,6 +183,7 @@ export const Menu: React.FC<MenuProps> = ({
                       multiSelectType === 'toggle' &&
                       !section?.link && (
                         <Toggle
+                          name={`menu-toggle-${item.id}`}
                           checked={isSelected}
                           onChange={() => handleSelect(item.id)}
                         />
@@ -189,14 +191,14 @@ export const Menu: React.FC<MenuProps> = ({
                     {!section?.link && (
                       <Box>
                         <Text
-                          textStyle={{ base: 'body-lg', md: 'body-md' }}
+                          textStyle={{ base: 'body.lg', md: 'body.md' }}
                           className={menuLabel}
                           color={{ base: 'slate.90', _dark: 'slate.5' }}
                         >
                           {item?.label}
                         </Text>
                         {item?.description && (
-                          <Text textStyle="body-xs" className={menuDescription}>
+                          <Text textStyle="body.xs" className={menuDescription}>
                             {item?.description}
                           </Text>
                         )}
