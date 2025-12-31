@@ -15,6 +15,7 @@ const {
   radioRecipe,
   tooltipRecipe,
   menuRecipe,
+  formFieldRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -69,6 +70,7 @@ export const cetecPreset = definePreset({
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
+        formField: formFieldRecipe,
       },
     },
   },

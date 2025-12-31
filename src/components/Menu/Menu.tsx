@@ -113,7 +113,7 @@ export const Menu: React.FC<MenuProps> = ({
         <Text
           onClick={handleBack}
           className={parentLabel}
-          textStyle={{ base: 'body-lg', md: 'body-md' }}
+          textStyle={{ base: 'body.lg', md: 'body.md' }}
           color={{ base: 'slate.90', _dark: 'slate.0' }}
         >
           <Icon name="caret-left" />
