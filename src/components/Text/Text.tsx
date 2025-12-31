@@ -13,7 +13,7 @@ export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
   } & AriaAttributes; // all aria attributes when we need.
 
 export const Text: React.FC<TextProps> = ({
-  as = 'p',
+  as = 'span',
   family,
   italic,
   bold,
