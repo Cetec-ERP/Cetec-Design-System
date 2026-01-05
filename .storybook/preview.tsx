@@ -23,6 +23,12 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: ['Intro', 'Tokens', ['*'], 'Components', 'Docs', '*'],
+      },
+    },
     docs: {
       page: DocTemplate,
       toc: {},

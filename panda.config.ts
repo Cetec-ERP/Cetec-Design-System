@@ -17,6 +17,7 @@ export default defineConfig({
     './src/**/*.{js,jsx,ts,tsx}',
     './pages/**/*.{js,jsx,ts,tsx}',
     './src/components/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    './src/storybook/**/*.{js,jsx,mjs,ts,tsx,mdx}',
   ],
 
   exclude: [],

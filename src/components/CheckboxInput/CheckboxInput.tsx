@@ -1,5 +1,5 @@
 import { splitProps } from '~/utils/splitProps';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, ChangeEventHandler } from 'react';
 import { cx } from '@styled-system/css';
 import { BoxProps } from '../Box';
 import { Label } from '../Label';
@@ -12,6 +12,8 @@ import {
 export type CheckboxInputProps = BoxProps &
   CheckboxInputVariantProps & {
     name: string;
+    checked: boolean;
+    onChange: ChangeEventHandler<HTMLInputElement>;
     id?: string;
     error?: boolean;
     children?: string | ReactNode;
@@ -20,6 +22,8 @@ export type CheckboxInputProps = BoxProps &
 export const CheckboxInput: FC<CheckboxInputProps> = ({
   id,
   name,
+  checked,
+  onChange,
   variant,
   children,
   error,
@@ -36,6 +40,8 @@ export const CheckboxInput: FC<CheckboxInputProps> = ({
       <Checkbox
         id={id}
         name={name}
+        checked={checked}
+        onChange={onChange}
         error={error}
         indeterminate={indeterminate}
         {...props}

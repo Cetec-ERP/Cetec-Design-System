@@ -357,8 +357,6 @@ const AppContent: React.FC = () => {
   const handleAction = () => {
     setMenuShow((show) => !show);
   };
-  const [checked, setChecked] = useState(false);
-
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [errorFormField, setErrorFormField] = useState(true);
   const [selectedToggleValue, setSelectedToggleValue] = useState<string[]>([]);
@@ -379,14 +377,38 @@ const AppContent: React.FC = () => {
     setErrorToggle(newTogglesSelected.length === 0);
   };
 
-  const handleCheckboxChange = (value: string) => {
-    const newSelected = selectedCheckbox.includes(value)
-      ? selectedCheckbox.filter((v) => v !== value)
-      : [...selectedCheckbox, value];
+  // Checkbox states using Storybook pattern
+  const [checkboxStates, setCheckboxStates] = useState({
+    normal: false,
+    defaultChecked: true,
+    indeterminate: false,
+    error: false,
+    disabled: false,
+  });
 
-    setCheckboxSelected(newSelected);
-    setError(newSelected.length === 0);
-  };
+  const handleCheckboxChange =
+    (key: keyof typeof checkboxStates) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCheckboxStates({ ...checkboxStates, [key]: e.target.checked });
+      };
+
+  // CheckboxInput states using Storybook pattern
+  const [checkboxInputStates, setCheckboxInputStates] = useState({
+    normal: false,
+    defaultChecked: true,
+    indeterminate: false,
+    error: false,
+    disabled: false,
+  });
+
+  const handleCheckboxInputChange =
+    (key: keyof typeof checkboxInputStates) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCheckboxInputStates({
+          ...checkboxInputStates,
+          [key]: e.target.checked,
+        });
+      };
 
   return (
     <VStack>
@@ -591,31 +613,30 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Checkboxes</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <Checkbox
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                checked={checkboxStates.normal}
+                onChange={handleCheckboxChange('normal')}
                 name="normal"
               />
               <Checkbox
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
-                defaultChecked={true}
+                checked={checkboxStates.defaultChecked}
+                onChange={handleCheckboxChange('defaultChecked')}
                 name="default-checked"
               />
               <Checkbox
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                checked={checkboxStates.indeterminate}
+                onChange={handleCheckboxChange('indeterminate')}
                 indeterminate
                 name="indeterminate"
               />
               <Checkbox
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                checked={checkboxStates.error}
+                onChange={handleCheckboxChange('error')}
                 error
                 name="error"
               />
               <Checkbox
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                checked={checkboxStates.disabled}
+                onChange={handleCheckboxChange('disabled')}
                 disabled
                 name="disabled"
               />
@@ -624,23 +645,46 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Checkbox Input</Heading>
             <VStack gap={'8'} alignItems={'flex-start'} maxW={'xs'}>
-              <CheckboxInput name="normal">
+              <CheckboxInput
+                name="normal"
+                checked={checkboxInputStates.normal}
+                onChange={handleCheckboxInputChange('normal')}
+              >
                 <Text>Aliqua irure veniam</Text>
               </CheckboxInput>
-              <CheckboxInput defaultChecked={true} name="default-checked">
+              <CheckboxInput
+                name="default-checked"
+                checked={checkboxInputStates.defaultChecked}
+                onChange={handleCheckboxInputChange('defaultChecked')}
+              >
                 <Text>elit consectetur elit cillum non eu laborum aute</Text>
               </CheckboxInput>
-              <CheckboxInput indeterminate name="indeterminate">
+              <CheckboxInput
+                indeterminate
+                name="indeterminate"
+                checked={checkboxInputStates.indeterminate}
+                onChange={handleCheckboxInputChange('indeterminate')}
+              >
                 <Text>
                   Ut fugiat tempor ullamco voluptate dolor labore amet magna
                   irure reprehenderit est irure est anim eiusmod commodo tempor
                   eu ut.
                 </Text>
               </CheckboxInput>
-              <CheckboxInput error name="error">
+              <CheckboxInput
+                error
+                name="error"
+                checked={checkboxInputStates.error}
+                onChange={handleCheckboxInputChange('error')}
+              >
                 <Text>et qui sit</Text>
               </CheckboxInput>
-              <CheckboxInput disabled name="disabled">
+              <CheckboxInput
+                disabled
+                name="disabled"
+                checked={checkboxInputStates.disabled}
+                onChange={handleCheckboxInputChange('disabled')}
+              >
                 <Text>aliquip velit anim irure</Text>
               </CheckboxInput>
             </VStack>
@@ -1656,7 +1700,7 @@ const AppContent: React.FC = () => {
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
-                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>
@@ -1721,23 +1765,23 @@ const AppContent: React.FC = () => {
                     errorText="Please select at least one option."
                     helpText="Helpful explanation if needed"
                   >
-                    <CheckBoxInput
+                    <CheckboxInput
                       name="inp"
                       onChange={() => handleCheckboxChange('option1')}
                     >
                       <Text size="16" weight="normal">
                         Mehna Malesuada
                       </Text>
-                    </CheckBoxInput>
+                    </CheckboxInput>
 
-                    <CheckBoxInput
+                    <CheckboxInput
                       name="inp"
                       onChange={() => handleCheckboxChange('option2')}
                     >
                       <Text size="16" weight="normal">
                         Mehna Malesuada
                       </Text>
-                    </CheckBoxInput>
+                    </CheckboxInput>
                   </FormField>
                 </Box>
                 <Box>

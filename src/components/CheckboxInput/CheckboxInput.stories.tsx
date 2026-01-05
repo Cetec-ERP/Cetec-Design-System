@@ -4,6 +4,7 @@ import { userEvent, within, expect } from '@storybook/test';
 import { CheckboxInput } from './CheckboxInput';
 import { CheckboxChangeHandler } from '../Checkbox';
 import { Box } from '../Box';
+import { FormField } from '../FormField';
 import { Text } from '../Text';
 import { Button } from '../Button';
 
@@ -108,7 +109,7 @@ export const AllStates: Story = {
         name="unchecked"
         id="unchecked"
         checked={false}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         <Text>Unchecked</Text>
       </CheckboxInput>
@@ -116,7 +117,7 @@ export const AllStates: Story = {
         name="checked"
         id="checked"
         checked={true}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         <Text>Checked</Text>
       </CheckboxInput>
@@ -125,7 +126,7 @@ export const AllStates: Story = {
         id="indeterminate"
         indeterminate
         checked={false}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         <Text>Indeterminate</Text>
       </CheckboxInput>
@@ -134,7 +135,7 @@ export const AllStates: Story = {
         id="error"
         error
         checked={false}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         <Text>Error state</Text>
       </CheckboxInput>
@@ -143,7 +144,7 @@ export const AllStates: Story = {
         id="disabled"
         disabled
         checked={false}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         <Text>Disabled</Text>
       </CheckboxInput>
@@ -152,7 +153,7 @@ export const AllStates: Story = {
         id="disabled-checked"
         disabled
         checked={true}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         <Text>Disabled + Checked</Text>
       </CheckboxInput>
@@ -263,7 +264,7 @@ export const ExCheckboxGroup: Story = {
 };
 
 export const ExFormIntegration: Story = {
-  name: 'Ex: Form Integration',
+  name: 'Ex: As FormField',
   render: () => {
     const [formData, setFormData] = useState({
       newsletter: false,
@@ -282,12 +283,10 @@ export const ExFormIntegration: Story = {
     const allAccepted = formData.terms && formData.privacy;
 
     return (
-      <Box
-        as="form"
+      <FormField
         onSubmit={handleSubmit}
-        display="flex"
-        flexDirection="column"
-        gap="16"
+        label="FormField Integration"
+        required
       >
         <CheckboxInput
           name="newsletter"
@@ -329,7 +328,7 @@ export const ExFormIntegration: Story = {
             Submit
           </Button>
         </Box>
-      </Box>
+      </FormField>
     );
   },
 };
@@ -394,7 +393,7 @@ export const A11yKeyboardNavigation: Story = {
         name="first"
         id="first"
         checked={false}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         First checkbox
       </CheckboxInput>
@@ -402,7 +401,7 @@ export const A11yKeyboardNavigation: Story = {
         name="second"
         id="second"
         checked={false}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         Second checkbox
       </CheckboxInput>
@@ -410,7 +409,7 @@ export const A11yKeyboardNavigation: Story = {
         name="third"
         id="third"
         checked={false}
-        onChange={() => {}}
+        onChange={() => { }}
       >
         Third checkbox
       </CheckboxInput>
