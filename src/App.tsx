@@ -786,14 +786,14 @@ const AppContent: React.FC = () => {
             <VStack gap={'10'} alignItems={'flex-start'}>
               <Heading level="h3">Default</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Card grabbed={false}>
-                  <Box className={css({ p: '16' })}>Default</Box>
+                <Card p="16">
+                  <Text>Default</Text>
                 </Card>
-                <Card grabbed>
-                  <Box className={css({ p: '16' })}>Grabbed</Box>
+                <Card variant="flat" p="16">
+                  <Text>Flat</Text>
                 </Card>
-                <Card disabled>
-                  <Box className={css({ p: '16' })}>Disabled</Box>
+                <Card disabled p="16">
+                  <Text>Disabled</Text>
                 </Card>
               </HStack>
             </VStack>
@@ -1627,7 +1627,7 @@ const AppContent: React.FC = () => {
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
-                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>

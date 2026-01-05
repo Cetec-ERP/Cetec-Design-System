@@ -7,6 +7,7 @@ import { cx } from '@styled-system/css';
 export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
   CardVariantProps & {
     href?: string;
+    onClick?: () => void;
     children?: string | ReactNode;
     grabbed?: boolean;
     disabled?: boolean;
@@ -15,6 +16,7 @@ export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
 export const Card: React.FC<CardProps> = ({
   variant,
   href,
+  onClick,
   children,
   disabled,
   grabbed,
@@ -24,12 +26,12 @@ export const Card: React.FC<CardProps> = ({
 
   return (
     <Box
-      as={href ? 'a' : 'button'}
+      as={href ? 'a' : onClick ? 'button' : 'div'}
       disabled={disabled}
       aria-disabled={disabled}
       data-grabbed={grabbed}
       className={cx(card({ variant }), className)}
-      {...(href ? { href } : { type: 'button' })}
+      {...(href ? { href } : onClick ? { onClick } : {})}
       {...otherProps}
     >
       {children}
