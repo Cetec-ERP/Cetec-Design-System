@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { Box, BoxProps } from '../Box';
 import { Label } from '../Label';
-import { CheckBox } from '../Checkbox/CheckBox';
+import { CheckBox } from '../CheckBox/CheckBox';
 import {
   checkboxInput,
   type CheckboxInputVariantProps,

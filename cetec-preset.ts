@@ -128,11 +128,6 @@ export const cetecPreset = definePreset({
   globalCss: {
     ...pandaBasePresetGlobalCss,
     ...globalCss,
-    html: {
-      '--global-font-heading': 'fonts.heading',
-      '--global-font-body': 'fonts.body',
-      '--global-font-mono': 'fonts.mono',
-    },
   },
   conditions: {
     ...pandaBasePresetConditions,

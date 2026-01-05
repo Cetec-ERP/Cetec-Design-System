@@ -35,7 +35,7 @@ const meta: Meta<typeof Text> = {
     },
     fontFamily: {
       control: 'select',
-      options: ['mono', 'serif', 'body'],
+      options: ['mono', 'serif', 'body', 'heading'],
       description: 'Font family',
       table: {
         defaultValue: { summary: 'body' },
@@ -43,10 +43,10 @@ const meta: Meta<typeof Text> = {
     },
     lineHeight: {
       control: 'select',
-      options: ['lg', 'md', 'sm', 'xs'],
+      options: ['loose', 'default', 'tight', 'none'],
       description: 'Line Height',
       table: {
-        defaultValue: { summary: 'md' },
+        defaultValue: { summary: 'default' },
       },
     },
     color: {
