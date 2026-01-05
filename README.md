@@ -2,12 +2,24 @@
 
 A React component library built with TypeScript and Panda CSS for the Cetec-ERP application and marketing website.
 
-- [Development](#development)
-- [Architecture](#architecture)
-- [Working with Components](#working-with-components)
-- [Working with Icons](#working-with-icons)
-- [Usage in Consumer Projects](#usage-in-consumer-projects)
-- [Release Process](#release-process)
+- [Cetec-ERP Design System](#cetec-erp-design-system)
+	- [Development](#development)
+		- [Setup](#setup)
+		- [Commands](#commands)
+	- [Architecture](#architecture)
+		- [Key Principles](#key-principles)
+	- [Working with Components](#working-with-components)
+		- [Adding a New Component](#adding-a-new-component)
+		- [Component Guidelines](#component-guidelines)
+	- [Working with Icons](#working-with-icons)
+		- [Adding Icons](#adding-icons)
+	- [Usage in Consumer Projects](#usage-in-consumer-projects)
+		- [Installation](#installation)
+		- [Panda CSS Configuration](#panda-css-configuration)
+		- [Using in Your Project](#using-in-your-project)
+	- [Release Process](#release-process)
+		- [Contributing](#contributing)
+		- [Release Labels](#release-labels)
 
 ## Development
 
@@ -61,17 +73,16 @@ This design system is built on **Panda CSS** with a strict tokens-first approach
 1. Create component directory: `src/components/[ComponentName]/`
 2. Create a recipe in `src/recipes/[componentname].ts` defining style variants
 3. Export recipe from `src/recipes/index.ts`
-4. Register recipe in `panda.config.ts` under `theme.extend.recipes` (or `slotRecipes` for multi-part components)
+4. Standard `recipes` are registered automatically, but new `slotRecipes` need to be manually registered in `panda.config.ts` under `theme.extend.recipes`
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
-7. Create Storybook story: `ComponentName.stories.tsx`
-8. Export from `src/index.ts`
+7. Create Storybook story in component directory: `ComponentName.stories.tsx`
+8. Export component from `src/index.ts`
 
 ### Component Guidelines
 
 - Use function components only (React 19)
 - Type props with TypeScript strict mode
-- Use `forwardRefWithAs` utility for polymorphic components
 - Style with Panda recipes (no inline styles or hard-coded values)
 - Follow accessibility guidelines (semantic HTML, keyboard support, ARIA when needed)
 
@@ -95,224 +106,19 @@ npm install cetec-design-system
 
 ### Panda CSS Configuration
 
-Copy the Panda config below and adjust the import paths to point to the package in `node_modules`.
+Copy `/panda.config.ts` and adjust the import paths to point to the package in `node_modules`.
 Set up the `include` option to contain the paths where Panda should look when building `styled-system` and `styles.css`.
-```
-import {
-  defineConfig,
-  defineTokens,
-  defineSemanticTokens,
-} from '@pandacss/dev';
-import pandaBasePreset from '@pandacss/preset-base';
-
-import * as tokens from 'node_modules/cetec-design-system/src/styles/tokens';
-import * as semanticTokens from 'node_modules/cetec-design-system/src/styles/semanticTokens';
-import { globalCss } from 'node_modules/cetec-design-system/src/styles/globalStyle';
-import { conditions } from 'node_modules/cetec-design-system/src/styles/conditions';
-import {
-  buttonRecipe,
-  iconButtonRecipe,
-  inputRecipe,
-  textareaRecipe,
-  headingRecipe,
-  linkRecipe,
-  labelRecipe,
-  textRecipe,
-  checkboxRecipe,
-  spinnerRecipe,
-  dividerRecipe,
-  preRecipe,
-  codeRecipe,
-  boxRecipe,
-  radioRecipe,
-  textinputRecipe,
-} from 'node_modules/cetec-design-system/src/recipes';
-import { benefitsRecipe } from "./src/recipes";
-
-// https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
-// omit default patterns here
-const { box, divider, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
-const pandaBasePresetConditions = pandaBasePreset.conditions;
-const pandaBasePresetUtilities = pandaBasePreset.utilities;
-const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
-
-// using pandas methods to define type-safe tokens
-const theme = {
-  tokens: defineTokens({
-    aspectRatios: tokens.aspectRatios,
-    borders: tokens.borders,
-    shadows: tokens.shadows,
-    easings: tokens.easings,
-    durations: tokens.durations,
-    letterSpacings: tokens.letterSpacings,
-    lineHeights: tokens.lineHeights,
-    blurs: tokens.blurs,
-    animations: tokens.animations,
-    colors: tokens.colors,
-    fonts: tokens.fonts,
-    fontSizes: tokens.fontSizes,
-    fontWeights: tokens.fontWeights,
-    sizes: tokens.sizes,
-    numericSizes: tokens.numericSizes,
-    spacing: tokens.sizes,
-    radii: tokens.radii,
-    keyframes: tokens.keyframes,
-    containerSizes: tokens.containerSizes,
-    breakpoints: tokens.breakpoints,
-  }),
-  semanticTokens: defineSemanticTokens({
-    colors: semanticTokens.colors,
-  }),
-};
-
-export default defineConfig({
-  presets: ['@pandacss/dev/presets'],
-  eject: true,
-  gitignore: true,
-  jsxFramework: 'react',
-  jsxStyleProps: 'all',
-  jsxFactory: 'styled',
-  watch: true,
-  include: ["./src/pages/index.astro", "./src/components/**/*{ts, tsx, js, jsx, astro}"],
-  preflight: true,
-  exclude: [],
-  strictTokens: true,
-  importMap: '@styled-system',
-  outdir: 'styled-system',
-
-  theme: {
-    containerSizes: tokens.containerSizes,
-    keyframes: tokens.keyframes,
-    tokens: {
-      aspectRatios: theme.tokens.aspectRatios,
-      borders: theme.tokens.borders,
-      shadows: theme.tokens.shadows,
-      easings: theme.tokens.easings,
-      durations: theme.tokens.durations,
-      letterSpacings: theme.tokens.letterSpacings,
-      lineHeights: theme.tokens.lineHeights,
-      blurs: theme.tokens.blurs,
-      animations: theme.tokens.animations,
-      colors: theme.tokens.colors,
-      fonts: theme.tokens.fonts,
-      fontSizes: theme.tokens.fontSizes,
-      fontWeights: theme.tokens.fontWeights,
-      sizes: theme.tokens.sizes,
-      numericSizes: theme.tokens.numericSizes,
-      spacing: theme.tokens.sizes,
-      radii: theme.tokens.radii,
-    },
-    semanticTokens: {
-      colors: theme.semanticTokens.colors,
-    },
-    extend: {
-      breakpoints: theme.tokens.breakpoints,
-      textStyles: tokens.textStyles,
-      recipes: {
-        benefits: benefitsRecipe,
-        text: textRecipe,
-        heading: headingRecipe,
-        link: linkRecipe,
-        label: labelRecipe,
-        button: buttonRecipe,
-        iconButton: iconButtonRecipe,
-        input: inputRecipe,
-        textinput: textinputRecipe,
-        textarea: textareaRecipe,
-        code: codeRecipe,
-        pre: preRecipe,
-        spinner: spinnerRecipe,
-        divider: dividerRecipe,
-        box: boxRecipe,
-      },
-      slotRecipes: {
-        checkbox: checkboxRecipe,
-        radio: radioRecipe,
-      },
-    },
-  },
-
-  utilities: {
-    ...pandaBasePresetUtilities,
-  },
-
-  patterns: {
-    icon: {
-      properties: {
-        size: {
-          type: 'enum',
-          value: Object.keys(tokens.sizes),
-        },
-      },
-      transform(props) {
-        const { size, ...rest } = props;
-        return {
-          width: size,
-          height: size,
-          ...rest,
-        };
-      },
-    },
-    extend: {
-      ...pandaBasePresetPatterns,
-      container: {
-        transform(props) {
-          return Object.assign(
-            {
-              position: 'relative',
-              width: '100%',
-              maxWidth: '7xl',
-              mx: 'auto',
-              px: { base: '24', md: '20', sm: '16' },
-            },
-            props,
-          );
-        },
-      },
-    },
-  },
-
-  globalCss: {
-    ...pandaBasePresetGlobalCss,
-    ...globalCss,
-    html: {
-      '--global-font-heading': 'fonts.heading',
-      '--global-font-body': 'fonts.body',
-      '--global-font-mono': 'fonts.mono',
-    },
-  },
-  conditions: {
-    ...pandaBasePresetConditions,
-    // Core conditions pulled from panda preset-base package
-    ...conditions,
-
-    // Themes moved to conditions.tx
-
-    // States
-    indeterminate:
-      '&:is(:indeterminate, [data-indeterminate], [aria-checked=mixed], [data-state=indeterminate])',
-    hidden: '&:is([hidden])',
-    current: '&:is([data-current])',
-    today: '&:is([data-today])',
-    collapsed:
-      '&:is([aria-collapsed=true], [data-collapsed], [data-state="collapsed"])',
-
-    // Containers
-    containerSmall: '@container (max-width: 560px)',
-    containerMedium: '@container (min-width: 561px) and (max-width: 999px)',
-    containerLarge: '@container (min-width: 1000px)',
-  },
-});
-```
 
 ### Using in Your Project
 
 1. **Import the stylesheet** at the root of your project:
+
 ```typescript
-import "@styled-system/styles.css";
+import '@styled-system/styles.css';
 ```
 
 2. **Wrap your app with ThemeProvider**:
+
 ```typescript
 import { ThemeProvider } from "cetec-design-system";
 
@@ -326,6 +132,7 @@ function App() {
 ```
 
 3. **Import and use components**:
+
 ```typescript
 import { Button, Text, Icon } from "cetec-design-system";
 
@@ -340,19 +147,50 @@ function MyComponent() {
 }
 ```
 
-### Available Components
-
-Box, Text, Button, IconButton, Icon, Pre, Heading, Link, Spinner, Divider, Checkbox, Radio, TextInput, Textarea, Card, Toggle, ToggleInput, RadioInput, CheckboxInput, ThemeSwitcher, Tooltip, Breadcrumbs, Tag, Menu
-
 ## Release Process
 
 This project uses [Auto](https://intuit.github.io/auto/) for automated releases and changelog generation.
 
 ### Contributing
 
-- **PR Titles**: Must follow [Conventional Commits](https://www.conventionalcommits.org/) format
 - **Release Labels**: PRs must have a release label (major, minor, patch, or release) to trigger a release
 - **Changelog**: Auto-generated based on PR labels and titles
+- **PR Titles**: Must follow our defined format for Auto release automation:
+
+> Conventional Commits Spec for PR Titles
+> PR titles should adhere to the following format:
+>
+> (scope):
+>
+> Examples:
+> fix: I fixed a bug
+> chore(minor): doin stuff and things
+> refactor(major)!: breaking stuff but not things
+>
+> Adding a '!' before the colon ‘:’ will flag the PR as a breaking change.
+> i.e. feat(major)!: breaking stuff
+>
+> Valid types are:
+> "feat" - new feature
+> "fix" - bug fix
+> "docs" - documentation only changes
+> "style" - purely CSS/formatting changes
+> "refactor" - neither fixes a bug nor adds a feature
+> "perf" - code change to improve performance
+> "test" - creating/deleting/changing tests only
+> "build" - changes affecting build process or changes to external dependencies
+> "ci" - changes to ci setup
+> "chore" - small changes that don't apply to other types
+> "revert" - reverting a commit
+>
+> Valid Scopes:
+> "major", "minor", "patch" - correspond to the potential impact of the change
+> "ticket" - fix pertaining to a ticket
+> "config" - changes to a config setting (add/remove/delete)
+> "script" - customer specific scripts that don't affect the greater codebase
+> "cypress" - pertaining to cypress tests only
+>
+> Use your best judgement when deciding what type and scope to use for the PR you’re creating.
 
 ### Release Labels
 

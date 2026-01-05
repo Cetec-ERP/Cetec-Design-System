@@ -1,31 +1,27 @@
-import {
-  defineConfig,
-} from '@pandacss/dev';
+import { defineConfig } from '@pandacss/dev';
 import { cetecPreset } from './cetec-preset';
 
-
 export default defineConfig({
-	eject: true,
+  eject: true,
   gitignore: true,
   jsxFramework: 'react',
   jsxStyleProps: 'all',
   jsxFactory: 'styled',
-	preflight: true,
-	strictTokens: true,
+  preflight: true,
+  strictTokens: true,
   watch: true,
-  
-	presets: ['@pandacss/dev/presets', cetecPreset],
-  
-	include: [
+
+  presets: ['@pandacss/dev/presets', cetecPreset],
+
+  include: [
     './src/**/*.{js,jsx,ts,tsx}',
     './pages/**/*.{js,jsx,ts,tsx}',
     './src/components/*/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
-  
-	exclude: [],
-	
+
+  exclude: [],
+
   prefix: 'cetec',
   importMap: '@styled-system',
   outdir: 'styled-system',
-
 });

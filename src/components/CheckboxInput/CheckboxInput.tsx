@@ -20,6 +20,7 @@ export type CheckboxInputProps = BoxProps &
 export const CheckboxInput: FC<CheckboxInputProps> = ({
   id,
   name,
+  variant,
   children,
   error,
   indeterminate,
@@ -27,7 +28,11 @@ export const CheckboxInput: FC<CheckboxInputProps> = ({
 }: CheckboxInputProps) => {
   const [className, otherProps] = splitProps(props);
   return (
-    <Label className={cx(checkboxInput(), className)} {...otherProps} htmlFor={id}>
+    <Label
+      className={cx(checkboxInput(), className)}
+      {...otherProps}
+      htmlFor={id}
+    >
       <Checkbox
         id={id}
         name={name}

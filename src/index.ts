@@ -23,3 +23,4 @@ export { Tooltip } from './components/Tooltip';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
 export { Menu } from './components/Menu';
+export { FormField } from './components/FormField';
