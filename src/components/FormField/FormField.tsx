@@ -55,7 +55,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     <Box className={formFieldContainer} {...props} disabled={disabled}>
       <Box className={labelWrapper}>
         <Box className={headLabel}>
-          <Text textStyle="body-md">{label} </Text>
+          <Text textStyle="body.md">{label} </Text>
           {required && (
             <Text as="span" color="red.50">
               *
@@ -72,16 +72,16 @@ export const FormField: React.FC<FormFieldProps> = ({
           )}
         </Box>
         {layout === 'default' && helpText && (
-          <Text as="span" textStyle="body-sm">
+          <Text as="span" textStyle="body.sm">
             {helpText}
           </Text>
         )}
       </Box>
       <Box className={contentWrapper}>
         {enhancedChildren}
-        {layout === 'inline' && <Text textStyle="body-sm">{helpText}</Text>}
+        {layout === 'inline' && <Text textStyle="body.sm">{helpText}</Text>}
         {error && (
-          <Text as="span" textStyle={'body-xs'} color="error.default">
+          <Text as="span" textStyle={'body.xs'} color="error.default">
             {errorText}
           </Text>
         )}

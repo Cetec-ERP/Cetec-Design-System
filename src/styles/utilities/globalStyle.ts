@@ -1,5 +1,5 @@
 import { defineGlobalStyles } from '@pandacss/dev';
-import { fontVariants } from './tokens';
+import { fontVariants } from './fontVariants';
 
 // includes some normalize styles from:
 // https://github.com/sindresorhus/modern-normalize/blob/main/modern-normalize.css
@@ -19,6 +19,9 @@ export const globalCss = defineGlobalStyles({
     },
   },
   html: {
+    '--global-font-heading': 'heading',
+    '--global-font-body': 'body',
+    '--global-font-mono': 'mono',
     fontSize: '16',
     lineHeight: 'calc(1em + 0.5rem)',
     '-webkit-text-size-adjust': '100%',

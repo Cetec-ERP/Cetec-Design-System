@@ -38,46 +38,46 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const resolvedPlacement =
     typeof position === 'string' ? position : 'bottom';
 
-    const clockWisePlacement : Position[] = ['bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'top', 'top-start', 'top-end', 'right', 'right-start', 'right-end'];
+  const clockWisePlacement: Position[] = ['bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'top', 'top-start', 'top-end', 'right', 'right-start', 'right-end'];
 
-    function getClockwise(start: Position): Position[] {
-      const index = clockWisePlacement.indexOf(start);
-      if (index === -1) return clockWisePlacement;
-    
-      const reordered = [...clockWisePlacement.slice(index + 1), ...clockWisePlacement.slice(0, index)];
-      return reordered;
-    }
-  
-  
-    const checkPosition = () => {
-      const tooltipPositioning = tooltipRef.current;
-      const triggerPositioning = triggerRef.current;
-      if (!tooltipPositioning || !triggerPositioning) return;
-    
-      const triggerRect = triggerPositioning.getBoundingClientRect();
-      const fallbacks = getClockwise(resolvedPlacement);
-    
-      for (const positioning of [resolvedPlacement, ...fallbacks]) {
-        const tooltipRect = getSimulatedRect(
-          triggerRect,
-          tooltipPositioning.offsetWidth,
-          tooltipPositioning.offsetHeight,
-          positioning,
-        );
-    
-        const fits =
-          tooltipRect.top >= 0 &&
-          tooltipRect.left >= 0 &&
-          tooltipRect.bottom <= window.innerHeight &&
-          tooltipRect.right <= window.innerWidth;
-    
-        if (fits) {
-          setCurrentPlacement(positioning);
-          return;
-        }
+  function getClockwise(start: Position): Position[] {
+    const index = clockWisePlacement.indexOf(start);
+    if (index === -1) return clockWisePlacement;
+
+    const reordered = [...clockWisePlacement.slice(index + 1), ...clockWisePlacement.slice(0, index)];
+    return reordered;
+  }
+
+
+  const checkPosition = () => {
+    const tooltipPositioning = tooltipRef.current;
+    const triggerPositioning = triggerRef.current;
+    if (!tooltipPositioning || !triggerPositioning) return;
+
+    const triggerRect = triggerPositioning.getBoundingClientRect();
+    const fallbacks = getClockwise(resolvedPlacement);
+
+    for (const positioning of [resolvedPlacement, ...fallbacks]) {
+      const tooltipRect = getSimulatedRect(
+        triggerRect,
+        tooltipPositioning.offsetWidth,
+        tooltipPositioning.offsetHeight,
+        positioning,
+      );
+
+      const fits =
+        tooltipRect.top >= 0 &&
+        tooltipRect.left >= 0 &&
+        tooltipRect.bottom <= window.innerHeight &&
+        tooltipRect.right <= window.innerWidth;
+
+      if (fits) {
+        setCurrentPlacement(positioning);
+        return;
       }
-      setCurrentPlacement(resolvedPlacement);
-    };
+    }
+    setCurrentPlacement(resolvedPlacement);
+  };
 
   function getSimulatedRect(
     triggerRect: DOMRect,
@@ -236,7 +236,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           {title && (
             <Text
               as="p"
-              textStyle="body-md"
+              textStyle="body.md"
               bold
               color={{ base: 'slate.0', _dark: 'slate.90' }}
             >
@@ -246,7 +246,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           {text && (
             <Text
               as="span"
-              textStyle="body-sm"
+              textStyle="body.sm"
               color={{ base: 'slate.0', _dark: 'slate.90' }}
             >
               {text}

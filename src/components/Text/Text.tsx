@@ -13,7 +13,7 @@ export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
   } & AriaAttributes; // all aria attributes when we need.
 
 export const Text: React.FC<TextProps> = ({
-  as = 'p',
+  as = 'span',
   family,
   italic,
   bold,
@@ -24,6 +24,7 @@ export const Text: React.FC<TextProps> = ({
   weight,
   role, // role if use in form input text for refrence, also semantic role overrides if non-semantic tag.
   tabIndex, // tabIndex main use for in list or loop select text using key press focus
+  truncate,
   ...props
 }: TextProps) => {
   const [className, otherProps] = splitProps(props);
@@ -31,8 +32,9 @@ export const Text: React.FC<TextProps> = ({
   return (
     <Box
       as={as}
+      textStyle={textStyle}
       className={cx(
-        text({ textStyle, family, bold, underline, italic, size, weight }),
+        text({ family, bold, underline, italic, size, weight, truncate }),
         className,
       )}
       {...otherProps}
