@@ -2,8 +2,8 @@ import { defineRecipe } from '@pandacss/dev';
 import {
   fontSizes as fontSizeTokens,
   fontWeights as fontWeightTokens,
-  fontVariants,
-} from '~/styles/tokens';
+} from '../styles/primitives';
+import { fontVariants } from '../styles/utilities';
 
 const textBase = {
   margin: '0',
@@ -58,6 +58,15 @@ const textVariants = {
   underline: {
     true: {
       textDecoration: 'underline',
+    },
+  },
+  truncate: {
+    true: {
+      width: 'full',
+      maxWidth: 'full',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
     },
   },
   size: fontSizes,

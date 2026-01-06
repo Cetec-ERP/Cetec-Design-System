@@ -20,4 +20,4 @@ export { checkBoxRecipe } from './checkbox';
 export { radioRecipe } from './radio';
 export { tooltipRecipe } from './tooltip';
 export { menuRecipe } from './menu';
-export { formFieldRecipe } from './formFieldRecipe';
+export { formFieldRecipe } from './formField';
