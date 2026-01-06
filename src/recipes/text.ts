@@ -68,6 +68,13 @@ const textVariants = {
       whiteSpace: 'nowrap',
     },
   },
+  allCaps: {
+    true: {
+      textTransform: 'uppercase',
+      fontWeight: 'bold',
+      letterSpacing: 'widest',
+    },
+  },
   size: fontSizes,
   weight: fontWeights,
 };
@@ -85,6 +92,12 @@ const headingVariants = {
     h2: { textStyle: 'heading.md' },
     h3: { textStyle: 'heading.sm' },
     h4: { textStyle: 'heading.xs' },
+  },
+  allCaps: {
+    true: {
+      textTransform: 'uppercase',
+      letterSpacing: 'widest',
+    },
   },
 };
 
