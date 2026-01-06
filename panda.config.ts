@@ -11,7 +11,8 @@ export default defineConfig({
   strictTokens: true,
   watch: true,
 
-  presets: ['@pandacss/dev/presets', cetecPreset],
+  // removed @pandacss/dev/presets because it was adding back things we intentionally excluded
+  presets: [cetecPreset],
 
   include: [
     './src/**/*.{js,jsx,ts,tsx}',
