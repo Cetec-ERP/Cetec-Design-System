@@ -1,9 +1,9 @@
 import { defineRecipe } from '@pandacss/dev';
 import {
   fontSizes as fontSizeTokens,
-	fontWeights as fontWeightTokens,
-	fontVariants,
-} from '../styles/tokens';
+  fontWeights as fontWeightTokens,
+} from '../styles/primitives';
+import { fontVariants } from '../styles/utilities';
 
 const textBase = {
   margin: '0',
@@ -35,24 +35,6 @@ const fontWeights = (Object.keys(fontWeightTokens) as FontWeightKey[]).reduce(
 );
 
 const textVariants = {
-  textStyle: {
-    'display-lg': { textStyle: 'display.lg' },
-    'display-md': { textStyle: 'display.md' },
-    'display-sm': { textStyle: 'display.sm' },
-    'display-xs': { textStyle: 'display.xs' },
-    'heading-lg': { textStyle: 'heading.lg' },
-    'heading-md': { textStyle: 'heading.md' },
-    'heading-sm': { textStyle: 'heading.sm' },
-    'heading-xs': { textStyle: 'heading.xs' },
-    'body-lg': { textStyle: 'body.lg' },
-    'body-md': { textStyle: 'body.md' },
-    'body-sm': { textStyle: 'body.sm' },
-    'body-xs': { textStyle: 'body.xs' },
-    'mono-lg': { textStyle: 'mono.lg' },
-    'mono-md': { textStyle: 'mono.md' },
-    'mono-sm': { textStyle: 'mono.sm' },
-    'mono-xs': { textStyle: 'mono.xs' },
-  },
   family: {
     heading: { fontFamily: 'heading' },
     body: { fontFamily: 'body' },
@@ -75,6 +57,15 @@ const textVariants = {
   underline: {
     true: {
       textDecoration: 'underline',
+    },
+  },
+  truncate: {
+    true: {
+      width: 'full',
+      maxWidth: 'full',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
     },
   },
   size: fontSizes,
@@ -159,9 +150,6 @@ export const textRecipe = defineRecipe({
   jsx: ['Text'],
   base: textBase,
   variants: textVariants,
-  defaultVariants: {
-    textStyle: 'body-md',
-  },
 });
 
 export const headingRecipe = defineRecipe({

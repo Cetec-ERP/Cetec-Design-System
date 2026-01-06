@@ -19,4 +19,4 @@ export { checkboxInputRecipe } from './checkboxinput';
 export { radioRecipe } from './radio';
 export { tooltipRecipe } from './tooltip';
 export { menuRecipe } from './menu';
-export { formFieldRecipe } from './formFieldRecipe';
+export { formFieldRecipe } from './formField';

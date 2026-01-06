@@ -3,7 +3,7 @@ import { Box, type BoxProps } from '~/components/Box';
 import { cx } from '@styled-system/css';
 import { IconNamesList } from './icons';
 import { icon } from '@styled-system/patterns';
-import { numericSizes } from '~/styles/tokens';
+import { numericSizes } from '~/styles/primitives';
 import { splitProps } from '~/utils/splitProps';
 import { ConditionalValue } from '@styled-system/types';
 import { WithEscapeHatch } from '@styled-system/types/prop-type';
