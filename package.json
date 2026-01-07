@@ -1,6 +1,10 @@
 {
   "name": "cetec-design-system",
   "version": "0.0.40-0",
+  "description": "Cetec-ERP Design System",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
@@ -12,7 +16,6 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "type": "module",
   "files": [
     "./dist/",
     "./src/styles/*",
@@ -64,12 +67,19 @@
       "plugin:storybook/recommended"
     ]
   },
-  "description": "Cetec-ERP Design System",
-  "main": "./dist/cetec-design-system.es.js",
   "exports": {
     ".": {
-      "import": "./dist/cetec-design-system.es.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
+    "./preset": {
+      "types": "./dist/preset.d.ts",
+      "import": "./dist/preset.js",
+      "default": "./dist/preset.js"
+    },
+    "./sprite.svg": "./dist/sprite.svg",
+    "./panda.buildinfo.json": "./dist/panda.buildinfo.json",
     "./styled-system": {
       "import": "./dist/styled-system"
     }
