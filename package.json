@@ -9,7 +9,7 @@
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
     "dev": "npx panda codegen --watch & vite",
-    "build": "npx panda codegen && vite build && npx panda ship --outfile dist/panda.buildinfo.json",
+    "build": "npx panda codegen && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
