@@ -9,19 +9,20 @@ export type HeadingProps = Omit<TextProps, keyof HeadingVariantProps> & HeadingV
 };
 
 export const Heading: React.FC<HeadingProps> = (
-  { 
-    level='h2', 
-    children, 
-    ...props 
+  {
+    level = 'h2',
+    allCaps,
+    children,
+    ...props
   }: HeadingProps,
 ) => {
 
-  const [ className, otherProps ] = splitProps(props);
+  const [className, otherProps] = splitProps(props);
   return (
     <Text
       as={level}
       className={cx(
-        heading({ level }), 
+        heading({ level, allCaps }),
         className,
       )}
       {...otherProps}

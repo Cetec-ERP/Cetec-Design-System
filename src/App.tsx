@@ -786,14 +786,14 @@ const AppContent: React.FC = () => {
             <VStack gap={'10'} alignItems={'flex-start'}>
               <Heading level="h3">Default</Heading>
               <HStack gap={'40'} alignItems={'flex-start'}>
-                <Card grabbed={false}>
-                  <Box className={css({ p: '16' })}>Default</Box>
+                <Card p="16">
+                  <Text>Default</Text>
                 </Card>
-                <Card grabbed>
-                  <Box className={css({ p: '16' })}>Grabbed</Box>
+                <Card variant="flat" p="16">
+                  <Text>Flat</Text>
                 </Card>
-                <Card disabled>
-                  <Box className={css({ p: '16' })}>Disabled</Box>
+                <Card disabled p="16">
+                  <Text>Disabled</Text>
                 </Card>
               </HStack>
             </VStack>
