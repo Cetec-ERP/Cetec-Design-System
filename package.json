@@ -23,7 +23,7 @@
     "./src/tokens/*",
     "./src/utils/*.ts"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource-variable/ruda": "^5.1.1",
     "react": "19.0.0",
