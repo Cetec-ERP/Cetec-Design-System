@@ -22,10 +22,13 @@ import * as componentRecipes from './src/recipes/index';
 
 // Separate slotRecipes from regular recipes
 const {
+  buttonRecipe,
+  iconButtonRecipe,
   checkBoxRecipe,
   radioRecipe,
   tooltipRecipe,
   menuRecipe,
+  formFieldRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -75,10 +78,13 @@ export const cetecPreset = definePreset({
         ...transformedRecipes,
       },
       slotRecipes: {
+        button: buttonRecipe,
+        iconButton: iconButtonRecipe,
         checkbox: checkBoxRecipe,
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
+        formField: formFieldRecipe,
       },
     },
   },

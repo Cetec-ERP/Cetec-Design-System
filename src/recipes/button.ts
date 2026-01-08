@@ -1,185 +1,213 @@
-import { defineRecipe } from '@pandacss/dev';
+import { defineSlotRecipe } from '@pandacss/dev';
 
-const buttonBase = {
-  position: 'relative',
-  appearance: 'none',
-  minWidth: '0',
-  transitionDuration: 'fast',
-  transitionProperty: 'background, border-color, color, box-shadow',
-  transitionTimingFunction: 'default',
-  userSelect: 'none',
-  verticalAlign: 'middle',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4',
-  fontFamily: 'body',
-  fontSize: '16',
-  fontWeight: 'medium',
-  lineHeight: 'default',
-  borderWidth: '1',
-  borderStyle: 'solid',
-  borderColor: 'transparent',
-  borderRadius: '4',
-  outlineWidth: '2',
-  outlineStyle: 'solid',
-  outlineColor: 'transparent',
-  outlineOffset: '1',
-  textDecoration: 'none',
-  whiteSpace: 'nowrap',
-  cursor: 'pointer',
-  _disabled: {
-    opacity: 0.4,
-    cursor: 'not-allowed',
+const buttonBaseStyles = {
+  container: {
+    position: 'relative',
+    appearance: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4',
+    minWidth: '0',
+    width: 'fit',
+    height: 'fit',
+    transitionDuration: 'fast',
+    transitionProperty: 'background, border-color, color, box-shadow',
+    transitionTimingFunction: 'default',
+    userSelect: 'none',
+    verticalAlign: 'middle',
+    fontFamily: 'body',
+    fontSize: '16',
+    fontWeight: 'medium',
+    lineHeight: 'default',
+    borderWidth: '1',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    borderRadius: '4',
+    outlineWidth: '2',
+    outlineStyle: 'solid',
+    outlineColor: 'transparent',
+    outlineOffset: '1',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
+    cursor: 'pointer',
+    _disabled: {
+      cursor: 'not-allowed',
+      bg: 'bg.disabled',
+      color: 'text.disabled',
+      borderColor: 'border.disabled',
+      icon: { fill: 'icon.disabled' },
+      _hover: {
+        bg: 'bg.disabled',
+        color: 'text.disabled',
+        borderColor: 'border.disabled',
+        icon: { fill: 'icon.disabled' },
+      },
+    },
+    _focusVisible: {
+      outlineColor: 'border.focused',
+    },
   },
-  _focusVisible: {
-    outlineColor: { base: 'slate.80', _dark: 'slate.5' },
-  },
-  '& svg': {
-    fill: 'current',
+  icon: {
+    aspectRatio: 'square',
+    transitionDuration: 'fast',
+    transitionProperty: 'fill',
+    transitionTimingFunction: 'default',
   },
 };
 
 const buttonVariants = {
   variant: {
-    primary: {
-      bg: { base: 'slate.90', _dark: 'slate.5' },
-      color: { base: 'slate.0', _dark: 'slate.90' },
-      _hover: {
-        bg: { base: 'slate.70', _dark: 'slate.10' },
-      },
-      _active: {
-        bg: { base: 'slate.100', _dark: 'slate.20' },
-      },
-      _disabled: {
-        _hover: {
-          bg: { base: 'slate.90', _dark: 'slate.5' },
-        },
-      },
-      _selected: {
-        bg: { base: 'slate.5', _dark: 'slate.90' },
-        color: { base: 'slate.90', _dark: 'slate.0' },
-      },
-    },
     standard: {
-      bg: { base: 'slate.5', _dark: 'slate.70' },
-      color: { base: 'slate.90', _dark: 'slate.0' },
-      _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60' },
-      },
-      _active: {
-        bg: { base: 'slate.20', _dark: 'slate.80' },
-      },
-      _disabled: {
+      container: {
+        bg: 'bg.neutral',
+        color: 'text',
+        icon: { fill: 'icon.decorative' },
         _hover: {
-          bg: { base: 'slate.5', _dark: 'slate.70' },
+          bg: 'bg.neutral.hovered',
+          icon: { fill: 'icon.decorative.hovered' },
+        },
+        _active: {
+          bg: 'bg.neutral.pressed',
+          icon: { fill: 'icon.decorative.hovered' },
         },
       },
-      _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.0', _dark: 'slate.90' },
-      },
     },
-    hollow: {
-      bg: 'transparent',
-      borderColor: { base: 'slate.30', _dark: 'slate.60' },
-      color: { base: 'slate.90', _dark: 'slate.0' },
-      _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60' },
-        borderColor: { base: 'slate.10', _dark: 'slate.60' },
-      },
-      _active: {
-        bg: { base: 'slate.20', _dark: 'slate.80' },
-        borderColor: { base: 'slate.20', _dark: 'slate.80' },
-      },
-      _disabled: {
+    primary: {
+      container: {
+        bg: 'bg.neutral.boldest',
+        color: 'text.inverse',
+        icon: { fill: 'icon.decorative.inverse' },
         _hover: {
-          bg: 'transparent',
+          bg: 'bg.neutral.bold.hovered',
+          icon: { fill: 'icon.decorative.inverse.hovered' },
+        },
+        _active: {
+          bg: 'bg.neutral.bold.pressed',
+          icon: { fill: 'icon.decorative.inverse.hovered' },
         },
       },
-      _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.0', _dark: 'slate.90' },
-        borderColor: 'transparent',
-      },
-    },
-    ghost: {
-      bg: 'transparent',
-      color: { base: 'slate.90', _dark: 'slate.0' },
-      _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60' },
-      },
-      _active: {
-        bg: { base: 'slate.20', _dark: 'slate.70' },
-      },
-      _disabled: {
-        _hover: {
-          bg: 'transparent',
+      hollow: {
+        container: {
+          bg: 'bg.neutral.subtle',
+          borderColor: 'border',
+          color: 'text.subtle',
+          icon: { fill: 'icon.decorative' },
+          _hover: {
+            bg: 'bg.neutral.subtle.hovered',
+            icon: { fill: 'icon.decorative.hovered' },
+          },
+          _active: {
+            bg: 'bg.neutral.subtle.pressed',
+            icon: { fill: 'icon.decorative.hovered' },
+          },
         },
       },
-      _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.0', _dark: 'slate.90' },
+      ghost: {
+        container: {
+          bg: 'bg.neutral.subtle',
+          color: 'text.subtle',
+          icon: { fill: 'icon.decorative' },
+          _hover: {
+            bg: 'bg.neutral.subtle.hovered',
+            icon: { fill: 'icon.decorative.hovered' },
+          },
+          _active: {
+            bg: 'bg.neutral.subtle.pressed',
+            icon: { fill: 'icon.decorative.hovered' },
+          },
+        },
       },
-    },
-    cta: {
-      bg: { base: 'gold.20', _dark: 'gold.30' },
-      color: 'slate.90',
-      _hover: {
-        bg: { base: 'gold.10', _dark: 'gold.20' },
-      },
-      _active: {
-        bg: { base: 'gold.30', _dark: 'gold.40' },
-      },
-      _disabled: {
-        _hover: {
+      cta: {
+        container: {
           bg: { base: 'gold.20', _dark: 'gold.30' },
+          color: 'slate.90',
+          _hover: {
+            bg: { base: 'gold.10', _dark: 'gold.20' },
+          },
+          _active: {
+            bg: { base: 'gold.30', _dark: 'gold.40' },
+          },
         },
       },
-    },
-    danger: {
-      bg: 'red.50',
-      color: 'slate.0',
-      _hover: {
-        bg: 'red.40',
-      },
-      _active: {
-        bg: 'red.60',
-      },
-      _disabled: {
-        _hover: {
+      danger: {
+        container: {
           bg: 'red.50',
+          color: 'slate.0',
+          _hover: {
+            bg: 'red.40',
+          },
+          _active: {
+            bg: 'red.60',
+          },
+          _disabled: {
+            _hover: {
+              bg: 'red.50',
+            },
+          },
         },
       },
     },
   },
 };
 
-export const buttonRecipe = defineRecipe({
+export const buttonRecipe = defineSlotRecipe({
   className: 'button',
   jsx: ['Button'],
-  base: buttonBase,
+  slots: ['container', 'icon'],
+  base: buttonBaseStyles,
   variants: {
     ...buttonVariants,
     size: {
       medium: {
-        fontSize: '16',
-        py: '3',
-        px: '10',
-      },
-      large: {
-        fontSize: '16',
-        py: '7',
-        px: '12',
-      },
-      small: {
-        fontSize: '14',
-        py: '0',
-        px: '8',
-        '& svg': {
-          mt: '-1',
-          mb: '-1',
+        container: {
+          fontSize: '16',
+          py: '3',
+          px: '12',
+        },
+        icon: {
+          w: '24',
+          h: '24',
         },
       },
+      xlarge: {
+        container: {
+          fontSize: '20',
+          py: '9',
+          px: '16',
+        },
+        icon: {
+          w: '28',
+          h: '28',
+        },
+      },
+      large: {
+        container: {
+          fontSize: '16',
+          py: '7',
+          px: '14',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
+      },
+      small: {
+        container: {
+          fontSize: '14',
+          py: '1',
+          px: '8',
+        },
+        icon: {
+          w: '22',
+          h: '22',
+        },
+      },
+    },
+    before: {
+      true: { container: {} },
+    },
+    after: {
+      true: { container: {} },
     },
   },
   defaultVariants: {
@@ -188,27 +216,56 @@ export const buttonRecipe = defineRecipe({
   },
 });
 
-export const iconButtonRecipe = defineRecipe({
+export const iconButtonRecipe = defineSlotRecipe({
   className: 'icon-button',
   jsx: ['IconButton'],
-  base: buttonBase,
+  slots: ['container', 'icon'],
+  base: buttonBaseStyles,
   variants: {
     ...buttonVariants,
     size: {
       medium: {
-        fontSize: '16',
-        p: '3',
+        container: {
+          fontSize: '16',
+          py: '3',
+          px: '12',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
+      },
+      xlarge: {
+        container: {
+          fontSize: '20',
+          py: '9',
+          px: '16',
+        },
+        icon: {
+          w: '28',
+          h: '28',
+        },
       },
       large: {
-        fontSize: '16',
-        p: '7',
+        container: {
+          fontSize: '16',
+          py: '7',
+          px: '14',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
       },
       small: {
-        fontSize: '14',
-        p: '0',
-        '& svg': {
-          mt: '-1',
-          mb: '-1',
+        container: {
+          fontSize: '14',
+          py: '1',
+          px: '8',
+        },
+        icon: {
+          w: '22',
+          h: '22',
         },
       },
     },
