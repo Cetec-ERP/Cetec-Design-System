@@ -22,7 +22,7 @@ import * as componentRecipes from './src/recipes/index';
 
 // Separate slotRecipes from regular recipes
 const {
-  checkBoxRecipe,
+  checkboxRecipe,
   radioRecipe,
   tooltipRecipe,
   menuRecipe,
@@ -75,7 +75,7 @@ export const cetecPreset = definePreset({
         ...transformedRecipes,
       },
       slotRecipes: {
-        checkbox: checkBoxRecipe,
+        checkbox: checkboxRecipe,
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
@@ -148,6 +148,8 @@ export const cetecPreset = definePreset({
           minHeight: ['*'],
           maxWidth: ['*'],
           maxHeight: ['*'],
+          padding: ['*'],
+          margin: ['*'],
           borderRadius: ['*'],
           textStyle: ['*'],
           fontFamily: ['*'],
