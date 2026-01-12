@@ -280,7 +280,7 @@ export const ProfileCard: Story = {
         <Flex flexDir="column" alignItems="flex-start" w="full">
           <Heading level="h4">Jane Doe</Heading>
           <Text color="text.muted">Product Designer</Text>
-          <Button size="small" mt="12">
+          <Button size="sm" mt="12">
             View Profile
           </Button>
         </Flex>
@@ -351,9 +351,7 @@ export const InteractiveComparison: Story = {
   render: () => (
     <VStack gap="24" alignItems="flex-start">
       <div>
-        <div
-          className={css({ mb: '8', fontSize: '14', fontWeight: 'bold' })}
-        >
+        <div className={css({ mb: '8', fontSize: '14', fontWeight: 'bold' })}>
           Non-Interactive (Content Container)
         </div>
         <Card>
@@ -371,9 +369,7 @@ export const InteractiveComparison: Story = {
         </Card>
       </div>
       <div>
-        <div
-          className={css({ mb: '8', fontSize: '14', fontWeight: 'bold' })}
-        >
+        <div className={css({ mb: '8', fontSize: '14', fontWeight: 'bold' })}>
           Interactive (Clickable Card)
         </div>
         <Card onClick={() => alert('Card clicked!')}>

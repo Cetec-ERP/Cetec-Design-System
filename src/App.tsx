@@ -61,32 +61,24 @@ const ButtonSection: React.FC = () => {
           <Button variant="ghost">Ghost</Button>
           <Button variant="cta">CTA</Button>
           <Button variant="danger">Danger</Button>
-          <Button size="large">
-            <Icon name="arrow-left" /> Button
+          <Button size="lg" iconBefore="arrow-left">
+            Button
           </Button>
-          <Button size="small">
-            Button <Icon name="arrow-right" />
+          <Button size="sm" iconAfter="arrow-right">
+            Button
           </Button>
         </HStack>
         <HStack>
-          <IconButton variant="ghost">
-            <Icon name="x" />
-          </IconButton>
-          <IconButton>
-            <Icon name="arrow-left" />
-          </IconButton>
-          <IconButton variant="primary" size="large">
-            <Icon name="arrow-right" />
-          </IconButton>
+          <IconButton variant="ghost" iconName="x" />
+          <IconButton variant="primary" iconName="arrow-left" size="lg" />
+          <IconButton variant="primary" iconName="arrow-right" size="lg" />
         </HStack>
         <HStack>
           <Button variant="primary" loading>
             Pepperoni
           </Button>
           <Button loading>Loading</Button>
-          <IconButton variant="primary" loading>
-            <Icon name="x" />
-          </IconButton>
+          <IconButton variant="primary" loading iconName="x" />
         </HStack>
       </VStack>
     </Section>
@@ -535,7 +527,7 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Spinner</Heading>
             <HStack gap={'40'} alignItems={'flex-end'}>
               <VStack>
-                <Spinner size="small" />
+                <Spinner size="sm" />
                 <Text>Small</Text>
               </VStack>
               <VStack>
@@ -1110,12 +1102,12 @@ const AppContent: React.FC = () => {
                   <Icon name="info" />
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content">
-                  <IconButton variant="primary" size="large">
+                  <IconButton variant="primary" size="lg">
                     <Icon name="aa-placeholder" />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content" caret={false}>
-                  <IconButton variant="primary" size="large">
+                  <IconButton variant="primary" size="lg">
                     <Icon name="aa-placeholder" />
                   </IconButton>
                 </Tooltip>
@@ -1627,7 +1619,7 @@ const AppContent: React.FC = () => {
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
-                // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>

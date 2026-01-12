@@ -13,7 +13,6 @@ export const globalCss = defineGlobalStyles({
       outlineColor: { base: 'slate.90', _dark: 'slate.0' },
     },
     _disabled: {
-      opacity: 0.4,
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },

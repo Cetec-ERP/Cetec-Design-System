@@ -32,16 +32,6 @@ const buttonBaseStyles = {
     cursor: 'pointer',
     _disabled: {
       cursor: 'not-allowed',
-      bg: 'bg.disabled',
-      color: 'text.disabled',
-      borderColor: 'border.disabled',
-      icon: { fill: 'icon.disabled' },
-      _hover: {
-        bg: 'bg.disabled',
-        color: 'text.disabled',
-        borderColor: 'border.disabled',
-        icon: { fill: 'icon.disabled' },
-      },
     },
     _focusVisible: {
       outlineColor: 'border.focused',
@@ -70,7 +60,18 @@ const buttonVariants = {
           bg: 'bg.neutral.pressed',
           icon: { fill: 'icon.decorative.hovered' },
         },
+        _disabled: {
+          bg: 'bg.disabled',
+          color: 'text.disabled',
+          icon: { fill: 'icon.disabled' },
+          _hover: {
+            bg: 'bg.disabled',
+            color: 'text.disabled',
+            icon: { fill: 'icon.disabled' },
+          },
+        },
       },
+      icon: { color: 'icon.decorative' },
     },
     primary: {
       container: {
@@ -85,67 +86,131 @@ const buttonVariants = {
           bg: 'bg.neutral.bold.pressed',
           icon: { fill: 'icon.decorative.inverse.hovered' },
         },
-      },
-      hollow: {
-        container: {
-          bg: 'bg.neutral.subtle',
-          borderColor: 'border',
-          color: 'text.subtle',
+        _disabled: {
+          bg: 'bg.neutral.inverse.subtle',
+          color: 'text.disabled',
           icon: { fill: 'icon.decorative' },
           _hover: {
-            bg: 'bg.neutral.subtle.hovered',
-            icon: { fill: 'icon.decorative.hovered' },
-          },
-          _active: {
-            bg: 'bg.neutral.subtle.pressed',
-            icon: { fill: 'icon.decorative.hovered' },
+            bg: 'bg.neutral.inverse.subtle',
+            color: 'text.disabled',
+            icon: { fill: 'icon.decorative' },
           },
         },
       },
-      ghost: {
-        container: {
+      icon: { color: 'icon.decorative.inverse' },
+    },
+    hollow: {
+      container: {
+        bg: 'bg.neutral.subtle',
+        borderColor: 'border',
+        color: 'text',
+        icon: { fill: 'icon.decorative' },
+        _hover: {
+          bg: 'bg.neutral.subtle.hovered',
+          icon: { fill: 'icon.decorative.hovered' },
+        },
+        _active: {
+          bg: 'bg.neutral.subtle.pressed',
+          icon: { fill: 'icon.decorative.hovered' },
+        },
+        _disabled: {
           bg: 'bg.neutral.subtle',
-          color: 'text.subtle',
-          icon: { fill: 'icon.decorative' },
+          color: 'text.disabled',
+          borderColor: 'border.disabled',
+          icon: { fill: 'icon.disabled' },
           _hover: {
-            bg: 'bg.neutral.subtle.hovered',
-            icon: { fill: 'icon.decorative.hovered' },
-          },
-          _active: {
-            bg: 'bg.neutral.subtle.pressed',
-            icon: { fill: 'icon.decorative.hovered' },
+            bg: 'bg.neutral.subtle',
+            color: 'text.disabled',
+            borderColor: 'border.disabled',
+            icon: { fill: 'icon.disabled' },
           },
         },
       },
-      cta: {
-        container: {
-          bg: { base: 'gold.20', _dark: 'gold.30' },
-          color: 'slate.90',
+      icon: { color: 'icon.decorative' },
+    },
+    ghost: {
+      container: {
+        bg: 'bg.neutral.subtle',
+        color: 'text',
+        icon: { fill: 'icon.decorative' },
+        _hover: {
+          bg: 'bg.neutral.subtle.hovered',
+          icon: { fill: 'icon.decorative.hovered' },
+        },
+        _active: {
+          bg: 'bg.neutral.subtle.pressed',
+          icon: { fill: 'icon.decorative.hovered' },
+        },
+        _disabled: {
+          bg: 'bg.neutral.subtle',
+          color: 'text.disabled',
+          borderColor: 'transparent',
+          icon: { fill: 'icon.disabled' },
           _hover: {
-            bg: { base: 'gold.10', _dark: 'gold.20' },
-          },
-          _active: {
-            bg: { base: 'gold.30', _dark: 'gold.40' },
+            bg: 'bg.neutral.subtle',
+            color: 'text.disabled',
+            borderColor: 'transparent',
+            icon: { fill: 'icon.disabled' },
           },
         },
       },
-      danger: {
-        container: {
-          bg: 'red.50',
-          color: 'slate.0',
+      icon: { color: 'icon.decorative' },
+    },
+    cta: {
+      container: {
+        bg: 'bg.cta.bold',
+        color: 'text.cta.inverse',
+        icon: { fill: 'icon.cta' },
+        _hover: {
+          bg: 'bg.cta.bold.hovered',
+          icon: { fill: 'icon.cta.hovered' },
+        },
+        _active: {
+          bg: 'bg.cta.bold.pressed',
+          icon: { fill: 'icon.cta.hovered' },
+        },
+        _disabled: {
+          bg: 'bg.cta',
+          color: 'text.disabled',
+          borderColor: 'transparent',
+          icon: { fill: 'icon.disabled' },
           _hover: {
-            bg: 'red.40',
-          },
-          _active: {
-            bg: 'red.60',
-          },
-          _disabled: {
-            _hover: {
-              bg: 'red.50',
-            },
+            bg: 'bg.cta',
+            color: 'text.disabled',
+            borderColor: 'transparent',
+            icon: { fill: 'icon.disabled' },
           },
         },
       },
+      icon: { color: 'icon.cta' },
+    },
+    danger: {
+      container: {
+        bg: 'bg.danger.bold',
+        color: 'text.danger.inverse',
+        icon: { fill: 'icon.danger.inverse' },
+        _hover: {
+          bg: 'bg.danger.bold.hovered',
+          icon: { fill: 'icon.inverse' },
+        },
+        _active: {
+          bg: 'bg.danger.bold.pressed',
+          icon: { fill: 'icon.inverse' },
+        },
+        _disabled: {
+          bg: 'bg.danger',
+          color: 'text.danger.inverse',
+          borderColor: 'transparent',
+          icon: { fill: 'icon.disabled' },
+          _hover: {
+            bg: 'bg.danger',
+            color: 'text.danger.inverse',
+            borderColor: 'transparent',
+            icon: { fill: 'icon.disabled' },
+          },
+        },
+      },
+      icon: { color: 'icon.danger.inverse' },
     },
   },
 };
@@ -158,7 +223,7 @@ export const buttonRecipe = defineSlotRecipe({
   variants: {
     ...buttonVariants,
     size: {
-      medium: {
+      md: {
         container: {
           fontSize: '16',
           py: '3',
@@ -169,7 +234,7 @@ export const buttonRecipe = defineSlotRecipe({
           h: '24',
         },
       },
-      xlarge: {
+      xl: {
         container: {
           fontSize: '20',
           py: '9',
@@ -180,7 +245,7 @@ export const buttonRecipe = defineSlotRecipe({
           h: '28',
         },
       },
-      large: {
+      lg: {
         container: {
           fontSize: '16',
           py: '7',
@@ -191,7 +256,7 @@ export const buttonRecipe = defineSlotRecipe({
           h: '24',
         },
       },
-      small: {
+      sm: {
         container: {
           fontSize: '14',
           py: '1',
@@ -203,16 +268,74 @@ export const buttonRecipe = defineSlotRecipe({
         },
       },
     },
-    before: {
+    iconBefore: {
       true: { container: {} },
     },
-    after: {
+    iconAfter: {
       true: { container: {} },
     },
   },
+  compoundVariants: [
+    {
+      size: 'md',
+      iconBefore: true,
+      css: {
+        container: { ps: '3' },
+      },
+    },
+    {
+      size: 'md',
+      iconAfter: true,
+      css: {
+        container: { pe: '3' },
+      },
+    },
+    {
+      size: 'sm',
+      iconBefore: true,
+      css: {
+        container: { ps: '2' },
+      },
+    },
+    {
+      size: 'sm',
+      iconAfter: true,
+      css: {
+        container: { pe: '2' },
+      },
+    },
+    {
+      size: 'lg',
+      iconBefore: true,
+      css: {
+        container: { ps: '5' },
+      },
+    },
+    {
+      size: 'lg',
+      iconAfter: true,
+      css: {
+        container: { pe: '5' },
+      },
+    },
+    {
+      size: 'xl',
+      iconBefore: true,
+      css: {
+        container: { ps: '7' },
+      },
+    },
+    {
+      size: 'xl',
+      iconAfter: true,
+      css: {
+        container: { pe: '7' },
+      },
+    },
+  ],
   defaultVariants: {
     variant: 'standard',
-    size: 'medium',
+    size: 'md',
   },
 });
 
@@ -224,44 +347,40 @@ export const iconButtonRecipe = defineSlotRecipe({
   variants: {
     ...buttonVariants,
     size: {
-      medium: {
+      md: {
         container: {
           fontSize: '16',
-          py: '3',
-          px: '12',
+          p: '3',
         },
         icon: {
           w: '24',
           h: '24',
         },
       },
-      xlarge: {
+      xl: {
         container: {
           fontSize: '20',
-          py: '9',
-          px: '16',
+          p: '9',
         },
         icon: {
           w: '28',
           h: '28',
         },
       },
-      large: {
+      lg: {
         container: {
           fontSize: '16',
-          py: '7',
-          px: '14',
+          p: '7',
         },
         icon: {
           w: '24',
           h: '24',
         },
       },
-      small: {
+      sm: {
         container: {
           fontSize: '14',
-          py: '1',
-          px: '8',
+          p: '1',
         },
         icon: {
           w: '22',
@@ -272,6 +391,6 @@ export const iconButtonRecipe = defineSlotRecipe({
   },
   defaultVariants: {
     variant: 'standard',
-    size: 'medium',
+    size: 'md',
   },
 });

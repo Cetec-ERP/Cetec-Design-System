@@ -125,7 +125,7 @@ import '../styles/font-imports.css';
     <Card p="16" variant="sunken" mb="16">
       <Text textStyle="mono.sm" fontFamily="mono" whiteSpace="pre-wrap">{`import { Button, Text } from 'cetec-design-system';
 
-<Button intent="primary">
+<Button variant="primary">
   Click me
 </Button>`}</Text>
     </Card>
@@ -139,17 +139,17 @@ import '../styles/font-imports.css';
 
 <Box p="24" border="default" rounded="16" bg="bg.surface.subtle">
   <Text textStyle="body.lg" fontWeight="bold" color="text" mb="16">Storybook Guidelines</Text>
-  
+
   <Grid gridTemplateColumns="auto 1fr" gap="12">
     <Text textStyle="body.sm" fontWeight="bold" color="text" mb="4">Story Files</Text>
     <Text textStyle="body.sm" color="text">Story files live alongside components in the component directory (e.g., `ComponentName.stories.tsx`).</Text>
-  
+
     <Text textStyle="body.sm" fontWeight="bold" color="text" mb="4">Default Export</Text>
     <Text textStyle="body.sm" color="text">Describes the component with `title`, `component`, and `tags: ["autodocs"]` for auto-generated documentation.</Text>
-  
+
     <Text textStyle="body.sm" fontWeight="bold" color="text" mb="4">Named Exports</Text>
     <Text textStyle="body.sm" color="text">Individual stories. Use function names or the `name` property for display. Prefer `args` over React hooks for story data.</Text>
-  
+
     <Text textStyle="body.sm" fontWeight="bold" color="text" mb="4">Version</Text>
     <Text textStyle="body.sm" color="text">Currently on Storybook version 8.</Text>
   </Grid>

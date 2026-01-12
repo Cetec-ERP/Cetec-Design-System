@@ -140,7 +140,7 @@ function MyComponent() {
   return (
     <>
       <Text>Hello World</Text>
-      <Button intent="primary">Click me</Button>
+      <Button variant="primary">Click me</Button>
       <Icon name="arrow-right" />
     </>
   );

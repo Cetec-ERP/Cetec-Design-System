@@ -6,37 +6,47 @@ const spinnerBase = {
   borderWidth: '3',
   borderStyle: 'solid',
   borderColor: 'transparent',
-  borderTopColor: 'slate.90',
-  borderBottomColor: 'slate.90',
+  borderTopColor: 'icon/60',
+  borderBottomColor: 'icon/60',
   animation: 'spin',
-  filter: 'invert(1)',
-  mixBlendMode: 'difference',
   isolation: 'isolate',
 };
 
 const spinnerVariants = {
   size: {
-    medium: {
+    xs: {
+      height: '16',
+      minHeight: '16',
+      borderWidth: '2',
+    },
+    sm: {
+      height: '20',
+      minHeight: '20',
+      borderWidth: '2',
+    },
+    md: {
       height: '24',
       minHeight: '24',
     },
-    small: {
-      height: '16',
-      minHeight: '16',
-    },
-    large: {
+    lg: {
       height: '32',
       minHeight: '32',
     },
-  }
+  },
+  inverse: {
+    true: {
+      borderTopColor: 'icon.inverse',
+      borderBottomColor: 'icon.inverse',
+    },
+  },
 };
 
 export const spinnerRecipe = defineRecipe({
   className: 'spinner',
-  jsx:['Spinner'],
+  jsx: ['Spinner'],
   base: spinnerBase,
   variants: spinnerVariants,
   defaultVariants: {
-    size: 'medium',
+    size: 'md',
   },
 });

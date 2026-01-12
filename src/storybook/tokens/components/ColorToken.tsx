@@ -6,7 +6,8 @@ import { Flex, Grid } from '@styled-system/jsx';
 import { Spinner } from '~/components/Spinner';
 import { Tooltip } from '~/components/Tooltip';
 
-let tokensCache: Record<string, { value: string; variable: string }> | null = null;
+let tokensCache: Record<string, { value: string; variable: string }> | null =
+  null;
 
 export interface ColorTokenProps {
   tokenKey: ColorTokenType;
@@ -18,7 +19,9 @@ export interface TokenMeta {
   variable: string;
 }
 
-async function loadTokens(): Promise<Record<string, { value: string; variable: string }>> {
+async function loadTokens(): Promise<
+  Record<string, { value: string; variable: string }>
+> {
   if (tokensCache) return tokensCache;
 
   try {
@@ -60,9 +63,7 @@ export async function getToken(path: string): Promise<TokenMeta | null> {
   };
 }
 
-export const ColorToken: React.FC<ColorTokenProps> = ({
-  tokenKey,
-}) => {
+export const ColorToken: React.FC<ColorTokenProps> = ({ tokenKey }) => {
   const [tokenMeta, setTokenMeta] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -80,39 +81,37 @@ export const ColorToken: React.FC<ColorTokenProps> = ({
       <Flex direction="column" align="center" gap="2">
         <Grid
           placeContent="center"
-          width='32'
-          height='32'
+          width="32"
+          height="32"
           border="default"
           borderRadius="4"
         >
-          <Spinner size="small" />
+          <Spinner size="sm" />
         </Grid>
         <Text textStyle="mono.xs" color="text.disabled">
           ###
         </Text>
-      </Flex >
+      </Flex>
     );
   }
 
   if (!tokenMeta) {
-    return "Token not found";
+    return 'Token not found';
   }
 
   return (
     <Flex direction="column" align="center" gap="2">
       <Tooltip text={tokenMeta.value}>
         <Box
-          width='32'
-          height='32'
+          width="32"
+          height="32"
           border="default"
           borderRadius="4"
           style={{ backgroundColor: tokenMeta.variable }}
         />
       </Tooltip>
 
-      <Text textStyle="mono.xs">
-        {tokenMeta.key.replace(/^.*?\./, '')}
-      </Text>
-    </Flex >
+      <Text textStyle="mono.xs">{tokenMeta.key.replace(/^.*?\./, '')}</Text>
+    </Flex>
   );
 };
