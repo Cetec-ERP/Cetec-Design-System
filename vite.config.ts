@@ -1,48 +1,68 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { dirname, resolve } from 'node:path';
-import * as path from 'path';
+import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    dts({
-      beforeWriteFile: (filePath, content) => ({
-        filePath: filePath.replace('src/components/**/*.d.ts', 'index.d.ts'),
-        content,
-      }),
-      include: ['src/components/**/*.tsx'],
-      outDir: 'dist',
-    }),
-  ],
-  resolve: {
-    alias: {
-      '~': path.resolve(__dirname, './src'),
-      '@styled-system': path.resolve(__dirname, './styled-system'),
-    },
-  },
-  base: '/',
-  ...(process.env.GH_REPO
-    ? {}
-    : {
-        build: {
-          lib: {
-            name: 'Cetec Design System',
-            fileName: (format) => `cetec-design-system.${format}.js`,
-            entry: resolve(__dirname, 'src/index.ts'),
-            formats: ['es'],
-          },
-          rollupOptions: {
-            external: ['react', 'react-dom', 'react/jsx-runtime'],
-            output: {
-              globals: {
-                react: 'React',
-                'react-dom': 'ReactDOM',
-              },
-            },
-          },
+export default defineConfig(({ mode: _mode }) => {
+  const isGitHubPages = !!process.env.GH_REPO;
+
+  if (isGitHubPages) {
+    // GitHub Pages build
+    return {
+      plugins: [react()],
+      base: `/${process.env.GH_REPO}/`,
+      resolve: {
+        alias: {
+          '~': resolve(__dirname, './src'),
+          '@styled-system': resolve(__dirname, './styled-system'),
         },
+      },
+      build: {
+        outDir: 'dist',
+      },
+    };
+  }
+
+  // Library build mode (default)
+  return {
+    plugins: [
+      react(),
+      dts({
+        include: ['src/**/*', 'cetec-preset.ts'],
+        exclude: ['src/**/*.stories.tsx'],
+        rollupTypes: true,
       }),
+    ],
+    resolve: {
+      alias: {
+        '~': resolve(__dirname, './src'),
+        '@styled-system': resolve(__dirname, './styled-system'),
+      },
+    },
+    build: {
+      lib: {
+        name: 'cetec-design-system',
+        entry: {
+          index: resolve(__dirname, 'src/index.ts'),
+          preset: resolve(__dirname, 'cetec-preset.ts'),
+        },
+        formats: ['es'],
+      },
+      rollupOptions: {
+        external: ['react', 'react-dom', 'react/jsx-runtime', '@pandacss/dev'],
+        output: {
+          preserveModules: false,
+          assetFileNames: 'assets/[name][extname]',
+          entryFileNames: '[name].js',
+          globals: {
+            react: 'React',
+            'react-dom': 'ReactDOM',
+          },
+        }
+      },
+      sourcemap: true,
+      minify: false, // Keep readable for debugging
+    },
+  };
 });
