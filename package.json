@@ -8,13 +8,17 @@
   "scripts": {
     "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
+    "prepare:static": "PANDA_STATIC=true npx panda codegen",
+    "debug-config": "npx panda debug --only-config",
+    "debug-config:static": "PANDA_STATIC=true npx panda debug --only-config",
     "dev": "npx panda codegen --watch & vite",
-    "build": "npx panda codegen && vite build",
+    "build": "npx panda codegen && npx panda cssgen && vite build",
+    "build:static": "PANDA_STATIC=true npx panda codegen && npx panda cssgen && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "storybook": "PANDA_STATIC=true storybook dev -p 6006",
+    "storybook:build": "PANDA_STATIC=true storybook build"
   },
   "files": [
     "./dist/",
