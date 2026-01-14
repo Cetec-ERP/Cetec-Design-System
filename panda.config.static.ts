@@ -26,4 +26,32 @@ export default defineConfig({
   prefix: 'cetec',
   importMap: '@styled-system',
   outdir: 'styled-system',
+
+  staticCss: {
+    css: [
+      {
+        properties: {
+          background: ['*'],
+          color: ['*'],
+          border: ['*'],
+          fill: ['*'],
+          boxShadow: ['*'],
+          width: ['*'],
+          height: ['*'],
+          minWidth: ['*'],
+          minHeight: ['*'],
+          maxWidth: ['*'],
+          maxHeight: ['*'],
+          borderRadius: ['*'],
+          textStyle: ['*'],
+          fontFamily: ['*'],
+          fontSize: ['*'],
+          fontWeight: ['*'],
+          lineHeight: ['*'],
+          letterSpacing: ['*'],
+        },
+        conditions: ['light', 'dark'],
+      },
+    ],
+  },
 });
