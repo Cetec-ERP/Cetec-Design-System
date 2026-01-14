@@ -1,7 +1,8 @@
-import { withThemeByClassName } from '@storybook/addon-themes'
-import type { Preview, ReactRenderer } from '@storybook/react'
+import { withThemeByClassName } from '@storybook/addon-themes';
+import type { Preview, ReactRenderer } from '@storybook/react';
 import DocTemplate from '../src/storybook/doctemplate.mdx';
-import "../src/styles/index.css";
+import '../src/styles/index.css';
+import './story-docs-style.css';
 
 const preview: Preview = {
   decorators: [
@@ -26,12 +27,21 @@ const preview: Preview = {
     options: {
       storySort: {
         method: 'alphabetical',
-        order: ['Intro', 'Tokens', ['Overview', 'Colors', 'Typography', 'Sizes', 'Shadows', '*'], 'Components'],
+        order: [
+          'Intro',
+          'Tokens',
+          ['Overview', 'Colors', 'Typography', 'Sizes', 'Shadows', '*'],
+          'Components',
+          'Guides',
+          '*',
+        ],
       },
     },
     docs: {
       page: DocTemplate,
-      toc: {},
+      toc: {
+        headingSelector: 'h2, h3, h4',
+      },
     },
   },
   tags: ['autodocs'],

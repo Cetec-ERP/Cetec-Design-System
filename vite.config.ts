@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode: _mode }) => {
@@ -33,6 +34,26 @@ export default defineConfig(({ mode: _mode }) => {
         exclude: ['src/**/*.stories.tsx'],
         rollupTypes: true,
       }),
+      viteStaticCopy({
+        targets: [
+          {
+            src: 'styled-system/specs',
+            dest: './',
+          },
+          {
+            src: 'styled-system/styles',
+            dest: './',
+          },
+          {
+            src: 'styled-system/styles.css',
+            dest: './',
+          },
+          {
+            src: '.mcp.json',
+            dest: './',
+          },
+        ],
+      }),
     ],
     resolve: {
       alias: {
@@ -59,7 +80,7 @@ export default defineConfig(({ mode: _mode }) => {
             react: 'React',
             'react-dom': 'ReactDOM',
           },
-        }
+        },
       },
       sourcemap: true,
       minify: false, // Keep readable for debugging
