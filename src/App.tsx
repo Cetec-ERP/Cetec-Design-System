@@ -4,7 +4,7 @@ import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
 import { Button } from '~/components/Button';
 import { IconButton } from '~/components/IconButton';
-import { Icon, IconNames, type IconNamesList } from '~/components/Icon';
+import { Icon, IconNames } from '~/components/Icon';
 import { Pre } from '~/components/Code';
 import { ThemeProvider } from '~/contexts/ThemeContext';
 import { ThemeSwitcher } from '~/components/ThemeSwitcher';
@@ -30,6 +30,8 @@ import { Menu } from './components/Menu';
 
 import { FormField } from './components/FormField';
 
+type AllIconNames = keyof typeof IconNames;
+
 export const IconList: React.FC = () => {
   return (
     <Grid
@@ -37,7 +39,7 @@ export const IconList: React.FC = () => {
       w="full"
       gridTemplateColumns={'repeat(auto-fill, minmax(200px, 1fr))'}
     >
-      {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
+      {(Object.keys(IconNames) as AllIconNames[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
           <Icon name={icon} />
           <Text textStyle="mono.sm">{icon}</Text>

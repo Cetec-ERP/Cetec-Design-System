@@ -1,6 +1,8 @@
 import { Box, type BoxProps } from '../Box';
 import { link, type LinkVariantProps } from '@styled-system/recipes';
-import { type FontSizeToken, type FontToken, type FontWeightToken } from '@styled-system/tokens';
+import { fontSizes } from '~/styles/primitives';
+import { fonts } from '~/styles/primitives';
+import { fontWeights } from '~/styles/primitives';
 import { Icon } from '../Icon/Icon';
 import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
@@ -9,11 +11,11 @@ export type LinkProps = Omit<BoxProps, keyof LinkVariantProps> & LinkVariantProp
   href: string;
   external?: boolean;
   disabled?: boolean;
-  size?: FontSizeToken;
-  family?: FontToken;
+  size?: keyof typeof fontSizes;
+  family?: keyof typeof fonts;
   italic?: boolean;
   bold?: boolean;
-  weight?: FontWeightToken;
+  weight?: keyof typeof fontWeights;
   className?: string;
   children?: React.ReactNode;
 };
@@ -33,7 +35,7 @@ export const Link: React.FC<LinkProps> = (
   }: LinkProps,
 ) => {
 
-  const [ className, otherProps ] = splitProps(props);
+  const [className, otherProps] = splitProps(props);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (disabled) {

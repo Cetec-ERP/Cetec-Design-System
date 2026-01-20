@@ -1,8 +1,4 @@
-import {
-  // defineTokens,
-  // defineSemanticTokens,
-  definePreset,
-} from '@pandacss/dev';
+import { definePreset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
 import * as tokens from './src/styles/primitives';
 import * as semanticTokens from './src/styles/semantics';

@@ -10,7 +10,7 @@
     "debug-config": "npx panda debug --only-config",
     "debug-config:static": "PANDA_STATIC=true npx panda debug --only-config",
     "dev": "npx panda codegen --watch & vite",
-    "build": "PANDA_STATIC=true npx panda codegen && npx panda cssgen --splitting && npx panda spec && npx panda init-mcp --client claude && vite build",
+    "build": "PANDA_STATIC=true npx panda codegen && npx panda cssgen --splitting && npx panda spec && npx panda emit-pkg && npx panda init-mcp --client claude && vite build && node scripts/fix-dts-paths.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
@@ -84,8 +84,40 @@
     "./sprite.svg": "./dist/sprite.svg",
     "./panda.buildinfo.json": "./dist/panda.buildinfo.json",
     "./styled-system": {
-      "import": "./dist/styled-system"
-    }
+      "types": "./dist/styled-system/*.d.ts",
+      "import": "./dist/styled-system/*.mjs"
+    },
+    "./css": {
+      "types": "./css/index.d.ts",
+      "require": "./css/index.mjs",
+      "import": "./css/index.mjs"
+    },
+    "./tokens": {
+      "types": "./tokens/index.d.ts",
+      "require": "./tokens/index.mjs",
+      "import": "./tokens/index.mjs"
+    },
+    "./types": {
+      "types": "./types/index.d.ts",
+      "require": "./types/index.mjs",
+      "import": "./types/index.mjs"
+    },
+    "./patterns": {
+      "types": "./patterns/index.d.ts",
+      "require": "./patterns/index.mjs",
+      "import": "./patterns/index.mjs"
+    },
+    "./recipes": {
+      "types": "./recipes/index.d.ts",
+      "require": "./recipes/index.mjs",
+      "import": "./recipes/index.mjs"
+    },
+    "./jsx": {
+      "types": "./jsx/index.d.ts",
+      "require": "./jsx/index.mjs",
+      "import": "./jsx/index.mjs"
+    },
+    "./styles.css": "./styles.css"
   },
   "repository": {
     "type": "git",

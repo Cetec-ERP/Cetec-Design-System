@@ -16,7 +16,7 @@ export default defineConfig(({ mode: _mode }) => {
       resolve: {
         alias: {
           '~': resolve(__dirname, './src'),
-          '@styled-system': resolve(__dirname, './styled-system'),
+          '@styled-system': resolve(__dirname, './src/styled-system'),
         },
       },
       build: {
@@ -37,15 +37,15 @@ export default defineConfig(({ mode: _mode }) => {
       viteStaticCopy({
         targets: [
           {
-            src: 'styled-system/specs',
+            src: 'src/styled-system/specs',
             dest: './',
           },
           {
-            src: 'styled-system/styles',
+            src: 'src/styled-system/styles',
             dest: './',
           },
           {
-            src: 'styled-system/styles.css',
+            src: 'src/styled-system/styles.css',
             dest: './',
           },
           {
@@ -58,7 +58,7 @@ export default defineConfig(({ mode: _mode }) => {
     resolve: {
       alias: {
         '~': resolve(__dirname, './src'),
-        '@styled-system': resolve(__dirname, './styled-system'),
+        '@styled-system': resolve(__dirname, './src/styled-system'),
       },
     },
     build: {
@@ -72,10 +72,12 @@ export default defineConfig(({ mode: _mode }) => {
       },
       rollupOptions: {
         external: ['react', 'react-dom', 'react/jsx-runtime', '@pandacss/dev'],
+        input: resolve(__dirname, 'src/index.ts'),
         output: {
           preserveModules: false,
           assetFileNames: 'assets/[name][extname]',
           entryFileNames: '[name].js',
+          externalImportAttributes: false,
           globals: {
             react: 'React',
             'react-dom': 'ReactDOM',

@@ -8,6 +8,7 @@ const isStatic = process.env.PANDA_STATIC === 'true';
 
 const staticCss = isStatic
   ? {
+    staticCss: {
       css: [
         {
           properties: {
@@ -33,8 +34,9 @@ const staticCss = isStatic
           conditions: ['light', 'dark'],
         },
       ],
-    }
-  : { css: [] };
+    },
+  }
+  : { staticCss: { css: [] } };
 
 export default defineConfig({
   eject: true,
@@ -60,9 +62,7 @@ export default defineConfig({
 
   prefix: 'cetec',
   importMap: '@styled-system',
-  outdir: 'styled-system',
+  outdir: 'src/styled-system',
 
-  staticCss: {
-    css: staticCss.css,
-  },
+  ...staticCss,
 });

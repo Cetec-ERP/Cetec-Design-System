@@ -4,7 +4,7 @@ import React, {
   createElement,
 } from 'react';
 import { box, type BoxVariantProps } from '@styled-system/recipes';
-import type { SystemStyleObject } from '@styled-system/types';
+import type { SystemStyleObject } from '@pandacss/types';
 import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
 /*
