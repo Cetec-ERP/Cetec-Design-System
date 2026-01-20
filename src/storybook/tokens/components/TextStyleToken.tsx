@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
 import { Flex, Grid } from '@styled-system/jsx';
 import { textStyles } from '~/styles/utilities/textStyles';
