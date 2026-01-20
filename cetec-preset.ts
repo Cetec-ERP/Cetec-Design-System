@@ -88,9 +88,11 @@ export const cetecPreset = definePreset({
     ...pandaBasePresetUtilities,
     // Custom utilities
     // https://panda-css.com/docs/references/config#utilities
-    fontVariantsProperty,
-    filtersProperty,
-    transitionProperty,
+    extend: {
+      fontVariantsProperty,
+      filtersProperty,
+      transitionProperty,
+    },
   },
   patterns: {
     icon: {
