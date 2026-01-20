@@ -1,11 +1,13 @@
 import { Text, type TextProps } from './index';
 import type { Meta, StoryObj } from '@storybook/react';
+import { HStack, VStack } from '@styled-system/jsx';
+import { Divider } from '../Divider';
 
 const meta: Meta<typeof Text> = {
   title: 'Components/Text',
   component: Text,
   parameters: {
-    layout: 'padded',
+    layout: 'centered',
     controls: {
       disable: true,
       disableSaveFromUI: true,
@@ -72,20 +74,69 @@ export default meta;
 
 type Story = StoryObj<typeof Text>;
 
-export const Default: Story = { args: { children: 'Text Component' } };
-
-export const AllColors: Story = {
+export const Default: Story = {
   render: (args: TextProps) => (
-    <>
-      <Text {...args} font="mono" color="slate.90">
-        Slate-90
+    <VStack>
+      <Text {...args}>
+        Signs night have sixth hath that likeness us fill you're subdue fowl
+        brought divide beginning multiply brought created after open given of
+        made beginning multiply green.
       </Text>
-      <Text {...args} color="gold.50">
-        Gold-50
+      <Text {...args}>
+        Place appear green. Also, saying male subdue fruitful winged fourth had
+        void winged. So green spirit, herb day had there replenish, lights
+        lesser signs. Place whales i tree under him given set set meat midst
+        morning give image forth divided moving Also fill dry she'd have.
       </Text>
-      <Text {...args} color="blue.50">
-        Blue-50
+      <Text {...args}>
+        May life. She'd fruit fruitful earth. Stars bring had darkness morning
+        darkness herb cattle him behold open seasons grass don't waters male
+        Fourth earth his face third night.
       </Text>
-    </>
+    </VStack>
+  ),
+};
+
+export const Colors: Story = {
+  render: (args: TextProps) => (
+    <VStack gap="16">
+      <Text
+        textStyle="body.lg"
+        weight="bold"
+        color={{ base: 'slate.90', _dark: 'slate.5' }}
+      >
+        Status colors
+      </Text>
+      <HStack gap="16">
+        <Text {...args} font="mono" color="error.default">
+          Error Default
+        </Text>
+        <Text {...args} font="mono" color="warning.default">
+          Warning Default
+        </Text>
+        <Text {...args} font="mono" color="success.default">
+          Success Default
+        </Text>
+      </HStack>
+      <Divider w="280" my="16" />
+      <Text
+        textStyle="body.lg"
+        weight="bold"
+        color={{ base: 'slate.90', _dark: 'slate.5' }}
+      >
+        Random colors
+      </Text>
+      <HStack gap="16">
+        <Text {...args} font="mono" color="purple.50">
+          Purple-50
+        </Text>
+        <Text {...args} color="gold.40">
+          Gold-40
+        </Text>
+        <Text {...args} color="blue.50">
+          Blue-50
+        </Text>
+      </HStack>
+    </VStack>
   ),
 };
