@@ -14,10 +14,6 @@ const interactiveHoverStyles = {
     outlineColor: 'border.focused',
     borderColor: 'border.focused',
   },
-  _disabled: {
-    opacity: '0.4',
-    cursor: 'not-allowed',
-  },
 };
 
 export const cardRecipe = defineRecipe({
@@ -32,6 +28,10 @@ export const cardRecipe = defineRecipe({
     outlineStyle: 'solid',
     outlineColor: 'transparent',
     outlineOffset: '0',
+    _disabled: {
+      opacity: '0.4',
+      cursor: 'not-allowed',
+    },
   },
   variants: {
     variant: {
@@ -69,9 +69,6 @@ export const cardRecipe = defineRecipe({
     interactive: {
       true: {
         cursor: 'pointer',
-      },
-      false: {
-        cursor: 'default',
       },
     },
   },
@@ -143,6 +140,5 @@ export const cardRecipe = defineRecipe({
   ],
   defaultVariants: {
     variant: 'default',
-    interactive: false,
   },
 });

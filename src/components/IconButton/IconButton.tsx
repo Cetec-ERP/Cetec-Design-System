@@ -1,4 +1,3 @@
-import { forwardRef } from 'react';
 import { cx } from '@styled-system/css';
 import { Grid } from '@styled-system/jsx';
 import { Box, type BoxProps } from '~/components/Box';
@@ -21,66 +20,60 @@ export type IconButtonProps = BoxProps &
   IconButtonVariantProps & {
     iconName: IconNamesList;
     href?: string;
-    onClick?: () => void;
     loading?: boolean;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
   };
 
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-  (props, ref) => {
-    const {
-      iconName,
-      variant,
-      size,
-      href,
-      loading,
-      disabled,
-      type = 'button',
-      onClick,
-      ...rest
-    } = props;
-    const classes = iconButton({ variant, size });
-    const [className, otherProps] = splitProps(rest);
-    const trulyDisabled = loading || disabled;
+export const IconButton = (props: IconButtonProps) => {
+  const {
+    iconName,
+    variant,
+    size,
+    href,
+    loading,
+    disabled,
+    type = 'button',
+    ...rest
+  } = props;
+  const classes = iconButton({ variant, size });
+  const [className, otherProps] = splitProps(rest);
+  const trulyDisabled = loading || disabled;
 
-    return (
-      <Box
-        as={href ? 'a' : 'button'}
-        ref={ref}
-        disabled={trulyDisabled}
-        aria-disabled={trulyDisabled}
-        aria-label={`icon-button`}
-        className={cx(classes.container, className)}
-        {...(href ? { href } : { type })}
-        onClick={onClick}
-        {...otherProps}
-        {...(trulyDisabled &&
-          href && {
-            onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
-              e.preventDefault(),
-          })}
-      >
-        <>
-          <Icon
-            name={iconName}
-            className={classes.icon}
-            opacity={loading ? 0 : 1}
-          />
-          {loading && (
-            <Grid
-              position="absolute"
-              top="0"
-              left="0"
-              right="0"
-              bottom="0"
-              placeItems="center"
-            >
-              <Spinner size="sm" />
-            </Grid>
-          )}
-        </>
-      </Box>
-    );
-  },
-);
+  return (
+    <Box
+      as={href ? 'a' : 'button'}
+      disabled={trulyDisabled}
+      aria-disabled={trulyDisabled}
+      aria-label={`icon-button`}
+      className={cx(classes.container, className)}
+      {...(href ? { href } : { type })}
+      {...otherProps}
+      {...(trulyDisabled &&
+        href && {
+          onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
+            e.preventDefault(),
+        })}
+    >
+      <>
+        <Icon
+          name={iconName}
+          className={classes.icon}
+          opacity={loading ? 0 : 1}
+        />
+        {loading && (
+          <Grid
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            placeItems="center"
+          >
+            <Spinner size="sm" />
+          </Grid>
+        )}
+      </>
+    </Box>
+  );
+};

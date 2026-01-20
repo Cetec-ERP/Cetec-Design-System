@@ -71,7 +71,6 @@ const buttonVariants = {
           },
         },
       },
-      icon: { color: 'icon.decorative' },
     },
     primary: {
       container: {
@@ -97,7 +96,6 @@ const buttonVariants = {
           },
         },
       },
-      icon: { color: 'icon.decorative.inverse' },
     },
     hollow: {
       container: {
@@ -126,7 +124,6 @@ const buttonVariants = {
           },
         },
       },
-      icon: { color: 'icon.decorative' },
     },
     ghost: {
       container: {
@@ -154,7 +151,6 @@ const buttonVariants = {
           },
         },
       },
-      icon: { color: 'icon.decorative' },
     },
     cta: {
       container: {
@@ -182,7 +178,6 @@ const buttonVariants = {
           },
         },
       },
-      icon: { color: 'icon.cta' },
     },
     danger: {
       container: {
@@ -210,7 +205,6 @@ const buttonVariants = {
           },
         },
       },
-      icon: { color: 'icon.danger.inverse' },
     },
   },
 };

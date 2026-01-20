@@ -1,21 +1,19 @@
 import { card, type CardVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '../Box';
-import { ReactNode, forwardRef } from 'react';
+import { ReactNode } from 'react';
 import { splitProps } from '~/utils/splitProps';
 import { cx } from '@styled-system/css';
 
 export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
   CardVariantProps & {
-    as?: React.ElementType;
     href?: string;
-    onClick?: () => void;
     children?: string | ReactNode;
     grabbed?: boolean;
     disabled?: boolean;
     interactive?: boolean;
   };
 
-export const Card = forwardRef<HTMLElement, CardProps>((props, ref) => {
+export const Card = (props: CardProps) => {
   const {
     as,
     variant,
@@ -42,28 +40,22 @@ export const Card = forwardRef<HTMLElement, CardProps>((props, ref) => {
     }
   }
 
-  const isButton = asComponent === 'button';
   const isLink = asComponent === 'a';
 
   return (
     <Box
-      ref={ref}
       as={asComponent}
       data-grabbed={grabbed}
       className={cx(card({ variant, interactive: isInteractive }), className)}
-      {...(href && { href })}
-      {...(isButton && { type: 'button' })}
-      {...(onClick && { onClick })}
-      {...(isInteractive &&
-        disabled && {
+      {...(href ? { href } : { type: 'button' })}
+      {...(disabled && {
         disabled: true,
         'aria-disabled': true,
         ...(isLink && { tabIndex: -1 }),
       })}
-      {...(!isInteractive && disabled && { 'aria-disabled': true })}
       {...otherProps}
     >
       {children}
     </Box>
   );
-});
+};
