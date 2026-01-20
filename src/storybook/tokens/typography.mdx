@@ -238,7 +238,70 @@ import { TextStyleToken } from './components/TextStyleToken';
     </Box>
   </Grid>
 
-  <Divider weight="thick" color="border.boldest" my="32"/>
-  {/* letterSpacings */}
+  <Divider weight="thick" color="border.boldest" my="32" />
+
+  {/* fontVariants */ }
+  ### Font Variants
+
+  The `font-variation-settings` property in CSS allows you to fine-tune attributes like weight, width, slant, or custom features on a variable font. Our main body font ([Recursive](https://www.recursive.design/)) supports the following variations:
+
+  - `MONO` (monospace): 0 to 1
+  - `CASL` (casual): 0 to 1
+  - `wght` (weight): 300 to 1000 (we're using `fontWeight` to control weight instead of this)
+  - `slnt` (slant): -15 to 0
+  - `CRSV` (cursive): 0, 0.5, 1
+
+  These have been built into shorthand properties for convenience, and can be applied with the `fontVariant` prop:
+
+  ```jsx
+    <Text fontVariant="body-italic">...</Text>
+  ```
+
+  <Divider color="border.disabled" my="12"/>
+
+  <Grid gridTemplateColumns="auto 1fr" columnGap="24" rowGap="32" w="fit" alignItems="baseline">
+    <Text textStyle="mono.md" color="text" bold>body</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="body" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+
+    <Text textStyle="mono.md" color="text" bold>body-italic</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="body-italic" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+
+    <Text textStyle="mono.md" color="text" bold>body-casual</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="body-casual" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+
+    <Text textStyle="mono.md" color="text" bold>body-casual-italic</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="body-casual-italic" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+
+    <Text textStyle="mono.md" color="text" bold>mono</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="mono" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+
+    <Text textStyle="mono.md" color="text" bold>mono-italic</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="mono-italic" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+
+    <Text textStyle="mono.md" color="text" bold>mono-casual</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="mono-casual" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+
+    <Text textStyle="mono.md" color="text" bold>mono-casual-italic</Text>
+    <Box p="2" bg="bg.neutral" rounded="2" w="fit" maxW="3xl" overflow="hidden">
+      <Text fontVariant="mono-casual-italic" fontSize="24">Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.</Text>
+    </Box>
+  </Grid>
+
+  <Divider weight="thick" color="border.boldest" my="32" />
+
 </Flex>
 </Unstyled>

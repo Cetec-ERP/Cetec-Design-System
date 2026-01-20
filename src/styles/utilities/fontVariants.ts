@@ -12,6 +12,10 @@ export const fontVariants = {
 };
 
 export const fontVariantsProperty = defineUtility({
-  className: 'fontVariants',
-  values: 'fontVariants',
+  className: 'fontVariant',
+  shorthand: 'fontVariant',
+  values: Object.keys(fontVariants),
+  transform(value: keyof typeof fontVariants) {
+    return { fontVariationSettings: fontVariants[value] };
+  },
 });
