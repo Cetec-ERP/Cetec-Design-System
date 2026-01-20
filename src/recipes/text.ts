@@ -62,6 +62,7 @@ const textVariants = {
   },
   truncate: {
     true: {
+      display: 'block',
       width: 'full',
       maxWidth: 'full',
       textOverflow: 'ellipsis',
