@@ -30,10 +30,12 @@ export default defineConfig(({ mode: _mode }) => {
     plugins: [
       react(),
       dts({
-        include: ['src/index.ts', 'src/cetec-preset.ts'],
+        include: ['src/**/*'],
         exclude: ['src/**/*.stories.tsx'],
+        entryRoot: 'src',
         outDir: 'dist/types',
         rollupTypes: true,
+        copyDtsFiles: true,
       }),
       viteStaticCopy({
         targets: [
