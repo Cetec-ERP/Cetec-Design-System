@@ -30,8 +30,9 @@ export default defineConfig(({ mode: _mode }) => {
     plugins: [
       react(),
       dts({
-        include: ['src/**/*', 'cetec-preset.ts'],
+        include: ['src/index.ts', 'src/cetec-preset.ts'],
         exclude: ['src/**/*.stories.tsx'],
+        outDir: 'dist/types',
         rollupTypes: true,
       }),
       viteStaticCopy({
@@ -66,13 +67,12 @@ export default defineConfig(({ mode: _mode }) => {
         name: 'cetec-design-system',
         entry: {
           index: resolve(__dirname, 'src/index.ts'),
-          preset: resolve(__dirname, 'cetec-preset.ts'),
+          preset: resolve(__dirname, 'src/cetec-preset.ts'),
         },
         formats: ['es'],
       },
       rollupOptions: {
         external: ['react', 'react-dom', 'react/jsx-runtime', '@pandacss/dev'],
-        input: resolve(__dirname, 'src/index.ts'),
         output: {
           preserveModules: false,
           assetFileNames: 'assets/[name][extname]',

@@ -1,4 +1,3 @@
-export { Box } from './components/Box';
 export { Text } from './components/Text';
 export { Button } from './components/Button';
 export { IconButton } from './components/IconButton';
@@ -8,6 +7,7 @@ export { Heading } from './components/Heading';
 export { Link } from './components/Link';
 export { Spinner } from './components/Spinner';
 export { Divider } from './components/Divider';
+export { Box } from './components/Box';
 export { CheckBox } from './components/CheckBox';
 export { Radio } from './components/Radio';
 export { TextInput } from './components/TextInput';
@@ -26,4 +26,4 @@ export { Menu } from './components/Menu';
 export { FormField } from './components/FormField';
 
 // Export the Panda CSS preset
-export { cetecPreset } from '../cetec-preset';
+export { cetecPreset } from './cetec-preset';
