@@ -1627,7 +1627,7 @@ const AppContent: React.FC = () => {
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
-                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>
