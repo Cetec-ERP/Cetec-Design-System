@@ -7,7 +7,7 @@ export { Heading } from './components/Heading';
 export { Link } from './components/Link';
 export { Spinner } from './components/Spinner';
 export { Divider } from './components/Divider';
-export { Box } from './components/Box';
+export { Box, type BoxProps } from './components/Box';
 export { CheckBox } from './components/CheckBox';
 export { Radio } from './components/Radio';
 export { TextInput } from './components/TextInput';
