@@ -23,6 +23,9 @@ npm run prepare             # Run Panda CSS codegen (auto-runs on install)
 
 # Icon Generation
 npm run generate-sprite     # Generate SVG sprite from src/components/Icon/svg files
+
+# MCP
+npm run panda-mcp           # Run local Panda CSS MCP server to expose the design system to AI tools
 ```
 
 **Note:** This project currently has NO test framework configured. Do not attempt to run tests.

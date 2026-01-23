@@ -55,6 +55,10 @@ export default defineConfig(({ mode: _mode }) => {
             src: '.mcp.json',
             dest: './',
           },
+          {
+            src: 'src/types/index.d.ts',
+            dest: './',
+          },
         ],
       }),
     ],
