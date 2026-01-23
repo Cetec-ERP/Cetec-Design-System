@@ -27,3 +27,18 @@ export { FormField } from './components/FormField';
 
 // Export the Panda CSS preset
 export { cetecPreset } from './cetec-preset';
+// Load minimal Panda helper type shims for declaration output
+import './types/panda-augment';
+export type {
+  RecipeVariantRecord,
+  RecipeConfig,
+  SlotRecipeVariantRecord,
+  SlotRecipeConfig,
+  SystemStyleObject,
+  GlobalStyleObject,
+  CompositionStyles,
+  PatternProperties,
+  PatternConfig,
+  Parts,
+  Panda,
+} from './types/panda-augment';
