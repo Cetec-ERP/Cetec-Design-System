@@ -1,3 +1,4 @@
+export { Box, type BoxProps } from './components/Box';
 export { Text } from './components/Text';
 export { Button } from './components/Button';
 export { IconButton } from './components/IconButton';
@@ -7,7 +8,6 @@ export { Heading } from './components/Heading';
 export { Link } from './components/Link';
 export { Spinner } from './components/Spinner';
 export { Divider } from './components/Divider';
-export { Box, type BoxProps } from './components/Box';
 export { CheckBox } from './components/CheckBox';
 export { Radio } from './components/Radio';
 export { TextInput } from './components/TextInput';

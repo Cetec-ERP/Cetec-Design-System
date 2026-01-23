@@ -3,12 +3,12 @@ import { Box, type BoxProps } from '../Box';
 import { ReactNode } from 'react';
 import { splitProps } from '~/utils/splitProps';
 import { cx } from '@styled-system/css';
-import { Icon } from '../Icon';
+import { Icon, type IconNamesList } from '../Icon';
 
 export type TagProps = BoxProps &
   TagVariantProps & {
     children: string | ReactNode;
-    iconName?: string;
+    iconName?: IconNamesList;
   };
 
 export const Tag: React.FC<TagProps> = ({

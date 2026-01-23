@@ -3,7 +3,7 @@ import { Box, type BoxProps } from '../Box';
 import { useRef, useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
-import { Icon } from '../Icon';
+import { Icon, type IconNamesList } from '../Icon';
 import { CheckBox } from '../CheckBox';
 import { Toggle } from '../Toggle';
 import { Link } from '../Link';
@@ -182,7 +182,7 @@ export const Menu: React.FC<MenuProps> = ({
                           color={{ base: 'slate.90', _dark: 'slate.0' }}
                         >
                           {item?.iconName && (
-                            <Icon name={item?.iconName as string} />
+                            <Icon name={`${item?.iconName as IconNamesList}`} />
                           )}
                         </Box>
                       )}

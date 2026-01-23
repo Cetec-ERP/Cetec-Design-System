@@ -1,10 +1,10 @@
 import { SVGAttributes } from 'react';
 import { Box, type BoxProps } from '~/components/Box';
 import { cx } from '@styled-system/css';
-import { IconNames } from './iconNames';
+import { IconNamesList } from './icons';
 import { icon } from '@styled-system/patterns';
-import { colors, numericSizes } from '~/styles/primitives';
-import { colors as semanticColors } from '~/styles/semantics';
+import { numericSizes } from '~/styles/primitives';
+import { ColorToken } from '@styled-system/tokens';
 import { splitProps } from '~/utils/splitProps';
 // import { ColorToken } from '@styled-system/tokens';
 
@@ -14,24 +14,12 @@ import { splitProps } from '~/utils/splitProps';
  * that only valid sizes are allowed.
  */
 export type AllowedIconSizes = keyof typeof numericSizes;
-type LeafKeys<T, Prefix extends string = ''> = {
-  [K in keyof T]: T[K] extends object
-  ? T[K] extends { value: any }
-  ? `${Prefix}${K & string}`
-  : LeafKeys<T[K], `${Prefix}${K & string}.`>
-  : `${Prefix}${K & string}`
-}[keyof T];
-
-export type AllowedColorTokens =
-  | LeafKeys<typeof colors>
-  | LeafKeys<typeof semanticColors>;
-export type AllowedIconNames = keyof typeof IconNames;
 
 export type IconProps = Omit<BoxProps, 'size'> &
   SVGAttributes<SVGElement> & {
-    name: AllowedIconNames;
+    name: IconNamesList;
     size?: AllowedIconSizes;
-    fill?: AllowedColorTokens;
+    fill?: ColorToken;
   };
 
 export const Icon: React.FC<IconProps> = ({
