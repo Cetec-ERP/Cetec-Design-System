@@ -14,7 +14,7 @@ const toggleBase = {
     },
   },
 
-  background:{
+  background: {
     position: 'absolute',
     w: '40',
     h: '24',
@@ -53,13 +53,12 @@ const toggleBase = {
     "& ~ [name='circle-check']": {
       display: 'inline-grid',
       position: 'absolute',
-      filter: { base: 'invert(100%)', _dark: 'invert(0%)' },
       opacity: 0,
       transform: 'translateX(0)',
       transitionProperty: 'transform, opacity',
       transitionDuration: '200ms',
       transitionTimingFunction: 'ease-in-out',
-      // fill: {base: 'slate.90 !important', _dark: 'slate.0 !important'}
+      color: { base: 'slate.0', _dark: 'slate.90' }
     },
 
     _checked: {
@@ -70,14 +69,15 @@ const toggleBase = {
       "& ~ [name='circle-check']": {
         opacity: 1,
         transform: 'translateX(16px)',
+        color: { base: 'slate.0', _dark: 'slate.90' }
       },
-      "& ~ [name='toggle-bg']":{
+      "& ~ [name='toggle-bg']": {
         bg: { base: 'slate.90', _dark: 'slate.0' },
-        borderColor: { base: 'slate.90 !important', _dark: 'slate.0 !important' },
+        borderColor: { base: 'slate.90', _dark: 'slate.0' },
       },
     },
-    _error:{
-      "& ~ [name='toggle-bg']":{
+    _error: {
+      "& ~ [name='toggle-bg']": {
         borderColor: 'error.default',
       },
     },
@@ -103,7 +103,7 @@ const toggleBase = {
     transitionDuration: '200ms',
     transitionTimingFunction: 'ease-in-out',
     "&:is([name='circle'])": {
-      fill: { base: 'slate.20 !important', _dark: 'slate.40 !important' },
+      fill: { base: 'slate.20', _dark: 'slate.40' },
     },
   },
 };

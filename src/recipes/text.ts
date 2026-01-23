@@ -12,6 +12,7 @@ const textBase = {
   fontSize: '16',
   fontVariationSettings: fontVariants.body,
   color: { base: 'slate.60', _dark: 'slate.30' },
+  maxWidth: 'prose',
 };
 
 type FontSizeKey = keyof typeof fontSizeTokens;

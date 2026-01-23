@@ -22,6 +22,7 @@ const {
   radioRecipe,
   tooltipRecipe,
   menuRecipe,
+  formFieldRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -75,6 +76,7 @@ export const cetecPreset: any = definePreset({
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
+        formField: formFieldRecipe,
       },
     },
   },
@@ -82,9 +84,11 @@ export const cetecPreset: any = definePreset({
     ...pandaBasePresetUtilities,
     // Custom utilities
     // https://panda-css.com/docs/references/config#utilities
-    fontVariantsProperty,
-    filtersProperty,
-    transitionProperty,
+    extend: {
+      fontVariantsProperty,
+      filtersProperty,
+      transitionProperty,
+    },
   },
   patterns: {
     icon: {
