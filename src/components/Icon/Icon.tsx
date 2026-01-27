@@ -6,7 +6,6 @@ import { icon } from '@styled-system/patterns';
 import { numericSizes } from '~/styles/primitives';
 import { ColorToken } from '@styled-system/tokens';
 import { splitProps } from '~/utils/splitProps';
-// import { ColorToken } from '@styled-system/tokens';
 
 /*
  * Using the size prop in this way cannot handle non-numeric sizes,
