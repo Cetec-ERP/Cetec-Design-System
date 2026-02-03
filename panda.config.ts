@@ -1,5 +1,42 @@
 import { defineConfig } from '@pandacss/dev';
-import { cetecPreset } from './cetec-preset';
+import { cetecPreset } from './src/cetec-preset';
+
+// Control whether the staticCss is included or not
+// because it's not needed for production and
+// generates a ton of CSS
+const isStatic = process.env.PANDA_STATIC === 'true';
+
+const staticCss = isStatic
+  ? {
+    staticCss: {
+      css: [
+        {
+          properties: {
+            background: ['*'],
+            color: ['*'],
+            border: ['*'],
+            fill: ['*'],
+            boxShadow: ['*'],
+            width: ['*'],
+            height: ['*'],
+            minWidth: ['*'],
+            minHeight: ['*'],
+            maxWidth: ['*'],
+            maxHeight: ['*'],
+            borderRadius: ['*'],
+            textStyle: ['*'],
+            fontFamily: ['*'],
+            fontSize: ['*'],
+            fontWeight: ['*'],
+            lineHeight: ['*'],
+            letterSpacing: ['*'],
+          },
+          conditions: ['light', 'dark'],
+        },
+      ],
+    },
+  }
+  : { staticCss: { css: [] } };
 
 export default defineConfig({
   eject: true,
@@ -7,11 +44,11 @@ export default defineConfig({
   jsxFramework: 'react',
   jsxStyleProps: 'all',
   jsxFactory: 'styled',
-  preflight: true,
+  preflight: false, // do not add Panda's default reset styles
   strictTokens: true,
   watch: true,
+  clean: true, // empty /styled-system each run
 
-  // removed @pandacss/dev/presets because it was adding back things we intentionally excluded
   presets: [cetecPreset],
 
   include: [
@@ -25,5 +62,7 @@ export default defineConfig({
 
   prefix: 'cetec',
   importMap: '@styled-system',
-  outdir: 'styled-system',
+  outdir: 'src/styled-system',
+
+  ...staticCss,
 });

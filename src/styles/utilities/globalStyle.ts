@@ -67,6 +67,7 @@ export const globalCss = defineGlobalStyles({
     margin: '0',
   },
   'button, [type="button"], [type="reset"], [type="submit"]': {
+    appearance: 'button',
     '-webkit-appearance': 'button',
   },
   legend: {
@@ -79,6 +80,7 @@ export const globalCss = defineGlobalStyles({
     height: 'auto',
   },
   '[type="search"]': {
+    appearance: 'textfield',
     '-webkit-appearance': 'textfield',
     outlineOffset: '-2px',
   },

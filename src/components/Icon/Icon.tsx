@@ -4,10 +4,8 @@ import { cx } from '@styled-system/css';
 import { IconNamesList } from './icons';
 import { icon } from '@styled-system/patterns';
 import { numericSizes } from '~/styles/primitives';
-import { splitProps } from '~/utils/splitProps';
-import { ConditionalValue } from '@styled-system/types';
-import { WithEscapeHatch } from '@styled-system/types/prop-type';
 import { ColorToken } from '@styled-system/tokens';
+import { splitProps } from '~/utils/splitProps';
 
 /*
  * Using the size prop in this way cannot handle non-numeric sizes,
@@ -20,7 +18,7 @@ export type IconProps = Omit<BoxProps, 'size'> &
   SVGAttributes<SVGElement> & {
     name: IconNamesList;
     size?: AllowedIconSizes;
-    fill?: ConditionalValue<WithEscapeHatch<ColorToken | `var(--${string})`>>;
+    fill?: ColorToken;
   };
 
 export const Icon: React.FC<IconProps> = ({
