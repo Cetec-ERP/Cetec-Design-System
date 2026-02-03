@@ -1,4 +1,4 @@
-import { definePreset } from '@pandacss/dev';
+import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
 import * as tokens from './styles/primitives';
 import * as semanticTokens from './styles/semantics';
@@ -52,7 +52,7 @@ const theme = {
   },
 };
 
-export const cetecPreset: any = definePreset({
+export const cetecPreset: Preset = definePreset({
   name: 'cetecPreset',
   theme: {
     extend: {
