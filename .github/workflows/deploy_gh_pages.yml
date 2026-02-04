@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - gh-pages-integration
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
