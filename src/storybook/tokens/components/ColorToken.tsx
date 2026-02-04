@@ -26,7 +26,7 @@ async function loadTokens(): Promise<
 
   try {
     // Fetch the tokens file as text
-    const response = await fetch('/styled-system/tokens/index.mjs');
+    const response = await fetch('/src/styled-system/tokens/index.mjs');
     const text = await response.text();
 
     // Parse the tokens object from the JavaScript

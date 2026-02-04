@@ -12,7 +12,7 @@ export { cardRecipe } from './card';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { tagRecipe } from './tag';
 export { radioInputRecipe } from './radioinput';
-export { checkboxInputRecipe } from './checkboxinput';
+export { checkboxInputRecipe } from './checkboxInput';
 
 // Slot Recipes
 export { buttonRecipe, iconButtonRecipe } from './button';
