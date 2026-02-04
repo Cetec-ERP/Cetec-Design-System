@@ -4,17 +4,17 @@
   "description": "Cetec-ERP Design System",
   "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
-    "cssgen": "npx panda cssgen 'src/**/*.css'",
     "prepare": "npx panda codegen",
     "dev": "npx panda codegen --watch & vite",
-    "build": "npx panda codegen && vite build",
+    "build": "rm -rf dist && PANDA_STATIC=true npx panda codegen && npx panda cssgen --splitting && npx panda spec && npx panda init-mcp --client claude && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "storybook": "PANDA_STATIC=true storybook dev -p 6006",
+    "storybook:build": "PANDA_STATIC=true storybook build",
+    "panda-mcp": "npx panda mcp"
   },
   "files": [
     "./dist/",
@@ -29,6 +29,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
+  "dependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@pandacss/dev": "^1.8.0",
@@ -60,7 +61,8 @@
     "typescript": "~5.7.3",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
-    "vite-plugin-dts": "^4.5.4"
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-static-copy": "^3.1.4"
   },
   "eslintConfig": {
     "extends": [
@@ -69,20 +71,17 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./preset": {
-      "types": "./dist/preset.d.ts",
+      "types": "./dist/types/preset.d.ts",
       "import": "./dist/preset.js",
       "default": "./dist/preset.js"
     },
     "./sprite.svg": "./dist/sprite.svg",
-    "./panda.buildinfo.json": "./dist/panda.buildinfo.json",
-    "./styled-system": {
-      "import": "./dist/styled-system"
-    }
+    "./styles.css": "./dist/styles.css"
   },
   "repository": {
     "type": "git",
