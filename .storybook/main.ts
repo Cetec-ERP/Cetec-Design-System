@@ -21,6 +21,14 @@ const config: StorybookConfig = {
   docs: {
     defaultName: 'Documentation',
   },
+  viteFinal: async (config) => {
+    const base = process.env.GH_REPO ? `/${process.env.GH_REPO}/` : '/';
+    config.base = base;
+    return config;
+  },
+  env: () => ({
+    BASE_PATH: process.env.GH_REPO ? `/${process.env.GH_REPO}/` : '/',
+  }),
 };
 
 export default config;
