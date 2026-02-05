@@ -1,0 +1,37 @@
+import{j as e}from"./jsx-runtime-D_zvdyIk.js";import{u as i}from"./index-DesjGnLX.js";import{M as t,U as d}from"./index-DHpzG-84.js";import"./index-BCtMShv3.js";import{F as c,G as o}from"./Box-CqLnHlok.js";import{D as l}from"./Divider-DWo1LlYr.js";import{T as h}from"./Text-BUbMnhQ6.js";import"./iframe-DzeBNSom.js";import"./index-D-fs5e6L.js";import"./index-DgH-xKnr.js";import"./index-DrFu-skq.js";function s(r){const n={code:"code",h1:"h1",h3:"h3",h4:"h4",li:"li",ol:"ol",p:"p",pre:"pre",strong:"strong",...i(),...r.components};return e.jsxs(e.Fragment,{children:[e.jsx(t,{title:"Guides / Storybook Deployment"}),`
+`,e.jsx(d,{children:e.jsxs(c,{direction:"column",gap:"16",children:[e.jsx(n.h1,{id:"storybook-deployment-to-github-pages",children:"Storybook Deployment to GitHub Pages"}),e.jsx(h,{textStyle:"body.lg",color:"text",maxW:"prose",children:"This document explains how Storybook is deployed to GitHub Pages, including automatic PR preview deployments for visual review during code review."}),e.jsx(l,{weight:"thick",color:"border",mb:"32"}),e.jsx(n.h3,{id:"overview",children:"Overview"}),e.jsxs(n.p,{children:["The design system uses ",e.jsx(n.strong,{children:"branch-based GitHub Pages deployment"})," rather than the newer GitHub Actions deployment method. This approach allows us to:"]}),e.jsxs(n.ol,{children:[`
+`,e.jsx(n.li,{children:"Deploy the main Storybook to the root URL"}),`
+`,e.jsx(n.li,{children:"Deploy PR previews to unique subdirectories"}),`
+`,e.jsx(n.li,{children:"Add additional tools (like Playroom) in the future without reworking the pipeline"}),`
+`]}),e.jsx(n.h3,{id:"url-structure",children:"URL Structure"}),e.jsxs(o,{gridTemplateColumns:"auto 1fr",gap:"2",mb:"16",rounded:"16",overflow:"hidden",className:"definitions-grid",children:[e.jsx(n.p,{children:e.jsx(n.strong,{children:"Main Storybook"})}),e.jsx(n.p,{children:e.jsx(n.code,{children:"https://cetec-erp.github.io/Cetec-Design-System/"})}),e.jsx(n.p,{children:e.jsx(n.strong,{children:"PR Preview (e.g., PR #123)"})}),e.jsx(n.p,{children:e.jsx(n.code,{children:"https://cetec-erp.github.io/Cetec-Design-System/pr-123/"})})]}),e.jsx(n.h3,{id:"how-it-works",children:"How It Works"}),e.jsxs(n.p,{children:["The workflow (",e.jsx(n.code,{children:".github/workflows/deploy_gh_pages.yml"}),") contains three jobs:"]}),e.jsxs(o,{gridTemplateColumns:"auto 1fr",gap:"2",mb:"32",rounded:"16",overflow:"hidden",className:"definitions-grid",children:[e.jsx(n.p,{children:e.jsx(n.strong,{children:e.jsx(n.code,{children:"deploy-main"})})}),e.jsxs(n.p,{children:["Triggered on push to ",e.jsx(n.code,{children:"main"}),". Builds Storybook and deploys to the root of the ",e.jsx(n.code,{children:"gh-pages"})," branch. Uses ",e.jsx(n.code,{children:"keep_files: true"})," to preserve existing PR preview directories."]}),e.jsx(n.p,{children:e.jsx(n.strong,{children:e.jsx(n.code,{children:"deploy-pr-preview"})})}),e.jsxs(n.p,{children:["Triggered when a PR is opened or updated. Builds Storybook with a PR-specific base path and deploys to ",e.jsx(n.code,{children:"/pr-<number>/"}),". Automatically comments the preview URL on the PR."]}),e.jsx(n.p,{children:e.jsx(n.strong,{children:e.jsx(n.code,{children:"cleanup-pr-preview"})})}),e.jsxs(n.p,{children:["Triggered when a PR is closed or merged. Removes the ",e.jsx(n.code,{children:"/pr-<number>/"})," directory from the ",e.jsx(n.code,{children:"gh-pages"})," branch to prevent accumulation of stale previews."]})]}),e.jsx(n.h3,{id:"directory-structure-on-gh-pages-branch",children:"Directory Structure on gh-pages Branch"}),e.jsx(n.pre,{children:e.jsx(n.code,{children:`gh-pages branch:
+├── index.html          # Main Storybook (from main branch)
+├── assets/             # Main Storybook assets
+├── pr-123/             # PR #123 preview
+│   ├── index.html
+│   └── assets/
+├── pr-456/             # PR #456 preview
+│   ├── index.html
+│   └── assets/
+└── ...
+`})}),e.jsx(n.h3,{id:"configuration-requirements",children:"Configuration Requirements"}),e.jsx(n.h4,{id:"github-pages-settings",children:"GitHub Pages Settings"}),e.jsx(n.p,{children:"GitHub Pages must be configured to deploy from a branch (not GitHub Actions):"}),e.jsxs(n.ol,{children:[`
+`,e.jsxs(n.li,{children:["Go to ",e.jsx(n.strong,{children:"Settings > Pages"})," in the repository"]}),`
+`,e.jsxs(n.li,{children:['Under "Build and deployment", set ',e.jsx(n.strong,{children:"Source"})," to ",e.jsx(n.strong,{children:'"Deploy from a branch"'})]}),`
+`,e.jsxs(n.li,{children:["Select branch: ",e.jsx(n.strong,{children:e.jsx(n.code,{children:"gh-pages"})}),", folder: ",e.jsx(n.strong,{children:e.jsx(n.code,{children:"/ (root)"})})]}),`
+`,e.jsx(n.li,{children:"Save"}),`
+`]}),e.jsx(n.h4,{id:"environment-variables",children:"Environment Variables"}),e.jsx(n.p,{children:"The workflow sets two environment variables for Storybook builds:"}),e.jsxs(o,{gridTemplateColumns:"auto 1fr",gap:"2",mb:"16",rounded:"16",overflow:"hidden",className:"definitions-grid",children:[e.jsx(n.p,{children:e.jsx(n.strong,{children:e.jsx(n.code,{children:"GH_REPO"})})}),e.jsxs(n.p,{children:["Used by ",e.jsx(n.code,{children:"vite.config.ts"})," to detect GitHub Pages mode and skip library build plugins (like ",e.jsx(n.code,{children:"viteStaticCopy"}),")."]}),e.jsx(n.p,{children:e.jsx(n.strong,{children:e.jsx(n.code,{children:"STORYBOOK_BASE_PATH"})})}),e.jsxs(n.p,{children:["Used by ",e.jsx(n.code,{children:".storybook/main.ts"})," to set the correct base path for assets. For PR previews, this is ",e.jsx(n.code,{children:"/Cetec-Design-System/pr-<number>/"}),"."]})]}),e.jsx(n.h3,{id:"key-implementation-details",children:"Key Implementation Details"}),e.jsx(n.h4,{id:"base-path-handling",children:"Base Path Handling"}),e.jsxs(n.p,{children:["Storybook's Vite config (",e.jsx(n.code,{children:".storybook/main.ts"}),") reads the base path from environment variables:"]}),e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-ts",children:`viteFinal: async (config) => {
+  const base = process.env.STORYBOOK_BASE_PATH
+    || (process.env.GH_REPO ? \`/\${process.env.GH_REPO}/\` : '/');
+  config.base = base;
+  return config;
+}
+`})}),e.jsx(n.h4,{id:"concurrency-control",children:"Concurrency Control"}),e.jsx(n.p,{children:"The workflow uses concurrency groups to prevent git conflicts when multiple PRs deploy simultaneously:"}),e.jsx(n.pre,{children:e.jsx(n.code,{className:"language-yaml",children:`concurrency:
+  group: pages-deploy-\${{ github.event.pull_request.number || 'main' }}
+  cancel-in-progress: true
+`})}),e.jsx(n.h4,{id:"pr-comment-updates",children:"PR Comment Updates"}),e.jsx(n.p,{children:"When a PR preview is deployed, the workflow comments the preview URL. On subsequent pushes, it updates the existing comment rather than creating a new one, keeping the PR timeline clean."}),e.jsx(n.h3,{id:"future-adding-playroom",children:"Future: Adding Playroom"}),e.jsx(n.p,{children:"The branch-based approach makes it easy to add additional tools. For Playroom, the structure would become:"}),e.jsx(n.pre,{children:e.jsx(n.code,{children:`gh-pages branch:
+├── index.html          # Main Storybook
+├── playroom/           # Main Playroom
+├── pr-123/
+│   ├── index.html      # PR Storybook preview
+│   └── playroom/       # PR Playroom preview
+└── ...
+`})}),e.jsx(n.p,{children:"Each tool can be deployed independently without affecting others."})]})})]})}function v(r={}){const{wrapper:n}={...i(),...r.components};return n?e.jsx(n,{...r,children:e.jsx(s,{...r})}):s(r)}export{v as default};
