@@ -5,7 +5,7 @@ import { create } from '@storybook/theming';
 
 export default create({
   brandTitle: 'Cetec ERP Design System',
-  brandImage: '/cetec-logo.svg',
+  brandImage: `${process.env.BASE_PATH}cetec-logo.svg`,
   brandTarget: '_self',
 
   // Typography
