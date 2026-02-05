@@ -43,6 +43,7 @@ jobs:
       - name: Build Storybook
         run: npm run storybook:build
         env:
+          GH_REPO: ${{ github.event.repository.name }}
           STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/
 
       - name: Deploy to gh-pages (root)
@@ -78,6 +79,7 @@ jobs:
       - name: Build Storybook
         run: npm run storybook:build
         env:
+          GH_REPO: ${{ github.event.repository.name }}
           STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/pr-${{ github.event.pull_request.number }}/
 
       - name: Deploy PR preview to gh-pages
