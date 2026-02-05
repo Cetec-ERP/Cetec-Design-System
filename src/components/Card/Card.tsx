@@ -15,7 +15,6 @@ export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
 
 export const Card = (props: CardProps) => {
   const {
-    as,
     variant,
     href,
     onClick,
@@ -32,7 +31,7 @@ export const Card = (props: CardProps) => {
 
   // Determine the correct semantic element to render
   const asComponent: ElementType =
-    as || (Boolean(href) && 'a') || (Boolean(onClick) && 'button') || 'div';
+    (Boolean(href) && 'a') || (Boolean(onClick) && 'button') || 'div';
 
   return (
     <Box
