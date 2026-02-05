@@ -1,10 +1,10 @@
 import { card, type CardVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '../Box';
-import { ReactNode } from 'react';
+import { ReactNode, ElementType } from 'react';
 import { splitProps } from '~/utils/splitProps';
 import { cx } from '@styled-system/css';
 
-export type CardProps = BoxProps &
+export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
   CardVariantProps & {
     href?: string;
     children?: string | ReactNode;
@@ -27,31 +27,24 @@ export const Card = (props: CardProps) => {
   } = props;
   const [className, otherProps] = splitProps(rest);
 
-  // Determine if card should be interactive based on props
+  // Determine if card should be interactive based on props (used for styling)
   const isInteractive = interactive || Boolean(href) || Boolean(onClick);
 
-  // Determine the element to render
-  let asComponent: React.ElementType = as || 'div';
-  if (!as) {
-    if (href) {
-      asComponent = 'a';
-    } else if (isInteractive) {
-      asComponent = 'button';
-    }
-  }
-
-  const isLink = asComponent === 'a';
+  // Determine the correct semantic element to render
+  const asComponent: ElementType =
+    as || (Boolean(href) && 'a') || (Boolean(onClick) && 'button') || 'div';
 
   return (
     <Box
       as={asComponent}
       data-grabbed={grabbed}
       className={cx(card({ variant, interactive: isInteractive }), className)}
-      {...(href ? { href } : { type: 'button' })}
+      {...(href && { href })}
+      {...(isInteractive && !href ? { type: 'button' } : {})}
       {...(disabled && {
         disabled: true,
         'aria-disabled': true,
-        ...(isLink && { tabIndex: -1 }),
+        ...(href && { tabIndex: -1 }),
       })}
       {...otherProps}
     >

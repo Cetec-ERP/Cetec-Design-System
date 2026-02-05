@@ -7,7 +7,7 @@ import { splitProps } from '~/utils/splitProps';
 import { Spinner } from '~/components/Spinner';
 import { Icon, type IconNamesList } from '~/components/Icon';
 
-export type ButtonProps = BoxProps &
+export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
   Omit<ButtonVariantProps, 'iconBefore' | 'iconAfter'> & {
     iconBefore?: IconNamesList;
     iconAfter?: IconNamesList;
@@ -46,14 +46,14 @@ export const Button = (props: ButtonProps) => {
       disabled={trulyDisabled}
       aria-disabled={trulyDisabled}
       aria-label={children}
-      className={cx(classes.container, className)}
+      className={`${cx(classes.container, className)} group`}
       {...(href ? { href } : { type })}
       {...otherProps}
       {...(trulyDisabled &&
         href && {
-        onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
-          e.preventDefault(),
-      })}
+          onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
+            e.preventDefault(),
+        })}
     >
       <>
         <HStack gap="4" opacity={loading ? 0 : 1}>

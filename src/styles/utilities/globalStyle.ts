@@ -51,6 +51,9 @@ export const globalCss = defineGlobalStyles({
   u: {
     textDecoration: 'underline',
   },
+  a: {
+    textDecoration: 'none',
+  },
   'code, kbd, samp, pre': {
     fontFamily: 'mono',
     fontVariationSettings: fontVariants.mono,

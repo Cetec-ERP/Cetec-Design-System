@@ -32,6 +32,7 @@ const buttonBaseStyles = {
     cursor: 'pointer',
     _disabled: {
       cursor: 'not-allowed',
+      opacity: '0.3',
     },
     _focusVisible: {
       outlineColor: 'border.focused',
@@ -51,49 +52,42 @@ const buttonVariants = {
       container: {
         bg: 'bg.neutral',
         color: 'text',
-        icon: { fill: 'icon.decorative' },
+        icon: {
+          fill: 'icon.decorative',
+        },
         _hover: {
           bg: 'bg.neutral.hovered',
-          icon: { fill: 'icon.decorative.hovered' },
+          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.pressed',
-          icon: { fill: 'icon.decorative.hovered' },
+          icon: { fill: 'current' },
         },
-        _disabled: {
-          bg: 'bg.disabled',
-          color: 'text.disabled',
-          icon: { fill: 'icon.disabled' },
-          _hover: {
-            bg: 'bg.disabled',
-            color: 'text.disabled',
-            icon: { fill: 'icon.disabled' },
-          },
-        },
+      },
+      icon: {
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
       },
     },
     primary: {
       container: {
         bg: 'bg.neutral.boldest',
         color: 'text.inverse',
-        icon: { fill: 'icon.decorative.inverse' },
+        icon: {
+          fill: 'icon.decorative.inverse',
+        },
         _hover: {
           bg: 'bg.neutral.bold.hovered',
-          icon: { fill: 'icon.decorative.inverse.hovered' },
+          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.bold.pressed',
-          icon: { fill: 'icon.decorative.inverse.hovered' },
+          icon: { fill: 'current' },
         },
-        _disabled: {
-          bg: 'bg.neutral.inverse.subtle',
-          color: 'text.disabled',
-          icon: { fill: 'icon.decorative' },
-          _hover: {
-            bg: 'bg.neutral.inverse.subtle',
-            color: 'text.disabled',
-            icon: { fill: 'icon.decorative' },
-          },
+      },
+      icon: {
+        mixBlendMode: { base: 'screen', _dark: 'multiply' },
+        _groupDisabled: {
+          fill: 'current',
         },
       },
     },
@@ -105,24 +99,15 @@ const buttonVariants = {
         icon: { fill: 'icon.decorative' },
         _hover: {
           bg: 'bg.neutral.subtle.hovered',
-          icon: { fill: 'icon.decorative.hovered' },
+          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.subtle.pressed',
-          icon: { fill: 'icon.decorative.hovered' },
+          icon: { fill: 'current' },
         },
-        _disabled: {
-          bg: 'bg.neutral.subtle',
-          color: 'text.disabled',
-          borderColor: 'border.disabled',
-          icon: { fill: 'icon.disabled' },
-          _hover: {
-            bg: 'bg.neutral.subtle',
-            color: 'text.disabled',
-            borderColor: 'border.disabled',
-            icon: { fill: 'icon.disabled' },
-          },
-        },
+      },
+      icon: {
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
       },
     },
     ghost: {
@@ -132,77 +117,56 @@ const buttonVariants = {
         icon: { fill: 'icon.decorative' },
         _hover: {
           bg: 'bg.neutral.subtle.hovered',
-          icon: { fill: 'icon.decorative.hovered' },
+          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.subtle.pressed',
-          icon: { fill: 'icon.decorative.hovered' },
+          icon: { fill: 'current' },
         },
-        _disabled: {
-          bg: 'bg.neutral.subtle',
-          color: 'text.disabled',
-          borderColor: 'transparent',
-          icon: { fill: 'icon.disabled' },
-          _hover: {
-            bg: 'bg.neutral.subtle',
-            color: 'text.disabled',
-            borderColor: 'transparent',
-            icon: { fill: 'icon.disabled' },
-          },
-        },
+      },
+      icon: {
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
       },
     },
     cta: {
       container: {
-        bg: 'bg.cta.bold',
-        color: 'text.cta.inverse',
-        icon: { fill: 'icon.cta' },
+        bg: 'gold.20',
+        color: 'neutral.90',
+        icon: { fill: 'neutral.50' },
         _hover: {
-          bg: 'bg.cta.bold.hovered',
-          icon: { fill: 'icon.cta.hovered' },
+          bg: 'gold.15',
+          icon: { fill: 'current' },
         },
         _active: {
-          bg: 'bg.cta.bold.pressed',
-          icon: { fill: 'icon.cta.hovered' },
+          bg: 'gold.30',
+          icon: { fill: 'current' },
         },
-        _disabled: {
-          bg: 'bg.cta',
-          color: 'text.disabled',
-          borderColor: 'transparent',
-          icon: { fill: 'icon.disabled' },
-          _hover: {
-            bg: 'bg.cta',
-            color: 'text.disabled',
-            borderColor: 'transparent',
-            icon: { fill: 'icon.disabled' },
-          },
+      },
+      icon: {
+        mixBlendMode: 'multiply',
+        _groupDisabled: {
+          fill: 'current',
         },
       },
     },
     danger: {
       container: {
-        bg: 'bg.danger.bold',
-        color: 'text.danger.inverse',
-        icon: { fill: 'icon.danger.inverse' },
+        bg: 'red.50',
+        color: 'neutral.0',
+        icon: { fill: 'neutral.40' },
         _hover: {
-          bg: 'bg.danger.bold.hovered',
-          icon: { fill: 'icon.inverse' },
+          bg: 'red.40',
+          icon: { fill: 'current' },
         },
         _active: {
-          bg: 'bg.danger.bold.pressed',
-          icon: { fill: 'icon.inverse' },
+          bg: 'red.60',
+          icon: { fill: 'current' },
         },
-        _disabled: {
-          bg: 'bg.danger',
-          color: 'text.danger.inverse',
-          borderColor: 'transparent',
-          icon: { fill: 'icon.disabled' },
-          _hover: {
-            bg: 'bg.danger',
-            color: 'text.danger.inverse',
-            borderColor: 'transparent',
-            icon: { fill: 'icon.disabled' },
-          },
+      },
+      icon: {
+        mixBlendMode: 'screen',
+        _groupDisabled: {
+          fill: 'current',
         },
       },
     },
