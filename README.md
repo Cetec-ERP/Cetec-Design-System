@@ -86,6 +86,8 @@ This design system is built on **Panda CSS** with a strict tokens-first approach
 - Style with Panda recipes (no inline styles or hard-coded values)
 - Follow accessibility guidelines (semantic HTML, keyboard support, ARIA when needed)
 
+Also see [Component Standards](./src/storybook/docs/componentStandards.mdx)
+
 ## Working with Icons
 
 ### Adding Icons
@@ -140,7 +142,7 @@ function MyComponent() {
   return (
     <>
       <Text>Hello World</Text>
-      <Button intent="primary">Click me</Button>
+      <Button variant="primary">Click me</Button>
       <Icon name="arrow-right" />
     </>
   );

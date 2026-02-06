@@ -9,10 +9,10 @@ const preview: Preview = {
     withThemeByClassName<ReactRenderer>({
       themes: {
         light: '',
-        dark: 'dark'
+        dark: 'dark',
       },
-      defaultTheme: 'light'
-    })
+      defaultTheme: 'light',
+    }),
   ],
   initialGlobals: {},
   parameters: {

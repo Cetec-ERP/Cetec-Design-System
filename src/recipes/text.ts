@@ -62,11 +62,19 @@ const textVariants = {
   },
   truncate: {
     true: {
+      display: 'block',
       width: 'full',
       maxWidth: 'full',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
+    },
+  },
+  allCaps: {
+    true: {
+      textTransform: 'uppercase',
+      fontWeight: 'bold',
+      letterSpacing: 'widest',
     },
   },
   size: fontSizes,
@@ -86,6 +94,12 @@ const headingVariants = {
     h2: { textStyle: 'heading.md' },
     h3: { textStyle: 'heading.sm' },
     h4: { textStyle: 'heading.xs' },
+  },
+  allCaps: {
+    true: {
+      textTransform: 'uppercase',
+      letterSpacing: 'widest',
+    },
   },
 };
 

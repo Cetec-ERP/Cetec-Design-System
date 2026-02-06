@@ -82,85 +82,107 @@ export const colors = defineSemanticTokens.colors({
     },
     success: {
       DEFAULT: {
-        value: { base: '{colors.green.10}', _dark: '{colors.green.90}' },
+        value: { base: '{colors.green.10}', _dark: '{colors.green.70}' },
       },
       hovered: {
         value: { base: '{colors.green.20}', _dark: '{colors.green.80}' },
       },
       pressed: {
-        value: { base: '{colors.green.30}', _dark: '{colors.green.70}' },
+        value: { base: '{colors.green.30}', _dark: '{colors.green.90}' },
       },
       bold: {
         DEFAULT: {
-          value: { base: '{colors.green.70}', _dark: '{colors.green.40}' },
+          value: { base: '{colors.green.50}', _dark: '{colors.green.40}' },
         },
         hovered: {
-          value: { base: '{colors.green.80}', _dark: '{colors.green.30}' },
+          value: { base: '{colors.green.60}', _dark: '{colors.green.30}' },
         },
         pressed: {
-          value: { base: '{colors.green.90}', _dark: '{colors.green.20}' },
+          value: { base: '{colors.green.70}', _dark: '{colors.green.20}' },
         },
       },
     },
     warning: {
       DEFAULT: {
-        value: { base: '{colors.orange.10}', _dark: '{colors.orange.90}' },
+        value: { base: '{colors.orange.10}', _dark: '{colors.orange.70}' },
       },
       hovered: {
         value: { base: '{colors.orange.20}', _dark: '{colors.orange.80}' },
       },
       pressed: {
-        value: { base: '{colors.orange.30}', _dark: '{colors.orange.70}' },
+        value: { base: '{colors.orange.30}', _dark: '{colors.orange.90}' },
       },
       bold: {
         DEFAULT: {
-          value: { base: '{colors.orange.30}', _dark: '{colors.orange.30}' },
+          value: { base: '{colors.orange.50}', _dark: '{colors.orange.30}' },
         },
         hovered: {
-          value: { base: '{colors.orange.40}', _dark: '{colors.orange.40}' },
+          value: { base: '{colors.orange.60}', _dark: '{colors.orange.40}' },
         },
         pressed: {
-          value: { base: '{colors.orange.50}', _dark: '{colors.orange.50}' },
+          value: { base: '{colors.orange.70}', _dark: '{colors.orange.50}' },
         },
       },
     },
     danger: {
       DEFAULT: {
-        value: { base: '{colors.red.10}', _dark: '{colors.red.90}' },
+        value: { base: '{colors.red.10}', _dark: '{colors.red.70}' },
       },
       hovered: { value: { base: '{colors.red.20}', _dark: '{colors.red.80}' } },
-      pressed: { value: { base: '{colors.red.30}', _dark: '{colors.red.70}' } },
+      pressed: { value: { base: '{colors.red.30}', _dark: '{colors.red.90}' } },
       bold: {
         DEFAULT: {
-          value: { base: '{colors.red.70}', _dark: '{colors.red.40}' },
+          value: { base: '{colors.red.50}', _dark: '{colors.red.40}' },
         },
         hovered: {
-          value: { base: '{colors.red.80}', _dark: '{colors.red.30}' },
+          value: { base: '{colors.red.40}', _dark: '{colors.red.30}' },
         },
         pressed: {
-          value: { base: '{colors.red.90}', _dark: '{colors.red.20}' },
+          value: { base: '{colors.red.60}', _dark: '{colors.red.50}' },
         },
       },
     },
     info: {
       DEFAULT: {
-        value: { base: '{colors.blue.10}', _dark: '{colors.blue.90}' },
+        value: { base: '{colors.blue.10}', _dark: '{colors.blue.70}' },
       },
       hovered: {
         value: { base: '{colors.blue.20}', _dark: '{colors.blue.80}' },
       },
       pressed: {
-        value: { base: '{colors.blue.30}', _dark: '{colors.blue.70}' },
+        value: { base: '{colors.blue.30}', _dark: '{colors.blue.90}' },
       },
       bold: {
         DEFAULT: {
-          value: { base: '{colors.blue.70}', _dark: '{colors.blue.40}' },
+          value: { base: '{colors.blue.50}', _dark: '{colors.blue.40}' },
         },
         hovered: {
-          value: { base: '{colors.blue.80}', _dark: '{colors.blue.30}' },
+          value: { base: '{colors.blue.60}', _dark: '{colors.blue.30}' },
         },
         pressed: {
-          value: { base: '{colors.blue.90}', _dark: '{colors.blue.20}' },
+          value: { base: '{colors.blue.70}', _dark: '{colors.blue.20}' },
+        },
+      },
+    },
+    cta: {
+      DEFAULT: {
+        value: { base: '{colors.gold.10}', _dark: '{colors.gold.70}' },
+      },
+      hovered: {
+        value: { base: '{colors.gold.20}', _dark: '{colors.gold.80}' },
+      },
+      pressed: {
+        value: { base: '{colors.gold.30}', _dark: '{colors.gold.90}' },
+      },
+      bold: {
+        DEFAULT: {
+          value: { base: '{colors.gold.20}', _dark: '{colors.gold.30}' },
+        },
+        hovered: {
+          value: { base: '{colors.gold.30}', _dark: '{colors.gold.20}' },
+        },
+        pressed: {
+          value: { base: '{colors.gold.40}', _dark: '{colors.gold.40}' },
         },
       },
     },
@@ -493,10 +515,10 @@ export const colors = defineSemanticTokens.colors({
     },
     focused: {
       DEFAULT: {
-        value: { base: '{colors.blue.50}', _dark: '{colors.blue.30}' },
+        value: { base: '{colors.neutral.90}', _dark: '{colors.darkNeutral.100}' },
       },
       inverse: {
-        value: { base: '{colors.blue.90}', _dark: '{colors.blue.10}' },
+        value: { base: '{colors.darkNeutral.100}', _dark: '{colors.neutral.90}' },
       },
     },
     input: {
@@ -572,7 +594,14 @@ export const colors = defineSemanticTokens.colors({
         },
       },
     },
-    danger: { value: { base: '{colors.red.70}', _dark: '{colors.red.50}' } },
+    danger: {
+      DEFAULT: { value: { base: '{colors.red.70}', _dark: '{colors.red.50}' } },
+      inverse: { value: { base: '{colors.red.10}', _dark: '{colors.red.70}' } },
+    },
+    cta: {
+      DEFAULT: { value: { base: '{colors.gold.50}', _dark: '{colors.gold.60}' } },
+      hovered: { value: { base: '{colors.gold.80}', _dark: '{colors.gold.90}' } },
+    },
     info: { value: { base: '{colors.blue.60}', _dark: '{colors.blue.50}' } },
   },
   link: {
@@ -642,7 +671,7 @@ export const colors = defineSemanticTokens.colors({
     },
     bold: {
       value: {
-        base: '{colors.neutral.100}',
+        base: '{colors.neutral.110}',
         _dark: '{colors.darkNeutral.110}',
       },
     },
@@ -659,7 +688,8 @@ export const colors = defineSemanticTokens.colors({
       },
     },
     success: {
-      value: { base: '{colors.green.80}', _dark: '{colors.green.30}' },
+      DEFAULT: { value: { base: '{colors.green.80}', _dark: '{colors.green.30}' } },
+      inverse: { value: { base: '{colors.green.5}', _dark: '{colors.green.80}' } },
     },
     warning: {
       DEFAULT: {
@@ -672,7 +702,14 @@ export const colors = defineSemanticTokens.colors({
         },
       },
     },
-    danger: { value: { base: '{colors.red.80}', _dark: '{colors.red.30}' } },
+    danger: {
+      DEFAULT: { value: { base: '{colors.red.80}', _dark: '{colors.red.30}' } },
+      inverse: { value: { base: '{colors.red.1}', _dark: '{colors.red.90}' } },
+    },
+    cta: {
+      DEFAULT: { value: { base: '{colors.gold.80}', _dark: '{colors.gold.20}' } },
+      inverse: { value: { base: '{colors.gold.80}', _dark: '{colors.gold.80}' } },
+    },
     info: { value: { base: '{colors.blue.80}', _dark: '{colors.blue.30}' } },
     accent: {
       neutral: {

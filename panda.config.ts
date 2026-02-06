@@ -8,35 +8,36 @@ const isStatic = process.env.PANDA_STATIC === 'true';
 
 const staticCss = isStatic
   ? {
-    staticCss: {
-      css: [
-        {
-          properties: {
-            background: ['*'],
-            color: ['*'],
-            border: ['*'],
-            fill: ['*'],
-            boxShadow: ['*'],
-            width: ['*'],
-            height: ['*'],
-            minWidth: ['*'],
-            minHeight: ['*'],
-            maxWidth: ['*'],
-            maxHeight: ['*'],
-            borderRadius: ['*'],
-            textStyle: ['*'],
-            fontFamily: ['*'],
-            fontSize: ['*'],
-            fontWeight: ['*'],
-            lineHeight: ['*'],
-            letterSpacing: ['*'],
+      staticCss: {
+        css: [
+          {
+            properties: {
+              background: ['*'],
+              color: ['*'],
+              border: ['*'],
+              fill: ['*'],
+              boxShadow: ['*'],
+              width: ['*'],
+              height: ['*'],
+              minWidth: ['*'],
+              minHeight: ['*'],
+              maxWidth: ['*'],
+              maxHeight: ['*'],
+              borderRadius: ['*'],
+              textStyle: ['*'],
+              fontFamily: ['*'],
+              fontSize: ['*'],
+              fontWeight: ['*'],
+              lineHeight: ['*'],
+              letterSpacing: ['*'],
+            },
+            conditions: ['light', 'dark'],
           },
-          conditions: ['light', 'dark'],
-        },
-      ],
-    },
-  }
-  : { staticCss: { css: [] } };
+        ],
+        recipes: '*' as const,
+      },
+    }
+  : {};
 
 export default defineConfig({
   eject: true,
@@ -47,14 +48,13 @@ export default defineConfig({
   preflight: false, // do not add Panda's default reset styles
   strictTokens: true,
   watch: true,
-  clean: true, // empty /styled-system each run
 
   presets: [cetecPreset],
 
   include: [
     './src/**/*.{js,jsx,ts,tsx}',
     './pages/**/*.{js,jsx,ts,tsx}',
-    './src/components/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    './src/components/**/*.stories.{js,jsx,mjs,ts,tsx}',
     './src/storybook/**/*.{js,jsx,mjs,ts,tsx,mdx}',
   ],
 

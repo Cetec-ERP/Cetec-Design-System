@@ -127,7 +127,7 @@ export const Menu: React.FC<MenuProps> = ({
       >
         {loading ? (
           <Box className={loaderContainer}>
-            <Spinner size="medium" />
+            <Spinner size="md" />
           </Box>
         ) : (
           current?.menu?.map((section) => (

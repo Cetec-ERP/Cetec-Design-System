@@ -1,220 +1,358 @@
-import { defineRecipe } from '@pandacss/dev';
+import { defineSlotRecipe } from '@pandacss/dev';
 
-const buttonBase = {
-  position: 'relative',
-  appearance: 'none',
-  minWidth: '0',
-  transitionDuration: 'fast',
-  transitionProperty: 'background, border-color, color, box-shadow',
-  transitionTimingFunction: 'default',
-  userSelect: 'none',
-  verticalAlign: 'middle',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4',
-  fontFamily: 'body',
-  fontSize: '16',
-  fontWeight: 'medium',
-  lineHeight: 'default',
-  borderWidth: '1',
-  borderStyle: 'solid',
-  borderColor: 'transparent',
-  borderRadius: '4',
-  outlineWidth: '2',
-  outlineStyle: 'solid',
-  outlineColor: 'transparent',
-  outlineOffset: '1',
-  textDecoration: 'none',
-  whiteSpace: 'nowrap',
-  cursor: 'pointer',
-  _disabled: {
-    opacity: 0.4,
-    cursor: 'not-allowed',
+const buttonBaseStyles = {
+  container: {
+    position: 'relative',
+    appearance: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4',
+    minWidth: '0',
+    width: 'fit',
+    height: 'fit',
+    transitionDuration: 'fast',
+    transitionProperty: 'background, border-color, color, box-shadow',
+    transitionTimingFunction: 'default',
+    userSelect: 'none',
+    verticalAlign: 'middle',
+    fontFamily: 'body',
+    fontSize: '16',
+    fontWeight: 'medium',
+    lineHeight: 'default',
+    borderWidth: '1',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    borderRadius: '4',
+    outlineWidth: '2',
+    outlineStyle: 'solid',
+    outlineColor: 'transparent',
+    outlineOffset: '1',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
+    cursor: 'pointer',
+    _disabled: {
+      cursor: 'not-allowed',
+      opacity: '0.3',
+    },
+    _loading: {
+      cursor: 'not-allowed',
+      opacity: '0.3',
+    },
+    _focusVisible: {
+      outlineColor: 'border.focused',
+    },
   },
-  _focusVisible: {
-    outlineColor: { base: 'slate.80', _dark: 'slate.5' },
-  },
-  '& svg': {
-    fill: 'current',
+  icon: {
+    aspectRatio: 'square',
+    transitionDuration: 'fast',
+    transitionProperty: 'fill',
+    transitionTimingFunction: 'default',
   },
 };
 
 const buttonVariants = {
   variant: {
-    primary: {
-      bg: { base: 'slate.90', _dark: 'slate.5' },
-      color: { base: 'slate.0', _dark: 'slate.90' },
-      _hover: {
-        bg: { base: 'slate.70', _dark: 'slate.10' },
-      },
-      _active: {
-        bg: { base: 'slate.100', _dark: 'slate.20' },
-      },
-      _disabled: {
+    standard: {
+      container: {
+        bg: 'bg.neutral',
+        color: 'text',
+        icon: {
+          fill: 'icon.decorative',
+        },
         _hover: {
-          bg: { base: 'slate.90', _dark: 'slate.5' },
+          bg: 'bg.neutral.hovered',
+          icon: { fill: 'current' },
+        },
+        _active: {
+          bg: 'bg.neutral.pressed',
+          icon: { fill: 'current' },
         },
       },
-      _selected: {
-        bg: { base: 'slate.5', _dark: 'slate.90' },
-        color: { base: 'slate.90', _dark: 'slate.0' },
+      icon: {
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
       },
     },
-    standard: {
-      bg: { base: 'slate.5', _dark: 'slate.70' },
-      color: { base: 'slate.90', _dark: 'slate.0' },
-      _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60' },
-      },
-      _active: {
-        bg: { base: 'slate.20', _dark: 'slate.80' },
-      },
-      _disabled: {
+    primary: {
+      container: {
+        bg: 'bg.neutral.boldest',
+        color: 'text.inverse',
+        icon: {
+          fill: 'icon.decorative.inverse',
+        },
         _hover: {
-          bg: { base: 'slate.5', _dark: 'slate.70' },
+          bg: 'bg.neutral.bold.hovered',
+          icon: { fill: 'current' },
+        },
+        _active: {
+          bg: 'bg.neutral.bold.pressed',
+          icon: { fill: 'current' },
         },
       },
-      _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.0', _dark: 'slate.90' },
+      icon: {
+        mixBlendMode: { base: 'screen', _dark: 'multiply' },
+        _groupDisabled: {
+          fill: 'current',
+        },
       },
     },
     hollow: {
-      bg: 'transparent',
-      borderColor: { base: 'slate.30', _dark: 'slate.60' },
-      color: { base: 'slate.90', _dark: 'slate.0' },
-      _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60' },
-        borderColor: { base: 'slate.10', _dark: 'slate.60' },
-      },
-      _active: {
-        bg: { base: 'slate.20', _dark: 'slate.80' },
-        borderColor: { base: 'slate.20', _dark: 'slate.80' },
-      },
-      _disabled: {
+      container: {
+        bg: 'bg.neutral.subtle',
+        borderColor: 'border',
+        color: 'text',
+        icon: { fill: 'icon.decorative' },
         _hover: {
-          bg: 'transparent',
+          bg: 'bg.neutral.subtle.hovered',
+          icon: { fill: 'current' },
+        },
+        _active: {
+          bg: 'bg.neutral.subtle.pressed',
+          icon: { fill: 'current' },
         },
       },
-      _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.0', _dark: 'slate.90' },
-        borderColor: 'transparent',
+      icon: {
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
       },
     },
     ghost: {
-      bg: 'transparent',
-      color: { base: 'slate.90', _dark: 'slate.0' },
-      _hover: {
-        bg: { base: 'slate.10', _dark: 'slate.60' },
-      },
-      _active: {
-        bg: { base: 'slate.20', _dark: 'slate.70' },
-      },
-      _disabled: {
+      container: {
+        bg: 'bg.neutral.subtle',
+        color: 'text',
+        icon: { fill: 'icon.decorative' },
         _hover: {
-          bg: 'transparent',
+          bg: 'bg.neutral.subtle.hovered',
+          icon: { fill: 'current' },
+        },
+        _active: {
+          bg: 'bg.neutral.subtle.pressed',
+          icon: { fill: 'current' },
         },
       },
-      _selected: {
-        bg: { base: 'slate.90', _dark: 'slate.5' },
-        color: { base: 'slate.0', _dark: 'slate.90' },
+      icon: {
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
       },
     },
     cta: {
-      bg: { base: 'gold.20', _dark: 'gold.30' },
-      color: 'slate.90',
-      _hover: {
-        bg: { base: 'gold.10', _dark: 'gold.20' },
-      },
-      _active: {
-        bg: { base: 'gold.30', _dark: 'gold.40' },
-      },
-      _disabled: {
+      container: {
+        bg: 'gold.20',
+        color: 'neutral.90',
+        icon: { fill: 'neutral.50' },
         _hover: {
-          bg: { base: 'gold.20', _dark: 'gold.30' },
+          bg: 'gold.15',
+          icon: { fill: 'current' },
+        },
+        _active: {
+          bg: 'gold.30',
+          icon: { fill: 'current' },
+        },
+      },
+      icon: {
+        mixBlendMode: 'multiply',
+        _groupDisabled: {
+          fill: 'current',
         },
       },
     },
     danger: {
-      bg: 'red.50',
-      color: 'slate.0',
-      _hover: {
-        bg: 'red.40',
-      },
-      _active: {
-        bg: 'red.60',
-      },
-      _disabled: {
+      container: {
+        bg: 'red.50',
+        color: 'neutral.0',
+        icon: { fill: 'neutral.40' },
         _hover: {
-          bg: 'red.50',
+          bg: 'red.40',
+          icon: { fill: 'current' },
+        },
+        _active: {
+          bg: 'red.60',
+          icon: { fill: 'current' },
+        },
+      },
+      icon: {
+        mixBlendMode: 'screen',
+        _groupDisabled: {
+          fill: 'current',
         },
       },
     },
   },
 };
 
-export const buttonRecipe = defineRecipe({
+export const buttonRecipe = defineSlotRecipe({
   className: 'button',
   jsx: ['Button'],
-  base: buttonBase,
+  slots: ['container', 'icon'],
+  base: buttonBaseStyles,
   variants: {
     ...buttonVariants,
     size: {
-      medium: {
-        fontSize: '16',
-        py: '3',
-        px: '10',
+      md: {
+        container: {
+          fontSize: '16',
+          py: '3',
+          px: '12',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
       },
-      large: {
-        fontSize: '16',
-        py: '7',
-        px: '12',
+      xl: {
+        container: {
+          fontSize: '20',
+          py: '9',
+          px: '16',
+        },
+        icon: {
+          w: '28',
+          h: '28',
+        },
       },
-      small: {
-        fontSize: '14',
-        py: '0',
-        px: '8',
-        '& svg': {
-          mt: '-1',
-          mb: '-1',
+      lg: {
+        container: {
+          fontSize: '16',
+          py: '7',
+          px: '14',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
+      },
+      sm: {
+        container: {
+          fontSize: '14',
+          py: '1',
+          px: '8',
+        },
+        icon: {
+          w: '22',
+          h: '22',
         },
       },
     },
+    iconBefore: {
+      true: { container: {} },
+    },
+    iconAfter: {
+      true: { container: {} },
+    },
   },
+  compoundVariants: [
+    {
+      size: 'md',
+      iconBefore: true,
+      css: {
+        container: { ps: '3' },
+      },
+    },
+    {
+      size: 'md',
+      iconAfter: true,
+      css: {
+        container: { pe: '3' },
+      },
+    },
+    {
+      size: 'sm',
+      iconBefore: true,
+      css: {
+        container: { ps: '2' },
+      },
+    },
+    {
+      size: 'sm',
+      iconAfter: true,
+      css: {
+        container: { pe: '2' },
+      },
+    },
+    {
+      size: 'lg',
+      iconBefore: true,
+      css: {
+        container: { ps: '5' },
+      },
+    },
+    {
+      size: 'lg',
+      iconAfter: true,
+      css: {
+        container: { pe: '5' },
+      },
+    },
+    {
+      size: 'xl',
+      iconBefore: true,
+      css: {
+        container: { ps: '7' },
+      },
+    },
+    {
+      size: 'xl',
+      iconAfter: true,
+      css: {
+        container: { pe: '7' },
+      },
+    },
+  ],
   defaultVariants: {
     variant: 'standard',
-    size: 'medium',
+    size: 'md',
   },
 });
 
-export const iconButtonRecipe = defineRecipe({
+export const iconButtonRecipe = defineSlotRecipe({
   className: 'icon-button',
   jsx: ['IconButton'],
-  base: buttonBase,
+  slots: ['container', 'icon'],
+  base: buttonBaseStyles,
   variants: {
     ...buttonVariants,
     size: {
-      medium: {
-        fontSize: '16',
-        p: '3',
+      md: {
+        container: {
+          fontSize: '16',
+          p: '3',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
       },
-      large: {
-        fontSize: '16',
-        p: '7',
+      xl: {
+        container: {
+          fontSize: '20',
+          p: '9',
+        },
+        icon: {
+          w: '28',
+          h: '28',
+        },
       },
-      small: {
-        fontSize: '14',
-        p: '0',
-        '& svg': {
-          mt: '-1',
-          mb: '-1',
+      lg: {
+        container: {
+          fontSize: '16',
+          p: '7',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
+      },
+      sm: {
+        container: {
+          fontSize: '14',
+          p: '1',
+        },
+        icon: {
+          w: '22',
+          h: '22',
         },
       },
     },
   },
   defaultVariants: {
     variant: 'standard',
-    size: 'medium',
+    size: 'md',
   },
 });

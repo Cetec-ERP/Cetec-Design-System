@@ -76,6 +76,7 @@ export const colors = defineTokens.colors({
     '4': { value: '#FEF3D3' },
     '5': { value: '#FEF0C8' },
     '10': { value: '#FFE396' },
+    '15': { value: '#ffd162' },
     '20': { value: '#FFBE2E' },
     '30': { value: '#E5A000' },
     '40': { value: '#C2850C' },
