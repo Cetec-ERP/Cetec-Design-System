@@ -34,6 +34,10 @@ const buttonBaseStyles = {
       cursor: 'not-allowed',
       opacity: '0.3',
     },
+    _loading: {
+      cursor: 'not-allowed',
+      opacity: '0.3',
+    },
     _focusVisible: {
       outlineColor: 'border.focused',
     },

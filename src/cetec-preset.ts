@@ -25,6 +25,7 @@ const {
   tooltipRecipe,
   menuRecipe,
   formFieldRecipe,
+  spinnerRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -81,6 +82,7 @@ export const cetecPreset: Preset = definePreset({
         tooltip: tooltipRecipe,
         menu: menuRecipe,
         formField: formFieldRecipe,
+        spinner: spinnerRecipe,
       },
     },
   },

@@ -34,9 +34,10 @@ const staticCss = isStatic
             conditions: ['light', 'dark'],
           },
         ],
+        recipes: '*' as const,
       },
     }
-  : { staticCss: { css: [] } };
+  : {};
 
 export default defineConfig({
   eject: true,
@@ -53,7 +54,7 @@ export default defineConfig({
   include: [
     './src/**/*.{js,jsx,ts,tsx}',
     './pages/**/*.{js,jsx,ts,tsx}',
-    './src/components/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    './src/components/**/*.stories.{js,jsx,mjs,ts,tsx}',
     './src/storybook/**/*.{js,jsx,mjs,ts,tsx,mdx}',
   ],
 

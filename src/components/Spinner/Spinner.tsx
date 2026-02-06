@@ -6,20 +6,26 @@ import { splitProps } from '~/utils/splitProps';
 export type SpinnerProps = Omit<BoxProps, keyof SpinnerVariantProps> &
   SpinnerVariantProps & {
     inverse?: boolean;
+    centered?: boolean;
   };
 
-export const Spinner: React.FC<SpinnerProps> = ({
-  size,
-  inverse,
-  ...props
-}: SpinnerProps) => {
-  const [className, otherProps] = splitProps(props);
+export const Spinner = (props: SpinnerProps) => {
+  const { size, inverse, centered, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
+  const classes = spinner({
+    size,
+    inverse,
+    centered,
+  });
 
   return (
-    <Box
-      as="div"
-      className={cx(spinner({ size, inverse }), className)}
-      {...otherProps}
-    />
+    <Box className={cx(classes.container, className)} {...otherProps}>
+      <Box
+        as="div"
+        className={classes.spinnerDiv}
+        size={size}
+        inverse={inverse}
+      />
+    </Box>
   );
 };

@@ -1,8 +1,8 @@
-import { card, type CardVariantProps } from '@styled-system/recipes';
-import { Box, type BoxProps } from '../Box';
-import { ReactNode, ElementType } from 'react';
-import { splitProps } from '~/utils/splitProps';
+import { ReactNode, ElementType, MouseEvent } from 'react';
 import { cx } from '@styled-system/css';
+import { splitProps } from '~/utils/splitProps';
+import { Box, type BoxProps } from '../Box';
+import { card, type CardVariantProps } from '@styled-system/recipes';
 
 export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
   CardVariantProps & {
@@ -43,7 +43,10 @@ export const Card = (props: CardProps) => {
       {...(disabled && {
         disabled: true,
         'aria-disabled': true,
-        ...(href && { tabIndex: -1 }),
+        ...(href && {
+          tabIndex: -1,
+          onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
+        }),
       })}
       {...otherProps}
     >
