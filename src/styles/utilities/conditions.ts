@@ -5,6 +5,7 @@ export const conditions = {
   focusVisible: '&:is(:focus-visible, [data-focus-visible=true])',
   disabled:
     '&:is(:disabled, [disabled], [data-disabled], [aria-disabled=true])',
+  deleted: '&:is(:deleted, [deleted], [data-deleted=true])',
   active: '&:is(:active, [data-active=true])',
   visited: '&:visited',
   target: '&:target',

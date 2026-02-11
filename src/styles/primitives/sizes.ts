@@ -25,6 +25,7 @@ export const numericSizes = {
   '64': { value: '4rem' },
   '72': { value: '4.5rem' },
   '80': { value: '5rem' },
+  '88': { value: '5.5rem' },
   '96': { value: '6rem' },
   '104': { value: '6.5rem' },
   '112': { value: '7rem' },

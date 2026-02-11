@@ -3,20 +3,24 @@ import { defineRecipe } from '@pandacss/dev';
 const dividerBase = {
   '--divider-weight': 'sizes.1',
   borderStyle: 'solid',
-  color: { base: 'slate.20', _dark: 'slate.80' },
+  color: 'border',
   borderColor: 'current',
+  borderWidth: '0',
   minWidth: '1',
   minHeight: '1',
+  flexGrow: 1,
 };
 
 const dividerVariants = {
   direction: {
     horizontal: {
-      width: 'full',
+      width: 'stretch',
+      borderTopStyle: 'solid',
       borderTopWidth: 'var(--divider-weight)',
     },
     vertical: {
-      height: 'full',
+      height: 'stretch',
+      borderLeftStyle: 'solid',
       borderLeftWidth: 'var(--divider-weight)',
     },
   },

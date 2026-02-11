@@ -12,9 +12,6 @@ export const borders = defineTokens.borders({
   bold: {
     value: '{borderWidths.2} solid {colors.border.bold}',
   },
-  boldest: {
-    value: '{borderWidths.4} solid {colors.border.boldest}',
-  },
   inverse: {
     value: '{borderWidths.1} solid {colors.border.inverse}',
   },
