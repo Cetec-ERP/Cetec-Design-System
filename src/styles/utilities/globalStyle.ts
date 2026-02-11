@@ -13,7 +13,6 @@ export const globalCss = defineGlobalStyles({
       outlineColor: { base: 'slate.90', _dark: 'slate.0' },
     },
     _disabled: {
-      opacity: 0.4,
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },
@@ -52,6 +51,9 @@ export const globalCss = defineGlobalStyles({
   u: {
     textDecoration: 'underline',
   },
+  a: {
+    textDecoration: 'none',
+  },
   'code, kbd, samp, pre': {
     fontFamily: 'mono',
     fontVariationSettings: fontVariants.mono,
@@ -67,6 +69,7 @@ export const globalCss = defineGlobalStyles({
     margin: '0',
   },
   'button, [type="button"], [type="reset"], [type="submit"]': {
+    appearance: 'button',
     '-webkit-appearance': 'button',
   },
   legend: {
@@ -79,6 +82,7 @@ export const globalCss = defineGlobalStyles({
     height: 'auto',
   },
   '[type="search"]': {
+    appearance: 'textfield',
     '-webkit-appearance': 'textfield',
     outlineOffset: '-2px',
   },

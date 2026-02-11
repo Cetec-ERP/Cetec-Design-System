@@ -41,23 +41,29 @@ const textareaBase = {
 
 const textareaVariants = {
   size: {
-    small: {
+    sm: {
       py: '0',
       px: '8',
       minHeight: '48',
       fontSize: '14',
     },
-    medium: {
+    md: {
       py: '3',
       px: '10',
       fontSize: '16',
       minHeight: '64',
     },
-    large: {
+    lg: {
       py: '7',
       px: '12',
       fontSize: '16',
       minHeight: '80',
+    },
+    xl: {
+      py: '9',
+      px: '16',
+      fontSize: '20',
+      minHeight: '96',
     },
   },
   autoSize: {
@@ -73,6 +79,6 @@ export const textareaRecipe = defineRecipe({
   base: textareaBase,
   variants: textareaVariants,
   defaultVariants: {
-    size: 'medium',
+    size: 'md',
   },
 });

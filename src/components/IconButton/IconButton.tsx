@@ -1,13 +1,13 @@
-import React, { FC, ReactElement } from 'react';
 import { cx } from '@styled-system/css';
+import { Grid } from '@styled-system/jsx';
 import { Box, type BoxProps } from '~/components/Box';
 import {
   iconButton,
   type IconButtonVariantProps,
 } from '@styled-system/recipes';
-import { ButtonContent } from '~/components/Button/ButtonContent';
-import { Icon } from '~/components/Icon';
 import { splitProps } from '~/utils/splitProps';
+import { Spinner } from '~/components/Spinner';
+import { Icon, type IconNamesList } from '~/components/Icon';
 
 /**
  * The IconButton component builds on Box.
@@ -16,44 +16,64 @@ import { splitProps } from '~/utils/splitProps';
  *
  * It requires exactly one child which must be an <Icon /> element.
  */
-export type IconButtonProps = BoxProps &
+export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
   IconButtonVariantProps & {
+    iconName: IconNamesList;
     href?: string;
     loading?: boolean;
-    children: ReactElement<typeof Icon>;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
   };
 
-export const IconButton: FC<IconButtonProps> = ({
-  variant,
-  size,
-  href,
-  children,
-  loading,
-  disabled,
-  type = 'button',
-  ...props
-}: IconButtonProps) => {
-  const isDisabled = loading || disabled;
-  const [className, otherProps] = splitProps(props);
+export const IconButton = (props: IconButtonProps) => {
+  const {
+    iconName,
+    variant,
+    size,
+    href,
+    loading,
+    disabled,
+    type = 'button',
+    ...rest
+  } = props;
+  const classes = iconButton({ variant, size });
+  const [className, otherProps] = splitProps(rest);
+  const trulyDisabled = loading || disabled;
 
   return (
     <Box
       as={href ? 'a' : 'button'}
-      disabled={isDisabled}
-      aria-disabled={isDisabled}
+      disabled={trulyDisabled}
+      aria-disabled={trulyDisabled}
       aria-label={`icon-button`}
-      className={cx(iconButton({ variant, size }), className)}
+      className={`${cx(classes.container, className)} group`}
       {...(href ? { href } : { type })}
       {...otherProps}
-      {...(isDisabled &&
+      {...(trulyDisabled &&
         href && {
           onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
             e.preventDefault(),
         })}
     >
-      <ButtonContent loading={!!loading}>{children}</ButtonContent>
+      <>
+        <Icon
+          name={iconName}
+          className={classes.icon}
+          opacity={loading ? 0 : 1}
+        />
+        {loading && (
+          <Grid
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            placeItems="center"
+          >
+            <Spinner size="sm" />
+          </Grid>
+        )}
+      </>
     </Box>
   );
 };

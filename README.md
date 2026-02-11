@@ -3,23 +3,23 @@
 A React component library built with TypeScript and Panda CSS for the Cetec-ERP application and marketing website.
 
 - [Cetec-ERP Design System](#cetec-erp-design-system)
-	- [Development](#development)
-		- [Setup](#setup)
-		- [Commands](#commands)
-	- [Architecture](#architecture)
-		- [Key Principles](#key-principles)
-	- [Working with Components](#working-with-components)
-		- [Adding a New Component](#adding-a-new-component)
-		- [Component Guidelines](#component-guidelines)
-	- [Working with Icons](#working-with-icons)
-		- [Adding Icons](#adding-icons)
-	- [Usage in Consumer Projects](#usage-in-consumer-projects)
-		- [Installation](#installation)
-		- [Panda CSS Configuration](#panda-css-configuration)
-		- [Using in Your Project](#using-in-your-project)
-	- [Release Process](#release-process)
-		- [Contributing](#contributing)
-		- [Release Labels](#release-labels)
+  - [Development](#development)
+    - [Setup](#setup)
+    - [Commands](#commands)
+  - [Architecture](#architecture)
+    - [Key Principles](#key-principles)
+  - [Working with Components](#working-with-components)
+    - [Adding a New Component](#adding-a-new-component)
+    - [Component Guidelines](#component-guidelines)
+  - [Working with Icons](#working-with-icons)
+    - [Adding Icons](#adding-icons)
+  - [Usage in Consumer Projects](#usage-in-consumer-projects)
+    - [Installation](#installation)
+    - [Panda CSS Configuration](#panda-css-configuration)
+    - [Using in Your Project](#using-in-your-project)
+  - [Release Process](#release-process)
+    - [Contributing](#contributing)
+    - [Release Labels](#release-labels)
 
 ## Development
 
@@ -38,7 +38,7 @@ npm run storybook           # Start Storybook on port 6006
 
 # Building
 npm run build               # Build for distribution (runs Panda codegen + Vite build)
-npm run build-storybook     # Build Storybook for deployment
+npm run storybook:build     # Build Storybook for deployment
 
 # Code Quality
 npm run lint                # Run ESLint
@@ -85,6 +85,8 @@ This design system is built on **Panda CSS** with a strict tokens-first approach
 - Type props with TypeScript strict mode
 - Style with Panda recipes (no inline styles or hard-coded values)
 - Follow accessibility guidelines (semantic HTML, keyboard support, ARIA when needed)
+
+Also see [Component Standards](./src/storybook/docs/componentStandards.mdx)
 
 ## Working with Icons
 
@@ -140,7 +142,7 @@ function MyComponent() {
   return (
     <>
       <Text>Hello World</Text>
-      <Button intent="primary">Click me</Button>
+      <Button variant="primary">Click me</Button>
       <Icon name="arrow-right" />
     </>
   );
@@ -150,6 +152,7 @@ function MyComponent() {
 ## Release Process
 
 This project uses [Auto](https://intuit.github.io/auto/) for automated releases and changelog generation.
+Packages are published from the repo root with `dist` included in the published files list.
 
 ### Contributing
 

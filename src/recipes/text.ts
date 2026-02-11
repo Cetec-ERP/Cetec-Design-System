@@ -12,6 +12,7 @@ const textBase = {
   fontSize: '16',
   fontVariationSettings: fontVariants.body,
   color: { base: 'slate.60', _dark: 'slate.30' },
+  maxWidth: 'prose',
 };
 
 type FontSizeKey = keyof typeof fontSizeTokens;
@@ -61,11 +62,19 @@ const textVariants = {
   },
   truncate: {
     true: {
+      display: 'block',
       width: 'full',
       maxWidth: 'full',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
+    },
+  },
+  allCaps: {
+    true: {
+      textTransform: 'uppercase',
+      fontWeight: 'bold',
+      letterSpacing: 'widest',
     },
   },
   size: fontSizes,
@@ -85,6 +94,12 @@ const headingVariants = {
     h2: { textStyle: 'heading.md' },
     h3: { textStyle: 'heading.sm' },
     h4: { textStyle: 'heading.xs' },
+  },
+  allCaps: {
+    true: {
+      textTransform: 'uppercase',
+      letterSpacing: 'widest',
+    },
   },
 };
 

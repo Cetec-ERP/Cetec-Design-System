@@ -2,20 +2,25 @@ import { defineRecipe } from '@pandacss/dev';
 
 const textInputVariants = {
   size: {
-    medium: {
+    md: {
       py: 3,
       px: 10,
       fontSize: '16',
     },
-    small: {
+    sm: {
       py: 0,
       px: 8,
       fontSize: '14',
     },
-    large: {
+    lg: {
       py: 7,
       px: 12,
       fontSize: '16',
+    },
+    xl: {
+      fontSize: '20',
+      py: '9',
+      px: '16',
     },
   },
   autoSize: {
@@ -71,6 +76,6 @@ export const textinputRecipe = defineRecipe({
   base: textInputBase,
   variants: textInputVariants,
   defaultVariants: {
-    size: 'medium',
+    size: 'md',
   },
 });

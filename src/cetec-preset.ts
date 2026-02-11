@@ -1,11 +1,7 @@
-import {
-  // defineTokens,
-  // defineSemanticTokens,
-  definePreset,
-} from '@pandacss/dev';
+import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
-import * as tokens from './src/styles/primitives';
-import * as semanticTokens from './src/styles/semantics';
+import * as tokens from './styles/primitives';
+import * as semanticTokens from './styles/semantics';
 import {
   breakpoints,
   conditions,
@@ -17,15 +13,19 @@ import {
   layerStyles,
   textStyles,
   transitionProperty,
-} from './src/styles/utilities';
-import * as componentRecipes from './src/recipes/index';
+} from './styles/utilities';
+import * as componentRecipes from './recipes/index';
 
 // Separate slotRecipes from regular recipes
 const {
+  buttonRecipe,
+  iconButtonRecipe,
   checkboxRecipe,
   radioRecipe,
   tooltipRecipe,
   menuRecipe,
+  formFieldRecipe,
+  spinnerRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -55,7 +55,7 @@ const theme = {
   },
 };
 
-export const cetecPreset = definePreset({
+export const cetecPreset: Preset = definePreset({
   name: 'cetecPreset',
   theme: {
     extend: {
@@ -75,10 +75,14 @@ export const cetecPreset = definePreset({
         ...transformedRecipes,
       },
       slotRecipes: {
+        button: buttonRecipe,
+        iconButton: iconButtonRecipe,
         checkbox: checkboxRecipe,
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
+        formField: formFieldRecipe,
+        spinner: spinnerRecipe,
       },
     },
   },
@@ -86,9 +90,11 @@ export const cetecPreset = definePreset({
     ...pandaBasePresetUtilities,
     // Custom utilities
     // https://panda-css.com/docs/references/config#utilities
-    fontVariantsProperty,
-    filtersProperty,
-    transitionProperty,
+    extend: {
+      fontVariantsProperty,
+      filtersProperty,
+      transitionProperty,
+    },
   },
   patterns: {
     icon: {
@@ -132,34 +138,5 @@ export const cetecPreset = definePreset({
   conditions: {
     ...pandaBasePresetConditions,
     ...conditions,
-  },
-  staticCss: {
-    css: [
-      {
-        properties: {
-          background: ['*'],
-          color: ['*'],
-          border: ['*'],
-          fill: ['*'],
-          boxShadow: ['*'],
-          width: ['*'],
-          height: ['*'],
-          minWidth: ['*'],
-          minHeight: ['*'],
-          maxWidth: ['*'],
-          maxHeight: ['*'],
-          padding: ['*'],
-          margin: ['*'],
-          borderRadius: ['*'],
-          textStyle: ['*'],
-          fontFamily: ['*'],
-          fontSize: ['*'],
-          fontWeight: ['*'],
-          lineHeight: ['*'],
-          letterSpacing: ['*'],
-        },
-        conditions: ['light', 'dark'],
-      },
-    ],
   },
 });

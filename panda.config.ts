@@ -1,5 +1,43 @@
 import { defineConfig } from '@pandacss/dev';
-import { cetecPreset } from './cetec-preset';
+import { cetecPreset } from './src/cetec-preset';
+
+// Control whether the staticCss is included or not
+// because it's not needed for production and
+// generates a ton of CSS
+const isStatic = process.env.PANDA_STATIC === 'true';
+
+const staticCss = isStatic
+  ? {
+      staticCss: {
+        css: [
+          {
+            properties: {
+              background: ['*'],
+              color: ['*'],
+              border: ['*'],
+              fill: ['*'],
+              boxShadow: ['*'],
+              width: ['*'],
+              height: ['*'],
+              minWidth: ['*'],
+              minHeight: ['*'],
+              maxWidth: ['*'],
+              maxHeight: ['*'],
+              borderRadius: ['*'],
+              textStyle: ['*'],
+              fontFamily: ['*'],
+              fontSize: ['*'],
+              fontWeight: ['*'],
+              lineHeight: ['*'],
+              letterSpacing: ['*'],
+            },
+            conditions: ['light', 'dark'],
+          },
+        ],
+        recipes: '*' as const,
+      },
+    }
+  : {};
 
 export default defineConfig({
   eject: true,
@@ -7,17 +45,16 @@ export default defineConfig({
   jsxFramework: 'react',
   jsxStyleProps: 'all',
   jsxFactory: 'styled',
-  preflight: true,
+  preflight: false, // do not add Panda's default reset styles
   strictTokens: true,
   watch: true,
 
-  // removed @pandacss/dev/presets because it was adding back things we intentionally excluded
   presets: [cetecPreset],
 
   include: [
     './src/**/*.{js,jsx,ts,tsx}',
     './pages/**/*.{js,jsx,ts,tsx}',
-    './src/components/*/*.stories.@(js|jsx|mjs|ts|tsx)',
+    './src/components/**/*.stories.{js,jsx,mjs,ts,tsx}',
     './src/storybook/**/*.{js,jsx,mjs,ts,tsx,mdx}',
   ],
 
@@ -25,5 +62,7 @@ export default defineConfig({
 
   prefix: 'cetec',
   importMap: '@styled-system',
-  outdir: 'styled-system',
+  outdir: 'src/styled-system',
+
+  ...staticCss,
 });

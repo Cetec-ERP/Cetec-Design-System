@@ -35,7 +35,7 @@ export const IconList: React.FC = () => {
     <Grid
       gap="16"
       w="full"
-      gridTemplateColumns={'repeat(auto-fill, minmax(200px, 1fr))'}
+      gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
     >
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
@@ -51,7 +51,7 @@ const ButtonSection: React.FC = () => {
   return (
     <Section>
       <Heading>Buttons</Heading>
-      <VStack alignItems={'flex-start'} gap={'24'}>
+      <VStack alignItems="flex-start" gap="24">
         <HStack>
           <Button variant="primary" onClick={() => alert('clicked')}>
             Primary
@@ -61,32 +61,24 @@ const ButtonSection: React.FC = () => {
           <Button variant="ghost">Ghost</Button>
           <Button variant="cta">CTA</Button>
           <Button variant="danger">Danger</Button>
-          <Button size="large">
-            <Icon name="arrow-left" /> Button
+          <Button size="lg" iconBefore="arrow-left">
+            Button
           </Button>
-          <Button size="small">
-            Button <Icon name="arrow-right" />
+          <Button size="sm" iconAfter="arrow-right">
+            Button
           </Button>
         </HStack>
         <HStack>
-          <IconButton variant="ghost">
-            <Icon name="x" />
-          </IconButton>
-          <IconButton>
-            <Icon name="arrow-left" />
-          </IconButton>
-          <IconButton variant="primary" size="large">
-            <Icon name="arrow-right" />
-          </IconButton>
+          <IconButton variant="ghost" iconName="x" />
+          <IconButton variant="primary" iconName="arrow-left" size="lg" />
+          <IconButton variant="primary" iconName="arrow-right" size="lg" />
         </HStack>
         <HStack>
           <Button variant="primary" loading>
             Pepperoni
           </Button>
           <Button loading>Loading</Button>
-          <IconButton variant="primary" loading>
-            <Icon name="x" />
-          </IconButton>
+          <IconButton variant="primary" loading iconName="x" />
         </HStack>
       </VStack>
     </Section>
@@ -100,14 +92,14 @@ interface SectionProps {
 export const Section: React.FC<SectionProps> = ({ children }) => {
   return (
     <Grid
-      gridTemplateColumns={'1fr 3fr'}
-      gap={'40'}
-      w={'full'}
-      borderTopWidth={'1'}
-      borderTopStyle={'solid'}
+      gridTemplateColumns="1fr 3fr"
+      gap="40"
+      w="full"
+      borderTopWidth="1"
+      borderTopStyle="solid"
       borderColor={{ base: 'slate.10', _dark: 'slate.80' }}
-      py={'24'}
-      pb={'96'}
+      py="24"
+      pb="96"
     >
       {children}
     </Grid>
@@ -118,23 +110,23 @@ const Header: React.FC = () => {
   return (
     <Flex
       w="full"
-      py={'4'}
+      py="4"
       bg={{ base: 'slate.10', _dark: 'slate.80' }}
-      mb={'56'}
-      position={'sticky'}
-      top={'0'}
-      zIndex={'100'}
-      boxShadow={'medium'}
+      mb="56"
+      position="sticky"
+      top="0"
+      zIndex="100"
+      boxShadow="medium"
     >
-      <Container maxW={'5xl'}>
-        <HStack justify={'space-between'}>
+      <Container maxW="5xl">
+        <HStack justify="space-between">
           <Text
-            as={'div'}
+            as="div"
             family="body"
             size="16"
-            letterSpacing={'widest'}
-            textTransform={'uppercase'}
-            fontWeight={'bold'}
+            letterSpacing="widest"
+            textTransform="uppercase"
+            fontWeight="bold"
             onClick={() => alert('clicked')}
           >
             Cetec Components
@@ -157,13 +149,13 @@ const ShadowBox = ({
 }) => {
   return (
     <Grid
-      placeContent={'center'}
-      width={'full'}
-      aspectRatio={'landscape'}
-      borderRadius={'4'}
+      placeContent="center"
+      width="full"
+      aspectRatio="landscape"
+      borderRadius="4"
       shadow={shadow}
       borderWidth={border ? '1' : undefined}
-      borderStyle={'solid'}
+      borderStyle="solid"
       borderColor={{ base: 'slate.10', _dark: 'slate.90' }}
       bg={{ base: 'slate.0', _dark: 'slate.80' }}
     >
@@ -388,9 +380,9 @@ const AppContent: React.FC = () => {
 
   const handleCheckboxChange =
     (key: keyof typeof checkboxStates) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckboxStates({ ...checkboxStates, [key]: e.target.checked });
-      };
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCheckboxStates({ ...checkboxStates, [key]: e.target.checked });
+    };
 
   // CheckboxInput states using Storybook pattern
   const [checkboxInputStates, setCheckboxInputStates] = useState({
@@ -403,30 +395,30 @@ const AppContent: React.FC = () => {
 
   const handleCheckboxInputChange =
     (key: keyof typeof checkboxInputStates) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckboxInputStates({
-          ...checkboxInputStates,
-          [key]: e.target.checked,
-        });
-      };
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCheckboxInputStates({
+        ...checkboxInputStates,
+        [key]: e.target.checked,
+      });
+    };
 
   return (
     <VStack>
       <Header />
-      <Container maxW={'5xl'}>
-        <VStack gap={'8'}>
+      <Container maxW="5xl">
+        <VStack gap="8">
           <ButtonSection />
           <Section>
             <Heading level="h2">Text</Heading>
 
-            <VStack alignItems={'flex-start'}>
+            <VStack alignItems="flex-start">
               <Grid
-                gridTemplateColumns={'minmax(auto, 1fr) 1fr'}
-                w={'full'}
-                gap={'24'}
-                alignItems={'center'}
+                gridTemplateColumns="minmax(auto, 1fr) 1fr"
+                w="full"
+                gap="24"
+                alignItems="center"
               >
-                <Box gridColumn={'1 / -1'}>
+                <Box gridColumn="1 / -1">
                   <Heading
                     level="h3"
                     color={{ base: 'gold.40', _dark: 'gold.30' }}
@@ -434,7 +426,7 @@ const AppContent: React.FC = () => {
                     Text styles
                   </Heading>
                 </Box>
-                <VStack gap={'16'}>
+                <VStack gap="16">
                   <Text>
                     Place appear green. <em>Also</em>, saying male subdue
                     fruitful{' '}
@@ -466,7 +458,7 @@ const AppContent: React.FC = () => {
                   subdue fowl.
                 </Text>
                 <Pre>{`<Text family="mono">...</Text>`}</Pre>
-                <Box gridColumn={'1 / -1'} mt={'32'}>
+                <Box gridColumn="1 / -1" mt="32">
                   <Heading
                     level="h3"
                     color={{ base: 'gold.40', _dark: 'gold.30' }}
@@ -482,7 +474,7 @@ const AppContent: React.FC = () => {
                 <Pre>{'<Heading as="h3">Hamburgefonstiv</Heading>'}</Pre>
                 <Heading level="h4">Hamburgefonstiv</Heading>
                 <Pre>{'<Heading as="h4">Hamburgefonstiv</Heading>'}</Pre>
-                <Box gridColumn={'1 / -1'} mt={'32'}>
+                <Box gridColumn="1 / -1" mt="32">
                   <Heading
                     level="h3"
                     color={{ base: 'gold.40', _dark: 'gold.30' }}
@@ -508,7 +500,7 @@ const AppContent: React.FC = () => {
                     '<Link href="https://cetecerp.com" external>Cetec ERP</Link>'
                   }
                 </Pre>
-                <Box gridColumn={'1 / -1'}>
+                <Box gridColumn="1 / -1">
                   <Text>
                     Signs night have sixth hath that likeness us fill{' '}
                     <Link href="https://cetecerp.com" external>
@@ -523,32 +515,32 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Shadows</Heading>
-            <VStack gap={'40'} alignItems={'flex-end'}>
-              <HStack width={'full'} gap={'40'} alignItems={'flex-end'}>
-                <ShadowBox shadow={'inset'}>
+            <VStack gap="40" alignItems="flex-end">
+              <HStack width="full" gap="40" alignItems="flex-end">
+                <ShadowBox shadow="inset">
                   <Text>Inset</Text>
                 </ShadowBox>
-                <ShadowBox shadow={'low'}>
+                <ShadowBox shadow="low">
                   <Text>Low</Text>
                 </ShadowBox>
-                <ShadowBox shadow={'medium'}>
+                <ShadowBox shadow="medium">
                   <Text>Medium</Text>
                 </ShadowBox>
-                <ShadowBox shadow={'high'}>
+                <ShadowBox shadow="high">
                   <Text>High</Text>
                 </ShadowBox>
               </HStack>
-              <HStack width={'full'} gap={'40'} alignItems={'flex-end'}>
-                <ShadowBox shadow={'inset'} border={true}>
+              <HStack width="full" gap="40" alignItems="flex-end">
+                <ShadowBox shadow="inset" border={true}>
                   <Text>Inset</Text>
                 </ShadowBox>
-                <ShadowBox shadow={'low'} border={true}>
+                <ShadowBox shadow="low" border={true}>
                   <Text>Low</Text>
                 </ShadowBox>
-                <ShadowBox shadow={'medium'} border={true}>
+                <ShadowBox shadow="medium" border={true}>
                   <Text>Medium</Text>
                 </ShadowBox>
-                <ShadowBox shadow={'high'} border={true}>
+                <ShadowBox shadow="high" border={true}>
                   <Text>High</Text>
                 </ShadowBox>
               </HStack>
@@ -556,20 +548,44 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Spinner</Heading>
-            <HStack gap={'40'} alignItems={'flex-end'}>
-              <VStack>
-                <Spinner size="small" />
-                <Text>Small</Text>
-              </VStack>
-              <VStack>
-                <Spinner />
-                <Text>Standard</Text>
-              </VStack>
-              <VStack>
-                <Spinner size="large" />
-                <Text>Large</Text>
-              </VStack>
-            </HStack>
+            <VStack gap="40">
+              <HStack gap="40" alignItems="flex-end">
+                <VStack>
+                  <Spinner size="xs" />
+                  <Text>xs</Text>
+                </VStack>
+                <VStack>
+                  <Spinner size="sm" />
+                  <Text>sm</Text>
+                </VStack>
+                <VStack>
+                  <Spinner />
+                  <Text>md</Text>
+                </VStack>
+                <VStack>
+                  <Spinner size="lg" />
+                  <Text>lg</Text>
+                </VStack>
+              </HStack>
+              <Flex gap="40" alignItems="center">
+                <Flex gap="12" alignItems="center">
+                  <Spinner size="xs" />
+                  <Text>Inline loading...</Text>
+                </Flex>
+                <Card
+                  display="flex"
+                  gap="12"
+                  h="124"
+                  aspectRatio="wide"
+                  position="relative"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Spinner size="lg" centered />
+                  <Text color="text.disabled">Centered in parent</Text>
+                </Card>
+              </Flex>
+            </VStack>
           </Section>
           <Section>
             <Heading level="h2">Divider</Heading>
@@ -580,12 +596,12 @@ const AppContent: React.FC = () => {
               <VStack width="full">
                 <Divider />
                 <Text> Thin (default) </Text>
-                <Divider weight={'medium'} />
+                <Divider weight="medium" />
                 <Text> Medium </Text>
-                <Divider weight={'thick'} />
+                <Divider weight="thick" />
                 <Text> Thick </Text>
                 <Divider
-                  weight={'thicker'}
+                  weight="thicker"
                   color={{ base: 'gold.40', _dark: 'gold.30' }}
                 />
                 <Text> Thicker </Text>
@@ -594,12 +610,12 @@ const AppContent: React.FC = () => {
                 Vertical
               </Heading>
               <HStack height="96">
-                <Divider direction={'vertical'} />
-                <Divider direction={'vertical'} weight={'medium'} />
-                <Divider direction={'vertical'} weight={'thick'} />
+                <Divider direction="vertical" />
+                <Divider direction="vertical" weight="medium" />
+                <Divider direction="vertical" weight="thick" />
                 <Divider
-                  direction={'vertical'}
-                  weight={'thicker'}
+                  direction="vertical"
+                  weight="thicker"
                   color={{ base: 'gold.40', _dark: 'gold.30' }}
                 />
               </HStack>
@@ -691,7 +707,7 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Radio</Heading>
-            <VStack gap={'40'} alignItems={'start'}>
+            <VStack gap="40" alignItems="start">
               <HStack>
                 <Radio name="normal" />
                 <Radio name="normal" defaultChecked={true} />
@@ -699,7 +715,7 @@ const AppContent: React.FC = () => {
                 <Radio name="normal" error={true} />
               </HStack>
               <HStack>
-                <HStack gap={'10'} alignItems={'center'}>
+                <HStack gap="10" alignItems="center">
                   <Heading level="h3">Gender</Heading>
                   <Radio name="gender"></Radio> Male
                   <Radio name="gender"></Radio> Female
@@ -709,10 +725,10 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Radio Input</Heading>
-            <VStack gap={'40'} alignItems={'start'}>
+            <VStack gap="40" alignItems="start">
               <HStack>
                 <RadioInput name="group">
-                  <Text as="div" size="16" weight={'normal'}>
+                  <Text as="div" size="16" weight="normal">
                     Consequat ipsum ipsum adipisicing deserunt.
                   </Text>
                   <Text size="14">Deserunt proident officia nostrud.</Text>
@@ -720,7 +736,7 @@ const AppContent: React.FC = () => {
               </HStack>
               <HStack>
                 <RadioInput name="group">
-                  <Text as="div" size="16" weight={'normal'}>
+                  <Text as="div" size="16" weight="normal">
                     Consequat ipsum ipsum adipisicing deserunt.
                   </Text>
                   <Text size="14">Deserunt proident officia nostrud.</Text>
@@ -730,7 +746,7 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Toggle</Heading>
-            <HStack gap={'40'} alignItems={'flex-end'}>
+            <HStack gap="40" alignItems="flex-end">
               <Toggle name="toggle-base" />
               <Toggle autoFocus={true} name="toggle-base" />
               <Toggle disabled name="toggle-base" />
@@ -739,21 +755,21 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Toggle Input</Heading>
-            <HStack gap={'40'} alignItems={'flex-end'}>
+            <HStack gap="40" alignItems="flex-end">
               <ToggleInput name="toggle-base">
-                <Text as="div" size="16" weight={'normal'}>
+                <Text as="div" size="16" weight="normal">
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
                 <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput name="toggle-base">
-                <Text as="div" size="16" weight={'normal'}>
+                <Text as="div" size="16" weight="normal">
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
                 <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
               <ToggleInput name="toggle-base">
-                <Text as="div" size="16" weight={'normal'}>
+                <Text as="div" size="16" weight="normal">
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
                 <Text size="14">Deserunt proident officia nostrud.</Text>
@@ -762,12 +778,12 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Text Input</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-end'}>
+            <VStack gap="40" alignItems="flex-start">
+              <HStack gap="40" alignItems="flex-end">
                 <VStack>
                   <TextInput
-                    size={'small'}
-                    placeholder={'Enter Text'}
+                    size="sm"
+                    placeholder="Enter Text"
                     name="small"
                     id="small"
                   />
@@ -775,7 +791,7 @@ const AppContent: React.FC = () => {
                 </VStack>
                 <VStack>
                   <TextInput
-                    placeholder={'Enter Text'}
+                    placeholder="Enter Text"
                     name="medium"
                     id="medium"
                   />
@@ -783,15 +799,15 @@ const AppContent: React.FC = () => {
                 </VStack>
                 <VStack>
                   <TextInput
-                    size={'large'}
-                    placeholder={'Enter Text'}
+                    size="lg"
+                    placeholder="Enter Text"
                     name="large"
                     id="large"
                   />
                   <Text role="large">Large</Text>
                 </VStack>
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
+              <HStack gap="40" alignItems="flex-end">
                 <VStack>
                   <TextInput
                     defaultValue="entered text"
@@ -803,7 +819,7 @@ const AppContent: React.FC = () => {
                 <VStack>
                   <TextInput
                     data-error={true}
-                    placeholder={'placeholder'}
+                    placeholder="placeholder"
                     name="error"
                     id="error"
                   />
@@ -812,18 +828,18 @@ const AppContent: React.FC = () => {
                 <VStack>
                   <TextInput
                     disabled
-                    placeholder={'placeholder'}
+                    placeholder="placeholder"
                     name="disabled"
                     id="disabled"
                   />
                   <Text role="disabled">Disabled</Text>
                 </VStack>
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-end'}>
+              <HStack gap="40" alignItems="flex-end">
                 <VStack>
                   <TextInput
                     autoSize={true}
-                    placeholder={'Enter Text'}
+                    placeholder="Enter Text"
                     name="auto"
                     id="auto"
                   />
@@ -834,13 +850,13 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Textarea</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Textarea name="small" placeholder="Small" size="small" />
+            <VStack gap="40" alignItems="flex-start">
+              <HStack gap="40" alignItems="flex-start">
+                <Textarea name="small" placeholder="Small" size="sm" />
                 <Textarea name="medium" placeholder="Medium" />
-                <Textarea name="large" placeholder="Large" size="large" />
+                <Textarea name="large" placeholder="Large" size="lg" />
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap="40" alignItems="flex-start">
                 <Textarea
                   name="default"
                   placeholder="placeholder"
@@ -849,31 +865,31 @@ const AppContent: React.FC = () => {
                 <Textarea name="disabled" placeholder="Disabled" disabled />
                 <Textarea name="error" placeholder="Error" data-error={true} />
               </HStack>
-              <HStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap="40" alignItems="flex-start">
                 <Textarea name="auto" placeholder="Auto Size" autoSize={true} />
               </HStack>
             </VStack>
           </Section>
           <Section>
             <Heading level="h2">Card</Heading>
-            <VStack gap={'10'} alignItems={'flex-start'}>
+            <VStack gap="10" alignItems="flex-start">
               <Heading level="h3">Default</Heading>
-              <HStack gap={'40'} alignItems={'flex-start'}>
-                <Card grabbed={false}>
-                  <Box className={css({ p: '16' })}>Default</Box>
+              <HStack gap="40" alignItems="flex-start">
+                <Card p="16">
+                  <Text>Default</Text>
                 </Card>
-                <Card grabbed>
-                  <Box className={css({ p: '16' })}>Grabbed</Box>
+                <Card variant="flat" p="16">
+                  <Text>Flat</Text>
                 </Card>
-                <Card disabled>
-                  <Box className={css({ p: '16' })}>Disabled</Box>
+                <Card disabled p="16">
+                  <Text>Disabled</Text>
                 </Card>
               </HStack>
             </VStack>
             <Heading level="h2"></Heading>
-            <VStack gap={'10'} alignItems={'flex-start'}>
+            <VStack gap="10" alignItems="flex-start">
               <Heading level="h3">Flat</Heading>
-              <HStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap="40" alignItems="flex-start">
                 <Card variant="flat">
                   <Box className={css({ p: '16' })}>Default</Box>
                 </Card>
@@ -886,9 +902,9 @@ const AppContent: React.FC = () => {
               </HStack>
             </VStack>
             <Heading level="h2"></Heading>
-            <VStack gap={'10'} alignItems={'flex-start'}>
+            <VStack gap="10" alignItems="flex-start">
               <Heading level="h3">Example</Heading>
-              <HStack gap={'40'} alignItems={'flex-start'}>
+              <HStack gap="40" alignItems="flex-start">
                 <Card grabbed>
                   <Box className={css({ p: '16', textAlign: 'left' })}>
                     <Heading level="h4">Affordable Default</Heading>
@@ -915,16 +931,16 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Tooltip</Heading>
             <VStack
-              gap={'40'}
-              alignContent={'flex-start'}
-              justifyContent={'flex-start'}
+              gap="40"
+              alignContent="flex-start"
+              justifyContent="flex-start"
             >
               <Heading level="h3">With Caret</Heading>
               <HStack
-                gap={'40'}
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Tooltip title="Enter" text="You define me" trigger="onClick">
                   Bottom
@@ -932,7 +948,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Title"
                   text="Details Content"
-                  position={'top'}
+                  position="top"
                   trigger="onHover"
                   caret={false}
                 >
@@ -941,7 +957,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'left'}
+                  position="left"
                   trigger="onClick"
                 >
                   Left
@@ -949,22 +965,22 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'right'}
+                  position="right"
                   trigger="onClick"
                 >
                   Right
                 </Tooltip>
               </HStack>
               <HStack
-                gap={'40'}
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'bottom-start'}
+                  position="bottom-start"
                   trigger="onClick"
                 >
                   Bottom Start
@@ -972,7 +988,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'top-start'}
+                  position="top-start"
                   trigger="onClick"
                 >
                   Top Start
@@ -980,7 +996,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'left-start'}
+                  position="left-start"
                   trigger="onClick"
                 >
                   Left Start
@@ -988,22 +1004,22 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'right-start'}
+                  position="right-start"
                   trigger="onClick"
                 >
                   Right Start
                 </Tooltip>
               </HStack>
               <HStack
-                gap={'40'}
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'bottom-end'}
+                  position="bottom-end"
                   trigger="onClick"
                 >
                   Bottom End
@@ -1011,7 +1027,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'top-end'}
+                  position="top-end"
                   trigger="onClick"
                 >
                   Top End
@@ -1019,7 +1035,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'left-end'}
+                  position="left-end"
                   trigger="onClick"
                 >
                   Left End
@@ -1027,7 +1043,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'right-end'}
+                  position="right-end"
                   trigger="onClick"
                 >
                   Right End
@@ -1036,16 +1052,16 @@ const AppContent: React.FC = () => {
             </VStack>
             <Heading level="h2"></Heading>
             <VStack
-              gap={'40'}
-              alignContent={'flex-start'}
-              justifyContent={'flex-start'}
+              gap="40"
+              alignContent="flex-start"
+              justifyContent="flex-start"
             >
               <Heading level="h3">Without Caret</Heading>
               <HStack
-                gap={'40'}
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Tooltip
                   title="Enter"
@@ -1058,7 +1074,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Title"
                   text="Details Content"
-                  position={'top'}
+                  position="top"
                   trigger="onClick"
                   caret={false}
                 >
@@ -1067,7 +1083,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'left'}
+                  position="left"
                   trigger="onClick"
                   caret={false}
                 >
@@ -1076,7 +1092,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'right'}
+                  position="right"
                   trigger="onClick"
                   caret={false}
                 >
@@ -1084,15 +1100,15 @@ const AppContent: React.FC = () => {
                 </Tooltip>
               </HStack>
               <HStack
-                gap={'40'}
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'bottom-start'}
+                  position="bottom-start"
                   trigger="onHover"
                   caret={false}
                 >
@@ -1101,7 +1117,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'top-start'}
+                  position="top-start"
                   trigger="onClick"
                   caret={false}
                 >
@@ -1110,7 +1126,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'left-start'}
+                  position="left-start"
                   trigger="onClick"
                   caret={false}
                 >
@@ -1119,7 +1135,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'right-start'}
+                  position="right-start"
                   trigger="onClick"
                   caret={false}
                 >
@@ -1127,15 +1143,15 @@ const AppContent: React.FC = () => {
                 </Tooltip>
               </HStack>
               <HStack
-                gap={'40'}
-                alignItems={'flex-start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'bottom-end'}
+                  position="bottom-end"
                   caret={false}
                 >
                   Bottom End
@@ -1143,7 +1159,7 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'top-end'}
+                  position="top-end"
                   caret={false}
                 >
                   Top End
@@ -1151,14 +1167,14 @@ const AppContent: React.FC = () => {
                 <Tooltip
                   title="Enter"
                   text="You define me"
-                  position={'left-end'}
+                  position="left-end"
                   caret={false}
                 >
                   Left End
                 </Tooltip>
                 <Tooltip
                   text="Right End Tooltip"
-                  position={'right-end'}
+                  position="right-end"
                   trigger="onClick"
                   caret={false}
                 >
@@ -1166,31 +1182,35 @@ const AppContent: React.FC = () => {
                 </Tooltip>
               </HStack>
             </VStack>
-            <Heading gap={'40'}></Heading>
+            <Heading gap="40"></Heading>
             <VStack
-              gap={'40'}
-              alignContent={'flex-start'}
-              justifyContent={'flex-start'}
+              gap="40"
+              alignContent="flex-start"
+              justifyContent="flex-start"
             >
               <Heading level="h3">Different Example</Heading>
               <HStack
-                gap={'40'}
-                alignItems={'center'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="center"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Tooltip title="Enter" text="You define me">
                   <Icon name="info" />
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content">
-                  <IconButton variant="primary" size="large">
-                    <Icon name="aa-placeholder" />
-                  </IconButton>
+                  <IconButton
+                    variant="primary"
+                    size="lg"
+                    iconName="aa-placeholder"
+                  />
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content" caret={false}>
-                  <IconButton variant="primary" size="large">
-                    <Icon name="aa-placeholder" />
-                  </IconButton>
+                  <IconButton
+                    variant="primary"
+                    size="lg"
+                    iconName="aa-placeholder"
+                  />
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content">
                   <Text as="u">Text</Text>
@@ -1200,7 +1220,7 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Breadcrumbs</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
+            <VStack gap="40" alignItems="flex-start">
               <HStack>
                 <Breadcrumbs
                   items={[
@@ -1214,7 +1234,7 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Tags</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
+            <VStack gap="40" alignItems="flex-start">
               <HStack>
                 <Tag>Tag</Tag>
                 <Tag hue="tan">Tag</Tag>
@@ -1479,15 +1499,15 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Menu</Heading>
             <VStack
-              gap={'40'}
-              alignContent={'flex-start'}
-              justifyContent={'flex-start'}
+              gap="40"
+              alignContent="flex-start"
+              justifyContent="flex-start"
             >
               <HStack
-                gap={'40'}
-                alignItems={'start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Box>
                   <Text>Basic</Text>
@@ -1516,10 +1536,10 @@ const AppContent: React.FC = () => {
                 </Box>
               </HStack>
               <HStack
-                gap={'40'}
-                alignItems={'start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Box>
                   <Text>Left Side Icon</Text>
@@ -1550,10 +1570,10 @@ const AppContent: React.FC = () => {
                 </Box>
               </HStack>
               <HStack
-                gap={'40'}
-                alignItems={'start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Box>
                   <Text>With Links</Text>
@@ -1582,10 +1602,10 @@ const AppContent: React.FC = () => {
                 </Box>
               </HStack>
               <HStack
-                gap={'40'}
-                alignItems={'start'}
-                justifyContent={'flex-start'}
-                width={'full'}
+                gap="40"
+                alignItems="start"
+                justifyContent="flex-start"
+                width="full"
               >
                 <Box color={{ base: 'slate.90', _dark: 'slate.0' }}>
                   <Text>Multi Level Menu</Text>
@@ -1609,31 +1629,31 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Form Field</Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
+            <VStack gap="40" alignItems="flex-start">
               <Heading level="h4">TextInput</Heading>
-              <Grid columns={3} columnGap={'40'}>
+              <Grid columns={3} columnGap="40">
                 <FormField label="Label for field" required={true}>
-                  <TextInput placeholder={'Enter Text'} name="input" />
+                  <TextInput placeholder="Enter Text" name="input" />
                 </FormField>
                 <FormField
-                  layout={'default'}
+                  layout="default"
                   label="Label for field"
                   required={true}
                   error={true}
                   errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <TextInput placeholder={'Enter Text'} name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" />
                 </FormField>
                 <FormField
-                  layout={'default'}
+                  layout="default"
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
                 >
-                  <TextInput placeholder={'Enter Text'} name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" />
                 </FormField>
                 <FormField
-                  layout={'default'}
+                  layout="default"
                   label="Label for field"
                   tooltip={true}
                   tooltipCaret={true}
@@ -1641,42 +1661,42 @@ const AppContent: React.FC = () => {
                   tooltipDescription="Details"
                   helpText="Helpful explanation if needed"
                 >
-                  <TextInput placeholder={'Enter Text'} name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" />
                 </FormField>
-                <FormField layout={'default'} label="Label for field" disabled>
-                  <TextInput placeholder={'Enter Text'} name="inp" />
+                <FormField layout="default" label="Label for field" disabled>
+                  <TextInput placeholder="Enter Text" name="inp" />
                 </FormField>
               </Grid>
-              <HStack gap={'40'} alignItems={'flex-start'}></HStack>
-              <Grid columns={2} gap={'40'} alignItems={'flex-start'}>
+              <HStack gap="40" alignItems="flex-start"></HStack>
+              <Grid columns={2} gap="40" alignItems="flex-start">
                 <FormField
-                  layout={'inline'}
+                  layout="inline"
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
                 >
-                  <TextInput placeholder={'Enter Text'} name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" />
                 </FormField>
                 <FormField
-                  layout={'inline'}
+                  layout="inline"
                   label="Label for field"
                   required={true}
                   error
                   errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <TextInput placeholder={'Enter Text'} name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" />
                 </FormField>
               </Grid>
             </VStack>
             <Heading level="h2"></Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
+            <VStack gap="40" alignItems="flex-start">
               <Heading level="h4">TextArea</Heading>
-              <Grid columns={3} columnGap={'40'}>
+              <Grid columns={3} columnGap="40">
                 <FormField label="Label for field" required={true}>
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>
                 <FormField
-                  layout={'default'}
+                  layout="default"
                   label="Label for field"
                   required={true}
                   error={true}
@@ -1685,7 +1705,7 @@ const AppContent: React.FC = () => {
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>
                 <FormField
-                  layout={'default'}
+                  layout="default"
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
@@ -1693,19 +1713,19 @@ const AppContent: React.FC = () => {
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>
               </Grid>
-              <HStack gap={'40'} alignItems={'flex-start'}></HStack>
-              <Grid columns={2} gap={'40'} alignItems={'flex-start'}>
+              <HStack gap="40" alignItems="flex-start"></HStack>
+              <Grid columns={2} gap="40" alignItems="flex-start">
                 <FormField
-                  layout={'inline'}
+                  layout="inline"
                   label="Label for field"
                   required={true}
                   helpText="Helpful explanation if needed"
-                // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
+                  // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>
                 <FormField
-                  layout={'inline'}
+                  layout="inline"
                   label="Label for field"
                   required={true}
                   error={true}
@@ -1714,7 +1734,7 @@ const AppContent: React.FC = () => {
                   <Textarea placeholder="Enter Text" name="inp" />
                 </FormField>
                 <FormField
-                  layout={'inline'}
+                  layout="inline"
                   label="Label for field"
                   required={true}
                   disabled={true}
@@ -1724,8 +1744,8 @@ const AppContent: React.FC = () => {
               </Grid>
             </VStack>
             <Heading level="h2"></Heading>
-            <VStack gap={'40'} alignItems={'flex-start'}>
-              <Grid columns={3} columnGap={'40'}>
+            <VStack gap="40" alignItems="flex-start">
+              <Grid columns={3} columnGap="40">
                 <Box>
                   <Heading level="h4">Radios</Heading>
                   <FormField

@@ -2,6 +2,7 @@ import { withThemeByClassName } from '@storybook/addon-themes';
 import type { Preview, ReactRenderer } from '@storybook/react';
 import DocTemplate from '../src/storybook/doctemplate.mdx';
 import '../src/styles/index.css';
+import './story-docs-style.css';
 
 const preview: Preview = {
   decorators: [
@@ -38,7 +39,9 @@ const preview: Preview = {
     },
     docs: {
       page: DocTemplate,
-      toc: {},
+      toc: {
+        headingSelector: 'h2, h3, h4',
+      },
     },
   },
   tags: ['autodocs'],
