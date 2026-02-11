@@ -8,17 +8,17 @@ const BreadcrumbsBase = {
     alignItems: 'center',
   },
   '& a': {
-    color: { base: 'slate.60', _dark: 'slate.30' },
+    color: 'text.subtlest',
     _focusVisible: {
-      color: 'blue.50',
+      color: 'link',
     },
   },
   '& p': {
-    color: { base: 'slate.90', _dark: 'slate.0' },
+    color: 'text',
   },
   '& span': {
     mx: '6',
-    color: { base: 'slate.20', _dark: 'slate.50' },
+    color: 'text.subtlest',
   },
 };
 
