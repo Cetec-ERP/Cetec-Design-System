@@ -1,6 +1,6 @@
 import { ReactNode, MouseEvent } from 'react';
 import { cx } from '@styled-system/css';
-import { HStack, Grid } from '@styled-system/jsx';
+import { HStack } from '@styled-system/jsx';
 import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
 import { splitProps } from '~/utils/splitProps';
