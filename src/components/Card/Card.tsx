@@ -1,8 +1,8 @@
-import { card, CardVariantProps } from '@styled-system/recipes';
-import { Box, BoxProps } from '../Box';
-import { ReactNode } from 'react';
-import { splitProps } from '~/utils/splitProps';
+import { ReactNode, ElementType, MouseEvent } from 'react';
 import { cx } from '@styled-system/css';
+import { splitProps } from '~/utils/splitProps';
+import { Box, type BoxProps } from '../Box';
+import { card, type CardVariantProps } from '@styled-system/recipes';
 
 export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
   CardVariantProps & {
@@ -10,26 +10,44 @@ export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
     children?: string | ReactNode;
     grabbed?: boolean;
     disabled?: boolean;
+    interactive?: boolean;
   };
 
-export const Card: React.FC<CardProps> = ({
-  variant,
-  href,
-  children,
-  disabled,
-  grabbed,
-  ...props
-}: CardProps) => {
-  const [className, otherProps] = splitProps(props);
+export const Card = (props: CardProps) => {
+  const {
+    variant,
+    href,
+    onClick,
+    children,
+    disabled,
+    grabbed,
+    interactive,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
+
+  // Determine if card should be interactive based on props (used for styling)
+  const isInteractive = interactive || Boolean(href) || Boolean(onClick);
+
+  // Determine the correct semantic element to render
+  const asComponent: ElementType =
+    (Boolean(href) && 'a') || (Boolean(onClick) && 'button') || 'div';
 
   return (
     <Box
-      as={href ? 'a' : 'button'}
-      disabled={disabled}
-      aria-disabled={disabled}
+      as={asComponent}
       data-grabbed={grabbed}
-      className={cx(card({ variant }), className)}
-      {...(href ? { href } : { type: 'button' })}
+      className={cx(card({ variant, interactive: isInteractive }), className)}
+      {...(href && { href })}
+      {...(isInteractive && !href ? { type: 'button' } : {})}
+      {...(disabled && {
+        disabled: true,
+        'aria-disabled': true,
+        ...(href && {
+          tabIndex: -1,
+          onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
+        }),
+      })}
       {...otherProps}
     >
       {children}

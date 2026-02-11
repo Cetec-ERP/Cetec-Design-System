@@ -1,12 +1,16 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode, MouseEvent } from 'react';
 import { cx } from '@styled-system/css';
+import { HStack, Grid } from '@styled-system/jsx';
 import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
-import { ButtonContent } from './ButtonContent';
 import { splitProps } from '~/utils/splitProps';
+import { Spinner } from '~/components/Spinner';
+import { Icon, type IconNamesList } from '~/components/Icon';
 
-export type ButtonProps = BoxProps &
-  ButtonVariantProps & {
+export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
+  Omit<ButtonVariantProps, 'iconBefore' | 'iconAfter'> & {
+    iconBefore?: IconNamesList;
+    iconAfter?: IconNamesList;
     href?: string;
     loading?: boolean;
     children?: string | ReactNode;
@@ -14,31 +18,60 @@ export type ButtonProps = BoxProps &
     type?: 'submit' | 'reset' | 'button';
   };
 
-export const Button: FC<ButtonProps> = ({
-  variant,
-  size,
-  href,
-  children,
-  loading,
-  disabled,
-  type = 'button',
-  ...props
-}: ButtonProps) => {
-  const trulyDisabled = loading || disabled;
-
-  const [className, otherProps] = splitProps(props);
+export const Button = (props: ButtonProps) => {
+  const {
+    variant,
+    size,
+    href,
+    iconBefore,
+    iconAfter,
+    children,
+    loading,
+    disabled,
+    type = 'button',
+    ...rest
+  } = props;
+  const classes = button({
+    variant,
+    size,
+    iconBefore: Boolean(iconBefore),
+    iconAfter: Boolean(iconAfter),
+  });
+  const [className, otherProps] = splitProps(rest);
 
   return (
     <Box
       as={href ? 'a' : 'button'}
-      disabled={trulyDisabled}
-      aria-disabled={trulyDisabled}
-      className={cx(button({ variant, size }), className)}
+      className={`${cx(classes.container, className)} group`}
       {...(href ? { href } : { type })}
       {...otherProps}
-      aria-label={children}
+      {...(loading && {
+        'aria-busy': true,
+        'aria-live': 'polite',
+      })}
+      {...(disabled && {
+        disabled: true,
+        'aria-disabled': true,
+        ...(href && {
+          tabIndex: -1,
+          onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
+        }),
+      })}
     >
-      <ButtonContent loading={!!loading}>{children}</ButtonContent>
+      <>
+        <HStack gap="4" opacity={loading ? 0 : 1}>
+          {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
+          {children}
+          {iconAfter && <Icon name={iconAfter} className={classes.icon} />}
+        </HStack>
+        {loading && (
+          <Spinner
+            size="sm"
+            inverse={variant === 'primary' || variant === 'danger'}
+            centered
+          />
+        )}
+      </>
     </Box>
   );
 };

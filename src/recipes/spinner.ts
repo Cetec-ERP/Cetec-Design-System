@@ -1,42 +1,82 @@
-import { defineRecipe } from '@pandacss/dev';
+import { defineSlotRecipe } from '@pandacss/dev';
 
 const spinnerBase = {
-  aspectRatio: 'square',
-  rounded: '100',
-  borderWidth: '3',
-  borderStyle: 'solid',
-  borderColor: 'transparent',
-  borderTopColor: 'slate.90',
-  borderBottomColor: 'slate.90',
-  animation: 'spin',
-  filter: 'invert(1)',
-  mixBlendMode: 'difference',
-  isolation: 'isolate',
+  // container: {
+  //   width: 'fit',
+  //   height: 'fit',
+  // },
+  spinnerDiv: {
+    aspectRatio: 'square',
+    rounded: '100',
+    borderWidth: '3',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    borderTopColor: 'icon',
+    borderBottomColor: 'icon',
+    animation: 'spin',
+    isolation: 'isolate',
+  },
 };
 
 const spinnerVariants = {
   size: {
-    medium: {
-      height: '24',
-      minHeight: '24',
+    xs: {
+      spinnerDiv: {
+        height: '16',
+        minHeight: '16',
+        borderWidth: '2',
+      },
     },
-    small: {
-      height: '16',
-      minHeight: '16',
+    sm: {
+      spinnerDiv: {
+        height: '20',
+        minHeight: '20',
+        borderWidth: '2',
+      },
     },
-    large: {
-      height: '32',
-      minHeight: '32',
+    md: {
+      spinnerDiv: {
+        height: '24',
+        minHeight: '24',
+      },
     },
-  }
+    lg: {
+      spinnerDiv: {
+        height: '32',
+        minHeight: '32',
+      },
+    },
+  },
+  inverse: {
+    true: {
+      spinnerDiv: {
+        borderTopColor: 'icon.inverse',
+        borderBottomColor: 'icon.inverse',
+      },
+    },
+  },
+  centered: {
+    true: {
+      container: {
+        position: 'absolute',
+        inset: '0',
+        display: 'grid',
+        placeContent: 'center',
+        width: 'full',
+        height: 'full',
+        zIndex: '100',
+      },
+    },
+  },
 };
 
-export const spinnerRecipe = defineRecipe({
+export const spinnerRecipe = defineSlotRecipe({
   className: 'spinner',
-  jsx:['Spinner'],
+  jsx: ['Spinner'],
+  slots: ['container', 'spinnerDiv'],
   base: spinnerBase,
   variants: spinnerVariants,
   defaultVariants: {
-    size: 'medium',
+    size: 'md',
   },
 });
