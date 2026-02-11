@@ -499,13 +499,18 @@ export const colors = defineSemanticTokens.colors({
       },
     },
     bold: {
-      value: { base: '{colors.neutral.60}', _dark: '{colors.darkNeutral.60}' },
-    },
-    boldest: {
-      value: { base: '{colors.neutral.80}', _dark: '{colors.darkNeutral.80}' },
+      value: { base: '{colors.neutral.90}', _dark: '{colors.darkNeutral.90}' },
     },
     inverse: {
-      value: { base: '{colors.neutral.0}', _dark: '{colors.darkNeutral.0}' },
+      DEFAULT: {
+        value: { base: '{colors.neutral.0}', _dark: '{colors.darkNeutral.0}' },
+      },
+      focused: {
+        value: {
+          base: '{colors.darkNeutral.100}',
+          _dark: '{colors.neutral.90}',
+        },
+      },
     },
     disabled: {
       value: {
@@ -514,17 +519,9 @@ export const colors = defineSemanticTokens.colors({
       },
     },
     focused: {
-      DEFAULT: {
-        value: {
-          base: '{colors.neutral.90}',
-          _dark: '{colors.darkNeutral.100}',
-        },
-      },
-      inverse: {
-        value: {
-          base: '{colors.darkNeutral.100}',
-          _dark: '{colors.neutral.90}',
-        },
+      value: {
+        base: '{colors.neutral.90}',
+        _dark: '{colors.darkNeutral.100}',
       },
     },
     input: {
@@ -628,8 +625,22 @@ export const colors = defineSemanticTokens.colors({
     pressed: {
       value: { base: '{colors.neutral.30}', _dark: '{colors.darkNeutral.30}' },
     },
-    sunken: {
-      value: { base: '{colors.neutral.10}', _dark: '{colors.darkNeutral.0}' },
+    raised: {
+      DEFAULT: {
+        value: { base: '{colors.neutral.0}', _dark: '{colors.darkNeutral.0}' },
+      },
+      hovered: {
+        value: {
+          base: '{colors.neutral.20}',
+          _dark: '{colors.darkNeutral.25}',
+        },
+      },
+      pressed: {
+        value: {
+          base: '{colors.neutral.30}',
+          _dark: '{colors.darkNeutral.30}',
+        },
+      },
     },
     overlay: {
       DEFAULT: {
@@ -648,22 +659,8 @@ export const colors = defineSemanticTokens.colors({
         },
       },
     },
-    raised: {
-      DEFAULT: {
-        value: { base: '{colors.neutral.0}', _dark: '{colors.darkNeutral.0}' },
-      },
-      hovered: {
-        value: {
-          base: '{colors.neutral.20}',
-          _dark: '{colors.darkNeutral.25}',
-        },
-      },
-      pressed: {
-        value: {
-          base: '{colors.neutral.30}',
-          _dark: '{colors.darkNeutral.30}',
-        },
-      },
+    sunken: {
+      value: { base: '{colors.neutral.10}', _dark: '{colors.darkNeutral.0}' },
     },
   },
   text: {
@@ -707,18 +704,26 @@ export const colors = defineSemanticTokens.colors({
     },
     warning: {
       DEFAULT: {
-        value: { base: '{colors.orange.80}', _dark: '{colors.orange.30}' },
+        value: { base: '{colors.orange.70}', _dark: '{colors.orange.20}' },
       },
       inverse: {
         value: {
-          base: '{colors.neutral.100}',
-          _dark: '{colors.darkNeutral.10}',
+          base: '{colors.orange.20}',
+          _dark: '{colors.orange.70}',
         },
       },
     },
     danger: {
-      DEFAULT: { value: { base: '{colors.red.80}', _dark: '{colors.red.30}' } },
-      inverse: { value: { base: '{colors.red.1}', _dark: '{colors.red.90}' } },
+      DEFAULT: { value: { base: '{colors.red.70}', _dark: '{colors.red.20}' } },
+      inverse: { value: { base: '{colors.red.20}', _dark: '{colors.red.70}' } },
+    },
+    info: {
+      DEFAULT: {
+        value: { base: '{colors.blue.60}', _dark: '{colors.blue.20}' },
+      },
+      inverse: {
+        value: { base: '{colors.blue.20}', _dark: '{colors.blue.60}' },
+      },
     },
     cta: {
       DEFAULT: {
@@ -728,7 +733,6 @@ export const colors = defineSemanticTokens.colors({
         value: { base: '{colors.gold.80}', _dark: '{colors.gold.80}' },
       },
     },
-    info: { value: { base: '{colors.blue.80}', _dark: '{colors.blue.30}' } },
     accent: {
       neutral: {
         DEFAULT: {
@@ -746,155 +750,155 @@ export const colors = defineSemanticTokens.colors({
       },
       gold: {
         DEFAULT: {
-          value: { base: '{colors.gold.80}', _dark: '{colors.gold.30}' },
+          value: { base: '{colors.gold.50}', _dark: '{colors.gold.40}' },
         },
         bold: {
-          value: { base: '{colors.gold.90}', _dark: '{colors.gold.20}' },
+          value: { base: '{colors.gold.60}', _dark: '{colors.gold.20}' },
         },
       },
       blue: {
         DEFAULT: {
-          value: { base: '{colors.blue.80}', _dark: '{colors.blue.30}' },
+          value: { base: '{colors.blue.50}', _dark: '{colors.blue.40}' },
         },
         bold: {
-          value: { base: '{colors.blue.90}', _dark: '{colors.blue.20}' },
+          value: { base: '{colors.blue.60}', _dark: '{colors.blue.30}' },
         },
       },
       green: {
         DEFAULT: {
-          value: { base: '{colors.green.80}', _dark: '{colors.green.30}' },
+          value: { base: '{colors.green.50}', _dark: '{colors.green.40}' },
         },
         bold: {
-          value: { base: '{colors.green.90}', _dark: '{colors.green.20}' },
+          value: { base: '{colors.green.60}', _dark: '{colors.green.20}' },
         },
       },
       yellow: {
         DEFAULT: {
-          value: { base: '{colors.yellow.80}', _dark: '{colors.yellow.30}' },
+          value: { base: '{colors.yellow.50}', _dark: '{colors.yellow.30}' },
         },
         bold: {
-          value: { base: '{colors.yellow.90}', _dark: '{colors.yellow.20}' },
+          value: { base: '{colors.yellow.60}', _dark: '{colors.yellow.20}' },
         },
       },
       red: {
         DEFAULT: {
-          value: { base: '{colors.red.80}', _dark: '{colors.red.30}' },
+          value: { base: '{colors.red.50}', _dark: '{colors.red.30}' },
         },
         bold: {
-          value: { base: '{colors.red.90}', _dark: '{colors.red.20}' },
+          value: { base: '{colors.red.60}', _dark: '{colors.red.20}' },
         },
       },
       tomato: {
         DEFAULT: {
-          value: { base: '{colors.tomato.80}', _dark: '{colors.tomato.30}' },
+          value: { base: '{colors.tomato.50}', _dark: '{colors.tomato.40}' },
         },
         bold: {
-          value: { base: '{colors.tomato.90}', _dark: '{colors.tomato.20}' },
+          value: { base: '{colors.tomato.60}', _dark: '{colors.tomato.30}' },
         },
       },
       tan: {
         DEFAULT: {
-          value: { base: '{colors.tan.80}', _dark: '{colors.tan.30}' },
+          value: { base: '{colors.tan.50}', _dark: '{colors.tan.30}' },
         },
         bold: {
-          value: { base: '{colors.tan.90}', _dark: '{colors.tan.20}' },
+          value: { base: '{colors.tan.60}', _dark: '{colors.tan.20}' },
         },
       },
       orange: {
         DEFAULT: {
-          value: { base: '{colors.orange.80}', _dark: '{colors.orange.30}' },
+          value: { base: '{colors.orange.60}', _dark: '{colors.orange.50}' },
         },
         bold: {
-          value: { base: '{colors.orange.90}', _dark: '{colors.orange.20}' },
+          value: { base: '{colors.orange.70}', _dark: '{colors.orange.30}' },
         },
       },
       pear: {
         DEFAULT: {
-          value: { base: '{colors.pear.80}', _dark: '{colors.pear.30}' },
+          value: { base: '{colors.pear.80}', _dark: '{colors.pear.60}' },
         },
         bold: {
-          value: { base: '{colors.pear.90}', _dark: '{colors.pear.20}' },
+          value: { base: '{colors.pear.80}', _dark: '{colors.pear.40}' },
         },
       },
       grass: {
         DEFAULT: {
-          value: { base: '{colors.grass.80}', _dark: '{colors.grass.30}' },
+          value: { base: '{colors.grass.60}', _dark: '{colors.grass.40}' },
         },
         bold: {
-          value: { base: '{colors.grass.90}', _dark: '{colors.grass.20}' },
+          value: { base: '{colors.grass.70}', _dark: '{colors.grass.30}' },
         },
       },
       mint: {
         DEFAULT: {
-          value: { base: '{colors.mint.80}', _dark: '{colors.mint.30}' },
+          value: { base: '{colors.mint.70}', _dark: '{colors.mint.50}' },
         },
         bold: {
-          value: { base: '{colors.mint.90}', _dark: '{colors.mint.20}' },
+          value: { base: '{colors.mint.80}', _dark: '{colors.mint.40}' },
         },
       },
       cyan: {
         DEFAULT: {
-          value: { base: '{colors.cyan.80}', _dark: '{colors.cyan.30}' },
+          value: { base: '{colors.cyan.50}', _dark: '{colors.cyan.30}' },
         },
         bold: {
-          value: { base: '{colors.cyan.90}', _dark: '{colors.cyan.20}' },
+          value: { base: '{colors.cyan.60}', _dark: '{colors.cyan.20}' },
         },
       },
       indigo: {
         DEFAULT: {
-          value: { base: '{colors.indigo.80}', _dark: '{colors.indigo.30}' },
+          value: { base: '{colors.indigo.40}', _dark: '{colors.indigo.20}' },
         },
         bold: {
-          value: { base: '{colors.indigo.90}', _dark: '{colors.indigo.20}' },
+          value: { base: '{colors.indigo.60}', _dark: '{colors.indigo.10}' },
         },
       },
       purple: {
         DEFAULT: {
-          value: { base: '{colors.purple.80}', _dark: '{colors.purple.30}' },
+          value: { base: '{colors.purple.50}', _dark: '{colors.purple.40}' },
         },
         bold: {
-          value: { base: '{colors.purple.90}', _dark: '{colors.purple.20}' },
+          value: { base: '{colors.purple.60}', _dark: '{colors.purple.30}' },
         },
       },
       violet: {
         DEFAULT: {
-          value: { base: '{colors.violet.80}', _dark: '{colors.violet.30}' },
+          value: { base: '{colors.violet.60}', _dark: '{colors.violet.40}' },
         },
         bold: {
-          value: { base: '{colors.violet.90}', _dark: '{colors.violet.20}' },
+          value: { base: '{colors.violet.70}', _dark: '{colors.violet.30}' },
         },
       },
       pink: {
         DEFAULT: {
-          value: { base: '{colors.pink.80}', _dark: '{colors.pink.30}' },
+          value: { base: '{colors.pink.70}', _dark: '{colors.pink.50}' },
         },
         bold: {
-          value: { base: '{colors.pink.90}', _dark: '{colors.pink.20}' },
+          value: { base: '{colors.pink.80}', _dark: '{colors.pink.40}' },
         },
       },
       rose: {
         DEFAULT: {
-          value: { base: '{colors.rose.80}', _dark: '{colors.rose.30}' },
+          value: { base: '{colors.rose.60}', _dark: '{colors.rose.40}' },
         },
         bold: {
-          value: { base: '{colors.rose.90}', _dark: '{colors.rose.20}' },
+          value: { base: '{colors.rose.70}', _dark: '{colors.rose.30}' },
         },
       },
       magenta: {
         DEFAULT: {
-          value: { base: '{colors.magenta.80}', _dark: '{colors.magenta.30}' },
+          value: { base: '{colors.magenta.60}', _dark: '{colors.magenta.40}' },
         },
         bold: {
-          value: { base: '{colors.magenta.90}', _dark: '{colors.magenta.20}' },
+          value: { base: '{colors.magenta.70}', _dark: '{colors.magenta.30}' },
         },
       },
     },
   },
-  // TODO: delete below after migration
   brand: {
     slate: { value: '{colors.slate.90}' },
     gold: { value: '{colors.gold.20}' },
   },
+  // TODO: delete below after migration
   success: {
     lighter: {
       value: {

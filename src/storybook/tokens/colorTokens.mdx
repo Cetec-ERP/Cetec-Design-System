@@ -21,14 +21,14 @@ import { SemanticColorToken } from './components/SemanticColorToken';
   Color tokens define the visual palette of the design system and are organized into two types: primitive and semantic.
 
   <Divider weight="thick" color="border.disabled" mb="48" />
-  
+
   <Box>
     ## Primitives
     Primitive color tokens are the base colors used throughout the design system.
   </Box>
 
   <Divider color="border.disabled" mb="48"/>
-  
+
   <Grid gridTemplateColumns="auto auto 1fr" columnGap="16" rowGap="16">
 
     #### Neutrals
@@ -253,14 +253,14 @@ import { SemanticColorToken } from './components/SemanticColorToken';
     </Flex>
 
   </Grid>
-  
+
   <Divider weight="thick" color="border.disabled" my="48"/>
-  
+
   <Box>
     ## Semantics
     Semantic color tokens are the theme-aware colors that are named based on their intended use-case.
   </Box>
-  
+
   <Divider color="border" mb="48"/>
 
   <Grid gridTemplateColumns="minmax(auto, 120px) repeat(auto-fill, minmax(min(220px, 100%), 1fr))" gridAutoRows="auto" rowGap="16" columnGap="40">
@@ -364,6 +364,21 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="bg.info.bold" />
           <SemanticColorToken token="bg.info.bold.hovered" />
           <SemanticColorToken token="bg.info.bold.pressed" />
+        </Flex>
+      </Grid>
+
+      <Grid gridTemplateColumns="subgrid" gridColumn="1 / -1">
+        <Flex direction="column" gap="8">
+          bg.cta
+          <SemanticColorToken token="bg.cta" />
+          <SemanticColorToken token="bg.cta.hovered" />
+          <SemanticColorToken token="bg.cta.pressed" />
+        </Flex>
+        <Flex direction="column" gap="8">
+          bg.cta.bold
+          <SemanticColorToken token="bg.cta.bold" />
+          <SemanticColorToken token="bg.cta.bold.hovered" />
+          <SemanticColorToken token="bg.cta.bold.pressed" />
         </Flex>
       </Grid>
     </Grid>
@@ -521,7 +536,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
         <SemanticColorToken token="bg.accent.pink.subtlest" />
         <SemanticColorToken token="bg.accent.pink.bold" />
       </Flex>
-    </Grid> 
+    </Grid>
   </Grid>
 
     <Divider my="48" />
@@ -555,7 +570,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
         <SemanticColorToken token="border.disabled" />
         <SemanticColorToken token="border.focused" />
-        <SemanticColorToken token="border.focused.inverse" />
+        <SemanticColorToken token="border.inverse.focused" />
       </Grid>
 
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
@@ -580,7 +595,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
     </Grid>
 
     <Divider weight="thick" color="border.disabled" my="48" />
-    
+
     <Grid gridTemplateColumns="minmax(auto, 120px) repeat(auto-fill, minmax(min(220px, 100%), 1fr))" gridAutoRows="auto" rowGap="16" columnGap="40">
       #### Icons
 
@@ -615,10 +630,19 @@ import { SemanticColorToken } from './components/SemanticColorToken';
         <SemanticColorToken token="icon.danger" />
         <SemanticColorToken token="icon.info" />
       </Grid>
+
+      <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
+
+      <Text textStyle="body.xs" allCaps>CTA</Text>
+
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="icon.cta" />
+        <SemanticColorToken token="icon.cta.hovered" />
+      </Grid>
     </Grid>
 
     <Divider weight="thick" color="border.disabled" my="48" />
-    
+
     <Grid gridTemplateColumns="minmax(auto, 120px) repeat(auto-fill, minmax(min(220px, 100%), 1fr))" gridAutoRows="auto" rowGap="16" columnGap="40">
       #### Links
 
@@ -627,9 +651,9 @@ import { SemanticColorToken } from './components/SemanticColorToken';
     </Grid>
 
     <Divider weight="thick" color="border.disabled" my="48" />
-    
+
     #### Surfaces
-    
+
     <Grid gridTemplateColumns="minmax(auto, 120px) repeat(auto-fill, minmax(min(220px, 100%), 1fr))" gridAutoRows="auto" rowGap="16" columnGap="40">
 
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
@@ -665,7 +689,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
 
       <Text textStyle="body.xs" allCaps>Sunken</Text>
-        
+
       <SemanticColorToken token="surface.sunken" />
     </Grid>
 
@@ -688,7 +712,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
         <SemanticColorToken token="text.disabled" />
         <SemanticColorToken token="text.placeholder" />
       </Grid>
-    
+
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
 
       <Text textStyle="body.xs" allCaps>Status</Text>
@@ -793,7 +817,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       <Icon name="warning" size="24" color="icon.warning" />
       <Text as="p" color="text.warning" lineHeight="tight">Legacy semantic color tokens are deprecated and will be removed in a future release.</Text>
     </Card>
-    
+
     <Grid gridTemplateColumns="minmax(auto, 120px) repeat(auto-fill, minmax(min(220px, 100%), 1fr))" gridAutoRows="auto" rowGap="16" columnGap="40">
 
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
