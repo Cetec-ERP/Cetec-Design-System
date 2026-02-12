@@ -1,4 +1,3 @@
-export { inputRecipe } from './input';
 export { textareaRecipe } from './textarea';
 export { textRecipe, headingRecipe, linkRecipe, labelRecipe } from './text';
 export { spinnerRecipe } from './spinner';
@@ -6,8 +5,8 @@ export { dividerRecipe } from './divider';
 export { preRecipe, codeRecipe } from './code';
 export { boxRecipe } from './box';
 export { toggleRecipe } from './toggle';
-export { textinputRecipe } from './textinput';
-export { toggleInputRecipe } from './toggleinput';
+export { textInputRecipe } from './textInput';
+export { toggleInputRecipe } from './toggleInput';
 export { cardRecipe } from './card';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { tagRecipe } from './tag';
