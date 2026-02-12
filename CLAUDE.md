@@ -10,12 +10,12 @@ This is the Cetec-ERP Design System - a React component library built with TypeS
 
 ```bash
 # Development
-npm run dev                  # Start Vite dev server with Panda CSS watch mode
+npm run dev                 # Start Vite dev server with Panda CSS watch mode
 npm run storybook           # Start Storybook on port 6006
 
 # Building
 npm run build               # Run Panda codegen + Vite build for distribution
-npm run build-storybook     # Build Storybook for deployment
+npm run storybook:build     # Build Storybook for deployment
 
 # Code Quality
 npm run lint                # Run ESLint
@@ -23,6 +23,9 @@ npm run prepare             # Run Panda CSS codegen (runs automatically on insta
 
 # Icon Generation
 npm run generate-sprite     # Generate SVG sprite from src/components/Icon/svg files
+
+# MCP
+npm run panda-mcp           # Run local Panda CSS MCP server to expose the design system to AI tools
 ```
 
 ## Architecture
@@ -56,13 +59,11 @@ Components follow these patterns:
 
 1. **Location**: `src/components/[ComponentName]/`
 2. **Structure**:
-
    - `ComponentName.tsx` - Main component implementation
    - `index.tsx` - Public exports
    - `ComponentName.stories.tsx` - Storybook documentation
 
 3. **Implementation patterns**:
-
    - Function components only (React 19)
    - TypeScript strict mode with typed props
    - Recipe-based styling via Panda CSS (no inline styles or hard-coded values)

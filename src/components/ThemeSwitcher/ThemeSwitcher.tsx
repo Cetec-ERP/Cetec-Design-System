@@ -1,7 +1,7 @@
 import { IconButton } from '~/components/IconButton';
 import { useTheme } from '~/contexts/ThemeContext';
 
-export const ThemeSwitcher: React.FC = ({ }) => {
+export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');

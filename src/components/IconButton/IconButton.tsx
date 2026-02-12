@@ -16,7 +16,7 @@ import { Icon, type IconNamesList } from '~/components/Icon';
  *
  * It requires exactly one child which must be an <Icon /> element.
  */
-export type IconButtonProps = BoxProps &
+export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
   IconButtonVariantProps & {
     iconName: IconNamesList;
     href?: string;
@@ -46,7 +46,7 @@ export const IconButton = (props: IconButtonProps) => {
       disabled={trulyDisabled}
       aria-disabled={trulyDisabled}
       aria-label={`icon-button`}
-      className={cx(classes.container, className)}
+      className={`${cx(classes.container, className)} group`}
       {...(href ? { href } : { type })}
       {...otherProps}
       {...(trulyDisabled &&

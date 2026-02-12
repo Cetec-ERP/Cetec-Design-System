@@ -1,4 +1,4 @@
-export { Box } from './components/Box';
+export { Box, type BoxProps } from './components/Box';
 export { Text } from './components/Text';
 export { Button } from './components/Button';
 export { IconButton } from './components/IconButton';
@@ -24,3 +24,22 @@ export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
 export { Menu } from './components/Menu';
 export { FormField } from './components/FormField';
+
+// Export the Panda CSS preset
+export { cetecPreset } from './cetec-preset';
+
+// Load minimal Panda helper type shims for declaration output (used during build)
+import './types/panda-augment';
+export type {
+  RecipeVariantRecord,
+  RecipeConfig,
+  SlotRecipeVariantRecord,
+  SlotRecipeConfig,
+  SystemStyleObject,
+  GlobalStyleObject,
+  CompositionStyles,
+  PatternProperties,
+  PatternConfig,
+  Parts,
+  Panda,
+} from './types/panda-augment';

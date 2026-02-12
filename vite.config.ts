@@ -2,10 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode: _mode }) => {
+export default defineConfig(({ mode: _mode, command }) => {
   const isGitHubPages = !!process.env.GH_REPO;
+  const isLibraryBuild = command === 'build' && !isGitHubPages;
 
   if (isGitHubPages) {
     // GitHub Pages build
@@ -15,7 +17,7 @@ export default defineConfig(({ mode: _mode }) => {
       resolve: {
         alias: {
           '~': resolve(__dirname, './src'),
-          '@styled-system': resolve(__dirname, './styled-system'),
+          '@styled-system': resolve(__dirname, './src/styled-system'),
         },
       },
       build: {
@@ -24,20 +26,52 @@ export default defineConfig(({ mode: _mode }) => {
     };
   }
 
-  // Library build mode (default)
+  // Library build mode (default) or development
   return {
     plugins: [
       react(),
-      dts({
-        include: ['src/**/*', 'cetec-preset.ts'],
-        exclude: ['src/**/*.stories.tsx'],
-        rollupTypes: true,
-      }),
+      // Only include build-time plugins when actually building the library
+      ...(isLibraryBuild
+        ? [
+            dts({
+              include: ['src/**/*'],
+              exclude: ['src/**/*.stories.tsx'],
+              entryRoot: 'src',
+              outDir: 'dist/types',
+              rollupTypes: true,
+              copyDtsFiles: true,
+            }),
+            viteStaticCopy({
+              targets: [
+                {
+                  src: 'src/styled-system/specs',
+                  dest: './',
+                },
+                {
+                  src: 'src/styled-system/styles',
+                  dest: './',
+                },
+                {
+                  src: 'src/styled-system/styles.css',
+                  dest: './',
+                },
+                {
+                  src: '.mcp.json',
+                  dest: './',
+                },
+                {
+                  src: 'src/types/index.d.ts',
+                  dest: './',
+                },
+              ],
+            }),
+          ]
+        : []),
     ],
     resolve: {
       alias: {
         '~': resolve(__dirname, './src'),
-        '@styled-system': resolve(__dirname, './styled-system'),
+        '@styled-system': resolve(__dirname, './src/styled-system'),
       },
     },
     build: {
@@ -45,7 +79,7 @@ export default defineConfig(({ mode: _mode }) => {
         name: 'cetec-design-system',
         entry: {
           index: resolve(__dirname, 'src/index.ts'),
-          preset: resolve(__dirname, 'cetec-preset.ts'),
+          preset: resolve(__dirname, 'src/cetec-preset.ts'),
         },
         formats: ['es'],
       },
@@ -55,11 +89,12 @@ export default defineConfig(({ mode: _mode }) => {
           preserveModules: false,
           assetFileNames: 'assets/[name][extname]',
           entryFileNames: '[name].js',
+          externalImportAttributes: false,
           globals: {
             react: 'React',
             'react-dom': 'ReactDOM',
           },
-        }
+        },
       },
       sourcemap: true,
       minify: false, // Keep readable for debugging

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, MouseEvent } from 'react';
 import { cx } from '@styled-system/css';
 import { HStack, Grid } from '@styled-system/jsx';
 import { Box, type BoxProps } from '~/components/Box';
@@ -7,7 +7,7 @@ import { splitProps } from '~/utils/splitProps';
 import { Spinner } from '~/components/Spinner';
 import { Icon, type IconNamesList } from '~/components/Icon';
 
-export type ButtonProps = BoxProps &
+export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
   Omit<ButtonVariantProps, 'iconBefore' | 'iconAfter'> & {
     iconBefore?: IconNamesList;
     iconAfter?: IconNamesList;
@@ -38,21 +38,24 @@ export const Button = (props: ButtonProps) => {
     iconAfter: Boolean(iconAfter),
   });
   const [className, otherProps] = splitProps(rest);
-  const trulyDisabled = loading || disabled;
 
   return (
     <Box
       as={href ? 'a' : 'button'}
-      disabled={trulyDisabled}
-      aria-disabled={trulyDisabled}
-      aria-label={children}
-      className={cx(classes.container, className)}
+      className={`${cx(classes.container, className)} group`}
       {...(href ? { href } : { type })}
       {...otherProps}
-      {...(trulyDisabled &&
-        href && {
-        onClick: (e: React.MouseEvent<HTMLAnchorElement>) =>
-          e.preventDefault(),
+      {...(loading && {
+        'aria-busy': true,
+        'aria-live': 'polite',
+      })}
+      {...(disabled && {
+        disabled: true,
+        'aria-disabled': true,
+        ...(href && {
+          tabIndex: -1,
+          onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
+        }),
       })}
     >
       <>
@@ -62,16 +65,11 @@ export const Button = (props: ButtonProps) => {
           {iconAfter && <Icon name={iconAfter} className={classes.icon} />}
         </HStack>
         {loading && (
-          <Grid
-            position="absolute"
-            top="0"
-            left="0"
-            right="0"
-            bottom="0"
-            placeItems="center"
-          >
-            <Spinner size="sm" />
-          </Grid>
+          <Spinner
+            size="sm"
+            inverse={variant === 'primary' || variant === 'danger'}
+            centered
+          />
         )}
       </>
     </Box>

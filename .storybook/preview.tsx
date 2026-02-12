@@ -1,18 +1,18 @@
-import { withThemeByClassName } from '@storybook/addon-themes'
-import type { Preview, ReactRenderer } from '@storybook/react'
+import { withThemeByClassName } from '@storybook/addon-themes';
+import type { Preview, ReactRenderer } from '@storybook/react';
 import DocTemplate from '../src/storybook/doctemplate.mdx';
-import "../src/styles/index.css";
-import "./story-docs-style.css";
+import '../src/styles/index.css';
+import './story-docs-style.css';
 
 const preview: Preview = {
   decorators: [
     withThemeByClassName<ReactRenderer>({
       themes: {
         light: '',
-        dark: 'dark'
+        dark: 'dark',
       },
-      defaultTheme: 'light'
-    })
+      defaultTheme: 'light',
+    }),
   ],
   initialGlobals: {},
   parameters: {
@@ -27,7 +27,14 @@ const preview: Preview = {
     options: {
       storySort: {
         method: 'alphabetical',
-        order: ['Intro', 'Tokens', ['Overview', 'Colors', 'Typography', 'Sizes', 'Shadows', '*'], 'Components', 'Guides', '*'],
+        order: [
+          'Intro',
+          'Tokens',
+          ['Overview', 'Colors', 'Typography', 'Sizes', 'Shadows', '*'],
+          'Components',
+          'Guides',
+          '*',
+        ],
       },
     },
     docs: {

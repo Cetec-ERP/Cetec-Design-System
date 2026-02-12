@@ -209,7 +209,13 @@ export const WithIcon: Story = {
           <IconButton iconName="cloud-synced" variant="ghost" />
         </Tooltip>
         <Tooltip text="Edit">
-          <IconButton iconName="edit" variant="ghost" />
+          <IconButton iconName="edit" variant="primary" />
+        </Tooltip>
+        <Tooltip text="Send">
+          <IconButton iconName="send" variant="cta" />
+        </Tooltip>
+        <Tooltip text="This cannot be undone">
+          <IconButton iconName="trash" variant="danger" />
         </Tooltip>
       </Wrap>
     </Grid>
