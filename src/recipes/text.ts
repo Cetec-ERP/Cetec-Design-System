@@ -11,7 +11,7 @@ const textBase = {
   fontWeight: 'normal',
   fontSize: '16',
   fontVariationSettings: fontVariants.body,
-  color: { base: 'slate.60', _dark: 'slate.30' },
+  color: 'text.subtlest',
   maxWidth: 'prose',
 };
 
@@ -84,7 +84,7 @@ const textVariants = {
 const headingBase = {
   fontFamily: 'heading',
   fontWeight: 'black',
-  color: { base: 'slate.90', _dark: 'slate.5' },
+  color: 'text',
   lineHeight: 'default',
 };
 
@@ -108,7 +108,7 @@ const linkBase = {
   alignItems: 'center',
   fontWeight: 'medium',
   gap: '1',
-  color: { base: 'blue.50', _dark: 'blue.40' },
+  color: 'link',
   textDecoration: 'none',
   backgroundImage: 'linear-gradient(90deg, transparent 0% 100%)',
   backgroundSize: '100% 1px',
@@ -121,12 +121,13 @@ const linkBase = {
   width: 'fit-content',
   cursor: 'pointer',
   _hover: {
-    color: { base: 'blue.40', _dark: 'blue.30' },
+    color: 'link',
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
+    textDecoration: 'underline',
   },
   _focus: {
     borderRadius: '4',
-    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
+    outlineColor: 'border.focused',
   },
 };
 

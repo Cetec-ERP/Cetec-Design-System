@@ -3,10 +3,11 @@ import { defineRecipe } from '@pandacss/dev';
 const textareaBase = {
   position: 'relative',
   width: 'full',
-  color: { base: 'slate.90', _dark: 'slate.0' },
+  bg: 'surface',
+  color: 'text',
   borderWidth: '1',
   borderStyle: 'solid',
-  borderColor: 'slate.30',
+  borderColor: 'border.input',
   borderRadius: '4',
   lineHeight: 'tight',
   outlineWidth: '1',
@@ -14,28 +15,25 @@ const textareaBase = {
   outlineColor: 'transparent',
   resize: 'both',
   _focus: {
-    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
-    borderColor: { base: 'slate.90', _dark: 'slate.0' },
+    outlineColor: 'border.focused',
+    borderColor: 'border.focused',
   },
   _error: {
     display: 'inline-grid',
-    borderColor: 'error.default',
+    borderColor: 'border.danger',
     _focus: {
-      borderColor: { base: 'error.default', _dark: 'error.default' },
-      outlineColor: { base: 'error.default', _dark: 'error.default' },
+      borderColor: 'border.danger',
+      outlineColor: 'border.danger',
     },
   },
   _placeholder: {
-    color: {
-      base: 'slate.50',
-      _dark: 'slate.40',
-    },
+    color: 'text.placeholder',
   },
   _disabled: {
     opacity: 0.4,
   },
   '&[data-error]:focus': {
-    borderColor: 'error.default',
+    borderColor: 'border.danger',
   },
 };
 

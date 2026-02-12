@@ -6,7 +6,7 @@ const menuBase = {
     left: '0',
     bottom: '0',
     width: { base: 'full', md: '260' },
-    bg: { base: 'slate.0', _dark: 'slate.80' },
+    bg: 'surface',
     py: { base: '12', md: '4' },
     boxShadow: 'medium',
     borderRadius: {
@@ -16,7 +16,7 @@ const menuBase = {
     borderBottomLeftRadius: { base: '0', md: '4' },
     borderBottomRightRadius: { base: '0', md: '4' },
     '& ~ svg': {
-      fill: { base: 'slate.90', _dark: 'slate.0' },
+      fill: 'icon.inverse',
       mr: 'auto',
     },
     overflow: 'hidden',
@@ -44,14 +44,14 @@ const menuBase = {
     },
 
     _hover: {
-      bg: { base: 'slate.2', _dark: 'slate.50' },
+      bg: 'surface.hovered',
       cursor: 'pointer',
     },
     _active: {
-      bg: { base: 'slate.10', _dark: 'slate.100' },
+      bg: 'surface.pressed',
     },
     _focusVisible: {
-      outlineColor: { base: 'slate.90', _dark: 'slate.0' },
+      outlineColor: 'border.focused',
       outlineOffset: '-2',
     },
     _disabled: {
@@ -66,7 +66,7 @@ const menuBase = {
     },
 
     "&[data-selected='true']": {
-      bg: { base: 'slate.10', _dark: 'slate.100' },
+      bg: 'surface.hovered',
     },
   },
 
@@ -83,7 +83,7 @@ const menuBase = {
     py: '4',
     pr: '12',
     pl: '4',
-    bg: { base: 'slate.5', _dark: 'slate.60' },
+    bg: 'surface.pressed',
     cursor: 'pointer',
   },
 

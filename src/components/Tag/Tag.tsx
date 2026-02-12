@@ -5,21 +5,22 @@ import { splitProps } from '~/utils/splitProps';
 import { cx } from '@styled-system/css';
 import { Icon, type IconNamesList } from '../Icon';
 
-export type TagProps = BoxProps &
+export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
   TagVariantProps & {
     children: string | ReactNode;
     iconName?: IconNamesList;
   };
 
-export const Tag: React.FC<TagProps> = ({
-  variant,
-  hue,
-  iconPosition = 'left',
-  children,
-  iconName,
-  ...props
-}) => {
-  const [className, otherProps] = splitProps(props);
+export const Tag = (props: TagProps) => {
+  const {
+    variant,
+    hue,
+    iconPosition = 'left',
+    children,
+    iconName,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
   const hasIcon = !!iconName;
 
   return (

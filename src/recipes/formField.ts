@@ -14,7 +14,7 @@ const formFieldBase = {
   },
   labelWrapper: {
     '& p': {
-      color: { base: 'slate.90', _dark: 'slate.0' },
+      color: 'text',
       // display: 'flex',
       // gap: '4',
     },
@@ -46,8 +46,8 @@ const formFieldVariants = {
 };
 
 export const formFieldRecipe = defineSlotRecipe({
-  className: 'formfield',
-  jsx: ['Formfield'],
+  className: 'formField',
+  jsx: ['FormField'],
   slots: ['formFieldContainer', 'contentWrapper', 'labelWrapper', 'headLabel'],
   base: formFieldBase,
   variants: formFieldVariants,
