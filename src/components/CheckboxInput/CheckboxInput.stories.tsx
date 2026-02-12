@@ -5,8 +5,8 @@ import { CheckboxInput } from './CheckboxInput';
 import { CheckboxChangeHandler } from '../Checkbox';
 import { Box } from '../Box';
 import { FormField } from '../FormField';
-import { Text } from '../Text';
 import { Button } from '../Button';
+import { Card } from '../Card';
 
 const meta: Meta<typeof CheckboxInput> = {
   title: 'Components/CheckboxInput',
@@ -104,60 +104,66 @@ export const Default: Story = {
 export const AllStates: Story = {
   name: 'All States',
   render: () => (
-    <Box display="flex" flexDirection="column" gap="16">
+    <Card
+      bg="bg.accent.tan.subtlest"
+      p="24"
+      display="flex"
+      flexDirection="column"
+      gap="16"
+    >
       <CheckboxInput
         name="unchecked"
         id="unchecked"
         checked={false}
-        onChange={() => { }}
+        onChange={() => {}}
       >
-        <Text>Unchecked</Text>
+        Unchecked
       </CheckboxInput>
       <CheckboxInput
         name="checked"
         id="checked"
         checked={true}
-        onChange={() => { }}
+        onChange={() => {}}
       >
-        <Text>Checked</Text>
+        Checked
       </CheckboxInput>
       <CheckboxInput
         name="indeterminate"
         id="indeterminate"
         indeterminate
         checked={false}
-        onChange={() => { }}
+        onChange={() => {}}
       >
-        <Text>Indeterminate</Text>
+        Indeterminate
       </CheckboxInput>
       <CheckboxInput
         name="error"
         id="error"
-        error
+        error={true}
         checked={false}
-        onChange={() => { }}
+        onChange={() => {}}
       >
-        <Text>Error state</Text>
+        Error state
       </CheckboxInput>
       <CheckboxInput
         name="disabled"
         id="disabled"
         disabled
         checked={false}
-        onChange={() => { }}
+        onChange={() => {}}
       >
-        <Text>Disabled</Text>
+        Disabled
       </CheckboxInput>
       <CheckboxInput
         name="disabled-checked"
         id="disabled-checked"
         disabled
         checked={true}
-        onChange={() => { }}
+        onChange={() => {}}
       >
-        <Text>Disabled + Checked</Text>
+        Disabled + Checked
       </CheckboxInput>
-    </Box>
+    </Card>
   ),
 };
 
@@ -283,11 +289,7 @@ export const ExFormIntegration: Story = {
     const allAccepted = formData.terms && formData.privacy;
 
     return (
-      <FormField
-        onSubmit={handleSubmit}
-        label="FormField Integration"
-        required
-      >
+      <FormField onSubmit={handleSubmit} label="FormField Integration" required>
         <CheckboxInput
           name="newsletter"
           id="newsletter"
@@ -393,7 +395,7 @@ export const A11yKeyboardNavigation: Story = {
         name="first"
         id="first"
         checked={false}
-        onChange={() => { }}
+        onChange={() => {}}
       >
         First checkbox
       </CheckboxInput>
@@ -401,7 +403,7 @@ export const A11yKeyboardNavigation: Story = {
         name="second"
         id="second"
         checked={false}
-        onChange={() => { }}
+        onChange={() => {}}
       >
         Second checkbox
       </CheckboxInput>
@@ -409,7 +411,7 @@ export const A11yKeyboardNavigation: Story = {
         name="third"
         id="third"
         checked={false}
-        onChange={() => { }}
+        onChange={() => {}}
       >
         Third checkbox
       </CheckboxInput>

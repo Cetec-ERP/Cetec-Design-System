@@ -1,7 +1,7 @@
 import { splitProps } from '~/utils/splitProps';
-import { FC, ReactNode, ChangeEventHandler } from 'react';
+import type { ReactNode, ChangeEventHandler } from 'react';
 import { cx } from '@styled-system/css';
-import { BoxProps } from '../Box';
+import { type BoxProps } from '../Box';
 import { Label } from '../Label';
 import { Checkbox } from '../Checkbox';
 import {
@@ -9,7 +9,10 @@ import {
   type CheckboxInputVariantProps,
 } from '@styled-system/recipes';
 
-export type CheckboxInputProps = BoxProps &
+export type CheckboxInputProps = Omit<
+  BoxProps,
+  keyof CheckboxInputVariantProps
+> &
   CheckboxInputVariantProps & {
     name: string;
     checked: boolean;
@@ -17,38 +20,39 @@ export type CheckboxInputProps = BoxProps &
     id?: string;
     error?: boolean;
     children?: string | ReactNode;
+    disabled?: boolean;
   };
 
-export const CheckboxInput: FC<CheckboxInputProps> = ({
-  id,
-  name,
-  checked,
-  onChange,
-  variant,
-  children,
-  error,
-  indeterminate,
-  ...props
-}: CheckboxInputProps) => {
-  const [className, otherProps] = splitProps(props);
+export const CheckboxInput = (props: CheckboxInputProps) => {
+  const {
+    name,
+    checked,
+    onChange,
+    id,
+    error,
+    children,
+    disabled,
+    indeterminate,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
   return (
     <Label
       className={cx(checkboxInput(), className)}
       {...otherProps}
       htmlFor={id}
+      disabled={disabled}
     >
       <Checkbox
         id={id}
         name={name}
+        error={error}
         checked={checked}
         onChange={onChange}
-        error={error}
         indeterminate={indeterminate}
-        {...props}
+        disabled={disabled}
       />
       {children}
     </Label>
   );
 };
-
-export default CheckboxInput;

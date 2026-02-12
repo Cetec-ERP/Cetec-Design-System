@@ -6,6 +6,10 @@ const checkboxInputBase = {
   '&.cetec-label': {
     fontSize: '16',
   },
+  _disabled: {
+    opacity: 0.4,
+    cursor: 'not-allowed',
+  },
 };
 
 export const checkboxInputRecipe = defineRecipe({
