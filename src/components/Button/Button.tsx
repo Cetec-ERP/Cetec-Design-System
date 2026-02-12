@@ -1,4 +1,4 @@
-import { ReactNode, MouseEvent } from 'react';
+import { MouseEvent } from 'react';
 import { cx } from '@styled-system/css';
 import { HStack } from '@styled-system/jsx';
 import { Box, type BoxProps } from '~/components/Box';
@@ -13,7 +13,7 @@ export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
     iconAfter?: IconNamesList;
     href?: string;
     loading?: boolean;
-    children?: string | ReactNode;
+    children: string;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
   };

@@ -2,12 +2,16 @@ import { defineRecipe } from '@pandacss/dev';
 
 const tagBase = {
   display: 'flex',
+  alignItems: 'center',
   py: '0',
   borderRadius: '2',
   gap: '1',
   px: '4',
+  w: 'fit',
+  h: '20',
   fontSize: '14',
   fontWeight: 'medium',
+  lineHeight: 'tight',
 };
 const tagVariant = {
   variant: {
@@ -35,14 +39,12 @@ const tagVariant = {
   },
   iconBefore: {
     true: {
-      flexDirection: 'row',
       gap: '1',
       pl: '1',
     },
   },
   iconAfter: {
     true: {
-      flexDirection: 'row-reverse',
       gap: '1',
       pr: '1',
     },
