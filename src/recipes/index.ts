@@ -16,7 +16,7 @@ export { checkboxInputRecipe } from './checkboxInput';
 
 // Slot Recipes
 export { buttonRecipe, iconButtonRecipe } from './button';
-export { checkBoxRecipe } from './checkbox';
+export { checkboxRecipe } from './checkbox';
 export { radioRecipe } from './radio';
 export { tooltipRecipe } from './tooltip';
 export { menuRecipe } from './menu';

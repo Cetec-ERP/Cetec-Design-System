@@ -32,7 +32,7 @@ const preview: Preview = {
           'Tokens',
           ['Overview', 'Colors', 'Typography', 'Sizes', 'Shadows', '*'],
           'Components',
-          'Guides',
+          'Docs',
           '*',
         ],
       },
