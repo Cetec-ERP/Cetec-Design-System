@@ -1,6 +1,8 @@
+import { useRef, useState } from 'react';
+import { splitProps } from '~/utils/splitProps';
+import { cx } from '@styled-system/css';
 import { menu, type MenuVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '../Box';
-import { useRef, useState } from 'react';
 import { Text } from '../Text';
 import { Divider } from '../Divider';
 import { Icon, type IconNamesList } from '../Icon';
@@ -37,15 +39,21 @@ export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
     onChange?: (selected: string[] | string | null) => void;
   };
 
-export const Menu: React.FC<MenuProps> = ({
-  loading,
-  onClose,
-  menuSection,
-  iconPlacement,
-  variant,
-  multiSelectType,
-  onChange,
-}) => {
+/**
+ * TODO: Update Menu component
+ */
+export const Menu = (props: MenuProps) => {
+  const {
+    loading,
+    onClose,
+    menuSection,
+    iconPlacement,
+    variant,
+    multiSelectType,
+    onChange,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
   const {
     wrapper,
     wrapperInner,
@@ -108,13 +116,20 @@ export const Menu: React.FC<MenuProps> = ({
   };
 
   return (
-    <Box className={wrapper} ref={menuRef}>
+    <Box
+      className={cx(
+        wrapper({ variant, hue, iconPosition, hasIcon }),
+        className,
+      )}
+      {...otherProps}
+      ref={menuRef}
+    >
       {isChildren.length > 1 && (
         <Text
           onClick={handleBack}
           className={parentLabel}
           textStyle={{ base: 'body.lg', md: 'body.md' }}
-          color={{ base: 'slate.90', _dark: 'slate.0' }}
+          color="text"
         >
           <Icon name="caret-left" />
           {current?.parentLabel || 'Back'}
@@ -247,7 +262,7 @@ export const Menu: React.FC<MenuProps> = ({
               </Box>
               {section?.divider && (
                 <Box className={dividerSection}>
-                  <Divider color={{ base: 'slate.10', _dark: 'slate.60' }} />
+                  <Divider color="border" />
                 </Box>
               )}
               {section?.spacer && <Box className={spacerSection}></Box>}

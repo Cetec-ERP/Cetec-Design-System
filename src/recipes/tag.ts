@@ -5,11 +5,9 @@ const tagBase = {
   py: '0',
   borderRadius: '2',
   gap: '1',
-  //   h: '20',
   px: '4',
   fontSize: '14',
-  fontWeight: '500',
-  //   lineHeight: 'none',
+  fontWeight: 'medium',
 };
 const tagVariant = {
   variant: {
@@ -35,22 +33,18 @@ const tagVariant = {
     rose: {},
     magenta: {},
   },
-  iconPosition: {
-    left: {
+  iconBefore: {
+    true: {
       flexDirection: 'row',
       gap: '1',
       pl: '1',
     },
-    right: {
+  },
+  iconAfter: {
+    true: {
       flexDirection: 'row-reverse',
       gap: '1',
       pr: '1',
-    },
-  },
-  hasIcon: {
-    true: {},
-    false: {
-      px: 4,
     },
   },
 };
@@ -63,8 +57,6 @@ export const tagRecipe = defineRecipe({
   defaultVariants: {
     variant: 'default',
     hue: 'slate',
-    iconPosition: 'left',
-    hasIcon: false,
   },
   compoundVariants: [
     {

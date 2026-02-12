@@ -70,8 +70,8 @@ const textInputBase = {
   },
 };
 
-export const textinputRecipe = defineRecipe({
-  className: 'textinput',
+export const textInputRecipe = defineRecipe({
+  className: 'textInput',
   jsx: ['TextInput'],
   base: textInputBase,
   variants: textInputVariants,

@@ -684,7 +684,15 @@ export const colors = defineSemanticTokens.colors({
       },
     },
     inverse: {
-      value: { base: '{colors.neutral.0}', _dark: '{colors.darkNeutral.10}' },
+      DEFAULT: {
+        value: { base: '{colors.neutral.0}', _dark: '{colors.darkNeutral.10}' },
+      },
+      subtlest: {
+        value: {
+          base: '{colors.darkNeutral.30}',
+          _dark: '{colors.neutral.40}',
+        },
+      },
     },
     placeholder: {
       value: { base: '{colors.neutral.50}', _dark: '{colors.darkNeutral.60}' },
