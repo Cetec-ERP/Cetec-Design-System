@@ -26,6 +26,7 @@ export const TextInput: React.FC<TextInputProps> = ({
     <Box
       as="input"
       id={id}
+      name={name}
       aria-label={name}
       aria-invalid={error || undefined}
       aria-describedby={ariaDescribedBy}
