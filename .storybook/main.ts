@@ -21,6 +21,18 @@ const config: StorybookConfig = {
   docs: {
     defaultName: 'Documentation',
   },
+  viteFinal: async (config) => {
+    // STORYBOOK_BASE_PATH allows PR previews to set paths like /Cetec-Design-System/pr-123/
+    // Falls back to GH_REPO for backwards compatibility, then to /
+    const base = process.env.STORYBOOK_BASE_PATH
+      || (process.env.GH_REPO ? `/${process.env.GH_REPO}/` : '/');
+    config.base = base;
+    return config;
+  },
+  env: () => ({
+    BASE_PATH: process.env.STORYBOOK_BASE_PATH
+      || (process.env.GH_REPO ? `/${process.env.GH_REPO}/` : '/'),
+  }),
 };
 
 export default config;

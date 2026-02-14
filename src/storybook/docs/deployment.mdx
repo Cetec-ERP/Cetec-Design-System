@@ -1,0 +1,148 @@
+import { Meta, Unstyled } from '@storybook/blocks';
+import { Grid, Flex } from '@styled-system/jsx';
+import { Divider } from '../../components/Divider';
+import { Text } from '../../components/Text';
+
+<Meta title="Guides / Storybook Deployment" />
+
+<Unstyled>
+
+<Flex direction="column" gap="16">
+
+# Storybook Deployment to GitHub Pages
+
+<Text textStyle="body.lg" color="text" maxW="prose">This document explains how Storybook is deployed to GitHub Pages, including automatic PR preview deployments for visual review during code review.</Text>
+
+<Divider weight="thick" color="border" mb="32" />
+
+### Overview
+
+The design system uses **branch-based GitHub Pages deployment** rather than the newer GitHub Actions deployment method. This approach allows us to:
+
+1. Deploy the main Storybook to the root URL
+2. Deploy PR previews to unique subdirectories
+3. Add additional tools (like Playroom) in the future without reworking the pipeline
+
+### URL Structure
+
+<Grid gridTemplateColumns="auto 1fr" gap="2" mb="16" rounded="16" overflow="hidden" className="definitions-grid">
+
+**Main Storybook**
+
+`https://cetec-erp.github.io/Cetec-Design-System/`
+
+**PR Preview (e.g., PR #123)**
+
+`https://cetec-erp.github.io/Cetec-Design-System/pr-123/`
+
+</Grid>
+
+### How It Works
+
+The workflow (`.github/workflows/deploy_gh_pages.yml`) contains three jobs:
+
+<Grid gridTemplateColumns="auto 1fr" gap="2" mb="32" rounded="16" overflow="hidden" className="definitions-grid">
+
+**`deploy-main`**
+
+Triggered on push to `main`. Builds Storybook and deploys to the root of the `gh-pages` branch. Uses `keep_files: true` to preserve existing PR preview directories.
+
+**`deploy-pr-preview`**
+
+Triggered when a PR is opened or updated. Builds Storybook with a PR-specific base path and deploys to `/pr-<number>/`. Automatically comments the preview URL on the PR.
+
+**`cleanup-pr-preview`**
+
+Triggered when a PR is closed or merged. Removes the `/pr-<number>/` directory from the `gh-pages` branch to prevent accumulation of stale previews.
+
+</Grid>
+
+### Directory Structure on gh-pages Branch
+
+```
+gh-pages branch:
+├── index.html          # Main Storybook (from main branch)
+├── assets/             # Main Storybook assets
+├── pr-123/             # PR #123 preview
+│   ├── index.html
+│   └── assets/
+├── pr-456/             # PR #456 preview
+│   ├── index.html
+│   └── assets/
+└── ...
+```
+
+### Configuration Requirements
+
+#### GitHub Pages Settings
+
+GitHub Pages must be configured to deploy from a branch (not GitHub Actions):
+
+1. Go to **Settings > Pages** in the repository
+2. Under "Build and deployment", set **Source** to **"Deploy from a branch"**
+3. Select branch: **`gh-pages`**, folder: **`/ (root)`**
+4. Save
+
+#### Environment Variables
+
+The workflow sets two environment variables for Storybook builds:
+
+<Grid gridTemplateColumns="auto 1fr" gap="2" mb="16" rounded="16" overflow="hidden" className="definitions-grid">
+
+**`GH_REPO`**
+
+Used by `vite.config.ts` to detect GitHub Pages mode and skip library build plugins (like `viteStaticCopy`).
+
+**`STORYBOOK_BASE_PATH`**
+
+Used by `.storybook/main.ts` to set the correct base path for assets. For PR previews, this is `/Cetec-Design-System/pr-<number>/`.
+
+</Grid>
+
+### Key Implementation Details
+
+#### Base Path Handling
+
+Storybook's Vite config (`.storybook/main.ts`) reads the base path from environment variables:
+
+```ts
+viteFinal: async (config) => {
+  const base = process.env.STORYBOOK_BASE_PATH
+    || (process.env.GH_REPO ? `/${process.env.GH_REPO}/` : '/');
+  config.base = base;
+  return config;
+}
+```
+
+#### Concurrency Control
+
+The workflow uses concurrency groups to prevent git conflicts when multiple PRs deploy simultaneously:
+
+```yaml
+concurrency:
+  group: pages-deploy-${{ github.event.pull_request.number || 'main' }}
+  cancel-in-progress: true
+```
+
+#### PR Comment Updates
+
+When a PR preview is deployed, the workflow comments the preview URL. On subsequent pushes, it updates the existing comment rather than creating a new one, keeping the PR timeline clean.
+
+### Future: Adding Playroom
+
+The branch-based approach makes it easy to add additional tools. For Playroom, the structure would become:
+
+```
+gh-pages branch:
+├── index.html          # Main Storybook
+├── playroom/           # Main Playroom
+├── pr-123/
+│   ├── index.html      # PR Storybook preview
+│   └── playroom/       # PR Playroom preview
+└── ...
+```
+
+Each tool can be deployed independently without affecting others.
+
+</Flex>
+</Unstyled>
