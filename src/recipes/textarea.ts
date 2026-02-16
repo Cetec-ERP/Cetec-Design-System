@@ -10,10 +10,14 @@ const textareaBase = {
   borderColor: 'border.input',
   borderRadius: '4',
   lineHeight: 'tight',
+  fontFamily: 'body',
   outlineWidth: '1',
   outlineStyle: 'solid',
   outlineColor: 'transparent',
   resize: 'both',
+  _placeholder: {
+    color: 'text.placeholder',
+  },
   _focus: {
     outlineColor: 'border.focused',
     borderColor: 'border.focused',
@@ -26,15 +30,12 @@ const textareaBase = {
       outlineColor: 'border.danger',
     },
   },
-  _placeholder: {
-    color: 'text.placeholder',
-  },
   _disabled: {
     opacity: 0.4,
   },
-  '&[data-error]:focus': {
-    borderColor: 'border.danger',
-  },
+  // '&[data-error]:focus': {
+  //   borderColor: 'border.danger',
+  // },
 };
 
 const textareaVariants = {
