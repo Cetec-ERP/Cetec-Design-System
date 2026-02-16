@@ -1,3 +1,0 @@
-ancestorEntries = ["src/components/TextInput/TextInput.tsx"]
-ourEntries = ["src/components/TextInput/TextInput.tsx"]
-theirEntries = ["src/components/TextInput/TextInput.tsx"]
