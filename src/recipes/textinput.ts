@@ -129,7 +129,9 @@ const textInputVariants = {
   },
 };
 
-const textInputCompoundVariants = [
+const textInputCompoundVariants: NonNullable<
+  Parameters<typeof defineSlotRecipe>[0]['compoundVariants']
+> = [
   {
     size: 'md',
     iconBefore: true,
