@@ -60,6 +60,7 @@ export const TextInput = (props: TextInputProps) => {
         as="input"
         id={id}
         name={name}
+        type={type}
         {...(error && {
           'data-error': true,
           'aria-invalid': true,

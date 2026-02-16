@@ -26,6 +26,7 @@ const {
   menuRecipe,
   formFieldRecipe,
   spinnerRecipe,
+  textInputRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -83,6 +84,7 @@ export const cetecPreset: Preset = definePreset({
         menu: menuRecipe,
         formField: formFieldRecipe,
         spinner: spinnerRecipe,
+        textInput: textInputRecipe,
       },
     },
   },
@@ -101,14 +103,13 @@ export const cetecPreset: Preset = definePreset({
       properties: {
         size: {
           type: 'enum',
-          value: Object.keys(tokens.sizes),
+          value: Object.keys(tokens.numericSizes),
         },
       },
       transform(props) {
         const { size, ...rest } = props;
         return {
           width: size,
-          height: size,
           ...rest,
         };
       },
