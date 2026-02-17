@@ -24,7 +24,7 @@ export const Spinner = (props: SpinnerProps) => {
         as="div"
         className={classes.spinnerDiv}
         size={size}
-        inverse={inverse}
+        inverse={inverse ? 'true' : undefined}
       />
     </Box>
   );

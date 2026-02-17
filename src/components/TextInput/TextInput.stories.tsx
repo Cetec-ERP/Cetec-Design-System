@@ -18,6 +18,9 @@ import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
 const meta = {
   title: 'Components/TextInput',
   component: TextInput,
+  args: {
+    name: 'text-input',
+  },
   parameters: {
     layout: 'centered',
   },
@@ -226,22 +229,43 @@ export const WithFormField: Story = {
   name: 'Ex: With FormField',
   render: () => (
     <VStack gap="24" alignItems="stretch" w="xs">
-      <FormField label="Full Name" required>
-        <TextInput name="fullName" iconBefore="user" placeholder="John Doe" />
+      <FormField label="Full Name" labelFor="fullName" required>
+        <TextInput
+          name="fullName"
+          id="fullName"
+          iconBefore="user"
+          placeholder="John Doe"
+        />
       </FormField>
-      <FormField label="Email" helpText="We'll never share your email.">
+      <FormField
+        label="Email"
+        labelFor="email"
+        helpText="We'll never share your email."
+        tooltipText="For real. We won't share it with anyone"
+      >
         <TextInput
           name="email"
-          iconBefore="mail"
+          id="email"
+          iconBefore="envelope"
           placeholder="john@example.com"
           type="email"
         />
       </FormField>
-      <FormField label="Username" error errorText="Username is already taken.">
-        <TextInput name="username" defaultValue="johndoe" error />
+      <FormField
+        label="Username"
+        labelFor="username"
+        error
+        errorText="Username is already taken."
+      >
+        <TextInput name="username" id="username" defaultValue="johndoe" error />
       </FormField>
-      <FormField label="Company" disabled>
-        <TextInput name="company" placeholder="Cetec ERP" disabled />
+      <FormField label="Company" labelFor="company" disabled>
+        <TextInput
+          name="company"
+          id="company"
+          placeholder="Cetec ERP"
+          disabled
+        />
       </FormField>
     </VStack>
   ),
@@ -252,18 +276,44 @@ export const InlineFormField: Story = {
   name: 'Ex: Inline FormField',
   render: () => (
     <VStack gap="16" alignItems="stretch" w="md">
-      <FormField layout="inline" label="First Name">
-        <TextInput name="firstName" placeholder="John" />
-      </FormField>
-      <FormField layout="inline" label="Last Name">
-        <TextInput name="lastName" placeholder="Doe" />
-      </FormField>
-      <FormField layout="inline" label="Phone">
+      <FormField layout="inline" labelFor="fullName" label="Full Name" required>
         <TextInput
-          name="phone"
-          iconBefore="phone"
-          placeholder="(555) 123-4567"
-          type="tel"
+          name="fullName"
+          id="fullName"
+          iconBefore="user"
+          placeholder="John Doe"
+        />
+      </FormField>
+      <FormField
+        layout="inline"
+        label="Email"
+        labelFor="email2"
+        helpText="We'll never share your email."
+        tooltipText="For real. We won't share it with anyone"
+      >
+        <TextInput
+          name="email2"
+          id="email2"
+          iconBefore="envelope"
+          placeholder="john@example.com"
+          type="email"
+        />
+      </FormField>
+      <FormField
+        layout="inline"
+        label="Username"
+        labelFor="username"
+        error
+        errorText="Username is already taken."
+      >
+        <TextInput name="username" id="username" defaultValue="johndoe" />
+      </FormField>
+      <FormField layout="inline" label="Company" labelFor="company2" disabled>
+        <TextInput
+          name="company"
+          id="company2"
+          placeholder="Cetec ERP"
+          disabled
         />
       </FormField>
     </VStack>
@@ -274,7 +324,7 @@ export const InlineFormField: Story = {
 export const SearchInput: Story = {
   name: 'Ex: Search Input',
   render: () => (
-    <Wrap gap="12" alignItems="center">
+    <Wrap gap="12" alignItems="center" w="xs">
       <TextInput
         name="search-sm"
         size="sm"
@@ -290,6 +340,12 @@ export const SearchInput: Story = {
       <TextInput
         name="search-lg"
         size="lg"
+        iconBefore="search"
+        placeholder="Search..."
+      />
+      <TextInput
+        name="search-xl"
+        size="xl"
         iconBefore="search"
         placeholder="Search..."
       />

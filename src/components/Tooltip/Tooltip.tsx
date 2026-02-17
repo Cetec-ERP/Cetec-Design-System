@@ -4,9 +4,18 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Text } from '../Text';
 
 export type Position =
-  | 'top' | 'bottom' | 'left' | 'right'
-  | 'top-start' | 'bottom-start' | 'left-start' | 'right-start'
-  | 'top-end' | 'bottom-end' | 'left-end' | 'right-end';
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'top-start'
+  | 'bottom-start'
+  | 'left-start'
+  | 'right-start'
+  | 'top-end'
+  | 'bottom-end'
+  | 'left-end'
+  | 'right-end';
 
 export type TooltipProps = Omit<BoxProps, keyof TooltipVariantProps> &
   TooltipVariantProps & {
@@ -35,19 +44,33 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const resolvedPlacement =
-    typeof position === 'string' ? position : 'bottom';
+  const resolvedPlacement = typeof position === 'string' ? position : 'bottom';
 
-  const clockWisePlacement: Position[] = ['bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'top', 'top-start', 'top-end', 'right', 'right-start', 'right-end'];
+  const clockWisePlacement: Position[] = [
+    'bottom',
+    'bottom-start',
+    'bottom-end',
+    'left',
+    'left-start',
+    'left-end',
+    'top',
+    'top-start',
+    'top-end',
+    'right',
+    'right-start',
+    'right-end',
+  ];
 
   function getClockwise(start: Position): Position[] {
     const index = clockWisePlacement.indexOf(start);
     if (index === -1) return clockWisePlacement;
 
-    const reordered = [...clockWisePlacement.slice(index + 1), ...clockWisePlacement.slice(0, index)];
+    const reordered = [
+      ...clockWisePlacement.slice(index + 1),
+      ...clockWisePlacement.slice(0, index),
+    ];
     return reordered;
   }
-
 
   const checkPosition = () => {
     const tooltipPositioning = tooltipRef.current;

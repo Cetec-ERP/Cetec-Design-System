@@ -38,6 +38,7 @@ export const TextInput = (props: TextInputProps) => {
     type = 'text',
     size,
     autoSize = false,
+    autoComplete = 'off',
     ...rest
   } = props;
   const classes = textInput({
@@ -50,10 +51,8 @@ export const TextInput = (props: TextInputProps) => {
   return (
     <Box
       className={cx(classes.container, className)}
-      {...(error && {
-        'data-error': true,
-        'aria-invalid': true,
-      })}
+      disabled={disabled}
+      data-error={error}
     >
       {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
       <Box
@@ -61,15 +60,10 @@ export const TextInput = (props: TextInputProps) => {
         id={id}
         name={name}
         type={type}
-        {...(error && {
-          'data-error': true,
-          'aria-invalid': true,
-        })}
-        {...(disabled && {
-          disabled: true,
-          'aria-disabled': true,
-        })}
+        disabled={disabled}
+        data-error={error}
         className={cx(classes.input, className)}
+        autoComplete={autoComplete}
         {...otherProps}
       />
       {iconBefore && iconAfter

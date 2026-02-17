@@ -143,10 +143,11 @@ const linkVariants = {
 };
 
 const labelBase = {
-  fontSize: '14',
+  fontSize: '16',
   fontWeight: 'normal',
-  lineHeight: 'default',
+  lineHeight: 'tight',
   cursor: 'default',
+  color: 'text',
 };
 
 //Copied linkvarients, don't have styles defined for this yet

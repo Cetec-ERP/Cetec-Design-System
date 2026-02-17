@@ -44,19 +44,16 @@ export const Button = (props: ButtonProps) => {
       as={href ? 'a' : 'button'}
       className={`${cx(classes.container, className)} group`}
       {...(href ? { href } : { type })}
-      {...otherProps}
       {...(loading && {
         'aria-busy': true,
         'aria-live': 'polite',
       })}
-      {...(disabled && {
-        disabled: true,
-        'aria-disabled': true,
-        ...(href && {
-          tabIndex: -1,
+      disabled={disabled}
+      {...(disabled &&
+        href && {
           onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
-        }),
-      })}
+        })}
+      {...otherProps}
     >
       <>
         <HStack gap="4" opacity={loading ? 0 : 1}>

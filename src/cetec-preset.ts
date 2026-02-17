@@ -41,7 +41,11 @@ const transformedRecipes = Object.fromEntries(
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
 // Omit default patterns here
-const { box, divider, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
+const {
+  box: _box,
+  divider: _divider,
+  ...pandaBasePresetPatterns
+} = pandaBasePreset.patterns;
 const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
@@ -99,21 +103,6 @@ export const cetecPreset: Preset = definePreset({
     },
   },
   patterns: {
-    icon: {
-      properties: {
-        size: {
-          type: 'enum',
-          value: Object.keys(tokens.numericSizes),
-        },
-      },
-      transform(props) {
-        const { size, ...rest } = props;
-        return {
-          width: size,
-          ...rest,
-        };
-      },
-    },
     extend: {
       ...pandaBasePresetPatterns,
       container: {

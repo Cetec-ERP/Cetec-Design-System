@@ -33,9 +33,13 @@ const textInputBase = {
         borderColor: 'border.input',
       },
     },
+    _groupDisabled: {
+      opacity: 1, // let FormField handle disabled state opacity
+    },
   },
   input: {
     width: 'full',
+    bg: 'surface',
     color: 'text',
     lineHeight: 'default',
     fontFamily: 'body',
@@ -44,17 +48,15 @@ const textInputBase = {
     _placeholder: {
       color: 'text.placeholder',
     },
-    // _focus: {
-    //   outlineColor: 'transparent',
-    //   borderColor: 'transparent',
-    // },
   },
   icon: {
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%)',
-    fill: 'icon.decorative',
+    fill: 'icon.decorative.subtle',
     mixBlendMode: { base: 'multiply', _dark: 'screen' },
+    pointerEvents: 'none',
+    zIndex: 1,
   },
 };
 

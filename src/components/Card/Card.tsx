@@ -38,16 +38,12 @@ export const Card = (props: CardProps) => {
       as={asComponent}
       data-grabbed={grabbed}
       className={cx(card({ variant, interactive: isInteractive }), className)}
-      {...(href && { href })}
+      href={href}
       {...(isInteractive && !href ? { type: 'button' } : {})}
-      {...(disabled && {
-        disabled: true,
-        'aria-disabled': true,
-        ...(href && {
-          tabIndex: -1,
+      {...(disabled &&
+        href && {
           onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
-        }),
-      })}
+        })}
       {...otherProps}
     >
       {children}
