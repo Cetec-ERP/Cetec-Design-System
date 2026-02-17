@@ -27,11 +27,13 @@ export type FormFieldProps = Omit<BoxProps, keyof FormFieldVariantProps> &
     disabled?: boolean;
     tooltipTitle?: string;
     tooltipText?: string;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
   };
 
 type FormFieldChildProps = {
   error?: boolean;
   disabled?: boolean;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 };
 
 export const Required = () => {
@@ -51,6 +53,7 @@ export const FormField = (props: FormFieldProps) => {
     disabled,
     tooltipTitle,
     tooltipText,
+    size,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -58,6 +61,7 @@ export const FormField = (props: FormFieldProps) => {
   // container, inputs, labelWrapper, headLabel
   const classes = formField({
     layout: layout === 'inline' ? 'inline' : 'default',
+    size,
   });
 
   const enhancedChildren = Children.map(children, (child) => {
@@ -66,6 +70,7 @@ export const FormField = (props: FormFieldProps) => {
       return cloneElement(c, {
         error: error ?? c.props.error,
         disabled: disabled ?? c.props.disabled,
+        size: size ?? c.props.size,
       });
     }
     return child;
@@ -76,6 +81,7 @@ export const FormField = (props: FormFieldProps) => {
       className={`${cx(classes.container, className)} group`}
       disabled={disabled}
       data-error={error}
+      data-size={size}
       {...otherProps}
     >
       <Flex className={classes.labelWrapper}>

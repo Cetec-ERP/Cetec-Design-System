@@ -34,7 +34,32 @@ const formFieldVariants = {
         rowGap: '2',
         gridTemplateColumns: 'auto 1fr',
         gridTemplateRows: 'auto auto',
-        alignItems: 'center',
+        alignItems: 'start',
+      },
+    },
+  },
+  size: {
+    sm: {
+      labelWrapper: {
+        '& .cetec-label': {
+          fontSize: '14',
+          lineHeight: 'tight',
+        },
+      },
+    },
+    md: {
+      labelWrapper: {
+        pt: '6',
+      },
+    },
+    lg: {
+      labelWrapper: {
+        pt: '10',
+      },
+    },
+    xl: {
+      labelWrapper: {
+        pt: '12',
       },
     },
   },
@@ -48,5 +73,6 @@ export const formFieldRecipe = defineSlotRecipe({
   variants: formFieldVariants,
   defaultVariants: {
     layout: 'default',
+    size: 'md',
   },
 });

@@ -33,9 +33,6 @@ const textareaBase = {
   _disabled: {
     opacity: 0.4,
   },
-  // '&[data-error]:focus': {
-  //   borderColor: 'border.danger',
-  // },
 };
 
 const textareaVariants = {
