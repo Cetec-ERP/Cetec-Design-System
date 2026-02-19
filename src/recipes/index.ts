@@ -21,3 +21,7 @@ export { radioRecipe } from './radio';
 export { tooltipRecipe } from './tooltip';
 export { menuRecipe } from './menu';
 export { formFieldRecipe } from './formField';
+export { avatarRecipe } from './avatar';
+export { badgeRecipe } from './badge';
+export { chipRecipe } from './chip';
+export { modalRecipe } from './modal';
