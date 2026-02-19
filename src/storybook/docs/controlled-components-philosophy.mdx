@@ -1,10 +1,10 @@
-import { 
-  Meta, 
-  Title, 
-  Primary, 
-  Controls, 
-  Stories, 
-  ArgTypes, 
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Stories,
+  ArgTypes,
   Canvas,
   Unstyled
 } from '@storybook/blocks';
@@ -20,17 +20,21 @@ import '../../styles/font-imports.css';
 <Unstyled>
 
   <Flex flexDirection="column" gap="16">
-    <Heading level="h1">Controlled Components Philosophy</Heading>
+    # Controlled Components Philosophy
 
-    <Text>This document explains why the Cetec Design System uses `controlled components` as the standard pattern for form inputs, including checkboxes, radios, text inputs, and other interactive elements.</Text>
+    This document explains why the Cetec Design System uses `controlled components` as the standard pattern for form inputs, including checkboxes, radios, text inputs, and other interactive elements.
+
+    <Text as="blockquote" textStyle="body-lg" p="12" borderLeftWidth="4" borderLeftColor="slate.20" borderLeftStyle="solid" my="8" maxW="prose">
+      <i>Controlled components in React are highly beneficial because they treat the React state as the "single source of truth" for form data, which provides developers with explicit control over component behavior and data flow.</i>
+    </Text>
 
     <Divider my="16"/>
 
-    <Heading level="h2">What's the Difference?</Heading>
+    ## What's the Difference
 
     <Wrap gap="24">
       <Flex flexDirection="column">
-        <Heading level="h4">Controlled Component</Heading>
+        #### Controlled Component
 
         Components where the parent explicitly controls the state:
 
@@ -47,9 +51,9 @@ import '../../styles/font-imports.css';
       </Flex>
 
       <Flex flexDirection="column">
-        <Heading level="h4">Uncontrolled Component</Heading>
+        #### Uncontrolled Component
 
-        <Text as="span">Components that manage their own internal state:</Text>
+        Components that manage their own internal state:
 
         ```typescript
         // Component manages its own state internally
@@ -61,13 +65,13 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h2">Why Controlled Components for Design Systems</Heading>
+    ## Why Controlled Components for Design Systems
 
-    <Heading level="h3">1. Predictability & Debugging</Heading>
+    ### 1. Predictability & Debugging
 
     <Grid columns={2} gap="24">
       <Flex flexDirection="column">
-        <Heading level="h4">Controlled</Heading>
+        #### Controlled
 
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">State is explicit and visible in parent component</Box>
@@ -79,7 +83,7 @@ import '../../styles/font-imports.css';
 
 
       <Flex flexDirection="column">
-        <Heading level="h4">Uncontrolled</Heading>
+        #### Uncontrolled
 
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">State hidden inside component</Box>
@@ -93,7 +97,7 @@ import '../../styles/font-imports.css';
     <Box py="8" px="16" bg="warning.lighter" color="warning.dark" borderRadius="4" width="fit-content"><b>Design System Goal:</b> Components should be predictable and transparent.</Box>
 
     <Flex flexDirection="column">
-      <Text>Example:</Text>
+      Example:
 
       ```typescript
       // Controlled - clear state visibility
@@ -106,9 +110,9 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h3">2. Composability & Integration</Heading>
+    ### 2. Composability & Integration
 
-    <Text>Design systems are building blocks that integrate with:</Text>
+    Design systems are building blocks that integrate with:
 
     <Box as="ul" gap="8" pl="24">
       <Box as="li" listStyleType="disc">Form libraries (React Hook Form, Formik, Final Form)</Box>
@@ -120,8 +124,8 @@ import '../../styles/font-imports.css';
 
     <Grid columns={2} gap="24">
       <Flex flexDirection="column">
-        <Heading level="h4">Controlled</Heading>
-        <Text>Controlled components integrate seamlessly:</Text>
+        #### Controlled
+        Controlled components integrate seamlessly:
 
         ```typescript
         // React Hook Form
@@ -149,8 +153,8 @@ import '../../styles/font-imports.css';
       </Flex>
 
       <Flex flexDirection="column">
-        <Heading level="h4">Uncontrolled</Heading>
-        <Text>Uncontrolled components fight these patterns:</Text>
+        #### Uncontrolled
+        Uncontrolled components fight these patterns:
         ```typescript
         // Need refs and imperative APIs - messy and error-prone
         const checkboxRef = useRef();
@@ -163,10 +167,10 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h3">3. Derived State & Validation</Heading>
+    ### 3. Derived State & Validation
 
     <Flex flexDirection="column">
-      <Text>Real applications need checkbox state to derive other UI:</Text>
+      Real applications need checkbox state to derive other UI:
 
     ```typescript
     const [terms, setTerms] = useState(false);
@@ -211,7 +215,7 @@ import '../../styles/font-imports.css';
     ```
     </Flex>
     <Flex flexDirection="column">
-      <Text>With uncontrolled components:</Text>
+      With uncontrolled components:
       <Box as="ul" gap="8" pl="24">
         <Box as="li" listStyleType="disc">Query DOM on every state check (expensive)</Box>
         <Box as="li" listStyleType="disc">Or maintain parallel state anyway (defeats purpose)</Box>
@@ -223,12 +227,12 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h3">4. Testing & Documentation</Heading>
+    ### 4. Testing & Documentation
 
     <Grid columns={2} gap="24">
       <Flex flexDirection="column">
-        <Heading level="h4">Controlled</Heading>
-        <Text>Controlled components are easier to test:</Text>
+      #### Controlled
+        Controlled components are easier to test:
 
         ```typescript
         // Set up exact state - no user interaction needed
@@ -250,8 +254,8 @@ import '../../styles/font-imports.css';
         ```
       </Flex>
       <Flex flexDirection="column">
-        <Heading level="h4">Uncontrolled</Heading>
-        <Text>Uncontrolled components require:</Text>
+      #### Uncontrolled
+        Uncontrolled components require:
 
         ```typescript
         // Must simulate user interaction
@@ -263,7 +267,7 @@ import '../../styles/font-imports.css';
     </Grid>
 
     <Flex flexDirection="column">
-      <Text>Storybook benefits:</Text>
+      Storybook benefits:
 
     ```typescript
     // Controlled - can show every state combination
@@ -285,14 +289,14 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h3">5. React Philosophy & Future</Heading>
+    ### 5. React Philosophy & Future
 
     <Flex flexDirection="column" gap="8">
-      <Text>React's mental model strongly favors controlled components:</Text>
+      React's mental model strongly favors controlled components:
 
       <Grid columns={3} gap="16">
         <Flex flexDirection="column">
-          <Text><b>One-way data flow:</b></Text>
+          **One-way data flow:**
           <Box as="ul" gap="8" pl="24">
             <Box as="li" listStyleType="disc">Props flow down</Box>
             <Box as="li" listStyleType="disc">Events flow up</Box>
@@ -301,7 +305,7 @@ import '../../styles/font-imports.css';
         </Flex>
 
         <Flex flexDirection="column">
-          <Text><b>Declarative UI:</b></Text>
+          **Declarative UI:**
           <Box as="ul" gap="8" pl="24">
             <Box as="li" listStyleType="disc">UI is a function of state</Box>
             <Box as="li" listStyleType="disc">`UI = f(state)`</Box>
@@ -310,7 +314,7 @@ import '../../styles/font-imports.css';
         </Flex>
 
         <Flex flexDirection="column">
-          <Text><b>React Server Components:</b></Text>
+          **React Server Components:**
           <Box as="ul" gap="8" pl="24">
             <Box as="li" listStyleType="disc">Uncontrolled components don't work in RSC patterns</Box>
             <Box as="li" listStyleType="disc">Server components can't manage client state</Box>
@@ -320,7 +324,7 @@ import '../../styles/font-imports.css';
       </Grid>
 
       <Flex flexDirection="column">
-        <Text><b>From React documentation:</b></Text>
+        **From React documentation:**
         <Text as="blockquote" textStyle="body-lg" p="12" borderLeftWidth="4" borderLeftColor="slate.20" borderLeftStyle="solid" my="8" maxW="prose">
           <i>"We recommend using controlled components to implement forms. In a controlled component, form data is handled by a React component."</i>
         </Text>
@@ -331,13 +335,13 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h2">When Uncontrolled Makes Sense</Heading>
+    ## When Uncontrolled Makes Sense
 
 
     <Grid columns={2} gap="24" alignItems="center">
       <Flex flexDirection="column">
-        <Heading level="h4">Traditional Form Submission</Heading>
-        <Text>If using native HTML form posts (not SPA patterns) that post directly to a server without JavaScript interaction.</Text>
+      #### Traditional Form Submission
+        If using native HTML form posts (not SPA patterns) that post directly to a server without JavaScript interaction.
       </Flex>
 
       ```html
@@ -346,50 +350,50 @@ import '../../styles/font-imports.css';
         <button type="submit">Submit</button>
       </form>
       ```
-    
+
       <Flex flexDirection="column">
-        <Heading level="h4">Quick Prototypes</Heading>
-        <Text>When prototyping and you genuinely don't need to access the state:</Text>
+      #### Quick Prototypes
+        When prototyping and you genuinely don't need to access the state:
       </Flex>
 
       ```typescript
       // Throwaway code for testing
         <Checkbox name="temp" />
       ```
-    
+
       <Flex flexDirection="column">
-        <Heading level="h4">Legacy Codebases</Heading>
-        <Text>When integrating with legacy systems that expect uncontrolled inputs.</Text>
+      #### Legacy Codebases
+        When integrating with legacy systems that expect uncontrolled inputs.
       </Flex>
     </Grid>
 
     <Divider my="16"/>
 
-    <Heading level="h2">The Trade-off</Heading>
+    ## The Trade-off
 
-    <Heading level="h3">Verbosity</Heading>
+    ### Verbosity
 
     <Grid columns={2} gap="24">
       <Flex flexDirection="column">
-        <Heading level="h4">Controlled</Heading>
-        <Text>Controlled requires boilerplate:</Text>
+      #### Controlled
+        Controlled requires boilerplate:
         ```typescript
         const [checked, setChecked] = useState(false);
         <Checkbox checked={checked} onChange={e => setChecked(e.target.checked)} />
         ```
       </Flex>
       <Flex flexDirection="column">
-        <Heading level="h4">Uncontrolled</Heading>
-        <Text>Uncontrolled is shorter:</Text>
+      #### Uncontrolled
+        Uncontrolled is shorter:
         ```typescript
         <Checkbox name="terms" />
         ```
       </Flex>
     </Grid>
 
-    <Heading level="h3">But Consider</Heading>
+    ### But Consider
 
-    <Text>In real applications, you almost always need that state anyway for:</Text>
+    In real applications, you almost always need that state anyway for:
     <Box as="ul" gap="8" pl="24">
       <Box as="li" listStyleType="disc">Form validation</Box>
       <Box as="li" listStyleType="disc">Submit button enable/disable</Box>
@@ -398,13 +402,13 @@ import '../../styles/font-imports.css';
       <Box as="li" listStyleType="disc">Analytics tracking</Box>
     </Box>
 
-    <Text>So the "extra" boilerplate is just making explicit what you'd need regardless.</Text>
+    So the "extra" boilerplate is just making explicit what you'd need regardless.
 
     <Divider my="16"/>
 
-    <Heading level="h2">Implementation Options Considered</Heading>
+    ## Implementation Options Considered
 
-    <Heading level="h3">Option A: Controlled Only (Chosen)</Heading>
+    ### Option A: Controlled Only (Chosen)
 
     ```typescript
     type CheckboxProps = {
@@ -417,7 +421,7 @@ import '../../styles/font-imports.css';
 
     <Grid gridTemplateColumns="auto auto" gap="24" w="fit">
       <Flex flexDirection="column" w="fit">
-        <Text><b>Pros</b></Text>
+        **Pros**
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">Explicit contract</Box>
           <Box as="li" listStyleType="disc">No hidden state</Box>
@@ -428,7 +432,7 @@ import '../../styles/font-imports.css';
       </Flex>
 
       <Flex flexDirection="column" w="fit">
-        <Text><b>Cons</b></Text>
+        **Cons**
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">More verbose for consumers</Box>
           <Box as="li" listStyleType="disc">Can't use without state management</Box>
@@ -438,7 +442,7 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h3">Option B: Controlled with Smart Defaults</Heading>
+    ### Option B: Controlled with Smart Defaults
 
     ```typescript
     type CheckboxProps = {
@@ -456,7 +460,7 @@ import '../../styles/font-imports.css';
 
     <Grid gridTemplateColumns="auto auto" gap="24" w="fit">
       <Flex flexDirection="column">
-        <Text><b>Pros</b></Text>
+        **Pros**
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">Supports both patterns</Box>
           <Box as="li" listStyleType="disc">Flexible for edge cases</Box>
@@ -465,7 +469,7 @@ import '../../styles/font-imports.css';
       </Flex>
 
       <Flex flexDirection="column">
-        <Text><b>Cons</b></Text>
+        **Cons**
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">More complex component code</Box>
           <Box as="li" listStyleType="disc">Can encourage anti-patterns</Box>
@@ -475,11 +479,11 @@ import '../../styles/font-imports.css';
       </Flex>
     </Grid>
 
-    <Text>Verdict: ❌ Too complex, enables anti-patterns</Text>
+    Verdict: ❌ Too complex, enables anti-patterns
 
     <Divider my="16"/>
 
-    <Heading level="h3">Option C: Controlled Only + Helper Hook</Heading>
+    ### Option C: Controlled Only + Helper Hook
 
     ```typescript
     // Design system exports helper
@@ -498,7 +502,7 @@ import '../../styles/font-imports.css';
 
     <Grid gridTemplateColumns="auto auto" gap="24" w="fit">
       <Flex flexDirection="column">
-        <Text><b>Pros</b></Text>
+        **Pros**
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">Maintains controlled pattern</Box>
           <Box as="li" listStyleType="disc">Reduces boilerplate</Box>
@@ -507,7 +511,7 @@ import '../../styles/font-imports.css';
         </Box>
       </Flex>
       <Flex flexDirection="column">
-        <Text><b>Cons</b></Text>
+        **Cons**
         <Box as="ul" gap="8" pl="24">
           <Box as="li" listStyleType="disc">One more concept to learn</Box>
           <Box as="li" listStyleType="disc">Still need the hook import</Box>
@@ -515,11 +519,11 @@ import '../../styles/font-imports.css';
       </Flex>
     </Grid>
 
-    <Text>Verdict: ✅ Good future enhancement</Text>
+    Verdict: ✅ Good future enhancement
 
     <Divider my="16"/>
 
-    <Heading level="h3">Why Controlled Components Are Right for Cetec:</Heading>
+    ### Why Controlled Components Are Right for Cetec:
 
     <Box as="ol" gap="8" pl="24">
       <Box as="li" listStyleType="decimal">**Target audience:** Developers building complex enterprise ERP applications</Box>
@@ -531,7 +535,7 @@ import '../../styles/font-imports.css';
       <Box as="li" listStyleType="decimal">**Future-proof:** Compatible with React Server Components</Box>
     </Box>
 
-    <Heading level="h3">Documentation Approach</Heading>
+    ### Documentation Approach
 
     All controlled components should clearly document:
 
@@ -557,9 +561,9 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h2">Real-World Examples</Heading>
+    ## Real-World Examples
 
-    <Heading level="h4">Simple Form</Heading>
+    #### Simple Form
 
     ```typescript
     function NewsletterSignup() {
@@ -593,7 +597,7 @@ import '../../styles/font-imports.css';
     }
     ```
 
-    <Heading level="h4">Select All Pattern</Heading>
+    #### Select All Pattern
 
     ```typescript
     function TaskList() {
@@ -640,7 +644,7 @@ import '../../styles/font-imports.css';
     }
     ```
 
-    <Heading level="h4">Form Library Integration</Heading>
+    #### Form Library Integration
 
     ```typescript
     import { useForm } from 'react-hook-form';
@@ -680,7 +684,7 @@ import '../../styles/font-imports.css';
 
     <Divider my="16"/>
 
-    <Heading level="h2">Summary</Heading>
+    ## Summary
 
     The controlled component pattern is the right choice for the Cetec Design System because:
 
