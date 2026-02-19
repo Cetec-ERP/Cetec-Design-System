@@ -18,6 +18,7 @@ export const Input: React.FC<InputProps> = (
     variant,
     type,
     children,
+    name,
     ...props 
   }: InputProps,
 ) => {
@@ -28,6 +29,7 @@ export const Input: React.FC<InputProps> = (
       <Text as='span'>{label}</Text>
       <Box
         as="input"
+        name={name}
         type={type}
         className={cx(
           input({ variant }),
