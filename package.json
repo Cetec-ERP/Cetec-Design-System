@@ -1,6 +1,6 @@
 {
   "name": "cetec-design-system",
-  "version": "0.0.43-0",
+  "version": "0.0.44-0",
   "description": "Cetec-ERP Design System",
   "type": "module",
   "main": "./dist/index.js",
