@@ -1,4 +1,5 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const modalBase = {
   overlay: {
@@ -15,6 +16,7 @@ const modalBase = {
     },
   },
   container: {
+    ...globalBaseStyles,
     position: 'fixed',
     top: '50%',
     left: '50%',

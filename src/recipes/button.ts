@@ -1,9 +1,13 @@
-import { defineSlotRecipe } from '@pandacss/dev';
+import { defineSlotRecipe, defineStyles } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
-const buttonBaseStyles = {
+const buttonBaseStyles = defineStyles({
   container: {
+    ...globalBaseStyles,
     position: 'relative',
-    appearance: 'none',
+    // appearance: 'none',
+    appearance: 'button',
+    '-webkit-appearance': 'button',
     display: 'flex',
     alignItems: 'center',
     gap: '4',
@@ -15,7 +19,7 @@ const buttonBaseStyles = {
     transitionTimingFunction: 'default',
     userSelect: 'none',
     verticalAlign: 'middle',
-    fontFamily: 'body',
+    // fontFamily: 'body',
     fontSize: '16',
     fontWeight: 'medium',
     lineHeight: 'default',
@@ -48,7 +52,7 @@ const buttonBaseStyles = {
     transitionProperty: 'fill',
     transitionTimingFunction: 'default',
   },
-};
+});
 
 const buttonVariants = {
   variant: {

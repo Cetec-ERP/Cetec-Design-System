@@ -1,6 +1,8 @@
 import { defineRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const BreadcrumbsBase = {
+  ...globalBaseStyles,
   display: 'flex',
   alignItems: 'center',
   '& li': {

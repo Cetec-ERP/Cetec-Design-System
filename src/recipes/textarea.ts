@@ -1,6 +1,9 @@
 import { defineRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const textareaBase = {
+  ...globalBaseStyles,
+  fontSize: '100%',
   position: 'relative',
   width: 'full',
   color: { base: 'slate.90', _dark: 'slate.0' },

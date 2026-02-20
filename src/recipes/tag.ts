@@ -1,6 +1,8 @@
 import { defineRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const tagBase = {
+  ...globalBaseStyles,
   display: 'flex',
   py: '0',
   borderRadius: '2',
