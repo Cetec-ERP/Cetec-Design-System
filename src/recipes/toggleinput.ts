@@ -5,7 +5,7 @@ const toggleInputBase = {
   ...globalBaseStyles,
   display: 'grid',
   gap: '8',
-  gridTemplateColumns: '40px auto',
+  gridTemplateColumns: '[40px auto]',
   userSelect: 'none',
 };
 

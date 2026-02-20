@@ -1,0 +1,147 @@
+/**
+ * includes some normalize styles from:
+ * https://github.com/sindresorhus/modern-normalize/blob/main/modern-normalize.css
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  &:is(:focus-visible, [data-focus-visible='true']) {
+    outline-color: var(--cetec-colors-border-focused);
+  }
+
+  &:is(:disabled, [disabled], [data-disabled], [aria-disabled='true']) {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+html {
+  --global-font-heading: var(--cetec-fonts-heading);
+  --global-font-body: var(--cetec-fonts-body);
+  --global-font-mono: var(--cetec-fonts-mono);
+  --cetec-font-variant-body: 'MONO' 0, 'CRSV' 0, 'CASL' 0, 'slnt' 0;
+  --cetec-font-variant-body-italic: 'MONO' 0, 'CRSV' 1, 'CASL' 0, 'slnt' -15;
+  --cetec-font-variant-body-casual: 'MONO' 0, 'CRSV' 1, 'CASL' 1, 'slnt' 0;
+  --cetec-font-variant-body-casual-italic:
+    'MONO' 0, 'CRSV' 1, 'CASL' 1, 'slnt' -15;
+  --cetec-font-variant-mono: 'MONO' 1, 'CRSV' 0, 'CASL' 0, 'slnt' 0;
+  --cetec-font-variant-mono-italic: 'MONO' 1, 'CRSV' 1, 'CASL' 0, 'slnt' -15;
+  --cetec-font-variant-mono-casual: 'MONO' 1, 'CRSV' 1, 'CASL' 1, 'slnt' 0;
+  --cetec-font-variant-mono-casual-italic:
+    'MONO' 1, 'CRSV' 1, 'CASL' 1, 'slnt' -15;
+  font-size: var(--cetec-font-sizes-16);
+  line-height: var(--cetec-line-heights-default);
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+body {
+  font-family: var(--cetec-fonts-body);
+  font-variation-settings: var(--cetec-font-variant-body);
+  background: var(--cetec-colors-surface);
+  color: var(--cetec-colors-text-subtlest);
+  font-weight: var(--cetec-font-weights-normal);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--cetec-colors-text);
+  font-weight: var(--cetec-font-weights-black);
+  line-height: var(--cetec-line-heights-default);
+}
+
+p {
+  margin-bottom: 0.5rem;
+}
+
+b,
+strong {
+  font-weight: var(--cetec-font-weights-bold);
+}
+
+i,
+em {
+  font-style: italic;
+  font-variation-settings: var(--cetec-font-variant-body-italic);
+}
+
+u {
+  text-decoration: underline;
+}
+
+a {
+  text-decoration: none;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--cetec-fonts-mono);
+  font-variation-settings: var(--cetec-font-variant-mono);
+  font-size: var(--cetec-font-sizes-16);
+}
+
+table {
+  border-color: var(--cetec-colors-border);
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: var(--cetec-fonts-body);
+  font-size: 100%;
+  line-height: var(--cetec-line-heights-default);
+  margin: 0;
+}
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  appearance: button;
+  -webkit-appearance: button;
+}
+
+legend {
+  padding: 0;
+}
+
+progress {
+  vertical-align: baseline;
+}
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type='search'] {
+  appearance: textfield;
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+summary {
+  display: list-item;
+}

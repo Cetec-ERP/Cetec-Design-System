@@ -1,5 +1,4 @@
 import { defineGlobalStyles } from '@pandacss/dev';
-import { fontVariants } from './fontVariants';
 
 // includes some normalize styles from:
 // https://github.com/sindresorhus/modern-normalize/blob/main/modern-normalize.css
@@ -15,85 +14,26 @@ export const globalCss = defineGlobalStyles({
     },
   },
   html: {
-    '--global-font-heading': 'heading',
-    '--global-font-body': 'body',
-    '--global-font-mono': 'mono',
+    '--global-font-heading': 'var(--cetec-fonts-heading)',
+    '--global-font-body': 'var(--cetec-fonts-body)',
+    '--global-font-mono': 'var(--cetec-fonts-mono)',
+    '--cetec-font-variant-body': '"MONO" 0, "CRSV" 0, "CASL" 0, "slnt" 0',
+    '--cetec-font-variant-body-italic':
+      '"MONO" 0, "CRSV" 1, "CASL" 0, "slnt" -15',
+    '--cetec-font-variant-body-casual':
+      '"MONO" 0, "CRSV" 1, "CASL" 1, "slnt" 0',
+    '--cetec-font-variant-body-casual-italic':
+      '"MONO" 0, "CRSV" 1, "CASL" 1, "slnt" -15',
+    '--cetec-font-variant-mono': '"MONO" 1, "CRSV" 0, "CASL" 0, "slnt" 0',
+    '--cetec-font-variant-mono-italic':
+      '"MONO" 1, "CRSV" 1, "CASL" 0, "slnt" -15',
+    '--cetec-font-variant-mono-casual':
+      '"MONO" 1, "CRSV" 1, "CASL" 1, "slnt" 0',
+    '--cetec-font-variant-mono-casual-italic':
+      '"MONO" 1, "CRSV" 1, "CASL" 1, "slnt" -15',
     fontSize: '16',
-    lineHeight: 'calc(1em + 0.5rem)',
+    lineHeight: 'var(--cetec-line-heights-default)',
     '-webkit-text-size-adjust': '100%',
     tabSize: '4',
   },
-  '.random-class': {
-    fontVariationSettings: fontVariants.body,
-  },
-
-  // body: {
-  // fontFamily: 'body',
-  // bg: { base: 'slate.0', _dark: 'slate.90' },
-  // color: { base: 'slate.60', _dark: 'slate.30' },
-  // fontWeight: 'normal',
-  // },
-  // 'h1, h2, h3, h4, h5, h6': {
-  //   color: { base: 'slate.90', _dark: 'slate.5' },
-  //   fontWeight: 'black',
-  //   lineHeight: 'calc(1em + 0.5rem)',
-  // },
-  // p: {
-  //   marginBottom: '0.5rem',
-  // },
-  // 'b, strong': {
-  //   fontWeight: 'bold',
-  // },
-  // 'i, em': {
-  //   fontStyle: 'italic',
-  //   fontVariationSettings: fontVariants['body-italic'],
-  // },
-  // u: {
-  //   textDecoration: 'underline',
-  // },
-  // a: {
-  //   textDecoration: 'none',
-  // },
-  // 'code, kbd, samp, pre': {
-  //   fontFamily: 'mono',
-  //   fontVariationSettings: fontVariants.mono,
-  //   fontSize: '1em',
-  // },
-  // table: {
-  //   borderColor: { base: 'slate.10', _dark: 'slate.60' },
-  // },
-  // 'button, input, optgroup, select, textarea': {
-  //   fontFamily: 'body',
-  //   fontSize: '100%',
-  //   lineHeight: 'calc(1em + 0.5rem)',
-  //   margin: '0',
-  // },
-  // 'button, [type="button"], [type="reset"], [type="submit"]': {
-  //   appearance: 'button',
-  //   '-webkit-appearance': 'button',
-  // },
-  // legend: {
-  //   padding: '0',
-  // },
-  // progress: {
-  //   verticalAlign: 'baseline',
-  // },
-  // '::-webkit-inner-spin-button, ::-webkit-outer-spin-button': {
-  //   height: 'auto',
-  // },
-  // '[type="search"]': {
-  //   appearance: 'textfield',
-  //   '-webkit-appearance': 'textfield',
-  //   outlineOffset: '-2px',
-  // },
-  // '::-webkit-search-decoration': {
-  //   '-webkit-appearance': 'none',
-  // },
-  // '::-webkit-file-upload-button': {
-  //   '-webkit-appearance': 'button',
-  //   font: 'inherit',
-  // },
-  // summary: {
-  //   display: 'list-item',
-  // },
 });

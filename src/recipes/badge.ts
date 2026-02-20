@@ -19,7 +19,7 @@ export const badgeRecipe = defineSlotRecipe({
       borderRadius: '999',
       fontWeight: 'medium',
       fontFamily: 'body',
-      lineHeight: '1',
+      lineHeight: 'none',
       whiteSpace: 'nowrap',
       userSelect: 'none',
       zIndex: '1',

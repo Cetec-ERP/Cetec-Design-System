@@ -10,7 +10,7 @@ const tagBase = {
   //   h: '20',
   px: '4',
   fontSize: '14',
-  fontWeight: '500',
+  fontWeight: 'medium',
   //   lineHeight: 'none',
 };
 const tagVariant = {
@@ -52,7 +52,7 @@ const tagVariant = {
   hasIcon: {
     true: {},
     false: {
-      px: 4,
+      px: '4',
     },
   },
 };
