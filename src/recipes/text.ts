@@ -6,12 +6,13 @@ import {
 import { fontVariants } from '../styles/utilities';
 
 const textBase = {
-  margin: '0',
-  lineHeight: 'default',
-  fontWeight: 'normal',
-  fontSize: '16',
+  fontFamily: 'body',
   fontVariationSettings: fontVariants.body,
-  color: { base: 'slate.60', _dark: 'slate.30' },
+  fontWeight: 'normal',
+  lineHeight: 'default',
+  color: 'text.subtlest',
+  margin: '0',
+  fontSize: '16',
   maxWidth: 'prose',
 };
 
@@ -38,7 +39,10 @@ const fontWeights = (Object.keys(fontWeightTokens) as FontWeightKey[]).reduce(
 const textVariants = {
   family: {
     heading: { fontFamily: 'heading' },
-    body: { fontFamily: 'body' },
+    body: {
+      fontFamily: 'body',
+      // fontVariationSettings: fontVariants.body,
+    },
     mono: {
       fontFamily: 'mono',
       fontVariationSettings: fontVariants.mono,
@@ -84,7 +88,7 @@ const textVariants = {
 const headingBase = {
   fontFamily: 'heading',
   fontWeight: 'black',
-  color: { base: 'slate.90', _dark: 'slate.5' },
+  color: 'text',
   lineHeight: 'default',
 };
 

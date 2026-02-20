@@ -1,6 +1,8 @@
 import { defineRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const tagBase = {
+  ...globalBaseStyles,
   display: 'flex',
   py: '0',
   borderRadius: '2',
@@ -8,7 +10,7 @@ const tagBase = {
   //   h: '20',
   px: '4',
   fontSize: '14',
-  fontWeight: '500',
+  fontWeight: 'medium',
   //   lineHeight: 'none',
 };
 const tagVariant = {
@@ -50,7 +52,7 @@ const tagVariant = {
   hasIcon: {
     true: {},
     false: {
-      px: 4,
+      px: '4',
     },
   },
 };

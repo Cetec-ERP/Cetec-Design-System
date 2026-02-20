@@ -1,7 +1,9 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const chipBase = {
   container: {
+    ...globalBaseStyles,
     position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',

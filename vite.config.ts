@@ -63,6 +63,10 @@ export default defineConfig(({ mode: _mode, command }) => {
                   src: 'src/types/index.d.ts',
                   dest: './',
                 },
+                {
+                  src: 'src/styles/reset.css',
+                  dest: './',
+                },
               ],
             }),
           ]

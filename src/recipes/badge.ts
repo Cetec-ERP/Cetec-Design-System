@@ -1,4 +1,5 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 export const badgeRecipe = defineSlotRecipe({
   className: 'badge',
@@ -6,6 +7,7 @@ export const badgeRecipe = defineSlotRecipe({
   slots: ['root', 'indicator'],
   base: {
     root: {
+      ...globalBaseStyles,
       display: 'inline-flex',
       position: 'relative',
       verticalAlign: 'middle',
@@ -17,7 +19,7 @@ export const badgeRecipe = defineSlotRecipe({
       borderRadius: '999',
       fontWeight: 'medium',
       fontFamily: 'body',
-      lineHeight: '1',
+      lineHeight: 'none',
       whiteSpace: 'nowrap',
       userSelect: 'none',
       zIndex: '1',
