@@ -366,6 +366,21 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="bg.info.bold.pressed" />
         </Flex>
       </Grid>
+
+      <Grid gridTemplateColumns="subgrid" gridColumn="1 / -1">
+        <Flex direction="column" gap="8">
+          bg.cta
+          <SemanticColorToken token="bg.cta" />
+          <SemanticColorToken token="bg.cta.hovered" />
+          <SemanticColorToken token="bg.cta.pressed" />
+        </Flex>
+        <Flex direction="column" gap="8">
+          bg.cta.bold
+          <SemanticColorToken token="bg.cta.bold" />
+          <SemanticColorToken token="bg.cta.bold.hovered" />
+          <SemanticColorToken token="bg.cta.bold.pressed" />
+        </Flex>
+      </Grid>
     </Grid>
 
     <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
@@ -555,7 +570,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
         <SemanticColorToken token="border.disabled" />
         <SemanticColorToken token="border.focused" />
-        <SemanticColorToken token="border.focused.inverse" />
+        <SemanticColorToken token="border.inverse.focused" />
       </Grid>
 
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
@@ -614,6 +629,15 @@ import { SemanticColorToken } from './components/SemanticColorToken';
         <SemanticColorToken token="icon.warning.inverse" />
         <SemanticColorToken token="icon.danger" />
         <SemanticColorToken token="icon.info" />
+      </Grid>
+
+      <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
+
+      <Text textStyle="body.xs" allCaps>CTA</Text>
+
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="icon.cta" />
+        <SemanticColorToken token="icon.cta.hovered" />
       </Grid>
     </Grid>
 
