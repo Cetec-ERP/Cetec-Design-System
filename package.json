@@ -83,7 +83,8 @@
       "default": "./dist/preset.js"
     },
     "./sprite.svg": "./dist/sprite.svg",
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./reset.css": "./dist/reset.css"
   },
   "repository": {
     "type": "git",
