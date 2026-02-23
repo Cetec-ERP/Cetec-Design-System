@@ -1,3 +1,47 @@
+# 0.0.35 (Fri Feb 20 2026)
+
+#### 🐛 Bug Fix
+
+- docs: setting up storybook for automatic github pages deployment and hosting [#128](https://github.com/Cetec-ERP/Cetec-Design-System/pull/128) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- feat: chip badge avatar modal [#135](https://github.com/Cetec-ERP/Cetec-Design-System/pull/135) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- fix: fixed name param on input components so forms work in astro. fix: eslint config was apparently busted. [#134](https://github.com/Cetec-ERP/Cetec-Design-System/pull/134) ([@Etwigg](https://github.com/Etwigg))
+- refactor!: button refactor [#126](https://github.com/Cetec-ERP/Cetec-Design-System/pull/126) ([@shaunrfox](https://github.com/shaunrfox))
+- refactor!: panda build output optimization [#127](https://github.com/Cetec-ERP/Cetec-Design-System/pull/127) ([@shaunrfox](https://github.com/shaunrfox))
+- refactor!: refactor text component and recipe [#121](https://github.com/Cetec-ERP/Cetec-Design-System/pull/121) ([@shaunrfox](https://github.com/shaunrfox))
+- build!: changed build to make it easier to consume the library [#125](https://github.com/Cetec-ERP/Cetec-Design-System/pull/125) ([@shaunrfox](https://github.com/shaunrfox))
+- fix: build [#123](https://github.com/Cetec-ERP/Cetec-Design-System/pull/123) ([@Etwigg](https://github.com/Etwigg))
+- refactor: tokens refactor [#122](https://github.com/Cetec-ERP/Cetec-Design-System/pull/122) ([@shaunrfox](https://github.com/shaunrfox))
+- fix: add missing exports [#120](https://github.com/Cetec-ERP/Cetec-Design-System/pull/120) ([@Etwigg](https://github.com/Etwigg))
+- feat: add new props for menu component [#119](https://github.com/Cetec-ERP/Cetec-Design-System/pull/119) ([@vidhi-parikh](https://github.com/vidhi-parikh))
+- refactor!: configuration + preset refactor [#115](https://github.com/Cetec-ERP/Cetec-Design-System/pull/115) ([@shaunrfox](https://github.com/shaunrfox))
+- feat: formfield component [#94](https://github.com/Cetec-ERP/Cetec-Design-System/pull/94) (smitpatel@Smits-MacBook-Air.local)
+- feat: new icons [#114](https://github.com/Cetec-ERP/Cetec-Design-System/pull/114) ([@shaunrfox](https://github.com/shaunrfox))
+- feat: menu component [#102](https://github.com/Cetec-ERP/Cetec-Design-System/pull/102) (smitpatel@Smits-MacBook-Air.local)
+- feat: accessibility standards [#113](https://github.com/Cetec-ERP/Cetec-Design-System/pull/113) (smitpatel@Smits-MacBook-Air.local [@Etwigg](https://github.com/Etwigg) ethanwiggins@Ethans-MacBook-Air.local)
+- feat: tag component [#112](https://github.com/Cetec-ERP/Cetec-Design-System/pull/112) (smitpatel@Smits-MacBook-Air.local ethanwiggins@Ethans-MacBook-Air.local)
+- refactor: token changes in preparation for upcoming components (like Tags) [#111](https://github.com/Cetec-ERP/Cetec-Design-System/pull/111) ([@shaunrfox](https://github.com/shaunrfox))
+- chore: change autorc [#110](https://github.com/Cetec-ERP/Cetec-Design-System/pull/110) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- chore: update release.yml [#109](https://github.com/Cetec-ERP/Cetec-Design-System/pull/109) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- chore: test release workflow [#108](https://github.com/Cetec-ERP/Cetec-Design-System/pull/108) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- feat: breadcrumbs component [#95](https://github.com/Cetec-ERP/Cetec-Design-System/pull/95) (smitpatel@Smits-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+- feat: testworkflow [#107](https://github.com/Cetec-ERP/Cetec-Design-System/pull/107) (ethanwiggins@Ethans-MacBook-Air.local [@Etwigg](https://github.com/Etwigg))
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of github.com:Cetec-ERP/Cetec-Design-System (ethanwiggins@Ethans-MacBook-Air.local)
+- fix: auto config file (ethanwiggins@Ethans-MacBook-Air.local)
+
+#### Authors: 6
+
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Ethan Wiggins (ethanwiggins@ethans-air.lan)
+- Ethan Wiggins (ethanwiggins@Ethans-MacBook-Air.local)
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+- Smit Patel ([@smitjp150622](https://github.com/smitjp150622))
+- Vidhi Parikh ([@vidhi-parikh](https://github.com/vidhi-parikh))
+
+---
+
 # 0.0.35 (Sat Feb 14 2026)
 
 #### 🐛 Bug Fix

@@ -1,0 +1,160 @@
+name: Deploy Storybook to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# Prevent concurrent deployments to avoid git conflicts
+concurrency:
+  group: pages-deploy-${{ github.event.pull_request.number || 'main' }}
+  cancel-in-progress: true
+
+jobs:
+  # Deploy main branch to root of gh-pages
+  deploy-main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Panda CSS
+        run: npm run prepare
+
+      - name: Generate SVG Sprite
+        run: npm run generate-sprite
+
+      - name: Build Storybook
+        run: npm run storybook:build
+        env:
+          GH_REPO: ${{ github.event.repository.name }}
+          STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/
+
+      - name: Deploy to gh-pages (root)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          destination_dir: .
+          keep_files: true  # Preserve PR preview directories
+
+  # Deploy PR preview to /pr-<number>/ subdirectory
+  deploy-pr-preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Panda CSS
+        run: npm run prepare
+
+      - name: Generate SVG Sprite
+        run: npm run generate-sprite
+
+      - name: Build Storybook
+        run: npm run storybook:build
+        env:
+          GH_REPO: ${{ github.event.repository.name }}
+          STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/pr-${{ github.event.pull_request.number }}/
+
+      - name: Deploy PR preview to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          destination_dir: pr-${{ github.event.pull_request.number }}
+          keep_files: true
+
+      - name: Comment PR with preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const repoName = context.repo.repo;
+            const owner = context.repo.owner;
+            const previewUrl = `https://${owner}.github.io/${repoName}/pr-${prNumber}/`;
+
+            // Check if we already commented
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo: repoName,
+              issue_number: prNumber,
+            });
+
+            const botComment = comments.data.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Storybook Preview')
+            );
+
+            const body = `## 📚 Storybook Preview
+
+            Your preview is ready!
+
+            **Preview URL:** ${previewUrl}
+
+            <sub>This preview will be automatically removed when the PR is closed.</sub>`;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo: repoName,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo: repoName,
+                issue_number: prNumber,
+                body,
+              });
+            }
+
+  # Clean up PR preview when PR is closed/merged
+  cleanup-pr-preview:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Remove PR preview directory
+        run: |
+          PR_DIR="pr-${{ github.event.pull_request.number }}"
+          if [ -d "$PR_DIR" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git rm -rf "$PR_DIR"
+            git commit -m "chore: remove preview for PR #${{ github.event.pull_request.number }}"
+            git push origin gh-pages
+          else
+            echo "Preview directory $PR_DIR does not exist, nothing to clean up"
+          fi

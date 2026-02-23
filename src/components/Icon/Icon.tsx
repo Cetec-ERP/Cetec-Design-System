@@ -37,7 +37,7 @@ export const Icon: React.FC<IconProps> = ({
       className={cx(icon({ size: size, fill }), className)}
       {...otherProps}
     >
-      <use xlinkHref={`/sprite.svg#${name}`} />
+      <use xlinkHref={`${import.meta.env.BASE_URL}sprite.svg#${name}`} />
     </Box>
   );
 };
