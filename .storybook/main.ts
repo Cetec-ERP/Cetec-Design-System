@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { mergeConfig } from 'vite';
 
 const config: StorybookConfig = {
   stories: [
@@ -20,6 +21,13 @@ const config: StorybookConfig = {
   },
   docs: {
     defaultName: 'Documentation',
+  },
+  viteFinal: async (config) => {
+    return mergeConfig(config, {
+      optimizeDeps: {
+        exclude: ['@pandacss/dev'],
+      },
+    });
   },
 };
 
