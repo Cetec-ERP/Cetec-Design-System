@@ -2,12 +2,10 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 const menuBase = {
   wrapper: {
-    width: '260',
+    width: 'fit',
     bg: 'surface',
     borderRadius: '4',
-    boxShadow: 'medium',
-    borderWidth: '1',
-    borderColor: 'border.default',
+    boxShadow: 'overlay',
     overflow: 'hidden',
     zIndex: '100',
   },
@@ -18,67 +16,72 @@ const menuBase = {
   item: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '8',
+    gap: '4',
     width: 'full',
     textAlign: 'left',
-    borderWidth: '0',
-    bg: 'transparent',
-    color: { base: 'slate.90', _dark: 'slate.5' },
+    borderWidth: '1',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    color: 'text',
     cursor: 'pointer',
     outline: '2px solid transparent',
     outlineOffset: '-2',
+    bg: 'surface',
     _hover: {
-      bg: 'surface.hovered',
+      bg: 'bg.neutral.hovered',
     },
-    _active: {
-      bg: 'surface.pressed',
+    '&:is(:active)': {
+      bg: 'bg.neutral.pressed',
     },
-    _focusVisible: {
-      outlineColor: 'border.focused',
+    _focus: {
+      bg: 'bg.neutral.hovered',
+    },
+    _selected: {
+      bg: 'surface.selected',
+      _hover: {
+        bg: 'surface.selected.hovered',
+      },
+      '&:is(:active)': {
+        bg: 'surface.selected.pressed',
+      },
+      _focus: {
+        bg: 'surface.selected.hovered',
+      },
     },
     _disabled: {
       opacity: '0.4',
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },
-    '&[data-selected=true]': {
-      bg: 'surface.hovered',
-    },
-    '&[data-active=true]': {
-      bg: 'surface.hovered',
-    },
+    //   '&[data-active=true]': {
+    //     bg: 'surface.hovered',
+    //   },
   },
-  itemIconBefore: {
-    width: '24',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: '0',
-  },
-  itemIconAfter: {
-    width: '24',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ml: 'auto',
+  icon: {
+    aspectRatio: 'square',
+    transitionDuration: 'fast',
+    transitionProperty: 'fill',
+    transitionTimingFunction: 'default',
     flexShrink: '0',
   },
   itemMain: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '2',
+    gap: '0',
     minWidth: '0',
   },
   itemLabel: {
-    color: { base: 'slate.90', _dark: 'slate.5' },
+    color: 'text',
   },
   itemDescription: {
-    color: { base: 'slate.60', _dark: 'slate.30' },
+    color: 'text.subtlest',
+    lineHeight: 'tight',
   },
   groupLabel: {
-    px: '12',
-    py: '6',
-    color: { base: 'slate.60', _dark: 'slate.30' },
+    px: '10',
+    pt: '12',
+    pb: '4',
+    color: 'text.subtlest',
   },
   divider: {
     borderWidth: '0',
@@ -90,14 +93,23 @@ const menuBase = {
   backHeader: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    px: '12',
-    py: '8',
-    borderBottomWidth: '1',
-    borderColor: 'border.default',
-    bg: 'surface.pressed',
+    justifyContent: 'start',
+    gap: '4',
+    ps: '4',
+    borderWidth: '0',
+    borderBlockWidth: '3',
+    borderColor: 'transparent',
+    bg: { base: 'tan.5', _dark: 'tan.60' },
     width: 'full',
     textAlign: 'left',
+    cursor: 'pointer',
+    color: 'text',
+    _hover: {
+      bg: { base: 'tan.10', _dark: 'tan.50' },
+    },
+    _active: {
+      bg: { base: 'tan.20', _dark: 'tan.70' },
+    },
   },
   submenuCaret: {
     display: 'flex',
@@ -124,59 +136,118 @@ const menuBase = {
   highlight: {
     bg: 'gold.5',
     color: 'text',
-    px: '2',
     borderRadius: '2',
   },
   noResults: {
     px: '12',
     py: '10',
-    color: { base: 'slate.60', _dark: 'slate.30' },
+    color: 'text.subtlest',
   },
 };
 
 const menuVariants = {
   density: {
-    condensed: {
+    compact: {
       item: {
+        py: '3',
         px: '10',
-        py: '6',
       },
       itemLabel: {
-        textStyle: 'body.xs',
+        textStyle: 'body.md',
+        color: 'text',
       },
       itemDescription: {
         textStyle: 'body.xs',
+        lineHeight: 'tight',
+      },
+      backHeader: {
+        py: '3',
+        pe: '10',
       },
     },
     comfortable: {
       item: {
+        py: '7',
         px: '12',
-        py: '8',
       },
       itemLabel: {
-        textStyle: 'body.sm',
+        textStyle: 'body.md',
+        color: 'text',
       },
       itemDescription: {
         textStyle: 'body.xs',
+        lineHeight: 'tight',
+      },
+      backHeader: {
+        py: '7',
+        pe: '12',
       },
     },
     spacious: {
       item: {
-        px: '14',
-        py: '12',
+        py: '9',
+        px: '16',
       },
       itemLabel: {
-        textStyle: 'body.md',
+        textStyle: 'body.lg',
+        color: 'text',
       },
       itemDescription: {
         textStyle: 'body.sm',
+        lineHeight: 'tight',
+      },
+      backHeader: {
+        py: '9',
+        pe: '16',
       },
     },
   },
   itemVariant: {
     default: {},
-    checkbox: {},
-    toggle: {},
+    checkbox: {
+      item: {
+        _hover: {
+          bg: 'surface',
+        },
+        _focus: {
+          bg: 'bg.neutral.hovered',
+        },
+        '&:is(:active), &:is([data-active="true"]):hover': {
+          bg: 'surface',
+        },
+        _selected: {
+          bg: 'surface',
+          _hover: {
+            bg: 'surface',
+          },
+          _focus: {
+            bg: 'bg.neutral.hovered',
+          },
+        },
+      },
+    },
+    toggle: {
+      item: {
+        _hover: {
+          bg: 'surface',
+        },
+        _focus: {
+          bg: 'bg.neutral.hovered',
+        },
+        '&:is(:active), &:is([data-active="true"]):hover': {
+          bg: 'surface',
+        },
+        _selected: {
+          bg: 'surface',
+          _hover: {
+            bg: 'surface',
+          },
+          _focus: {
+            bg: 'bg.neutral.hovered',
+          },
+        },
+      },
+    },
     section: {
       item: {
         cursor: 'default',
@@ -191,6 +262,16 @@ const menuVariants = {
       },
     },
   },
+  iconBefore: {
+    true: {
+      item: {},
+    },
+  },
+  iconAfter: {
+    true: {
+      item: {},
+    },
+  },
 };
 
 export const menuRecipe = defineSlotRecipe({
@@ -200,8 +281,7 @@ export const menuRecipe = defineSlotRecipe({
     'wrapper',
     'list',
     'item',
-    'itemIconBefore',
-    'itemIconAfter',
+    'icon',
     'itemMain',
     'itemLabel',
     'itemDescription',
@@ -218,7 +298,7 @@ export const menuRecipe = defineSlotRecipe({
   base: menuBase,
   variants: menuVariants,
   defaultVariants: {
-    density: 'comfortable',
+    density: 'compact',
     itemVariant: 'default',
   },
 });

@@ -225,8 +225,8 @@ export const AutocompleteFiltering: Story = {
 export const Density: Story = {
   render: () => (
     <HStack gap="12" alignItems="flex-start">
-      <Menu inline density="condensed">
-        <MenuItem label="Condensed" description="Small row spacing" />
+      <Menu inline density="compact">
+        <MenuItem label="Compact" description="Small row spacing" />
         <MenuItem label="Second row" />
       </Menu>
       <Menu inline density="comfortable">

@@ -33,7 +33,6 @@ import {
 } from 'react';
 
 import { Box } from '../Box';
-import { Card } from '../Card';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import {
@@ -88,7 +87,7 @@ export const Menu = (props: MenuProps) => {
     closeOnSelect = true,
     inline = false,
     subMenuInteraction = 'hover',
-    density = 'comfortable',
+    density = 'compact',
     query = '',
     filterMode = 'none',
     renderNoResults,
@@ -220,9 +219,8 @@ export const Menu = (props: MenuProps) => {
   const content = (
     <MenuRootProvider value={rootContextValue}>
       <MenuFilterProvider value={filterContextValue}>
-        <Card
+        <Box
           ref={floating.refs.setFloating}
-          variant="overlay"
           className={cx(classes.wrapper, className)}
           {...getFloatingProps()}
           {...otherProps}
@@ -269,8 +267,8 @@ export const Menu = (props: MenuProps) => {
                             className={classes.backHeader}
                             onClick={rootContextValue.onPopDrilldownPanel}
                           >
-                            <Icon name="caret-left" />
-                            <Text textStyle="body.xs">{panel.title}</Text>
+                            <Icon name="caret-left" fill="icon" />
+                            {panel.title}
                           </Box>
                         )}
                         <Box className={classes.list}>{panelChildren}</Box>
@@ -297,8 +295,8 @@ export const Menu = (props: MenuProps) => {
                               className={classes.backHeader}
                               onClick={rootContextValue.onPopDrilldownPanel}
                             >
-                              <Icon name="caret-left" />
-                              <Text textStyle="body.xs">{panel.title}</Text>
+                              <Icon name="caret-left" fill="icon" />
+                              {panel.title}
                             </Box>
                           )}
                           <Box className={classes.list}>{panelChildren}</Box>
@@ -310,7 +308,7 @@ export const Menu = (props: MenuProps) => {
               </Box>
             </Box>
           )}
-        </Card>
+        </Box>
       </MenuFilterProvider>
     </MenuRootProvider>
   );

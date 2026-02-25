@@ -1,10 +1,12 @@
 import { useFloatingTree, useListItem, useMergeRefs } from '@floating-ui/react';
 import { cx } from '@styled-system/css';
 import { menu } from '@styled-system/recipes';
-import type { HTMLProps, MouseEvent } from 'react';
+import type { ChangeEventHandler, HTMLProps, MouseEvent } from 'react';
 
 import { Box } from '../Box';
 import { Icon } from '../Icon';
+import { CheckBox } from '../CheckBox';
+import { Toggle } from '../Toggle';
 import { Text } from '../Text';
 import { splitProps } from '~/utils/splitProps';
 import {
@@ -79,6 +81,8 @@ export const MenuItem = (props: MenuItemProps) => {
   const classes = menu({
     density: density ?? rootContext.density,
     itemVariant: variant,
+    iconBefore: Boolean(iconBefore),
+    iconAfter: Boolean(iconAfter),
   });
 
   if (variant === 'divider') {
@@ -122,6 +126,7 @@ export const MenuItem = (props: MenuItemProps) => {
   const mergedRef = useMergeRefs([listItem.ref]);
 
   const shouldCloseOnSelect = closeOnSelect ?? rootContext.closeOnSelect;
+  const controlName = textValue ?? label ?? 'menu-item';
 
   const handleSelect = (event: MouseEvent<HTMLElement>) => {
     onClick?.(event);
@@ -133,6 +138,11 @@ export const MenuItem = (props: MenuItemProps) => {
     if (!event.defaultPrevented && shouldCloseOnSelect) {
       rootContext.onCloseMenu();
     }
+  };
+
+  const handleControlChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   const itemProps: HTMLProps<HTMLElement> = listContext
@@ -167,30 +177,43 @@ export const MenuItem = (props: MenuItemProps) => {
 
   const content = (
     <>
-      {iconBefore && (
-        <Box className={classes.itemIconBefore}>
-          <Icon name={iconBefore} />
-        </Box>
+      {variant === 'checkbox' && (
+        <CheckBox
+          name={controlName}
+          checked={Boolean(selected)}
+          onChange={handleControlChange}
+          tabIndex={-1}
+        />
       )}
+
+      {variant === 'toggle' && (
+        <Toggle
+          name={controlName}
+          checked={Boolean(selected)}
+          onChange={handleControlChange}
+          mr="4"
+          tabIndex={-1}
+        />
+      )}
+
+      {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
 
       <Box className={classes.itemMain}>
         {label && (
-          <Text className={classes.itemLabel} textStyle="body.sm">
+          <Text className={classes.itemLabel}>
             <HighlightedText value={label} />
           </Text>
         )}
 
         {description && (
-          <Text className={classes.itemDescription} textStyle="body.xs">
+          <Text className={classes.itemDescription}>
             <HighlightedText value={description} />
           </Text>
         )}
       </Box>
 
-      {(iconAfter || (variant !== 'default' && selected)) && (
-        <Box className={classes.itemIconAfter}>
-          <Icon name={iconAfter || 'check'} />
-        </Box>
+      {iconAfter && (
+        <Icon className={classes.icon} name={iconAfter} ml="auto" />
       )}
     </>
   );

@@ -10,7 +10,7 @@ export const globalCss = defineGlobalStyles({
     margin: 0,
     padding: 0,
     _focusVisible: {
-      outlineColor: { base: 'slate.90', _dark: 'slate.0' },
+      outline: 'none',
     },
     _disabled: {
       cursor: 'not-allowed',

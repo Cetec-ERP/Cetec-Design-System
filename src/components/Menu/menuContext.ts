@@ -4,8 +4,9 @@ import type { HTMLProps, ReactElement, ReactNode } from 'react';
 import type { Placement } from '@floating-ui/react';
 import type { BoxProps } from '~/components/Box';
 import type { IconNamesList } from '~/components/Icon';
+import type { MenuVariantProps } from '@styled-system/recipes';
 
-export type MenuDensity = 'condensed' | 'comfortable' | 'spacious';
+export type MenuDensity = 'compact' | 'comfortable' | 'spacious';
 export type MenuFilterMode = 'none' | 'contains';
 export type SubMenuInteraction = 'hover' | 'drilldown';
 
@@ -36,21 +37,22 @@ export type MenuItemVariant =
   | 'section'
   | 'divider';
 
-export type MenuItemProps = Omit<BoxProps, 'as'> & {
-  label?: string;
-  description?: string;
-  variant?: MenuItemVariant;
-  disabled?: boolean;
-  selected?: boolean;
-  iconBefore?: IconNamesList;
-  iconAfter?: IconNamesList;
-  href?: string;
-  target?: string;
-  rel?: string;
-  closeOnSelect?: boolean;
-  density?: MenuDensity;
-  textValue?: string;
-};
+export type MenuItemProps = Omit<BoxProps, 'as'> &
+  Omit<MenuVariantProps, 'iconBefore' | 'iconAfter'> & {
+    label?: string;
+    description?: string;
+    variant?: MenuItemVariant;
+    disabled?: boolean;
+    selected?: boolean;
+    iconBefore?: IconNamesList;
+    iconAfter?: IconNamesList;
+    href?: string;
+    target?: string;
+    rel?: string;
+    closeOnSelect?: boolean;
+    density?: MenuDensity;
+    textValue?: string;
+  };
 
 export type MenuGroupProps = BoxProps & {
   label?: string;
@@ -58,16 +60,17 @@ export type MenuGroupProps = BoxProps & {
   divider?: boolean;
 };
 
-export type SubMenuProps = Omit<BoxProps, 'as'> & {
-  label: string;
-  description?: string;
-  disabled?: boolean;
-  iconBefore?: IconNamesList;
-  interaction?: SubMenuInteraction;
-  placement?: Placement;
-  children: ReactNode;
-  textValue?: string;
-};
+export type SubMenuProps = Omit<BoxProps, 'as'> &
+  Omit<MenuVariantProps, 'iconBefore'> & {
+    label: string;
+    description?: string;
+    disabled?: boolean;
+    iconBefore?: IconNamesList;
+    interaction?: SubMenuInteraction;
+    placement?: Placement;
+    children: ReactNode;
+    textValue?: string;
+  };
 
 export type MenuFilterContextValue = {
   query: string;

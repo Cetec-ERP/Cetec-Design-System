@@ -167,20 +167,12 @@ export const SubMenu = (props: SubMenuProps) => {
         {...drilldownButtonProps}
         type="button"
       >
-        {iconBefore && (
-          <Box className={classes.itemIconBefore}>
-            <Icon name={iconBefore} />
-          </Box>
-        )}
+        {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
 
         <Box className={classes.itemMain}>
-          <Text className={classes.itemLabel} textStyle="body.sm">
-            {label}
-          </Text>
+          <Text className={classes.itemLabel}>{label}</Text>
           {description && (
-            <Text className={classes.itemDescription} textStyle="body.xs">
-              {description}
-            </Text>
+            <Text className={classes.itemDescription}>{description}</Text>
           )}
         </Box>
 
@@ -356,26 +348,16 @@ export const SubMenu = (props: SubMenuProps) => {
         {...referencePropsWithoutRef}
         type="button"
       >
-        {iconBefore && (
-          <Box className={classes.itemIconBefore}>
-            <Icon name={iconBefore} />
-          </Box>
-        )}
+        {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
 
         <Box className={classes.itemMain}>
-          <Text className={classes.itemLabel} textStyle="body.sm">
-            {label}
-          </Text>
+          <Text className={classes.itemLabel}>{label}</Text>
           {description && (
-            <Text className={classes.itemDescription} textStyle="body.xs">
-              {description}
-            </Text>
+            <Text className={classes.itemDescription}>{description}</Text>
           )}
         </Box>
 
-        <Box className={classes.submenuCaret}>
-          <Icon name="caret-right" />
-        </Box>
+        <Icon className={classes.submenuCaret} name="caret-right" />
       </button>
 
       {open && (

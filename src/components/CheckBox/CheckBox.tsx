@@ -34,6 +34,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
         className={input}
         name={name}
         id={id}
+        checked={checked}
         aria-label={name}
         {...props}
         {...(indeterminate && { 'data-indeterminate': true })}
