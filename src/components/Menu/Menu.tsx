@@ -24,9 +24,11 @@ import {
   Children,
   cloneElement,
   type HTMLProps,
+  type CSSProperties,
   type ReactNode,
   isValidElement,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -115,6 +117,13 @@ export const Menu = (props: MenuProps) => {
   };
 
   const [drilldownPanels, setDrilldownPanels] = useState<DrilldownPanel[]>([]);
+  const [wrapperSize, setWrapperSize] = useState<{
+    width: number | null;
+    height: number | null;
+  }>({
+    width: null,
+    height: null,
+  });
   const drilldownDepth = drilldownPanels.length;
 
   useEffect(() => {
@@ -207,14 +216,75 @@ export const Menu = (props: MenuProps) => {
   };
 
   const panels = [{ key: 'root', title: 'Menu', children }, ...drilldownPanels];
+  const activePanel = panels[Math.min(drilldownDepth, panels.length - 1)]!;
   const panelCount = panels.length;
   const trackWidthPercent = panelCount * 100;
   const panelWidthPercent = 100 / panelCount;
   const trackTranslatePercent = (drilldownDepth * 100) / panelCount;
-  const floatingStyle =
-    hasReference && !inline
-      ? { ...floating.floatingStyles, ...otherProps.style }
-      : otherProps.style;
+  const shouldUseDrilldownSizing =
+    subMenuInteraction === 'drilldown' && hasVisibleResults;
+
+  const sizeProbeRef = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (!isOpen || !shouldUseDrilldownSizing) {
+      setWrapperSize({ width: null, height: null });
+      return;
+    }
+
+    const sizeProbe = sizeProbeRef.current;
+    if (!sizeProbe) {
+      return;
+    }
+
+    const updateWrapperSize = () => {
+      const nextWidth = Math.ceil(sizeProbe.scrollWidth);
+      const nextHeight = Math.ceil(sizeProbe.scrollHeight);
+
+      setWrapperSize((previous) => {
+        if (previous.width === nextWidth && previous.height === nextHeight) {
+          return previous;
+        }
+
+        return {
+          width: nextWidth,
+          height: nextHeight,
+        };
+      });
+    };
+
+    updateWrapperSize();
+
+    const resizeObserver = new ResizeObserver(updateWrapperSize);
+    resizeObserver.observe(sizeProbe);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [
+    activePanel.children,
+    activePanel.key,
+    activePanel.title,
+    density,
+    drilldownDepth,
+    hasVisibleResults,
+    isOpen,
+    shouldUseDrilldownSizing,
+  ]);
+
+  const drilldownWrapperStyle: CSSProperties =
+    shouldUseDrilldownSizing && wrapperSize.width && wrapperSize.height
+      ? {
+          width: `${wrapperSize.width}px`,
+          height: `${wrapperSize.height}px`,
+        }
+      : {};
+
+  const floatingStyle = {
+    ...(hasReference && !inline ? floating.floatingStyles : {}),
+    ...drilldownWrapperStyle,
+    ...otherProps.style,
+  };
 
   const content = (
     <MenuRootProvider value={rootContextValue}>
@@ -236,6 +306,33 @@ export const Menu = (props: MenuProps) => {
 
           {hasVisibleResults && (
             <Box className={classes.panelsViewport}>
+              {shouldUseDrilldownSizing && (
+                <Box
+                  ref={sizeProbeRef}
+                  className={classes.sizeProbe}
+                  aria-hidden
+                >
+                  <Box className={classes.panel}>
+                    {drilldownDepth > 0 && (
+                      <Box
+                        as="button"
+                        type="button"
+                        className={classes.backHeader}
+                      >
+                        <Icon name="caret-left" fill="icon" />
+                        {activePanel.title}
+                      </Box>
+                    )}
+                    <Box className={classes.list}>
+                      {withPanelScopedKeys(
+                        activePanel.children,
+                        `${activePanel.key}-probe`,
+                      )}
+                    </Box>
+                  </Box>
+                </Box>
+              )}
+
               <Box
                 className={classes.panelsTrack}
                 style={{

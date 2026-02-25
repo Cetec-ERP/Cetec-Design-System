@@ -8,6 +8,9 @@ const menuBase = {
     boxShadow: 'overlay',
     overflow: 'hidden',
     zIndex: '100',
+    transitionProperty: 'width, height',
+    transitionDuration: 'normal',
+    transitionTimingFunction: 'default',
   },
   list: {
     display: 'flex',
@@ -120,6 +123,7 @@ const menuBase = {
   panelsViewport: {
     overflow: 'hidden',
     width: 'full',
+    position: 'relative',
   },
   panelsTrack: {
     display: 'flex',
@@ -132,6 +136,15 @@ const menuBase = {
   panel: {
     minWidth: '0',
     flexShrink: '0',
+  },
+  sizeProbe: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    visibility: 'hidden',
+    inset: '0',
+    width: 'fit-content',
+    height: 'fit-content',
+    overflow: 'visible',
   },
   highlight: {
     bg: 'gold.5',
@@ -292,6 +305,7 @@ export const menuRecipe = defineSlotRecipe({
     'panelsViewport',
     'panelsTrack',
     'panel',
+    'sizeProbe',
     'highlight',
     'noResults',
   ],
