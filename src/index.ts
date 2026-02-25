@@ -22,7 +22,19 @@ export { ThemeProvider } from './contexts/ThemeContext';
 export { Tooltip } from './components/Tooltip';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
-export { Menu } from './components/Menu';
+export {
+  Menu,
+  MenuGroup,
+  MenuItem,
+  SubMenu,
+  type MenuDensity,
+  type MenuGroupProps,
+  type MenuItemProps,
+  type MenuItemVariant,
+  type MenuProps,
+  type SubMenuProps,
+} from './components/Menu';
+export { MenuLegacy, type MenuLegacyProps } from './components/MenuLegacy';
 export { FormField } from './components/FormField';
 
 // Export the Panda CSS preset

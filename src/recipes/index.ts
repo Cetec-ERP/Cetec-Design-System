@@ -19,5 +19,6 @@ export { checkBoxRecipe } from './checkbox';
 export { radioRecipe } from './radio';
 export { tooltipRecipe } from './tooltip';
 export { menuRecipe } from './menu';
+export { menuLegacyRecipe } from './menuLegacy';
 export { textInputRecipe } from './textInput';
 export { formFieldRecipe } from './formField';

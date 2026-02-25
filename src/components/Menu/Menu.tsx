@@ -1,275 +1,343 @@
-import { useRef, useState } from 'react';
-import { splitProps } from '~/utils/splitProps';
+import {
+  autoUpdate,
+  flip,
+  FloatingFocusManager,
+  FloatingList,
+  FloatingNode,
+  FloatingPortal,
+  FloatingTree,
+  offset,
+  shift,
+  size,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useListNavigation,
+  useFloatingNodeId,
+  useRole,
+  useTypeahead,
+} from '@floating-ui/react';
 import { cx } from '@styled-system/css';
-import { menu, type MenuVariantProps } from '@styled-system/recipes';
-import { Box, type BoxProps } from '../Box';
+import { menu } from '@styled-system/recipes';
+import {
+  Children,
+  cloneElement,
+  type HTMLProps,
+  type ReactNode,
+  isValidElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
+import { Box } from '../Box';
+import { Card } from '../Card';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
-import { Divider } from '../Divider';
-import { Icon, type IconNamesList } from '../Icon';
-import { CheckBox } from '../CheckBox';
-import { Toggle } from '../Toggle';
-import { Link } from '../Link';
-import { Spinner } from '../Spinner';
-import { useOnClose } from '~/utils/useOnClose';
+import {
+  hasMatchingItems,
+  MenuFilterProvider,
+  MenuListProvider,
+  MenuRootProvider,
+  type MenuProps,
+  type MenuRootContextValue,
+} from './menuContext';
+import { splitProps } from '~/utils/splitProps';
 
-export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
-  MenuVariantProps & {
-    loading?: boolean;
-    onClose?: () => void;
-    menuSection: {
-      id?: string;
-      title?: string;
-      divider?: boolean;
-      spacer?: boolean;
-      link?: boolean;
-      items: {
-        id: string;
-        label: string;
-        description?: string;
-        value?: string;
-        iconName?: string;
-        children?: MenuProps['menuSection'];
-        disabled?: boolean;
-        href?: string;
-      }[];
-    }[];
-    iconPlacement?: 'left' | 'right';
-    variant?: 'single-select' | 'multi-select';
-    multiSelectType?: 'checkbox' | 'toggle';
-    onChange?: (selected: string[] | string | null) => void;
-  };
+type DrilldownPanel = {
+  key: string;
+  title: string;
+  children: ReactNode;
+};
 
-/**
- * TODO: Update Menu component
- */
+const defaultGetItemText = ({
+  label,
+  description,
+}: {
+  label?: string;
+  description?: string;
+}) => {
+  return [label, description].filter(Boolean).join(' ').trim();
+};
+
+const withPanelScopedKeys = (nodes: ReactNode, panelKey: string) => {
+  return Children.map(nodes, (childNode, index) => {
+    if (!isValidElement(childNode)) {
+      return childNode;
+    }
+
+    const childKey = childNode.key ?? index;
+    return cloneElement(childNode, {
+      key: `${panelKey}-${String(childKey)}`,
+    });
+  });
+};
+
 export const Menu = (props: MenuProps) => {
+  const nodeId = useFloatingNodeId();
   const {
-    loading,
-    onClose,
-    menuSection,
-    iconPlacement,
-    variant,
-    multiSelectType,
-    onChange,
+    trigger,
+    children,
+    open,
+    defaultOpen,
+    onOpenChange,
+    placement = 'bottom-start',
+    strategy = 'absolute',
+    closeOnSelect = true,
+    inline = false,
+    subMenuInteraction = 'hover',
+    density = 'comfortable',
+    query = '',
+    filterMode = 'none',
+    renderNoResults,
+    highlightMatches = Boolean(query),
+    getItemText = defaultGetItemText,
     ...rest
   } = props;
+
   const [className, otherProps] = splitProps(rest);
-  const {
-    wrapper,
-    wrapperInner,
-    sectionTitle,
-    menuItem,
-    menuLabel,
-    menuDescription,
-    parentLabel,
-    multiLevelIcon,
-    dividerSection,
-    spacerSection,
-    iconSection,
-    loaderContainer,
-  } = menu({
-    iconPlacement,
-    multiSelectType,
-  });
-  const [selected, setSelected] = useState<string[]>([]);
-  const [isChildren, setIsChildren] = useState([
-    { menu: menuSection, parentLabel: null as string | null },
-  ]);
+  const classes = menu({ density });
 
-  const current = isChildren[isChildren.length - 1];
+  const hasReference = Boolean(trigger) && !inline;
 
-  const menuRef = useRef<HTMLDivElement | null>(null);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(
+    defaultOpen ?? false,
+  );
+  const isControlled = open !== undefined;
+  const isOpen = isControlled ? open : uncontrolledOpen;
 
-  useOnClose(menuRef, onClose);
-
-  const handleSelect = (id: string) => {
-    if (variant === 'single-select') {
-      if (selected.includes(id)) {
-        setSelected([]);
-        onChange?.(null);
-      } else {
-        setSelected([id]);
-        onChange?.(id);
-      }
-    } else {
-      setSelected((prev) =>
-        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-      );
-      onChange?.(
-        selected.includes(id)
-          ? selected.filter((x) => x !== id)
-          : [...selected, id],
-      );
+  const setOpenState = (nextOpen: boolean) => {
+    if (!isControlled) {
+      setUncontrolledOpen(nextOpen);
     }
+    onOpenChange?.(nextOpen);
   };
 
-  const handleOpenSubmenu = (
-    children: MenuProps['menuSection'],
-    parentLabel: string,
-  ) => {
-    if (children)
-      setIsChildren([...isChildren, { menu: children, parentLabel }]);
+  const [drilldownPanels, setDrilldownPanels] = useState<DrilldownPanel[]>([]);
+  const drilldownDepth = drilldownPanels.length;
+
+  useEffect(() => {
+    if (!isOpen) {
+      setDrilldownPanels([]);
+    }
+  }, [isOpen]);
+
+  const floating = useFloating({
+    nodeId,
+    open: hasReference ? isOpen : true,
+    onOpenChange: setOpenState,
+    placement,
+    strategy,
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(4), flip(), shift({ padding: 8 }), size()],
+  });
+
+  const listRef = useRef<Array<HTMLElement | null>>([]);
+  const labelsRef = useRef<Array<string | null>>([]);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const click = useClick(floating.context, { enabled: hasReference });
+  const dismiss = useDismiss(floating.context, { enabled: hasReference });
+  const role = useRole(floating.context, { role: 'menu' });
+  const listNavigation = useListNavigation(floating.context, {
+    listRef,
+    activeIndex,
+    onNavigate: setActiveIndex,
+    loop: true,
+  });
+  const typeahead = useTypeahead(floating.context, {
+    listRef: labelsRef,
+    activeIndex,
+    onMatch: setActiveIndex,
+    resetMs: 600,
+  });
+
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [click, dismiss, role, listNavigation, typeahead],
+  );
+
+  const filterContextValue = useMemo(
+    () => ({
+      query,
+      filterMode,
+      highlightMatches,
+      getItemText,
+    }),
+    [filterMode, getItemText, highlightMatches, query],
+  );
+
+  const activePanelChildren =
+    drilldownPanels[drilldownPanels.length - 1]?.children ?? children;
+
+  const hasVisibleResults = hasMatchingItems(
+    activePanelChildren,
+    filterContextValue,
+  );
+
+  const rootContextValue: MenuRootContextValue = {
+    density,
+    closeOnSelect,
+    subMenuInteraction,
+    inline,
+    onCloseMenu: () => {
+      setOpenState(false);
+      setDrilldownPanels([]);
+    },
+    onPushDrilldownPanel: (title, panelChildren) => {
+      setDrilldownPanels((prev) => [
+        ...prev,
+        {
+          key: `${title}-${prev.length}`,
+          title,
+          children: panelChildren,
+        },
+      ]);
+    },
+    onPopDrilldownPanel: () => {
+      setDrilldownPanels((prev) => prev.slice(0, -1));
+    },
+    drilldownDepth,
   };
 
-  const handleBack = () => {
-    setIsChildren(isChildren.slice(0, -1));
+  const menuListContextValue = {
+    activeIndex,
+    getItemProps: (userProps?: HTMLProps<HTMLElement>) =>
+      getItemProps(userProps) as HTMLProps<HTMLElement>,
   };
 
-  return (
-    <Box
-      className={cx(
-        wrapper({ variant, hue, iconPosition, hasIcon }),
-        className,
-      )}
-      {...otherProps}
-      ref={menuRef}
-    >
-      {isChildren.length > 1 && (
-        <Text
-          onClick={handleBack}
-          className={parentLabel}
-          textStyle={{ base: 'body.lg', md: 'body.md' }}
-          color="text"
+  const panels = [{ key: 'root', title: 'Menu', children }, ...drilldownPanels];
+  const panelCount = panels.length;
+  const trackWidthPercent = panelCount * 100;
+  const panelWidthPercent = 100 / panelCount;
+  const trackTranslatePercent = (drilldownDepth * 100) / panelCount;
+  const floatingStyle =
+    hasReference && !inline
+      ? { ...floating.floatingStyles, ...otherProps.style }
+      : otherProps.style;
+
+  const content = (
+    <MenuRootProvider value={rootContextValue}>
+      <MenuFilterProvider value={filterContextValue}>
+        <Card
+          ref={floating.refs.setFloating}
+          variant="overlay"
+          className={cx(classes.wrapper, className)}
+          {...getFloatingProps()}
+          {...otherProps}
+          style={floatingStyle}
         >
-          <Icon name="caret-left" />
-          {current?.parentLabel || 'Back'}
-        </Text>
-      )}
-
-      <Box
-        data-anim={isChildren.length > 1 ? 'slide-left' : undefined}
-        className={wrapperInner}
-      >
-        {loading ? (
-          <Box className={loaderContainer}>
-            <Spinner size="md" />
-          </Box>
-        ) : (
-          current?.menu?.map((section) => (
-            <Box key={section.id}>
-              {section.title && (
-                <Box className={sectionTitle}>
-                  <Text textStyle="body.xs">{section?.title}</Text>
-                </Box>
+          {!hasVisibleResults && (
+            <Box className={classes.noResults}>
+              {renderNoResults ?? (
+                <Text textStyle="body.sm">No results found</Text>
               )}
-              <Box>
-                {section?.items?.map((item) => {
-                  const hasChildren = !!item.children?.length;
-                  const isSelected = selected.includes(item.id);
-                  const isDisabled = !!item?.disabled;
-                  const activateItem = () => {
-                    if (isDisabled) return;
-                    if (item?.children) {
-                      handleOpenSubmenu(item.children, item.label);
-                    } else {
-                      handleSelect(item.id);
-                    }
-                  };
-                  return (
-                    <Box
-                      color={{ base: 'slate.100', _dark: 'slate.90' }}
-                      key={item?.id}
-                      className={menuItem}
-                      tabIndex={isDisabled ? -1 : 0}
-                      disabled={item?.disabled}
-                      aria-disabled={item?.disabled}
-                      data-selected={isSelected}
-                      onClick={activateItem}
-                      onKeyDown={(e: {
-                        key: string;
-                        preventDefault: () => void;
-                      }) => {
-                        if (
-                          e.key === ' ' ||
-                          e.key === 'Spacebar' ||
-                          e.key === 'Enter'
-                        ) {
-                          e.preventDefault();
-                          activateItem();
-                        }
-                      }}
-                      role="button"
-                      aria-pressed={isSelected}
-                    >
-                      {(iconPlacement || item?.iconName) && (
-                        <Box
-                          className={iconSection}
-                          color={{ base: 'slate.90', _dark: 'slate.0' }}
-                        >
-                          {item?.iconName && (
-                            <Icon name={`${item?.iconName as IconNamesList}`} />
-                          )}
-                        </Box>
-                      )}
-                      {variant === 'multi-select' &&
-                        multiSelectType === 'checkbox' &&
-                        !section?.link && (
-                          <CheckBox
-                            name={item.id}
-                            id={item.id}
-                            checked={isSelected}
-                            onChange={() => handleSelect(item.id)}
-                          />
-                        )}
-                      {variant === 'multi-select' &&
-                        multiSelectType === 'toggle' &&
-                        !section?.link && (
-                          <Toggle
-                            name={item.id}
-                            id={item.id}
-                            checked={isSelected}
-                            onChange={() => handleSelect(item.id)}
-                          />
-                        )}
-                      {!section?.link && (
-                        <Box>
-                          <Text
-                            textStyle={{ base: 'body.lg', md: 'body.md' }}
-                            className={menuLabel}
-                            color={{ base: 'slate.90', _dark: 'slate.5' }}
+            </Box>
+          )}
+
+          {hasVisibleResults && (
+            <Box className={classes.panelsViewport}>
+              <Box
+                className={classes.panelsTrack}
+                style={{
+                  width: `${trackWidthPercent}%`,
+                  transform: `translateX(-${trackTranslatePercent}%)`,
+                }}
+              >
+                {panels.map((panel, index) => {
+                  const isActivePanel = index === drilldownDepth;
+                  const panelChildren = withPanelScopedKeys(
+                    panel.children,
+                    panel.key,
+                  );
+
+                  if (!isActivePanel) {
+                    return (
+                      <Box
+                        key={panel.key}
+                        className={classes.panel}
+                        style={{
+                          flex: `0 0 ${panelWidthPercent}%`,
+                        }}
+                        aria-hidden
+                      >
+                        {index > 0 && (
+                          <Box
+                            as="button"
+                            type="button"
+                            className={classes.backHeader}
+                            onClick={rootContextValue.onPopDrilldownPanel}
                           >
-                            {item?.label}
-                          </Text>
-                          {item?.description && (
-                            <Text
-                              textStyle="body.xs"
-                              className={menuDescription}
-                            >
-                              {item?.description}
-                            </Text>
-                          )}
-                        </Box>
-                      )}
-                      {section?.link && (
-                        <Link
-                          href={`${item?.href}`}
-                          color={{ base: 'slate.90', _dark: 'slate.0' }}
-                        >
-                          {item?.label} <Icon name="arrow-square-out" />
-                        </Link>
-                      )}
-                      {hasChildren && (
+                            <Icon name="caret-left" />
+                            <Text textStyle="body.xs">{panel.title}</Text>
+                          </Box>
+                        )}
+                        <Box className={classes.list}>{panelChildren}</Box>
+                      </Box>
+                    );
+                  }
+
+                  return (
+                    <MenuListProvider
+                      key={panel.key}
+                      value={menuListContextValue}
+                    >
+                      <FloatingList elementsRef={listRef} labelsRef={labelsRef}>
                         <Box
-                          className={multiLevelIcon}
-                          color={{ base: 'slate.90', _dark: 'slate.0' }}
+                          className={classes.panel}
+                          style={{
+                            flex: `0 0 ${panelWidthPercent}%`,
+                          }}
                         >
-                          <Icon name="caret-right" />
+                          {index > 0 && (
+                            <Box
+                              as="button"
+                              type="button"
+                              className={classes.backHeader}
+                              onClick={rootContextValue.onPopDrilldownPanel}
+                            >
+                              <Icon name="caret-left" />
+                              <Text textStyle="body.xs">{panel.title}</Text>
+                            </Box>
+                          )}
+                          <Box className={classes.list}>{panelChildren}</Box>
                         </Box>
-                      )}
-                    </Box>
+                      </FloatingList>
+                    </MenuListProvider>
                   );
                 })}
               </Box>
-              {section?.divider && (
-                <Box className={dividerSection}>
-                  <Divider color="border" />
-                </Box>
-              )}
-              {section?.spacer && <Box className={spacerSection}></Box>}
             </Box>
-          ))
+          )}
+        </Card>
+      </MenuFilterProvider>
+    </MenuRootProvider>
+  );
+
+  const shouldRenderInline = inline || !trigger;
+
+  if (shouldRenderInline) {
+    return content;
+  }
+
+  return (
+    <FloatingTree>
+      <FloatingNode id={nodeId}>
+        {cloneElement(
+          trigger,
+          getReferenceProps({
+            ref: floating.refs.setReference,
+          }),
         )}
-      </Box>
-    </Box>
+        {isOpen && (
+          <FloatingPortal>
+            <FloatingFocusManager context={floating.context} modal={false}>
+              {content}
+            </FloatingFocusManager>
+          </FloatingPortal>
+        )}
+      </FloatingNode>
+    </FloatingTree>
   );
 };

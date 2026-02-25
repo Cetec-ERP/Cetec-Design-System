@@ -668,6 +668,23 @@ export const colors = defineSemanticTokens.colors({
     sunken: {
       value: { base: '{colors.neutral.10}', _dark: '{colors.darkNeutral.0}' },
     },
+    selected: {
+      DEFAULT: {
+        value: { base: '{colors.blue.5}', _dark: '{colors.blue.70}' },
+      },
+      hovered: {
+        value: {
+          base: '{colors.blue.10}',
+          _dark: '{colors.blue.60}',
+        },
+      },
+      pressed: {
+        value: {
+          base: '{colors.blue.20}',
+          _dark: '{colors.blue.80}',
+        },
+      },
+    },
   },
   text: {
     DEFAULT: {

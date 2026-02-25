@@ -26,7 +26,7 @@ import { css } from '@styled-system/css';
 import { Tooltip } from './components/Tooltip';
 import { Breadcrumbs } from './components/Breadcrumbs';
 import { Tag } from './components/Tag';
-import { Menu } from './components/Menu';
+import { MenuLegacy as Menu } from './components/MenuLegacy';
 
 import { FormField } from './components/FormField';
 

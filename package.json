@@ -14,7 +14,8 @@
     "generate-sprite": "node src/utils/generate-sprite.js",
     "storybook": "PANDA_STATIC=true storybook dev -p 6006",
     "storybook:build": "PANDA_STATIC=true storybook build",
-    "panda-mcp": "npx panda mcp"
+    "panda-mcp": "npx panda mcp",
+    "doctor": "npx react-doctor"
   },
   "files": [
     "./dist/",
@@ -29,7 +30,9 @@
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@floating-ui/react": "^0.27.16"
+  },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@pandacss/dev": "^1.8.0",
