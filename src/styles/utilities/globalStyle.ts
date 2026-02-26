@@ -6,8 +6,6 @@ import { defineGlobalStyles } from '@pandacss/dev';
 export const globalCss = defineGlobalStyles({
   '*, *::before, *::after': {
     boxSizing: 'border-box',
-    margin: 0,
-    padding: 0,
     _disabled: {
       cursor: 'not-allowed',
       pointerEvents: 'none',
@@ -31,9 +29,7 @@ export const globalCss = defineGlobalStyles({
       '"MONO" 1, "CRSV" 1, "CASL" 1, "slnt" 0',
     '--cetec-font-variant-mono-casual-italic':
       '"MONO" 1, "CRSV" 1, "CASL" 1, "slnt" -15',
-    fontSize: '16',
-    lineHeight: 'var(--cetec-line-heights-default)',
-    '-webkit-text-size-adjust': '100%',
-    tabSize: '4',
+    '--cetec-base-font-size': 'var(--cetec-font-sizes-16)',
+    fontSize: 'var(--cetec-base-font-size)',
   },
 });
