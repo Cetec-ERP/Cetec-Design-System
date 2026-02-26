@@ -8,25 +8,13 @@ export type PreProps = BoxProps & {
   children: string | React.ReactNode;
   lang?: string;
   as?: string;
-}
+};
 
-export const Pre: React.FC<PreProps> = ( 
-  {
-    children, 
-    lang, 
-    ...props
-  }: PreProps,
-) => {
-  const [className, otherProps] = splitProps(props);
+export const Pre = (props: PreProps) => {
+  const { children, lang, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
   return (
-    <Box
-      as="pre"
-      className={cx(
-        pre({}),
-        className,
-      )}
-      {...otherProps}
-    >
+    <Box as="pre" className={cx(pre({}), className)} {...otherProps}>
       <Code lang={lang} slot="react" bg="transparent" {...otherProps}>
         {children}
       </Code>

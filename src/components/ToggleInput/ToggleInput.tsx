@@ -1,47 +1,43 @@
-import type { ReactNode, ChangeEventHandler } from 'react';
-import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
+import { FC, ReactNode } from 'react';
 import { BoxProps } from '../Box';
 import {
   toggleInput,
   type ToggleInputVariantProps,
 } from '@styled-system/recipes';
+import { splitProps } from '~/utils/splitProps';
 import { Label } from '../Label';
+import { cx } from '@styled-system/css';
 import { Toggle } from '../Toggle';
-import { Text } from '../Text';
 
-export type ToggleInputProps = Omit<BoxProps, keyof ToggleInputVariantProps> &
+export type ToggleInputProps = BoxProps &
   ToggleInputVariantProps & {
     name: string;
-    children: string | ReactNode;
-    checked: boolean;
-    onChange: ChangeEventHandler<HTMLInputElement>;
     id?: string;
     error?: boolean;
-    disabled?: boolean;
+    children?: string | ReactNode;
   };
 
-export const ToggleInput = (props: ToggleInputProps) => {
-  const { name, id, checked, onChange, children, error, disabled, ...rest } =
-    props;
-  const [className, otherProps] = splitProps(rest);
+export const ToggleInput: FC<ToggleInputProps> = ({
+  name,
+  id,
+  children,
+  error,
+  ...props
+}: ToggleInputProps) => {
+  const [className, otherProps] = splitProps(props);
   return (
     <Label
       className={cx(toggleInput({}), className)}
-      htmlFor={name}
-      disabled={disabled}
-      data-error={error}
       {...otherProps}
+      htmlFor={id}
     >
       <Toggle
-        name={name}
         id={id}
-        checked={checked}
-        onChange={onChange}
-        disabled={disabled}
-        data-error={error}
+        name={name}
+        {...(error && { 'data-error': true })}
+        {...props}
       />
-      <Text>{children}</Text>
+      {children && <div>{children}</div>}
     </Label>
   );
 };

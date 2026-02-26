@@ -1,73 +1,49 @@
-import { type ChangeEventHandler, ChangeEvent } from 'react';
-import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../Box';
 import { toggle, type ToggleVariantProps } from '@styled-system/recipes';
 import { Icon } from '../Icon';
+import { Label } from '../Label';
+import React from 'react';
 
-export type ToggleProps = Omit<
-  BoxProps,
-  'checked' | 'onChange' | keyof ToggleVariantProps
-> &
+export type ToggleProps = Omit<BoxProps, keyof ToggleVariantProps> &
   ToggleVariantProps & {
     name: string;
-    checked: boolean;
-    onChange: ChangeEventHandler<HTMLInputElement>;
     id?: string;
-    disabled?: boolean;
     error?: boolean;
+    disabled?: boolean;
   };
 
-/**
- * Helper type for toggle change events
- * @example
- * const handleChange: ToggleChangeHandler = (e) => setChecked(e.target.checked);
- */
-export type ToggleChangeEvent = ChangeEvent<HTMLInputElement>;
-
-/**
- * Helper type for toggle change handler functions
- * @example
- * const handleChange: ToggleChangeHandler = (e) => setChecked(e.target.checked);
- */
-export type ToggleChangeHandler = (e: ToggleChangeEvent) => void;
-
-/**
- * Toggle is a controlled component.
- * You must pass `checked` and `onChange` props.
- *
- * @example
- * const [checked, setChecked] = useState(false);
- * <Toggle
- *   checked={checked}
- *   onChange={(e) => setChecked(e.target.checked)}
- * />
- */
-
-export const Toggle = (props: ToggleProps) => {
-  const { name, id, checked, onChange, error, disabled, ...rest } = props;
-  const [className, otherProps] = splitProps(rest);
-  const classes = toggle({});
+export const Toggle: React.FC<ToggleProps> = ({
+  name,
+  id,
+  error,
+  disabled,
+  checked,
+  ...props
+}: ToggleProps) => {
+  const { container, input, indicator, background } = toggle({});
   return (
-    <Box
-      className={cx(classes.container, className)}
-      disabled={disabled}
-      data-error={error}
+    <Label
+      className={container}
+      {...(disabled && { 'data-disabled': true })}
+      color={{ base: 'slate.90', _dark: 'slate.0' }}
     >
       <Box
         as="input"
         type="checkbox"
         name={name}
         id={id}
-        checked={checked}
-        onChange={onChange}
-        className={classes.input}
-        data-error={error}
-        disabled={disabled}
-        {...otherProps}
+        aria-label={name}
+        className={input}
+        {...(checked ? { 'data-checked': true } : {})}
+        {...(error ? { 'data-error': true } : {})}
+        {...props}
       />
-      <Icon name={'circle'} className={classes.indicator} />
-      <Icon name={'circle-check'} className={classes.indicator} />
-    </Box>
+      <Box as="span" className={background} name={'toggle-bg'} />
+      <Icon name={'circle'} className={indicator} />
+      <Icon
+        name={'circle-check'}
+        className={indicator}
+      />
+    </Label>
   );
 };

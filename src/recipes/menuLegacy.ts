@@ -131,7 +131,7 @@ const menuLegacyVariants = {
 };
 
 export const menuLegacyRecipe = defineSlotRecipe({
-  className: 'menu-legacy',
+  className: 'menuLegacy',
   jsx: ['MenuLegacy'],
   slots: [
     'wrapper',

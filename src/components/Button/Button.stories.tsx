@@ -199,24 +199,20 @@ export const WithIcon: Story = {
         IconButton
       </Text>
       <Wrap gap="56">
-        <Tooltip text="Download">
-          <IconButton iconName="download" />
-        </Tooltip>
-        <Tooltip text="Print">
-          <IconButton iconName="printer" variant="hollow" />
-        </Tooltip>
-        <Tooltip text="Last sync: 3 hours ago">
-          <IconButton iconName="cloud-synced" variant="ghost" />
-        </Tooltip>
-        <Tooltip text="Edit">
-          <IconButton iconName="edit" variant="primary" />
-        </Tooltip>
-        <Tooltip text="Send">
-          <IconButton iconName="send" variant="cta" />
-        </Tooltip>
-        <Tooltip text="This cannot be undone">
-          <IconButton iconName="trash" variant="danger" />
-        </Tooltip>
+        <IconButton iconName="download" altText="Download" />
+        <IconButton iconName="printer" variant="hollow" altText="Print" />
+        <IconButton
+          iconName="cloud-synced"
+          variant="ghost"
+          altText="Last sync: 3 hours ago"
+        />
+        <IconButton iconName="edit" variant="primary" altText="Edit" />
+        <IconButton iconName="send" variant="cta" altText="Send" />
+        <IconButton
+          iconName="trash"
+          variant="danger"
+          altText="This cannot be undone"
+        />
       </Wrap>
     </Grid>
   ),

@@ -21,8 +21,9 @@ export type BoxProps = Omit<ComponentPropsWithRef<ElementType>, 'as'> &
     as?: ElementType;
   };
 
-export const Box: React.FC<BoxProps> = ({ as = 'div', ...props }) => {
-  const [className, otherProps] = splitProps(props);
+export const Box = (props: BoxProps) => {
+  const { as = 'div', ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
   const comboClassName = cx(box({}), className);
   return createElement(as, {
     className: comboClassName,

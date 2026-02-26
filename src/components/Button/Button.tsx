@@ -55,20 +55,18 @@ export const Button = (props: ButtonProps) => {
         })}
       {...otherProps}
     >
-      <>
-        <HStack gap="4" opacity={loading ? 0 : 1}>
-          {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
-          {children}
-          {iconAfter && <Icon name={iconAfter} className={classes.icon} />}
-        </HStack>
-        {loading && (
-          <Spinner
-            size="sm"
-            inverse={variant === 'primary' || variant === 'danger'}
-            centered
-          />
-        )}
-      </>
+      <HStack gap="4" opacity={loading ? 0 : 1}>
+        {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
+        {children}
+        {iconAfter && <Icon name={iconAfter} className={classes.icon} />}
+      </HStack>
+      {loading && (
+        <Spinner
+          size="sm"
+          inverse={variant === 'primary' || variant === 'danger'}
+          centered
+        />
+      )}
     </Box>
   );
 };
