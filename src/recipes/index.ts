@@ -9,7 +9,7 @@ export { toggleInputRecipe } from './toggleInput';
 export { cardRecipe } from './card';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { tagRecipe } from './tag';
-export { radioInputRecipe } from './radioinput';
+export { radioInputRecipe } from './radioInput';
 export { checkboxInputRecipe } from './checkboxInput';
 export { iconRecipe } from './icon';
 
