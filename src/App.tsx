@@ -11,7 +11,7 @@ import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { CheckBox } from './components/CheckBox';
+import { Checkbox } from './components/Checkbox';
 import { type ShadowToken } from '@styled-system/tokens';
 import { Radio } from './components/Radio';
 import { Toggle } from './components/Toggle';
@@ -19,7 +19,7 @@ import { Divider } from './components/Divider';
 import { TextInput } from './components/TextInput';
 import { Textarea } from '~/components/Textarea';
 import { RadioInput } from './components/RadioInput';
-import { CheckBoxInput } from './components/CheckboxInput';
+import { CheckboxInput } from './components/CheckboxInput';
 import { ToggleInput } from './components/ToggleInput';
 import { Card } from './components/Card';
 import { css } from '@styled-system/css';
@@ -349,7 +349,6 @@ const AppContent: React.FC = () => {
   const handleAction = () => {
     setMenuShow((show) => !show);
   };
-
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [errorFormField, setErrorFormField] = useState(true);
   const [selectedToggleValue, setSelectedToggleValue] = useState<string[]>([]);
@@ -370,14 +369,38 @@ const AppContent: React.FC = () => {
     setErrorToggle(newTogglesSelected.length === 0);
   };
 
-  const handleCheckboxChange = (value: string) => {
-    const newSelected = selectedCheckbox.includes(value)
-      ? selectedCheckbox.filter((v) => v !== value)
-      : [...selectedCheckbox, value];
+  // Checkbox states using Storybook pattern
+  const [checkboxStates, setCheckboxStates] = useState({
+    normal: false,
+    defaultChecked: true,
+    indeterminate: false,
+    error: false,
+    disabled: false,
+  });
 
-    setCheckboxSelected(newSelected);
-    setError(newSelected.length === 0);
-  };
+  const handleCheckboxChange =
+    (key: keyof typeof checkboxStates) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCheckboxStates({ ...checkboxStates, [key]: e.target.checked });
+    };
+
+  // CheckboxInput states using Storybook pattern
+  const [checkboxInputStates, setCheckboxInputStates] = useState({
+    normal: false,
+    defaultChecked: true,
+    indeterminate: false,
+    error: false,
+    disabled: false,
+  });
+
+  const handleCheckboxInputChange =
+    (key: keyof typeof checkboxInputStates) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCheckboxInputStates({
+        ...checkboxInputStates,
+        [key]: e.target.checked,
+      });
+    };
 
   return (
     <VStack>
@@ -604,33 +627,83 @@ const AppContent: React.FC = () => {
           </Section>
           <Section>
             <Heading level="h2">Checkboxes</Heading>
-            <HStack gap="40" alignItems="flex-end">
-              <CheckBox name="normal" />
-              <CheckBox defaultChecked={true} name="default-checked" />
-              <CheckBox indeterminate name="indeterminate" />
-              <CheckBox error name="error" />
-              <CheckBox disabled name="disabled" />
+            <HStack gap={'40'} alignItems={'flex-end'}>
+              <Checkbox
+                checked={checkboxStates.normal}
+                onChange={handleCheckboxChange('normal')}
+                name="normal"
+              />
+              <Checkbox
+                checked={checkboxStates.defaultChecked}
+                onChange={handleCheckboxChange('defaultChecked')}
+                name="default-checked"
+              />
+              <Checkbox
+                checked={checkboxStates.indeterminate}
+                onChange={handleCheckboxChange('indeterminate')}
+                indeterminate
+                name="indeterminate"
+              />
+              <Checkbox
+                checked={checkboxStates.error}
+                onChange={handleCheckboxChange('error')}
+                error
+                name="error"
+              />
+              <Checkbox
+                checked={checkboxStates.disabled}
+                onChange={handleCheckboxChange('disabled')}
+                disabled
+                name="disabled"
+              />
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Checkbox Input</Heading>
-            <HStack gap="40" alignItems="flex-end">
-              <CheckBoxInput name="normal">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput defaultChecked={true} name="default-checked">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput indeterminate name="indeterminate">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput error name="error">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-              <CheckBoxInput disabled name="disabled">
-                <Text>Consequat ipsum ipsum adipisicing deserunt.</Text>
-              </CheckBoxInput>
-            </HStack>
+            <VStack gap={'8'} alignItems={'flex-start'} maxW={'xs'}>
+              <CheckboxInput
+                name="normal"
+                checked={checkboxInputStates.normal}
+                onChange={handleCheckboxInputChange('normal')}
+              >
+                <Text>Aliqua irure veniam</Text>
+              </CheckboxInput>
+              <CheckboxInput
+                name="default-checked"
+                checked={checkboxInputStates.defaultChecked}
+                onChange={handleCheckboxInputChange('defaultChecked')}
+              >
+                <Text>elit consectetur elit cillum non eu laborum aute</Text>
+              </CheckboxInput>
+              <CheckboxInput
+                indeterminate
+                name="indeterminate"
+                checked={checkboxInputStates.indeterminate}
+                onChange={handleCheckboxInputChange('indeterminate')}
+              >
+                <Text>
+                  Ut fugiat tempor ullamco voluptate dolor labore amet magna
+                  irure reprehenderit est irure est anim eiusmod commodo tempor
+                  eu ut.
+                </Text>
+              </CheckboxInput>
+              <CheckboxInput
+                error
+                name="error"
+                checked={checkboxInputStates.error}
+                onChange={handleCheckboxInputChange('error')}
+              >
+                <Text>et qui sit</Text>
+              </CheckboxInput>
+              <CheckboxInput
+                disabled
+                name="disabled"
+                checked={checkboxInputStates.disabled}
+                onChange={handleCheckboxInputChange('disabled')}
+              >
+                <Text>aliquip velit anim irure</Text>
+              </CheckboxInput>
+            </VStack>
           </Section>
           <Section>
             <Heading level="h2">Radio</Heading>
@@ -1712,23 +1785,23 @@ const AppContent: React.FC = () => {
                     errorText="Please select at least one option."
                     helpText="Helpful explanation if needed"
                   >
-                    <CheckBoxInput
+                    <CheckboxInput
                       name="inp"
                       onChange={() => handleCheckboxChange('option1')}
                     >
                       <Text size="16" weight="normal">
                         Mehna Malesuada
                       </Text>
-                    </CheckBoxInput>
+                    </CheckboxInput>
 
-                    <CheckBoxInput
+                    <CheckboxInput
                       name="inp"
                       onChange={() => handleCheckboxChange('option2')}
                     >
                       <Text size="16" weight="normal">
                         Mehna Malesuada
                       </Text>
-                    </CheckBoxInput>
+                    </CheckboxInput>
                   </FormField>
                 </Box>
                 <Box>

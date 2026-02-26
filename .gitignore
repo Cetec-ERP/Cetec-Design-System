@@ -38,9 +38,10 @@ styled-system-studio
 storybook-static
 
 .env
-.claude
 .plugin-config
 .project-structure.md
+.pair-programming-session.md
 .session-summary.md
 .pair-programming-session.md
 /.tmp
+.claude

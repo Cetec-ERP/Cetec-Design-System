@@ -20,7 +20,7 @@ import * as componentRecipes from './recipes/index';
 const {
   buttonRecipe,
   iconButtonRecipe,
-  checkBoxRecipe,
+  checkboxRecipe,
   radioRecipe,
   tooltipRecipe,
   menuRecipe,
@@ -83,7 +83,7 @@ export const cetecPreset: Preset = definePreset({
       slotRecipes: {
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
-        checkbox: checkBoxRecipe,
+        checkbox: checkboxRecipe,
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
