@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { HStack, VStack } from '@styled-system/jsx';
+import { HStack, VStack, Flex } from '@styled-system/jsx';
 import { type ChangeEvent, useState } from 'react';
 
+import { Box } from '../Box';
 import { Button } from '../Button';
+import { FormField } from '../FormField';
 import { TextInput } from '../TextInput';
 import { Menu } from './Menu';
 import { MenuGroup } from './MenuGroup';
@@ -114,13 +116,33 @@ export const MultiSelect: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const LocalOptions: Story = {
+export const Density: Story = {
+  render: () => (
+    <HStack gap="12" alignItems="flex-start">
+      <Menu inline density="compact">
+        <MenuItem label="Compact" description="Small row spacing" />
+        <MenuItem label="Second row" />
+      </Menu>
+      <Menu inline density="comfortable">
+        <MenuItem label="Comfortable" description="Default row spacing" />
+        <MenuItem label="Second row" />
+      </Menu>
+      <Menu inline density="spacious">
+        <MenuItem label="Spacious" description="Large row spacing" />
+        <MenuItem label="Second row" />
+      </Menu>
+    </HStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ToggleOptions: Story = {
   render: () => {
     const [compact, setCompact] = useState(false);
     const [alerts, setAlerts] = useState(true);
 
     return (
-      <Menu inline closeOnSelect={false}>
+      <Menu inline closeOnSelect={false} w="264">
         <MenuGroup label="Options" divider>
           <MenuItem
             variant="toggle"
@@ -188,6 +210,82 @@ export const SubMenuDrilldown: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const SubMenuDrilldownForms: Story = {
+  render: () => {
+    const [profileName, setProfileName] = useState('');
+    const [profileOwner, setProfileOwner] = useState('');
+    const [alertTopic, setAlertTopic] = useState('');
+    const [alertChannel, setAlertChannel] = useState('');
+
+    return (
+      <Menu
+        trigger={<Button iconAfter="caret-down">Open menu</Button>}
+        subMenuInteraction="drilldown"
+        closeOnSelect={false}
+      >
+        <MenuItem label="Dashboard" />
+
+        <SubMenu label="Edit profile">
+          <Box p="24" display="grid" gap="8" minW="248" justifyItems="end">
+            <FormField label="Profile name" labelFor="profile-name">
+              <TextInput
+                id="profile-name"
+                name="profileName"
+                value={profileName}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setProfileName(event.target.value)
+                }
+              />
+            </FormField>
+
+            <FormField label="Owner" labelFor="profile-owner">
+              <TextInput
+                id="profile-owner"
+                name="profileOwner"
+                value={profileOwner}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setProfileOwner(event.target.value)
+                }
+              />
+            </FormField>
+
+            <Button variant="primary">Submit</Button>
+          </Box>
+        </SubMenu>
+
+        <SubMenu label="Create alert">
+          <Box p="24" display="grid" gap="8" minW="248" justifyItems="end">
+            <FormField label="Topic" labelFor="alert-topic">
+              <TextInput
+                id="alert-topic"
+                name="alertTopic"
+                value={alertTopic}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setAlertTopic(event.target.value)
+                }
+              />
+            </FormField>
+
+            <FormField label="Channel" labelFor="alert-channel">
+              <TextInput
+                id="alert-channel"
+                name="alertChannel"
+                value={alertChannel}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setAlertChannel(event.target.value)
+                }
+              />
+            </FormField>
+
+            <Button variant="primary">Submit</Button>
+          </Box>
+        </SubMenu>
+      </Menu>
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const AutocompleteFiltering: Story = {
   render: () => {
     const [query, setQuery] = useState('');
@@ -222,22 +320,32 @@ export const AutocompleteFiltering: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const Density: Story = {
+export const Sidebar: Story = {
   render: () => (
-    <HStack gap="12" alignItems="flex-start">
-      <Menu inline density="compact">
-        <MenuItem label="Compact" description="Small row spacing" />
-        <MenuItem label="Second row" />
+    <Flex
+      minW="3xl"
+      h="lg"
+      bg="bg.neutral"
+      overflow="hidden"
+      boxShadow="overlay"
+    >
+      <Menu
+        subMenuInteraction="hover"
+        sidebar={true}
+        maxW="264"
+        density="comfortable"
+      >
+        <MenuItem label="View profile" />
+        <SubMenu label="More actions" minW="180">
+          <MenuItem label="Export" />
+          <MenuItem label="Share" />
+          <SubMenu label="Advanced" minW="180">
+            <MenuItem label="Audit log" />
+            <MenuItem label="Settings" />
+          </SubMenu>
+        </SubMenu>
       </Menu>
-      <Menu inline density="comfortable">
-        <MenuItem label="Comfortable" description="Default row spacing" />
-        <MenuItem label="Second row" />
-      </Menu>
-      <Menu inline density="spacious">
-        <MenuItem label="Spacious" description="Large row spacing" />
-        <MenuItem label="Second row" />
-      </Menu>
-    </HStack>
+    </Flex>
   ),
   parameters: { controls: { disable: true } },
 };

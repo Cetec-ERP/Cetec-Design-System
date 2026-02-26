@@ -5,7 +5,7 @@ import type { ChangeEventHandler, HTMLProps, MouseEvent } from 'react';
 
 import { Box } from '../Box';
 import { Icon } from '../Icon';
-import { CheckBox } from '../CheckBox';
+import { Checkbox } from '../Checkbox';
 import { Toggle } from '../Toggle';
 import { Text } from '../Text';
 import { splitProps } from '~/utils/splitProps';
@@ -178,7 +178,7 @@ export const MenuItem = (props: MenuItemProps) => {
   const content = (
     <>
       {variant === 'checkbox' && (
-        <CheckBox
+        <Checkbox
           name={controlName}
           checked={Boolean(selected)}
           onChange={handleControlChange}

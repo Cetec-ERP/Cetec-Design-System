@@ -28,6 +28,7 @@ export type MenuProps = {
   renderNoResults?: ReactNode;
   highlightMatches?: boolean;
   getItemText?: (item: { label?: string; description?: string }) => string;
+  sidebar?: MenuVariantProps['sidebar'];
 } & BoxProps;
 
 export type MenuItemVariant =
@@ -81,6 +82,7 @@ export type MenuFilterContextValue = {
 
 export type MenuRootContextValue = {
   density: MenuDensity;
+  sidebar?: MenuVariantProps['sidebar'];
   closeOnSelect: boolean;
   subMenuInteraction: SubMenuInteraction;
   inline: boolean;

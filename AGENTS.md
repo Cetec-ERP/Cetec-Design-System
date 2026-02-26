@@ -91,7 +91,7 @@ export const Component: FC<ComponentProps> = ({ required, ...props }) => {
 **Type Composition:** Extend base types, use `Omit` for conflicts:
 
 ```tsx
-export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
+export type CheckboxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
   CheckboxVariantProps & {
     name: string;
   };

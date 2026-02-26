@@ -90,6 +90,7 @@ export const Menu = (props: MenuProps) => {
     inline = false,
     subMenuInteraction = 'hover',
     density = 'compact',
+    sidebar,
     query = '',
     filterMode = 'none',
     renderNoResults,
@@ -99,7 +100,7 @@ export const Menu = (props: MenuProps) => {
   } = props;
 
   const [className, otherProps] = splitProps(rest);
-  const classes = menu({ density });
+  const classes = menu({ density, sidebar });
 
   const hasReference = Boolean(trigger) && !inline;
 
@@ -186,6 +187,7 @@ export const Menu = (props: MenuProps) => {
 
   const rootContextValue: MenuRootContextValue = {
     density,
+    sidebar,
     closeOnSelect,
     subMenuInteraction,
     inline,
@@ -413,7 +415,11 @@ export const Menu = (props: MenuProps) => {
   const shouldRenderInline = inline || !trigger;
 
   if (shouldRenderInline) {
-    return content;
+    return (
+      <FloatingTree>
+        <FloatingNode id={nodeId}>{content}</FloatingNode>
+      </FloatingTree>
+    );
   }
 
   return (

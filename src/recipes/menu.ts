@@ -29,7 +29,7 @@ const menuBase = {
     cursor: 'pointer',
     outline: '2px solid transparent',
     outlineOffset: '-2',
-    bg: 'surface',
+    bg: 'transparent',
     _hover: {
       bg: 'bg.neutral.hovered',
     },
@@ -56,9 +56,6 @@ const menuBase = {
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },
-    //   '&[data-active=true]': {
-    //     bg: 'surface.hovered',
-    //   },
   },
   icon: {
     aspectRatio: 'square',
@@ -283,6 +280,18 @@ const menuVariants = {
   iconAfter: {
     true: {
       item: {},
+    },
+  },
+  sidebar: {
+    true: {
+      wrapper: {
+        width: 'full',
+        height: 'full',
+        minHeight: 'full',
+        overflowY: 'auto',
+        rounded: '0',
+        boxShadow: 'none',
+      },
     },
   },
 };

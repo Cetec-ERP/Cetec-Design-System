@@ -66,9 +66,10 @@ export const SubMenu = (props: SubMenuProps) => {
     density,
     ...rest
   } = props;
-  const [itemClassName, htmlProps] = splitProps(rest);
+  const [contentClassName, htmlProps] = splitProps(rest);
+  const { style: contentStyle, ...otherHtmlProps } = htmlProps;
   const menuItemHtmlProps: Omit<HTMLProps<HTMLElement>, 'ref'> = {
-    ...htmlProps,
+    ...otherHtmlProps,
   };
 
   const rootContext = useMenuRootContext();
@@ -76,7 +77,9 @@ export const SubMenu = (props: SubMenuProps) => {
   const parentListContext = useMenuListContext();
 
   const resolvedInteraction = interaction ?? rootContext.subMenuInteraction;
-  const classes = menu({ density: density ?? rootContext.density });
+  const classes = menu({
+    density: density ?? rootContext.density,
+  });
 
   const resolvedTextValue = deriveItemTextValue({
     textValue,
@@ -153,10 +156,11 @@ export const SubMenu = (props: SubMenuProps) => {
         {...menuItemHtmlProps}
         role="menuitem"
         disabled={disabled}
-        className={classes.item}
+        className={cx(classes.item, contentClassName)}
         ref={(node: HTMLButtonElement | null) => {
           listItem.ref(node as HTMLElement | null);
         }}
+        style={contentStyle}
         tabIndex={
           parentListContext
             ? parentListContext.activeIndex === listItem.index
@@ -299,7 +303,7 @@ export const SubMenu = (props: SubMenuProps) => {
 
   const floatingStyle = {
     ...floating.floatingStyles,
-    ...(htmlProps.style || {}),
+    ...(contentStyle || {}),
   };
 
   const parentItemProps = parentListContext
@@ -333,7 +337,7 @@ export const SubMenu = (props: SubMenuProps) => {
         aria-haspopup="menu"
         aria-expanded={open}
         disabled={disabled}
-        className={cx(classes.item, itemClassName)}
+        className={classes.item}
         ref={(node: HTMLButtonElement | null) => {
           listItem.ref(node as HTMLElement | null);
           floating.refs.setReference(node);
@@ -372,7 +376,7 @@ export const SubMenu = (props: SubMenuProps) => {
               <MenuListProvider value={nestedListContext}>
                 <Box
                   ref={floating.refs.setFloating}
-                  className={classes.wrapper}
+                  className={cx(classes.wrapper, contentClassName)}
                   {...getFloatingProps({
                     onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
                       if (event.key === 'ArrowLeft') {

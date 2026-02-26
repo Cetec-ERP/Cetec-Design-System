@@ -8,7 +8,7 @@ import {
 import { splitProps } from '~/utils/splitProps';
 import { useOnClose } from '~/utils/useOnClose';
 import { Box, type BoxProps } from '../Box';
-import { CheckBox } from '../CheckBox';
+import { Checkbox } from '../Checkbox';
 import { Divider } from '../Divider';
 import { Icon, type IconNamesList } from '../Icon';
 import { Link } from '../Link';
@@ -210,7 +210,7 @@ export const MenuLegacy = (props: MenuLegacyProps) => {
                         {variant === 'multi-select' &&
                           multiSelectType === 'checkbox' &&
                           !section.link && (
-                            <CheckBox
+                            <Checkbox
                               name={item.id}
                               id={item.id}
                               checked={isSelected}
