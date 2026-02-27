@@ -41,6 +41,7 @@ export const ModalHeader = (props: ModalHeaderProps) => {
             <IconButton
               variant="ghost"
               onClick={onClose}
+              altText="Close dialog"
               aria-label="Close dialog"
               className={classes.closeButton}
               iconName="x"

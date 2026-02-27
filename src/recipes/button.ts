@@ -83,12 +83,12 @@ const buttonVariants = {
         },
       },
       icon: {
-        fill: 'icon.decorative.inverse',
+        fill: 'icon.decorative.inverse.subtle',
         mixBlendMode: { base: 'screen', _dark: 'multiply' },
-        _groupHover: { fill: 'current' },
-        _groupActive: { fill: 'current' },
+        _groupHover: { fill: 'icon.decorative.inverse' },
+        _groupActive: { fill: 'icon.decorative.inverse' },
         _groupDisabled: {
-          fill: 'current',
+          fill: 'icon.decorative.inverse.subtle',
         },
       },
     },
@@ -162,12 +162,12 @@ const buttonVariants = {
         },
       },
       icon: {
-        fill: 'neutral.40',
+        fill: 'icon.decorative.inverse',
         mixBlendMode: 'screen',
-        _groupHover: { fill: 'current' },
-        _groupActive: { fill: 'current' },
+        _groupHover: { fill: 'icon.decorative.inverse' },
+        _groupActive: { fill: 'icon.decorative.inverse' },
         _groupDisabled: {
-          fill: 'current',
+          fill: 'icon.decorative.inverse',
         },
       },
     },

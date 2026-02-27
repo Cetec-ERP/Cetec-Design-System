@@ -425,18 +425,24 @@ export const FormDialog: Story = {
             <ModalHeader title="Edit Profile" showCloseButton />
             <ModalBody>
               <VStack gap="12" alignItems="stretch">
-                <FormField label="Full Name" required>
-                  <TextInput name="name" placeholder="Jane Doe" />
-                </FormField>
-                <FormField label="Email" required>
+                <FormField label="Full Name" labelFor="profile-name" required>
                   <TextInput
+                    id="profile-name"
+                    name="name"
+                    placeholder="Jane Doe"
+                  />
+                </FormField>
+                <FormField label="Email" labelFor="profile-email" required>
+                  <TextInput
+                    id="profile-email"
                     name="email"
                     type="email"
                     placeholder="jane@example.com"
                   />
                 </FormField>
-                <FormField label="Bio">
+                <FormField label="Bio" labelFor="profile-bio">
                   <Textarea
+                    id="profile-bio"
                     name="bio"
                     placeholder="Tell us about yourself..."
                   />

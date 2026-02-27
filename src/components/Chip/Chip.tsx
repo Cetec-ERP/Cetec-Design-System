@@ -158,14 +158,11 @@ export const Chip = (props: ChipProps) => {
     <Box
       as="button"
       ref={buttonRef}
-      className={cx(classes.container, className)}
+      className={`${cx(classes.container, className)} group`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={getTabIndex()}
-      {...(disabled && {
-        disabled: true,
-        'aria-disabled': true,
-      })}
+      disabled={disabled}
       aria-label={ariaLabel}
       role={role}
       aria-checked={isSelectable ? isSelected : undefined}
