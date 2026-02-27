@@ -170,5 +170,3 @@ export const Avatar = (props: AvatarProps) => {
     </Box>
   );
 };
-
-Avatar.displayName = 'Avatar';

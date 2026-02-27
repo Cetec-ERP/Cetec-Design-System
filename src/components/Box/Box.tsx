@@ -1,8 +1,4 @@
-import React, {
-  ComponentPropsWithRef,
-  type ElementType,
-  createElement,
-} from 'react';
+import { ComponentPropsWithRef, type ElementType, createElement } from 'react';
 import { box, type BoxVariantProps } from '@styled-system/recipes';
 import type { SystemStyleObject } from '@styled-system/types';
 import { cx } from '@styled-system/css';

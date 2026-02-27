@@ -10,8 +10,8 @@ export const ThemeSwitcher = () => {
   return (
     <IconButton
       variant="ghost"
+      altText={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
       onClick={toggleTheme}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
       iconName={theme === 'light' ? 'moon' : 'sun'}
     />
   );

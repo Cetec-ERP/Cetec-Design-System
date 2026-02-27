@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import { Box, type BoxProps } from '../Box';
 import { link, type LinkVariantProps } from '@styled-system/recipes';
 import {
@@ -23,21 +24,22 @@ export type LinkProps = Omit<BoxProps, keyof LinkVariantProps> &
     children?: React.ReactNode;
   };
 
-export const Link: React.FC<LinkProps> = ({
-  href,
-  external,
-  disabled,
-  children,
-  size,
-  family,
-  weight,
-  italic,
-  bold,
-  ...props
-}: LinkProps) => {
-  const [className, otherProps] = splitProps(props);
+export const Link = (props: LinkProps) => {
+  const {
+    href,
+    external,
+    disabled,
+    children,
+    size,
+    family,
+    weight,
+    italic,
+    bold,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (disabled) {
       e.preventDefault();
       e.stopPropagation();
@@ -50,7 +52,7 @@ export const Link: React.FC<LinkProps> = ({
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
-      aria-disabled={disabled}
+      disabled={disabled}
       className={cx(link({ family, italic, bold, size, weight }), className)}
       onClick={handleClick}
       {...otherProps}
