@@ -1,7 +1,9 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const buttonBaseStyles = {
   container: {
+    ...globalBaseStyles,
     position: 'relative',
     appearance: 'none',
     display: 'flex',
@@ -15,7 +17,6 @@ const buttonBaseStyles = {
     transitionTimingFunction: 'default',
     userSelect: 'none',
     verticalAlign: 'middle',
-    fontFamily: 'body',
     fontSize: '16',
     fontWeight: 'medium',
     lineHeight: 'default',

@@ -1,4 +1,5 @@
 import { defineRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const textInputVariants = {
   size: {
@@ -31,6 +32,10 @@ const textInputVariants = {
 };
 
 const textInputBase = {
+  ...globalBaseStyles,
+  fontSize: '100%',
+  appearance: 'textfield',
+  '-webkit-appearance': 'textfield',
   position: 'relative',
   width: 'full',
   borderWidth: '1',
@@ -38,7 +43,7 @@ const textInputBase = {
   borderStyle: 'solid',
   borderRadius: '4',
   lineHeight: 'default',
-  fontFamily: 'body',
+  // fontFamily: 'body',
   outlineWidth: '1',
   outlineStyle: 'solid',
   outlineColor: 'transparent',
