@@ -1,7 +1,9 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const formFieldBase = {
   container: {
+    ...globalBaseStyles,
     _disabled: {
       opacity: '0.4',
       pointerEvents: 'none',

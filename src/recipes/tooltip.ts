@@ -1,5 +1,6 @@
 // src/recipes/tooltip.ts
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 export const tooltipRecipe = defineSlotRecipe({
   className: 'tooltip',
@@ -8,6 +9,7 @@ export const tooltipRecipe = defineSlotRecipe({
 
   base: {
     tooltipContent: {
+      ...globalBaseStyles,
       display: 'flex',
       flexDirection: 'column',
       // Inverted surface: dark in light mode, light in dark mode

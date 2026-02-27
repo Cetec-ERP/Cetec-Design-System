@@ -1,6 +1,6 @@
 {
   "name": "cetec-design-system",
-  "version": "0.0.42-0",
+  "version": "0.0.45-0",
   "description": "Cetec-ERP Design System",
   "type": "module",
   "main": "./dist/index.js",
@@ -84,7 +84,8 @@
       "default": "./dist/preset.js"
     },
     "./sprite.svg": "./dist/sprite.svg",
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./reset.css": "./dist/reset.css"
   },
   "repository": {
     "type": "git",

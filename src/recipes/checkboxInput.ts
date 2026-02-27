@@ -1,6 +1,8 @@
 import { defineRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const checkboxInputBase = {
+  ...globalBaseStyles,
   display: 'flex',
   alignItems: 'start',
   gap: '4',
@@ -18,7 +20,8 @@ const checkboxInputBase = {
 };
 
 export const checkboxInputRecipe = defineRecipe({
-  className: 'checkboxInput',
+  className: 'checkbox-input',
   jsx: ['CheckboxInput'],
   base: checkboxInputBase,
+  variants: {},
 });

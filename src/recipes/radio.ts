@@ -1,4 +1,5 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 export const radioRecipe = defineSlotRecipe({
   className: 'radio',
@@ -6,6 +7,7 @@ export const radioRecipe = defineSlotRecipe({
   slots: ['container', 'input', 'indicator', 'radioBg'],
   base: {
     container: {
+      ...globalBaseStyles,
       position: 'relative',
       w: '24',
       h: '24',

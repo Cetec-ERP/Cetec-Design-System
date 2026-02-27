@@ -494,10 +494,10 @@ const AppContent: React.FC = () => {
                 <Pre>
                   {`<Text>
     ...
-  <Text as="span" italic>winged fourth</Text>
-  <Text as="span" bold>replenish</Text>
-  <Text as="span" underline>whales</Text>
-</Text>`}
+        <Text as="span" italic>winged fourth</Text>
+        <Text as="span" bold>replenish</Text>
+        <Text as="span" underline>whales</Text>
+      </Text>`}
                 </Pre>
                 <Text family="mono">
                   Signs night have sixth hath that likeness us fill you're
@@ -1011,14 +1011,14 @@ const AppContent: React.FC = () => {
             <VStack gap="10" alignItems="flex-start">
               <Heading level="h3">Flat</Heading>
               <HStack gap="40" alignItems="flex-start">
-                <Card variant="flat">
-                  <Box className={css({ p: '16' })}>Default</Box>
+                <Card variant="flat" p="16">
+                  Default
                 </Card>
-                <Card variant="flat" grabbed>
-                  <Box className={css({ p: '16' })}>Grabbed</Box>
+                <Card variant="flat" p="16" grabbed>
+                  Grabbed
                 </Card>
-                <Card variant="flat" disabled>
-                  <Box className={css({ p: '16' })}>Disabled</Box>
+                <Card variant="flat" p="16" disabled>
+                  Disabled
                 </Card>
               </HStack>
             </VStack>

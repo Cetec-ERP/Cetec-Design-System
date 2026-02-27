@@ -1,18 +1,70 @@
-.sbdocs-content {
-  padding-inline: var(--cetec-sizes-48);
+.sb-show-main,
+.docs-story {
+  background: var(--cetec-colors-surface);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  &:not([class*='cetec-']) {
-    font-family: var(--cetec-fonts-heading);
-    font-weight: var(--cetec-font-weights-black);
-    line-height: calc(1em + 0.5rem);
-    color: var(--cetec-colors-text);
+.sbdocs-content {
+  padding: var(--cetec-sizes-48);
+}
+
+.sbdocs {
+  font-family: var(--cetec-fonts-body);
+  font-variation-settings: var(--cetec-font-variant-body);
+  background: var(--cetec-colors-surface);
+  color: var(--cetec-colors-text-subtlest);
+  font-weight: var(--cetec-font-weights-normal);
+
+  &.sbdocs-wrapper {
+    padding: 0;
+    gap: 0;
+    justify-content: start;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &:not([class*='cetec-']) {
+      font-family: var(--cetec-fonts-heading);
+      font-weight: var(--cetec-font-weights-black);
+      line-height: calc(1em + 0.5rem);
+      color: var(--cetec-colors-text);
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  p + h1,
+  p + h2,
+  p + h3,
+  p + h4 {
+    &:not([class*='cetec-']) {
+      margin-top: 1.5rem;
+    }
+  }
+
+  h1 {
+    font-size: var(--cetec-font-sizes-40);
+
+    &.sbdocs-title {
+      font-size: var(--cetec-font-sizes-64);
+    }
+  }
+
+  h2:not(#stories) {
+    font-size: var(--cetec-font-sizes-32);
+  }
+
+  h3 {
+    font-size: var(--cetec-font-sizes-24);
+  }
+
+  h4 {
+    font-size: var(--cetec-font-sizes-20);
+  }
+
+  p:not([class*='cetec-']) {
     margin-bottom: 0.5rem;
   }
 }
@@ -109,5 +161,9 @@ ol:not([class*='cetec-']) {
     background-color: var(--bg-color);
     padding: var(--cetec-sizes-12);
     margin: 0;
+  }
+
+  #additional-variations {
+    margin-top: var(--cetec-sizes-48);
   }
 }

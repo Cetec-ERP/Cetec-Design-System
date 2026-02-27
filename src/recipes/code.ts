@@ -1,6 +1,8 @@
 import { defineRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const codeBase = {
+  ...globalBaseStyles,
   bg: 'bg.neutral.inverse',
   position: 'relative',
   overflow: 'auto',
@@ -10,6 +12,7 @@ const codeBase = {
 };
 
 const preBase = {
+  ...globalBaseStyles,
   borderRadius: '8',
   overflow: 'hidden',
   borderWidth: '0',

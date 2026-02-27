@@ -1,7 +1,9 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+import { globalBaseStyles } from '~/styles/utilities';
 
 const menuBase = {
   wrapper: {
+    ...globalBaseStyles,
     width: 'fit',
     bg: 'surface',
     borderRadius: '4',
