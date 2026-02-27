@@ -93,7 +93,6 @@ export const FormField = (props: FormFieldProps) => {
           <Tooltip
             {...(tooltipTitle && { title: tooltipTitle })}
             text={tooltipText}
-            h="20"
           >
             <Icon name="info" fill="icon.decorative.subtle" size="20" />
           </Tooltip>
