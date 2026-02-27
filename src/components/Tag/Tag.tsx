@@ -28,9 +28,13 @@ export const Tag = (props: TagProps) => {
       )}
       {...otherProps}
     >
-      {iconBefore && <Icon name={iconBefore} fill="current" size="20" />}
+      {iconBefore && (
+        <Icon name={iconBefore} fill="current" color="inherit" size="20" />
+      )}
       {children}
-      {iconAfter && <Icon name={iconAfter} fill="current" size="20" />}
+      {iconAfter && (
+        <Icon name={iconAfter} fill="current" color="inherit" size="20" />
+      )}
     </Box>
   );
 };
