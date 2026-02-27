@@ -20,7 +20,7 @@ const checkboxInputBase = {
 };
 
 export const checkboxInputRecipe = defineRecipe({
-  className: 'checkbox-input',
+  className: 'checkboxInput',
   jsx: ['CheckboxInput'],
   base: checkboxInputBase,
   variants: {},
