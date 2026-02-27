@@ -353,8 +353,8 @@ const AppContent: React.FC = () => {
   const [errorFormField, setErrorFormField] = useState(true);
   const [selectedToggleValue, setSelectedToggleValue] = useState<string[]>([]);
   const [errorToggle, setErrorToggle] = useState(true);
-  const [selectedCheckbox, setCheckboxSelected] = useState<string[]>([]);
-  const [error, setError] = useState(true);
+  const [_selectedCheckbox, _setCheckboxSelected] = useState<string[]>([]);
+  const [error, _setError] = useState(true);
 
   const handleFormFieldChange = (value: string) => {
     setSelectedValue(value);
@@ -398,6 +398,52 @@ const AppContent: React.FC = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setCheckboxInputStates({
         ...checkboxInputStates,
+        [key]: e.target.checked,
+      });
+    };
+
+  const [radioSelection, setRadioSelection] = useState({
+    basic: 'defaultChecked',
+    gender: 'male',
+    radioInput: 'option1',
+  });
+
+  const handleRadioSelectionChange =
+    (key: keyof typeof radioSelection) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setRadioSelection({
+        ...radioSelection,
+        [key]: e.target.value,
+      });
+    };
+
+  const [toggleStates, setToggleStates] = useState({
+    base: false,
+    focused: true,
+    disabled: true,
+    error: true,
+  });
+
+  const handleToggleChange =
+    (key: keyof typeof toggleStates) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setToggleStates({
+        ...toggleStates,
+        [key]: e.target.checked,
+      });
+    };
+
+  const [toggleInputStates, setToggleInputStates] = useState({
+    one: false,
+    two: true,
+    three: false,
+  });
+
+  const handleToggleInputChange =
+    (key: keyof typeof toggleInputStates) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setToggleInputStates({
+        ...toggleInputStates,
         [key]: e.target.checked,
       });
     };
@@ -709,16 +755,50 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Radio</Heading>
             <VStack gap="40" alignItems="start">
               <HStack>
-                <Radio name="normal" />
-                <Radio name="normal" defaultChecked={true} />
-                <Radio name="normal" disabled />
-                <Radio name="normal" error={true} />
+                <Radio
+                  name="basic-radio"
+                  value="normal"
+                  checked={radioSelection.basic === 'normal'}
+                  onChange={handleRadioSelectionChange('basic')}
+                />
+                <Radio
+                  name="basic-radio"
+                  value="defaultChecked"
+                  checked={radioSelection.basic === 'defaultChecked'}
+                  onChange={handleRadioSelectionChange('basic')}
+                />
+                <Radio
+                  name="basic-radio"
+                  value="disabled"
+                  checked={radioSelection.basic === 'disabled'}
+                  onChange={handleRadioSelectionChange('basic')}
+                  disabled
+                />
+                <Radio
+                  name="basic-radio"
+                  value="error"
+                  checked={radioSelection.basic === 'error'}
+                  onChange={handleRadioSelectionChange('basic')}
+                  error
+                />
               </HStack>
               <HStack>
                 <HStack gap="10" alignItems="center">
                   <Heading level="h3">Gender</Heading>
-                  <Radio name="gender"></Radio> Male
-                  <Radio name="gender"></Radio> Female
+                  <Radio
+                    name="gender"
+                    value="male"
+                    checked={radioSelection.gender === 'male'}
+                    onChange={handleRadioSelectionChange('gender')}
+                  />
+                  Male
+                  <Radio
+                    name="gender"
+                    value="female"
+                    checked={radioSelection.gender === 'female'}
+                    onChange={handleRadioSelectionChange('gender')}
+                  />
+                  Female
                 </HStack>
               </HStack>
             </VStack>
@@ -727,7 +807,12 @@ const AppContent: React.FC = () => {
             <Heading level="h2">Radio Input</Heading>
             <VStack gap="40" alignItems="start">
               <HStack>
-                <RadioInput name="group">
+                <RadioInput
+                  name="group"
+                  value="option1"
+                  checked={radioSelection.radioInput === 'option1'}
+                  onChange={handleRadioSelectionChange('radioInput')}
+                >
                   <Text as="div" size="16" weight="normal">
                     Consequat ipsum ipsum adipisicing deserunt.
                   </Text>
@@ -735,7 +820,12 @@ const AppContent: React.FC = () => {
                 </RadioInput>
               </HStack>
               <HStack>
-                <RadioInput name="group">
+                <RadioInput
+                  name="group"
+                  value="option2"
+                  checked={radioSelection.radioInput === 'option2'}
+                  onChange={handleRadioSelectionChange('radioInput')}
+                >
                   <Text as="div" size="16" weight="normal">
                     Consequat ipsum ipsum adipisicing deserunt.
                   </Text>
@@ -747,28 +837,59 @@ const AppContent: React.FC = () => {
           <Section>
             <Heading level="h2">Toggle</Heading>
             <HStack gap="40" alignItems="flex-end">
-              <Toggle name="toggle-base" />
-              <Toggle autoFocus={true} name="toggle-base" />
-              <Toggle disabled name="toggle-base" />
-              <Toggle error={true} name="toggle-base" />
+              <Toggle
+                name="toggle-base"
+                checked={toggleStates.base}
+                onChange={handleToggleChange('base')}
+              />
+              <Toggle
+                autoFocus
+                name="toggle-focus"
+                checked={toggleStates.focused}
+                onChange={handleToggleChange('focused')}
+              />
+              <Toggle
+                name="toggle-disabled"
+                checked={toggleStates.disabled}
+                onChange={handleToggleChange('disabled')}
+                disabled
+              />
+              <Toggle
+                name="toggle-error"
+                checked={toggleStates.error}
+                onChange={handleToggleChange('error')}
+                error
+              />
             </HStack>
           </Section>
           <Section>
             <Heading level="h2">Toggle Input</Heading>
             <HStack gap="40" alignItems="flex-end">
-              <ToggleInput name="toggle-base">
+              <ToggleInput
+                name="toggle-input-one"
+                checked={toggleInputStates.one}
+                onChange={handleToggleInputChange('one')}
+              >
                 <Text as="div" size="16" weight="normal">
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
                 <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
-              <ToggleInput name="toggle-base">
+              <ToggleInput
+                name="toggle-input-two"
+                checked={toggleInputStates.two}
+                onChange={handleToggleInputChange('two')}
+              >
                 <Text as="div" size="16" weight="normal">
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>
                 <Text size="14">Deserunt proident officia nostrud.</Text>
               </ToggleInput>
-              <ToggleInput name="toggle-base">
+              <ToggleInput
+                name="toggle-input-three"
+                checked={toggleInputStates.three}
+                onChange={handleToggleInputChange('three')}
+              >
                 <Text as="div" size="16" weight="normal">
                   Consequat ipsum ipsum adipisicing deserunt.
                 </Text>

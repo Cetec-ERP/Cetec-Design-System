@@ -1,36 +1,93 @@
-import { Box, type BoxProps } from '../Box';
+import { type ChangeEvent } from 'react';
+import { cx } from '@styled-system/css';
+import { splitProps } from '~/utils/splitProps';
 import { radio, type RadioVariantProps } from '@styled-system/recipes';
+import { Box, type BoxProps } from '../Box';
 import { Icon } from '../Icon';
-import { Label } from '../Label';
 
-export type RadioProps = Omit<BoxProps, keyof RadioVariantProps> &
+export type RadioProps = Omit<
+  BoxProps,
+  'checked' | 'onChange' | keyof RadioVariantProps
+> &
   RadioVariantProps & {
-    id?: string;
     name: string;
-    disabled?: boolean;
+    checked: boolean;
+    onChange: RadioChangeHandler;
+    id?: string;
     error?: boolean;
+    disabled?: boolean;
   };
 
-export const Radio: React.FC<RadioProps> = ({ id, name, error, ...props }) => {
-  const { container, input, indicator } = radio({});
+/**
+ * Helper type for radio change events
+ * @example
+ * const handleChange: RadioChangeHandler = (e) => setChecked(e.target.checked);
+ */
+export type RadioChangeEvent = ChangeEvent<HTMLInputElement>;
+
+/**
+ * Helper type for radio change handler functions
+ * @example
+ * const handleChange: RadioChangeHandler = (e) => setChecked(e.target.checked);
+ */
+export type RadioChangeHandler = (e: RadioChangeEvent) => void;
+
+/**
+ * Radio is a controlled component.
+ * You must pass `checked` and `onChange` props.
+ *
+ * @example
+ * const [checked, setChecked] = useState(false);
+ * <Radio
+ *   checked={checked}
+ *   onChange={(e) => setChecked(e.target.checked)}
+ * />
+ */
+export const Radio = (props: RadioProps) => {
+  const {
+    name,
+    checked,
+    onChange,
+    id,
+    error,
+    disabled,
+    container,
+    input,
+    indicator,
+    radioBg,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
+  const classes = radio({
+    container,
+    input,
+    indicator,
+    radioBg,
+  });
+
+  // Determine which icon to render based on state
+  const iconName = checked ? 'radio-checked' : 'radio';
+
   return (
-    <Label
-      className={container}
-      color={error ? 'red.50' : { base: 'slate.90', _dark: 'slate.0' }}
+    <Box
+      className={cx(classes.container, className)}
+      {...(error && { 'data-error': true })}
     >
       <Box
         as="input"
         type="radio"
-        id={id}
+        className={classes.input}
         name={name}
-        aria-label={name}
-        className={input}
-        {...props}
+        id={id}
+        checked={checked}
+        onChange={onChange}
+        disabled={disabled}
         {...(error && { 'data-error': true })}
+        {...otherProps}
       />
-      <Icon className={indicator} name={'radio'} />
-      <Icon className={indicator} name={'radio-checked'} />
-      <Icon className={indicator} name={'radio-focus'} />
-    </Label>
+      <Icon className={classes.radioBg} name="circle" />
+      <Icon className={classes.indicator} name={iconName} />
+      <Icon className={classes.indicator} name="radio-focus" />
+    </Box>
   );
 };

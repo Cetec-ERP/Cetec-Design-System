@@ -1,46 +1,47 @@
+import { useId, type ReactNode } from 'react';
+import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
-import { Label } from '../Label';
-import { Radio } from '../Radio/Radio';
 import {
   radioInput,
   type RadioInputVariantProps,
 } from '@styled-system/recipes';
-import { cx } from '@styled-system/css';
-import { Box, type BoxProps } from '../Box';
-import { FC, ReactNode } from 'react';
+import { Radio, RadioChangeHandler } from '../Radio';
+import { type BoxProps } from '../Box';
+import { Label } from '../Label';
 
-export type RadioInputProps = BoxProps &
+export type RadioInputProps = Omit<BoxProps, keyof RadioInputVariantProps> &
   RadioInputVariantProps & {
     name: string;
+    checked: boolean;
+    onChange: RadioChangeHandler;
     id?: string;
     error?: boolean;
     children?: string | ReactNode;
+    disabled?: boolean;
   };
 
-export const RadioInput: FC<RadioInputProps> = ({
-  id,
-  name,
-  variant,
-  children,
-  error,
-  ...props
-}: RadioInputProps) => {
-  const [className, otherProps] = splitProps(props);
+export const RadioInput = (props: RadioInputProps) => {
+  const { name, checked, onChange, id, children, error, disabled, ...rest } =
+    props;
+  const [className, otherProps] = splitProps(rest);
+  const generatedId = useId();
+  const resolvedId = id ?? generatedId;
   return (
     <Label
-      className={cx(radioInput({ variant }), className)}
+      className={cx(radioInput(), className)}
+      htmlFor={resolvedId}
+      disabled={disabled}
       {...otherProps}
-      htmlFor={id}
     >
       <Radio
         name={name}
-        id={id}
-        {...(error && { 'data-error': true })}
-        {...props}
+        checked={checked}
+        onChange={onChange}
+        id={resolvedId}
+        error={error}
+        disabled={disabled}
       />
-      {children && <Box as="div">{children}</Box>}
+      {children}
     </Label>
   );
 };
-
-export default RadioInput;

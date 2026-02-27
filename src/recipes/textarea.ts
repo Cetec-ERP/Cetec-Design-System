@@ -33,6 +33,9 @@ const textareaBase = {
   _disabled: {
     opacity: 0.4,
   },
+  _groupDisabled: {
+    opacity: 1, // let FormField handle disabled state opacity
+  },
 };
 
 const textareaVariants = {

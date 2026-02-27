@@ -4,7 +4,6 @@ import { Button } from './Button';
 import { Text } from '../Text';
 import { IconButton } from '../IconButton';
 import { Divider } from '../Divider';
-import { Tooltip } from '../Tooltip';
 import { HStack, Wrap, Grid } from '@styled-system/jsx';
 
 /**

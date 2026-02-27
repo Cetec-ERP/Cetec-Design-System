@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { userEvent, within, expect } from '@storybook/test';
 import { CheckboxInput } from './CheckboxInput';
 import { CheckboxChangeHandler } from '../Checkbox';
@@ -82,7 +82,7 @@ type Story = StoryObj<typeof meta>;
 
 // 1. Default - Most common usage
 export const Default: Story = {
-  render: () => {
+  render: function DefaultRender() {
     const [checked, setChecked] = useState(false);
     const handleChange: CheckboxChangeHandler = (e) =>
       setChecked(e.target.checked);
@@ -170,7 +170,7 @@ export const AllStates: Story = {
 // 3. Example Stories - Use "Ex:" prefix
 export const ExInteractive: Story = {
   name: 'Ex: Interactive Toggle',
-  render: () => {
+  render: function ExInteractiveRender() {
     const [checked, setChecked] = useState(false);
 
     return (
@@ -179,7 +179,7 @@ export const ExInteractive: Story = {
           name="interactive"
           id="interactive"
           checked={checked}
-          onChange={(e: any) => setChecked(e.target.checked)}
+          onChange={(e) => setChecked(e.target.checked)}
         >
           Click to toggle (currently: {checked ? 'checked' : 'unchecked'})
         </CheckboxInput>
@@ -190,7 +190,7 @@ export const ExInteractive: Story = {
 
 export const ExCheckboxGroup: Story = {
   name: 'Ex: Checkbox Group with Select All',
-  render: () => {
+  render: function ExCheckboxGroupRender() {
     const [selections, setSelections] = useState({
       option1: false,
       option2: true,
@@ -198,9 +198,11 @@ export const ExCheckboxGroup: Story = {
       option4: false,
     });
 
-    const handleChange = (key: keyof typeof selections) => (e: any) => {
-      setSelections({ ...selections, [key]: e.target.checked });
-    };
+    const handleChange =
+      (key: keyof typeof selections) =>
+      (e: Parameters<CheckboxChangeHandler>[0]) => {
+        setSelections({ ...selections, [key]: e.target.checked });
+      };
 
     // Calculate if parent should be indeterminate
     const checkedCount = Object.values(selections).filter(Boolean).length;
@@ -208,7 +210,7 @@ export const ExCheckboxGroup: Story = {
     const someChecked =
       checkedCount > 0 && checkedCount < Object.keys(selections).length;
 
-    const handleSelectAll = (e: any) => {
+    const handleSelectAll: CheckboxChangeHandler = (e) => {
       const newValue = e.target.checked;
       setSelections({
         option1: newValue,
@@ -271,14 +273,14 @@ export const ExCheckboxGroup: Story = {
 
 export const ExFormIntegration: Story = {
   name: 'Ex: As FormField',
-  render: () => {
+  render: function ExFormIntegrationRender() {
     const [formData, setFormData] = useState({
       newsletter: false,
       terms: false,
       privacy: false,
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       console.log('Form submitted:', formData);
       alert(
@@ -289,12 +291,17 @@ export const ExFormIntegration: Story = {
     const allAccepted = formData.terms && formData.privacy;
 
     return (
-      <FormField onSubmit={handleSubmit} label="FormField Integration" required>
+      <FormField
+        onSubmit={handleSubmit}
+        label="FormField Integration"
+        labelFor="newsletter"
+        required
+      >
         <CheckboxInput
           name="newsletter"
           id="newsletter"
           checked={formData.newsletter}
-          onChange={(e: any) =>
+          onChange={(e) =>
             setFormData({ ...formData, newsletter: e.target.checked })
           }
         >
@@ -305,7 +312,7 @@ export const ExFormIntegration: Story = {
           name="terms"
           id="terms"
           checked={formData.terms}
-          onChange={(e: any) =>
+          onChange={(e) =>
             setFormData({ ...formData, terms: e.target.checked })
           }
           error={!formData.terms}
@@ -317,7 +324,7 @@ export const ExFormIntegration: Story = {
           name="privacy"
           id="privacy"
           checked={formData.privacy}
-          onChange={(e: any) =>
+          onChange={(e) =>
             setFormData({ ...formData, privacy: e.target.checked })
           }
           error={!formData.privacy}
@@ -338,7 +345,7 @@ export const ExFormIntegration: Story = {
 // 4. Accessibility Stories - Use "A11y:" prefix
 export const A11yAccessibilityCheck: Story = {
   name: 'A11y: Accessibility Check',
-  render: () => {
+  render: function A11yAccessibilityCheckRender() {
     const [checked, setChecked] = useState(false);
     const handleChange: CheckboxChangeHandler = (e) =>
       setChecked(e.target.checked);

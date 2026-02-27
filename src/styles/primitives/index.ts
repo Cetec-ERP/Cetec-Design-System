@@ -15,6 +15,7 @@ export * from './radii';
 export * from './shadows';
 export * from './sizes';
 export * from './spacings';
+export * from './zIndex';
 
 /*
 Officially supported token types
@@ -42,5 +43,5 @@ radii: string
 shadows: Shadow | Shadow[] | string | string[] // setup as semantic tokens
 sizes: string
 spacing: string | number
-zIndex: string | number // not currently using
+zIndex: string
 */

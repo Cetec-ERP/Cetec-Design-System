@@ -1,8 +1,8 @@
-import { type ChangeEventHandler, ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
 import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
-import { Box, type BoxProps } from '../Box';
 import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
+import { Box, type BoxProps } from '../Box';
 import { Icon } from '../Icon';
 
 export type CheckboxProps = Omit<
@@ -10,20 +10,13 @@ export type CheckboxProps = Omit<
   'checked' | 'onChange' | keyof CheckboxVariantProps
 > &
   CheckboxVariantProps & {
-    /** Form field name */
     name: string;
-    /** Controlled checked state (REQUIRED) */
     checked: boolean;
-    /** Change handler (REQUIRED) */
-    onChange: ChangeEventHandler<HTMLInputElement>;
-    /** Unique identifier for the checkbox */
+    onChange: CheckboxChangeHandler;
     id?: string;
-    /** Display indeterminate state (partially checked) */
-    indeterminate?: boolean;
-    /** Disable the checkbox */
-    disabled?: boolean;
-    /** Display error state */
     error?: boolean;
+    disabled?: boolean;
+    indeterminate?: boolean;
   };
 
 /**
@@ -95,10 +88,7 @@ export const Checkbox = (props: CheckboxProps) => {
         id={id}
         checked={checked}
         onChange={onChange}
-        {...(disabled && {
-          disabled: true,
-          'aria-disabled': true,
-        })}
+        disabled={disabled}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}
         {...otherProps}

@@ -10,11 +10,9 @@ export const checkboxRecipe = defineSlotRecipe({
       display: 'inline-grid',
       placeContent: 'center',
       gridTemplateColumns: 'auto 1fr',
-      gap: 4,
       alignItems: 'start',
       cursor: 'pointer',
       userSelect: 'none',
-      color: 'text',
     },
     input: {
       position: 'absolute',
@@ -23,7 +21,7 @@ export const checkboxRecipe = defineSlotRecipe({
       height: 'full',
       margin: '0',
       padding: '0',
-      zIndex: 1,
+      zIndex: 'raised',
       cursor: 'inherit',
       "& ~ [name='checkbox']": {
         display: 'inline-grid',
@@ -68,8 +66,8 @@ export const checkboxRecipe = defineSlotRecipe({
     },
     indicator: {
       display: 'none',
-      width: 24,
-      height: 24,
+      width: '24',
+      height: '24',
       zIndex: 3,
       "&:is([name='checkbox'])": {
         fill: 'icon.subtlest',
@@ -78,12 +76,12 @@ export const checkboxRecipe = defineSlotRecipe({
     },
     checkBg: {
       position: 'absolute',
-      top: 0,
-      left: 0,
-      width: 'full',
-      height: 'full',
+      top: '0',
+      left: '0',
+      width: '24',
+      height: '24',
       fill: 'surface',
-      zIndex: 1,
+      zIndex: 'base',
     },
   },
 });

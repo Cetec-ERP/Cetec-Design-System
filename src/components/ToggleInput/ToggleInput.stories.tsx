@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { userEvent, within, expect } from '@storybook/test';
 import { ToggleInput } from './ToggleInput';
 import { ToggleChangeHandler } from '../Toggle';
@@ -74,7 +74,7 @@ type Story = StoryObj<typeof meta>;
 
 // 1. Default - Most common usage
 export const Default: Story = {
-  render: () => {
+  render: function DefaultRender() {
     const [checked, setChecked] = useState(false);
     const handleChange: ToggleChangeHandler = (e) =>
       setChecked(e.target.checked);
@@ -153,7 +153,7 @@ export const AllStates: Story = {
 // 3. Example Stories - Use "Ex:" prefix
 export const ExInteractive: Story = {
   name: 'Ex: Interactive Toggle',
-  render: () => {
+  render: function ExInteractiveRender() {
     const [checked, setChecked] = useState(false);
 
     return (
@@ -162,7 +162,9 @@ export const ExInteractive: Story = {
           name="interactive"
           id="interactive"
           checked={checked}
-          onChange={(e: any) => setChecked(e.target.checked)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setChecked(e.target.checked)
+          }
         >
           Click to toggle (currently: {checked ? 'checked' : 'unchecked'})
         </ToggleInput>
@@ -173,14 +175,14 @@ export const ExInteractive: Story = {
 
 export const ExFormIntegration: Story = {
   name: 'Ex: As FormField',
-  render: () => {
+  render: function ExFormIntegrationRender() {
     const [formData, setFormData] = useState({
       newsletter: false,
       terms: false,
       privacy: false,
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       console.log('Form submitted:', formData);
       alert(
@@ -202,7 +204,7 @@ export const ExFormIntegration: Story = {
           name="newsletter"
           id="newsletter"
           checked={formData.newsletter}
-          onChange={(e: any) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFormData({ ...formData, newsletter: e.target.checked })
           }
         >
@@ -213,7 +215,7 @@ export const ExFormIntegration: Story = {
           name="terms"
           id="terms"
           checked={formData.terms}
-          onChange={(e: any) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFormData({ ...formData, terms: e.target.checked })
           }
           error={!formData.terms}
@@ -225,7 +227,7 @@ export const ExFormIntegration: Story = {
           name="privacy"
           id="privacy"
           checked={formData.privacy}
-          onChange={(e: any) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFormData({ ...formData, privacy: e.target.checked })
           }
           error={!formData.privacy}
@@ -246,7 +248,7 @@ export const ExFormIntegration: Story = {
 // 4. Accessibility Stories - Use "A11y:" prefix
 export const A11yAccessibilityCheck: Story = {
   name: 'A11y: Accessibility Check',
-  render: () => {
+  render: function A11yAccessibilityCheckRender() {
     const [checked, setChecked] = useState(false);
     const handleChange: ToggleChangeHandler = (e) =>
       setChecked(e.target.checked);
@@ -297,7 +299,7 @@ export const A11yAccessibilityCheck: Story = {
 
 export const A11yKeyboardNavigation: Story = {
   name: 'A11y: Keyboard Navigation',
-  render: () => {
+  render: function A11yKeyboardNavigationRender() {
     const [firstChecked, setFirstChecked] = useState(false);
     const [secondChecked, setSecondChecked] = useState(false);
     const [thirdChecked, setThirdChecked] = useState(false);
@@ -308,7 +310,7 @@ export const A11yKeyboardNavigation: Story = {
           name="first"
           id="first"
           checked={firstChecked}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setFirstChecked(e.target.checked)
           }
         >
@@ -318,7 +320,7 @@ export const A11yKeyboardNavigation: Story = {
           name="second"
           id="second"
           checked={secondChecked}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setSecondChecked(e.target.checked)
           }
         >
@@ -328,7 +330,7 @@ export const A11yKeyboardNavigation: Story = {
           name="third"
           id="third"
           checked={thirdChecked}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setThirdChecked(e.target.checked)
           }
         >
