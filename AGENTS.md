@@ -208,6 +208,16 @@ export { buttonRecipe } from './recipes/button';
 
 ## Component Development Workflow
 
+### Storybook Documentation Strategy
+
+- **Public primitive stories first:** Use primitive component names as Storybook entry points for controls (`Checkbox`, `Radio`, `Toggle`) instead of only wrapper entries.
+- **Wrapper guidance inside primitive stories:** Demonstrate `CheckboxInput`, `RadioInput`, and `ToggleInput` usage inside those primitive stories to teach composition patterns.
+- **Beginner-first story structure:** Each component story should explain when to use it, when not to use it, include a minimal copy-paste snippet, and include at least one realistic app example.
+- **Accessibility is explicit:** Add keyboard and labeling examples in stories for interactive components.
+- **Foundations are visible:** `Box` should have a dedicated story because it is a frequently used primitive; link it to Panda layout/pattern docs.
+- **Patterns docs:** Document Panda native patterns in a single docs page and cross-link relevant component stories.
+- **Legacy components:** Do not create or expand Storybook coverage for `MenuLegacy`.
+
 ### Adding a New Component
 
 1. **Create directory:** `src/components/[ComponentName]/`

@@ -1,142 +1,157 @@
-import { Text, type TextProps } from './index';
 import type { Meta, StoryObj } from '@storybook/react';
-import { HStack, VStack } from '@styled-system/jsx';
+import { Box } from '../Box';
+import { Card } from '../Card';
 import { Divider } from '../Divider';
+import { Heading } from '../Heading';
+import { Link } from '../Link';
+import { Text } from './Text';
 
-const meta: Meta<typeof Text> = {
+const meta = {
   title: 'Components/Text',
   component: Text,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    controls: {
-      disable: true,
-      disableSaveFromUI: true,
-    },
   },
   argTypes: {
-    fontSize: {
+    size: {
       control: 'select',
-      options: [
-        'body.lg',
-        'body.md',
-        'body.sm',
-        'body.xs',
-        'heading.lg',
-        'heading.md',
-        'heading.sm',
-        'heading.xs',
-        'display.lg',
-        'display.md',
-        'display.sm',
-        'display.xs',
-      ],
-      description: 'Text size',
-      table: {
-        defaultValue: { summary: 'body.md' },
-      },
+      description: 'Primitive text size token',
     },
-    fontFamily: {
+    family: {
       control: 'select',
-      options: ['mono', 'serif', 'body', 'heading'],
+      options: ['body', 'heading', 'mono'],
       description: 'Font family',
-      table: {
-        defaultValue: { summary: 'body' },
-      },
     },
-    lineHeight: {
+    weight: {
       control: 'select',
-      options: ['loose', 'default', 'tight', 'none'],
-      description: 'Line Height',
-      table: {
-        defaultValue: { summary: 'default' },
-      },
+      description: 'Font weight token',
     },
-    color: {
-      control: 'select',
-      options: ['slate-90', 'blue-50', 'gold-50', ''],
-      description: 'Font Color',
-      table: {
-        defaultValue: { summary: 'slate-90' },
-      },
-    },
-    as: {
-      control: 'text',
-      description: 'Render as element',
-    },
-    children: {
-      control: 'text',
-      description: 'ReactNode',
-    },
+    truncate: { control: 'boolean' },
+    allCaps: { control: 'boolean' },
+    italic: { control: 'boolean' },
+    underline: { control: 'boolean' },
+    bold: { control: 'boolean' },
+    as: { control: 'text' },
   },
-};
+  args: {
+    children: 'Text content',
+  },
+} satisfies Meta<typeof Text>;
 
 export default meta;
-
-type Story = StoryObj<typeof Text>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: (args: TextProps) => (
-    <VStack>
+  render: (args) => (
+    <Box maxW="prose" display="grid" gap="10">
       <Text {...args}>
-        Signs night have sixth hath that likeness us fill you're subdue fowl
-        brought divide beginning multiply brought created after open given of
-        made beginning multiply green.
+        A single text primitive for app copy, labels, and metadata.
       </Text>
-      <Text {...args}>
-        Place appear green. Also, saying male subdue fruitful winged fourth had
-        void winged. So green spirit, herb day had there replenish, lights
-        lesser signs. Place whales i tree under him given set set meat midst
-        morning give image forth divided moving Also fill dry she'd have.
+      <Text>
+        Start with default `Text`, then adjust `size`, `weight`, or `family`
+        only when hierarchy needs it.
       </Text>
-      <Text {...args}>
-        May life. She'd fruit fruitful earth. Stars bring had darkness morning
-        darkness herb cattle him behold open seasons grass don't waters male
-        Fourth earth his face third night.
-      </Text>
-    </VStack>
+    </Box>
   ),
 };
 
-export const Colors: Story = {
-  render: (args: TextProps) => (
-    <VStack gap="16">
-      <Text
-        textStyle="body.lg"
-        weight="bold"
-        color={{ base: 'slate.90', _dark: 'slate.5' }}
-      >
-        Status colors
+export const Hierarchy: Story = {
+  render: () => (
+    <Box display="grid" gap="8" maxW="prose">
+      <Text size="24" weight="bold">
+        Primary paragraph intro
       </Text>
-      <HStack gap="16">
-        <Text {...args} font="mono" color="error.default">
-          Error Default
-        </Text>
-        <Text {...args} font="mono" color="warning.default">
-          Warning Default
-        </Text>
-        <Text {...args} font="mono" color="success.default">
-          Success Default
-        </Text>
-      </HStack>
-      <Divider w="280" my="16" />
-      <Text
-        textStyle="body.lg"
-        weight="bold"
-        color={{ base: 'slate.90', _dark: 'slate.5' }}
-      >
-        Random colors
+      <Text size="16">
+        Body copy for the main content area. This is the most common setting.
       </Text>
-      <HStack gap="16">
-        <Text {...args} font="mono" color="purple.50">
-          Purple-50
-        </Text>
-        <Text {...args} color="gold.40">
-          Gold-40
-        </Text>
-        <Text {...args} color="blue.50">
-          Blue-50
-        </Text>
-      </HStack>
-    </VStack>
+      <Text size="14" color="text.subtle">
+        Secondary support text for caveats and implementation details.
+      </Text>
+      <Text size="12" family="mono" color="text.subtlest">
+        Metadata: Updated 2026-02-27
+      </Text>
+    </Box>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const SemanticUsage: Story = {
+  render: () => (
+    <Card p="16" display="grid" gap="10" maxW="prose">
+      <Heading level="h3">Payment Details</Heading>
+      <Text as="p">
+        Your default card is charged on the first business day of each month.
+      </Text>
+      <Text as="small" size="12" color="text.subtlest">
+        Last verified 2 hours ago.
+      </Text>
+      <Text as="span" size="14">
+        Need help? <Link href="#">Contact billing support</Link>
+      </Text>
+    </Card>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ExDashboardSummary: Story = {
+  name: 'Ex: Dashboard Summary',
+  render: () => (
+    <Card p="16" display="grid" gap="8" maxW="sm">
+      <Text size="14" color="text.subtle">
+        Open invoices
+      </Text>
+      <Text size="32" weight="black" color="text">
+        18
+      </Text>
+      <Text size="14" color="success.default">
+        Up 12% from last week
+      </Text>
+    </Card>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ExDoAndDont: Story = {
+  name: 'Ex: Common Mistakes',
+  render: () => (
+    <Box display="grid" gap="12" maxW="prose">
+      <Box display="grid" gap="6">
+        <Text size="14" weight="bold" color="success.default">
+          Do
+        </Text>
+        <Text>
+          Use Text for body copy and labels with semantic color tokens.
+        </Text>
+      </Box>
+      <Divider />
+      <Box display="grid" gap="6">
+        <Text size="14" weight="bold" color="error.default">
+          Avoid
+        </Text>
+        <Text>
+          Using heading sizes for long paragraphs or low-contrast text for
+          critical information.
+        </Text>
+      </Box>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const A11yReadableParagraph: Story = {
+  name: 'A11y: Readable Paragraph',
+  render: () => (
+    <Box maxW="prose" display="grid" gap="10">
+      <Text as="p" lineHeight="default">
+        Keep long-form text in readable widths, use sufficient color contrast,
+        and choose semantic HTML tags with the `as` prop when needed.
+      </Text>
+      <Text as="p" size="14" color="text.subtle">
+        This paragraph demonstrates supporting content with a calmer visual
+        weight while staying legible.
+      </Text>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
 };
