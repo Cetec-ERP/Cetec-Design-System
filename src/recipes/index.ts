@@ -22,3 +22,7 @@ export { menuRecipe } from './menu';
 export { menuLegacyRecipe } from './menuLegacy';
 export { textInputRecipe } from './textInput';
 export { formFieldRecipe } from './formField';
+export { avatarRecipe } from './avatar';
+export { badgeRecipe } from './badge';
+export { chipRecipe } from './chip';
+export { modalRecipe } from './modal';

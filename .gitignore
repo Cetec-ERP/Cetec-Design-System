@@ -45,3 +45,11 @@ storybook-static
 .pair-programming-session.md
 /.tmp
 .claude
+
+# Merge/conflict artifact directories (from GUI tools)
+.auto-resolution/
+.conflict-base-*/
+.conflict-side-*/
+.conflict-ours/
+.conflict-theirs/
+.conflict-files/

@@ -22,6 +22,10 @@ export { ThemeProvider } from './contexts/ThemeContext';
 export { Tooltip } from './components/Tooltip';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
+export { Avatar } from './components/Avatar';
+export { Badge } from './components/Badge';
+export { Chip, ChipGroup } from './components/Chip';
+export { Modal } from './components/Modal';
 export {
   Menu,
   MenuGroup,
