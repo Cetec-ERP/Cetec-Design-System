@@ -18,6 +18,7 @@ import * as componentRecipes from './recipes/index';
 
 // Separate slotRecipes from regular recipes
 const {
+  badgeRecipe,
   buttonRecipe,
   iconButtonRecipe,
   checkboxRecipe,
@@ -25,9 +26,15 @@ const {
   tooltipRecipe,
   menuRecipe,
   menuLegacyRecipe,
+  toggleRecipe,
+  chipRecipe,
+  avatarRecipe,
+  modalRecipe,
   formFieldRecipe,
   spinnerRecipe,
   textInputRecipe,
+  datePickerRecipe,
+  timePickerRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -83,6 +90,7 @@ export const cetecPreset: Preset = definePreset({
         ...transformedRecipes,
       },
       slotRecipes: {
+        badge: badgeRecipe,
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
         checkbox: checkboxRecipe,
@@ -90,9 +98,15 @@ export const cetecPreset: Preset = definePreset({
         tooltip: tooltipRecipe,
         menu: menuRecipe,
         menuLegacy: menuLegacyRecipe,
+        toggle: toggleRecipe,
+        chip: chipRecipe,
+        avatar: avatarRecipe,
+        modal: modalRecipe,
         formField: formFieldRecipe,
         spinner: spinnerRecipe,
         textInput: textInputRecipe,
+        datePicker: datePickerRecipe,
+        timePicker: timePickerRecipe,
       },
     },
   },

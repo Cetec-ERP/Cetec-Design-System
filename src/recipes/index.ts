@@ -26,3 +26,5 @@ export { avatarRecipe } from './avatar';
 export { badgeRecipe } from './badge';
 export { chipRecipe } from './chip';
 export { modalRecipe } from './modal';
+export { datePickerRecipe } from './datePicker';
+export { timePickerRecipe } from './timePicker';
