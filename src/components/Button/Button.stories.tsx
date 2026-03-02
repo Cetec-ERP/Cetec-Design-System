@@ -76,7 +76,10 @@ const meta = {
       description: 'Button content',
     },
   },
-  args: { onClick: fn() },
+  args: {
+    children: 'Button',
+    onClick: fn(),
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;

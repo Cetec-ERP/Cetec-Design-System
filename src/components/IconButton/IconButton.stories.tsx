@@ -31,6 +31,8 @@ export const Variants: Story = {
       <IconButton iconName="info" altText="Info" variant="ghost" />
       <IconButton iconName="send" altText="Send" variant="cta" />
       <IconButton iconName="trash" altText="Delete" variant="danger" />
+      <IconButton iconName="alarm" altText="Alarms" variant="selected" />
+      <IconButton iconName="barcode" altText="Barcode" variant="selectedBold" />
     </Wrap>
   ),
   parameters: { controls: { disable: true } },
