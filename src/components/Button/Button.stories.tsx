@@ -26,7 +26,16 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'],
+      options: [
+        'standard',
+        'primary',
+        'hollow',
+        'ghost',
+        'cta',
+        'danger',
+        'selected',
+        'selectedBold',
+      ],
       description: 'Visual style variants',
       table: {
         defaultValue: { summary: 'standard' },
@@ -81,7 +90,16 @@ export const Variants: Story = {
   render: () => (
     <Wrap gap="12" alignItems="center">
       {(
-        ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'] as const
+        [
+          'standard',
+          'primary',
+          'hollow',
+          'ghost',
+          'cta',
+          'danger',
+          'selected',
+          'selectedBold',
+        ] as const
       ).map((variant) => (
         <Button key={variant} variant={variant}>
           {variant}
@@ -121,7 +139,16 @@ export const InteractionStates: Story = {
       </Text>
       <Wrap gap="12" alignItems="center">
         {(
-          ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'] as const
+          [
+            'standard',
+            'primary',
+            'hollow',
+            'ghost',
+            'cta',
+            'danger',
+            'selected',
+            'selectedBold',
+          ] as const
         ).map((variant) => (
           <Button key={variant} variant={variant} disabled>
             {variant}
@@ -133,7 +160,16 @@ export const InteractionStates: Story = {
       </Text>
       <Wrap gap="12" alignItems="center">
         {(
-          ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'] as const
+          [
+            'standard',
+            'primary',
+            'hollow',
+            'ghost',
+            'cta',
+            'danger',
+            'selected',
+            'selectedBold',
+          ] as const
         ).map((variant) => (
           <Button key={variant} variant={variant} loading>
             {variant}
@@ -168,7 +204,7 @@ export const WithIcon: Story = {
         <Button iconBefore="timer" variant="primary">
           Start Timer
         </Button>
-        <Button iconBefore="calendar" variant="hollow">
+        <Button iconBefore="calendar" variant="selectedBold">
           2026-01-12
         </Button>
         <Button iconBefore="info" variant="ghost">
@@ -189,7 +225,12 @@ export const WithIcon: Story = {
         <Button iconAfter="download" variant="primary">
           Download
         </Button>
-        <Button iconAfter="arrow-square-out">Logout</Button>
+        <Button iconAfter="scale" variant="hollow">
+          Weigh
+        </Button>
+        <Button iconAfter="screwdriver" variant="selected">
+          Tools
+        </Button>
       </Wrap>
 
       <Divider gridColumn="1 / -1" />

@@ -80,6 +80,28 @@ export const colors = defineSemanticTokens.colors({
         },
       },
     },
+    selected: {
+      DEFAULT: {
+        value: { base: '{colors.blue.10}', _dark: '{colors.blue.80}' },
+      },
+      hovered: {
+        value: { base: '{colors.blue.5}', _dark: '{colors.blue.70}' },
+      },
+      pressed: {
+        value: { base: '{colors.blue.20}', _dark: '{colors.blue.90}' },
+      },
+      bold: {
+        DEFAULT: {
+          value: { base: '{colors.blue.60}', _dark: '{colors.blue.40}' },
+        },
+        hovered: {
+          value: { base: '{colors.blue.50}', _dark: '{colors.blue.30}' },
+        },
+        pressed: {
+          value: { base: '{colors.blue.70}', _dark: '{colors.blue.50}' },
+        },
+      },
+    },
     success: {
       DEFAULT: {
         value: { base: '{colors.green.10}', _dark: '{colors.green.70}' },
@@ -490,6 +512,7 @@ export const colors = defineSemanticTokens.colors({
   blanket: {
     DEFAULT: { value: { base: '#17171775', _dark: '#10121499' } },
     danger: { value: { base: '#ef5c4814', _dark: '#e3493514' } },
+    selected: { value: { base: '#388bff14', _dark: '#1d7afc14' } },
   },
   border: {
     DEFAULT: {
@@ -532,6 +555,9 @@ export const colors = defineSemanticTokens.colors({
         },
       },
     },
+    selected: {
+      value: { base: '{colors.blue.60}', _dark: '{colors.blue.40}' },
+    },
     input: {
       value: { base: '{colors.neutral.50}', _dark: '{colors.darkNeutral.60}' },
     },
@@ -559,6 +585,9 @@ export const colors = defineSemanticTokens.colors({
     },
     inverse: {
       value: { base: '{colors.neutral.0}', _dark: '{colors.darkNeutral.10}' },
+    },
+    selected: {
+      value: { base: '{colors.blue.60}', _dark: '{colors.blue.40}' },
     },
     disabled: {
       value: {
@@ -723,6 +752,9 @@ export const colors = defineSemanticTokens.colors({
           _dark: '{colors.darkNeutral.40}',
         },
       },
+    },
+    selected: {
+      value: { base: '{colors.blue.60}', _dark: '{colors.blue.40}' },
     },
     placeholder: {
       value: { base: '{colors.neutral.40}', _dark: '{colors.darkNeutral.40}' },

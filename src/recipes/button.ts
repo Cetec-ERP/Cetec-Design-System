@@ -171,6 +171,53 @@ const buttonVariants = {
         },
       },
     },
+    selected: {
+      container: {
+        bg: 'bg.selected',
+        color: 'text.selected',
+        icon: { fill: 'icon.selected' },
+        _hover: {
+          bg: 'bg.selected.hovered',
+          color: 'text.selected.hovered',
+          icon: { fill: 'icon.selected' },
+        },
+        _active: {
+          bg: 'bg.selected.pressed',
+          color: 'text.selected',
+          icon: { fill: 'icon.selected' },
+        },
+      },
+      icon: {
+        fill: 'icon.selected',
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        _groupHover: { fill: 'icon.selected' },
+        _groupActive: { fill: 'icon.selected' },
+        _groupDisabled: {
+          fill: 'icon.selected',
+        },
+      },
+    },
+    selectedBold: {
+      container: {
+        bg: 'bg.selected.bold',
+        color: 'text.inverse',
+        _hover: {
+          bg: 'bg.selected.bold.hovered',
+        },
+        _active: {
+          bg: 'bg.selected.bold.pressed',
+        },
+      },
+      icon: {
+        fill: 'icon.inverse',
+        mixBlendMode: { base: 'screen', _dark: 'multiply' },
+        _groupHover: { fill: 'icon.inverse' },
+        _groupActive: { fill: 'icon.inverse' },
+        _groupDisabled: {
+          fill: 'icon.inverse',
+        },
+      },
+    },
   },
 };
 

@@ -63,7 +63,11 @@ export const Button = (props: ButtonProps) => {
       {loading && (
         <Spinner
           size="sm"
-          inverse={variant === 'primary' || variant === 'danger'}
+          inverse={
+            variant === 'primary' ||
+            variant === 'danger' ||
+            variant === 'selectedBold'
+          }
           centered
         />
       )}
