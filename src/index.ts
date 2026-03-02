@@ -24,7 +24,10 @@ export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
 export { Menu } from './components/Menu';
 export { FormField } from './components/FormField';
-
+export { Avatar } from './components/Avatar';
+export { Modal } from './components/Modal';
+export { Chip } from './components/Chip';
+export { Badge } from './components/Badge';
 // Export the Panda CSS preset
 export { cetecPreset } from './cetec-preset';
 
