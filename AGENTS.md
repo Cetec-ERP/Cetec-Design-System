@@ -19,6 +19,11 @@ npm run storybook:build     # Build Storybook for deployment
 
 # Code Quality
 npm run lint                # Run ESLint on all files
+npm run lint:fix            # Run ESLint with autofix
+npm run typecheck           # Run TypeScript type checking
+npm run validate            # Run lint + typecheck
+npm run validate:full       # Run validate + production build
+npm run doctor              # Run react-doctor + storybook doctor
 npm run prepare             # Run Panda CSS codegen (auto-runs on install)
 
 # Icon Generation
@@ -29,6 +34,17 @@ npm run panda-mcp           # Run local Panda CSS MCP server to expose the desig
 ```
 
 **Note:** This project currently has NO test framework configured. Do not attempt to run tests.
+
+## Canonical Standards
+
+The canonical standards set is in `standards/`.
+
+- `standards/components/`
+- `standards/recipes/`
+- `standards/lint/`
+- `standards/index.yml`
+
+Use these files as the source of truth for component, recipe, and lint conventions.
 
 ## Code Style & Conventions
 
