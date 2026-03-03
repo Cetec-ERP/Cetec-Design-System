@@ -6,11 +6,12 @@
   "main": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "prepare": "npx panda codegen",
+    "prepare": "npx panda codegen && npx simple-git-hooks",
     "dev": "npx panda codegen --watch & vite",
     "build": "rm -rf dist && PANDA_STATIC=true npx panda codegen && npx panda cssgen --splitting && npx panda spec && npx panda init-mcp --client claude && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:staged": "lint-staged",
     "typecheck": "tsc --noEmit",
     "validate": "npm run lint && npm run typecheck",
     "validate:full": "npm run validate && npm run build",
@@ -22,6 +23,16 @@
     "doctor": "npm run doctor:react && npm run doctor:storybook",
     "doctor:react": "npx react-doctor",
     "doctor:storybook": "npx storybook doctor"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,scss,yml,yaml}": "prettier --write"
   },
   "files": [
     "./dist/",
@@ -66,8 +77,10 @@
     "eslint-plugin-storybook": "^0.11.2",
     "eslint-plugin-unicorn": "^61.0.2",
     "globals": "^15.14.0",
+    "lint-staged": "^16.2.2",
     "postcss": "^8.5.1",
     "prettier": "^3.3.3",
+    "simple-git-hooks": "^2.13.1",
     "storybook": "^8.6.17",
     "svg-sprite": "^2.0.4",
     "svgo": "^3.0.2",

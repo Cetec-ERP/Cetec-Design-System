@@ -13,7 +13,8 @@ Tracks concrete implementation work for lint standards and rollout.
   - `doctor`, `doctor:react`, `doctor:storybook`
 - Added TypeScript casing safety:
   - `forceConsistentCasingInFileNames: true` in `tsconfig.json`.
-- Added baseline ESLint plugins and warn-level rollout rules in `eslint.config.js`:
+- Added baseline ESLint plugins and warn-level rollout rules in
+  `eslint.config.js`:
   - `@typescript-eslint/consistent-type-imports`
   - `import/no-unresolved`
   - `import/order`
@@ -23,16 +24,21 @@ Tracks concrete implementation work for lint standards and rollout.
   - `eslint-plugin-import`
   - `eslint-import-resolver-typescript`
   - `eslint-plugin-unicorn`
+- Installed updated dependencies and lockfile.
+- Ran `npm run validate` and captured baseline warning/error profile.
+- Added local ESLint plugin scaffold in `tools/eslint-plugin-cetec/`.
+- Implemented and wired first custom rule at warn-level:
+  - `cetec/recipe-export-name-matches-file`
+- Implemented and wired additional custom rules at warn-level:
+  - `cetec/recipe-jsx-name-matches-component`
+  - `cetec/no-hardcoded-design-values-in-recipes`
+- Added CI workflow for rollout gating and report-only doctor checks:
+  - `.github/workflows/standards-rollout-ci.yml`
 
 ## Next
 
-1. Install/update lockfile for newly added lint dependencies.
-2. Run `npm run validate` and capture baseline warnings/errors.
-3. Add narrow allowlist for filename-case legacy exceptions if needed.
-4. Create local custom plugin scaffold at `tools/eslint-plugin-cetec/`.
-5. Implement custom rules:
-   - `recipe-export-name-matches-file`
-   - `recipe-jsx-name-matches-component`
-   - `no-hardcoded-design-values-in-recipes`
-6. Integrate custom rules as warn-level first, then promote to error.
-7. Add CI job updates to run `npm run validate` and scoped doctor checks.
+1. Add narrow allowlist for filename-case legacy exceptions if needed.
+2. Integrate custom rules as warn-level first, then promote to
+   error.
+3. Decide whether `doctor` should become blocking in CI after baseline
+   cleanup.

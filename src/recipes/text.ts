@@ -1,9 +1,10 @@
 import { defineRecipe } from '@pandacss/dev';
-import { globalBaseStyles } from '../styles/utilities';
+
 import {
   fontSizes as fontSizeTokens,
   fontWeights as fontWeightTokens,
 } from '../styles/primitives';
+import { globalBaseStyles } from '../styles/utilities';
 import { fontVariants } from '../styles/utilities';
 
 const textBase = {

@@ -1,4 +1,5 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 const menuBase = {

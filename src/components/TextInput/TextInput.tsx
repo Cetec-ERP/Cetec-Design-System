@@ -1,8 +1,10 @@
 import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
-import { Box, type BoxProps } from '../Box/Box';
-import { Icon, type IconNamesList } from '~/components/Icon';
 import { textInput, type TextInputVariantProps } from '@styled-system/recipes';
+
+import { Icon, type IconNamesList } from '~/components/Icon';
+import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box/Box';
 
 export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
   Omit<TextInputVariantProps, 'iconBefore' | 'iconAfter'> & {

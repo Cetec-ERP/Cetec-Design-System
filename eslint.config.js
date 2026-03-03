@@ -7,9 +7,10 @@ import reactPlugin from 'eslint-plugin-react';
 import unicorn from 'eslint-plugin-unicorn';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
+import cetecPlugin from './tools/eslint-plugin-cetec/index.js';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'storybook-static', 'styled-system'] },
   {
     extends: [
       js.configs.recommended,
@@ -126,7 +127,8 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/recipes/**/*.ts'],
+    files: ['src/recipes/*.ts'],
+    ignores: ['src/recipes/index.ts'],
     rules: {
       'unicorn/filename-case': [
         'warn',
@@ -137,6 +139,12 @@ export default tseslint.config(
           ignore: ['^index$'],
         },
       ],
+      'cetec/recipe-export-name-matches-file': 'warn',
+      'cetec/recipe-jsx-name-matches-component': 'warn',
+      'cetec/no-hardcoded-design-values-in-recipes': 'warn',
+    },
+    plugins: {
+      cetec: cetecPlugin,
     },
   },
 );
