@@ -1,12 +1,12 @@
-name: Standards Rollout CI
+name: CI Validate
 
 on:
   pull_request:
   workflow_dispatch:
 
 jobs:
-  validate-and-report:
-    name: Validate and Doctor Report
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,3 @@ jobs:
 
       - name: Run required validation gate
         run: npm run validate
-
-      - name: Run doctor report (non-blocking)
-        continue-on-error: true
-        run: npm run doctor
