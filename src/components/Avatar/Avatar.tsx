@@ -1,9 +1,12 @@
-import { useEffect, useState, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+
 import { cx, css } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
-import { Box, type BoxProps } from '~/components/Box';
 import { avatar, type AvatarVariantProps } from '@styled-system/recipes';
+
+import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type AllowedIconSizes } from '~/components/Icon';
+import { splitProps } from '~/utils/splitProps';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 

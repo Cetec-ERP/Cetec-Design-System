@@ -3,7 +3,7 @@ import { create } from '@storybook/theming';
 // TODO: Static Import Logo?
 // TODO: Implement Tokens or use DS colors
 
-export default create({
+const cetecTheme = create({
   brandTitle: 'Cetec ERP Design System',
   brandImage: '/cetec-logo.svg',
   brandTarget: '_self',
@@ -40,3 +40,5 @@ export default create({
   // inputTextColor: '#10162F',
   // inputBorderRadius: 2,
 });
+
+export default cetecTheme;

@@ -1,7 +1,10 @@
-import { ReactNode, type ElementType } from 'react';
-import { Box, type BoxProps } from '~/components/Box';
-import { text, type TextVariantProps } from '@styled-system/recipes';
+import type { ReactNode } from 'react';
+import { type ElementType } from 'react';
+
 import { cx } from '@styled-system/css';
+import { text, type TextVariantProps } from '@styled-system/recipes';
+
+import { Box, type BoxProps } from '~/components/Box';
 import { splitProps } from '~/utils/splitProps';
 
 export type TextProps = Omit<BoxProps, keyof TextVariantProps> &

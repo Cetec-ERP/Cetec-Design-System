@@ -1,7 +1,9 @@
-import { Box, type BoxProps } from '../Box/Box';
-import { spinner, type SpinnerVariantProps } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
+import { spinner, type SpinnerVariantProps } from '@styled-system/recipes';
+
 import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box/Box';
 
 export type SpinnerProps = Omit<BoxProps, keyof SpinnerVariantProps> &
   SpinnerVariantProps & {

@@ -1,11 +1,14 @@
-import { SVGAttributes } from 'react';
-import { Box, type BoxProps } from '~/components/Box';
+import type { SVGAttributes } from 'react';
+
 import { cx } from '@styled-system/css';
-import { IconNamesList } from './icons';
 import { icon, type IconVariantProps } from '@styled-system/recipes';
-import { numericSizes } from '~/styles/primitives';
-import { ColorToken } from '@styled-system/tokens';
+import type { ColorToken } from '@styled-system/tokens';
+
+import { Box, type BoxProps } from '~/components/Box';
+import type { numericSizes } from '~/styles/primitives';
 import { splitProps } from '~/utils/splitProps';
+
+import type { IconNamesList } from './icons';
 
 /*
  * Using the size prop in this way cannot handle non-numeric sizes,

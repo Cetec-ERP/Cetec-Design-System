@@ -1,7 +1,9 @@
 // src/components/Tooltip/Tooltip.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
+
 import { Tooltip } from './Tooltip';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Tooltip> = {
   title: 'Components/Tooltip',
@@ -17,10 +19,18 @@ const meta: Meta<typeof Tooltip> = {
     placement: {
       control: 'select',
       options: [
-        'top', 'top-start', 'top-end',
-        'bottom', 'bottom-start', 'bottom-end',
-        'left', 'left-start', 'left-end',
-        'right', 'right-start', 'right-end',
+        'top',
+        'top-start',
+        'top-end',
+        'bottom',
+        'bottom-start',
+        'bottom-end',
+        'left',
+        'left-start',
+        'left-end',
+        'right',
+        'right-start',
+        'right-end',
       ],
     },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },
@@ -79,17 +89,33 @@ export const Sizes: Story = {
 
 export const AllPlacements: Story = {
   render: (args) => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-      {(['top-start', 'top', 'top-end',
-         'left', '', 'right',
-         'bottom-start', 'bottom', 'bottom-end'] as const).map((p) =>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: 16,
+      }}
+    >
+      {(
+        [
+          'top-start',
+          'top',
+          'top-end',
+          'left',
+          '',
+          'right',
+          'bottom-start',
+          'bottom',
+          'bottom-end',
+        ] as const
+      ).map((p) =>
         p ? (
           <Tooltip key={p} {...args} placement={p} text={p}>
             <Button style={{ width: '100%' }}>{p}</Button>
           </Tooltip>
         ) : (
           <div key="empty" />
-        )
+        ),
       )}
     </div>
   ),

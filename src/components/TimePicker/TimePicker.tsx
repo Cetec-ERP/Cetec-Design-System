@@ -1,4 +1,15 @@
 import {
+  type KeyboardEvent,
+  type MouseEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FocusEvent,
+} from 'react';
+
+import {
   FloatingFocusManager,
   FloatingPortal,
   autoUpdate,
@@ -9,16 +20,19 @@ import {
   useFloating,
   useInteractions,
 } from '@floating-ui/react';
+
 import { cx } from '@styled-system/css';
 import {
   timePicker,
   type TimePickerVariantProps,
 } from '@styled-system/recipes';
-import type React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { Box } from '~/components/Box';
 import type { BoxProps } from '~/components/Box';
+import { splitProps } from '~/utils/splitProps';
+
 import { TimeList } from './TimeList';
+
 import type { HourCycle, TimeValue } from './TimeList';
 
 export type { TimeValue, HourCycle };
@@ -144,27 +158,32 @@ export const TimePicker = (props: TimePickerProps) => {
     size,
     open: controlledOpen,
     onOpenChange,
-    className,
     ...rest
   } = props;
+
+  const [className, otherProps] = splitProps(rest);
 
   const segments = getSegments(hourCycle);
 
   // ── Segment state ──────────────────────────────────────────────────────────
-  const initNumericValues = (
-    v: TimeValue | null | undefined,
-  ): NumericValues => {
-    if (!v) return { hour: null, minute: null };
-    if (hourCycle === '12') {
-      return { hour: to12hDisplay(v.hour).hour12, minute: v.minute };
-    }
-    return { hour: v.hour, minute: v.minute };
-  };
+  const initNumericValues = useCallback(
+    (v: TimeValue | null | undefined): NumericValues => {
+      if (!v) return { hour: null, minute: null };
+      if (hourCycle === '12') {
+        return { hour: to12hDisplay(v.hour).hour12, minute: v.minute };
+      }
+      return { hour: v.hour, minute: v.minute };
+    },
+    [hourCycle],
+  );
 
-  const initAmpm = (v: TimeValue | null | undefined): 'AM' | 'PM' | null => {
-    if (!v || hourCycle !== '12') return null;
-    return to12hDisplay(v.hour).ampm;
-  };
+  const initAmpm = useCallback(
+    (v: TimeValue | null | undefined): 'AM' | 'PM' | null => {
+      if (!v || hourCycle !== '12') return null;
+      return to12hDisplay(v.hour).ampm;
+    },
+    [hourCycle],
+  );
 
   const [numericVals, setNumericVals] = useState<NumericValues>(() =>
     initNumericValues(value),
@@ -196,7 +215,7 @@ export const TimePicker = (props: TimePickerProps) => {
       setNumericVals(initNumericValues(value));
       setAmpm(initAmpm(value));
     }
-  }, [value, hourCycle]);
+  }, [value, initAmpm, initNumericValues]);
 
   // ── Floating UI ────────────────────────────────────────────────────────────
   const { refs, floatingStyles, context } = useFloating({
@@ -219,7 +238,7 @@ export const TimePicker = (props: TimePickerProps) => {
       containerRef.current = el;
       refs.setReference(el);
     },
-    [refs.setReference],
+    [refs],
   );
 
   const focusSegment = useCallback((index: number) => {
@@ -227,7 +246,7 @@ export const TimePicker = (props: TimePickerProps) => {
   }, []);
 
   const handleSegmentBlur = useCallback(
-    (e: React.FocusEvent) => {
+    (e: FocusEvent) => {
       setFocusedSegment(null);
       const related = e.relatedTarget as Node | null;
       if (
@@ -258,7 +277,7 @@ export const TimePicker = (props: TimePickerProps) => {
 
   // ── Keyboard handler ───────────────────────────────────────────────────────
   const handleSegmentKeyDown = useCallback(
-    (e: React.KeyboardEvent, segIdx: number) => {
+    (e: KeyboardEvent, segIdx: number) => {
       const seg = segments[segIdx];
       if (!seg) return;
 
@@ -416,7 +435,7 @@ export const TimePicker = (props: TimePickerProps) => {
 
   // ── Render segments ────────────────────────────────────────────────────────
   const renderSegments = () => {
-    const items: React.ReactNode[] = [];
+    const items: ReactNode[] = [];
 
     segments.forEach((seg, idx) => {
       if (seg.kind === 'ampm') {
@@ -445,7 +464,7 @@ export const TimePicker = (props: TimePickerProps) => {
               if (!disabled) handleOpenChange(true);
             }}
             onBlur={handleSegmentBlur}
-            onKeyDown={(e: React.KeyboardEvent) => handleSegmentKeyDown(e, idx)}
+            onKeyDown={(e: KeyboardEvent) => handleSegmentKeyDown(e, idx)}
           >
             {display}
           </Box>,
@@ -493,7 +512,7 @@ export const TimePicker = (props: TimePickerProps) => {
             if (!disabled) handleOpenChange(true);
           }}
           onBlur={handleSegmentBlur}
-          onKeyDown={(e: React.KeyboardEvent) => handleSegmentKeyDown(e, idx)}
+          onKeyDown={(e: KeyboardEvent) => handleSegmentKeyDown(e, idx)}
         >
           {display}
         </Box>,
@@ -531,7 +550,7 @@ export const TimePicker = (props: TimePickerProps) => {
   };
 
   return (
-    <Box className={cx(classes.root, className)} {...rest}>
+    <Box className={cx(classes.root, className)} {...otherProps}>
       {/* Segmented input */}
       <Box
         ref={setContainerRef}
@@ -541,7 +560,7 @@ export const TimePicker = (props: TimePickerProps) => {
         aria-disabled={disabled}
         data-error={error ? true : undefined}
         data-open={isOpen || undefined}
-        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        onClick={(e: MouseEvent<HTMLDivElement>) => {
           if (e.target === e.currentTarget && !disabled)
             segmentRefs.current[0]?.focus();
         }}

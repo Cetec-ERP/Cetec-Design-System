@@ -1,5 +1,4 @@
 import { defineTokens } from '@pandacss/dev';
-// import { colors } from './colors';
 
 export const shadows = defineTokens.shadows({
   zeroShadow: {

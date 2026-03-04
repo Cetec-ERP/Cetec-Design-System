@@ -1,7 +1,10 @@
 import { type ChangeEvent } from 'react';
+
 import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
 import { radio, type RadioVariantProps } from '@styled-system/recipes';
+
+import { splitProps } from '~/utils/splitProps';
+
 import { Box, type BoxProps } from '../Box';
 import { Icon } from '../Icon';
 

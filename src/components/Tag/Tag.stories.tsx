@@ -1,7 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Tag } from './Tag';
 import { Wrap, Grid } from '@styled-system/jsx';
+
 import { Text } from '../Text';
+
+import { Tag } from './Tag';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 /**
  * Tag component for labeling, categorizing, and organizing items.

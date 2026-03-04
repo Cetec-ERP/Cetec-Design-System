@@ -1,15 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { HStack, VStack, Flex } from '@styled-system/jsx';
 import { type ChangeEvent, useState } from 'react';
+
+import { HStack, VStack, Flex } from '@styled-system/jsx';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
 import { FormField } from '../FormField';
 import { TextInput } from '../TextInput';
+
 import { Menu } from './Menu';
 import { MenuGroup } from './MenuGroup';
 import { MenuItem } from './MenuItem';
 import { SubMenu } from './SubMenu';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Menu',
@@ -25,6 +28,199 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const SingleSelectExample = () => {
+  const [selected, setSelected] = useState('item-2');
+
+  return (
+    <Menu inline closeOnSelect={false}>
+      <MenuItem
+        label="Option One"
+        selected={selected === 'item-1'}
+        onClick={() => setSelected('item-1')}
+      />
+      <MenuItem
+        label="Option Two"
+        selected={selected === 'item-2'}
+        onClick={() => setSelected('item-2')}
+      />
+      <MenuItem
+        label="Option Three"
+        selected={selected === 'item-3'}
+        onClick={() => setSelected('item-3')}
+      />
+    </Menu>
+  );
+};
+
+const MultiSelectExample = () => {
+  const [selected, setSelected] = useState<string[]>(['beta']);
+  const toggle = (value: string) => {
+    setSelected((prev) =>
+      prev.includes(value)
+        ? prev.filter((entry) => entry !== value)
+        : [...prev, value],
+    );
+  };
+
+  return (
+    <Menu inline closeOnSelect={false}>
+      <MenuItem
+        variant="checkbox"
+        label="Alpha"
+        selected={selected.includes('alpha')}
+        onClick={() => toggle('alpha')}
+      />
+      <MenuItem
+        variant="checkbox"
+        label="Beta"
+        selected={selected.includes('beta')}
+        onClick={() => toggle('beta')}
+      />
+      <MenuItem
+        variant="checkbox"
+        label="Gamma"
+        selected={selected.includes('gamma')}
+        onClick={() => toggle('gamma')}
+      />
+    </Menu>
+  );
+};
+
+const ToggleOptionsExample = () => {
+  const [compact, setCompact] = useState(false);
+  const [alerts, setAlerts] = useState(true);
+
+  return (
+    <Menu inline closeOnSelect={false} w="264">
+      <MenuGroup label="Options" divider>
+        <MenuItem
+          variant="toggle"
+          label="Compact mode"
+          selected={compact}
+          onClick={() => setCompact((state) => !state)}
+        />
+        <MenuItem
+          variant="toggle"
+          label="Email alerts"
+          selected={alerts}
+          onClick={() => setAlerts((state) => !state)}
+        />
+      </MenuGroup>
+      <MenuItem
+        label="Open docs"
+        href="https://cetecerp.com"
+        iconAfter="arrow-square-out"
+        target="_blank"
+        rel="noreferrer"
+      />
+    </Menu>
+  );
+};
+
+const SubMenuDrilldownFormsExample = () => {
+  const [profileName, setProfileName] = useState('');
+  const [profileOwner, setProfileOwner] = useState('');
+  const [alertTopic, setAlertTopic] = useState('');
+  const [alertChannel, setAlertChannel] = useState('');
+
+  return (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open menu</Button>}
+      subMenuInteraction="drilldown"
+      closeOnSelect={false}
+    >
+      <MenuItem label="Dashboard" />
+
+      <SubMenu label="Edit profile">
+        <Box p="24" display="grid" gap="8" minW="248" justifyItems="end">
+          <FormField label="Profile name" labelFor="profile-name">
+            <TextInput
+              id="profile-name"
+              name="profileName"
+              value={profileName}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setProfileName(event.target.value)
+              }
+            />
+          </FormField>
+
+          <FormField label="Owner" labelFor="profile-owner">
+            <TextInput
+              id="profile-owner"
+              name="profileOwner"
+              value={profileOwner}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setProfileOwner(event.target.value)
+              }
+            />
+          </FormField>
+
+          <Button variant="primary">Submit</Button>
+        </Box>
+      </SubMenu>
+
+      <SubMenu label="Create alert">
+        <Box p="24" display="grid" gap="8" minW="248" justifyItems="end">
+          <FormField label="Topic" labelFor="alert-topic">
+            <TextInput
+              id="alert-topic"
+              name="alertTopic"
+              value={alertTopic}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setAlertTopic(event.target.value)
+              }
+            />
+          </FormField>
+
+          <FormField label="Channel" labelFor="alert-channel">
+            <TextInput
+              id="alert-channel"
+              name="alertChannel"
+              value={alertChannel}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setAlertChannel(event.target.value)
+              }
+            />
+          </FormField>
+
+          <Button variant="primary">Submit</Button>
+        </Box>
+      </SubMenu>
+    </Menu>
+  );
+};
+
+const AutocompleteFilteringExample = () => {
+  const [query, setQuery] = useState('');
+
+  return (
+    <VStack gap="12" alignItems="stretch" width="full" maxW="sm">
+      <TextInput
+        name="menu-query"
+        iconBefore="search"
+        placeholder="Filter menu items"
+        value={query}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          setQuery(event.target.value)
+        }
+      />
+
+      <Menu inline query={query} filterMode="contains" highlightMatches>
+        <MenuItem
+          label="Account settings"
+          description="Manage profile and security"
+        />
+        <MenuItem
+          label="Notifications"
+          description="Email, SMS and push alerts"
+        />
+        <MenuItem label="Integrations" description="Connect external tools" />
+        <MenuItem label="Audit history" description="Track critical events" />
+      </Menu>
+    </VStack>
+  );
+};
 
 export const Actions: Story = {
   render: () => (
@@ -53,66 +249,12 @@ export const ActionsWithSections: Story = {
 };
 
 export const SingleSelect: Story = {
-  render: () => {
-    const [selected, setSelected] = useState('item-2');
-
-    return (
-      <Menu inline closeOnSelect={false}>
-        <MenuItem
-          label="Option One"
-          selected={selected === 'item-1'}
-          onClick={() => setSelected('item-1')}
-        />
-        <MenuItem
-          label="Option Two"
-          selected={selected === 'item-2'}
-          onClick={() => setSelected('item-2')}
-        />
-        <MenuItem
-          label="Option Three"
-          selected={selected === 'item-3'}
-          onClick={() => setSelected('item-3')}
-        />
-      </Menu>
-    );
-  },
+  render: () => <SingleSelectExample />,
   parameters: { controls: { disable: true } },
 };
 
 export const MultiSelect: Story = {
-  render: () => {
-    const [selected, setSelected] = useState<string[]>(['beta']);
-    const toggle = (value: string) => {
-      setSelected((prev) =>
-        prev.includes(value)
-          ? prev.filter((entry) => entry !== value)
-          : [...prev, value],
-      );
-    };
-
-    return (
-      <Menu inline closeOnSelect={false}>
-        <MenuItem
-          variant="checkbox"
-          label="Alpha"
-          selected={selected.includes('alpha')}
-          onClick={() => toggle('alpha')}
-        />
-        <MenuItem
-          variant="checkbox"
-          label="Beta"
-          selected={selected.includes('beta')}
-          onClick={() => toggle('beta')}
-        />
-        <MenuItem
-          variant="checkbox"
-          label="Gamma"
-          selected={selected.includes('gamma')}
-          onClick={() => toggle('gamma')}
-        />
-      </Menu>
-    );
-  },
+  render: () => <MultiSelectExample />,
   parameters: { controls: { disable: true } },
 };
 
@@ -137,36 +279,7 @@ export const Density: Story = {
 };
 
 export const ToggleOptions: Story = {
-  render: () => {
-    const [compact, setCompact] = useState(false);
-    const [alerts, setAlerts] = useState(true);
-
-    return (
-      <Menu inline closeOnSelect={false} w="264">
-        <MenuGroup label="Options" divider>
-          <MenuItem
-            variant="toggle"
-            label="Compact mode"
-            selected={compact}
-            onClick={() => setCompact((state) => !state)}
-          />
-          <MenuItem
-            variant="toggle"
-            label="Email alerts"
-            selected={alerts}
-            onClick={() => setAlerts((state) => !state)}
-          />
-        </MenuGroup>
-        <MenuItem
-          label="Open docs"
-          href="https://cetecerp.com"
-          iconAfter="arrow-square-out"
-          target="_blank"
-          rel="noreferrer"
-        />
-      </Menu>
-    );
-  },
+  render: () => <ToggleOptionsExample />,
   parameters: { controls: { disable: true } },
 };
 
@@ -211,112 +324,12 @@ export const SubMenuDrilldown: Story = {
 };
 
 export const SubMenuDrilldownForms: Story = {
-  render: () => {
-    const [profileName, setProfileName] = useState('');
-    const [profileOwner, setProfileOwner] = useState('');
-    const [alertTopic, setAlertTopic] = useState('');
-    const [alertChannel, setAlertChannel] = useState('');
-
-    return (
-      <Menu
-        trigger={<Button iconAfter="caret-down">Open menu</Button>}
-        subMenuInteraction="drilldown"
-        closeOnSelect={false}
-      >
-        <MenuItem label="Dashboard" />
-
-        <SubMenu label="Edit profile">
-          <Box p="24" display="grid" gap="8" minW="248" justifyItems="end">
-            <FormField label="Profile name" labelFor="profile-name">
-              <TextInput
-                id="profile-name"
-                name="profileName"
-                value={profileName}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setProfileName(event.target.value)
-                }
-              />
-            </FormField>
-
-            <FormField label="Owner" labelFor="profile-owner">
-              <TextInput
-                id="profile-owner"
-                name="profileOwner"
-                value={profileOwner}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setProfileOwner(event.target.value)
-                }
-              />
-            </FormField>
-
-            <Button variant="primary">Submit</Button>
-          </Box>
-        </SubMenu>
-
-        <SubMenu label="Create alert">
-          <Box p="24" display="grid" gap="8" minW="248" justifyItems="end">
-            <FormField label="Topic" labelFor="alert-topic">
-              <TextInput
-                id="alert-topic"
-                name="alertTopic"
-                value={alertTopic}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setAlertTopic(event.target.value)
-                }
-              />
-            </FormField>
-
-            <FormField label="Channel" labelFor="alert-channel">
-              <TextInput
-                id="alert-channel"
-                name="alertChannel"
-                value={alertChannel}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setAlertChannel(event.target.value)
-                }
-              />
-            </FormField>
-
-            <Button variant="primary">Submit</Button>
-          </Box>
-        </SubMenu>
-      </Menu>
-    );
-  },
+  render: () => <SubMenuDrilldownFormsExample />,
   parameters: { controls: { disable: true } },
 };
 
 export const AutocompleteFiltering: Story = {
-  render: () => {
-    const [query, setQuery] = useState('');
-
-    return (
-      <VStack gap="12" alignItems="stretch" width="full" maxW="sm">
-        <TextInput
-          name="menu-query"
-          iconBefore="search"
-          placeholder="Filter menu items"
-          value={query}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setQuery(event.target.value)
-          }
-        />
-
-        <Menu inline query={query} filterMode="contains" highlightMatches>
-          <MenuItem
-            label="Account settings"
-            description="Manage profile and security"
-          />
-          <MenuItem
-            label="Notifications"
-            description="Email, SMS and push alerts"
-          />
-          <MenuItem label="Integrations" description="Connect external tools" />
-          <MenuItem label="Audit history" description="Track critical events" />
-        </Menu>
-      </VStack>
-    );
-  },
+  render: () => <AutocompleteFilteringExample />,
   parameters: { controls: { disable: true } },
 };
 

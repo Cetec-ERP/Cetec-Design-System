@@ -1,4 +1,16 @@
 import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FocusEvent,
+  type KeyboardEvent,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
+
+import {
   FloatingFocusManager,
   FloatingPortal,
   autoUpdate,
@@ -9,16 +21,18 @@ import {
   useFloating,
   useInteractions,
 } from '@floating-ui/react';
+
 import { cx } from '@styled-system/css';
 import {
   datePicker,
   type DatePickerVariantProps,
 } from '@styled-system/recipes';
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import { Box } from '~/components/Box';
 import type { BoxProps } from '~/components/Box';
+
 import { Calendar } from './Calendar';
+
 import type { DateValue } from './Calendar';
 
 export type { DateValue };
@@ -187,7 +201,7 @@ export const DatePicker = (props: DatePickerProps) => {
       containerRef.current = el;
       refs.setReference(el);
     },
-    [refs.setReference],
+    [refs],
   );
 
   const focusSegment = useCallback((index: number) => {
@@ -195,7 +209,7 @@ export const DatePicker = (props: DatePickerProps) => {
   }, []);
 
   const handleSegmentBlur = useCallback(
-    (e: React.FocusEvent) => {
+    (e: FocusEvent) => {
       setFocusedSegment(null);
       const related = e.relatedTarget as Node | null;
       if (
@@ -226,7 +240,7 @@ export const DatePicker = (props: DatePickerProps) => {
 
   // ── Keyboard handler factory ───────────────────────────────────────────────
   const handleSegmentKeyDown = useCallback(
-    (e: React.KeyboardEvent, segIdx: number) => {
+    (e: KeyboardEvent, segIdx: number) => {
       const seg = DATE_SEGMENTS[segIdx];
       if (!seg) return;
       const { type } = seg;
@@ -352,7 +366,7 @@ export const DatePicker = (props: DatePickerProps) => {
 
   // ── Render segments ────────────────────────────────────────────────────────
   const renderSegments = () => {
-    const items: React.ReactNode[] = [];
+    const items: ReactNode[] = [];
 
     DATE_SEGMENTS.forEach((seg, idx) => {
       const val = segments[seg.type];
@@ -397,7 +411,7 @@ export const DatePicker = (props: DatePickerProps) => {
             if (!disabled) handleOpenChange(true);
           }}
           onBlur={handleSegmentBlur}
-          onKeyDown={(e: React.KeyboardEvent) => handleSegmentKeyDown(e, idx)}
+          onKeyDown={(e: KeyboardEvent) => handleSegmentKeyDown(e, idx)}
         >
           {display}
         </Box>,
@@ -430,13 +444,14 @@ export const DatePicker = (props: DatePickerProps) => {
       {/* Segmented input container */}
       <Box
         ref={setContainerRef}
+        id={id}
         className={classes.input}
         role="group"
         aria-label={label}
         aria-disabled={disabled}
         data-error={error ? true : undefined}
         data-open={isOpen || undefined}
-        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        onClick={(e: MouseEvent<HTMLDivElement>) => {
           if (e.target === e.currentTarget && !disabled)
             segmentRefs.current[0]?.focus();
         }}

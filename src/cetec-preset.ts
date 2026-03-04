@@ -1,5 +1,7 @@
 import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
+
+import * as componentRecipes from './recipes/index';
 import * as tokens from './styles/primitives';
 import * as semanticTokens from './styles/semantics';
 import {
@@ -14,7 +16,6 @@ import {
   textStyles,
   transitionProperty,
 } from './styles/utilities';
-import * as componentRecipes from './recipes/index';
 
 // Separate slotRecipes from regular recipes
 const {

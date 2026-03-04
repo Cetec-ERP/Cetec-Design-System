@@ -1,36 +1,38 @@
-import { ReactNode, useState } from 'react';
+import { useState, type ChangeEvent, type FC, type ReactNode } from 'react';
+
+import { css } from '@styled-system/css';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
+import { type ShadowToken } from '@styled-system/tokens';
+
 import { Box } from '~/components/Box';
-import { Text } from '~/components/Text';
 import { Button } from '~/components/Button';
-import { IconButton } from '~/components/IconButton';
-import { Icon, IconNames, type IconNamesList } from '~/components/Icon';
 import { Pre } from '~/components/Code';
-import { ThemeProvider } from '~/contexts/ThemeContext';
-import { ThemeSwitcher } from '~/components/ThemeSwitcher';
 import { Heading } from '~/components/Heading';
+import { Icon, IconNames, type IconNamesList } from '~/components/Icon';
+import { IconButton } from '~/components/IconButton';
 import { Link } from '~/components/Link';
 import { Spinner } from '~/components/Spinner';
-import { Checkbox } from './components/Checkbox';
-import { type ShadowToken } from '@styled-system/tokens';
-import { Radio } from './components/Radio';
-import { Toggle } from './components/Toggle';
-import { Divider } from './components/Divider';
-import { TextInput } from './components/TextInput';
+import { Text } from '~/components/Text';
 import { Textarea } from '~/components/Textarea';
-import { RadioInput } from './components/RadioInput';
-import { CheckboxInput } from './components/CheckboxInput';
-import { ToggleInput } from './components/ToggleInput';
-import { Card } from './components/Card';
-import { css } from '@styled-system/css';
-import { Tooltip } from './components/Tooltip';
+import { ThemeSwitcher } from '~/components/ThemeSwitcher';
+import { ThemeProvider } from '~/contexts/ThemeContext';
+
 import { Breadcrumbs } from './components/Breadcrumbs';
-import { Tag } from './components/Tag';
-import { MenuLegacy as Menu } from './components/MenuLegacy';
-
+import { Card } from './components/Card';
+import { Checkbox } from './components/Checkbox';
+import { CheckboxInput } from './components/CheckboxInput';
+import { Divider } from './components/Divider';
 import { FormField } from './components/FormField';
+import { MenuLegacy as Menu } from './components/MenuLegacy';
+import { Radio } from './components/Radio';
+import { RadioInput } from './components/RadioInput';
+import { Tag } from './components/Tag';
+import { TextInput } from './components/TextInput';
+import { Toggle } from './components/Toggle';
+import { ToggleInput } from './components/ToggleInput';
+import { Tooltip } from './components/Tooltip';
 
-export const IconList: React.FC = () => {
+export const IconList: FC = () => {
   return (
     <Grid
       gap="16"
@@ -47,7 +49,7 @@ export const IconList: React.FC = () => {
   );
 };
 
-const ButtonSection: React.FC = () => {
+const ButtonSection: FC = () => {
   return (
     <Section>
       <Heading>Buttons</Heading>
@@ -69,16 +71,31 @@ const ButtonSection: React.FC = () => {
           </Button>
         </HStack>
         <HStack>
-          <IconButton variant="ghost" iconName="x" />
-          <IconButton variant="primary" iconName="arrow-left" size="lg" />
-          <IconButton variant="primary" iconName="arrow-right" size="lg" />
+          <IconButton variant="ghost" iconName="x" altText="Close" />
+          <IconButton
+            variant="primary"
+            iconName="arrow-left"
+            size="lg"
+            altText="Left"
+          />
+          <IconButton
+            variant="primary"
+            iconName="arrow-right"
+            size="lg"
+            altText="Right"
+          />
         </HStack>
         <HStack>
           <Button variant="primary" loading>
             Pepperoni
           </Button>
           <Button loading>Loading</Button>
-          <IconButton variant="primary" loading iconName="x" />
+          <IconButton
+            variant="primary"
+            loading
+            iconName="x"
+            altText="Loading"
+          />
         </HStack>
       </VStack>
     </Section>
@@ -89,7 +106,7 @@ interface SectionProps {
   children?: ReactNode;
 }
 
-export const Section: React.FC<SectionProps> = ({ children }) => {
+export const Section: FC<SectionProps> = ({ children }) => {
   return (
     <Grid
       gridTemplateColumns="1fr 3fr"
@@ -106,7 +123,7 @@ export const Section: React.FC<SectionProps> = ({ children }) => {
   );
 };
 
-const Header: React.FC = () => {
+const Header: FC = () => {
   return (
     <Flex
       w="full"
@@ -115,7 +132,7 @@ const Header: React.FC = () => {
       mb="56"
       position="sticky"
       top="0"
-      zIndex="100"
+      zIndex="1000"
       boxShadow="medium"
     >
       <Container maxW="5xl">
@@ -344,7 +361,7 @@ const menuWithLink = [
   },
 ];
 
-const AppContent: React.FC = () => {
+const AppContent: FC = () => {
   const [menuShow, setMenuShow] = useState(false);
   const handleAction = () => {
     setMenuShow((show) => !show);
@@ -380,7 +397,7 @@ const AppContent: React.FC = () => {
 
   const handleCheckboxChange =
     (key: keyof typeof checkboxStates) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setCheckboxStates({ ...checkboxStates, [key]: e.target.checked });
     };
 
@@ -395,7 +412,7 @@ const AppContent: React.FC = () => {
 
   const handleCheckboxInputChange =
     (key: keyof typeof checkboxInputStates) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setCheckboxInputStates({
         ...checkboxInputStates,
         [key]: e.target.checked,
@@ -410,7 +427,7 @@ const AppContent: React.FC = () => {
 
   const handleRadioSelectionChange =
     (key: keyof typeof radioSelection) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setRadioSelection({
         ...radioSelection,
         [key]: e.target.value,
@@ -425,8 +442,7 @@ const AppContent: React.FC = () => {
   });
 
   const handleToggleChange =
-    (key: keyof typeof toggleStates) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (key: keyof typeof toggleStates) => (e: ChangeEvent<HTMLInputElement>) => {
       setToggleStates({
         ...toggleStates,
         [key]: e.target.checked,
@@ -441,7 +457,7 @@ const AppContent: React.FC = () => {
 
   const handleToggleInputChange =
     (key: keyof typeof toggleInputStates) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setToggleInputStates({
         ...toggleInputStates,
         [key]: e.target.checked,
@@ -1324,6 +1340,7 @@ const AppContent: React.FC = () => {
                     variant="primary"
                     size="lg"
                     iconName="aa-placeholder"
+                    altText="Placeholder"
                   />
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content" caret={false}>
@@ -1331,6 +1348,7 @@ const AppContent: React.FC = () => {
                     variant="primary"
                     size="lg"
                     iconName="aa-placeholder"
+                    altText="Placeholder"
                   />
                 </Tooltip>
                 <Tooltip title="Title" text="Details Content">
@@ -1730,13 +1748,11 @@ const AppContent: React.FC = () => {
               >
                 <Box color={{ base: 'slate.90', _dark: 'slate.0' }}>
                   <Text>Multi Level Menu</Text>
-                  <Button onClick={handleAction}>
-                    Action{' '}
-                    {menuShow ? (
-                      <Icon name="caret-up" />
-                    ) : (
-                      <Icon name="caret-down" />
-                    )}
+                  <Button
+                    onClick={handleAction}
+                    iconAfter={menuShow ? 'caret-up' : 'caret-down'}
+                  >
+                    Action
                   </Button>
                   {menuShow && (
                     <Menu
@@ -1753,39 +1769,51 @@ const AppContent: React.FC = () => {
             <VStack gap="40" alignItems="flex-start">
               <Heading level="h4">TextInput</Heading>
               <Grid columns={3} columnGap="40">
-                <FormField label="Label for field" required={true}>
-                  <TextInput placeholder="Enter Text" name="input" />
+                <FormField
+                  label="Label for field"
+                  labelFor="input"
+                  required={true}
+                >
+                  <TextInput placeholder="Enter Text" name="input" id="input" />
                 </FormField>
                 <FormField
                   layout="default"
                   label="Label for field"
+                  labelFor="input2"
                   required={true}
                   error={true}
                   errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <TextInput placeholder="Enter Text" name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" id="input2" />
                 </FormField>
                 <FormField
                   layout="default"
                   label="Label for field"
+                  labelFor="input3"
                   required={true}
                   helpText="Helpful explanation if needed"
                 >
-                  <TextInput placeholder="Enter Text" name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" id="input3" />
                 </FormField>
                 <FormField
                   layout="default"
                   label="Label for field"
+                  labelFor="input4"
                   tooltip={true}
                   tooltipCaret={true}
                   tooltipTitle="Name Field"
                   tooltipDescription="Details"
                   helpText="Helpful explanation if needed"
                 >
-                  <TextInput placeholder="Enter Text" name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" id="input4" />
                 </FormField>
-                <FormField layout="default" label="Label for field" disabled>
-                  <TextInput placeholder="Enter Text" name="inp" />
+                <FormField
+                  layout="default"
+                  label="Label for field"
+                  labelFor="input5"
+                  disabled
+                >
+                  <TextInput placeholder="Enter Text" name="inp" id="input5" />
                 </FormField>
               </Grid>
               <HStack gap="40" alignItems="flex-start"></HStack>
@@ -1793,19 +1821,21 @@ const AppContent: React.FC = () => {
                 <FormField
                   layout="inline"
                   label="Label for field"
+                  labelFor="input6"
                   required={true}
                   helpText="Helpful explanation if needed"
                 >
-                  <TextInput placeholder="Enter Text" name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" id="input6" />
                 </FormField>
                 <FormField
                   layout="inline"
                   label="Label for field"
+                  labelFor="input7"
                   required={true}
                   error
                   errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <TextInput placeholder="Enter Text" name="inp" />
+                  <TextInput placeholder="Enter Text" name="inp" id="input7" />
                 </FormField>
               </Grid>
             </VStack>
@@ -1813,25 +1843,31 @@ const AppContent: React.FC = () => {
             <VStack gap="40" alignItems="flex-start">
               <Heading level="h4">TextArea</Heading>
               <Grid columns={3} columnGap="40">
-                <FormField label="Label for field" required={true}>
-                  <Textarea placeholder="Enter Text" name="inp" />
+                <FormField
+                  label="Label for field"
+                  labelFor="input8"
+                  required={true}
+                >
+                  <Textarea placeholder="Enter Text" name="inp" id="input8" />
                 </FormField>
                 <FormField
                   layout="default"
                   label="Label for field"
+                  labelFor="input9"
                   required={true}
                   error={true}
                   errorText="Consectetur duis ex duis sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <Textarea placeholder="Enter Text" name="inp" />
+                  <Textarea placeholder="Enter Text" name="inp" id="input9" />
                 </FormField>
                 <FormField
                   layout="default"
                   label="Label for field"
+                  labelFor="input10"
                   required={true}
                   helpText="Helpful explanation if needed"
                 >
-                  <Textarea placeholder="Enter Text" name="inp" />
+                  <Textarea placeholder="Enter Text" name="inp" id="input10" />
                 </FormField>
               </Grid>
               <HStack gap="40" alignItems="flex-start"></HStack>
@@ -1839,28 +1875,31 @@ const AppContent: React.FC = () => {
                 <FormField
                   layout="inline"
                   label="Label for field"
+                  labelFor="input11"
                   required={true}
                   helpText="Helpful explanation if needed"
                   // errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <Textarea placeholder="Enter Text" name="inp" />
+                  <Textarea placeholder="Enter Text" name="inp" id="input11" />
                 </FormField>
                 <FormField
                   layout="inline"
                   label="Label for field"
+                  labelFor="input12"
                   required={true}
                   error={true}
                   errorText="Consectetur duis ex duis excepteur sint fugiat laboris mollit cillum ad ea sunt."
                 >
-                  <Textarea placeholder="Enter Text" name="inp" />
+                  <Textarea placeholder="Enter Text" name="inp" id="input12" />
                 </FormField>
                 <FormField
                   layout="inline"
                   label="Label for field"
+                  labelFor="input13"
                   required={true}
                   disabled={true}
                 >
-                  <Textarea placeholder="Enter Text" name="inp" />
+                  <Textarea placeholder="Enter Text" name="inp" id="input13" />
                 </FormField>
               </Grid>
             </VStack>
@@ -1871,6 +1910,7 @@ const AppContent: React.FC = () => {
                   <Heading level="h4">Radios</Heading>
                   <FormField
                     label="Label for field"
+                    labelFor="input14"
                     required={true}
                     error={errorFormField}
                     errorText="Select any one option."
@@ -1878,6 +1918,7 @@ const AppContent: React.FC = () => {
                   >
                     <RadioInput
                       name="label-field"
+                      id="input14"
                       checked={selectedValue === 'option1'}
                       onChange={() => handleFormFieldChange('option1')}
                     >
@@ -1888,6 +1929,7 @@ const AppContent: React.FC = () => {
 
                     <RadioInput
                       name="label-field"
+                      id="input14"
                       checked={selectedValue === 'option2'}
                       onChange={() => handleFormFieldChange('option2')}
                     >
@@ -1901,6 +1943,7 @@ const AppContent: React.FC = () => {
                   <Heading level="h4">Checkbox</Heading>
                   <FormField
                     label="Label for field"
+                    labelFor="input15"
                     required
                     error={error}
                     errorText="Please select at least one option."
@@ -1908,7 +1951,9 @@ const AppContent: React.FC = () => {
                   >
                     <CheckboxInput
                       name="inp"
-                      onChange={() => handleCheckboxChange('option1')}
+                      id="input15"
+                      checked={false}
+                      onChange={() => handleCheckboxChange('normal')}
                     >
                       <Text size="16" weight="normal">
                         Mehna Malesuada
@@ -1917,7 +1962,9 @@ const AppContent: React.FC = () => {
 
                     <CheckboxInput
                       name="inp"
-                      onChange={() => handleCheckboxChange('option2')}
+                      id="input15"
+                      checked={false}
+                      onChange={() => handleCheckboxChange('defaultChecked')}
                     >
                       <Text size="16" weight="normal">
                         Mehna Malesuada
@@ -1929,15 +1976,17 @@ const AppContent: React.FC = () => {
                   <Heading level="h4">Toggles</Heading>
                   <FormField
                     label="Label for field"
+                    labelFor="input16"
                     required
                     error={errorToggle}
                     errorText="Please select at least one option."
                     helpText="Helpful explanation if needed"
                   >
                     <ToggleInput
+                      name="inp"
+                      id="input16"
                       checked={selectedToggleValue.includes('option1')}
                       onChange={() => handleToggles('option1')}
-                      name="inp"
                     >
                       <Text size="16" weight="normal">
                         Mehna Malesuada
@@ -1946,6 +1995,7 @@ const AppContent: React.FC = () => {
 
                     <ToggleInput
                       name="inp"
+                      id="input16"
                       checked={selectedToggleValue.includes('option2')}
                       onChange={() => handleToggles('option2')}
                     >

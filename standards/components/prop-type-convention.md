@@ -15,6 +15,8 @@ export type ComponentProps = Omit<BoxProps, keyof ComponentVariantProps> &
 
 2. Prefer React 19 ref-as-prop typing (`ComponentPropsWithRef`) and avoid `forwardRef` wrappers unless external integration requires it.
 3. If a component should not accept children, explicitly omit `'children'` from the base type.
+4. Do not declare function components with `React.FC` or `FC`; type props on the function parameter.
+5. Do not use React namespace type imports/usages (for example `import type React from 'react'` or `React.ReactNode`); use named type imports from `react`.
 
 ```ts
 export type DatePickerProps = Omit<

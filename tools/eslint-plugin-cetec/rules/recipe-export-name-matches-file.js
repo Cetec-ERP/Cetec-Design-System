@@ -20,19 +20,16 @@ const recipeExportNameMatchesFileRule = {
     const filename = context.getFilename();
     const fileBaseName = path.basename(filename, path.extname(filename));
     const expectedExportName = `${fileBaseName}Recipe`;
+    const recipeExports = [];
 
-    const reportMismatch = (node, actualName) => {
-      if (actualName === expectedExportName) {
+    const addRecipeExport = (node, exportName) => {
+      if (!exportName.endsWith('Recipe')) {
         return;
       }
 
-      context.report({
+      recipeExports.push({
         node,
-        messageId: 'mismatch',
-        data: {
-          actual: actualName,
-          expected: expectedExportName,
-        },
+        exportName,
       });
     };
 
@@ -51,23 +48,42 @@ const recipeExportNameMatchesFileRule = {
           }
 
           const exportName = declaration.id.name;
-
-          if (!exportName.endsWith('Recipe')) {
-            continue;
-          }
-
-          reportMismatch(declaration.id, exportName);
+          addRecipeExport(declaration.id, exportName);
         }
       },
       ExportSpecifier(node) {
         const exportedName =
           node.exported.type === 'Identifier' ? node.exported.name : null;
 
-        if (!exportedName || !exportedName.endsWith('Recipe')) {
+        if (!exportedName) {
           return;
         }
 
-        reportMismatch(node.exported, exportedName);
+        addRecipeExport(node.exported, exportedName);
+      },
+      'Program:exit'() {
+        if (recipeExports.length === 0) {
+          return;
+        }
+
+        const hasExpectedExport = recipeExports.some(
+          ({ exportName }) => exportName === expectedExportName,
+        );
+
+        if (hasExpectedExport) {
+          return;
+        }
+
+        const [{ node, exportName: actual }] = recipeExports;
+
+        context.report({
+          node,
+          messageId: 'mismatch',
+          data: {
+            actual,
+            expected: expectedExportName,
+          },
+        });
       },
     };
   },

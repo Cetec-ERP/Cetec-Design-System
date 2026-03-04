@@ -1,8 +1,11 @@
 import { type ReactNode, useRef, useCallback, type RefObject } from 'react';
+
 import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
 import { Wrap, type WrapProps } from '@styled-system/jsx';
+
 import { type BoxProps } from '~/components/Box';
+import { splitProps } from '~/utils/splitProps';
+
 import { ChipGroupContext, type ChipGroupType } from './ChipGroupContext';
 
 export type ChipGroupProps = Omit<WrapProps, 'role'> &

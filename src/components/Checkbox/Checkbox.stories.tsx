@@ -1,10 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
+
+import { expect, fn, userEvent, within } from '@storybook/test';
+
 import { Box } from '../Box';
 import { Card } from '../Card';
-import { Checkbox, type CheckboxChangeHandler } from './Checkbox';
 import { CheckboxInput } from '../CheckboxInput';
+
+import { Checkbox, type CheckboxChangeHandler } from './Checkbox';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Checkbox',

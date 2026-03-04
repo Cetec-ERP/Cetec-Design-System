@@ -1,7 +1,10 @@
-import { ComponentPropsWithRef, type ElementType, createElement } from 'react';
+import type { ComponentPropsWithRef } from 'react';
+import { type ElementType, createElement } from 'react';
+
+import { cx } from '@styled-system/css';
 import { box, type BoxVariantProps } from '@styled-system/recipes';
 import type { SystemStyleObject } from '@styled-system/types';
-import { cx } from '@styled-system/css';
+
 import { splitProps } from '~/utils/splitProps';
 /*
  * Imports from recipes are placeholders for if we want to add some kind of styling to Box

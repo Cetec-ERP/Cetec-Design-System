@@ -1,8 +1,10 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, type ReactNode } from 'react';
+
 import { cx, css } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
-import { Box, type BoxProps } from '~/components/Box';
 import { badge, type BadgeVariantProps } from '@styled-system/recipes';
+
+import { Box, type BoxProps } from '~/components/Box';
+import { splitProps } from '~/utils/splitProps';
 
 export type BadgeVariant =
   | 'neutral'
@@ -25,7 +27,7 @@ export type BadgeProps = Omit<BoxProps, keyof BadgeVariantProps> &
     /** Color scheme of the badge. Default: 'danger' */
     variant?: BadgeVariant;
     /** Content to wrap with the badge */
-    children?: React.ReactNode;
+    children?: ReactNode;
   };
 
 // Animation styles

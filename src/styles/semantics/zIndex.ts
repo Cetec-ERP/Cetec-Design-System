@@ -1,4 +1,3 @@
-// src/styles/semantics/zIndex.ts
 import { defineSemanticTokens } from '@pandacss/dev';
 
 /**

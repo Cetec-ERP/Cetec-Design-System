@@ -10,7 +10,9 @@ import tseslint from 'typescript-eslint';
 import cetecPlugin from './tools/eslint-plugin-cetec/index.js';
 
 export default tseslint.config(
-  { ignores: ['dist', 'storybook-static', 'styled-system'] },
+  {
+    ignores: ['dist', 'storybook-static', 'styled-system', 'src/types/**'],
+  },
   {
     extends: [
       js.configs.recommended,
@@ -33,6 +35,7 @@ export default tseslint.config(
       },
     },
     plugins: {
+      cetec: cetecPlugin,
       import: importPlugin,
       react: reactPlugin,
       'react-hooks': reactHooks,
@@ -57,6 +60,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       '@typescript-eslint/consistent-type-imports': 'warn',
+      'cetec/no-react-namespace-type-imports': 'warn',
       'import/no-unresolved': 'warn',
       'import/order': [
         'warn',
@@ -124,6 +128,10 @@ export default tseslint.config(
           ignore: ['^index$'],
         },
       ],
+      'cetec/no-react-fc-components': 'warn',
+    },
+    plugins: {
+      cetec: cetecPlugin,
     },
   },
   {
@@ -145,6 +153,12 @@ export default tseslint.config(
     },
     plugins: {
       cetec: cetecPlugin,
+    },
+  },
+  {
+    files: ['src/contexts/**/*.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
 );

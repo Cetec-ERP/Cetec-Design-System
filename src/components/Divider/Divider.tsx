@@ -1,8 +1,9 @@
-import { Box, type BoxProps } from '../Box/Box';
+import { cx } from '@styled-system/css';
 import { divider, type DividerVariantProps } from '@styled-system/recipes';
 
-import { cx } from '@styled-system/css';
 import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box/Box';
 
 export type DividerProps = Omit<BoxProps, keyof DividerVariantProps> &
   DividerVariantProps & {

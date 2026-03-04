@@ -1,8 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Textarea } from './Textarea';
-import { FormField } from '../FormField';
 import { Grid, VStack } from '@styled-system/jsx';
+
+import { FormField } from '../FormField';
 import { Text } from '../Text';
+
+import { Textarea } from './Textarea';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 /**
  * Textarea component for multi-line text entry.

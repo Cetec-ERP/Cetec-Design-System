@@ -1,8 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '../Box';
 import { Text } from '../Text';
+
 import { Code } from './Code';
 import { Pre } from './Pre';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Code',

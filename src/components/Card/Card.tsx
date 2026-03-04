@@ -1,8 +1,11 @@
-import { ReactNode, ElementType, MouseEvent } from 'react';
+import type { ReactNode, ElementType, MouseEvent } from 'react';
+
 import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
-import { Box, type BoxProps } from '../Box';
 import { card, type CardVariantProps } from '@styled-system/recipes';
+
+import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box';
 
 export type CardProps = Omit<BoxProps, keyof CardVariantProps> &
   CardVariantProps & {

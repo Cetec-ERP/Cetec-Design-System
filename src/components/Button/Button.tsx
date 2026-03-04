@@ -1,11 +1,13 @@
-import { MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
+
 import { cx } from '@styled-system/css';
 import { HStack } from '@styled-system/jsx';
-import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
-import { splitProps } from '~/utils/splitProps';
-import { Spinner } from '~/components/Spinner';
+
+import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
+import { Spinner } from '~/components/Spinner';
+import { splitProps } from '~/utils/splitProps';
 
 export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
   Omit<ButtonVariantProps, 'iconBefore' | 'iconAfter'> & {

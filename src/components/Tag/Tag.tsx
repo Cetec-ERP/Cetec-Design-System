@@ -1,7 +1,9 @@
-import { tag, type TagVariantProps } from '@styled-system/recipes';
-import { Box, type BoxProps } from '../Box';
-import { splitProps } from '~/utils/splitProps';
 import { cx } from '@styled-system/css';
+import { tag, type TagVariantProps } from '@styled-system/recipes';
+
+import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box';
 import { Icon, type IconNamesList } from '../Icon';
 
 export type TagProps = Omit<BoxProps, keyof TagVariantProps> &

@@ -1,10 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '../Box';
 import { Card } from '../Card';
 import { Divider } from '../Divider';
 import { Heading } from '../Heading';
 import { Link } from '../Link';
+
 import { Text } from './Text';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Text',

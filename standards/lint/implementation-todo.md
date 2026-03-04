@@ -20,6 +20,7 @@ Tracks concrete implementation work for lint standards and rollout.
   - `import/order`
   - `@typescript-eslint/naming-convention`
   - `unicorn/filename-case` scoped for components and recipes
+  - `src/types/**` excluded from lint scope
 - Added lint-related dependencies in `package.json`:
   - `eslint-plugin-import`
   - `eslint-import-resolver-typescript`
@@ -32,6 +33,8 @@ Tracks concrete implementation work for lint standards and rollout.
 - Implemented and wired additional custom rules at warn-level:
   - `cetec/recipe-jsx-name-matches-component`
   - `cetec/no-hardcoded-design-values-in-recipes`
+  - `cetec/no-react-fc-components`
+  - `cetec/no-react-namespace-type-imports`
 - Added CI workflow for rollout gating and report-only doctor checks:
   - `.github/workflows/standards-rollout-ci.yml`
 

@@ -1,8 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '../Box';
 import { Card } from '../Card';
 import { Text } from '../Text';
+
 import { Divider } from './Divider';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Divider',

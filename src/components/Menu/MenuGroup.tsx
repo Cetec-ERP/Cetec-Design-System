@@ -2,6 +2,7 @@ import { menu } from '@styled-system/recipes';
 
 import { Box } from '../Box';
 import { Text } from '../Text';
+
 import {
   hasMatchingItems,
   MENU_COMPONENT_TYPES,

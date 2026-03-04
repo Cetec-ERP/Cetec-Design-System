@@ -1,11 +1,15 @@
-import { ReactNode } from 'react';
-import { Box, type BoxProps } from '../Box';
-import { IconButton } from '../IconButton';
-import { modal as modalRecipe } from '@styled-system/recipes';
+import type { ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
+import { modal as modalRecipe } from '@styled-system/recipes';
+
 import { splitProps } from '~/utils/splitProps';
-import { useModalContext } from './ModalContext';
+
+import { Box, type BoxProps } from '../Box';
 import { Heading } from '../Heading';
+import { IconButton } from '../IconButton';
+
+import { useModalContext } from './ModalContext';
 
 export type ModalHeaderProps = Omit<BoxProps, 'children'> & {
   /** Title text */

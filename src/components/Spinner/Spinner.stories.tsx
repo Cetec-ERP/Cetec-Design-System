@@ -1,8 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Box } from '../Box';
 import { Card } from '../Card';
 import { Text } from '../Text';
+
 import { Spinner } from './Spinner';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Spinner',

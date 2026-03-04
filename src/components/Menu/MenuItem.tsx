@@ -1,14 +1,18 @@
-import { useFloatingTree, useListItem, useMergeRefs } from '@floating-ui/react';
-import { cx } from '@styled-system/css';
-import { menu } from '@styled-system/recipes';
 import type { ChangeEventHandler, HTMLProps, MouseEvent } from 'react';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { Checkbox } from '../Checkbox';
-import { Toggle } from '../Toggle';
-import { Text } from '../Text';
+import { useFloatingTree, useListItem, useMergeRefs } from '@floating-ui/react';
+
+import { cx } from '@styled-system/css';
+import { menu } from '@styled-system/recipes';
+
 import { splitProps } from '~/utils/splitProps';
+
+import { Box } from '../Box';
+import { Checkbox } from '../Checkbox';
+import { Icon } from '../Icon';
+import { Text } from '../Text';
+import { Toggle } from '../Toggle';
+
 import {
   deriveItemTextValue,
   getHighlightedTextParts,
@@ -85,6 +89,22 @@ export const MenuItem = (props: MenuItemProps) => {
     iconAfter: Boolean(iconAfter),
   });
 
+  const resolvedTextValue = deriveItemTextValue({
+    textValue,
+    label,
+    description,
+    getItemText: filterContext.getItemText,
+  });
+
+  const isVisible = isItemMatch({
+    textValue: resolvedTextValue,
+    query: filterContext.query,
+    filterMode: filterContext.filterMode,
+  });
+
+  const listItem = useListItem({ label: resolvedTextValue });
+  const mergedRef = useMergeRefs([listItem.ref]);
+
   if (variant === 'divider') {
     return (
       <Box
@@ -105,25 +125,9 @@ export const MenuItem = (props: MenuItemProps) => {
     );
   }
 
-  const resolvedTextValue = deriveItemTextValue({
-    textValue,
-    label,
-    description,
-    getItemText: filterContext.getItemText,
-  });
-
-  const isVisible = isItemMatch({
-    textValue: resolvedTextValue,
-    query: filterContext.query,
-    filterMode: filterContext.filterMode,
-  });
-
   if (!isVisible) {
     return null;
   }
-
-  const listItem = useListItem({ label: resolvedTextValue });
-  const mergedRef = useMergeRefs([listItem.ref]);
 
   const shouldCloseOnSelect = closeOnSelect ?? rootContext.closeOnSelect;
   const controlName = textValue ?? label ?? 'menu-item';

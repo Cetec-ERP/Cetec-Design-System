@@ -1,4 +1,15 @@
 import {
+  type CSSProperties,
+  type HTMLProps,
+  type KeyboardEvent,
+  type MouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
+import {
   autoUpdate,
   flip,
   FloatingFocusManager,
@@ -21,22 +32,16 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react';
+
 import { cx } from '@styled-system/css';
 import { menu } from '@styled-system/recipes';
-import {
-  type HTMLProps,
-  type KeyboardEvent,
-  type MouseEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+
+import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
-import { splitProps } from '~/utils/splitProps';
+
 import {
   deriveItemTextValue,
   isItemMatch,
@@ -67,7 +72,8 @@ export const SubMenu = (props: SubMenuProps) => {
     ...rest
   } = props;
   const [contentClassName, htmlProps] = splitProps(rest);
-  const { style: contentStyle, ...otherHtmlProps } = htmlProps;
+  const { style, ...otherHtmlProps } = htmlProps;
+  const contentStyle = style as CSSProperties | undefined;
   const menuItemHtmlProps: Omit<HTMLProps<HTMLElement>, 'ref'> = {
     ...otherHtmlProps,
   };
@@ -93,99 +99,7 @@ export const SubMenu = (props: SubMenuProps) => {
     query: filterContext.query,
     filterMode: filterContext.filterMode,
   });
-
-  if (!isVisible) {
-    return null;
-  }
-
   const listItem = useListItem({ label: resolvedTextValue });
-
-  if (resolvedInteraction === 'drilldown') {
-    const buttonProps: HTMLProps<HTMLElement> = parentListContext
-      ? parentListContext.getItemProps({
-          onClick: (event?: MouseEvent<HTMLElement>) => {
-            event?.preventDefault();
-            event?.stopPropagation();
-            if (!disabled) {
-              rootContext.onPushDrilldownPanel(label, children);
-            }
-          },
-          onKeyDown: (event) => {
-            if (
-              event.key === 'ArrowRight' ||
-              event.key === 'Enter' ||
-              event.key === ' '
-            ) {
-              event.preventDefault();
-              event.stopPropagation();
-              if (!disabled) {
-                rootContext.onPushDrilldownPanel(label, children);
-              }
-            }
-          },
-        })
-      : {
-          onClick: (event?: MouseEvent<HTMLElement>) => {
-            event?.preventDefault();
-            event?.stopPropagation();
-            if (!disabled) {
-              rootContext.onPushDrilldownPanel(label, children);
-            }
-          },
-          onKeyDown: (event?: KeyboardEvent<HTMLElement>) => {
-            if (
-              event &&
-              (event.key === 'ArrowRight' ||
-                event.key === 'Enter' ||
-                event.key === ' ')
-            ) {
-              event.preventDefault();
-              event.stopPropagation();
-              if (!disabled) {
-                rootContext.onPushDrilldownPanel(label, children);
-              }
-            }
-          },
-        };
-    const drilldownButtonProps: Omit<HTMLProps<HTMLElement>, 'ref'> = {
-      ...buttonProps,
-    };
-
-    return (
-      <button
-        {...menuItemHtmlProps}
-        role="menuitem"
-        disabled={disabled}
-        className={cx(classes.item, contentClassName)}
-        ref={(node: HTMLButtonElement | null) => {
-          listItem.ref(node as HTMLElement | null);
-        }}
-        style={contentStyle}
-        tabIndex={
-          parentListContext
-            ? parentListContext.activeIndex === listItem.index
-              ? 0
-              : -1
-            : 0
-        }
-        {...drilldownButtonProps}
-        type="button"
-      >
-        {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
-
-        <Box className={classes.itemMain}>
-          <Text className={classes.itemLabel}>{label}</Text>
-          {description && (
-            <Text className={classes.itemDescription}>{description}</Text>
-          )}
-        </Box>
-
-        <Box className={classes.submenuCaret}>
-          <Icon name="caret-right" />
-        </Box>
-      </button>
-    );
-  }
 
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -328,6 +242,97 @@ export const SubMenu = (props: SubMenuProps) => {
   const referencePropsWithoutRef: Omit<HTMLProps<HTMLElement>, 'ref'> = {
     ...referenceProps,
   };
+
+  if (!isVisible) {
+    return null;
+  }
+
+  if (resolvedInteraction === 'drilldown') {
+    const buttonProps: HTMLProps<HTMLElement> = parentListContext
+      ? parentListContext.getItemProps({
+          onClick: (event?: MouseEvent<HTMLElement>) => {
+            event?.preventDefault();
+            event?.stopPropagation();
+            if (!disabled) {
+              rootContext.onPushDrilldownPanel(label, children);
+            }
+          },
+          onKeyDown: (event) => {
+            if (
+              event.key === 'ArrowRight' ||
+              event.key === 'Enter' ||
+              event.key === ' '
+            ) {
+              event.preventDefault();
+              event.stopPropagation();
+              if (!disabled) {
+                rootContext.onPushDrilldownPanel(label, children);
+              }
+            }
+          },
+        })
+      : {
+          onClick: (event?: MouseEvent<HTMLElement>) => {
+            event?.preventDefault();
+            event?.stopPropagation();
+            if (!disabled) {
+              rootContext.onPushDrilldownPanel(label, children);
+            }
+          },
+          onKeyDown: (event?: KeyboardEvent<HTMLElement>) => {
+            if (
+              event &&
+              (event.key === 'ArrowRight' ||
+                event.key === 'Enter' ||
+                event.key === ' ')
+            ) {
+              event.preventDefault();
+              event.stopPropagation();
+              if (!disabled) {
+                rootContext.onPushDrilldownPanel(label, children);
+              }
+            }
+          },
+        };
+    const drilldownButtonProps: Omit<HTMLProps<HTMLElement>, 'ref'> = {
+      ...buttonProps,
+    };
+
+    return (
+      <button
+        {...menuItemHtmlProps}
+        role="menuitem"
+        disabled={disabled}
+        className={cx(classes.item, contentClassName)}
+        ref={(node: HTMLButtonElement | null) => {
+          listItem.ref(node as HTMLElement | null);
+        }}
+        style={contentStyle}
+        tabIndex={
+          parentListContext
+            ? parentListContext.activeIndex === listItem.index
+              ? 0
+              : -1
+            : 0
+        }
+        {...drilldownButtonProps}
+        type="button"
+      >
+        {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
+
+        <Box className={classes.itemMain}>
+          <Text className={classes.itemLabel}>{label}</Text>
+          {description && (
+            <Text className={classes.itemDescription}>{description}</Text>
+          )}
+        </Box>
+
+        <Box className={classes.submenuCaret}>
+          <Icon name="caret-right" />
+        </Box>
+      </button>
+    );
+  }
 
   return (
     <FloatingNode id={nodeId}>

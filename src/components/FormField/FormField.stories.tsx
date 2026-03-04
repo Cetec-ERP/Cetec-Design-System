@@ -1,9 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState, type ChangeEvent } from 'react';
+
 import { Box } from '../Box';
 import { CheckboxInput } from '../CheckboxInput';
-import { FormField } from './FormField';
 import { TextInput } from '../TextInput';
+
+import { FormField } from './FormField';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/FormField',

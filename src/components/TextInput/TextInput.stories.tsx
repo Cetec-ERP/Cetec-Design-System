@@ -1,8 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { TextInput } from './TextInput';
+import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
+
 import { FormField } from '../FormField';
 import { Text } from '../Text';
-import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
+
+import { TextInput } from './TextInput';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 /**
  * TextInput component for single-line text entry.

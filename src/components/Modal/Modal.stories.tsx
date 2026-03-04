@@ -1,17 +1,21 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+
 import { Flex, Grid, VStack } from '@styled-system/jsx';
-import { Modal } from './Modal';
-import { ModalHeader } from './ModalHeader';
-import { ModalBody } from './ModalBody';
-import { ModalFooter } from './ModalFooter';
+
 import { Button } from '../Button';
-import { Text } from '../Text';
-import { TextInput } from '../TextInput';
-import { Textarea } from '../Textarea';
+import { Divider } from '../Divider';
 import { FormField } from '../FormField';
 import { Icon } from '../Icon';
-import { Divider } from '../Divider';
+import { Text } from '../Text';
+import { Textarea } from '../Textarea';
+import { TextInput } from '../TextInput';
+
+import { Modal } from './Modal';
+import { ModalBody } from './ModalBody';
+import { ModalFooter } from './ModalFooter';
+import { ModalHeader } from './ModalHeader';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Modal> = {
   title: 'Components/Modal',

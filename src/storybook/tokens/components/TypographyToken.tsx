@@ -1,24 +1,48 @@
-import React from 'react';
+import { Flex } from '@styled-system/jsx';
+
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
-import { Flex } from '@styled-system/jsx';
-import { fonts, fontWeights, fontSizes, lineHeights, letterSpacings } from '~/styles/primitives';
+import type {
+  fonts,
+  fontWeights,
+  fontSizes,
+  lineHeights,
+  letterSpacings,
+} from '~/styles/primitives';
 
 interface TypographyTokenProps {
-  tokenKey: keyof typeof fonts | keyof typeof fontWeights | keyof typeof fontSizes | keyof typeof lineHeights | keyof typeof letterSpacings;
-  type: 'textStyle' | 'font' | 'fontSize' | 'fontWeight' | 'lineHeight' | 'letterSpacing';
+  tokenKey:
+    | keyof typeof fonts
+    | keyof typeof fontWeights
+    | keyof typeof fontSizes
+    | keyof typeof lineHeights
+    | keyof typeof letterSpacings;
+  type:
+    | 'textStyle'
+    | 'font'
+    | 'fontSize'
+    | 'fontWeight'
+    | 'lineHeight'
+    | 'letterSpacing';
   sampleText?: string;
   showValue?: boolean;
 }
 
-export const TypographyToken: React.FC<TypographyTokenProps> = ({
+type TypographyStyleProps = {
+  fontFamily?: string;
+  fontSize?: string;
+  fontWeight?: string;
+  lineHeight?: string;
+  letterSpacing?: string;
+};
+
+export const TypographyToken = ({
   type,
   tokenKey,
   showValue = true,
   sampleText = 'The quick brown fox jumps over the lazy dog',
-}) => {
-
-  const styleProps: any = {};
+}: TypographyTokenProps) => {
+  const styleProps: TypographyStyleProps = {};
 
   switch (type) {
     case 'font':
@@ -40,7 +64,12 @@ export const TypographyToken: React.FC<TypographyTokenProps> = ({
 
   return (
     <Flex gap="12" w="fit" align="baseline">
-      <Text textStyle="mono.md" fontWeight="bold" color="text" lineHeight="none">
+      <Text
+        textStyle="mono.md"
+        fontWeight="bold"
+        color="text"
+        lineHeight="none"
+      >
         {tokenKey}
       </Text>
 

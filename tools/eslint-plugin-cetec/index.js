@@ -3,6 +3,14 @@ import {
   noHardcodedDesignValuesInRecipesRule,
 } from './rules/no-hardcoded-design-values-in-recipes.js';
 import {
+  RULE_NAME as noReactFcComponentsRuleName,
+  noReactFcComponentsRule,
+} from './rules/no-react-fc-components.js';
+import {
+  RULE_NAME as noReactNamespaceTypeImportsRuleName,
+  noReactNamespaceTypeImportsRule,
+} from './rules/no-react-namespace-type-imports.js';
+import {
   RULE_NAME as recipeJsxNameMatchesComponentRuleName,
   recipeJsxNameMatchesComponentRule,
 } from './rules/recipe-jsx-name-matches-component.js';
@@ -27,6 +35,8 @@ const cetecPlugin = {
   rules: {
     [noHardcodedDesignValuesInRecipesRuleName]:
       noHardcodedDesignValuesInRecipesRule,
+    [noReactFcComponentsRuleName]: noReactFcComponentsRule,
+    [noReactNamespaceTypeImportsRuleName]: noReactNamespaceTypeImportsRule,
     [recipeExportNameMatchesFileRuleName]: recipeExportNameMatchesFileRule,
     [recipeJsxNameMatchesComponentRuleName]: recipeJsxNameMatchesComponentRule,
   },

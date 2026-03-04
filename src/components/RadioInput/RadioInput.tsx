@@ -1,13 +1,18 @@
 import { useId, type ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
 import {
   radioInput,
   type RadioInputVariantProps,
 } from '@styled-system/recipes';
-import { Radio, RadioChangeHandler } from '../Radio';
+
+import { splitProps } from '~/utils/splitProps';
+
 import { type BoxProps } from '../Box';
 import { Label } from '../Label';
+import { Radio } from '../Radio';
+
+import type { RadioChangeHandler } from '../Radio';
 
 export type RadioInputProps = Omit<BoxProps, keyof RadioInputVariantProps> &
   RadioInputVariantProps & {

@@ -1,13 +1,18 @@
 import { useId, type ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
 import {
   checkboxInput,
   type CheckboxInputVariantProps,
 } from '@styled-system/recipes';
-import { Checkbox, CheckboxChangeHandler } from '../Checkbox';
+
+import { splitProps } from '~/utils/splitProps';
+
 import { type BoxProps } from '../Box';
+import { Checkbox } from '../Checkbox';
 import { Label } from '../Label';
+
+import type { CheckboxChangeHandler } from '../Checkbox';
 
 export type CheckboxInputProps = Omit<
   BoxProps,

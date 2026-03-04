@@ -1,9 +1,12 @@
-import { breadcrumbs, BreadcrumbsVariantProps } from '@styled-system/recipes';
-import { type BoxProps } from '../Box';
-import { splitProps } from '~/utils/splitProps';
 import { cx } from '@styled-system/css';
-import { Text } from '../Text';
+import type { BreadcrumbsVariantProps } from '@styled-system/recipes';
+import { breadcrumbs } from '@styled-system/recipes';
+
+import { splitProps } from '~/utils/splitProps';
+
+import { type BoxProps } from '../Box';
 import { Link } from '../Link';
+import { Text } from '../Text';
 
 export type BreadcrumbsProps = Omit<BoxProps, keyof BreadcrumbsVariantProps> &
   BreadcrumbsVariantProps & {

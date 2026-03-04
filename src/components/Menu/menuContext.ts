@@ -1,17 +1,26 @@
-import React, { createContext, useContext } from 'react';
-import type { HTMLProps, ReactElement, ReactNode } from 'react';
+import {
+  Children,
+  createContext,
+  isValidElement,
+  useContext,
+  type HTMLProps,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 
-import type { Placement } from '@floating-ui/react';
+import type { MenuVariantProps } from '@styled-system/recipes';
+
 import type { BoxProps } from '~/components/Box';
 import type { IconNamesList } from '~/components/Icon';
-import type { MenuVariantProps } from '@styled-system/recipes';
+
+import type { Placement } from '@floating-ui/react';
 
 export type MenuDensity = 'compact' | 'comfortable' | 'spacious';
 export type MenuFilterMode = 'none' | 'contains';
 export type SubMenuInteraction = 'hover' | 'drilldown';
 
 export type MenuProps = {
-  trigger?: React.ReactElement;
+  trigger?: ReactElement;
   children: ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
@@ -196,8 +205,8 @@ export const hasMatchingItems = (
   children: ReactNode,
   filterContext: MenuFilterContextValue,
 ): boolean => {
-  return React.Children.toArray(children).some((childNode) => {
-    if (!React.isValidElement(childNode)) {
+  return Children.toArray(children).some((childNode) => {
+    if (!isValidElement(childNode)) {
       return false;
     }
 

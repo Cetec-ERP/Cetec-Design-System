@@ -1,6 +1,7 @@
-import { Box, type BoxProps } from '~/components/Box';
-import { textarea, type TextareaVariantProps } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
+import { textarea, type TextareaVariantProps } from '@styled-system/recipes';
+
+import { Box, type BoxProps } from '~/components/Box';
 import { splitProps } from '~/utils/splitProps';
 
 export type TextareaProps = Omit<BoxProps, keyof TextareaVariantProps> &

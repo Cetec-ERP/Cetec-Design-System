@@ -1,8 +1,9 @@
+import { useEffect, useRef, type RefObject } from 'react';
+
 import type { timePicker } from '@styled-system/recipes';
-import type React from 'react';
-import { useEffect, useRef } from 'react';
+
 import { Box } from '~/components/Box';
-import { MenuListItem } from '~/components/Menu';
+import { MenuItem } from '~/components/Menu';
 
 export interface TimeValue {
   hour: number; // always 24h (0–23)
@@ -30,15 +31,17 @@ function from12h(displayHour: number, meridiem: 'AM' | 'PM'): number {
 
 // ─── TimeList ──────────────────────────────────────────────────────────────────
 
-export const TimeList: React.FC<TimeListProps> = ({
-  selectedHour,
-  selectedMinute,
-  selectedMeridiem,
-  onSelect,
-  hourCycle,
-  minuteStep,
-  classes,
-}) => {
+export const TimeList = (props: TimeListProps) => {
+  const {
+    selectedHour,
+    selectedMinute,
+    selectedMeridiem,
+    onSelect,
+    hourCycle,
+    minuteStep,
+    classes,
+  } = props;
+
   const is12h = hourCycle === '12';
 
   // Generate hour options
@@ -60,7 +63,7 @@ export const TimeList: React.FC<TimeListProps> = ({
   // Scroll selected items into view when popover opens
   useEffect(() => {
     const scrollToSelected = (
-      colRef: React.RefObject<HTMLDivElement | null>,
+      colRef: RefObject<HTMLDivElement | null>,
       selector: string,
     ) => {
       const col = colRef.current;
@@ -77,7 +80,7 @@ export const TimeList: React.FC<TimeListProps> = ({
     scrollToSelected(hourColRef, '[aria-selected="true"]');
     scrollToSelected(minuteColRef, '[aria-selected="true"]');
     if (is12h) scrollToSelected(meridiemColRef, '[aria-selected="true"]');
-  }, []); // run once on mount (popover just opened)
+  }, [is12h]); // run once on mount (popover just opened)
 
   // ── Selection handlers ────────────────────────────────────────────────────
 
@@ -103,7 +106,7 @@ export const TimeList: React.FC<TimeListProps> = ({
   // ── Column renderer ────────────────────────────────────────────────────────
 
   const renderColumn = <T extends string | number>(
-    colRef: React.RefObject<HTMLDivElement | null>,
+    colRef: RefObject<HTMLDivElement | null>,
     label: string,
     items: T[],
     selectedItem: T | null,
@@ -120,7 +123,7 @@ export const TimeList: React.FC<TimeListProps> = ({
     >
       <Box className={classes.columnLabel}>{label}</Box>
       {items.map((item) => (
-        <MenuListItem
+        <MenuItem
           key={String(item)}
           label={formatItem(item)}
           selected={item === selectedItem}

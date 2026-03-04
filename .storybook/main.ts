@@ -18,7 +18,6 @@ const config: StorybookConfig = {
     options: {},
   },
   features: {
-    backgrounds: false,
     backgroundsStoryGlobals: false,
   },
   docs: {

@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
+
 import {
   FloatingPortal,
   FloatingFocusManager,
@@ -7,14 +8,20 @@ import {
   useInteractions,
   FloatingOverlay,
 } from '@floating-ui/react';
-import { Box, type BoxProps } from '../Box';
+
+import { cx } from '@styled-system/css';
 import {
   modal as modalRecipe,
   type ModalVariantProps,
 } from '@styled-system/recipes';
-import { cx } from '@styled-system/css';
+
 import { splitProps } from '~/utils/splitProps';
-import { ModalContext, ModalContextValue } from './ModalContext';
+
+import { Box, type BoxProps } from '../Box';
+
+import { ModalContext } from './ModalContext';
+
+import type { ModalContextValue } from './ModalContext';
 
 export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
   ModalVariantProps & {
@@ -25,7 +32,7 @@ export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
     /** Whether clicking the overlay should close the modal */
     preventOverlayClose?: boolean;
     /** Children (ModalHeader, ModalBody, ModalFooter) */
-    children: React.ReactNode;
+    children: ReactNode;
     /** Optional ID for ARIA attributes */
     id?: string;
   };

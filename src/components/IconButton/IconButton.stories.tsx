@@ -1,7 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
+
 import { Wrap } from '@styled-system/jsx';
+
 import { IconButton } from './IconButton';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/IconButton',

@@ -5,8 +5,10 @@ import {
   menuLegacy,
   type MenuLegacyVariantProps,
 } from '@styled-system/recipes';
+
 import { splitProps } from '~/utils/splitProps';
 import { useOnClose } from '~/utils/useOnClose';
+
 import { Box, type BoxProps } from '../Box';
 import { Checkbox } from '../Checkbox';
 import { Divider } from '../Divider';

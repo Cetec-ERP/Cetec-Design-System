@@ -1,4 +1,18 @@
 import {
+  Children,
+  cloneElement,
+  type HTMLProps,
+  type CSSProperties,
+  type ReactNode,
+  isValidElement,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
+import {
   autoUpdate,
   flip,
   FloatingFocusManager,
@@ -18,25 +32,16 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react';
+
 import { cx } from '@styled-system/css';
 import { menu } from '@styled-system/recipes';
-import {
-  Children,
-  cloneElement,
-  type HTMLProps,
-  type CSSProperties,
-  type ReactNode,
-  isValidElement,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+
+import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
+
 import {
   hasMatchingItems,
   MenuFilterProvider,
@@ -45,7 +50,6 @@ import {
   type MenuProps,
   type MenuRootContextValue,
 } from './menuContext';
-import { splitProps } from '~/utils/splitProps';
 
 type DrilldownPanel = {
   key: string;

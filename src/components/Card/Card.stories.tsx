@@ -1,13 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { Card } from './Card';
+
 import { css } from '@styled-system/css';
 import { HStack, VStack, Grid, Flex, Wrap } from '@styled-system/jsx';
-import { Text } from '../Text';
-import { Heading } from '../Heading';
-import { Button } from '../Button';
-import { Icon } from '../Icon';
+
 import { Box } from '../Box';
+import { Button } from '../Button';
+import { Heading } from '../Heading';
+import { Icon } from '../Icon';
+import { Text } from '../Text';
+
+import { Card } from './Card';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 /**
  * Card component for containing content with optional interactivity.

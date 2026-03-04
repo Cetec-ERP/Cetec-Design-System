@@ -30,13 +30,13 @@ export const radioRecipe = defineSlotRecipe({
       cursor: 'inherit',
       "& ~ [name='radio']": {
         display: 'inline-grid',
-        zIndex: 3,
+        zIndex: 'zIndex.3',
       },
       _checked: {
         "& ~ [name='radio-checked']": {
           display: 'inline-grid',
           fill: 'icon',
-          zIndex: 2,
+          zIndex: 'zIndex.2',
         },
         "& ~ [name='radio']": {
           display: 'none',
@@ -46,7 +46,7 @@ export const radioRecipe = defineSlotRecipe({
         display: 'inline-grid',
         '& ~ svg:not([name="circle"])': {
           fill: 'red.50',
-          zIndex: 3,
+          zIndex: 'zIndex.3',
         },
       },
       _focusVisible: {
@@ -54,7 +54,7 @@ export const radioRecipe = defineSlotRecipe({
           display: 'inline-grid',
           position: 'absolute',
           fill: 'border.focused',
-          zIndex: 2,
+          zIndex: 'zIndex.2',
         },
       },
     },
@@ -64,10 +64,10 @@ export const radioRecipe = defineSlotRecipe({
       inset: '0',
       width: '24',
       height: '24',
-      zIndex: 3,
+      zIndex: 'zIndex.3',
       "&:is([name='radio'])": {
         fill: 'icon.subtlest',
-        zIndex: 3,
+        zIndex: 'zIndex.3',
       },
     },
     radioBg: {

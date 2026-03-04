@@ -2,7 +2,7 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 export const toggleRecipe = defineSlotRecipe({
   className: 'toggle',
-  jsx: ['toggle'],
+  jsx: ['Toggle'],
   slots: ['container', 'input', 'indicator'],
   base: {
     container: {

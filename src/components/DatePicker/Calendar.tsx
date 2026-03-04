@@ -1,6 +1,8 @@
+import type { KeyboardEvent } from 'react';
+
 import { cx } from '@styled-system/css';
 import type { datePicker } from '@styled-system/recipes';
-import type React from 'react';
+
 import { Box } from '~/components/Box';
 import { Button } from '~/components/Button';
 import { IconButton } from '~/components/IconButton';
@@ -144,7 +146,7 @@ export const Calendar = (props: CalendarProps) => {
     }
   };
 
-  const handleDayKeyDown = (e: React.KeyboardEvent, day: number) => {
+  const handleDayKeyDown = (e: KeyboardEvent, day: number) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleDayClick(day);
@@ -255,11 +257,11 @@ export const Calendar = (props: CalendarProps) => {
                     aria-label={`${MONTH_NAMES[viewMonth - 1]} ${day}, ${viewYear}${isToday ? ', today' : ''}${isSelected ? ', selected' : ''}`}
                     tabIndex={isUnavailable ? -1 : 0}
                     onClick={() => !isUnavailable && handleDayClick(day)}
-                    onKeyDown={(e: React.KeyboardEvent) =>
+                    onKeyDown={(e: KeyboardEvent) =>
                       !isUnavailable && handleDayKeyDown(e, day)
                     }
                   >
-                    {day}
+                    {String(day)}
                   </Button>
                 </Box>
               );

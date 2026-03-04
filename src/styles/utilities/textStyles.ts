@@ -1,4 +1,5 @@
 import { defineTextStyles } from '@pandacss/dev';
+
 import { fontVariants } from './fontVariants';
 
 export const baseHeadingStyles = {

@@ -1,4 +1,7 @@
 // src/components/Tooltip/Tooltip.tsx
+import { useRef, useState } from 'react';
+import type { ReactNode } from 'react';
+
 import {
   FloatingArrow,
   FloatingPortal,
@@ -15,12 +18,13 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react';
+
 import { cx } from '@styled-system/css';
 import { type TooltipVariantProps, tooltip } from '@styled-system/recipes';
 import { token } from '@styled-system/tokens';
-import { useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+
 import { splitProps } from '~/utils/splitProps';
+
 import { Box, type BoxProps } from '../Box';
 import { Text } from '../Text';
 

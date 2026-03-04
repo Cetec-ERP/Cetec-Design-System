@@ -1,10 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
+
+import { expect, fn, userEvent, within } from '@storybook/test';
+
 import { Box } from '../Box';
 import { Card } from '../Card';
 import { ToggleInput } from '../ToggleInput';
+
 import { Toggle, type ToggleChangeHandler } from './Toggle';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Toggle',
