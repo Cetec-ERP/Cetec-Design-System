@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { cx, css } from '@styled-system/css';
 import { avatar, type AvatarVariantProps } from '@styled-system/recipes';
@@ -100,21 +100,16 @@ export const Avatar = (props: AvatarProps) => {
   } = props;
 
   const [className, otherProps] = splitProps(rest);
-  const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  // Reset error state when src changes
-  useEffect(() => {
-    setImageError(false);
-    setImageLoaded(false);
-  }, [src]);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
 
   // Type-safe size for indexing
   const safeSize = size as AvatarSize;
   const classes = avatar({ size: safeSize, shape });
 
   // Determine what to show: image, fallback, or initials
-  const showImage = src && !imageError;
+  const showImage = Boolean(src) && failedSrc !== src;
+  const isImageLoaded = Boolean(src) && loadedSrc === src;
   const initials = name ? getInitials(name) : null;
 
   // Get icon size based on avatar size
@@ -135,14 +130,28 @@ export const Avatar = (props: AvatarProps) => {
           src={src}
           alt={alt}
           className={classes.image}
-          onError={() => setImageError(true)}
-          onLoad={() => setImageLoaded(true)}
-          opacity={imageLoaded ? 1 : 0}
+          onError={() => {
+            if (!src) {
+              return;
+            }
+
+            setFailedSrc(src);
+            setLoadedSrc(null);
+          }}
+          onLoad={() => {
+            if (!src) {
+              return;
+            }
+
+            setLoadedSrc(src);
+            setFailedSrc(null);
+          }}
+          opacity={isImageLoaded ? 1 : 0}
         />
       )}
 
       {/* Fallback content (shown when no image or image failed) */}
-      {(!showImage || !imageLoaded) && (
+      {(!showImage || !isImageLoaded) && (
         <Box as="span" className={classes.fallback}>
           {fallback || initials || <Icon name="user" />}
         </Box>

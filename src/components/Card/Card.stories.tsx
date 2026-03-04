@@ -333,10 +333,10 @@ export const StatsCard: Story = {
 export const CardGrid: Story = {
   render: () => (
     <Grid gridTemplateColumns="repeat(3, 1fr)" gap="16" w="4xl" p="40">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
-        <Card key={i} variant="flat" interactive>
+      {[1, 2, 3, 4, 5, 6].map((cardNumber) => (
+        <Card key={`card-${cardNumber}`} variant="flat" interactive>
           <VStack p="16" gap="8" alignItems="flex-start">
-            <Heading level="h4">Card {i}</Heading>
+            <Heading level="h4">Card {cardNumber}</Heading>
             <Text>Card content goes here.</Text>
           </VStack>
         </Card>

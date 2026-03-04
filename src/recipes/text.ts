@@ -130,9 +130,8 @@ const linkBase = {
   _hover: {
     color: 'link',
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
-    textDecoration: 'underline',
   },
-  _focus: {
+  _focusVisible: {
     borderRadius: '4',
     outlineColor: 'border.focused',
   },

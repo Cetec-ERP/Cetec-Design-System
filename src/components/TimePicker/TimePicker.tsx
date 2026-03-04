@@ -1,11 +1,11 @@
 import {
   type KeyboardEvent,
   type MouseEvent,
-  type ReactNode,
   useCallback,
   useEffect,
   useRef,
   useState,
+  type MutableRefObject,
   type FocusEvent,
 } from 'react';
 
@@ -89,6 +89,141 @@ function getSegments(hourCycle: HourCycle): SegmentDef[] {
 
 type NumericValues = Record<NumericSegType, number | null>;
 type NumericRaw = Record<NumericSegType, string>;
+
+type TimeSegmentsProps = {
+  segments: SegmentDef[];
+  ampm: 'AM' | 'PM' | null;
+  numericVals: NumericValues;
+  rawInput: NumericRaw;
+  disabled: boolean;
+  error: boolean;
+  hourCycle: HourCycle;
+  classes: ReturnType<typeof timePicker>;
+  segmentRefs: MutableRefObject<(HTMLElement | null)[]>;
+  onFocusSegment: (segment: SegmentType) => void;
+  onBlurSegment: (event: FocusEvent) => void;
+  onKeyDownSegment: (event: KeyboardEvent, segmentIndex: number) => void;
+};
+
+const TimeSegments = ({
+  segments,
+  ampm,
+  numericVals,
+  rawInput,
+  disabled,
+  error,
+  hourCycle,
+  classes,
+  segmentRefs,
+  onFocusSegment,
+  onBlurSegment,
+  onKeyDownSegment,
+}: TimeSegmentsProps) => {
+  return segments.flatMap((seg, idx) => {
+    if (seg.kind === 'ampm') {
+      const display = ampm ?? seg.placeholder;
+
+      return [
+        <Box
+          key="ampm"
+          as="span"
+          role="spinbutton"
+          tabIndex={disabled ? -1 : 0}
+          aria-label="AM or PM"
+          aria-valuetext={display}
+          className={classes.segment}
+          color={
+            ampm === null
+              ? error
+                ? 'text.danger'
+                : 'text.placeholder'
+              : undefined
+          }
+          ref={(el: HTMLElement | null) => {
+            segmentRefs.current[idx] = el;
+          }}
+          onFocus={() => {
+            onFocusSegment('ampm');
+          }}
+          onBlur={onBlurSegment}
+          onKeyDown={(event: KeyboardEvent) => onKeyDownSegment(event, idx)}
+        >
+          {display}
+        </Box>,
+      ];
+    }
+
+    const val = numericVals[seg.type];
+    const raw = rawInput[seg.type];
+    const display =
+      raw.length > 0
+        ? raw
+        : val !== null
+          ? String(val).padStart(2, '0')
+          : seg.placeholder;
+    const isPlaceholder = val === null && raw.length === 0;
+
+    const items = [
+      <Box
+        key={seg.type}
+        as="span"
+        role="spinbutton"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={seg.type.charAt(0).toUpperCase() + seg.type.slice(1)}
+        aria-valuenow={val ?? undefined}
+        aria-valuemin={seg.min}
+        aria-valuemax={seg.max}
+        aria-valuetext={display}
+        className={classes.segment}
+        color={
+          isPlaceholder
+            ? error
+              ? 'text.danger'
+              : 'text.placeholder'
+            : undefined
+        }
+        ref={(el: HTMLElement | null) => {
+          segmentRefs.current[idx] = el;
+        }}
+        onFocus={() => {
+          onFocusSegment(seg.type);
+        }}
+        onBlur={onBlurSegment}
+        onKeyDown={(event: KeyboardEvent) => onKeyDownSegment(event, idx)}
+      >
+        {display}
+      </Box>,
+    ];
+
+    if (seg.type === 'hour') {
+      items.push(
+        <Box
+          key="sep-hour-min"
+          as="span"
+          className={classes.separator}
+          aria-hidden="true"
+        >
+          :
+        </Box>,
+      );
+    }
+
+    if (seg.type === 'minute' && hourCycle === '12') {
+      items.push(
+        <Box
+          key="sep-min-ampm"
+          as="span"
+          className={classes.separator}
+          aria-hidden="true"
+        >
+          {' '}
+        </Box>,
+      );
+    }
+
+    return items;
+  });
+};
 
 // ─── 12h ↔ 24h conversion ─────────────────────────────────────────────────────
 
@@ -433,122 +568,6 @@ export const TimePicker = (props: TimePickerProps) => {
   const selectedDisplayHour = numericVals.hour;
   const selectedMinute = numericVals.minute;
 
-  // ── Render segments ────────────────────────────────────────────────────────
-  const renderSegments = () => {
-    const items: ReactNode[] = [];
-
-    segments.forEach((seg, idx) => {
-      if (seg.kind === 'ampm') {
-        const display = ampm ?? seg.placeholder;
-        items.push(
-          <Box
-            key="ampm"
-            as="span"
-            role="spinbutton"
-            tabIndex={disabled ? -1 : 0}
-            aria-label="AM or PM"
-            aria-valuetext={display}
-            className={classes.segment}
-            color={
-              ampm === null
-                ? error
-                  ? 'text.danger'
-                  : 'text.placeholder'
-                : undefined
-            }
-            ref={(el: HTMLElement | null) => {
-              segmentRefs.current[idx] = el;
-            }}
-            onFocus={() => {
-              setFocusedSegment('ampm');
-              if (!disabled) handleOpenChange(true);
-            }}
-            onBlur={handleSegmentBlur}
-            onKeyDown={(e: KeyboardEvent) => handleSegmentKeyDown(e, idx)}
-          >
-            {display}
-          </Box>,
-        );
-        return;
-      }
-
-      // Numeric segment
-      const val = numericVals[seg.type];
-      const raw = rawInput[seg.type];
-      let display: string;
-      if (raw.length > 0) {
-        display = raw;
-      } else if (val !== null) {
-        display = String(val).padStart(2, '0');
-      } else {
-        display = seg.placeholder;
-      }
-      const isPlaceholder = val === null && raw.length === 0;
-
-      items.push(
-        <Box
-          key={seg.type}
-          as="span"
-          role="spinbutton"
-          tabIndex={disabled ? -1 : 0}
-          aria-label={seg.type.charAt(0).toUpperCase() + seg.type.slice(1)}
-          aria-valuenow={val ?? undefined}
-          aria-valuemin={seg.min}
-          aria-valuemax={seg.max}
-          aria-valuetext={display}
-          className={classes.segment}
-          color={
-            isPlaceholder
-              ? error
-                ? 'text.danger'
-                : 'text.placeholder'
-              : undefined
-          }
-          ref={(el: HTMLElement | null) => {
-            segmentRefs.current[idx] = el;
-          }}
-          onFocus={() => {
-            setFocusedSegment(seg.type);
-            if (!disabled) handleOpenChange(true);
-          }}
-          onBlur={handleSegmentBlur}
-          onKeyDown={(e: KeyboardEvent) => handleSegmentKeyDown(e, idx)}
-        >
-          {display}
-        </Box>,
-      );
-
-      // Add ":" separator after hour, before minute
-      if (seg.type === 'hour') {
-        items.push(
-          <Box
-            key="sep-hour-min"
-            as="span"
-            className={classes.separator}
-            aria-hidden="true"
-          >
-            :
-          </Box>,
-        );
-      }
-      // Add space separator before AM/PM
-      if (seg.type === 'minute' && hourCycle === '12') {
-        items.push(
-          <Box
-            key="sep-min-ampm"
-            as="span"
-            className={classes.separator}
-            aria-hidden="true"
-          >
-            {' '}
-          </Box>,
-        );
-      }
-    });
-
-    return items;
-  };
-
   return (
     <Box className={cx(classes.root, className)} {...otherProps}>
       {/* Segmented input */}
@@ -566,7 +585,25 @@ export const TimePicker = (props: TimePickerProps) => {
         }}
         {...(getReferenceProps() as Record<string, unknown>)}
       >
-        {renderSegments()}
+        <TimeSegments
+          segments={segments}
+          ampm={ampm}
+          numericVals={numericVals}
+          rawInput={rawInput}
+          disabled={disabled}
+          error={error}
+          hourCycle={hourCycle}
+          classes={classes}
+          segmentRefs={segmentRefs}
+          onFocusSegment={(segment) => {
+            setFocusedSegment(segment);
+            if (!disabled) {
+              handleOpenChange(true);
+            }
+          }}
+          onBlurSegment={handleSegmentBlur}
+          onKeyDownSegment={handleSegmentKeyDown}
+        />
       </Box>
 
       {/* Popover time list */}

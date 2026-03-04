@@ -1,30 +1,47 @@
-import { defineRecipe } from '@pandacss/dev';
+import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
-export const breadcrumbsRecipe = defineRecipe({
+export const breadcrumbsRecipe = defineSlotRecipe({
   className: 'breadcrumbs',
   jsx: ['Breadcrumbs'],
+  slots: ['wrapper', 'slash', 'linkSegment', 'currentSegment'],
   base: {
-    ...globalBaseStyles,
-    display: 'flex',
-    alignItems: 'center',
-    '& li': {
+    wrapper: {
+      ...globalBaseStyles,
       display: 'flex',
+      gap: '6',
       alignItems: 'center',
+      fontFamily: 'mono',
+      fontSize: '14',
+      '& li': {
+        display: 'flex',
+        gap: '6',
+        alignItems: 'center',
+      },
     },
-    '& a': {
-      color: { base: 'slate.60', _dark: 'slate.30' },
+    slash: {
+      fontFamily: 'mono',
+      fontSize: '14',
+      color: 'text.placeholder',
+    },
+    linkSegment: {
+      fontFamily: 'mono',
+      fontSize: '14',
+      color: 'text.subtlest',
+      fontWeight: 'normal',
+      _hover: {
+        color: 'link',
+      },
       _focusVisible: {
         color: 'blue.50',
       },
     },
-    '& p': {
-      color: { base: 'slate.90', _dark: 'slate.0' },
-    },
-    '& span': {
-      mx: '6',
-      color: { base: 'slate.20', _dark: 'slate.50' },
+    currentSegment: {
+      fontFamily: 'mono',
+      fontSize: '14',
+      color: 'text',
+      fontWeight: 'bold',
     },
   },
 });

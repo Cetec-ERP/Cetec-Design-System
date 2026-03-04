@@ -390,7 +390,7 @@ export const AvatarStack: Story = {
           sampleImages.user3,
           sampleImages.user4,
         ].map((src, i) => (
-          <Box key={i} ml={i > 0 ? '-8' : '0'} position="relative">
+          <Box key={src} ml={i > 0 ? '-8' : '0'} position="relative">
             <Avatar size="md" src={src} />
           </Box>
         ))}

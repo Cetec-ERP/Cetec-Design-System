@@ -858,7 +858,6 @@ const AppContent: FC = () => {
                 onChange={handleToggleChange('base')}
               />
               <Toggle
-                autoFocus
                 name="toggle-focus"
                 checked={toggleStates.focused}
                 onChange={handleToggleChange('focused')}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useReducer, useRef, type ReactNode } from 'react';
 
 import {
   FloatingPortal,
@@ -37,6 +37,36 @@ export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
     id?: string;
   };
 
+type ModalPhase = 'open' | 'closing' | 'closed';
+
+type ModalState = {
+  phase: ModalPhase;
+};
+
+type ModalAction =
+  | { type: 'open' }
+  | { type: 'startClosing' }
+  | { type: 'finishClosing' };
+
+const modalStateReducer = (
+  state: ModalState,
+  action: ModalAction,
+): ModalState => {
+  switch (action.type) {
+    case 'open':
+      return { phase: 'open' };
+    case 'startClosing':
+      if (state.phase === 'closed') {
+        return state;
+      }
+      return { phase: 'closing' };
+    case 'finishClosing':
+      return { phase: 'closed' };
+    default:
+      return state;
+  }
+};
+
 export const Modal = (props: ModalProps) => {
   const {
     open,
@@ -49,8 +79,9 @@ export const Modal = (props: ModalProps) => {
   } = props;
   const [className, otherProps] = splitProps(rest);
   const classes = modalRecipe({ size });
-  const [isClosing, setIsClosing] = useState(false);
-  const [shouldRender, setShouldRender] = useState(open);
+  const [{ phase }, dispatch] = useReducer(modalStateReducer, {
+    phase: open ? 'open' : 'closed',
+  });
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Floating UI setup
@@ -69,42 +100,39 @@ export const Modal = (props: ModalProps) => {
   // Handle open/close state with animation
   useEffect(() => {
     if (open) {
-      setShouldRender(true);
-      setIsClosing(false);
+      dispatch({ type: 'open' });
       // Clear any pending timeout
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
-    } else if (shouldRender) {
-      // Start closing animation
-      setIsClosing(true);
-      // Wait for animation to complete before unmounting
-      timeoutRef.current = setTimeout(() => {
-        setShouldRender(false);
-        setIsClosing(false);
-      }, 150);
+      return;
     }
+
+    dispatch({ type: 'startClosing' });
+    timeoutRef.current = setTimeout(() => {
+      dispatch({ type: 'finishClosing' });
+    }, 150);
 
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [open, shouldRender]);
+  }, [open]);
 
   // Context value
   const contextValue: ModalContextValue = {
-    open: shouldRender && !isClosing,
+    open: phase === 'open',
     onClose: () => onOpenChange(false),
     preventOverlayClose,
   };
 
-  if (!shouldRender) {
+  if (phase === 'closed') {
     return null;
   }
 
-  const dataState = isClosing ? 'closing' : 'open';
+  const dataState = phase === 'closing' ? 'closing' : 'open';
 
   return (
     <ModalContext.Provider value={contextValue}>

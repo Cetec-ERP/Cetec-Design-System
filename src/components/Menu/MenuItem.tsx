@@ -34,20 +34,20 @@ const HighlightedText = ({ value }: { value: string }) => {
   }
 
   const parts = getHighlightedTextParts(value, query);
+  let runningOffset = 0;
 
   return (
     <>
-      {parts.map((part, index) => {
+      {parts.map((part) => {
+        const key = `${part.text}-${runningOffset}`;
+        runningOffset += part.text.length;
+
         if (!part.match) {
-          return <span key={`${part.text}-${index}`}>{part.text}</span>;
+          return <span key={key}>{part.text}</span>;
         }
 
         return (
-          <Box
-            as="mark"
-            key={`${part.text}-${index}`}
-            className={classes.highlight}
-          >
+          <Box as="mark" key={key} className={classes.highlight}>
             {part.text}
           </Box>
         );

@@ -3,7 +3,7 @@ import { defineRecipe } from '@pandacss/dev';
 const dividerBase = {
   '--divider-weight': 'sizes.1',
   borderStyle: 'solid',
-  color: { base: 'slate.20', _dark: 'slate.80' },
+  color: 'border',
   borderColor: 'current',
   minWidth: '1',
   minHeight: '1',

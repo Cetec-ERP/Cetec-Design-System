@@ -4,10 +4,10 @@ import {
   useMemo,
   useRef,
   useState,
+  type MutableRefObject,
   type FocusEvent,
   type KeyboardEvent,
   type MouseEvent,
-  type ReactNode,
 } from 'react';
 
 import {
@@ -57,6 +57,95 @@ const DATE_SEGMENTS: SegmentDef[] = [
 
 type SegmentValues = Record<SegmentType, number | null>;
 type SegmentRaw = Record<SegmentType, string>;
+
+type DateSegmentsProps = {
+  segments: SegmentValues;
+  rawInput: SegmentRaw;
+  disabled: boolean;
+  error: boolean;
+  focusedSegment: SegmentType | null;
+  classes: ReturnType<typeof datePicker>;
+  segmentRefs: MutableRefObject<(HTMLElement | null)[]>;
+  onFocusSegment: (segment: SegmentType) => void;
+  onBlurSegment: (event: FocusEvent) => void;
+  onKeyDownSegment: (event: KeyboardEvent, segmentIndex: number) => void;
+};
+
+const DateSegments = ({
+  segments,
+  rawInput,
+  disabled,
+  error,
+  focusedSegment,
+  classes,
+  segmentRefs,
+  onFocusSegment,
+  onBlurSegment,
+  onKeyDownSegment,
+}: DateSegmentsProps) => {
+  return DATE_SEGMENTS.flatMap((seg, idx) => {
+    const val = segments[seg.type];
+    const raw = rawInput[seg.type];
+
+    let display: string;
+    if (raw.length > 0) {
+      display = raw.padStart(seg.digits === 4 ? raw.length : 1, '');
+    } else if (val !== null) {
+      display = String(val).padStart(seg.digits === 4 ? seg.digits : 2, '0');
+    } else {
+      display = seg.placeholder;
+    }
+
+    const segmentNode = (
+      <Box
+        key={seg.type}
+        as="span"
+        role="spinbutton"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={seg.type.charAt(0).toUpperCase() + seg.type.slice(1)}
+        aria-valuenow={val ?? undefined}
+        aria-valuemin={seg.min}
+        aria-valuemax={seg.max}
+        aria-valuetext={display}
+        className={classes.segment}
+        color={
+          val === null && raw.length === 0
+            ? error
+              ? 'text.danger'
+              : 'text.placeholder'
+            : undefined
+        }
+        data-focused={focusedSegment === seg.type ? true : undefined}
+        ref={(el: HTMLElement | null) => {
+          segmentRefs.current[idx] = el;
+        }}
+        onFocus={() => {
+          onFocusSegment(seg.type);
+        }}
+        onBlur={onBlurSegment}
+        onKeyDown={(event: KeyboardEvent) => onKeyDownSegment(event, idx)}
+      >
+        {display}
+      </Box>
+    );
+
+    if (idx === DATE_SEGMENTS.length - 1) {
+      return [segmentNode];
+    }
+
+    return [
+      segmentNode,
+      <Box
+        key={`sep-${seg.type}`}
+        as="span"
+        className={classes.separator}
+        aria-hidden="true"
+      >
+        /
+      </Box>,
+    ];
+  });
+};
 
 // ─── Auto-advance logic ────────────────────────────────────────────────────────
 
@@ -150,8 +239,10 @@ export const DatePicker = (props: DatePickerProps) => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() + 1 };
   }, []);
-  const [viewYear, setViewYear] = useState(value?.year ?? today.year);
-  const [viewMonth, setViewMonth] = useState(value?.month ?? today.month);
+  const [viewDate, setViewDate] = useState({
+    year: value?.year ?? today.year,
+    month: value?.month ?? today.month,
+  });
 
   // ── Popover state ──────────────────────────────────────────────────────────
   const [internalOpen, setInternalOpen] = useState(false);
@@ -174,8 +265,7 @@ export const DatePicker = (props: DatePickerProps) => {
         year: value?.year ?? null,
       });
       if (value) {
-        setViewMonth(value.month);
-        setViewYear(value.year);
+        setViewDate({ year: value.year, month: value.month });
       }
     }
   }, [value]);
@@ -326,9 +416,9 @@ export const DatePicker = (props: DatePickerProps) => {
 
           // Sync calendar view to newly completed values
           if (type === 'month' && next.year) {
-            setViewMonth(finalVal);
+            setViewDate((prev) => ({ ...prev, month: finalVal }));
           } else if (type === 'year') {
-            setViewYear(finalVal);
+            setViewDate((prev) => ({ ...prev, year: finalVal }));
           }
         } else {
           setRawInput((prev) => ({ ...prev, [type]: newRaw }));
@@ -348,8 +438,7 @@ export const DatePicker = (props: DatePickerProps) => {
     (date: DateValue) => {
       setSegments({ month: date.month, day: date.day, year: date.year });
       setRawInput({ month: '', day: '', year: '' });
-      setViewMonth(date.month);
-      setViewYear(date.year);
+      setViewDate({ year: date.year, month: date.month });
       onChange?.(date);
       handleOpenChange(false);
     },
@@ -357,82 +446,11 @@ export const DatePicker = (props: DatePickerProps) => {
   );
 
   const handleViewChange = useCallback((year: number, month: number) => {
-    setViewYear(year);
-    setViewMonth(month);
+    setViewDate({ year, month });
   }, []);
 
   // ── Recipe classes ─────────────────────────────────────────────────────────
   const classes = datePicker({ size });
-
-  // ── Render segments ────────────────────────────────────────────────────────
-  const renderSegments = () => {
-    const items: ReactNode[] = [];
-
-    DATE_SEGMENTS.forEach((seg, idx) => {
-      const val = segments[seg.type];
-      const raw = rawInput[seg.type];
-      // Display: prefer current raw input (being typed), then committed value, then placeholder
-      let display: string;
-      if (raw.length > 0) {
-        display = raw.padStart(seg.digits === 4 ? raw.length : 1, '');
-      } else if (val !== null) {
-        display = String(val).padStart(seg.digits === 4 ? seg.digits : 2, '0');
-      } else {
-        display = seg.placeholder;
-      }
-
-      const isPlaceholder = val === null && raw.length === 0;
-
-      items.push(
-        <Box
-          key={seg.type}
-          as="span"
-          role="spinbutton"
-          tabIndex={disabled ? -1 : 0}
-          aria-label={seg.type.charAt(0).toUpperCase() + seg.type.slice(1)}
-          aria-valuenow={val ?? undefined}
-          aria-valuemin={seg.min}
-          aria-valuemax={seg.max}
-          aria-valuetext={display}
-          className={classes.segment}
-          color={
-            isPlaceholder
-              ? error
-                ? 'text.danger'
-                : 'text.placeholder'
-              : undefined
-          }
-          data-focused={focusedSegment === seg.type ? true : undefined}
-          ref={(el: HTMLElement | null) => {
-            segmentRefs.current[idx] = el;
-          }}
-          onFocus={() => {
-            setFocusedSegment(seg.type);
-            if (!disabled) handleOpenChange(true);
-          }}
-          onBlur={handleSegmentBlur}
-          onKeyDown={(e: KeyboardEvent) => handleSegmentKeyDown(e, idx)}
-        >
-          {display}
-        </Box>,
-      );
-
-      if (idx < DATE_SEGMENTS.length - 1) {
-        items.push(
-          <Box
-            key={`sep-${idx}`}
-            as="span"
-            className={classes.separator}
-            aria-hidden="true"
-          >
-            /
-          </Box>,
-        );
-      }
-    });
-
-    return items;
-  };
 
   const dateValue: DateValue | null =
     segments.month !== null && segments.day !== null && segments.year !== null
@@ -457,7 +475,23 @@ export const DatePicker = (props: DatePickerProps) => {
         }}
         {...(getReferenceProps() as Record<string, unknown>)}
       >
-        {renderSegments()}
+        <DateSegments
+          segments={segments}
+          rawInput={rawInput}
+          disabled={disabled}
+          error={error}
+          focusedSegment={focusedSegment}
+          classes={classes}
+          segmentRefs={segmentRefs}
+          onFocusSegment={(segment) => {
+            setFocusedSegment(segment);
+            if (!disabled) {
+              handleOpenChange(true);
+            }
+          }}
+          onBlurSegment={handleSegmentBlur}
+          onKeyDownSegment={handleSegmentKeyDown}
+        />
       </Box>
 
       {/* Popover calendar */}
@@ -482,8 +516,8 @@ export const DatePicker = (props: DatePickerProps) => {
                 onSelect={handleCalendarSelect}
                 minDate={minDate}
                 maxDate={maxDate}
-                viewYear={viewYear}
-                viewMonth={viewMonth}
+                viewYear={viewDate.year}
+                viewMonth={viewDate.month}
                 onViewChange={handleViewChange}
                 classes={classes}
               />

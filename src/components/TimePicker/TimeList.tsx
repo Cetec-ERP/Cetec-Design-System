@@ -22,6 +22,50 @@ export interface TimeListProps {
   classes: ReturnType<typeof timePicker>;
 }
 
+type TimeListColumnProps<T extends string | number> = {
+  colRef: RefObject<HTMLDivElement | null>;
+  label: string;
+  items: T[];
+  selectedItem: T | null;
+  onItemSelect: (item: T) => void;
+  formatItem: (item: T) => string;
+  ariaLabel: string;
+  classes: ReturnType<typeof timePicker>;
+};
+
+const TimeListColumn = <T extends string | number>({
+  colRef,
+  label,
+  items,
+  selectedItem,
+  onItemSelect,
+  formatItem,
+  ariaLabel,
+  classes,
+}: TimeListColumnProps<T>) => {
+  return (
+    <Box
+      ref={colRef}
+      className={classes.column}
+      role="listbox"
+      aria-label={ariaLabel}
+      aria-orientation="vertical"
+    >
+      <Box className={classes.columnLabel}>{label}</Box>
+      {items.map((item) => (
+        <MenuItem
+          key={String(item)}
+          label={formatItem(item)}
+          selected={item === selectedItem}
+          type="action"
+          justifyContent="center"
+          onClick={() => onItemSelect(item)}
+        />
+      ))}
+    </Box>
+  );
+};
+
 // ─── 12h conversion ────────────────────────────────────────────────────────────
 
 function from12h(displayHour: number, meridiem: 'AM' | 'PM'): number {
@@ -103,70 +147,42 @@ export const TimeList = (props: TimeListProps) => {
     onSelect({ hour, minute: selectedMinute ?? 0 });
   };
 
-  // ── Column renderer ────────────────────────────────────────────────────────
-
-  const renderColumn = <T extends string | number>(
-    colRef: RefObject<HTMLDivElement | null>,
-    label: string,
-    items: T[],
-    selectedItem: T | null,
-    onItemSelect: (item: T) => void,
-    formatItem: (item: T) => string,
-    ariaLabel: string,
-  ) => (
-    <Box
-      ref={colRef}
-      className={classes.column}
-      role="listbox"
-      aria-label={ariaLabel}
-      aria-orientation="vertical"
-    >
-      <Box className={classes.columnLabel}>{label}</Box>
-      {items.map((item) => (
-        <MenuItem
-          key={String(item)}
-          label={formatItem(item)}
-          selected={item === selectedItem}
-          type="action"
-          justifyContent="center"
-          onClick={() => onItemSelect(item)}
-        />
-      ))}
-    </Box>
-  );
-
   const pad2 = (n: number) => String(n).padStart(2, '0');
 
   return (
     <>
-      {renderColumn(
-        hourColRef,
-        'Hr',
-        hours,
-        selectedHour,
-        handleHourSelect,
-        pad2,
-        'Hour',
+      <TimeListColumn
+        colRef={hourColRef}
+        label="Hr"
+        items={hours}
+        selectedItem={selectedHour}
+        onItemSelect={handleHourSelect}
+        formatItem={pad2}
+        ariaLabel="Hour"
+        classes={classes}
+      />
+      <TimeListColumn
+        colRef={minuteColRef}
+        label="Min"
+        items={minutes}
+        selectedItem={selectedMinute}
+        onItemSelect={handleMinuteSelect}
+        formatItem={pad2}
+        ariaLabel="Minute"
+        classes={classes}
+      />
+      {is12h && (
+        <TimeListColumn
+          colRef={meridiemColRef}
+          label=""
+          items={meridiems}
+          selectedItem={selectedMeridiem}
+          onItemSelect={handleMeridiemSelect}
+          formatItem={(meridiem) => meridiem}
+          ariaLabel="AM or PM"
+          classes={classes}
+        />
       )}
-      {renderColumn(
-        minuteColRef,
-        'Min',
-        minutes,
-        selectedMinute,
-        handleMinuteSelect,
-        pad2,
-        'Minute',
-      )}
-      {is12h &&
-        renderColumn(
-          meridiemColRef,
-          '',
-          meridiems,
-          selectedMeridiem,
-          handleMeridiemSelect,
-          (m: string) => m,
-          'AM or PM',
-        )}
     </>
   );
 };

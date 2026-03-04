@@ -36,6 +36,7 @@ const {
   textInputRecipe,
   datePickerRecipe,
   timePickerRecipe,
+  breadcrumbsRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -108,6 +109,7 @@ export const cetecPreset: Preset = definePreset({
         textInput: textInputRecipe,
         datePicker: datePickerRecipe,
         timePicker: timePickerRecipe,
+        breadcrumbs: breadcrumbsRecipe,
       },
     },
   },
