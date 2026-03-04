@@ -66,7 +66,7 @@ const getSizeTokenValue = (
   return undefined;
 };
 
-const wrapperStyles = css({
+export const wrapperStyles = css({
   w: 'fit',
   py: '2',
   px: '4',
@@ -83,7 +83,7 @@ const wrapperStyles = css({
   },
 });
 
-const sizeBarStyles = css({
+export const sizeBarStyles = css({
   height: '8',
   rounded: '2',
   bg: 'bg.accent.blue',
