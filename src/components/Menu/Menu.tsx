@@ -281,15 +281,14 @@ export const Menu = (props: MenuProps) => {
   const drilldownWrapperStyle: CSSProperties =
     shouldUseDrilldownSizing && wrapperSize.width && wrapperSize.height
       ? {
-          width: `${wrapperSize.width}px`,
-          height: `${wrapperSize.height}px`,
+          width: `[${wrapperSize.width}px]`,
+          height: `[${wrapperSize.height}px]`,
         }
       : {};
 
   const floatingStyle = {
     ...(hasReference && !inline ? floating.floatingStyles : {}),
     ...drilldownWrapperStyle,
-    ...otherProps.style,
   };
 
   const content = (
@@ -341,10 +340,8 @@ export const Menu = (props: MenuProps) => {
 
               <Box
                 className={classes.panelsTrack}
-                style={{
-                  width: `${trackWidthPercent}%`,
-                  transform: `translateX(-${trackTranslatePercent}%)`,
-                }}
+                width={`[${trackWidthPercent}%]`}
+                transform={`[translateX(-${trackTranslatePercent}%)]`}
               >
                 {panels.map((panel, index) => {
                   const isActivePanel = index === drilldownDepth;
@@ -358,9 +355,7 @@ export const Menu = (props: MenuProps) => {
                       <Box
                         key={panel.key}
                         className={classes.panel}
-                        style={{
-                          flex: `0 0 ${panelWidthPercent}%`,
-                        }}
+                        flex={`[0 0 ${panelWidthPercent}%]`}
                         aria-hidden
                       >
                         {index > 0 && (
@@ -387,9 +382,7 @@ export const Menu = (props: MenuProps) => {
                       <FloatingList elementsRef={listRef} labelsRef={labelsRef}>
                         <Box
                           className={classes.panel}
-                          style={{
-                            flex: `0 0 ${panelWidthPercent}%`,
-                          }}
+                          flex={`[0 0 ${panelWidthPercent}%]`}
                         >
                           {index > 0 && (
                             <Box

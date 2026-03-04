@@ -19,7 +19,7 @@ export const avatarRecipe = defineSlotRecipe({
       verticalAlign: 'middle',
       flexShrink: 0,
       color: 'text',
-      bg: 'bg.neutral',
+      bg: 'bg.neutral.solid',
       userSelect: 'none',
       aspectRatio: 'square',
     },

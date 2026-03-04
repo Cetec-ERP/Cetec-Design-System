@@ -30,12 +30,7 @@ const ControlledTimePickerExample = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap="16"
-      style={{ width: '220px' }}
-    >
+    <Box display="flex" flexDirection="column" gap="16" width="224">
       <TimePicker hourCycle="12" value={value} onChange={setValue} />
       <Text size="14" color="text.subtle">
         Selected (24h): {value ? formatTime(value) : 'none'}
@@ -88,7 +83,7 @@ export const Disabled: Story = {
 export const InFormField: Story = {
   name: 'In FormField',
   render: () => (
-    <Box style={{ width: '220px' }}>
+    <Box width="224">
       <FormField label="Meeting time" labelFor="meeting-time" required>
         <TimePicker id="meeting-time" hourCycle="12" />
       </FormField>

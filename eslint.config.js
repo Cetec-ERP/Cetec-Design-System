@@ -60,6 +60,11 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       '@typescript-eslint/consistent-type-imports': 'warn',
+      'cetec/discourage-css-variable-styling': 'warn',
+      'cetec/no-classname-css-call': 'error',
+      'cetec/no-inline-style-prop': 'error',
+      'cetec/no-pixel-units': 'error',
+      'cetec/no-raw-font-weight-values': 'error',
       'cetec/no-react-namespace-type-imports': 'warn',
       'import/no-unresolved': 'warn',
       'import/order': [

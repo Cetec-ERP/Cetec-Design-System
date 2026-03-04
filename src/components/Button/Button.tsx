@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { HStack } from '@styled-system/jsx';
@@ -15,7 +15,7 @@ export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
     iconAfter?: IconNamesList;
     href?: string;
     loading?: boolean;
-    children: string;
+    children: string | ReactNode; // include ReactNode so we can pass in components like <Badge/>
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
   };

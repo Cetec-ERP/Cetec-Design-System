@@ -137,7 +137,7 @@ export const Avatar = (props: AvatarProps) => {
           className={classes.image}
           onError={() => setImageError(true)}
           onLoad={() => setImageLoaded(true)}
-          style={{ opacity: imageLoaded ? 1 : 0 }}
+          opacity={imageLoaded ? 1 : 0}
         />
       )}
 

@@ -1,6 +1,5 @@
 import { fn } from '@storybook/test';
 
-import { css } from '@styled-system/css';
 import { HStack, VStack, Grid, Flex, Wrap } from '@styled-system/jsx';
 
 import { Box } from '../Box';
@@ -215,25 +214,25 @@ export const SemanticElements: Story = {
     <Grid gridTemplateColumns="repeat(3, 1fr)" gap="16">
       <Card as="article">
         <VStack p="12" gap="4" alignItems="flex-start">
-          <code className={css({ fontSize: '14', color: 'blue.50' })}>
+          <Box as="code" fontSize="14" color="blue.50">
             article
-          </code>
+          </Box>
           <Text>For blog posts, news</Text>
         </VStack>
       </Card>
       <Card as="section" variant="flat">
         <VStack p="12" gap="4" alignItems="flex-start">
-          <code className={css({ fontSize: '14', color: 'blue.50' })}>
+          <Box as="code" fontSize="14" color="blue.50">
             section
-          </code>
+          </Box>
           <Text>For grouped content</Text>
         </VStack>
       </Card>
       <Card as="aside" variant="ghost">
         <VStack p="12" gap="4" alignItems="flex-start">
-          <code className={css({ fontSize: '14', color: 'blue.50' })}>
+          <Box as="code" fontSize="14" color="blue.50">
             aside
-          </code>
+          </Box>
           <Text>For supplementary content</Text>
         </VStack>
       </Card>
@@ -355,9 +354,9 @@ export const InteractiveComparison: Story = {
   render: () => (
     <VStack gap="24" alignItems="flex-start">
       <div>
-        <div className={css({ mb: '8', fontSize: '14', fontWeight: 'bold' })}>
+        <Box mb="8" fontSize="14" fontWeight="bold">
           Non-Interactive (Content Container)
-        </div>
+        </Box>
         <Card>
           <VStack p="16" gap="0" alignItems="flex-start">
             <Heading level="h4">Static Card</Heading>
@@ -373,9 +372,9 @@ export const InteractiveComparison: Story = {
         </Card>
       </div>
       <div>
-        <div className={css({ mb: '8', fontSize: '14', fontWeight: 'bold' })}>
+        <Box mb="8" fontSize="14" fontWeight="bold">
           Interactive (Clickable Card)
-        </div>
+        </Box>
         <Card onClick={() => alert('Card clicked!')}>
           <VStack p="16" gap="8" alignItems="flex-start">
             <Heading level="h4">Clickable Card</Heading>

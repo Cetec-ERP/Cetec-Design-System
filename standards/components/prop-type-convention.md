@@ -32,6 +32,9 @@ export type DatePickerProps = Omit<
 
 1. If a recipe prop needs a different public type, omit it from recipe variant props and re-declare it.
 2. Prefer declaring component-specific props after base/variant composition for readability.
+3. Do not narrow `children` to `string` when component composition is expected.
+   - For composable primitives (for example `Button` with inline `Badge`), type as `ReactNode` (or `string | ReactNode`) to preserve valid usage.
+   - Prefer adapting prop types over forcing callsite rewrites that reduce component ergonomics.
 
 ### Situational Example: Re-typing Variant Props
 

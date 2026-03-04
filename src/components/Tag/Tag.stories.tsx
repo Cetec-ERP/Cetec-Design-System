@@ -21,6 +21,9 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  args: {
+    children: 'Tag',
+  },
   argTypes: {
     variant: {
       control: 'select',

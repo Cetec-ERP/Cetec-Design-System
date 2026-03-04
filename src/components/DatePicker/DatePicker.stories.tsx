@@ -26,12 +26,7 @@ const ControlledDatePickerExample = () => {
   const [value, setValue] = useState<DateValue | null>(null);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap="16"
-      style={{ width: '300px' }}
-    >
+    <Box display="flex" flexDirection="column" gap="16" w="xs">
       <DatePicker value={value} onChange={setValue} />
       <Text size="14" color="text.subtle">
         Selected:{' '}
@@ -93,9 +88,9 @@ export const SizeLg: Story = {
 export const InFormField: Story = {
   name: 'In FormField',
   render: () => (
-    <Box style={{ width: '300px' }}>
-      <FormField label="Birth date" required>
-        <DatePicker />
+    <Box w="xs">
+      <FormField label="Birth date" labelFor="birth-date" required>
+        <DatePicker id="birth-date" />
       </FormField>
     </Box>
   ),

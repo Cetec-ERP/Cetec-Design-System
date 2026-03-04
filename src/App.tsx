@@ -1,6 +1,5 @@
 import { useState, type ChangeEvent, type FC, type ReactNode } from 'react';
 
-import { css } from '@styled-system/css';
 import { HStack, VStack, Container, Grid, Flex } from '@styled-system/jsx';
 import { type ShadowToken } from '@styled-system/tokens';
 
@@ -37,7 +36,7 @@ export const IconList: FC = () => {
     <Grid
       gap="16"
       w="full"
-      gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+      gridTemplateColumns={`repeat(auto-fill, minmax(${'224'}, 1fr))`}
     >
       {(Object.keys(IconNames) as IconNamesList[]).map((icon) => (
         <HStack key={icon} color={{ base: 'gold.40', _dark: 'gold.30' }}>
@@ -1043,7 +1042,7 @@ const AppContent: FC = () => {
               <Heading level="h3">Example</Heading>
               <HStack gap="40" alignItems="flex-start">
                 <Card grabbed>
-                  <Box className={css({ p: '16', textAlign: 'left' })}>
+                  <Box p="16" textAlign="left">
                     <Heading level="h4">Affordable Default</Heading>
                     <Text>
                       Forward thinking pricing model. Cetec ERP has broken
@@ -1053,7 +1052,7 @@ const AppContent: FC = () => {
                   </Box>
                 </Card>
                 <Card variant="flat">
-                  <Box className={css({ p: '16', textAlign: 'left' })}>
+                  <Box p="16" textAlign="left">
                     <Heading level="h4">Affordable Flat</Heading>
                     <Text>
                       Forward thinking pricing model. Cetec ERP has broken

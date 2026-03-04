@@ -35,6 +35,12 @@ Tracks concrete implementation work for lint standards and rollout.
   - `cetec/no-hardcoded-design-values-in-recipes`
   - `cetec/no-react-fc-components`
   - `cetec/no-react-namespace-type-imports`
+- Implemented and wired additional styling consistency rules:
+  - `cetec/no-inline-style-prop` (error)
+  - `cetec/no-pixel-units` (error)
+  - `cetec/no-raw-font-weight-values` (error)
+  - `cetec/no-classname-css-call` (error)
+  - `cetec/discourage-css-variable-styling` (warn)
 - Added CI workflow for rollout gating and report-only doctor checks:
   - `.github/workflows/standards-rollout-ci.yml`
 
