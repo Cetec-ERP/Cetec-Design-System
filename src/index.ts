@@ -40,6 +40,10 @@ export {
 } from './components/Menu';
 export { MenuLegacy, type MenuLegacyProps } from './components/MenuLegacy';
 export { FormField } from './components/FormField';
+export { Avatar } from './components/Avatar';
+export { Modal, ModalHeader, ModalFooter, ModalBody } from './components/Modal';
+export { Chip, ChipGroup } from './components/Chip';
+export { Badge } from './components/Badge';
 
 // Export the Panda CSS preset
 export { cetecPreset } from './cetec-preset';
