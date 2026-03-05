@@ -35,6 +35,7 @@ export const ToggleInput = (props: ToggleInputProps) => {
     <Label
       className={cx(toggleInput({}), className)}
       htmlFor={resolvedId}
+      error={error}
       disabled={disabled}
       {...otherProps}
     >

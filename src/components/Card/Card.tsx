@@ -43,6 +43,7 @@ export const Card = (props: CardProps) => {
       className={cx(card({ variant, interactive: isInteractive }), className)}
       href={href}
       {...(isInteractive && !href ? { type: 'button' } : {})}
+      disabled={disabled}
       {...(disabled &&
         href && {
           onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),

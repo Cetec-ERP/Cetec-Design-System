@@ -175,7 +175,7 @@ export const Disabled: Story = {
   name: 'Disabled states',
   render: () => (
     <Wrap justifyContent="center" gap="24" p="40">
-      <Card disabled>
+      <Card disabled href="#link-target">
         <Flex flexDir="column" p={'16'}>
           <Heading level="h3">Default Card</Heading>
           <Text>Static card with shadow</Text>

@@ -104,6 +104,7 @@ export const Menu = (props: MenuProps) => {
   } = props;
 
   const [className, otherProps] = splitProps(rest);
+  const userStyle = otherProps.style as CSSProperties | undefined;
   const classes = menu({ density, sidebar });
 
   const hasReference = Boolean(trigger) && !inline;
@@ -200,14 +201,26 @@ export const Menu = (props: MenuProps) => {
       setDrilldownPanels([]);
     },
     onPushDrilldownPanel: (title, panelChildren) => {
-      setDrilldownPanels((prev) => [
-        ...prev,
-        {
-          key: `${title}-${prev.length}`,
-          title,
-          children: panelChildren,
-        },
-      ]);
+      setDrilldownPanels((prev) => {
+        const activePanel = prev[prev.length - 1];
+
+        if (
+          activePanel &&
+          activePanel.title === title &&
+          activePanel.children === panelChildren
+        ) {
+          return prev;
+        }
+
+        return [
+          ...prev,
+          {
+            key: `${title}-${prev.length}`,
+            title,
+            children: panelChildren,
+          },
+        ];
+      });
     },
     onPopDrilldownPanel: () => {
       setDrilldownPanels((prev) => prev.slice(0, -1));
@@ -281,14 +294,15 @@ export const Menu = (props: MenuProps) => {
   const drilldownWrapperStyle: CSSProperties =
     shouldUseDrilldownSizing && wrapperSize.width && wrapperSize.height
       ? {
-          width: `[${wrapperSize.width}px]`,
-          height: `[${wrapperSize.height}px]`,
+          width: `${wrapperSize.width}px`,
+          height: `${wrapperSize.height}px`,
         }
       : {};
 
   const floatingStyle = {
     ...(hasReference && !inline ? floating.floatingStyles : {}),
     ...drilldownWrapperStyle,
+    ...(userStyle ?? {}),
   };
 
   const content = (
@@ -340,8 +354,10 @@ export const Menu = (props: MenuProps) => {
 
               <Box
                 className={classes.panelsTrack}
-                width={`[${trackWidthPercent}%]`}
-                transform={`[translateX(-${trackTranslatePercent}%)]`}
+                style={{
+                  width: `${trackWidthPercent}%`,
+                  transform: `translateX(-${trackTranslatePercent}%)`,
+                }}
               >
                 {panels.map((panel, index) => {
                   const isActivePanel = index === drilldownDepth;
@@ -355,7 +371,9 @@ export const Menu = (props: MenuProps) => {
                       <Box
                         key={panel.key}
                         className={classes.panel}
-                        flex={`[0 0 ${panelWidthPercent}%]`}
+                        style={{
+                          flex: `0 0 ${panelWidthPercent}%`,
+                        }}
                         aria-hidden
                       >
                         {index > 0 && (
@@ -382,7 +400,9 @@ export const Menu = (props: MenuProps) => {
                       <FloatingList elementsRef={listRef} labelsRef={labelsRef}>
                         <Box
                           className={classes.panel}
-                          flex={`[0 0 ${panelWidthPercent}%]`}
+                          style={{
+                            flex: `0 0 ${panelWidthPercent}%`,
+                          }}
                         >
                           {index > 0 && (
                             <Box

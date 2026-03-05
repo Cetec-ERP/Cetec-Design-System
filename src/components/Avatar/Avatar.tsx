@@ -174,9 +174,15 @@ export const Avatar = (props: AvatarProps) => {
           as="span"
           className={cx(classes.status, statusStyles[status as AvatarStatus])}
         >
-          {status === 'approved' && <Icon name="check" size={iconSize} />}
-          {status === 'declined' && <Icon name="x" size={iconSize} />}
-          {status === 'locked' && <Icon name="lock" size={iconSize} />}
+          {status === 'approved' && (
+            <Icon name="check" size={iconSize} fill="icon.inverse" />
+          )}
+          {status === 'declined' && (
+            <Icon name="x" size={iconSize} fill="icon.inverse" />
+          )}
+          {status === 'locked' && (
+            <Icon name="lock" size={iconSize} fill="icon.inverse" />
+          )}
         </Box>
       )}
     </Box>

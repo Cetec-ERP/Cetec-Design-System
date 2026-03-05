@@ -40,6 +40,7 @@ export const colors = defineTokens.colors({
     '90': { value: '#BFC1C4' },
     '100': { value: '#CECFD2' },
     '110': { value: '#E2E3E4' },
+    '120': { value: '#F1F1F2' },
   },
   darkNeutralA: {
     '-10': { value: '#01040475' },

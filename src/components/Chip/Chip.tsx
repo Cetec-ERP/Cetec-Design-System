@@ -187,14 +187,19 @@ export const Chip = (props: ChipProps) => {
           <Icon
             name="check"
             size={iconSize}
-            className={classes.icon}
+            className={classes.chipIcon}
             aria-hidden
           />
         )}
         {before}
         {children}
         {dismissable ? (
-          <Icon name="x" size={iconSize} className={classes.icon} aria-hidden />
+          <Icon
+            name="x"
+            size={iconSize}
+            className={classes.chipIcon}
+            aria-hidden
+          />
         ) : (
           after
         )}

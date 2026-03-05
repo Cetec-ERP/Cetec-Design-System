@@ -5,6 +5,7 @@ import { expect, fn, userEvent, within } from '@storybook/test';
 import { Box } from '../Box';
 import { Card } from '../Card';
 import { CheckboxInput } from '../CheckboxInput';
+import { Label } from '../Label';
 
 import { Checkbox, type CheckboxChangeHandler } from './Checkbox';
 
@@ -16,6 +17,12 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Use `CheckboxInput` for app forms so labels, spacing, and click targets are wired by default. Use `Checkbox` only when building a custom composed wrapper.',
+      },
+    },
   },
   argTypes: {
     name: { control: 'text' },
@@ -38,16 +45,25 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: function DefaultRender() {
     const [checked, setChecked] = useState(false);
-    const onChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
 
     return (
-      <Checkbox
-        name="primitive-checkbox"
-        id="primitive-checkbox"
+      <CheckboxInput
+        name="updates"
+        id="updates"
         checked={checked}
-        onChange={onChange}
-      />
+        onChange={(e) => setChecked(e.target.checked)}
+      >
+        Send me release updates
+      </CheckboxInput>
     );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Recommended default for product UI: `CheckboxInput` with visible label copy.',
+      },
+    },
   },
 };
 
@@ -55,70 +71,99 @@ export const AllStates: Story = {
   name: 'All States',
   render: () => (
     <Card p="24" bg="bg.accent.tan.subtlest" display="grid" gap="12">
-      <Checkbox
+      <CheckboxInput
         name="unchecked"
         id="unchecked"
         checked={false}
         onChange={() => {}}
-      />
-      <Checkbox
+      >
+        Unchecked
+      </CheckboxInput>
+      <CheckboxInput
         name="checked"
         id="checked"
         checked={true}
         onChange={() => {}}
-      />
-      <Checkbox
+      >
+        Checked
+      </CheckboxInput>
+      <CheckboxInput
         name="indeterminate"
         id="indeterminate"
         checked={false}
         indeterminate
         onChange={() => {}}
-      />
-      <Checkbox
+      >
+        Indeterminate
+      </CheckboxInput>
+      <CheckboxInput
         name="error"
         id="error"
         checked={false}
         error
         onChange={() => {}}
-      />
-      <Checkbox
+      >
+        Error
+      </CheckboxInput>
+      <CheckboxInput
         name="disabled"
         id="disabled"
         checked={false}
         disabled
         onChange={() => {}}
-      />
-      <Checkbox
+      >
+        Disabled
+      </CheckboxInput>
+      <CheckboxInput
         name="disabled-checked"
         id="disabled-checked"
         checked={true}
         disabled
         onChange={() => {}}
-      />
+      >
+        Disabled checked
+      </CheckboxInput>
     </Card>
   ),
-  parameters: { controls: { disable: true } },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'State coverage shown with `CheckboxInput`, which is the primary integration surface in forms.',
+      },
+    },
+  },
 };
 
-export const ExWithLabelWrapper: Story = {
-  name: 'Ex: With CheckboxInput Wrapper',
-  render: function ExWithLabelWrapperRender() {
+export const ExPrimitiveOnly: Story = {
+  name: 'Ex: Primitive Checkbox Only',
+  render: function ExPrimitiveOnlyRender() {
     const [checked, setChecked] = useState(false);
+    const onChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
+    const id = 'primitive-checkbox';
 
     return (
-      <Box maxW="prose" display="grid" gap="12">
-        <CheckboxInput
-          name="terms"
-          id="terms"
+      <Label htmlFor={id} display="inline-flex" alignItems="center" gap="6">
+        <Checkbox
+          name="primitive-checkbox"
+          id={id}
           checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
-        >
-          I agree to the terms and conditions
-        </CheckboxInput>
-      </Box>
+          onChange={onChange}
+        />
+        Manual composition using Checkbox primitive
+      </Label>
     );
   },
-  parameters: { controls: { disable: true } },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Primitive-only example for advanced composition. Prefer `CheckboxInput` in application code.',
+      },
+    },
+  },
 };
 
 export const ExSelectAllPattern: Story = {

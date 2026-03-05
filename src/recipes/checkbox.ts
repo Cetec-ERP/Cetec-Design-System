@@ -25,13 +25,13 @@ export const checkboxRecipe = defineSlotRecipe({
       cursor: 'inherit',
       "& ~ [name='checkbox']": {
         display: 'inline-grid',
-        zIndex: 'zIndex.3',
+        zIndex: '3',
       },
       _checked: {
         "& ~ [name='checkbox-checked']": {
           display: 'inline-grid',
           fill: 'icon',
-          zIndex: 'zIndex.2',
+          zIndex: '2',
         },
         "& ~ [name='checkbox']": {
           display: 'none',
@@ -41,7 +41,7 @@ export const checkboxRecipe = defineSlotRecipe({
         "& ~ [name='checkbox-indeterminate']": {
           display: 'inline-grid',
           fill: 'icon',
-          zIndex: 'zIndex.3',
+          zIndex: '3',
           _disabled: {},
         },
         "& ~ [name='checkbox']": {
@@ -52,7 +52,7 @@ export const checkboxRecipe = defineSlotRecipe({
         display: 'inline-grid',
         '& ~ svg:not([name="square"])': {
           fill: 'red.50',
-          zIndex: 'zIndex.3',
+          zIndex: '3',
         },
       },
       _focusVisible: {
@@ -60,7 +60,7 @@ export const checkboxRecipe = defineSlotRecipe({
           display: 'inline-grid',
           position: 'absolute',
           fill: 'border.focused',
-          zIndex: 'zIndex.2',
+          zIndex: '2',
         },
       },
     },
@@ -68,10 +68,10 @@ export const checkboxRecipe = defineSlotRecipe({
       display: 'none',
       width: '24',
       height: '24',
-      zIndex: 'zIndex.3',
+      zIndex: '3',
       "&:is([name='checkbox'])": {
         fill: 'icon.subtlest',
-        zIndex: 'zIndex.3',
+        zIndex: '3',
       },
     },
     checkBg: {

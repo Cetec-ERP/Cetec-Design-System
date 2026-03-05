@@ -3,6 +3,7 @@ import { defineRecipe } from '@pandacss/dev';
 const interactiveHoverStyles = {
   cursor: 'pointer',
   transition: 'all',
+  textDecoration: 'none',
   _hover: {
     bg: 'surface',
     boxShadow: 'elevated',

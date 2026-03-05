@@ -1,3 +1,5 @@
+import { Flex } from '@styled-system/jsx';
+
 import { Box } from '../Box';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
@@ -305,7 +307,7 @@ export const PresenceAndStatus: Story = {
 
 export const UserList: Story = {
   render: () => (
-    <Box display="flex" flexDir="column" gap="3">
+    <Box display="flex" flexDir="column" gap="8">
       {[
         {
           name: 'Alice Johnson',
@@ -328,15 +330,17 @@ export const UserList: Story = {
           img: sampleImages.user4,
         },
       ].map((user) => (
-        <Box key={user.name} display="flex" gap="3" alignItems="center">
+        <Box key={user.name} display="flex" gap="8" alignItems="center">
           <Avatar
             size="md"
             src={user.img}
             name={user.name}
             presence={user.presence}
           />
-          <Box>
-            <Text fontWeight="medium">{user.name}</Text>
+          <Flex gap="8" alignItems="baseline">
+            <Text fontWeight="medium" color="text">
+              {user.name}
+            </Text>
             <Text fontSize="12" color="text.subtle">
               {user.presence === 'online'
                 ? 'Available'
@@ -346,7 +350,7 @@ export const UserList: Story = {
                     ? 'Do not disturb'
                     : 'Away'}
             </Text>
-          </Box>
+          </Flex>
         </Box>
       ))}
     </Box>

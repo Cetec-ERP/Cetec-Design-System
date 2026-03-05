@@ -4,6 +4,7 @@ import { expect, fn, userEvent, within } from '@storybook/test';
 
 import { Box } from '../Box';
 import { Card } from '../Card';
+import { Label } from '../Label';
 import { ToggleInput } from '../ToggleInput';
 
 import { Toggle, type ToggleChangeHandler } from './Toggle';
@@ -16,6 +17,12 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Use `ToggleInput` in product settings and forms so label association and spacing are consistent. Use `Toggle` when composing custom wrappers only.',
+      },
+    },
   },
   argTypes: {
     name: { control: 'text' },
@@ -37,16 +44,25 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: function DefaultRender() {
     const [checked, setChecked] = useState(false);
-    const onChange: ToggleChangeHandler = (e) => setChecked(e.target.checked);
 
     return (
-      <Toggle
-        name="primitive-toggle"
-        id="primitive-toggle"
+      <ToggleInput
+        name="email-alerts"
+        id="email-alerts"
         checked={checked}
-        onChange={onChange}
-      />
+        onChange={(e) => setChecked(e.target.checked)}
+      >
+        Enable email alerts
+      </ToggleInput>
     );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Recommended default for app settings: controlled `ToggleInput` with clear label text.',
+      },
+    },
   },
 };
 
@@ -54,56 +70,90 @@ export const AllStates: Story = {
   name: 'All States',
   render: () => (
     <Card p="24" bg="bg.accent.tan.subtlest" display="grid" gap="12">
-      <Toggle
+      <ToggleInput
         name="unchecked"
         id="unchecked"
         checked={false}
         onChange={() => {}}
-      />
-      <Toggle name="checked" id="checked" checked={true} onChange={() => {}} />
-      <Toggle
+      >
+        Unchecked
+      </ToggleInput>
+      <ToggleInput
+        name="checked"
+        id="checked"
+        checked={true}
+        onChange={() => {}}
+      >
+        Checked
+      </ToggleInput>
+      <ToggleInput
         name="error"
         id="error"
         checked={false}
         error
         onChange={() => {}}
-      />
-      <Toggle
+      >
+        Error
+      </ToggleInput>
+      <ToggleInput
         name="disabled"
         id="disabled"
         checked={false}
         disabled
         onChange={() => {}}
-      />
-      <Toggle
+      >
+        Disabled
+      </ToggleInput>
+      <ToggleInput
         name="disabled-checked"
         id="disabled-checked"
         checked={true}
         disabled
         onChange={() => {}}
-      />
+      >
+        Disabled checked
+      </ToggleInput>
     </Card>
   ),
-  parameters: { controls: { disable: true } },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'State coverage is demonstrated with `ToggleInput`, the primary component for application usage.',
+      },
+    },
+  },
 };
 
-export const ExWithLabelWrapper: Story = {
-  name: 'Ex: With ToggleInput Wrapper',
-  render: function ExWithLabelWrapperRender() {
-    const [enabled, setEnabled] = useState(false);
+export const ExPrimitiveOnly: Story = {
+  name: 'Ex: Primitive Toggle Only',
+  render: function ExPrimitiveOnlyRender() {
+    const [checked, setChecked] = useState(false);
+    const onChange: ToggleChangeHandler = (e) => setChecked(e.target.checked);
+    const id = 'primitive-toggle';
 
     return (
-      <ToggleInput
-        name="email-alerts"
-        id="email-alerts"
-        checked={enabled}
-        onChange={(e) => setEnabled(e.target.checked)}
-      >
-        Enable email alerts
-      </ToggleInput>
+      <Label htmlFor={id} display="inline-flex" alignItems="center" gap="6">
+        <Toggle
+          name="primitive-toggle"
+          id={id}
+          checked={checked}
+          onChange={onChange}
+        />
+        Manual composition using Toggle primitive
+      </Label>
     );
   },
-  parameters: { controls: { disable: true } },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Primitive-only example for advanced composition. Prefer `ToggleInput` in application code.',
+      },
+    },
+  },
 };
 
 export const ExSettingsGroup: Story = {

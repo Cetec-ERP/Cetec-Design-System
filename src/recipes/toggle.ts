@@ -23,7 +23,7 @@ export const toggleRecipe = defineSlotRecipe({
         bg: 'bg.neutral.inverse',
         borderColor: 'transparent',
       },
-      '[data-error=true] &': {
+      _error: {
         borderColor: 'border.danger',
       },
       '&:has(:focus-visible)': {

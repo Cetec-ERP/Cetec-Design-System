@@ -30,6 +30,7 @@ export const breadcrumbsRecipe = defineSlotRecipe({
       fontSize: '14',
       color: 'text.subtlest',
       fontWeight: 'normal',
+      whiteSpace: 'nowrap',
       _hover: {
         color: 'link',
       },
@@ -42,6 +43,7 @@ export const breadcrumbsRecipe = defineSlotRecipe({
       fontSize: '14',
       color: 'text',
       fontWeight: 'bold',
+      whiteSpace: 'nowrap',
     },
   },
 });

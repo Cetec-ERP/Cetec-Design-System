@@ -1,4 +1,4 @@
-import { useId, useState, type ChangeEvent } from 'react';
+import { useId, useState } from 'react';
 
 import { expect, fn, userEvent, within } from '@storybook/test';
 
@@ -16,6 +16,12 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Use `RadioInput` for product forms so each option includes a label and reliable hit area. Use `Radio` only for custom composition patterns.',
+      },
+    },
   },
   argTypes: {
     name: { control: 'text' },
@@ -37,6 +43,103 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: function DefaultRender() {
     const groupId = useId();
+    const [selected, setSelected] = useState('standard');
+
+    return (
+      <Box display="grid" gap="10">
+        <RadioInput
+          name={`${groupId}-shipping`}
+          id={`${groupId}-standard`}
+          checked={selected === 'standard'}
+          onChange={() => setSelected('standard')}
+        >
+          Standard shipping
+        </RadioInput>
+        <RadioInput
+          name={`${groupId}-shipping`}
+          id={`${groupId}-express`}
+          checked={selected === 'express'}
+          onChange={() => setSelected('express')}
+        >
+          Express shipping
+        </RadioInput>
+      </Box>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Recommended usage: `RadioInput` options in a controlled group with user-facing labels.',
+      },
+    },
+  },
+};
+
+export const AllStates: Story = {
+  name: 'All States',
+  render: () => (
+    <Card p="24" bg="bg.accent.tan.subtlest" display="grid" gap="12">
+      <RadioInput
+        name="unchecked"
+        id="unchecked"
+        checked={false}
+        onChange={() => {}}
+      >
+        Unchecked
+      </RadioInput>
+      <RadioInput
+        name="checked"
+        id="checked"
+        checked={true}
+        onChange={() => {}}
+      >
+        Checked
+      </RadioInput>
+      <RadioInput
+        name="error"
+        id="error"
+        checked={false}
+        error
+        onChange={() => {}}
+      >
+        Error
+      </RadioInput>
+      <RadioInput
+        name="disabled"
+        id="disabled"
+        checked={false}
+        disabled
+        onChange={() => {}}
+      >
+        Disabled
+      </RadioInput>
+      <RadioInput
+        name="disabled-checked"
+        id="disabled-checked"
+        checked={true}
+        disabled
+        onChange={() => {}}
+      >
+        Disabled checked
+      </RadioInput>
+    </Card>
+  ),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'State examples are shown as `RadioInput` options because that is the primary form integration path.',
+      },
+    },
+  },
+};
+
+export const ExPrimitiveOnly: Story = {
+  name: 'Ex: Primitive Radio Only',
+  render: function ExPrimitiveOnlyRender() {
+    const groupId = useId();
     const [selected, setSelected] = useState('one');
 
     return (
@@ -56,80 +159,15 @@ export const Default: Story = {
       </Box>
     );
   },
-};
-
-export const AllStates: Story = {
-  name: 'All States',
-  render: () => (
-    <Card p="24" bg="bg.accent.tan.subtlest" display="grid" gap="12">
-      <Radio
-        name="unchecked"
-        id="unchecked"
-        checked={false}
-        onChange={() => {}}
-      />
-      <Radio name="checked" id="checked" checked={true} onChange={() => {}} />
-      <Radio
-        name="error"
-        id="error"
-        checked={false}
-        error
-        onChange={() => {}}
-      />
-      <Radio
-        name="disabled"
-        id="disabled"
-        checked={false}
-        disabled
-        onChange={() => {}}
-      />
-      <Radio
-        name="disabled-checked"
-        id="disabled-checked"
-        checked={true}
-        disabled
-        onChange={() => {}}
-      />
-    </Card>
-  ),
-  parameters: { controls: { disable: true } },
-};
-
-export const ExWithLabelWrapper: Story = {
-  name: 'Ex: With RadioInput Wrapper',
-  render: function ExWithLabelWrapperRender() {
-    const groupId = useId();
-    const [selected, setSelected] = useState('standard');
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.id.endsWith('express')) {
-        setSelected('express');
-        return;
-      }
-      setSelected('standard');
-    };
-
-    return (
-      <Box display="grid" gap="10">
-        <RadioInput
-          name={`${groupId}-shipping`}
-          id={`${groupId}-standard`}
-          checked={selected === 'standard'}
-          onChange={handleChange}
-        >
-          Standard shipping
-        </RadioInput>
-        <RadioInput
-          name={`${groupId}-shipping`}
-          id={`${groupId}-express`}
-          checked={selected === 'express'}
-          onChange={handleChange}
-        >
-          Express shipping
-        </RadioInput>
-      </Box>
-    );
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Primitive-only example for advanced wrappers. Prefer `RadioInput` in application flows.',
+      },
+    },
   },
-  parameters: { controls: { disable: true } },
 };
 
 export const A11yKeyboardNavigation: Story = {
