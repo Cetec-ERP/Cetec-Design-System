@@ -36,10 +36,12 @@ npm install
 # Development
 npm run dev                  # Start Vite dev server with Panda CSS watch mode
 npm run storybook           # Start Storybook on port 6006
+npm run playroom            # Start Playroom on port 9000
 
 # Building
 npm run build               # Build for distribution (runs Panda codegen + Vite build)
 npm run storybook:build     # Build Storybook for deployment
+npm run playroom:build      # Build Playroom for deployment (dist/playroom)
 
 # Code Quality
 npm run lint                # Run ESLint
