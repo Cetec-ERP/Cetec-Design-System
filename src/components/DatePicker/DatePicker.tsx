@@ -466,7 +466,8 @@ export const DatePicker = (props: DatePickerProps) => {
         className={`${classes.input} group`}
         role="group"
         aria-label={label}
-        disabled={disabled}
+        aria-disabled={disabled}
+        data-disabled={disabled || undefined}
         data-error={error || undefined}
         data-open={isOpen || undefined}
         onClick={(e: MouseEvent<HTMLDivElement>) => {

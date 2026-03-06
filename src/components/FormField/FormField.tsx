@@ -77,7 +77,8 @@ export const FormField = (props: FormFieldProps) => {
   return (
     <Box
       className={`${cx(classes.container, className)} group`}
-      disabled={disabled}
+      aria-disabled={disabled}
+      data-disabled={disabled || undefined}
       data-error={error}
       data-size={size}
       {...otherProps}

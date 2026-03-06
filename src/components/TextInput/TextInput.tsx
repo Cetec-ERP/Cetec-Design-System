@@ -53,7 +53,8 @@ export const TextInput = (props: TextInputProps) => {
   return (
     <Box
       className={cx(classes.container, className)}
-      disabled={disabled}
+      aria-disabled={disabled}
+      data-disabled={disabled || undefined}
       data-error={error}
     >
       {iconBefore && <Icon name={iconBefore} className={classes.icon} />}

@@ -181,8 +181,8 @@ export const MenuLegacy = (props: MenuLegacyProps) => {
                         color={{ base: 'slate.100', _dark: 'slate.90' }}
                         className={menuItem}
                         tabIndex={isDisabled ? -1 : 0}
-                        disabled={item.disabled}
                         aria-disabled={item.disabled}
+                        data-disabled={item.disabled}
                         data-selected={isSelected}
                         onClick={activateItem}
                         onKeyDown={(event: KeyboardEvent<HTMLElement>) => {
