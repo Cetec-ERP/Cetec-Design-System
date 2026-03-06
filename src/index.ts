@@ -18,7 +18,7 @@ export { ToggleInput } from './components/ToggleInput';
 export { RadioInput } from './components/RadioInput';
 export { CheckboxInput } from './components/CheckboxInput';
 export { ThemeSwitcher } from './components/ThemeSwitcher';
-export { ThemeProvider } from './contexts/ThemeContext';
+export { ThemeProvider, useTheme } from './contexts/ThemeContext';
 export { Tooltip } from './components/Tooltip';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
@@ -40,6 +40,9 @@ export { Avatar } from './components/Avatar';
 export { Modal, ModalHeader, ModalFooter, ModalBody } from './components/Modal';
 export { Chip, ChipGroup } from './components/Chip';
 export { Badge } from './components/Badge';
+
+// Export hooks
+export { useMediaQuery, useContainerQuery } from './hooks';
 
 // Export the Panda CSS preset
 export { cetecPreset } from './cetec-preset';
