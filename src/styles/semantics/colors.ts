@@ -661,8 +661,8 @@ export const colors = defineSemanticTokens.colors({
     },
   },
   link: {
-    DEFAULT: { value: { base: '{colors.blue.70}', _dark: '{colors.blue.40}' } },
-    pressed: { value: { base: '{colors.blue.80}', _dark: '{colors.blue.30}' } },
+    DEFAULT: { value: { base: '{colors.blue.50}', _dark: '{colors.blue.40}' } },
+    pressed: { value: { base: '{colors.blue.60}', _dark: '{colors.blue.50}' } },
   },
   surface: {
     DEFAULT: {

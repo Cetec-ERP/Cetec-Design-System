@@ -158,7 +158,6 @@ export const Calendar = (props: CalendarProps) => {
       {/* Calendar header: prev / Month Year / next */}
       <Box className={classes.calendarHeader}>
         <IconButton
-          // className={classes.navButton}
           altText="Previous month"
           disabled={!canGoPrev}
           onClick={() => onViewChange(prevYear, prevMonthNum)}

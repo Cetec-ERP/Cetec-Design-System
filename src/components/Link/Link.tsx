@@ -61,7 +61,7 @@ export const Link = (props: LinkProps) => {
       {...otherProps}
     >
       {children}
-      {external && <Icon name="arrow-square-out" size={'20'} fill="current" />}
+      {external && <Icon name="arrow-square-out" size="20" fill="link" />}
     </Box>
   );
 };

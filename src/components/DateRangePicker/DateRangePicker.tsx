@@ -1,4 +1,5 @@
 import { Box } from '~/components/Box';
+import { Text } from '~/components/Text';
 
 import { DatePicker } from '../DatePicker/DatePicker';
 
@@ -51,6 +52,7 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
         error={error}
         size={size}
       />
+      <Text color={disabled ? 'text.disabled' : 'text.subtlest'}>&ndash;</Text>
       <DatePicker
         value={endValue}
         onChange={onEndChange}

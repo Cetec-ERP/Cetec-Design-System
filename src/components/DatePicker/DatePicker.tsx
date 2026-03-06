@@ -4,7 +4,7 @@ import {
   useMemo,
   useRef,
   useState,
-  type MutableRefObject,
+  type RefObject,
   type FocusEvent,
   type KeyboardEvent,
   type MouseEvent,
@@ -28,8 +28,8 @@ import {
   type DatePickerVariantProps,
 } from '@styled-system/recipes';
 
-import { Box } from '~/components/Box';
-import type { BoxProps } from '~/components/Box';
+import { Box, type BoxProps } from '~/components/Box';
+import { splitProps } from '~/utils/splitProps';
 
 import { Calendar } from './Calendar';
 
@@ -65,7 +65,7 @@ type DateSegmentsProps = {
   error: boolean;
   focusedSegment: SegmentType | null;
   classes: ReturnType<typeof datePicker>;
-  segmentRefs: MutableRefObject<(HTMLElement | null)[]>;
+  segmentRefs: RefObject<(HTMLElement | null)[]>;
   onFocusSegment: (segment: SegmentType) => void;
   onBlurSegment: (event: FocusEvent) => void;
   onKeyDownSegment: (event: KeyboardEvent, segmentIndex: number) => void;
@@ -75,7 +75,6 @@ const DateSegments = ({
   segments,
   rawInput,
   disabled,
-  error,
   focusedSegment,
   classes,
   segmentRefs,
@@ -110,8 +109,8 @@ const DateSegments = ({
         className={classes.segment}
         color={
           val === null && raw.length === 0
-            ? error
-              ? 'text.danger'
+            ? disabled
+              ? 'text.disabled'
               : 'text.placeholder'
             : undefined
         }
@@ -215,9 +214,10 @@ export const DatePicker = (props: DatePickerProps) => {
     size,
     open: controlledOpen,
     onOpenChange,
-    className,
     ...rest
   } = props;
+
+  const [className, otherProps] = splitProps(rest);
 
   // ── Segment state ──────────────────────────────────────────────────────────
   const [segments, setSegments] = useState<SegmentValues>(() => ({
@@ -458,16 +458,16 @@ export const DatePicker = (props: DatePickerProps) => {
       : null;
 
   return (
-    <Box className={cx(classes.root, className)} {...rest}>
+    <Box className={cx(classes.root, className)} {...otherProps}>
       {/* Segmented input container */}
       <Box
         ref={setContainerRef}
         id={id}
-        className={classes.input}
+        className={`${classes.input} group`}
         role="group"
         aria-label={label}
-        aria-disabled={disabled}
-        data-error={error ? true : undefined}
+        disabled={disabled}
+        data-error={error || undefined}
         data-open={isOpen || undefined}
         onClick={(e: MouseEvent<HTMLDivElement>) => {
           if (e.target === e.currentTarget && !disabled)

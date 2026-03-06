@@ -11,7 +11,7 @@ const datePickerBase = {
   input: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '2',
+    gap: '0',
     width: 'full',
     borderWidth: '1',
     borderStyle: 'solid',
@@ -48,20 +48,15 @@ const datePickerBase = {
       pointerEvents: 'none',
     },
     _error: {
-      bg: 'bg.danger',
       borderColor: 'border.danger',
-      color: 'text.danger',
       _hover: {
-        bg: 'bg.danger.hovered',
         borderColor: 'border.danger',
       },
       _focusWithin: {
-        bg: 'bg.danger',
         borderColor: 'border.danger',
         outlineColor: 'border.danger',
       },
       _open: {
-        bg: 'bg.danger',
         borderColor: 'border.danger',
         outlineColor: 'border.danger',
       },
@@ -77,11 +72,17 @@ const datePickerBase = {
     borderRadius: '2',
     cursor: 'default',
     userSelect: 'none',
+    fontFamily: 'mono',
     fontVariantNumeric: 'tabular-nums',
+    fontVariantsProperty: 'mono',
     minWidth: '1.5em',
     textAlign: 'center',
+    color: 'text',
     _focusVisible: {
       bg: 'bg.neutral.hovered',
+    },
+    _groupDisabled: {
+      color: 'text.disabled',
     },
   },
 
@@ -141,31 +142,11 @@ const datePickerBase = {
 
   // Individual day button in the grid
   day: {
-    // display: "flex",
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'mono',
     width: '32',
     height: '32',
-    // borderRadius: "4",
-    // fontSize: "14",
-    // cursor: "pointer",
-    // outline: "none",
-    // bg: "transparent",
-    // border: "none",
-    // color: "text",
-    // transitionDuration: "fast",
-    // transitionProperty: "background, color",
-    // transitionTimingFunction: "default",
-    // _hover: {
-    // bg: "bg.neutral",
-    // },
-    // _focusVisible: {
-    //   outlineWidth: "2",
-    //   outlineStyle: "solid",
-    //   outlineColor: "border.focused",
-    //   outlineOffset: "-1",
-    // },
     _today: {
       fontWeight: 'bold',
       color: 'text.selected',

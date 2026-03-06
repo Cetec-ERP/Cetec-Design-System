@@ -22,7 +22,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => (
+    <Box display="grid" w="md">
+      <Divider />
+    </Box>
+  ),
+};
 
 export const Weights: Story = {
   render: () => (
@@ -40,7 +46,7 @@ export const Vertical: Story = {
   render: () => (
     <Card p="16" display="flex" alignItems="center" gap="12" h="96">
       <Text>Left</Text>
-      <Divider direction="vertical" weight="medium" />
+      <Divider direction="vertical" />
       <Text>Right</Text>
     </Card>
   ),

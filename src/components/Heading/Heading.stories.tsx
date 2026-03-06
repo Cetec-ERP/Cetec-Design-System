@@ -1,4 +1,5 @@
-import { Box } from '../Box';
+import { Flex, VStack } from '@styled-system/jsx';
+
 import { Text } from '../Text';
 
 import { Heading } from './Heading';
@@ -25,12 +26,12 @@ export const Default: Story = {};
 
 export const Levels: Story = {
   render: () => (
-    <Box display="grid" gap="8" maxW="prose">
+    <VStack gap="8">
       <Heading level="h1">Heading 1</Heading>
       <Heading level="h2">Heading 2</Heading>
       <Heading level="h3">Heading 3</Heading>
       <Heading level="h4">Heading 4</Heading>
-    </Box>
+    </VStack>
   ),
   parameters: { controls: { disable: true } },
 };
@@ -38,16 +39,22 @@ export const Levels: Story = {
 export const ExContentHierarchy: Story = {
   name: 'Ex: Content Hierarchy',
   render: () => (
-    <Box display="grid" gap="10" maxW="prose">
-      <Heading level="h2">Billing Settings</Heading>
-      <Text>Manage your payment methods and invoice preferences.</Text>
+    <VStack alignItems="start" gap="24">
+      <Flex direction="column">
+        <Heading level="h2">Billing Settings</Heading>
+        <Text>Manage your payment methods and invoice preferences.</Text>
+      </Flex>
 
-      <Heading level="h3">Default Payment Method</Heading>
-      <Text>Visa ending in 0091 is used for recurring charges.</Text>
+      <Flex direction="column">
+        <Heading level="h3">Default Payment Method</Heading>
+        <Text>Visa ending in 0091 is used for recurring charges.</Text>
+      </Flex>
 
-      <Heading level="h3">Invoice Delivery</Heading>
-      <Text>Invoices are emailed to accounting@company.com.</Text>
-    </Box>
+      <Flex direction="column">
+        <Heading level="h3">Invoice Delivery</Heading>
+        <Text>Invoices are emailed to accounting@company.com.</Text>
+      </Flex>
+    </VStack>
   ),
   parameters: { controls: { disable: true } },
 };
@@ -55,14 +62,14 @@ export const ExContentHierarchy: Story = {
 export const ExAllCaps: Story = {
   name: 'Ex: All Caps Variant',
   render: () => (
-    <Box display="grid" gap="8" maxW="prose">
+    <Flex direction="column" gap="4">
       <Heading level="h4" allCaps>
         Section label
       </Heading>
       <Text>
         Use all caps sparingly for short section labels, not for long headings.
       </Text>
-    </Box>
+    </Flex>
   ),
   parameters: { controls: { disable: true } },
 };
