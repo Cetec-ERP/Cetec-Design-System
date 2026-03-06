@@ -1,9 +1,10 @@
 import { defineRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 const codeBase = {
   ...globalBaseStyles,
-  bg: 'slate.80',
+  bg: 'bg.neutral.inverse',
   position: 'relative',
   overflow: 'auto',
   p: '4',
@@ -16,9 +17,9 @@ const preBase = {
   borderRadius: '8',
   overflow: 'hidden',
   borderWidth: '0',
-  borderColor: 'slate.60',
-  bg: 'slate.80',
-  color: 'slate.5',
+  borderColor: 'border',
+  bg: 'bg.neutral.inverse',
+  color: 'text.inverse.subtlest',
   px: '16',
   py: '8',
   my: '8',

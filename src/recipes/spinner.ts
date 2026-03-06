@@ -1,10 +1,6 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
 const spinnerBase = {
-  // container: {
-  //   width: 'fit',
-  //   height: 'fit',
-  // },
   spinnerDiv: {
     aspectRatio: 'square',
     rounded: '100',

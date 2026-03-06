@@ -1,6 +1,8 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
-import type { Preview, ReactRenderer } from '@storybook/react';
+
 import DocTemplate from '../src/storybook/doctemplate.mdx';
+
+import type { Preview, ReactRenderer } from '@storybook/react';
 import '../src/styles/index.css';
 import './story-docs-style.css';
 
@@ -33,7 +35,7 @@ const preview: Preview = {
           'Tokens',
           ['Overview', 'Colors', 'Typography', 'Sizes', 'Shadows', '*'],
           'Components',
-          'Guides',
+          'Docs',
           '*',
         ],
       },

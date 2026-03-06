@@ -1,17 +1,20 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 export const radioRecipe = defineSlotRecipe({
   className: 'radio',
   jsx: ['Radio'],
-  slots: ['container', 'input', 'indicator'],
+  slots: ['container', 'input', 'indicator', 'radioBg'],
   base: {
     container: {
       ...globalBaseStyles,
       position: 'relative',
+      w: '24',
+      h: '24',
       display: 'inline-grid',
+      placeContent: 'center',
       gridTemplateColumns: 'auto 1fr',
-      gap: 4,
       alignItems: 'start',
       cursor: 'pointer',
       userSelect: 'none',
@@ -23,51 +26,58 @@ export const radioRecipe = defineSlotRecipe({
       height: 'full',
       margin: '0',
       padding: '0',
-      zIndex: 1,
+      zIndex: 'raised',
       cursor: 'inherit',
       "& ~ [name='radio']": {
         display: 'inline-grid',
+        zIndex: 'zIndex.3',
       },
       _checked: {
         "& ~ [name='radio-checked']": {
           display: 'inline-grid',
-          fill: { base: 'slate.90', _dark: 'slate.0' },
+          fill: 'icon',
+          zIndex: 'zIndex.2',
         },
         "& ~ [name='radio']": {
           display: 'none',
         },
       },
-      _disabled: {
-        '& ~ svg': {
-          opacity: 0.4,
-          pointerEvents: 'none',
-          cursor: 'none',
-        },
-        display: 'inline-grid',
-      },
       _error: {
         display: 'inline-grid',
-        '& ~ svg': {
+        '& ~ svg:not([name="circle"])': {
           fill: 'red.50',
+          zIndex: 'zIndex.3',
         },
       },
       _focusVisible: {
         "& ~ [name='radio-focus']": {
           display: 'inline-grid',
           position: 'absolute',
-          fill: { base: 'slate.90', _dark: 'slate.1' },
+          fill: 'border.focused',
+          zIndex: 'zIndex.2',
         },
       },
     },
     indicator: {
-      placeContent: 'center',
       display: 'none',
-      width: 24,
-      height: 24,
+      position: 'absolute',
+      inset: '0',
+      width: '24',
+      height: '24',
+      zIndex: 'zIndex.3',
       "&:is([name='radio'])": {
-        display: 'inline-grid',
-        fill: 'slate.20',
+        fill: 'icon.subtlest',
+        zIndex: 'zIndex.3',
       },
+    },
+    radioBg: {
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      width: '24',
+      height: '24',
+      fill: 'surface',
+      zIndex: 'base',
     },
   },
 });

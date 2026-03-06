@@ -1,4 +1,5 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 const chipBase = {
@@ -26,19 +27,11 @@ const chipBase = {
     outlineColor: 'transparent',
     bg: 'bg.neutral',
     color: 'text',
-    icon: {
-      fill: 'icon.decorative',
-      transitionDuration: 'fast',
-      transitionProperty: 'fill',
-      transitionTimingFunction: 'default',
-    },
     _hover: {
       bg: 'bg.neutral.hovered',
-      icon: { fill: 'icon.decorative.hovered' },
     },
     _active: {
       bg: 'bg.neutral.pressed',
-      icon: { fill: 'icon.decorative.hovered' },
     },
     _focusVisible: {
       outlineColor: 'border.focused',
@@ -57,40 +50,50 @@ const chipBase = {
       bg: 'bg.disabled',
       color: 'text.disabled',
       borderColor: 'border.disabled',
-      icon: { fill: 'icon.disabled' },
       _hover: {
         bg: 'bg.disabled',
         color: 'text.disabled',
         borderColor: 'border.disabled',
-        icon: { fill: 'icon.disabled' },
+        chipIcon: { fill: 'icon.disabled' },
       },
     },
     _selected: {
       bg: 'bg.neutral.boldest',
       color: 'text.inverse',
-      icon: { fill: 'icon.decorative.inverse' },
+      // chipIcon: { fill: 'icon.decorative.inverse' },
       _hover: {
         bg: 'bg.neutral.bold.hovered',
-        icon: { fill: 'icon.inverse' },
+        // chipIcon: { fill: 'icon.inverse' },
       },
       _active: {
         bg: 'bg.neutral.bold.pressed',
-        icon: { fill: 'icon.inverse' },
+        // chipIcon: { fill: 'icon.inverse' },
       },
     },
   },
-  icon: {
+  chipIcon: {
+    fill: 'icon.decorative',
     aspectRatio: 'square',
     transitionDuration: 'fast',
     transitionProperty: 'fill',
     transitionTimingFunction: 'default',
+    _groupHover: { fill: 'icon.decorative.hovered' },
+    _groupActive: { fill: 'icon.decorative.hovered' },
+    _groupDisabled: { fill: 'icon.decorative' },
+
+    '[data-selected=true] &': {
+      fill: 'icon.decorative.inverse',
+    },
+    '.group:is(:hover, [data-hover])[data-selected=true] &': {
+      fill: 'icon.decorative.inverse.hovered',
+    },
   },
 };
 
 export const chipRecipe = defineSlotRecipe({
   className: 'chip',
   jsx: ['Chip'],
-  slots: ['container', 'icon'],
+  slots: ['container', 'chipIcon'],
   base: chipBase,
   variants: {
     size: {
@@ -102,7 +105,7 @@ export const chipRecipe = defineSlotRecipe({
           py: '1',
           fontSize: '14',
         },
-        icon: {
+        chipIcon: {
           w: '20',
           h: '20',
         },
@@ -115,7 +118,7 @@ export const chipRecipe = defineSlotRecipe({
           py: '0',
           fontSize: '14',
         },
-        icon: {
+        chipIcon: {
           w: '20',
           h: '20',
         },
@@ -128,7 +131,7 @@ export const chipRecipe = defineSlotRecipe({
           py: '4',
           fontSize: '16',
         },
-        icon: {
+        chipIcon: {
           w: '24',
           h: '24',
         },

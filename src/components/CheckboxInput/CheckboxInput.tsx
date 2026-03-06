@@ -1,48 +1,65 @@
-import { FC, ReactNode } from 'react';
-import { Box, BoxProps } from '../Box';
-import { Label } from '../Label';
-import { CheckBox } from '../CheckBox/CheckBox';
+import { useId, type ReactNode } from 'react';
+
+import { cx } from '@styled-system/css';
 import {
   checkboxInput,
   type CheckboxInputVariantProps,
 } from '@styled-system/recipes';
-import { splitProps } from '~/utils/splitProps';
-import { cx } from '@styled-system/css';
 
-export type CheckBoxInputProps = BoxProps &
+import { splitProps } from '~/utils/splitProps';
+
+import { type BoxProps } from '../Box';
+import { Checkbox } from '../Checkbox';
+import { Label } from '../Label';
+
+import type { CheckboxChangeHandler } from '../Checkbox';
+
+export type CheckboxInputProps = Omit<
+  BoxProps,
+  keyof CheckboxInputVariantProps
+> &
   CheckboxInputVariantProps & {
+    name: string;
+    checked: boolean;
+    onChange: CheckboxChangeHandler;
+    id?: string;
     error?: boolean;
     children?: string | ReactNode;
-    name: string;
-    id?: string;
+    disabled?: boolean;
   };
 
-export const CheckBoxInput: FC<CheckBoxInputProps> = ({
-  id,
-  name,
-  variant,
-  children,
-  error,
-  indeterminate,
-  ...props
-}: CheckBoxInputProps) => {
-  const [className, otherProps] = splitProps(props);
+export const CheckboxInput = (props: CheckboxInputProps) => {
+  const {
+    name,
+    checked,
+    onChange,
+    id,
+    children,
+    error,
+    disabled,
+    indeterminate,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
+  const generatedId = useId();
+  const resolvedId = id ?? generatedId;
   return (
     <Label
-      className={cx(checkboxInput({ variant }), className)}
+      className={cx(checkboxInput(), className)}
+      htmlFor={resolvedId}
+      disabled={disabled}
       {...otherProps}
     >
-      <CheckBox
-        id={id}
+      <Checkbox
         name={name}
+        checked={checked}
+        onChange={onChange}
+        id={resolvedId}
         error={error}
-        {...(error && { 'data-error': true })}
-        {...(indeterminate && { 'data-indeterminate': true })}
-        {...props}
+        disabled={disabled}
+        indeterminate={indeterminate}
       />
-      {children && <Box as="span">{children}</Box>}
+      {children}
     </Label>
   );
 };
-
-export default CheckBoxInput;

@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+
 import { Flex, Grid } from '@styled-system/jsx';
+
+import { Avatar } from '../Avatar';
+import { Badge } from '../Badge';
+import { Box } from '../Box';
+import { Icon } from '../Icon';
+import { Text } from '../Text';
+
 import { Chip } from './Chip';
 import { ChipGroup } from './ChipGroup';
-import { Box } from '../Box';
-import { Text } from '../Text';
-import { Icon } from '../Icon';
-import { Badge } from '../Badge';
-import { Avatar } from '../Avatar';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 // Sample avatar images (using placeholder service)
 const sampleImages = {

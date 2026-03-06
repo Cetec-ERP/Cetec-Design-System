@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Icon, IconNames } from ".";
-import { Box } from "../Box";
-import { Wrap } from "@styled-system/jsx";
+import { Wrap } from '@styled-system/jsx';
+
+import { Box } from '../Box';
+
+import { Icon, IconNames } from '.';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: "Components/Icon",
+  title: 'Components/Icon',
   component: Icon,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Icon>;
 
@@ -16,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    name: "aa-placeholder", // or any default icon name
+    name: 'aa-placeholder', // or any default icon name
   },
   render: () => (
     <Box>

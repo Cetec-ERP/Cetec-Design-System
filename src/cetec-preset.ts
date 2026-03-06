@@ -1,5 +1,7 @@
 import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
+
+import * as componentRecipes from './recipes/index';
 import * as tokens from './styles/primitives';
 import * as semanticTokens from './styles/semantics';
 import {
@@ -14,22 +16,27 @@ import {
   textStyles,
   transitionProperty,
 } from './styles/utilities';
-import * as componentRecipes from './recipes/index';
 
 // Separate slotRecipes from regular recipes
 const {
+  badgeRecipe,
   buttonRecipe,
   iconButtonRecipe,
-  checkBoxRecipe,
+  checkboxRecipe,
   radioRecipe,
   tooltipRecipe,
   menuRecipe,
+  menuLegacyRecipe,
+  toggleRecipe,
+  chipRecipe,
+  avatarRecipe,
+  modalRecipe,
   formFieldRecipe,
   spinnerRecipe,
-  avatarRecipe,
-  badgeRecipe,
-  chipRecipe,
-  modalRecipe,
+  textInputRecipe,
+  datePickerRecipe,
+  timePickerRecipe,
+  breadcrumbsRecipe,
   ...regularRecipes
 } = componentRecipes;
 
@@ -44,7 +51,11 @@ const transformedRecipes = Object.fromEntries(
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
 // Omit default patterns here
-const { box, divider, ...pandaBasePresetPatterns } = pandaBasePreset.patterns;
+const {
+  box: _box,
+  divider: _divider,
+  ...pandaBasePresetPatterns
+} = pandaBasePreset.patterns;
 const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
@@ -56,6 +67,7 @@ const theme = {
   semanticTokens: {
     colors: semanticTokens.colors,
     shadows: semanticTokens.shadows,
+    zIndex: semanticTokens.zIndex,
   },
 };
 
@@ -69,6 +81,7 @@ export const cetecPreset: Preset = definePreset({
       semanticTokens: {
         colors: theme.semanticTokens.colors,
         shadows: theme.semanticTokens.shadows,
+        zIndex: theme.semanticTokens.zIndex,
       },
       breakpoints: breakpoints,
       containerSizes: containerSizes,
@@ -79,18 +92,24 @@ export const cetecPreset: Preset = definePreset({
         ...transformedRecipes,
       },
       slotRecipes: {
+        badge: badgeRecipe,
         button: buttonRecipe,
         iconButton: iconButtonRecipe,
-        checkbox: checkBoxRecipe,
+        checkbox: checkboxRecipe,
         radio: radioRecipe,
         tooltip: tooltipRecipe,
         menu: menuRecipe,
+        menuLegacy: menuLegacyRecipe,
+        toggle: toggleRecipe,
+        chip: chipRecipe,
+        avatar: avatarRecipe,
+        modal: modalRecipe,
         formField: formFieldRecipe,
         spinner: spinnerRecipe,
-        avatar: avatarRecipe,
-        badge: badgeRecipe,
-        chip: chipRecipe,
-        modal: modalRecipe,
+        textInput: textInputRecipe,
+        datePicker: datePickerRecipe,
+        timePicker: timePickerRecipe,
+        breadcrumbs: breadcrumbsRecipe,
       },
     },
   },
@@ -105,22 +124,6 @@ export const cetecPreset: Preset = definePreset({
     },
   },
   patterns: {
-    icon: {
-      properties: {
-        size: {
-          type: 'enum',
-          value: Object.keys(tokens.sizes),
-        },
-      },
-      transform(props) {
-        const { size, ...rest } = props;
-        return {
-          width: size,
-          height: size,
-          ...rest,
-        };
-      },
-    },
     extend: {
       ...pandaBasePresetPatterns,
       container: {

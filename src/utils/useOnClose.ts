@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, type RefObject } from 'react';
 
 export const useOnClose = (
-  ref: React.RefObject<HTMLElement | null>,
+  ref: RefObject<HTMLElement | null>,
   onClose?: () => void,
 ) => {
   useEffect(() => {

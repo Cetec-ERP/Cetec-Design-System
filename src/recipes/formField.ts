@@ -1,59 +1,78 @@
 import { defineSlotRecipe } from '@pandacss/dev';
-import { globalBaseStyles } from '~/styles/utilities';
 
 const formFieldBase = {
-  formFieldContainer: {
-    ...globalBaseStyles,
+  container: {
     _disabled: {
       opacity: '0.4',
       pointerEvents: 'none',
     },
   },
-  contentWrapper: {
+  inputs: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '6',
+    gap: '2',
   },
   labelWrapper: {
-    '& p': {
-      color: { base: 'slate.90', _dark: 'slate.0' },
-      // display: 'flex',
-      // gap: '4',
-    },
-  },
-  headLabel: {
-    display: 'flex',
-    gap: '4',
+    alignItems: 'center',
+    gap: '2',
   },
 };
 
 const formFieldVariants = {
   layout: {
     default: {
-      formFieldContainer: {
+      container: {
         display: 'flex',
         flexDirection: 'column',
-        gap: '6',
+        gap: '2',
       },
     },
     inline: {
-      formFieldContainer: {
+      container: {
         display: 'grid',
-        gap: '12',
+        columnGap: '12',
+        rowGap: '2',
         gridTemplateColumns: 'auto 1fr',
+        gridTemplateRows: 'auto auto',
         alignItems: 'start',
+      },
+    },
+  },
+  size: {
+    sm: {
+      labelWrapper: {
+        '& .cetec-label': {
+          fontSize: '14',
+          lineHeight: 'tight',
+        },
+      },
+    },
+    md: {
+      labelWrapper: {
+        pt: '6',
+      },
+    },
+    lg: {
+      labelWrapper: {
+        pt: '10',
+      },
+    },
+    xl: {
+      labelWrapper: {
+        pt: '12',
       },
     },
   },
 };
 
 export const formFieldRecipe = defineSlotRecipe({
-  className: 'formfield',
-  jsx: ['Formfield'],
-  slots: ['formFieldContainer', 'contentWrapper', 'labelWrapper', 'headLabel'],
+  className: 'formField',
+  jsx: ['FormField'],
+  slots: ['container', 'inputs', 'labelWrapper'],
   base: formFieldBase,
   variants: formFieldVariants,
   defaultVariants: {
     layout: 'default',
+    size: 'md',
   },
 });

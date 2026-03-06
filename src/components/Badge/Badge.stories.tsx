@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from './Badge';
-import { Box } from '../Box';
-import { Text } from '../Text';
-import { Icon } from '../Icon';
-import { Button } from '../Button';
+
 import { Grid, VStack, Flex } from '@styled-system/jsx';
+
+import { Box } from '../Box';
+import { Button } from '../Button';
+import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
+import { Text } from '../Text';
+
+import { Badge } from './Badge';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Badge> = {
   title: 'Components/Badge',
@@ -157,7 +161,7 @@ export const Sizes: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="6">
       <Box display="flex" flexDir="column" gap="2">
-        <Text fontWeight="600">Dot Mode:</Text>
+        <Text fontWeight="bold">Dot Mode:</Text>
         <Box display="flex" gap="16" alignItems="center">
           <Badge size="sm">
             <Icon name="envelope" size="20" />
@@ -171,7 +175,7 @@ export const Sizes: Story = {
         </Box>
       </Box>
       <Box display="flex" flexDir="column" gap="2">
-        <Text fontWeight="600">Count Mode:</Text>
+        <Text fontWeight="bold">Count Mode:</Text>
         <Box display="flex" gap="16" alignItems="center">
           <Badge count={5} size="sm">
             <Icon name="envelope" size="20" />
@@ -196,7 +200,7 @@ export const variants: Story = {
   render: () => (
     <Flex flexDir="column" gap="16">
       <Flex flexDir="column" gap="12">
-        <Text fontWeight="600">Dot Mode:</Text>
+        <Text fontWeight="bold">Dot Mode:</Text>
         <Flex gap="16" alignItems="center" flexWrap="wrap">
           <Flex flexDir="column" alignItems="center" gap="1">
             <Badge variant="neutral">
@@ -265,7 +269,7 @@ export const variants: Story = {
         </Flex>
       </Flex>
       <Flex flexDir="column" gap="12">
-        <Text fontWeight="600">Count Mode:</Text>
+        <Text fontWeight="bold">Count Mode:</Text>
         <Flex gap="16" alignItems="center" flexWrap="wrap">
           <Flex flexDir="column" alignItems="center" gap="1">
             <Badge count={9} variant="neutral">
@@ -416,12 +420,14 @@ const AnimationDemo = () => {
           variant="hollow"
           size="sm"
           iconName="minus"
+          altText="Decrease count"
           onClick={() => setCount((c) => Math.max(0, c - 1))}
         />
         <IconButton
           variant="hollow"
           size="sm"
           iconName="plus"
+          altText="Increase count"
           onClick={() => setCount((c) => c + 1)}
         />
       </Box>
@@ -442,7 +448,7 @@ export const UseCases: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="12">
       <Box display="flex" flexDir="column" gap="12">
-        <Text fontWeight="600">Notifications</Text>
+        <Text fontWeight="bold">Notifications</Text>
         <Box display="flex" gap="16" alignItems="center">
           <Badge count={3}>
             <Icon name="bell" size="24" />
@@ -456,7 +462,7 @@ export const UseCases: Story = {
         </Box>
       </Box>
       <Box display="flex" flexDir="column" gap="8">
-        <Text fontWeight="600">Status Indicators</Text>
+        <Text fontWeight="bold">Status Indicators</Text>
         <Box display="flex" gap="16" alignItems="center">
           <Badge variant="success">
             <Icon name="user" size="24" />
@@ -470,7 +476,7 @@ export const UseCases: Story = {
         </Box>
       </Box>
       <Box display="flex" flexDir="column" gap="8">
-        <Text fontWeight="600">Standalone Badges</Text>
+        <Text fontWeight="bold">Standalone Badges</Text>
         <Box display="flex" gap="8" alignItems="center">
           <Badge variant="danger" />
           <Badge variant="success" />
