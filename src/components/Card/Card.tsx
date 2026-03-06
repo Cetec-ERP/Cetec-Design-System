@@ -1,4 +1,4 @@
-import type { ReactNode, ElementType, MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { card, type CardVariantProps } from '@styled-system/recipes';
@@ -32,22 +32,28 @@ export const Card = (props: CardProps) => {
   // Determine if card should be interactive based on props (used for styling)
   const isInteractive = interactive || Boolean(href) || Boolean(onClick);
 
-  // Determine the correct semantic element to render
-  const asComponent: ElementType =
-    (Boolean(href) && 'a') || (Boolean(onClick) && 'button') || 'div';
-
   return (
     <Box
-      as={asComponent}
+      {...(href
+        ? ({
+            as: 'a',
+            href,
+            ...(disabled && {
+              onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
+            }),
+          } satisfies BoxProps<'a'>)
+        : isInteractive
+          ? ({
+              as: 'button',
+              type: 'button',
+              disabled,
+            } satisfies BoxProps<'button'>)
+          : ({
+              as: 'div',
+            } satisfies BoxProps<'div'>))}
       data-grabbed={grabbed}
       className={cx(card({ variant, interactive: isInteractive }), className)}
-      href={href}
-      {...(isInteractive && !href ? { type: 'button' } : {})}
-      disabled={disabled}
-      {...(disabled &&
-        href && {
-          onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
-        })}
+      aria-disabled={disabled}
       {...otherProps}
     >
       {children}

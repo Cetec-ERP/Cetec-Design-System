@@ -31,6 +31,7 @@
       font-weight: var(--cetec-font-weights-black);
       line-height: calc(1em + 0.5rem);
       color: var(--cetec-colors-text);
+      margin: 0;
       margin-bottom: 0.5rem;
     }
   }
@@ -110,6 +111,11 @@ pre {
     'CASL' 0,
     'slnt' 0;
   font-size: 1em;
+  margin: 0;
+
+  .docblock-source {
+    margin: 0;
+  }
 }
 
 code {
@@ -138,8 +144,8 @@ em {
 ul,
 ol {
   &:not([class*='cetec-']) {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
+    margin: 0 0 1rem 1.5rem;
+    padding-inline-start: 1rem;
   }
 }
 

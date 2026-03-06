@@ -40,19 +40,27 @@ export const IconButton = (props: IconButtonProps) => {
   return (
     <Tooltip text={altText}>
       <Box
-        as={href ? 'a' : 'button'}
+        {...(href
+          ? ({
+              as: 'a',
+              href,
+              ...(disabled && {
+                onClick: (e: MouseEvent<HTMLAnchorElement>) =>
+                  e.preventDefault(),
+              }),
+            } satisfies BoxProps<'a'>)
+          : ({
+              as: 'button',
+              type,
+              disabled,
+            } satisfies BoxProps<'button'>))}
         className={`${cx(classes.container, className)} group`}
-        {...(href ? { href } : { type })}
         {...(loading && {
           'aria-busy': true,
           'aria-live': 'polite',
         })}
-        disabled={disabled}
+        aria-disabled={disabled}
         aria-label={altText}
-        {...(disabled &&
-          href && {
-            onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
-          })}
         {...otherProps}
       >
         <Icon

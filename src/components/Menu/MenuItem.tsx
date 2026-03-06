@@ -1,14 +1,15 @@
 import type { ChangeEventHandler, HTMLProps, MouseEvent } from 'react';
 
-import { useFloatingTree, useListItem, useMergeRefs } from '@floating-ui/react';
+import { useFloatingTree, useListItem } from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
 import { menu } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
+import { Box, type BoxProps } from '../Box';
 import { Checkbox } from '../Checkbox';
+import { Divider } from '../Divider';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Toggle } from '../Toggle';
@@ -75,7 +76,7 @@ export const MenuItem = (props: MenuItemProps) => {
     ...rest
   } = props;
 
-  const [itemClassName, htmlProps] = splitProps(rest);
+  const [className, otherProps] = splitProps(rest);
 
   const rootContext = useMenuRootContext();
   const tree = useFloatingTree();
@@ -103,26 +104,10 @@ export const MenuItem = (props: MenuItemProps) => {
   });
 
   const listItem = useListItem({ label: resolvedTextValue });
-  const mergedRef = useMergeRefs([listItem.ref]);
 
+  // TODO: Fix Divider collapse
   if (variant === 'divider') {
-    return (
-      <Box
-        role="separator"
-        aria-orientation="horizontal"
-        className={classes.divider}
-      />
-    );
-  }
-
-  if (variant === 'section') {
-    return (
-      <Box role="presentation" className={classes.item}>
-        <Text className={classes.groupLabel} textStyle="body.xs">
-          {label}
-        </Text>
-      </Box>
-    );
+    return <Divider />;
   }
 
   if (!isVisible) {
@@ -149,30 +134,20 @@ export const MenuItem = (props: MenuItemProps) => {
     event.stopPropagation();
   };
 
-  const itemProps: HTMLProps<HTMLElement> = listContext
-    ? listContext.getItemProps({
-        onClick: handleSelect,
-      })
-    : {
-        onClick: handleSelect,
-      };
+  type MenuInteractionProps = Pick<
+    HTMLProps<HTMLElement>,
+    'onClick' | 'onKeyDown' | 'onPointerMove' | 'onMouseMove' | 'onFocus'
+  >;
 
-  const commonProps = {
-    ...htmlProps,
-    ...itemProps,
-    ref: mergedRef,
-    className: cx(classes.item, itemClassName),
-    'data-selected': selected,
-    'data-disabled': disabled,
-    'data-active': listContext
-      ? listContext.activeIndex === listItem.index
-      : false,
-    tabIndex: listContext
-      ? listContext.activeIndex === listItem.index
-        ? 0
-        : -1
-      : 0,
-  };
+  const itemProps = (
+    listContext
+      ? listContext.getItemProps({
+          onClick: handleSelect,
+        })
+      : {
+          onClick: handleSelect,
+        }
+  ) as MenuInteractionProps;
 
   const role =
     variant === 'checkbox' || variant === 'toggle'
@@ -222,41 +197,53 @@ export const MenuItem = (props: MenuItemProps) => {
     </>
   );
 
-  if (href) {
-    return (
-      <a
-        href={href}
-        target={target}
-        rel={rel}
-        role={role}
-        aria-checked={
-          variant === 'checkbox' || variant === 'toggle'
-            ? Boolean(selected)
-            : undefined
-        }
-        aria-disabled={disabled}
-        {...commonProps}
-      >
-        {content}
-      </a>
-    );
-  }
+  const elementProps: BoxProps<'a'> | BoxProps<'button'> = href
+    ? ({
+        as: 'a',
+        href,
+        target,
+        rel,
+        ...(disabled && {
+          onClick: (event: MouseEvent<HTMLAnchorElement>) => {
+            event.preventDefault();
+          },
+        }),
+      } satisfies BoxProps<'a'>)
+    : ({
+        as: 'button',
+        type: 'button',
+        disabled,
+      } satisfies BoxProps<'button'>);
+
+  const itemRef = (node: HTMLAnchorElement | HTMLButtonElement | null) => {
+    listItem.ref(node as HTMLElement | null);
+  };
 
   return (
-    <button
+    <Box
+      {...elementProps}
+      className={cx(classes.item, className)}
+      ref={itemRef}
       role={role}
       aria-checked={
         variant === 'checkbox' || variant === 'toggle'
           ? Boolean(selected)
           : undefined
       }
-      disabled={disabled}
       aria-disabled={disabled}
-      {...commonProps}
-      type="button"
+      data-selected={selected}
+      data-disabled={disabled}
+      data-active={
+        listContext ? listContext.activeIndex === listItem.index : false
+      }
+      tabIndex={
+        listContext ? (listContext.activeIndex === listItem.index ? 0 : -1) : 0
+      }
+      {...itemProps}
+      {...otherProps}
     >
       {content}
-    </button>
+    </Box>
   );
 };
 

@@ -57,7 +57,6 @@ const TimeListColumn = <T extends string | number>({
           key={String(item)}
           label={formatItem(item)}
           selected={item === selectedItem}
-          type="action"
           justifyContent="center"
           onClick={() => onItemSelect(item)}
         />

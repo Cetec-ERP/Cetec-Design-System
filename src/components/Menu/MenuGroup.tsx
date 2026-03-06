@@ -9,12 +9,16 @@ import {
   menuComponentTypeKey,
   type MenuGroupProps,
   useMenuFilterContext,
+  useMenuRootContext,
 } from './menuContext';
 
 export const MenuGroup = (props: MenuGroupProps) => {
   const { label, children, divider, ...rest } = props;
-  const classes = menu({});
+  const rootContext = useMenuRootContext();
   const filterContext = useMenuFilterContext();
+  const classes = menu({
+    density: rootContext.density || undefined,
+  });
 
   const hasMatches = hasMatchingItems(children, filterContext);
 
@@ -25,9 +29,9 @@ export const MenuGroup = (props: MenuGroupProps) => {
   return (
     <Box {...rest}>
       {label && (
-        <Box className={classes.groupLabel}>
-          <Text textStyle="body.xs">{label}</Text>
-        </Box>
+        <Text as="div" className={classes.groupLabel}>
+          {label}
+        </Text>
       )}
 
       <Box>{children}</Box>

@@ -4,6 +4,7 @@ import {
   isValidElement,
   useContext,
   type HTMLProps,
+  type MouseEvent as ReactMouseEvent,
   type ReactElement,
   type ReactNode,
 } from 'react';
@@ -17,7 +18,8 @@ import type { Placement } from '@floating-ui/react';
 
 export type MenuDensity = 'compact' | 'comfortable' | 'spacious';
 export type MenuFilterMode = 'none' | 'contains';
-export type SubMenuInteraction = 'hover' | 'drilldown';
+export type SubMenuInteraction = 'hover' | 'digin';
+export type MenuTriggerInteraction = 'click' | 'hover';
 
 export type MenuProps = {
   trigger?: ReactElement;
@@ -29,6 +31,9 @@ export type MenuProps = {
   strategy?: 'absolute' | 'fixed';
   closeOnSelect?: boolean;
   inline?: boolean;
+  triggerInteraction?: MenuTriggerInteraction;
+  triggerOpenDelay?: number;
+  triggerCloseDelay?: number;
   subMenuInteraction?: SubMenuInteraction;
   density?: MenuDensity;
   query?: string;
@@ -37,17 +42,15 @@ export type MenuProps = {
   renderNoResults?: ReactNode;
   highlightMatches?: boolean;
   getItemText?: (item: { label?: string; description?: string }) => string;
-  sidebar?: MenuVariantProps['sidebar'];
+  panel?: MenuVariantProps['panel'];
 } & BoxProps;
 
-export type MenuItemVariant =
-  | 'default'
-  | 'checkbox'
-  | 'toggle'
-  | 'section'
-  | 'divider';
+export type MenuItemVariant = 'default' | 'checkbox' | 'toggle' | 'divider';
 
-export type MenuItemProps = Omit<BoxProps, 'as'> &
+export type MenuItemProps = Omit<
+  BoxProps<'button'>,
+  'as' | 'ref' | 'onClick' | 'type'
+> &
   Omit<MenuVariantProps, 'iconBefore' | 'iconAfter'> & {
     label?: string;
     description?: string;
@@ -62,6 +65,7 @@ export type MenuItemProps = Omit<BoxProps, 'as'> &
     closeOnSelect?: boolean;
     density?: MenuDensity;
     textValue?: string;
+    onClick?: (event: ReactMouseEvent<HTMLElement>) => void;
   };
 
 export type MenuGroupProps = BoxProps & {
@@ -71,10 +75,11 @@ export type MenuGroupProps = BoxProps & {
 };
 
 export type SubMenuProps = Omit<BoxProps, 'as'> &
-  Omit<MenuVariantProps, 'iconBefore'> & {
+  Omit<MenuVariantProps, 'iconBefore' | 'iconAfter'> & {
     label: string;
     description?: string;
     disabled?: boolean;
+    selected?: boolean;
     iconBefore?: IconNamesList;
     interaction?: SubMenuInteraction;
     placement?: Placement;
@@ -91,14 +96,14 @@ export type MenuFilterContextValue = {
 
 export type MenuRootContextValue = {
   density: MenuDensity;
-  sidebar?: MenuVariantProps['sidebar'];
+  panel?: MenuVariantProps['panel'];
   closeOnSelect: boolean;
   subMenuInteraction: SubMenuInteraction;
   inline: boolean;
   onCloseMenu: () => void;
-  onPushDrilldownPanel: (title: string, panelChildren: ReactNode) => void;
-  onPopDrilldownPanel: () => void;
-  drilldownDepth: number;
+  onPushDiginLevel: (title: string, levelChildren: ReactNode) => void;
+  onPopDiginLevel: () => void;
+  diginDepth: number;
 };
 
 export type MenuListContextValue = {
@@ -216,7 +221,7 @@ export const hasMatchingItems = (
 
     if (componentType === MENU_COMPONENT_TYPES.item) {
       const variant = child.props.variant as MenuItemVariant | undefined;
-      if (variant === 'divider' || variant === 'section') {
+      if (variant === 'divider') {
         return true;
       }
 

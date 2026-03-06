@@ -65,24 +65,26 @@ const MultiSelectExample = () => {
 
   return (
     <Menu inline closeOnSelect={false}>
-      <MenuItem
-        variant="checkbox"
-        label="Alpha"
-        selected={selected.includes('alpha')}
-        onClick={() => toggle('alpha')}
-      />
-      <MenuItem
-        variant="checkbox"
-        label="Beta"
-        selected={selected.includes('beta')}
-        onClick={() => toggle('beta')}
-      />
-      <MenuItem
-        variant="checkbox"
-        label="Gamma"
-        selected={selected.includes('gamma')}
-        onClick={() => toggle('gamma')}
-      />
+      <MenuGroup label="Wave type">
+        <MenuItem
+          variant="checkbox"
+          label="Alpha"
+          selected={selected.includes('alpha')}
+          onClick={() => toggle('alpha')}
+        />
+        <MenuItem
+          variant="checkbox"
+          label="Beta"
+          selected={selected.includes('beta')}
+          onClick={() => toggle('beta')}
+        />
+        <MenuItem
+          variant="checkbox"
+          label="Gamma"
+          selected={selected.includes('gamma')}
+          onClick={() => toggle('gamma')}
+        />
+      </MenuGroup>
     </Menu>
   );
 };
@@ -92,33 +94,83 @@ const ToggleOptionsExample = () => {
   const [alerts, setAlerts] = useState(true);
 
   return (
-    <Menu inline closeOnSelect={false} w="264">
-      <MenuGroup label="Options" divider>
+    <HStack alignItems="flex-start" gap="16">
+      <Menu inline closeOnSelect={false} w="264">
+        <MenuGroup label="Options" divider>
+          <MenuItem
+            variant="toggle"
+            label="Compact mode"
+            selected={compact}
+            onClick={() => setCompact((state) => !state)}
+          />
+          <MenuItem
+            variant="toggle"
+            label="Email alerts"
+            selected={alerts}
+            onClick={() => setAlerts((state) => !state)}
+          />
+        </MenuGroup>
         <MenuItem
-          variant="toggle"
-          label="Compact mode"
-          selected={compact}
-          onClick={() => setCompact((state) => !state)}
+          label="Open docs"
+          href="https://cetecerp.com"
+          iconAfter="arrow-square-out"
+          target="_blank"
+          rel="noreferrer"
         />
+      </Menu>
+
+      <Menu inline closeOnSelect={false} w="264" density="comfortable">
+        <MenuGroup label="Options" divider>
+          <MenuItem
+            variant="toggle"
+            label="Compact mode"
+            selected={compact}
+            onClick={() => setCompact((state) => !state)}
+          />
+          <MenuItem
+            variant="toggle"
+            label="Email alerts"
+            selected={alerts}
+            onClick={() => setAlerts((state) => !state)}
+          />
+        </MenuGroup>
         <MenuItem
-          variant="toggle"
-          label="Email alerts"
-          selected={alerts}
-          onClick={() => setAlerts((state) => !state)}
+          label="Open docs"
+          href="https://cetecerp.com"
+          iconAfter="arrow-square-out"
+          target="_blank"
+          rel="noreferrer"
         />
-      </MenuGroup>
-      <MenuItem
-        label="Open docs"
-        href="https://cetecerp.com"
-        iconAfter="arrow-square-out"
-        target="_blank"
-        rel="noreferrer"
-      />
-    </Menu>
+      </Menu>
+
+      <Menu inline closeOnSelect={false} w="264" density="spacious">
+        <MenuGroup label="Options" divider>
+          <MenuItem
+            variant="toggle"
+            label="Compact mode"
+            selected={compact}
+            onClick={() => setCompact((state) => !state)}
+          />
+          <MenuItem
+            variant="toggle"
+            label="Email alerts"
+            selected={alerts}
+            onClick={() => setAlerts((state) => !state)}
+          />
+        </MenuGroup>
+        <MenuItem
+          label="Open docs"
+          href="https://cetecerp.com"
+          iconAfter="arrow-square-out"
+          target="_blank"
+          rel="noreferrer"
+        />
+      </Menu>
+    </HStack>
   );
 };
 
-const SubMenuDrilldownFormsExample = () => {
+const SubMenuDiginFormsExample = () => {
   const [profileName, setProfileName] = useState('');
   const [profileOwner, setProfileOwner] = useState('');
   const [alertTopic, setAlertTopic] = useState('');
@@ -127,7 +179,7 @@ const SubMenuDrilldownFormsExample = () => {
   return (
     <Menu
       trigger={<Button iconAfter="caret-down">Open menu</Button>}
-      subMenuInteraction="drilldown"
+      subMenuInteraction="digin"
       closeOnSelect={false}
     >
       <MenuItem label="Dashboard" />
@@ -263,15 +315,18 @@ export const Density: Story = {
     <HStack gap="12" alignItems="flex-start">
       <Menu inline density="compact">
         <MenuItem label="Compact" description="Small row spacing" />
-        <MenuItem label="Second row" />
+        <MenuItem label="Second row" iconBefore="apps" />
+        <MenuItem label="Third row" iconBefore="settings" />
       </Menu>
       <Menu inline density="comfortable">
         <MenuItem label="Comfortable" description="Default row spacing" />
-        <MenuItem label="Second row" />
+        <MenuItem label="Second row" iconBefore="apps" />
+        <MenuItem label="Third row" iconBefore="settings" />
       </Menu>
       <Menu inline density="spacious">
         <MenuItem label="Spacious" description="Large row spacing" />
-        <MenuItem label="Second row" />
+        <MenuItem label="Second row" iconBefore="apps" />
+        <MenuItem label="Third row" iconBefore="settings" />
       </Menu>
     </HStack>
   ),
@@ -303,11 +358,65 @@ export const SubMenuHover: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const SubMenuDrilldown: Story = {
+export const TopNavHoverTrigger: Story = {
+  name: 'Top nav hover trigger',
+  render: () => (
+    <VStack
+      alignItems="stretch"
+      minW="3xl"
+      h="2xl"
+      bg="bg.neutral"
+      p="24"
+      gap="16"
+    >
+      <HStack
+        alignItems="center"
+        gap="12"
+        borderWidth="1"
+        borderColor="border"
+        bg="surface"
+        px="24"
+        py="16"
+      >
+        <Menu
+          triggerInteraction="hover"
+          trigger={<Button variant="selectedBold">Sales</Button>}
+          subMenuInteraction="hover"
+          closeOnSelect={false}
+        >
+          <SubMenu label="Quotes">
+            <MenuItem label="Open quotes" />
+            <MenuItem label="Draft quotes" />
+          </SubMenu>
+
+          <SubMenu label="Orders" selected>
+            <MenuItem label="Order list" />
+            <SubMenu label="Used orders" selected>
+              <MenuItem label="Order as used" selected />
+              <MenuItem label="Bookings" />
+              <MenuItem label="Order commissions" />
+            </SubMenu>
+          </SubMenu>
+
+          <SubMenu label="Invoices">
+            <MenuItem label="All invoices" />
+            <MenuItem label="Credit notes" />
+          </SubMenu>
+        </Menu>
+
+        <Button>Production</Button>
+        <Button>Admin</Button>
+      </HStack>
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const SubMenuDigin: Story = {
   render: () => (
     <Menu
       trigger={<Button iconAfter="caret-down">Open menu</Button>}
-      subMenuInteraction="drilldown"
+      subMenuInteraction="digin"
     >
       <MenuItem label="Dashboard" />
       <SubMenu label="Settings">
@@ -323,8 +432,8 @@ export const SubMenuDrilldown: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const SubMenuDrilldownForms: Story = {
-  render: () => <SubMenuDrilldownFormsExample />,
+export const SubMenuDiginForms: Story = {
+  render: () => <SubMenuDiginFormsExample />,
   parameters: { controls: { disable: true } },
 };
 
@@ -333,7 +442,8 @@ export const AutocompleteFiltering: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const Sidebar: Story = {
+export const PanelAsSidebar: Story = {
+  name: 'Panel as sidebar',
   render: () => (
     <Flex
       minW="3xl"
@@ -344,8 +454,40 @@ export const Sidebar: Story = {
     >
       <Menu
         subMenuInteraction="hover"
-        sidebar={true}
+        panel={true}
         maxW="264"
+        density="comfortable"
+      >
+        <MenuItem label="View profile" />
+        <SubMenu label="More actions" minW="180">
+          <MenuItem label="Export" />
+          <MenuItem label="Share" />
+          <SubMenu label="Advanced" minW="180">
+            <MenuItem label="Audit log" />
+            <MenuItem label="Settings" />
+          </SubMenu>
+        </SubMenu>
+      </Menu>
+    </Flex>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const PanelAsMobileNav: Story = {
+  name: 'Panel as mobile nav',
+  render: () => (
+    <Flex
+      minW="3xl"
+      h="lg"
+      bg="bg.neutral"
+      overflow="hidden"
+      boxShadow="overlay"
+    >
+      <Menu
+        subMenuInteraction="digin"
+        panel={true}
+        maxW="264"
+        w="full"
         density="comfortable"
       >
         <MenuItem label="View profile" />

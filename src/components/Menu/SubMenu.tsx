@@ -63,6 +63,7 @@ export const SubMenu = (props: SubMenuProps) => {
     label,
     description,
     disabled,
+    selected,
     iconBefore,
     interaction,
     placement,
@@ -74,9 +75,7 @@ export const SubMenu = (props: SubMenuProps) => {
   const [contentClassName, htmlProps] = splitProps(rest);
   const { style, ...otherHtmlProps } = htmlProps;
   const contentStyle = style as CSSProperties | undefined;
-  const menuItemHtmlProps: Omit<HTMLProps<HTMLElement>, 'ref'> = {
-    ...otherHtmlProps,
-  };
+  const menuItemHtmlProps: Omit<HTMLProps<HTMLElement>, 'ref'> = otherHtmlProps;
 
   const rootContext = useMenuRootContext();
   const filterContext = useMenuFilterContext();
@@ -85,6 +84,8 @@ export const SubMenu = (props: SubMenuProps) => {
   const resolvedInteraction = interaction ?? rootContext.subMenuInteraction;
   const classes = menu({
     density: density ?? rootContext.density,
+    iconBefore: Boolean(iconBefore),
+    iconAfter: true,
   });
 
   const resolvedTextValue = deriveItemTextValue({
@@ -247,14 +248,14 @@ export const SubMenu = (props: SubMenuProps) => {
     return null;
   }
 
-  if (resolvedInteraction === 'drilldown') {
+  if (resolvedInteraction === 'digin') {
     const buttonProps: HTMLProps<HTMLElement> = parentListContext
       ? parentListContext.getItemProps({
           onClick: (event?: MouseEvent<HTMLElement>) => {
             event?.preventDefault();
             event?.stopPropagation();
             if (!disabled) {
-              rootContext.onPushDrilldownPanel(label, children);
+              rootContext.onPushDiginLevel(label, children);
             }
           },
           onKeyDown: (event) => {
@@ -266,7 +267,7 @@ export const SubMenu = (props: SubMenuProps) => {
               event.preventDefault();
               event.stopPropagation();
               if (!disabled) {
-                rootContext.onPushDrilldownPanel(label, children);
+                rootContext.onPushDiginLevel(label, children);
               }
             }
           },
@@ -276,7 +277,7 @@ export const SubMenu = (props: SubMenuProps) => {
             event?.preventDefault();
             event?.stopPropagation();
             if (!disabled) {
-              rootContext.onPushDrilldownPanel(label, children);
+              rootContext.onPushDiginLevel(label, children);
             }
           },
           onKeyDown: (event?: KeyboardEvent<HTMLElement>) => {
@@ -289,12 +290,12 @@ export const SubMenu = (props: SubMenuProps) => {
               event.preventDefault();
               event.stopPropagation();
               if (!disabled) {
-                rootContext.onPushDrilldownPanel(label, children);
+                rootContext.onPushDiginLevel(label, children);
               }
             }
           },
         };
-    const drilldownButtonProps: Omit<HTMLProps<HTMLElement>, 'ref'> = {
+    const diginButtonProps: Omit<HTMLProps<HTMLElement>, 'ref'> = {
       ...buttonProps,
     };
 
@@ -302,12 +303,20 @@ export const SubMenu = (props: SubMenuProps) => {
       <button
         {...menuItemHtmlProps}
         role="menuitem"
+        aria-disabled={disabled}
         disabled={disabled}
         className={cx(classes.item, contentClassName)}
         ref={(node: HTMLButtonElement | null) => {
           listItem.ref(node as HTMLElement | null);
         }}
         style={contentStyle}
+        data-selected={selected}
+        data-disabled={disabled}
+        data-active={
+          parentListContext
+            ? parentListContext.activeIndex === listItem.index
+            : false
+        }
         tabIndex={
           parentListContext
             ? parentListContext.activeIndex === listItem.index
@@ -315,7 +324,7 @@ export const SubMenu = (props: SubMenuProps) => {
               : -1
             : 0
         }
-        {...drilldownButtonProps}
+        {...diginButtonProps}
         type="button"
       >
         {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
@@ -327,9 +336,7 @@ export const SubMenu = (props: SubMenuProps) => {
           )}
         </Box>
 
-        <Box className={classes.submenuCaret}>
-          <Icon name="caret-right" />
-        </Box>
+        <Icon className={classes.icon} name="caret-right" ml="auto" />
       </button>
     );
   }
@@ -341,12 +348,20 @@ export const SubMenu = (props: SubMenuProps) => {
         role="menuitem"
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-disabled={disabled}
         disabled={disabled}
         className={classes.item}
         ref={(node: HTMLButtonElement | null) => {
           listItem.ref(node as HTMLElement | null);
           floating.refs.setReference(node);
         }}
+        data-selected={selected}
+        data-disabled={disabled}
+        data-active={
+          parentListContext
+            ? parentListContext.activeIndex === listItem.index
+            : false
+        }
         tabIndex={
           parentListContext
             ? parentListContext.activeIndex === listItem.index
@@ -366,7 +381,7 @@ export const SubMenu = (props: SubMenuProps) => {
           )}
         </Box>
 
-        <Icon className={classes.submenuCaret} name="caret-right" />
+        <Icon className={classes.icon} name="caret-right" ml="auto" />
       </button>
 
       {open && (

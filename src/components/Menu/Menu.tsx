@@ -27,9 +27,11 @@ import {
   useDismiss,
   useFloating,
   useInteractions,
+  useHover,
   useListNavigation,
   useFloatingNodeId,
   useRole,
+  safePolygon,
   useTypeahead,
 } from '@floating-ui/react';
 
@@ -51,7 +53,7 @@ import {
   type MenuRootContextValue,
 } from './menuContext';
 
-type DrilldownPanel = {
+type DiginLevel = {
   key: string;
   title: string;
   children: ReactNode;
@@ -67,7 +69,7 @@ const defaultGetItemText = ({
   return [label, description].filter(Boolean).join(' ').trim();
 };
 
-const withPanelScopedKeys = (nodes: ReactNode, panelKey: string) => {
+const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
   return Children.map(nodes, (childNode, index) => {
     if (!isValidElement(childNode)) {
       return childNode;
@@ -75,7 +77,7 @@ const withPanelScopedKeys = (nodes: ReactNode, panelKey: string) => {
 
     const childKey = childNode.key ?? index;
     return cloneElement(childNode, {
-      key: `${panelKey}-${String(childKey)}`,
+      key: `${levelKey}-${String(childKey)}`,
     });
   });
 };
@@ -92,9 +94,12 @@ export const Menu = (props: MenuProps) => {
     strategy = 'absolute',
     closeOnSelect = true,
     inline = false,
+    triggerInteraction = 'click',
+    triggerOpenDelay = 75,
+    triggerCloseDelay = 100,
     subMenuInteraction = 'hover',
     density = 'compact',
-    sidebar,
+    panel,
     query = '',
     filterMode = 'none',
     renderNoResults,
@@ -105,7 +110,7 @@ export const Menu = (props: MenuProps) => {
 
   const [className, otherProps] = splitProps(rest);
   const userStyle = otherProps.style as CSSProperties | undefined;
-  const classes = menu({ density, sidebar });
+  const classes = menu({ density, panel });
 
   const hasReference = Boolean(trigger) && !inline;
 
@@ -114,15 +119,24 @@ export const Menu = (props: MenuProps) => {
   );
   const isControlled = open !== undefined;
   const isOpen = isControlled ? open : uncontrolledOpen;
+  const isMenuVisible = hasReference ? isOpen : true;
 
-  const setOpenState = (nextOpen: boolean) => {
+  const setOpenState = (nextOpen: boolean, _event?: Event, reason?: string) => {
+    if (
+      triggerInteraction === 'hover' &&
+      !nextOpen &&
+      (reason === 'hover' || reason === 'safe-polygon')
+    ) {
+      return;
+    }
+
     if (!isControlled) {
       setUncontrolledOpen(nextOpen);
     }
     onOpenChange?.(nextOpen);
   };
 
-  const [drilldownPanels, setDrilldownPanels] = useState<DrilldownPanel[]>([]);
+  const [diginLevels, setDiginLevels] = useState<DiginLevel[]>([]);
   const [wrapperSize, setWrapperSize] = useState<{
     width: number | null;
     height: number | null;
@@ -130,11 +144,11 @@ export const Menu = (props: MenuProps) => {
     width: null,
     height: null,
   });
-  const drilldownDepth = drilldownPanels.length;
+  const diginDepth = diginLevels.length;
 
   useEffect(() => {
     if (!isOpen) {
-      setDrilldownPanels([]);
+      setDiginLevels([]);
     }
   }, [isOpen]);
 
@@ -152,7 +166,19 @@ export const Menu = (props: MenuProps) => {
   const labelsRef = useRef<Array<string | null>>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const click = useClick(floating.context, { enabled: hasReference });
+  const hover = useHover(floating.context, {
+    enabled: hasReference && triggerInteraction === 'hover',
+    delay: {
+      open: triggerOpenDelay,
+      close: triggerCloseDelay,
+    },
+    handleClose: safePolygon({
+      blockPointerEvents: true,
+    }),
+  });
+  const click = useClick(floating.context, {
+    enabled: hasReference && triggerInteraction === 'click',
+  });
   const dismiss = useDismiss(floating.context, { enabled: hasReference });
   const role = useRole(floating.context, { role: 'menu' });
   const listNavigation = useListNavigation(floating.context, {
@@ -169,7 +195,7 @@ export const Menu = (props: MenuProps) => {
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
-    [click, dismiss, role, listNavigation, typeahead],
+    [hover, click, dismiss, role, listNavigation, typeahead],
   );
 
   const filterContextValue = useMemo(
@@ -182,32 +208,32 @@ export const Menu = (props: MenuProps) => {
     [filterMode, getItemText, highlightMatches, query],
   );
 
-  const activePanelChildren =
-    drilldownPanels[drilldownPanels.length - 1]?.children ?? children;
+  const activeLevelChildren =
+    diginLevels[diginLevels.length - 1]?.children ?? children;
 
   const hasVisibleResults = hasMatchingItems(
-    activePanelChildren,
+    activeLevelChildren,
     filterContextValue,
   );
 
   const rootContextValue: MenuRootContextValue = {
     density,
-    sidebar,
+    panel,
     closeOnSelect,
     subMenuInteraction,
     inline,
     onCloseMenu: () => {
       setOpenState(false);
-      setDrilldownPanels([]);
+      setDiginLevels([]);
     },
-    onPushDrilldownPanel: (title, panelChildren) => {
-      setDrilldownPanels((prev) => {
-        const activePanel = prev[prev.length - 1];
+    onPushDiginLevel: (title, levelChildren) => {
+      setDiginLevels((prev) => {
+        const activeLevel = prev[prev.length - 1];
 
         if (
-          activePanel &&
-          activePanel.title === title &&
-          activePanel.children === panelChildren
+          activeLevel &&
+          activeLevel.title === title &&
+          activeLevel.children === levelChildren
         ) {
           return prev;
         }
@@ -217,15 +243,15 @@ export const Menu = (props: MenuProps) => {
           {
             key: `${title}-${prev.length}`,
             title,
-            children: panelChildren,
+            children: levelChildren,
           },
         ];
       });
     },
-    onPopDrilldownPanel: () => {
-      setDrilldownPanels((prev) => prev.slice(0, -1));
+    onPopDiginLevel: () => {
+      setDiginLevels((prev) => prev.slice(0, -1));
     },
-    drilldownDepth,
+    diginDepth,
   };
 
   const menuListContextValue = {
@@ -234,19 +260,21 @@ export const Menu = (props: MenuProps) => {
       getItemProps(userProps) as HTMLProps<HTMLElement>,
   };
 
-  const panels = [{ key: 'root', title: 'Menu', children }, ...drilldownPanels];
-  const activePanel = panels[Math.min(drilldownDepth, panels.length - 1)]!;
-  const panelCount = panels.length;
-  const trackWidthPercent = panelCount * 100;
-  const panelWidthPercent = 100 / panelCount;
-  const trackTranslatePercent = (drilldownDepth * 100) / panelCount;
-  const shouldUseDrilldownSizing =
-    subMenuInteraction === 'drilldown' && hasVisibleResults;
+  const levels = [{ key: 'root', title: 'Menu', children }, ...diginLevels];
+  const activeLevel = levels[Math.min(diginDepth, levels.length - 1)]!;
+  const levelCount = levels.length;
+  const trackWidthPercent = levelCount * 100;
+  const levelWidthPercent = 100 / levelCount;
+  const trackTranslatePercent = (diginDepth * 100) / levelCount;
+  const shouldUsePanelDiginProbeFill =
+    Boolean(panel) && subMenuInteraction === 'digin';
+  const shouldUseDiginSizing =
+    subMenuInteraction === 'digin' && hasVisibleResults;
 
   const sizeProbeRef = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
-    if (!isOpen || !shouldUseDrilldownSizing) {
+    if (!isMenuVisible || !shouldUseDiginSizing) {
       setWrapperSize({ width: null, height: null });
       return;
     }
@@ -281,18 +309,18 @@ export const Menu = (props: MenuProps) => {
       resizeObserver.disconnect();
     };
   }, [
-    activePanel.children,
-    activePanel.key,
-    activePanel.title,
+    activeLevel.children,
+    activeLevel.key,
+    activeLevel.title,
     density,
-    drilldownDepth,
+    diginDepth,
     hasVisibleResults,
-    isOpen,
-    shouldUseDrilldownSizing,
+    isMenuVisible,
+    shouldUseDiginSizing,
   ]);
 
-  const drilldownWrapperStyle: CSSProperties =
-    shouldUseDrilldownSizing && wrapperSize.width && wrapperSize.height
+  const diginWrapperStyle: CSSProperties =
+    shouldUseDiginSizing && wrapperSize.width && wrapperSize.height
       ? {
           width: `${wrapperSize.width}px`,
           height: `${wrapperSize.height}px`,
@@ -301,9 +329,12 @@ export const Menu = (props: MenuProps) => {
 
   const floatingStyle = {
     ...(hasReference && !inline ? floating.floatingStyles : {}),
-    ...drilldownWrapperStyle,
+    ...diginWrapperStyle,
     ...(userStyle ?? {}),
   };
+  const diginSizeProbeStyle: CSSProperties = shouldUsePanelDiginProbeFill
+    ? { inset: '0', width: '100%', height: '100%' }
+    : {};
 
   const content = (
     <MenuRootProvider value={rootContextValue}>
@@ -324,28 +355,29 @@ export const Menu = (props: MenuProps) => {
           )}
 
           {hasVisibleResults && (
-            <Box className={classes.panelsViewport}>
-              {shouldUseDrilldownSizing && (
+            <Box className={classes.levelsViewport}>
+              {shouldUseDiginSizing && (
                 <Box
                   ref={sizeProbeRef}
                   className={classes.sizeProbe}
                   aria-hidden
+                  style={diginSizeProbeStyle}
                 >
-                  <Box className={classes.panel}>
-                    {drilldownDepth > 0 && (
+                  <Box className={classes.level}>
+                    {diginDepth > 0 && (
                       <Box
                         as="button"
                         type="button"
                         className={classes.backHeader}
                       >
                         <Icon name="caret-left" fill="icon" />
-                        {activePanel.title}
+                        {activeLevel.title}
                       </Box>
                     )}
                     <Box className={classes.list}>
-                      {withPanelScopedKeys(
-                        activePanel.children,
-                        `${activePanel.key}-probe`,
+                      {withLevelScopedKeys(
+                        activeLevel.children,
+                        `${activeLevel.key}-probe`,
                       )}
                     </Box>
                   </Box>
@@ -353,26 +385,26 @@ export const Menu = (props: MenuProps) => {
               )}
 
               <Box
-                className={classes.panelsTrack}
+                className={classes.levelsTrack}
                 style={{
                   width: `${trackWidthPercent}%`,
                   transform: `translateX(-${trackTranslatePercent}%)`,
                 }}
               >
-                {panels.map((panel, index) => {
-                  const isActivePanel = index === drilldownDepth;
-                  const panelChildren = withPanelScopedKeys(
-                    panel.children,
-                    panel.key,
+                {levels.map((level, index) => {
+                  const isActiveLevel = index === diginDepth;
+                  const levelChildren = withLevelScopedKeys(
+                    level.children,
+                    level.key,
                   );
 
-                  if (!isActivePanel) {
+                  if (!isActiveLevel) {
                     return (
                       <Box
-                        key={panel.key}
-                        className={classes.panel}
+                        key={level.key}
+                        className={classes.level}
                         style={{
-                          flex: `0 0 ${panelWidthPercent}%`,
+                          flex: `0 0 ${levelWidthPercent}%`,
                         }}
                         aria-hidden
                       >
@@ -381,27 +413,31 @@ export const Menu = (props: MenuProps) => {
                             as="button"
                             type="button"
                             className={classes.backHeader}
-                            onClick={rootContextValue.onPopDrilldownPanel}
+                            onClick={rootContextValue.onPopDiginLevel}
                           >
-                            <Icon name="caret-left" fill="icon" />
-                            {panel.title}
+                            <Icon
+                              className={classes.icon}
+                              name="caret-left"
+                              // fill="icon"
+                            />
+                            {level.title}
                           </Box>
                         )}
-                        <Box className={classes.list}>{panelChildren}</Box>
+                        <Box className={classes.list}>{levelChildren}</Box>
                       </Box>
                     );
                   }
 
                   return (
                     <MenuListProvider
-                      key={panel.key}
+                      key={level.key}
                       value={menuListContextValue}
                     >
                       <FloatingList elementsRef={listRef} labelsRef={labelsRef}>
                         <Box
-                          className={classes.panel}
+                          className={classes.level}
                           style={{
-                            flex: `0 0 ${panelWidthPercent}%`,
+                            flex: `0 0 ${levelWidthPercent}%`,
                           }}
                         >
                           {index > 0 && (
@@ -409,13 +445,17 @@ export const Menu = (props: MenuProps) => {
                               as="button"
                               type="button"
                               className={classes.backHeader}
-                              onClick={rootContextValue.onPopDrilldownPanel}
+                              onClick={rootContextValue.onPopDiginLevel}
                             >
-                              <Icon name="caret-left" fill="icon" />
-                              {panel.title}
+                              <Icon
+                                className={classes.icon}
+                                name="caret-left"
+                                // fill="icon"
+                              />
+                              {level.title}
                             </Box>
                           )}
-                          <Box className={classes.list}>{panelChildren}</Box>
+                          <Box className={classes.list}>{levelChildren}</Box>
                         </Box>
                       </FloatingList>
                     </MenuListProvider>

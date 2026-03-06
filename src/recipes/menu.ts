@@ -14,6 +14,7 @@ const menuBase = {
     transitionProperty: 'width, height',
     transitionDuration: 'normal',
     transitionTimingFunction: 'default',
+    outline: 'none',
   },
   list: {
     display: 'flex',
@@ -81,10 +82,10 @@ const menuBase = {
     lineHeight: 'tight',
   },
   groupLabel: {
-    px: '10',
-    pt: '12',
-    pb: '4',
     color: 'text.subtlest',
+    borderStyle: 'solid',
+    borderWidth: '1',
+    borderColor: 'transparent',
   },
   divider: {
     borderWidth: '0',
@@ -97,7 +98,7 @@ const menuBase = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'start',
-    gap: '4',
+    gap: '0',
     ps: '4',
     borderWidth: '0',
     borderBlockWidth: '3',
@@ -114,18 +115,12 @@ const menuBase = {
       bg: { base: 'tan.20', _dark: 'tan.70' },
     },
   },
-  submenuCaret: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ml: 'auto',
-  },
-  panelsViewport: {
+  levelsViewport: {
     overflow: 'hidden',
     width: 'full',
     position: 'relative',
   },
-  panelsTrack: {
+  levelsTrack: {
     display: 'flex',
     width: 'full',
     transitionProperty: 'transform',
@@ -133,7 +128,7 @@ const menuBase = {
     transitionTimingFunction: 'default',
     willChange: 'transform',
   },
-  panel: {
+  level: {
     minWidth: '0',
     flexShrink: '0',
   },
@@ -141,7 +136,8 @@ const menuBase = {
     position: 'absolute',
     pointerEvents: 'none',
     visibility: 'hidden',
-    inset: '0',
+    top: '0',
+    left: '0',
     width: 'fit-content',
     height: 'fit-content',
     overflow: 'visible',
@@ -165,6 +161,12 @@ const menuVariants = {
         py: '3',
         px: '10',
       },
+      groupLabel: {
+        px: '10',
+        pt: '8',
+        pb: '2',
+        fontSize: '12',
+      },
       itemLabel: {
         textStyle: 'body.md',
         color: 'text',
@@ -174,8 +176,15 @@ const menuVariants = {
         lineHeight: 'tight',
       },
       backHeader: {
-        py: '3',
-        pe: '10',
+        py: '1',
+        pe: '18',
+        ps: '5',
+        textStyle: 'body.md',
+        color: 'text',
+      },
+      icon: {
+        w: '24',
+        h: '24',
       },
     },
     comfortable: {
@@ -183,6 +192,12 @@ const menuVariants = {
         py: '7',
         px: '12',
       },
+      groupLabel: {
+        px: '12',
+        pt: '12',
+        pb: '4',
+        fontSize: '14',
+      },
       itemLabel: {
         textStyle: 'body.md',
         color: 'text',
@@ -192,14 +207,27 @@ const menuVariants = {
         lineHeight: 'tight',
       },
       backHeader: {
-        py: '7',
-        pe: '12',
+        py: '5',
+        pe: '20',
+        ps: '7',
+        textStyle: 'body.md',
+        color: 'text',
+      },
+      icon: {
+        w: '24',
+        h: '24',
       },
     },
     spacious: {
       item: {
         py: '9',
         px: '16',
+      },
+      groupLabel: {
+        px: '16',
+        pt: '16',
+        pb: '6',
+        fontSize: '16',
       },
       itemLabel: {
         textStyle: 'body.lg',
@@ -210,8 +238,15 @@ const menuVariants = {
         lineHeight: 'tight',
       },
       backHeader: {
-        py: '9',
-        pe: '16',
+        py: '7',
+        pe: '24',
+        ps: '9',
+        textStyle: 'body.lg',
+        color: 'text',
+      },
+      icon: {
+        w: '28',
+        h: '28',
       },
     },
   },
@@ -261,14 +296,6 @@ const menuVariants = {
         },
       },
     },
-    section: {
-      item: {
-        cursor: 'default',
-        _hover: {
-          bg: 'transparent',
-        },
-      },
-    },
     divider: {
       item: {
         display: 'none',
@@ -285,7 +312,7 @@ const menuVariants = {
       item: {},
     },
   },
-  sidebar: {
+  panel: {
     true: {
       wrapper: {
         width: 'full',
@@ -298,6 +325,74 @@ const menuVariants = {
     },
   },
 };
+
+const menuCompoundVariants: NonNullable<
+  Parameters<typeof defineSlotRecipe>[0]['compoundVariants']
+> = [
+  {
+    density: 'compact',
+    iconBefore: true,
+    css: {
+      item: { ps: '5' },
+    },
+  },
+  {
+    density: 'compact',
+    iconAfter: true,
+    css: {
+      item: { pe: '5' },
+    },
+  },
+  {
+    density: 'compact',
+    itemVariant: 'checkbox',
+    css: {
+      item: { ps: '5' },
+    },
+  },
+  {
+    density: 'comfortable',
+    iconBefore: true,
+    css: {
+      item: { ps: '7' },
+    },
+  },
+  {
+    density: 'comfortable',
+    iconAfter: true,
+    css: {
+      item: { pe: '7' },
+    },
+  },
+  {
+    density: 'comfortable',
+    itemVariant: 'checkbox',
+    css: {
+      item: { ps: '7' },
+    },
+  },
+  {
+    density: 'spacious',
+    iconBefore: true,
+    css: {
+      item: { ps: '9' },
+    },
+  },
+  {
+    density: 'spacious',
+    iconAfter: true,
+    css: {
+      item: { pe: '9' },
+    },
+  },
+  {
+    density: 'spacious',
+    itemVariant: 'checkbox',
+    css: {
+      item: { ps: '9' },
+    },
+  },
+];
 
 export const menuRecipe = defineSlotRecipe({
   className: 'menu',
@@ -313,16 +408,16 @@ export const menuRecipe = defineSlotRecipe({
     'groupLabel',
     'divider',
     'backHeader',
-    'submenuCaret',
-    'panelsViewport',
-    'panelsTrack',
-    'panel',
+    'levelsViewport',
+    'levelsTrack',
+    'level',
     'sizeProbe',
     'highlight',
     'noResults',
   ],
   base: menuBase,
   variants: menuVariants,
+  compoundVariants: menuCompoundVariants,
   defaultVariants: {
     density: 'compact',
     itemVariant: 'default',

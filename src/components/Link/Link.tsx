@@ -55,7 +55,9 @@ export const Link = (props: LinkProps) => {
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
-      disabled={disabled}
+      // aria-disabled and tabIndex are needed to properly disable the link for accessibility
+      aria-disabled={disabled}
+      tabIndex={disabled ? -1 : undefined}
       className={cx(link({ family, italic, bold, size, weight }), className)}
       onClick={handleClick}
       {...otherProps}
