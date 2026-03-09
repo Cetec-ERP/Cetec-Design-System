@@ -33,6 +33,14 @@ const meta: Meta<typeof Modal> = {
         defaultValue: { summary: 'md' },
       },
     },
+    variant: {
+      control: 'select',
+      options: ['defauilt', 'confirmation'],
+      description: 'Modal type',
+      table: {
+        defaultValue: { summary: 'default' },
+      },
+    },
     preventOverlayClose: {
       control: 'boolean',
       description: 'Prevent closing when clicking overlay',
@@ -485,6 +493,7 @@ export const ConfirmationDialog: Story = {
             open={isOpen}
             onOpenChange={setIsOpen}
             size="sm"
+            variant="confirmation"
             preventOverlayClose
           >
             <ModalHeader title="Delete Item" showCloseButton={false} />

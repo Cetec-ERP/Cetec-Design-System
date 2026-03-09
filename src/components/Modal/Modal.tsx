@@ -75,10 +75,11 @@ export const Modal = (props: ModalProps) => {
     preventOverlayClose = false,
     children,
     id,
+    variant = 'default',
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
-  const classes = modalRecipe({ size });
+  const classes = modalRecipe({ size, variant });
   const [{ phase }, dispatch] = useReducer(modalStateReducer, {
     phase: open ? 'open' : 'closed',
   });

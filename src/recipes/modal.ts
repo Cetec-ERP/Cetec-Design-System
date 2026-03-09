@@ -113,6 +113,26 @@ const modalVariants = {
       },
     },
   },
+  variant: {
+    default: {
+      container: {
+        xsDown: {
+          width: 'full',
+          height: 'full',
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          borderRadius: '0',
+        },
+      },
+    },
+    confirmation: {
+      container: {
+        height: 'fit',
+        width: 'md',
+        maxWidth: '90vw',
+      },
+    },
+  },
 };
 
 export const modalRecipe = defineSlotRecipe({
@@ -130,6 +150,7 @@ export const modalRecipe = defineSlotRecipe({
   base: modalBase,
   variants: modalVariants,
   defaultVariants: {
+    variant: 'default',
     size: 'md',
   },
 });
