@@ -111,6 +111,12 @@ export type MenuListContextValue = {
   getItemProps: (userProps?: HTMLProps<HTMLElement>) => HTMLProps<HTMLElement>;
 };
 
+export type MenuProviderProps = {
+  children: ReactNode;
+  root?: Partial<MenuRootContextValue>;
+  filter?: Partial<MenuFilterContextValue>;
+};
+
 export const MENU_COMPONENT_TYPES = {
   group: 'MenuGroup',
   item: 'MenuItem',
@@ -129,11 +135,29 @@ const defaultGetItemText = ({
   return [label, description].filter(Boolean).join(' ').trim();
 };
 
-const MenuFilterContext = createContext<MenuFilterContextValue>({
+const noop = () => undefined;
+
+export const defaultMenuFilterContextValue: MenuFilterContextValue = {
   query: '',
   filterMode: 'none',
   highlightMatches: true,
   getItemText: defaultGetItemText,
+};
+
+export const defaultMenuRootContextValue: MenuRootContextValue = {
+  density: 'compact',
+  panel: false,
+  closeOnSelect: true,
+  subMenuInteraction: 'hover',
+  inline: false,
+  onCloseMenu: noop,
+  onPushDiginLevel: noop,
+  onPopDiginLevel: noop,
+  diginDepth: 0,
+};
+
+const MenuFilterContext = createContext<MenuFilterContextValue>({
+  ...defaultMenuFilterContextValue,
 });
 
 const MenuRootContext = createContext<MenuRootContextValue | null>(null);

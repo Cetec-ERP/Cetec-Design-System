@@ -4,7 +4,6 @@ import {
   FloatingPortal,
   FloatingFocusManager,
   useDismiss,
-  useFloating,
   useInteractions,
   FloatingOverlay,
 } from '@floating-ui/react';
@@ -15,6 +14,7 @@ import {
   type ModalVariantProps,
 } from '@styled-system/recipes';
 
+import { useOverlayFloating } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -86,9 +86,11 @@ export const Modal = (props: ModalProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Floating UI setup
-  const { refs, context } = useFloating({
+  const { refs, context } = useOverlayFloating({
     open,
     onOpenChange,
+    strategy: 'fixed',
+    middleware: [],
   });
 
   // Dismiss on Escape key

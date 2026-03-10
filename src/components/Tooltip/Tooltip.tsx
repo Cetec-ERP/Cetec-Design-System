@@ -7,12 +7,7 @@ import {
   FloatingPortal,
   type Placement,
   arrow,
-  autoUpdate,
-  flip,
-  offset as floatingOffset,
-  shift,
   useDismiss,
-  useFloating,
   useFocus,
   useHover,
   useInteractions,
@@ -23,6 +18,10 @@ import { cx } from '@styled-system/css';
 import { type TooltipVariantProps, tooltip } from '@styled-system/recipes';
 import { token } from '@styled-system/tokens';
 
+import {
+  createOverlayMiddleware,
+  useOverlayFloating,
+} from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -66,17 +65,14 @@ export const Tooltip = (props: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef<SVGSVGElement>(null);
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles, context } = useOverlayFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
     placement,
-    middleware: [
-      floatingOffset(offset),
-      flip(),
-      shift({ padding: 8 }),
-      arrow({ element: arrowRef }),
-    ],
-    whileElementsMounted: autoUpdate,
+    middleware: createOverlayMiddleware({
+      offset,
+      extras: [arrow({ element: arrowRef })],
+    }),
   });
 
   const hover = useHover(context, { move: false, delay });

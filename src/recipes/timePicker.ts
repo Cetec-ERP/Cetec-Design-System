@@ -148,43 +148,6 @@ const timePickerBase = {
     zIndex: 1,
     userSelect: 'none',
   },
-
-  // Individual time option button in a column
-  listItem: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 'full',
-    py: '8',
-    px: '8',
-    fontSize: '14',
-    cursor: 'pointer',
-    outline: 'none',
-    bg: 'transparent',
-    border: 'none',
-    color: 'text',
-    scrollSnapAlign: 'start',
-    transitionDuration: 'fast',
-    transitionProperty: 'background, color',
-    transitionTimingFunction: 'default',
-    _hover: {
-      bg: 'bg.neutral',
-    },
-    _focusVisible: {
-      outlineWidth: '2',
-      outlineStyle: 'solid',
-      outlineColor: 'border.focused',
-      outlineOffset: '-2',
-    },
-    _selected: {
-      bg: 'bg.selected',
-      color: 'text.selected',
-      fontWeight: 'medium',
-      _hover: {
-        bg: 'bg.selected.hovered',
-      },
-    },
-  },
 };
 
 const timePickerVariants = {
@@ -224,7 +187,6 @@ export const timePickerRecipe = defineSlotRecipe({
     'popover',
     'column',
     'columnLabel',
-    'listItem',
   ],
   base: timePickerBase,
   variants: timePickerVariants,

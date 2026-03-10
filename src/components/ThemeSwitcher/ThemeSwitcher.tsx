@@ -1,5 +1,5 @@
 import { IconButton } from '~/components/IconButton';
-import { useTheme } from '~/contexts/ThemeContext';
+import { useTheme } from '~/system/context';
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();

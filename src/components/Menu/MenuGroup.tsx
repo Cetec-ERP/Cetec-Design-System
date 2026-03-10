@@ -10,7 +10,7 @@ import {
   type MenuGroupProps,
   useMenuFilterContext,
   useMenuRootContext,
-} from './menuContext';
+} from './context/menuContext';
 
 export const MenuGroup = (props: MenuGroupProps) => {
   const { label, children, divider, ...rest } = props;

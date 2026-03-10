@@ -8,15 +8,11 @@ import { menu } from '@styled-system/recipes';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
-import { Checkbox } from '../Checkbox';
 import { Divider } from '../Divider';
-import { Icon } from '../Icon';
-import { Text } from '../Text';
-import { Toggle } from '../Toggle';
+import { OptionRowContent } from '../OptionRow';
 
 import {
   deriveItemTextValue,
-  getHighlightedTextParts,
   isItemMatch,
   MENU_COMPONENT_TYPES,
   menuComponentTypeKey,
@@ -24,38 +20,7 @@ import {
   useMenuFilterContext,
   useMenuListContext,
   useMenuRootContext,
-} from './menuContext';
-
-const HighlightedText = ({ value }: { value: string }) => {
-  const { query, highlightMatches } = useMenuFilterContext();
-  const classes = menu({});
-
-  if (!highlightMatches || !query.trim()) {
-    return <>{value}</>;
-  }
-
-  const parts = getHighlightedTextParts(value, query);
-  let runningOffset = 0;
-
-  return (
-    <>
-      {parts.map((part) => {
-        const key = `${part.text}-${runningOffset}`;
-        runningOffset += part.text.length;
-
-        if (!part.match) {
-          return <span key={key}>{part.text}</span>;
-        }
-
-        return (
-          <Box as="mark" key={key} className={classes.highlight}>
-            {part.text}
-          </Box>
-        );
-      })}
-    </>
-  );
-};
+} from './context/menuContext';
 
 export const MenuItem = (props: MenuItemProps) => {
   const {
@@ -154,48 +119,8 @@ export const MenuItem = (props: MenuItemProps) => {
       ? 'menuitemcheckbox'
       : 'menuitem';
 
-  const content = (
-    <>
-      {variant === 'checkbox' && (
-        <Checkbox
-          name={controlName}
-          checked={Boolean(selected)}
-          onChange={handleControlChange}
-          tabIndex={-1}
-        />
-      )}
-
-      {variant === 'toggle' && (
-        <Toggle
-          name={controlName}
-          checked={Boolean(selected)}
-          onChange={handleControlChange}
-          mr="4"
-          tabIndex={-1}
-        />
-      )}
-
-      {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
-
-      <Box className={classes.itemMain}>
-        {label && (
-          <Text className={classes.itemLabel}>
-            <HighlightedText value={label} />
-          </Text>
-        )}
-
-        {description && (
-          <Text className={classes.itemDescription}>
-            <HighlightedText value={description} />
-          </Text>
-        )}
-      </Box>
-
-      {iconAfter && (
-        <Icon className={classes.icon} name={iconAfter} ml="auto" />
-      )}
-    </>
-  );
+  const selectionControl =
+    variant === 'checkbox' || variant === 'toggle' ? variant : 'none';
 
   const elementProps: BoxProps<'a'> | BoxProps<'button'> = href
     ? ({
@@ -242,7 +167,25 @@ export const MenuItem = (props: MenuItemProps) => {
       {...itemProps}
       {...otherProps}
     >
-      {content}
+      <OptionRowContent
+        label={label}
+        description={description}
+        iconBefore={iconBefore}
+        iconAfter={iconAfter}
+        selected={selected}
+        selectionControl={selectionControl}
+        controlName={controlName}
+        onControlChange={handleControlChange}
+        query={filterContext.query}
+        highlightMatches={filterContext.highlightMatches}
+        classes={{
+          icon: classes.icon,
+          itemMain: classes.itemMain,
+          itemLabel: classes.itemLabel,
+          itemDescription: classes.itemDescription,
+          highlight: classes.highlight,
+        }}
+      />
     </Box>
   );
 };

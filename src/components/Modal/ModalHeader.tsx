@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { modal as modalRecipe } from '@styled-system/recipes';
 
-import { useMediaQuery } from '~/hooks';
+import { useMediaQuery } from '~/system/hooks';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';

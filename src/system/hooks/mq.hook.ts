@@ -5,30 +5,10 @@ import { breakpoints } from '~/styles/utilities';
 type BreakpointKey = keyof typeof breakpoints;
 type QueryDirection = 'min' | 'max';
 
-/**
- * Token-aware media query hook for conditional rendering based on breakpoints.
- *
- * @example
- * // Mobile-first: matches when viewport is >= md (768px)
- * const isMd = useMediaQuery('md');
- * const isLg = useMediaQuery('lg');
- *
- * @example
- * // In JSX
- * {isLg ? <LargeComponent />
- *  : isMd ? <MediumComponent />
- *  : <SmallComponent />}
- *
- * @example
- * // Max-width: matches when viewport is < lg (1024px)
- * // ⚠︎ Max-width queries should not be used except in extreme circumstances
- * const isSmallerThanLg = useMediaQuery('lg', 'max');
- */
 export default function useMediaQuery(
   breakpoint: BreakpointKey,
   direction: QueryDirection = 'min',
 ): boolean {
-  // Memoize the query string based on breakpoint and direction
   const query = useMemo(() => {
     const breakpointValue = breakpoints[breakpoint];
     const breakpointNum = Number.parseInt(breakpointValue, 10);
@@ -38,10 +18,8 @@ export default function useMediaQuery(
       : `(max-width: ${breakpointNum - 1}px)`;
   }, [breakpoint, direction]);
 
-  // Memoize the MediaQueryList object
   const mediaQuery = useMemo(() => {
     if (typeof window === 'undefined') {
-      // SSR fallback - return a mock that always returns false
       return {
         matches: false,
         addEventListener: () => {},
@@ -59,7 +37,6 @@ export default function useMediaQuery(
       };
     },
     () => mediaQuery.matches,
-    // SSR fallback - return false on server
     () => false,
   );
 }

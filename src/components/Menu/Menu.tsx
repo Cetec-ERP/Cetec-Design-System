@@ -13,19 +13,14 @@ import {
 } from 'react';
 
 import {
-  autoUpdate,
-  flip,
   FloatingFocusManager,
   FloatingList,
   FloatingNode,
   FloatingPortal,
   FloatingTree,
-  offset,
-  shift,
   size,
   useClick,
   useDismiss,
-  useFloating,
   useInteractions,
   useHover,
   useListNavigation,
@@ -38,6 +33,10 @@ import {
 import { cx } from '@styled-system/css';
 import { menu } from '@styled-system/recipes';
 
+import {
+  createOverlayMiddleware,
+  useOverlayFloating,
+} from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box';
@@ -51,7 +50,7 @@ import {
   MenuRootProvider,
   type MenuProps,
   type MenuRootContextValue,
-} from './menuContext';
+} from './context/menuContext';
 
 type DiginLevel = {
   key: string;
@@ -152,14 +151,15 @@ export const Menu = (props: MenuProps) => {
     }
   }, [isOpen]);
 
-  const floating = useFloating({
+  const floating = useOverlayFloating({
     nodeId,
     open: hasReference ? isOpen : true,
     onOpenChange: setOpenState,
     placement,
     strategy,
-    whileElementsMounted: autoUpdate,
-    middleware: [offset(4), flip(), shift({ padding: 8 }), size()],
+    middleware: createOverlayMiddleware({
+      extras: [size()],
+    }),
   });
 
   const listRef = useRef<Array<HTMLElement | null>>([]);

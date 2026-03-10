@@ -5,19 +5,14 @@ import {
   useEffect,
   useRef,
   useState,
-  type MutableRefObject,
+  type RefObject,
   type FocusEvent,
 } from 'react';
 
 import {
   FloatingFocusManager,
   FloatingPortal,
-  autoUpdate,
-  flip,
-  offset as floatingOffset,
-  shift,
   useDismiss,
-  useFloating,
   useInteractions,
 } from '@floating-ui/react';
 
@@ -29,6 +24,7 @@ import {
 
 import { Box } from '~/components/Box';
 import type { BoxProps } from '~/components/Box';
+import { useOverlayFloating } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
 import { TimeList } from './TimeList';
@@ -99,7 +95,7 @@ type TimeSegmentsProps = {
   error: boolean;
   hourCycle: HourCycle;
   classes: ReturnType<typeof timePicker>;
-  segmentRefs: MutableRefObject<(HTMLElement | null)[]>;
+  segmentRefs: RefObject<(HTMLElement | null)[]>;
   onFocusSegment: (segment: SegmentType) => void;
   onBlurSegment: (event: FocusEvent) => void;
   onKeyDownSegment: (event: KeyboardEvent, segmentIndex: number) => void;
@@ -353,12 +349,10 @@ export const TimePicker = (props: TimePickerProps) => {
   }, [value, initAmpm, initNumericValues]);
 
   // ── Floating UI ────────────────────────────────────────────────────────────
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles, context } = useOverlayFloating({
     open: isOpen,
     onOpenChange: handleOpenChange,
     placement: 'bottom-start',
-    middleware: [floatingOffset(4), flip(), shift({ padding: 8 })],
-    whileElementsMounted: autoUpdate,
   });
 
   const dismiss = useDismiss(context, { bubbles: false });
