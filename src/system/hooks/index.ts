@@ -1,2 +1,2 @@
-export { default as useMediaQuery } from './mq.hook';
-export { default as useContainerQuery } from './cq.hook';
+export { useMediaQuery } from './mq.hook';
+export { useContainerQuery } from './cq.hook';

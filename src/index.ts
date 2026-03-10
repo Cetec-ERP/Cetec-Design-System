@@ -23,9 +23,16 @@ export { Tooltip } from './components/Tooltip';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
 export {
-  ListboxOption,
-  type ListboxOptionProps,
-} from './components/ListboxOption';
+  List,
+  ListItem,
+  ListItemContent,
+  HighlightText,
+  type ListProps,
+  type ListItemProps,
+  type ListItemContentProps,
+  type HighlightTextProps,
+  type ListDensity,
+} from './components/List';
 export {
   Menu,
   MenuGroup,

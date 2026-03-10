@@ -34,13 +34,12 @@ import {
 } from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
-import { menu } from '@styled-system/recipes';
+import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { Text } from '../Text';
+import { ListItemContent } from '../List';
 
 import {
   deriveItemTextValue,
@@ -82,10 +81,15 @@ export const SubMenu = (props: SubMenuProps) => {
   const parentListContext = useMenuListContext();
 
   const resolvedInteraction = interaction ?? rootContext.subMenuInteraction;
-  const classes = menu({
-    density: density ?? rootContext.density,
+  const resolvedDensity =
+    typeof density === 'string' ? density : rootContext.density;
+  const classes = menu({ density: resolvedDensity });
+  const listClassName = list({});
+  const itemClassName = listItemRecipe({
+    density: resolvedDensity,
     iconBefore: Boolean(iconBefore),
     iconAfter: true,
+    selected: Boolean(selected),
   });
 
   const resolvedTextValue = deriveItemTextValue({
@@ -100,7 +104,7 @@ export const SubMenu = (props: SubMenuProps) => {
     query: filterContext.query,
     filterMode: filterContext.filterMode,
   });
-  const listItem = useListItem({ label: resolvedTextValue });
+  const listItemData = useListItem({ label: resolvedTextValue });
 
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -305,21 +309,21 @@ export const SubMenu = (props: SubMenuProps) => {
         role="menuitem"
         aria-disabled={disabled}
         disabled={disabled}
-        className={cx(classes.item, contentClassName)}
+        className={cx(itemClassName, contentClassName)}
         ref={(node: HTMLButtonElement | null) => {
-          listItem.ref(node as HTMLElement | null);
+          listItemData.ref(node as HTMLElement | null);
         }}
         style={contentStyle}
         data-selected={selected}
         data-disabled={disabled}
         data-active={
           parentListContext
-            ? parentListContext.activeIndex === listItem.index
+            ? parentListContext.activeIndex === listItemData.index
             : false
         }
         tabIndex={
           parentListContext
-            ? parentListContext.activeIndex === listItem.index
+            ? parentListContext.activeIndex === listItemData.index
               ? 0
               : -1
             : 0
@@ -327,16 +331,15 @@ export const SubMenu = (props: SubMenuProps) => {
         {...diginButtonProps}
         type="button"
       >
-        {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
-
-        <Box className={classes.itemMain}>
-          <Text className={classes.itemLabel}>{label}</Text>
-          {description && (
-            <Text className={classes.itemDescription}>{description}</Text>
-          )}
-        </Box>
-
-        <Icon className={classes.icon} name="caret-right" ml="auto" />
+        <ListItemContent
+          label={label}
+          description={description}
+          iconBefore={iconBefore}
+          iconAfter="caret-right"
+          density={resolvedDensity}
+          query={filterContext.query}
+          highlightMatches={filterContext.highlightMatches}
+        />
       </button>
     );
   }
@@ -350,21 +353,21 @@ export const SubMenu = (props: SubMenuProps) => {
         aria-expanded={open}
         aria-disabled={disabled}
         disabled={disabled}
-        className={classes.item}
+        className={itemClassName}
         ref={(node: HTMLButtonElement | null) => {
-          listItem.ref(node as HTMLElement | null);
+          listItemData.ref(node as HTMLElement | null);
           floating.refs.setReference(node);
         }}
         data-selected={selected}
         data-disabled={disabled}
         data-active={
           parentListContext
-            ? parentListContext.activeIndex === listItem.index
+            ? parentListContext.activeIndex === listItemData.index
             : false
         }
         tabIndex={
           parentListContext
-            ? parentListContext.activeIndex === listItem.index
+            ? parentListContext.activeIndex === listItemData.index
               ? 0
               : -1
             : 0
@@ -372,16 +375,15 @@ export const SubMenu = (props: SubMenuProps) => {
         {...referencePropsWithoutRef}
         type="button"
       >
-        {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
-
-        <Box className={classes.itemMain}>
-          <Text className={classes.itemLabel}>{label}</Text>
-          {description && (
-            <Text className={classes.itemDescription}>{description}</Text>
-          )}
-        </Box>
-
-        <Icon className={classes.icon} name="caret-right" ml="auto" />
+        <ListItemContent
+          label={label}
+          description={description}
+          iconBefore={iconBefore}
+          iconAfter="caret-right"
+          density={resolvedDensity}
+          query={filterContext.query}
+          highlightMatches={filterContext.highlightMatches}
+        />
       </button>
 
       {open && (
@@ -411,7 +413,7 @@ export const SubMenu = (props: SubMenuProps) => {
                     elementsRef={floatingListRef}
                     labelsRef={labelsRef}
                   >
-                    <Box className={classes.list}>{children}</Box>
+                    <Box className={listClassName}>{children}</Box>
                   </FloatingList>
                 </Box>
               </MenuListProvider>

@@ -5,7 +5,7 @@ import { containerSizes } from '~/styles/utilities';
 type ContainerSizeKey = keyof typeof containerSizes;
 type QueryDirection = 'min' | 'max';
 
-export default function useContainerQuery(
+export function useContainerQuery(
   containerRef: RefObject<HTMLElement>,
   size: ContainerSizeKey,
   direction: QueryDirection = 'min',

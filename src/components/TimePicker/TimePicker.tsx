@@ -22,14 +22,11 @@ import {
   type TimePickerVariantProps,
 } from '@styled-system/recipes';
 
-import { Box } from '~/components/Box';
-import type { BoxProps } from '~/components/Box';
+import { Box, type BoxProps } from '~/components/Box';
 import { useOverlayFloating } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
-import { TimeList } from './TimeList';
-
-import type { HourCycle, TimeValue } from './TimeList';
+import { TimeList, type HourCycle, type TimeValue } from './TimeList';
 
 export type { TimeValue, HourCycle };
 

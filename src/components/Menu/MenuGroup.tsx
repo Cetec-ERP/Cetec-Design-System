@@ -1,6 +1,7 @@
-import { menu } from '@styled-system/recipes';
+import { listItemGroup } from '@styled-system/recipes';
 
 import { Box } from '../Box';
+import { Divider } from '../Divider';
 import { Text } from '../Text';
 
 import {
@@ -16,7 +17,7 @@ export const MenuGroup = (props: MenuGroupProps) => {
   const { label, children, divider, ...rest } = props;
   const rootContext = useMenuRootContext();
   const filterContext = useMenuFilterContext();
-  const classes = menu({
+  const classes = listItemGroup({
     density: rootContext.density || undefined,
   });
 
@@ -36,13 +37,7 @@ export const MenuGroup = (props: MenuGroupProps) => {
 
       <Box>{children}</Box>
 
-      {divider && (
-        <Box
-          role="separator"
-          aria-orientation="horizontal"
-          className={classes.divider}
-        />
-      )}
+      {divider && <Divider role="separator" className={classes.divider} />}
     </Box>
   );
 };

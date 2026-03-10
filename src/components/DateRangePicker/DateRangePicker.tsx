@@ -1,9 +1,11 @@
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
 
-import { DatePicker } from '../DatePicker/DatePicker';
-
-import type { DatePickerProps, DateValue } from '../DatePicker/DatePicker';
+import {
+  DatePicker,
+  type DatePickerProps,
+  type DateValue,
+} from '../DatePicker/DatePicker';
 
 export type DateRangePickerProps = {
   /** Start date value */

@@ -5,7 +5,7 @@ import { breakpoints } from '~/styles/utilities';
 type BreakpointKey = keyof typeof breakpoints;
 type QueryDirection = 'min' | 'max';
 
-export default function useMediaQuery(
+export function useMediaQuery(
   breakpoint: BreakpointKey,
   direction: QueryDirection = 'min',
 ): boolean {

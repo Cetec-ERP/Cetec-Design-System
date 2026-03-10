@@ -94,79 +94,29 @@ const ToggleOptionsExample = () => {
   const [alerts, setAlerts] = useState(true);
 
   return (
-    <HStack alignItems="flex-start" gap="16">
-      <Menu inline closeOnSelect={false} w="264">
-        <MenuGroup label="Options" divider>
-          <MenuItem
-            variant="toggle"
-            label="Compact mode"
-            selected={compact}
-            onClick={() => setCompact((state) => !state)}
-          />
-          <MenuItem
-            variant="toggle"
-            label="Email alerts"
-            selected={alerts}
-            onClick={() => setAlerts((state) => !state)}
-          />
-        </MenuGroup>
+    <Menu inline closeOnSelect={false} w="264">
+      <MenuGroup label="Options" divider>
         <MenuItem
-          label="Open docs"
-          href="https://cetecerp.com"
-          iconAfter="arrow-square-out"
-          target="_blank"
-          rel="noreferrer"
+          variant="toggle"
+          label="Compact mode"
+          selected={compact}
+          onClick={() => setCompact((state) => !state)}
         />
-      </Menu>
-
-      <Menu inline closeOnSelect={false} w="264" density="comfortable">
-        <MenuGroup label="Options" divider>
-          <MenuItem
-            variant="toggle"
-            label="Compact mode"
-            selected={compact}
-            onClick={() => setCompact((state) => !state)}
-          />
-          <MenuItem
-            variant="toggle"
-            label="Email alerts"
-            selected={alerts}
-            onClick={() => setAlerts((state) => !state)}
-          />
-        </MenuGroup>
         <MenuItem
-          label="Open docs"
-          href="https://cetecerp.com"
-          iconAfter="arrow-square-out"
-          target="_blank"
-          rel="noreferrer"
+          variant="toggle"
+          label="Email alerts"
+          selected={alerts}
+          onClick={() => setAlerts((state) => !state)}
         />
-      </Menu>
-
-      <Menu inline closeOnSelect={false} w="264" density="spacious">
-        <MenuGroup label="Options" divider>
-          <MenuItem
-            variant="toggle"
-            label="Compact mode"
-            selected={compact}
-            onClick={() => setCompact((state) => !state)}
-          />
-          <MenuItem
-            variant="toggle"
-            label="Email alerts"
-            selected={alerts}
-            onClick={() => setAlerts((state) => !state)}
-          />
-        </MenuGroup>
-        <MenuItem
-          label="Open docs"
-          href="https://cetecerp.com"
-          iconAfter="arrow-square-out"
-          target="_blank"
-          rel="noreferrer"
-        />
-      </Menu>
-    </HStack>
+      </MenuGroup>
+      <MenuItem
+        label="Open docs"
+        href="https://cetecerp.com"
+        iconAfter="arrow-square-out"
+        target="_blank"
+        rel="noreferrer"
+      />
+    </Menu>
   );
 };
 

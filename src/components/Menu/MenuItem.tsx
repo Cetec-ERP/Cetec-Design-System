@@ -3,13 +3,13 @@ import type { ChangeEventHandler, HTMLProps, MouseEvent } from 'react';
 import { useFloatingTree, useListItem } from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
-import { menu } from '@styled-system/recipes';
+import { listItem as listItemRecipe } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
 import { Divider } from '../Divider';
-import { OptionRowContent } from '../OptionRow';
+import { ListItemContent } from '../List';
 
 import {
   deriveItemTextValue,
@@ -47,12 +47,16 @@ export const MenuItem = (props: MenuItemProps) => {
   const tree = useFloatingTree();
   const filterContext = useMenuFilterContext();
   const listContext = useMenuListContext();
+  const visualVariant: 'default' | 'checkbox' | 'toggle' =
+    variant === 'divider' ? 'default' : variant;
 
-  const classes = menu({
-    density: density ?? rootContext.density,
-    itemVariant: variant,
+  const resolvedDensity = density ?? rootContext.density;
+  const classes = listItemRecipe({
+    density: resolvedDensity,
+    variant: visualVariant,
     iconBefore: Boolean(iconBefore),
     iconAfter: Boolean(iconAfter),
+    selected: Boolean(selected),
   });
 
   const resolvedTextValue = deriveItemTextValue({
@@ -68,7 +72,7 @@ export const MenuItem = (props: MenuItemProps) => {
     filterMode: filterContext.filterMode,
   });
 
-  const listItem = useListItem({ label: resolvedTextValue });
+  const listItemData = useListItem({ label: resolvedTextValue });
 
   // TODO: Fix Divider collapse
   if (variant === 'divider') {
@@ -119,8 +123,8 @@ export const MenuItem = (props: MenuItemProps) => {
       ? 'menuitemcheckbox'
       : 'menuitem';
 
-  const selectionControl =
-    variant === 'checkbox' || variant === 'toggle' ? variant : 'none';
+  // const selectionControl =
+  //   variant === 'checkbox' || variant === 'toggle' ? variant : 'none';
 
   const elementProps: BoxProps<'a'> | BoxProps<'button'> = href
     ? ({
@@ -141,13 +145,13 @@ export const MenuItem = (props: MenuItemProps) => {
       } satisfies BoxProps<'button'>);
 
   const itemRef = (node: HTMLAnchorElement | HTMLButtonElement | null) => {
-    listItem.ref(node as HTMLElement | null);
+    listItemData.ref(node as HTMLElement | null);
   };
 
   return (
     <Box
       {...elementProps}
-      className={cx(classes.item, className)}
+      className={cx(classes, className)}
       ref={itemRef}
       role={role}
       aria-checked={
@@ -159,32 +163,30 @@ export const MenuItem = (props: MenuItemProps) => {
       data-selected={selected}
       data-disabled={disabled}
       data-active={
-        listContext ? listContext.activeIndex === listItem.index : false
+        listContext ? listContext.activeIndex === listItemData.index : false
       }
       tabIndex={
-        listContext ? (listContext.activeIndex === listItem.index ? 0 : -1) : 0
+        listContext
+          ? listContext.activeIndex === listItemData.index
+            ? 0
+            : -1
+          : 0
       }
       {...itemProps}
       {...otherProps}
     >
-      <OptionRowContent
+      <ListItemContent
         label={label}
         description={description}
         iconBefore={iconBefore}
         iconAfter={iconAfter}
         selected={selected}
-        selectionControl={selectionControl}
+        variant={variant}
         controlName={controlName}
         onControlChange={handleControlChange}
         query={filterContext.query}
         highlightMatches={filterContext.highlightMatches}
-        classes={{
-          icon: classes.icon,
-          itemMain: classes.itemMain,
-          itemLabel: classes.itemLabel,
-          itemDescription: classes.itemDescription,
-          highlight: classes.highlight,
-        }}
+        density={resolvedDensity}
       />
     </Box>
   );

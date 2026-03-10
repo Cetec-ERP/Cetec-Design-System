@@ -19,9 +19,7 @@ import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
 
-import { ModalContext } from './ModalContext';
-
-import type { ModalContextValue } from './ModalContext';
+import { ModalContext, type ModalContextValue } from './ModalContext';
 
 export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
   ModalVariantProps & {

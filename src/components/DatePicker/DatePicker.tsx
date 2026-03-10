@@ -27,9 +27,7 @@ import { Box, type BoxProps } from '~/components/Box';
 import { useOverlayFloating } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
-import { Calendar } from './Calendar';
-
-import type { DateValue } from './Calendar';
+import { Calendar, type DateValue } from './Calendar';
 
 export type { DateValue };
 

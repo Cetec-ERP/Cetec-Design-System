@@ -3,7 +3,7 @@ import { useEffect, useRef, type RefObject } from 'react';
 import type { timePicker } from '@styled-system/recipes';
 
 import { Box } from '~/components/Box';
-import { ListboxOption } from '~/components/ListboxOption';
+import { List, ListItem, ListItemContent } from '~/components/List';
 
 export interface TimeValue {
   hour: number; // always 24h (0–23)
@@ -52,14 +52,17 @@ const TimeListColumn = <T extends string | number>({
       aria-orientation="vertical"
     >
       <Box className={classes.columnLabel}>{label}</Box>
-      {items.map((item) => (
-        <ListboxOption
-          key={String(item)}
-          label={formatItem(item)}
-          selected={item === selectedItem}
-          onClick={() => onItemSelect(item)}
-        />
-      ))}
+      <List>
+        {items.map((item) => (
+          <ListItem
+            key={String(item)}
+            selected={item === selectedItem}
+            onClick={() => onItemSelect(item)}
+          >
+            <ListItemContent label={formatItem(item)} />
+          </ListItem>
+        ))}
+      </List>
     </Box>
   );
 };

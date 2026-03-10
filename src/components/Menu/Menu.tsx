@@ -31,7 +31,7 @@ import {
 } from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
-import { menu } from '@styled-system/recipes';
+import { list, menu } from '@styled-system/recipes';
 
 import {
   createOverlayMiddleware,
@@ -110,6 +110,7 @@ export const Menu = (props: MenuProps) => {
   const [className, otherProps] = splitProps(rest);
   const userStyle = otherProps.style as CSSProperties | undefined;
   const classes = menu({ density, panel });
+  const listClassName = list({});
 
   const hasReference = Boolean(trigger) && !inline;
 
@@ -374,7 +375,7 @@ export const Menu = (props: MenuProps) => {
                         {activeLevel.title}
                       </Box>
                     )}
-                    <Box className={classes.list}>
+                    <Box className={listClassName}>
                       {withLevelScopedKeys(
                         activeLevel.children,
                         `${activeLevel.key}-probe`,
@@ -415,15 +416,11 @@ export const Menu = (props: MenuProps) => {
                             className={classes.backHeader}
                             onClick={rootContextValue.onPopDiginLevel}
                           >
-                            <Icon
-                              className={classes.icon}
-                              name="caret-left"
-                              // fill="icon"
-                            />
+                            <Icon name="caret-left" />
                             {level.title}
                           </Box>
                         )}
-                        <Box className={classes.list}>{levelChildren}</Box>
+                        <Box className={listClassName}>{levelChildren}</Box>
                       </Box>
                     );
                   }
@@ -447,15 +444,11 @@ export const Menu = (props: MenuProps) => {
                               className={classes.backHeader}
                               onClick={rootContextValue.onPopDiginLevel}
                             >
-                              <Icon
-                                className={classes.icon}
-                                name="caret-left"
-                                // fill="icon"
-                              />
+                              <Icon name="caret-left" />
                               {level.title}
                             </Box>
                           )}
-                          <Box className={classes.list}>{levelChildren}</Box>
+                          <Box className={listClassName}>{levelChildren}</Box>
                         </Box>
                       </FloatingList>
                     </MenuListProvider>

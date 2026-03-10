@@ -1,12 +1,11 @@
 import { Box } from '~/components/Box';
 
-import { TimePicker } from '../TimePicker/TimePicker';
-
-import type {
-  HourCycle,
-  TimePickerProps,
-  TimeValue,
-} from '../TimePicker/TimePicker';
+import {
+  TimePicker,
+  type HourCycle,
+  type TimePickerProps,
+  type TimeValue,
+} from '../TimePicker';
 
 export type TimeRangePickerProps = {
   /** Start time value (hour in 24h format, 0–23) */

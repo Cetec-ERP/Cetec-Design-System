@@ -1,4 +1,12 @@
-import { Box } from '../Box';
+import { cx } from '@styled-system/css';
+
+import {
+  highlightText,
+  type HighlightTextVariantProps,
+} from '~/styled-system/recipes';
+import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box';
 
 type HighlightPart = {
   text: string;
@@ -20,19 +28,21 @@ const getHighlightParts = (value: string, query: string): HighlightPart[] => {
   }));
 };
 
-export type HighlightTextProps = {
-  value: string;
-  query: string;
-  enabled?: boolean;
-  highlightClassName?: string;
-};
+export type HighlightTextProps = Omit<
+  BoxProps,
+  keyof HighlightTextVariantProps
+> &
+  HighlightTextVariantProps & {
+    value: string;
+    query: string;
+    enabled?: boolean;
+  };
 
-export const HighlightText = ({
-  value,
-  query,
-  enabled = true,
-  highlightClassName,
-}: HighlightTextProps) => {
+export const HighlightText = (props: HighlightTextProps) => {
+  const { value, query, enabled = true, ...rest } = props;
+
+  const [className, otherProps] = splitProps(rest);
+
   if (!enabled || !query.trim()) {
     return <>{value}</>;
   }
@@ -51,7 +61,12 @@ export const HighlightText = ({
         }
 
         return (
-          <Box as="mark" key={key} className={highlightClassName}>
+          <Box
+            as="mark"
+            key={key}
+            className={cx(highlightText(), className)}
+            {...otherProps}
+          >
             {part.text}
           </Box>
         );
