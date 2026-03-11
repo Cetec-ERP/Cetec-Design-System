@@ -5,7 +5,7 @@ import { create } from '@storybook/theming';
 
 const cetecTheme = create({
   brandTitle: 'Cetec ERP Design System',
-  brandImage: '/cetec-logo.svg',
+  brandImage: './cetec-logo.svg',
   brandTarget: '_self',
 
   // Typography
