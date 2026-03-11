@@ -8,6 +8,8 @@ import { Box, type BoxProps } from '~/components/Box';
 import type { numericSizes } from '~/styles/primitives';
 import { splitProps } from '~/utils/splitProps';
 
+import { useIconConfig } from './IconContext';
+
 import type { IconNamesList } from './icons';
 
 /*
@@ -28,6 +30,9 @@ export type IconProps = Omit<BoxProps, IconNamesList | 'size'> &
 export const Icon = (props: IconProps) => {
   const { name, size, fill, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
+  const { spritePath } = useIconConfig();
+  const spriteHref = `${spritePath}#${name}`;
+
   return (
     <Box
       as="svg"
@@ -39,7 +44,7 @@ export const Icon = (props: IconProps) => {
       className={cx(icon(), className)}
       {...otherProps}
     >
-      <use xlinkHref={`/sprite.svg#${name}`} />
+      <use xlinkHref={spriteHref} />
     </Box>
   );
 };

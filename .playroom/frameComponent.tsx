@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, type ReactNode } from 'react';
 
-import { Box, type BoxProps } from '~/components/Box';
-import { ThemeProvider } from '~/contexts/ThemeContext';
-import { useTheme } from '~/contexts/ThemeContext';
+import { Box, type BoxProps } from '../src/components/Box';
+import { IconProvider } from '../src/components/Icon';
+import { ThemeProvider, useTheme } from '../src/system/context';
 
 type PlayroomTheme = {
   name?: string;
@@ -13,6 +13,52 @@ type FrameComponentProps = {
   themeName?: string | null;
   theme?: PlayroomTheme | string;
 };
+
+function getPlayroomSpritePath() {
+  if (typeof window === 'undefined') {
+    return '/sprite.svg';
+  }
+
+  const marker = '/playroom/';
+  const pathname = window.location.pathname;
+  const markerIndex = pathname.indexOf(marker);
+
+  if (markerIndex === -1) {
+    return '/sprite.svg';
+  }
+
+  const afterPlayroomPath = pathname.slice(markerIndex + marker.length);
+  const hasFileName =
+    afterPlayroomPath.includes('.') && !afterPlayroomPath.endsWith('/');
+  const playroomBase = hasFileName
+    ? pathname.slice(0, pathname.lastIndexOf('/') + 1)
+    : pathname.slice(0, markerIndex + marker.length);
+
+  return `${playroomBase}sprite.svg`;
+}
+
+function getPlayroomAssetPath(fileName: string) {
+  if (typeof window === 'undefined') {
+    return `/${fileName}`;
+  }
+
+  const marker = '/playroom/';
+  const pathname = window.location.pathname;
+  const markerIndex = pathname.indexOf(marker);
+
+  if (markerIndex === -1) {
+    return `/${fileName}`;
+  }
+
+  const afterPlayroomPath = pathname.slice(markerIndex + marker.length);
+  const hasFileName =
+    afterPlayroomPath.includes('.') && !afterPlayroomPath.endsWith('/');
+  const playroomBase = hasFileName
+    ? pathname.slice(0, pathname.lastIndexOf('/') + 1)
+    : pathname.slice(0, markerIndex + marker.length);
+
+  return `${playroomBase}${fileName}`;
+}
 
 const THEME_STORAGE_KEY = 'cetec-theme-preference';
 
@@ -76,11 +122,21 @@ export default function FrameComponent({
 
   return (
     <>
-      <link rel="stylesheet" href="/playroom-fonts.css" type="text/css" />
-      <link rel="stylesheet" href="/playroom-static.css" type="text/css" />
+      <link
+        rel="stylesheet"
+        href={getPlayroomAssetPath('playroom-fonts.css')}
+        type="text/css"
+      />
+      <link
+        rel="stylesheet"
+        href={getPlayroomAssetPath('playroom-static.css')}
+        type="text/css"
+      />
       <ThemeProvider>
-        <ThemeBridge themeName={colorMode} />
-        <Box {...frameBodyStyles}>{children}</Box>
+        <IconProvider spritePath={getPlayroomSpritePath()}>
+          <ThemeBridge themeName={colorMode} />
+          <Box {...frameBodyStyles}>{children}</Box>
+        </IconProvider>
       </ThemeProvider>
     </>
   );

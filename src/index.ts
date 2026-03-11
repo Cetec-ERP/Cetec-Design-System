@@ -2,7 +2,12 @@ export { Box, type BoxProps } from './components/Box';
 export { Text } from './components/Text';
 export { Button } from './components/Button';
 export { IconButton } from './components/IconButton';
-export { Icon, IconNames } from './components/Icon';
+export {
+  Icon,
+  IconNames,
+  IconProvider,
+  type IconProviderProps,
+} from './components/Icon';
 export { Pre } from './components/Code';
 export { Heading } from './components/Heading';
 export { Link } from './components/Link';

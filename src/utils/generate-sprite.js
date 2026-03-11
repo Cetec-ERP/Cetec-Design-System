@@ -219,8 +219,10 @@ function validateIconMetadata(iconNames, iconMetadata) {
 }
 
 function buildMergedIconMetadata(iconNames, iconMetadata) {
+  const sortedIconNames = [...iconNames].sort((a, b) => a.localeCompare(b));
+
   return Object.fromEntries(
-    iconNames.map((iconName) => [
+    sortedIconNames.map((iconName) => [
       iconName,
       createMetadataEntry(iconMetadata[iconName]),
     ]),

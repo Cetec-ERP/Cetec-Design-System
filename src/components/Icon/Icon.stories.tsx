@@ -1,12 +1,10 @@
 import type { ChangeEvent } from 'react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
-import { Wrap } from '@styled-system/jsx';
+import { Flex } from '@styled-system/jsx';
 
 import { Box } from '../Box';
-import { Button } from '../Button';
-import { Chip } from '../Chip';
-import { ChipGroup } from '../Chip';
+import { IconButton } from '../IconButton';
 import { Text } from '../Text';
 import { TextInput } from '../TextInput';
 
@@ -55,7 +53,7 @@ const meta = {
   component: Icon,
   tags: ['autodocs'],
   parameters: {
-    layout: '',
+    layout: 'centered',
     docs: {
       description: {
         component: `Use \`Icon\` for visual affordances in buttons, statuses, and navigation.
@@ -71,9 +69,9 @@ Minimal snippet:
 
 Realistic example:
 \`\`\`tsx
-<button aria-label="Search customers">
-  <Icon name="search" />
-</button>
+<Button iconAfter="search">
+  Search customers
+</Button>
 \`\`\``,
       },
     },
@@ -96,34 +94,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+type CopyState =
+  | { status: 'idle' }
+  | { status: 'success'; snippet: string }
+  | { status: 'error'; name: string; message: string };
+
 function IconCatalogStory() {
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState<'all' | string>('all');
-  const [showDeprecated, setShowDeprecated] = useState(false);
-  const [copyStatus, setCopyStatus] = useState('');
-  const categories = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          iconNames
-            .map((name) => iconMetadataByName[name]?.category)
-            .filter((value): value is string => Boolean(value)),
-        ),
-      ).sort((a, b) => a.localeCompare(b)),
-    [],
-  );
-
-  const filteredIcons = useMemo(() => {
+  const [showDeprecated] = useState(false);
+  const [copyState, setCopyState] = useState<CopyState>({ status: 'idle' });
+  const filteredIcons = (() => {
     const terms = tokenize(query);
 
     return iconNames.filter((name) => {
       const metadata = iconMetadataByName[name] ?? {};
       const isDeprecated = metadata.deprecated ?? false;
       if (!showDeprecated && isDeprecated) {
-        return false;
-      }
-
-      if (category !== 'all' && metadata.category !== category) {
         return false;
       }
 
@@ -134,72 +120,119 @@ function IconCatalogStory() {
       const searchIndex = buildSearchIndex(name, metadata);
       return terms.every((term) => searchIndex.includes(term));
     });
-  }, [category, query, showDeprecated]);
+  })();
 
   const onCopy = async (name: string) => {
     const snippet = `<Icon name="${name}" />`;
 
     try {
       await navigator.clipboard.writeText(snippet);
-      setCopyStatus(`Copied: ${snippet}`);
+      setCopyState({ status: 'success', snippet });
     } catch {
-      setCopyStatus(`Copy failed for ${name}. Clipboard said "nope".`);
+      setCopyState({
+        status: 'error',
+        name,
+        message: 'Clipboard said "nope".',
+      });
     }
+    setTimeout(() => setCopyState({ status: 'idle' }), 3000);
   };
 
   return (
-    <Box display="grid" gap="16" maxW="6xl" mx="auto" py="16">
-      <Box display="grid" gap="10">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap="32"
+      maxW="6xl"
+      mx="auto"
+      py="20"
+      px="24"
+    >
+      <Flex
+        justifyContent="start"
+        alignItems="center"
+        gap="24"
+        px="12"
+        py="12"
+        borderRadius="4"
+        zIndex="1"
+        position="sticky"
+        top="28"
+        bg="surface.sunken"
+        shadow="raised"
+      >
         <TextInput
           name="icon-search"
           type="search"
+          size="lg"
           value={query}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             setQuery(event.currentTarget.value)
           }
           placeholder="Search by icon name, alias, or tag..."
           iconBefore="search"
-          minW={{ base: 'full', md: 'md' }}
+          w="280"
         />
+        <Text fontSize="12" color="text.subtle" mr="auto">
+          Showing {filteredIcons.length} of {iconNames.length} icons
+        </Text>
 
-        <Wrap gap="8">
-          <ChipGroup
-            type="single"
-            value={category}
-            onChange={(nextValue) =>
-              setCategory(typeof nextValue === 'string' ? nextValue : 'all')
-            }
-            label="Icon categories"
+        {copyState.status === 'success' ? (
+          <Box
+            role="status"
+            aria-live="polite"
+            px="8"
+            py="4"
+            borderRadius="4"
+            // bg="bg.success"
+            fontSize="12"
+            color="text.success"
+            display="flex"
+            alignItems="center"
+            gap="4"
           >
-            <Chip value="all">all</Chip>
-            {categories.map((value) => (
-              <Chip key={value} value={value}>
-                {value}
-              </Chip>
-            ))}
-          </ChipGroup>
-          <Chip onClick={() => setShowDeprecated((value) => !value)}>
-            {showDeprecated ? 'hide deprecated' : 'show deprecated'}
-          </Chip>
-        </Wrap>
-      </Box>
-
-      <Text fontSize="12" color="text.subtle">
-        Showing {filteredIcons.length} of {iconNames.length} icons
-      </Text>
-
-      {copyStatus ? (
-        <Box
-          role="status"
-          aria-live="polite"
-          p="8"
-          borderRadius="8"
-          bg="bg.accent.blue.subtlest"
-          color="text.subtle"
-        >
-          {copyStatus}
-        </Box>
-      ) : null}
+            <Icon
+              name="circle-check"
+              fill="icon.success"
+              size="20"
+              aria-hidden
+            />
+            Copied: {copyState.snippet}
+          </Box>
+        ) : copyState.status === 'error' ? (
+          <Box
+            role="status"
+            aria-live="polite"
+            px="8"
+            py="4"
+            borderRadius="4"
+            // bg="bg.danger"
+            fontSize="12"
+            color="text.danger"
+            display="flex"
+            alignItems="center"
+            gap="4"
+          >
+            <Icon name="prohibit" fill="icon.danger" size="20" aria-hidden />
+            Copy failed for {copyState.name}. {copyState.message}
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            alignItems="center"
+            gap="4"
+            px="8"
+            py="4"
+            borderRadius="4"
+            // bg="surface.sunken"
+            fontSize="12"
+            color="text.subtle"
+          >
+            <Icon name="copy" size="20" aria-hidden />
+            Click an icon to copy the JSX snippet
+          </Box>
+        )}
+      </Flex>
 
       <Box
         display="grid"
@@ -211,29 +244,18 @@ function IconCatalogStory() {
       >
         {filteredIcons.map((name) => {
           return (
-            <Box
-              key={name}
-              p="12"
-              borderWidth="1"
-              borderColor="border"
-              borderRadius="8"
-              display="grid"
-              gap="8"
-            >
-              <Wrap gap="8" alignItems="center">
-                <Icon name={name} aria-hidden />
-                <Box fontSize="12">{name}</Box>
-              </Wrap>
-
-              <Button
+            <Flex key={name} gap="8" flexDirection="column" alignItems="center">
+              <IconButton
                 onClick={() => onCopy(name)}
-                size="sm"
+                size="lg"
                 variant="ghost"
-                justifySelf="start"
-              >
-                Copy usage
-              </Button>
-            </Box>
+                iconName={name}
+                altText={`Copy ${name} icon`}
+              />
+              <Text textStyle="mono.xs" color="text.accent.gold">
+                {name}
+              </Text>
+            </Flex>
           );
         })}
       </Box>

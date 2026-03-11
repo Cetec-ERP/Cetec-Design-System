@@ -1,5 +1,6 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
 
+import { IconProvider } from '../src/components/Icon';
 import DocTemplate from '../src/storybook/doctemplate.mdx';
 
 import type { Preview, ReactRenderer } from '@storybook/react';
@@ -8,6 +9,21 @@ import './story-docs-style.css';
 
 const preview: Preview = {
   decorators: [
+    (Story) => {
+      const pathname =
+        typeof window === 'undefined' ? '/' : window.location.pathname;
+      const basePath = pathname.endsWith('.html')
+        ? pathname.slice(0, pathname.lastIndexOf('/') + 1)
+        : pathname;
+      const normalizedPath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+      const spritePath = `${normalizedPath}sprite.svg`;
+
+      return (
+        <IconProvider spritePath={spritePath}>
+          <Story />
+        </IconProvider>
+      );
+    },
     withThemeByClassName<ReactRenderer>({
       themes: {
         light: '',

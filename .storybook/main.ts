@@ -25,6 +25,7 @@ const config: StorybookConfig = {
   },
   viteFinal: async (config) => {
     return mergeConfig(config, {
+      base: process.env.STORYBOOK_BASE_PATH ?? '/',
       optimizeDeps: {
         exclude: ['@pandacss/dev'],
       },
