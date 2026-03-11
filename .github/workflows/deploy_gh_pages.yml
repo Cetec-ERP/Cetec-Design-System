@@ -18,9 +18,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Deploy main branch to root of gh-pages
-  deploy-main:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  validate:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    name: Validate
     runs-on: ubuntu-latest
 
     steps:
@@ -36,6 +36,23 @@ jobs:
 
       - name: Run validation gate
         run: npm run validate
+
+  # Deploy main branch to root of gh-pages
+  deploy-main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Generate Panda CSS
         run: npm run prepare
@@ -73,6 +90,7 @@ jobs:
   # Deploy PR preview to /pr-<number>/ subdirectory
   deploy-pr-preview:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    needs: validate
     runs-on: ubuntu-latest
 
     steps:
@@ -85,9 +103,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Run validation gate
-        run: npm run validate
 
       - name: Generate Panda CSS
         run: npm run prepare
