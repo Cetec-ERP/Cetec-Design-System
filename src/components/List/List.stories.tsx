@@ -5,7 +5,7 @@ import { HStack, VStack } from '@styled-system/jsx';
 
 import { Card } from '../Card';
 
-import { List, ListItem, ListItemContent } from './index';
+import { List, ListItem, ListItemContent, ListItemGroup } from './index';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -149,11 +149,22 @@ export const Density: Story = {
     <HStack gap="12" alignItems="start">
       <Card variant="flat" minW="2xs">
         <List density="compact">
-          {items.slice(0, 3).map((item) => (
-            <ListItem key={`compact-${item.id}`}>
-              <ListItemContent label={item.label} description={item.desc} />
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map((item) => (
+              <ListItem key={`compact-${item.id}`}>
+                <ListItemContent label={item.label} description={item.desc} />
+              </ListItem>
+            ))}
+          </ListItemGroup>
+          {/*<ListItem variant="divider" />*/}
+          <ListItemGroup label="User Settings">
+            <ListItem>
+              <ListItemContent label="Profile" />
             </ListItem>
-          ))}
+            <ListItem iconAfter="arrow-right">
+              <ListItemContent label="Logout" />
+            </ListItem>
+          </ListItemGroup>
         </List>
       </Card>
       <Card variant="flat" minW="2xs">

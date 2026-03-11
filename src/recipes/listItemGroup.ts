@@ -5,8 +5,11 @@ import { globalBaseStyles } from '~/styles/utilities';
 export const listItemGroupRecipe = defineSlotRecipe({
   className: 'listItemGroup',
   jsx: ['ListItemGroup'],
-  slots: ['groupLabel', 'divider'],
+  slots: ['wrapper', 'groupLabel', 'divider'],
   base: {
+    wrapper: {
+      width: 'full',
+    },
     groupLabel: {
       ...globalBaseStyles,
       color: 'text.subtlest',

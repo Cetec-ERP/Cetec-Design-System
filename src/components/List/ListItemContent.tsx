@@ -7,23 +7,13 @@ import {
 
 import { Box, type BoxProps } from '../Box';
 import { Checkbox } from '../Checkbox';
-import { Divider } from '../Divider';
+// import { Divider } from '../Divider';
 import { Icon, type IconNamesList } from '../Icon';
 import { Text } from '../Text';
 import { Toggle } from '../Toggle';
 
 import { HighlightText } from './HighlightText';
 import { useListContext } from './listContext';
-
-// type SelectionControl = 'none' | 'checkbox' | 'toggle';
-
-// type ListItemContentClasses = {
-//   icon?: string;
-//   itemMain?: string;
-//   itemLabel?: string;
-//   itemDescription?: string;
-//   highlight?: string;
-// };
 
 export type ListItemContentProps = Omit<
   BoxProps,
@@ -41,9 +31,6 @@ export type ListItemContentProps = Omit<
     onControlChange?: ChangeEventHandler<HTMLInputElement>;
   };
 
-// const selectionControl =
-//   variant === 'checkbox' || variant === 'toggle' ? variant : 'none';
-
 export const ListItemContent = (props: ListItemContentProps) => {
   const {
     label,
@@ -54,11 +41,19 @@ export const ListItemContent = (props: ListItemContentProps) => {
     highlightMatches,
     selected,
     variant = 'default',
+    density,
     controlName = 'list-item',
     onControlChange,
   } = props;
-  const classes = listItemContent({});
   const listContext = useListContext();
+  const resolvedDensity = density ?? listContext.density;
+  const classes = listItemContent({
+    variant,
+    density: resolvedDensity,
+    selected: Boolean(selected),
+    iconBefore: Boolean(iconBefore),
+    iconAfter: Boolean(iconAfter),
+  });
 
   const resolvedQuery = query ?? listContext.query;
   const shouldHighlight = highlightMatches ?? listContext.highlightMatches;
@@ -67,9 +62,9 @@ export const ListItemContent = (props: ListItemContentProps) => {
     onControlChange?.(event);
   };
 
-  if (variant === 'divider') {
-    return <Divider className={classes.divider} />;
-  }
+  // if (variant === 'divider') {
+  //   return <Divider className={classes.divider} />;
+  // }
 
   return (
     <>

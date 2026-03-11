@@ -7,9 +7,10 @@ export const highlightTextRecipe = defineRecipe({
   jsx: ['HighlightText'],
   base: {
     ...globalBaseStyles,
-    bg: 'bg.accent.gold.subtle',
+    bg: { base: 'gold.10', _dark: 'gold.60' },
     color: 'text',
     borderRadius: '2',
+    lineHeight: 'inherit',
   },
   variants: {},
 });

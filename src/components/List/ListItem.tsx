@@ -8,6 +8,7 @@ import { type IconNamesList } from '~/components/Icon';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
+import { Divider } from '../Divider';
 
 import { useListContext } from './listContext';
 
@@ -36,6 +37,7 @@ export const ListItem = (props: ListItemProps) => {
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
+
   const listContext = useListContext();
 
   const isSelected = Boolean(selected);
@@ -46,6 +48,7 @@ export const ListItem = (props: ListItemProps) => {
       const mergeProps: Partial<ListItemContentProps> = {
         selected: isSelected || undefined,
         variant,
+        density: resolvedDensity,
         iconBefore,
         iconAfter,
       };
@@ -57,14 +60,27 @@ export const ListItem = (props: ListItemProps) => {
     return child;
   });
 
+  const classes = listItem({
+    selected: isSelected,
+    density: resolvedDensity,
+    variant: variant ?? 'default',
+    iconBefore: Boolean(iconBefore),
+    iconAfter: Boolean(iconAfter),
+  });
+
+  if (variant === 'divider') {
+    return (
+      <Box className={classes.divider}>
+        <Divider />
+      </Box>
+    );
+  }
+
   return (
     <Box
       as="button"
       type="button"
-      className={cx(
-        listItem({ selected: isSelected, density: resolvedDensity }),
-        className,
-      )}
+      className={cx(classes.wrapper, className)}
       role="option"
       aria-selected={isSelected}
       data-selected={isSelected || undefined}

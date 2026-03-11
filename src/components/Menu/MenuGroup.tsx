@@ -1,8 +1,4 @@
-import { listItemGroup } from '@styled-system/recipes';
-
-import { Box } from '../Box';
-import { Divider } from '../Divider';
-import { Text } from '../Text';
+import { ListItemGroup } from '../List';
 
 import {
   hasMatchingItems,
@@ -17,9 +13,6 @@ export const MenuGroup = (props: MenuGroupProps) => {
   const { label, children, divider, ...rest } = props;
   const rootContext = useMenuRootContext();
   const filterContext = useMenuFilterContext();
-  const classes = listItemGroup({
-    density: rootContext.density || undefined,
-  });
 
   const hasMatches = hasMatchingItems(children, filterContext);
 
@@ -28,17 +21,14 @@ export const MenuGroup = (props: MenuGroupProps) => {
   }
 
   return (
-    <Box {...rest}>
-      {label && (
-        <Text as="div" className={classes.groupLabel}>
-          {label}
-        </Text>
-      )}
-
-      <Box>{children}</Box>
-
-      {divider && <Divider role="separator" className={classes.divider} />}
-    </Box>
+    <ListItemGroup
+      density={rootContext.density}
+      label={label}
+      divider={divider}
+      {...rest}
+    >
+      {children}
+    </ListItemGroup>
   );
 };
 
