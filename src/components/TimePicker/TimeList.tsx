@@ -3,7 +3,7 @@ import { useEffect, useRef, type RefObject } from 'react';
 import type { timePicker } from '@styled-system/recipes';
 
 import { Box } from '~/components/Box';
-import { List, ListItem, ListItemContent } from '~/components/List';
+import { List, ListItem } from '~/components/List';
 
 export interface TimeValue {
   hour: number; // always 24h (0–23)
@@ -51,16 +51,18 @@ const TimeListColumn = <T extends string | number>({
       aria-label={ariaLabel}
       aria-orientation="vertical"
     >
-      <Box className={classes.columnLabel}>{label}</Box>
+      <Box className={classes.columnLabel} data-time-list-label="true">
+        {label}
+      </Box>
       <List>
         {items.map((item) => (
           <ListItem
             key={String(item)}
             selected={item === selectedItem}
             onClick={() => onItemSelect(item)}
-          >
-            <ListItemContent label={formatItem(item)} />
-          </ListItem>
+            label={formatItem(item)}
+            justifyContent="center"
+          />
         ))}
       </List>
     </Box>
@@ -114,13 +116,24 @@ export const TimeList = (props: TimeListProps) => {
       const col = colRef.current;
       const el = col?.querySelector(selector) as HTMLElement | null;
       if (!col || !el) return;
+
+      const label = col.querySelector(
+        '[data-time-list-label="true"]',
+      ) as HTMLElement | null;
+      const labelHeight = label?.offsetHeight ?? 0;
+      col.style.scrollPaddingTop = `${labelHeight}px`;
+      const viewportHeight = Math.max(col.clientHeight - labelHeight, 0);
+
       const colRect = col.getBoundingClientRect();
       const elRect = el.getBoundingClientRect();
       // el's offset from col's top in the scrollable content
       const elRelativeTop = elRect.top - colRect.top + col.scrollTop;
-      // Center the selected item vertically in the column
-      col.scrollTop =
-        elRelativeTop - col.clientHeight / 2 + el.clientHeight / 2;
+
+      // Center the selected item within the scrollable area below the sticky label
+      const targetScrollTop =
+        elRelativeTop - labelHeight - viewportHeight / 2 + el.clientHeight / 2;
+      const maxScrollTop = col.scrollHeight - col.clientHeight;
+      col.scrollTop = Math.min(Math.max(targetScrollTop, 0), maxScrollTop);
     };
     scrollToSelected(hourColRef, '[aria-selected="true"]');
     scrollToSelected(minuteColRef, '[aria-selected="true"]');
@@ -175,7 +188,7 @@ export const TimeList = (props: TimeListProps) => {
       {is12h && (
         <TimeListColumn
           colRef={meridiemColRef}
-          label=""
+          label="AM/PM"
           items={meridiems}
           selectedItem={selectedMeridiem}
           onItemSelect={handleMeridiemSelect}

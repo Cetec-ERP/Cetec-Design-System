@@ -39,7 +39,9 @@ import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box';
-import { ListItemContent } from '../List';
+import { Icon } from '../Icon';
+import { HighlightText } from '../List';
+import { Text } from '../Text';
 
 import {
   deriveItemTextValue,
@@ -309,7 +311,7 @@ export const SubMenu = (props: SubMenuProps) => {
         role="menuitem"
         aria-disabled={disabled}
         disabled={disabled}
-        className={cx(itemClassName, contentClassName)}
+        className={cx(itemClassName.wrapper, contentClassName)}
         ref={(node: HTMLButtonElement | null) => {
           listItemData.ref(node as HTMLElement | null);
         }}
@@ -331,15 +333,31 @@ export const SubMenu = (props: SubMenuProps) => {
         {...diginButtonProps}
         type="button"
       >
-        <ListItemContent
-          label={label}
-          description={description}
-          iconBefore={iconBefore}
-          iconAfter="caret-right"
-          density={resolvedDensity}
-          query={filterContext.query}
-          highlightMatches={filterContext.highlightMatches}
-        />
+        {iconBefore && (
+          <Icon className={itemClassName.icon} name={iconBefore} />
+        )}
+
+        <Box className={itemClassName.itemMain}>
+          <Text className={itemClassName.itemLabel}>
+            <HighlightText
+              value={label}
+              query={filterContext.query}
+              enabled={filterContext.highlightMatches}
+            />
+          </Text>
+
+          {description && (
+            <Text className={itemClassName.itemDescription}>
+              <HighlightText
+                value={description}
+                query={filterContext.query}
+                enabled={filterContext.highlightMatches}
+              />
+            </Text>
+          )}
+        </Box>
+
+        <Icon className={itemClassName.icon} name="caret-right" ml="auto" />
       </button>
     );
   }
@@ -353,7 +371,7 @@ export const SubMenu = (props: SubMenuProps) => {
         aria-expanded={open}
         aria-disabled={disabled}
         disabled={disabled}
-        className={itemClassName}
+        className={itemClassName.wrapper}
         ref={(node: HTMLButtonElement | null) => {
           listItemData.ref(node as HTMLElement | null);
           floating.refs.setReference(node);
@@ -375,15 +393,31 @@ export const SubMenu = (props: SubMenuProps) => {
         {...referencePropsWithoutRef}
         type="button"
       >
-        <ListItemContent
-          label={label}
-          description={description}
-          iconBefore={iconBefore}
-          iconAfter="caret-right"
-          density={resolvedDensity}
-          query={filterContext.query}
-          highlightMatches={filterContext.highlightMatches}
-        />
+        {iconBefore && (
+          <Icon className={itemClassName.icon} name={iconBefore} />
+        )}
+
+        <Box className={itemClassName.itemMain}>
+          <Text className={itemClassName.itemLabel}>
+            <HighlightText
+              value={label}
+              query={filterContext.query}
+              enabled={filterContext.highlightMatches}
+            />
+          </Text>
+
+          {description && (
+            <Text className={itemClassName.itemDescription}>
+              <HighlightText
+                value={description}
+                query={filterContext.query}
+                enabled={filterContext.highlightMatches}
+              />
+            </Text>
+          )}
+        </Box>
+
+        <Icon className={itemClassName.icon} name="caret-right" ml="auto" />
       </button>
 
       {open && (

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { HStack, VStack } from '@styled-system/jsx';
+import { HStack } from '@styled-system/jsx';
 
 import { Card } from '../Card';
 
-import { List, ListItem, ListItemContent, ListItemGroup } from './index';
+import { List, ListItem, ListItemGroup } from './index';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -46,9 +46,9 @@ const SingleSelectExample = () => {
             key={item.id}
             selected={selected === item.id}
             onClick={() => setSelected(item.id)}
-          >
-            <ListItemContent label={item.label} description={item.desc} />
-          </ListItem>
+            label={item.label}
+            description={item.desc}
+          />
         ))}
       </List>
     </Card>
@@ -73,13 +73,36 @@ const MultiSelectCheckboxExample = () => {
             variant="checkbox"
             selected={selected.includes(item.id)}
             onClick={() => toggleItem(item.id)}
-          >
-            <ListItemContent
-              variant="checkbox"
-              label={item.label}
-              description={item.desc}
-            />
-          </ListItem>
+            label={item.label}
+            description={item.desc}
+          />
+        ))}
+      </List>
+    </Card>
+  );
+};
+
+const ToggleSelectionExample = () => {
+  const [selected, setSelected] = useState<string[]>(['notify', 'audit']);
+
+  const toggleItem = (id: string) => {
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((entry) => entry !== id) : [...prev, id],
+    );
+  };
+
+  return (
+    <Card variant="flat" minW="2xs">
+      <List role="listbox" aria-label="Toggle list">
+        {items.map((item) => (
+          <ListItem
+            key={item.id}
+            variant="toggle"
+            selected={selected.includes(item.id)}
+            onClick={() => toggleItem(item.id)}
+            label={item.label}
+            description={item.desc}
+          />
         ))}
       </List>
     </Card>
@@ -102,9 +125,9 @@ const HighlightingExample = () => {
             key={item.id}
             selected={index === 0}
             iconAfter="arrow-right"
-          >
-            <ListItemContent label={item.label} description={item.desc} />
-          </ListItem>
+            label={item.label}
+            description={item.desc}
+          />
         ))}
       </List>
     </Card>
@@ -128,9 +151,9 @@ const FloatingSearchBarExample = () => {
             key={`${item.id}-${index}`}
             selected={index === 0}
             iconAfter="arrow-right"
-          >
-            <ListItemContent label={item.label} description={item.desc} />
-          </ListItem>
+            label={item.label}
+            description={item.desc}
+          />
         ))}
       </List>
     </Card>
@@ -151,38 +174,51 @@ export const Density: Story = {
         <List density="compact">
           <ListItemGroup label="Account Settings" divider>
             {items.slice(0, 3).map((item) => (
-              <ListItem key={`compact-${item.id}`}>
-                <ListItemContent label={item.label} description={item.desc} />
-              </ListItem>
+              <ListItem
+                key={`compact-${item.id}`}
+                label={item.label}
+                description={item.desc}
+              />
             ))}
           </ListItemGroup>
-          {/*<ListItem variant="divider" />*/}
           <ListItemGroup label="User Settings">
-            <ListItem>
-              <ListItemContent label="Profile" />
-            </ListItem>
-            <ListItem iconAfter="arrow-right">
-              <ListItemContent label="Logout" />
-            </ListItem>
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
           </ListItemGroup>
         </List>
       </Card>
       <Card variant="flat" minW="2xs">
         <List density="comfortable">
-          {items.slice(0, 3).map((item) => (
-            <ListItem key={`comfortable-${item.id}`}>
-              <ListItemContent label={item.label} description={item.desc} />
-            </ListItem>
-          ))}
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map((item) => (
+              <ListItem
+                key={`compact-${item.id}`}
+                label={item.label}
+                description={item.desc}
+              />
+            ))}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
         </List>
       </Card>
       <Card variant="flat" minW="2xs">
         <List density="spacious">
-          {items.slice(0, 3).map((item) => (
-            <ListItem key={`spacious-${item.id}`}>
-              <ListItemContent label={item.label} description={item.desc} />
-            </ListItem>
-          ))}
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map((item) => (
+              <ListItem
+                key={`compact-${item.id}`}
+                label={item.label}
+                description={item.desc}
+              />
+            ))}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
         </List>
       </Card>
     </HStack>
@@ -193,22 +229,10 @@ export const Density: Story = {
 export const SelectionControls: Story = {
   args: {},
   render: () => (
-    <VStack alignItems="start" gap="16">
+    <HStack alignItems="start" gap="16">
       <MultiSelectCheckboxExample />
-      <Card variant="flat" minW="2xs">
-        <List role="listbox" aria-label="Toggle list">
-          {items.slice(0, 3).map((item, index) => (
-            <ListItem key={item.id} variant="toggle" selected={index === 0}>
-              <ListItemContent
-                variant="toggle"
-                label={item.label}
-                description={item.desc}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Card>
-    </VStack>
+      <ToggleSelectionExample />
+    </HStack>
   ),
   parameters: { controls: { disable: true } },
 };

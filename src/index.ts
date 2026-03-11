@@ -24,14 +24,12 @@ export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
 export {
   List,
-  ListGroup,
+  ListItemGroup,
   ListItem,
-  ListItemContent,
   HighlightText,
   type ListProps,
-  type ListGroupProps,
+  type ListItemGroupProps,
   type ListItemProps,
-  type ListItemContentProps,
   type HighlightTextProps,
   type ListDensity,
 } from './components/List';

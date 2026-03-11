@@ -39,7 +39,6 @@ const {
   listRecipe,
   listItemRecipe,
   highlightTextRecipe,
-  listItemContentRecipe,
   listItemGroupRecipe,
   ...regularRecipes
 } = componentRecipes;
@@ -116,7 +115,6 @@ export const cetecPreset: Preset = definePreset({
         datePicker: datePickerRecipe,
         timePicker: timePickerRecipe,
         breadcrumbs: breadcrumbsRecipe,
-        listItemContent: listItemContentRecipe,
         listItemGroup: listItemGroupRecipe,
       },
     },

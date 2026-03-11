@@ -5,7 +5,14 @@ import { globalBaseStyles } from '~/styles/utilities';
 export const listItemRecipe = defineSlotRecipe({
   className: 'listItem',
   jsx: ['ListItem'],
-  slots: ['wrapper', 'divider'],
+  slots: [
+    'wrapper',
+    'icon',
+    'itemMain',
+    'itemLabel',
+    'itemDescription',
+    'divider',
+  ],
   base: {
     wrapper: {
       ...globalBaseStyles,
@@ -44,6 +51,26 @@ export const listItemRecipe = defineSlotRecipe({
     },
     divider: {
       width: 'full',
+    },
+    icon: {
+      aspectRatio: 'square',
+      transitionDuration: 'fast',
+      transitionProperty: 'fill',
+      transitionTimingFunction: 'default',
+      flexShrink: '0',
+    },
+    itemMain: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0',
+      minWidth: '0',
+    },
+    itemLabel: {
+      color: 'text',
+    },
+    itemDescription: {
+      color: 'text.subtlest',
+      lineHeight: 'tight',
     },
   },
   variants: {
@@ -101,6 +128,18 @@ export const listItemRecipe = defineSlotRecipe({
           py: '3',
           px: '10',
         },
+        itemLabel: {
+          textStyle: 'body.md',
+          color: 'text',
+        },
+        itemDescription: {
+          textStyle: 'body.xs',
+          lineHeight: 'tight',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
         divider: {
           py: '3',
           px: '10',
@@ -111,6 +150,18 @@ export const listItemRecipe = defineSlotRecipe({
           py: '7',
           px: '12',
         },
+        itemLabel: {
+          textStyle: 'body.md',
+          color: 'text',
+        },
+        itemDescription: {
+          textStyle: 'body.xs',
+          lineHeight: 'tight',
+        },
+        icon: {
+          w: '24',
+          h: '24',
+        },
         divider: {
           py: '7',
           px: '12',
@@ -120,6 +171,18 @@ export const listItemRecipe = defineSlotRecipe({
         wrapper: {
           py: '9',
           px: '16',
+        },
+        itemLabel: {
+          textStyle: 'body.lg',
+          color: 'text',
+        },
+        itemDescription: {
+          textStyle: 'body.sm',
+          lineHeight: 'tight',
+        },
+        icon: {
+          w: '28',
+          h: '28',
         },
         divider: {
           py: '9',

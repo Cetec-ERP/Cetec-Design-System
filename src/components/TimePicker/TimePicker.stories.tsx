@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { HStack } from '~/styled-system/jsx';
+
 import { Box } from '../Box';
 import { FormField } from '../FormField';
 import { Text } from '../Text';
@@ -21,7 +23,8 @@ export default meta;
 type Story = StoryObj<typeof TimePicker>;
 
 const ControlledTimePickerExample = () => {
-  const [value, setValue] = useState<TimeValue | null>(null);
+  const [value12, set12Value] = useState<TimeValue | null>(null);
+  const [value24, set24Value] = useState<TimeValue | null>(null);
 
   const formatTime = (timeValue: TimeValue) => {
     const hour = String(timeValue.hour).padStart(2, '0');
@@ -30,12 +33,20 @@ const ControlledTimePickerExample = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap="16" width="224">
-      <TimePicker hourCycle="12" value={value} onChange={setValue} />
-      <Text size="14" color="text.subtle">
-        Selected (24h): {value ? formatTime(value) : 'none'}
-      </Text>
-    </Box>
+    <HStack gap="32">
+      <Box display="flex" flexDirection="column" gap="4" width="184">
+        <TimePicker hourCycle="12" value={value12} onChange={set12Value} />
+        <Text size="14" color="text.subtle">
+          Selected (12h): {value12 ? formatTime(value12) : 'none'}
+        </Text>
+      </Box>
+      <Box display="flex" flexDirection="column" gap="4" width="184">
+        <TimePicker hourCycle="24" value={value24} onChange={set24Value} />
+        <Text size="14" color="text.subtle">
+          Selected (24h): {value24 ? formatTime(value24) : 'none'}
+        </Text>
+      </Box>
+    </HStack>
   );
 };
 

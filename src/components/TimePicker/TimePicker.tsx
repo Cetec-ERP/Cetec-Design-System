@@ -128,7 +128,7 @@ const TimeSegments = ({
           color={
             ampm === null
               ? error
-                ? 'text.danger'
+                ? 'text.disabled'
                 : 'text.placeholder'
               : undefined
           }
@@ -171,7 +171,7 @@ const TimeSegments = ({
         color={
           isPlaceholder
             ? error
-              ? 'text.danger'
+              ? 'text.disabled'
               : 'text.placeholder'
             : undefined
         }
@@ -564,7 +564,7 @@ export const TimePicker = (props: TimePickerProps) => {
       {/* Segmented input */}
       <Box
         ref={setContainerRef}
-        className={classes.input}
+        className={`${classes.input} group`}
         role="group"
         aria-label={label}
         aria-disabled={disabled}

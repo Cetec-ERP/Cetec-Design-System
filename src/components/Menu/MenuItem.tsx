@@ -8,8 +8,12 @@ import { listItem as listItemRecipe } from '@styled-system/recipes';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
+import { Checkbox } from '../Checkbox';
 import { Divider } from '../Divider';
-import { ListItemContent } from '../List';
+import { Icon } from '../Icon';
+import { HighlightText } from '../List';
+import { Text } from '../Text';
+import { Toggle } from '../Toggle';
 
 import {
   deriveItemTextValue,
@@ -151,7 +155,7 @@ export const MenuItem = (props: MenuItemProps) => {
   return (
     <Box
       {...elementProps}
-      className={cx(classes, className)}
+      className={cx(classes.wrapper, className)}
       ref={itemRef}
       role={role}
       aria-checked={
@@ -175,19 +179,52 @@ export const MenuItem = (props: MenuItemProps) => {
       {...itemProps}
       {...otherProps}
     >
-      <ListItemContent
-        label={label}
-        description={description}
-        iconBefore={iconBefore}
-        iconAfter={iconAfter}
-        selected={selected}
-        variant={variant}
-        controlName={controlName}
-        onControlChange={handleControlChange}
-        query={filterContext.query}
-        highlightMatches={filterContext.highlightMatches}
-        density={resolvedDensity}
-      />
+      {variant === 'checkbox' && (
+        <Checkbox
+          name={controlName}
+          checked={Boolean(selected)}
+          onChange={handleControlChange}
+          tabIndex={-1}
+        />
+      )}
+
+      {variant === 'toggle' && (
+        <Toggle
+          name={controlName}
+          checked={Boolean(selected)}
+          onChange={handleControlChange}
+          mr="4"
+          tabIndex={-1}
+        />
+      )}
+
+      {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
+
+      <Box className={classes.itemMain}>
+        {label && (
+          <Text className={classes.itemLabel}>
+            <HighlightText
+              value={label}
+              query={filterContext.query}
+              enabled={filterContext.highlightMatches}
+            />
+          </Text>
+        )}
+
+        {description && (
+          <Text className={classes.itemDescription}>
+            <HighlightText
+              value={description}
+              query={filterContext.query}
+              enabled={filterContext.highlightMatches}
+            />
+          </Text>
+        )}
+      </Box>
+
+      {iconAfter && (
+        <Icon className={classes.icon} name={iconAfter} ml="auto" />
+      )}
     </Box>
   );
 };

@@ -55,7 +55,7 @@ flowchart TD
 
 ### `src/system/context/`
 
-- `ThemeContext.tsx`: `ThemeProvider` implementation and theme DOM sync.
+- `ThemeProvider.tsx`: `ThemeProvider` implementation and theme DOM sync.
 - `theme-context.ts`: context object + shared types.
 - `useTheme.ts`: hook API for theme consumers.
 - `index.ts`: public barrel for `ThemeProvider` and `useTheme`.

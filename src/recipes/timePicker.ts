@@ -23,7 +23,7 @@ const timePickerBase = {
     outlineColor: 'transparent',
     bg: 'bg.input',
     color: 'text',
-    fontFamily: 'body',
+    fontFamily: 'mono',
     lineHeight: 'default',
     cursor: 'text',
     userSelect: 'none',
@@ -48,20 +48,15 @@ const timePickerBase = {
       pointerEvents: 'none',
     },
     _error: {
-      bg: 'bg.danger',
       borderColor: 'border.danger',
-      color: 'text.danger',
       _hover: {
-        bg: 'bg.danger.hovered',
         borderColor: 'border.danger',
       },
       _focusWithin: {
-        bg: 'bg.danger',
         borderColor: 'border.danger',
         outlineColor: 'border.danger',
       },
       _open: {
-        bg: 'bg.danger',
         borderColor: 'border.danger',
         outlineColor: 'border.danger',
       },
@@ -77,17 +72,23 @@ const timePickerBase = {
     borderRadius: '2',
     cursor: 'default',
     userSelect: 'none',
+    fontFamily: 'mono',
+    fontVariantsProperty: 'mono',
     fontVariantNumeric: 'tabular-nums',
     minWidth: '1.5em',
     textAlign: 'center',
+    color: 'text',
     _focusVisible: {
       bg: 'bg.neutral.hovered',
+    },
+    _groupDisabled: {
+      color: 'text.disabled',
     },
   },
 
   // The ":" separator between time segments
   separator: {
-    color: 'text.subtlest',
+    color: 'text.placeholder',
     userSelect: 'none',
     display: 'inline-flex',
     alignItems: 'center',
@@ -106,7 +107,7 @@ const timePickerBase = {
     zIndex: 1000,
     overflow: 'hidden',
     outline: 'none',
-    minWidth: '160',
+    w: 'fit',
   },
 
   // A single scrollable column (hours, minutes, or AM/PM)
@@ -118,6 +119,8 @@ const timePickerBase = {
     maxHeight: '200',
     scrollSnapType: 'y mandatory',
     borderRight: 'default',
+    minW: '56',
+    textAlign: 'center',
     _last: {
       borderRight: 'none',
     },
