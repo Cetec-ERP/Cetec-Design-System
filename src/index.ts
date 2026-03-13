@@ -58,6 +58,9 @@ export { Modal, ModalHeader, ModalFooter, ModalBody } from './components/Modal';
 export { Chip, ChipGroup } from './components/Chip';
 export { Badge } from './components/Badge';
 
+// Export splitProps helper
+export { splitProps } from './utils/splitProps';
+
 // Export hooks
 export { useMediaQuery, useContainerQuery } from './system/hooks';
 

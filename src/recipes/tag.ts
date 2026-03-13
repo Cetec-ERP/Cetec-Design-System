@@ -15,7 +15,7 @@ const tagBase = {
   fontSize: '14',
   fontWeight: 'medium',
   lineHeight: 'tight',
-  //   lineHeight: 'none',
+  whiteSpace: 'nowrap',
 };
 const tagVariant = {
   variant: {
