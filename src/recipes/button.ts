@@ -1,4 +1,5 @@
 import { defineSlotRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 const buttonBaseStyles = {
@@ -57,42 +58,38 @@ const buttonVariants = {
       container: {
         bg: 'bg.neutral',
         color: 'text',
-        icon: {
-          fill: 'icon.decorative',
-        },
         _hover: {
           bg: 'bg.neutral.hovered',
-          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.pressed',
-          icon: { fill: 'current' },
         },
       },
       icon: {
+        fill: 'icon.decorative',
         mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        _groupHover: { fill: 'current' },
+        _groupActive: { fill: 'current' },
       },
     },
     primary: {
       container: {
         bg: 'bg.neutral.boldest',
         color: 'text.inverse',
-        icon: {
-          fill: 'icon.decorative.inverse',
-        },
         _hover: {
           bg: 'bg.neutral.bold.hovered',
-          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.bold.pressed',
-          icon: { fill: 'current' },
         },
       },
       icon: {
+        fill: 'icon.decorative.inverse.subtle',
         mixBlendMode: { base: 'screen', _dark: 'multiply' },
+        _groupHover: { fill: 'icon.decorative.inverse' },
+        _groupActive: { fill: 'icon.decorative.inverse' },
         _groupDisabled: {
-          fill: 'current',
+          fill: 'icon.decorative.inverse.subtle',
         },
       },
     },
@@ -101,54 +98,54 @@ const buttonVariants = {
         bg: 'bg.neutral.subtle',
         borderColor: 'border',
         color: 'text',
-        icon: { fill: 'icon.decorative' },
         _hover: {
           bg: 'bg.neutral.subtle.hovered',
-          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.subtle.pressed',
-          icon: { fill: 'current' },
         },
       },
       icon: {
+        fill: 'icon.decorative',
         mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        _groupHover: { fill: 'current' },
+        _groupActive: { fill: 'current' },
       },
     },
     ghost: {
       container: {
         bg: 'bg.neutral.subtle',
         color: 'text',
-        icon: { fill: 'icon.decorative' },
         _hover: {
           bg: 'bg.neutral.subtle.hovered',
-          icon: { fill: 'current' },
         },
         _active: {
           bg: 'bg.neutral.subtle.pressed',
-          icon: { fill: 'current' },
         },
       },
       icon: {
+        fill: 'icon.decorative',
         mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        _groupHover: { fill: 'current' },
+        _groupActive: { fill: 'current' },
       },
     },
     cta: {
       container: {
         bg: 'gold.20',
         color: 'neutral.90',
-        icon: { fill: 'neutral.50' },
         _hover: {
           bg: 'gold.15',
-          icon: { fill: 'current' },
         },
         _active: {
           bg: 'gold.30',
-          icon: { fill: 'current' },
         },
       },
       icon: {
+        fill: 'neutral.50',
         mixBlendMode: 'multiply',
+        _groupHover: { fill: 'current' },
+        _groupActive: { fill: 'current' },
         _groupDisabled: {
           fill: 'current',
         },
@@ -158,20 +155,67 @@ const buttonVariants = {
       container: {
         bg: 'red.50',
         color: 'neutral.0',
-        icon: { fill: 'neutral.40' },
         _hover: {
           bg: 'red.40',
-          icon: { fill: 'current' },
         },
         _active: {
           bg: 'red.60',
-          icon: { fill: 'current' },
         },
       },
       icon: {
+        fill: 'icon.decorative.inverse',
         mixBlendMode: 'screen',
+        _groupHover: { fill: 'icon.decorative.inverse' },
+        _groupActive: { fill: 'icon.decorative.inverse' },
         _groupDisabled: {
-          fill: 'current',
+          fill: 'icon.decorative.inverse',
+        },
+      },
+    },
+    selected: {
+      container: {
+        bg: 'bg.selected',
+        color: 'text.selected',
+        icon: { fill: 'icon.selected' },
+        _hover: {
+          bg: 'bg.selected.hovered',
+          color: 'text.selected.hovered',
+          icon: { fill: 'icon.selected' },
+        },
+        _active: {
+          bg: 'bg.selected.pressed',
+          color: 'text.selected',
+          icon: { fill: 'icon.selected' },
+        },
+      },
+      icon: {
+        fill: 'icon.selected',
+        mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        _groupHover: { fill: 'icon.selected' },
+        _groupActive: { fill: 'icon.selected' },
+        _groupDisabled: {
+          fill: 'icon.selected',
+        },
+      },
+    },
+    selectedBold: {
+      container: {
+        bg: 'bg.selected.bold',
+        color: 'text.inverse',
+        _hover: {
+          bg: 'bg.selected.bold.hovered',
+        },
+        _active: {
+          bg: 'bg.selected.bold.pressed',
+        },
+      },
+      icon: {
+        fill: 'icon.inverse',
+        mixBlendMode: { base: 'screen', _dark: 'multiply' },
+        _groupHover: { fill: 'icon.inverse' },
+        _groupActive: { fill: 'icon.inverse' },
+        _groupDisabled: {
+          fill: 'icon.inverse',
         },
       },
     },
@@ -303,7 +347,7 @@ export const buttonRecipe = defineSlotRecipe({
 });
 
 export const iconButtonRecipe = defineSlotRecipe({
-  className: 'icon-button',
+  className: 'iconButton',
   jsx: ['IconButton'],
   slots: ['container', 'icon'],
   base: buttonBaseStyles,

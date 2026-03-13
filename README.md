@@ -6,6 +6,7 @@ A React component library built with TypeScript and Panda CSS for the Cetec-ERP 
   - [Development](#development)
     - [Setup](#setup)
     - [Commands](#commands)
+  - [Standards](#standards)
   - [Architecture](#architecture)
     - [Key Principles](#key-principles)
   - [Working with Components](#working-with-components)
@@ -35,18 +36,36 @@ npm install
 # Development
 npm run dev                  # Start Vite dev server with Panda CSS watch mode
 npm run storybook           # Start Storybook on port 6006
+npm run playroom            # Start Playroom on port 9000
 
 # Building
 npm run build               # Build for distribution (runs Panda codegen + Vite build)
 npm run storybook:build     # Build Storybook for deployment
+npm run playroom:build      # Build Playroom for deployment (dist/playroom)
 
 # Code Quality
 npm run lint                # Run ESLint
+npm run lint:fix            # Run ESLint with autofix
+npm run typecheck           # Run TypeScript type checking
+npm run validate            # Run lint + typecheck
+npm run validate:full       # Run validate + production build
+npm run doctor              # Run react-doctor + storybook doctor
 npm run prepare             # Run Panda CSS codegen (runs automatically after npm install)
 
 # Icons
 npm run generate-sprite     # Generate SVG sprite from icon source files
 ```
+
+## Standards
+
+Canonical standards now live in `standards/`:
+
+- `standards/components/` - component API, composition, Floating UI, Storybook conventions
+- `standards/recipes/` - recipe naming/registration and token-only styling
+- `standards/lint/` - baseline lint rules, custom design-system lint rules, rollout workflow
+- `standards/index.yml` - index of all standards documents
+
+If this README and `standards/` ever conflict, treat `standards/` as the source of truth.
 
 ## Architecture
 

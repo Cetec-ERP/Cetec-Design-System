@@ -2,13 +2,18 @@ export { Box, type BoxProps } from './components/Box';
 export { Text } from './components/Text';
 export { Button } from './components/Button';
 export { IconButton } from './components/IconButton';
-export { Icon, IconNames } from './components/Icon';
+export {
+  Icon,
+  IconNames,
+  IconProvider,
+  type IconProviderProps,
+} from './components/Icon';
 export { Pre } from './components/Code';
 export { Heading } from './components/Heading';
 export { Link } from './components/Link';
 export { Spinner } from './components/Spinner';
 export { Divider } from './components/Divider';
-export { CheckBox } from './components/CheckBox';
+export { Checkbox } from './components/Checkbox';
 export { Radio } from './components/Radio';
 export { TextInput } from './components/TextInput';
 export { Textarea } from './components/Textarea';
@@ -16,18 +21,48 @@ export { Card } from './components/Card';
 export { Toggle } from './components/Toggle';
 export { ToggleInput } from './components/ToggleInput';
 export { RadioInput } from './components/RadioInput';
-export { CheckBoxInput } from './components/CheckboxInput';
+export { CheckboxInput } from './components/CheckboxInput';
 export { ThemeSwitcher } from './components/ThemeSwitcher';
-export { ThemeProvider } from './contexts/ThemeContext';
+export { ThemeProvider, useTheme } from './system/context';
 export { Tooltip } from './components/Tooltip';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Tag } from './components/Tag';
-export { Menu } from './components/Menu';
+export {
+  List,
+  ListItemGroup,
+  ListItem,
+  HighlightText,
+  type ListProps,
+  type ListItemGroupProps,
+  type ListItemProps,
+  type HighlightTextProps,
+  type ListDensity,
+} from './components/List';
+export {
+  Menu,
+  MenuGroup,
+  MenuItem,
+  MenuProvider,
+  SubMenu,
+  type MenuDensity,
+  type MenuGroupProps,
+  type MenuItemProps,
+  type MenuItemVariant,
+  type MenuProps,
+  type MenuProviderProps,
+  type SubMenuProps,
+} from './components/Menu';
 export { FormField } from './components/FormField';
 export { Avatar } from './components/Avatar';
 export { Modal, ModalHeader, ModalFooter, ModalBody } from './components/Modal';
 export { Chip, ChipGroup } from './components/Chip';
 export { Badge } from './components/Badge';
+
+// Export splitProps helper
+export { splitProps } from './utils/splitProps';
+
+// Export hooks
+export { useMediaQuery, useContainerQuery } from './system/hooks';
 
 // Export the Panda CSS preset
 export { cetecPreset } from './cetec-preset';

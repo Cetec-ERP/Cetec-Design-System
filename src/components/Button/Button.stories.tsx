@@ -1,11 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { Button } from './Button';
-import { Text } from '../Text';
-import { IconButton } from '../IconButton';
-import { Divider } from '../Divider';
-import { Tooltip } from '../Tooltip';
+
 import { HStack, Wrap, Grid } from '@styled-system/jsx';
+
+import { Divider } from '../Divider';
+import { IconButton } from '../IconButton';
+import { Text } from '../Text';
+
+import { Button } from './Button';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 /**
  * Button component with comprehensive variant support.
@@ -27,7 +30,16 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'],
+      options: [
+        'standard',
+        'primary',
+        'hollow',
+        'ghost',
+        'cta',
+        'danger',
+        'selected',
+        'selectedBold',
+      ],
       description: 'Visual style variants',
       table: {
         defaultValue: { summary: 'standard' },
@@ -68,7 +80,10 @@ const meta = {
       description: 'Button content',
     },
   },
-  args: { onClick: fn() },
+  args: {
+    children: 'Button',
+    onClick: fn(),
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -82,7 +97,16 @@ export const Variants: Story = {
   render: () => (
     <Wrap gap="12" alignItems="center">
       {(
-        ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'] as const
+        [
+          'standard',
+          'primary',
+          'hollow',
+          'ghost',
+          'cta',
+          'danger',
+          'selected',
+          'selectedBold',
+        ] as const
       ).map((variant) => (
         <Button key={variant} variant={variant}>
           {variant}
@@ -122,7 +146,16 @@ export const InteractionStates: Story = {
       </Text>
       <Wrap gap="12" alignItems="center">
         {(
-          ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'] as const
+          [
+            'standard',
+            'primary',
+            'hollow',
+            'ghost',
+            'cta',
+            'danger',
+            'selected',
+            'selectedBold',
+          ] as const
         ).map((variant) => (
           <Button key={variant} variant={variant} disabled>
             {variant}
@@ -134,7 +167,16 @@ export const InteractionStates: Story = {
       </Text>
       <Wrap gap="12" alignItems="center">
         {(
-          ['standard', 'primary', 'hollow', 'ghost', 'cta', 'danger'] as const
+          [
+            'standard',
+            'primary',
+            'hollow',
+            'ghost',
+            'cta',
+            'danger',
+            'selected',
+            'selectedBold',
+          ] as const
         ).map((variant) => (
           <Button key={variant} variant={variant} loading>
             {variant}
@@ -169,7 +211,7 @@ export const WithIcon: Story = {
         <Button iconBefore="timer" variant="primary">
           Start Timer
         </Button>
-        <Button iconBefore="calendar" variant="hollow">
+        <Button iconBefore="calendar" variant="selectedBold">
           2026-01-12
         </Button>
         <Button iconBefore="info" variant="ghost">
@@ -190,7 +232,12 @@ export const WithIcon: Story = {
         <Button iconAfter="download" variant="primary">
           Download
         </Button>
-        <Button iconAfter="arrow-square-out">Logout</Button>
+        <Button iconAfter="scale" variant="hollow">
+          Weigh
+        </Button>
+        <Button iconAfter="screwdriver" variant="selected">
+          Tools
+        </Button>
       </Wrap>
 
       <Divider gridColumn="1 / -1" />
@@ -199,24 +246,20 @@ export const WithIcon: Story = {
         IconButton
       </Text>
       <Wrap gap="56">
-        <Tooltip text="Download">
-          <IconButton iconName="download" />
-        </Tooltip>
-        <Tooltip text="Print">
-          <IconButton iconName="printer" variant="hollow" />
-        </Tooltip>
-        <Tooltip text="Last sync: 3 hours ago">
-          <IconButton iconName="cloud-synced" variant="ghost" />
-        </Tooltip>
-        <Tooltip text="Edit">
-          <IconButton iconName="edit" variant="primary" />
-        </Tooltip>
-        <Tooltip text="Send">
-          <IconButton iconName="send" variant="cta" />
-        </Tooltip>
-        <Tooltip text="This cannot be undone">
-          <IconButton iconName="trash" variant="danger" />
-        </Tooltip>
+        <IconButton iconName="download" altText="Download" />
+        <IconButton iconName="printer" variant="hollow" altText="Print" />
+        <IconButton
+          iconName="cloud-synced"
+          variant="ghost"
+          altText="Last sync: 3 hours ago"
+        />
+        <IconButton iconName="edit" variant="primary" altText="Edit" />
+        <IconButton iconName="send" variant="cta" altText="Send" />
+        <IconButton
+          iconName="trash"
+          variant="danger"
+          altText="This cannot be undone"
+        />
       </Wrap>
     </Grid>
   ),

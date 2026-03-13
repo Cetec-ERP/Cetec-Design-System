@@ -1,17 +1,21 @@
 import { defineRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 const tagBase = {
   ...globalBaseStyles,
   display: 'flex',
+  alignItems: 'center',
   py: '0',
   borderRadius: '2',
   gap: '1',
-  //   h: '20',
   px: '4',
+  w: 'fit',
+  h: '20',
   fontSize: '14',
   fontWeight: 'medium',
-  //   lineHeight: 'none',
+  lineHeight: 'tight',
+  whiteSpace: 'nowrap',
 };
 const tagVariant = {
   variant: {
@@ -37,14 +41,14 @@ const tagVariant = {
     rose: {},
     magenta: {},
   },
-  iconPosition: {
-    left: {
-      flexDirection: 'row',
+  iconBefore: {
+    true: {
       gap: '1',
       pl: '1',
     },
-    right: {
-      flexDirection: 'row-reverse',
+  },
+  iconAfter: {
+    true: {
       gap: '1',
       pr: '1',
     },
@@ -65,8 +69,6 @@ export const tagRecipe = defineRecipe({
   defaultVariants: {
     variant: 'default',
     hue: 'slate',
-    iconPosition: 'left',
-    hasIcon: false,
   },
   compoundVariants: [
     {

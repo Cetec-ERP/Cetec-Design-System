@@ -1,10 +1,11 @@
+import { Flex } from '@styled-system/jsx';
 import {
   token,
   type ColorToken as ColorTokenType,
 } from '@styled-system/tokens';
+
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
-import { Flex } from '@styled-system/jsx';
 import { Tooltip } from '~/components/Tooltip';
 
 export type ColorTokenProps = {
@@ -34,7 +35,6 @@ export const ColorToken = ({ tokenKey }: ColorTokenProps) => {
           border="default"
           borderRadius="4"
           bg={tokenKey}
-          // style={{ backgroundColor: tokenMeta.variable }}
         />
       </Tooltip>
 

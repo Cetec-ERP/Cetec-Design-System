@@ -1,11 +1,14 @@
-import { Text, type TextProps } from '~/components/Text';
-import { heading, type HeadingVariantProps } from '@styled-system/recipes';
+import type { ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
+import { heading, type HeadingVariantProps } from '@styled-system/recipes';
+
+import { Text, type TextProps } from '~/components/Text';
 import { splitProps } from '~/utils/splitProps';
 
 export type HeadingProps = Omit<TextProps, keyof HeadingVariantProps> &
   HeadingVariantProps & {
-    children?: string | React.ReactNode;
+    children?: string | ReactNode;
     level?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   };
 

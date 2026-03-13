@@ -1,20 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useReducer, useRef, type ReactNode } from 'react';
+
 import {
   FloatingPortal,
   FloatingFocusManager,
   useDismiss,
-  useFloating,
   useInteractions,
   FloatingOverlay,
 } from '@floating-ui/react';
-import { Box, type BoxProps } from '../Box';
+
+import { cx } from '@styled-system/css';
 import {
   modal as modalRecipe,
   type ModalVariantProps,
 } from '@styled-system/recipes';
-import { cx } from '@styled-system/css';
+
+import { useOverlayFloating } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
-import { ModalContext, ModalContextValue } from './ModalContext';
+
+import { Box, type BoxProps } from '../Box';
+
+import { ModalContext, type ModalContextValue } from './ModalContext';
 
 export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
   ModalVariantProps & {
@@ -25,10 +30,40 @@ export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
     /** Whether clicking the overlay should close the modal */
     preventOverlayClose?: boolean;
     /** Children (ModalHeader, ModalBody, ModalFooter) */
-    children: React.ReactNode;
+    children: ReactNode;
     /** Optional ID for ARIA attributes */
     id?: string;
   };
+
+type ModalPhase = 'open' | 'closing' | 'closed';
+
+type ModalState = {
+  phase: ModalPhase;
+};
+
+type ModalAction =
+  | { type: 'open' }
+  | { type: 'startClosing' }
+  | { type: 'finishClosing' };
+
+const modalStateReducer = (
+  state: ModalState,
+  action: ModalAction,
+): ModalState => {
+  switch (action.type) {
+    case 'open':
+      return { phase: 'open' };
+    case 'startClosing':
+      if (state.phase === 'closed') {
+        return state;
+      }
+      return { phase: 'closing' };
+    case 'finishClosing':
+      return { phase: 'closed' };
+    default:
+      return state;
+  }
+};
 
 export const Modal = (props: ModalProps) => {
   const {
@@ -38,18 +73,22 @@ export const Modal = (props: ModalProps) => {
     preventOverlayClose = false,
     children,
     id,
+    variant = 'default',
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
-  const classes = modalRecipe({ size });
-  const [isClosing, setIsClosing] = useState(false);
-  const [shouldRender, setShouldRender] = useState(open);
+  const classes = modalRecipe({ size, variant });
+  const [{ phase }, dispatch] = useReducer(modalStateReducer, {
+    phase: open ? 'open' : 'closed',
+  });
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Floating UI setup
-  const { refs, context } = useFloating({
+  const { refs, context } = useOverlayFloating({
     open,
     onOpenChange,
+    strategy: 'fixed',
+    middleware: [],
   });
 
   // Dismiss on Escape key
@@ -62,42 +101,39 @@ export const Modal = (props: ModalProps) => {
   // Handle open/close state with animation
   useEffect(() => {
     if (open) {
-      setShouldRender(true);
-      setIsClosing(false);
+      dispatch({ type: 'open' });
       // Clear any pending timeout
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
-    } else if (shouldRender) {
-      // Start closing animation
-      setIsClosing(true);
-      // Wait for animation to complete before unmounting
-      timeoutRef.current = setTimeout(() => {
-        setShouldRender(false);
-        setIsClosing(false);
-      }, 150);
+      return;
     }
+
+    dispatch({ type: 'startClosing' });
+    timeoutRef.current = setTimeout(() => {
+      dispatch({ type: 'finishClosing' });
+    }, 150);
 
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [open, shouldRender]);
+  }, [open]);
 
   // Context value
   const contextValue: ModalContextValue = {
-    open: shouldRender && !isClosing,
+    open: phase === 'open',
     onClose: () => onOpenChange(false),
     preventOverlayClose,
   };
 
-  if (!shouldRender) {
+  if (phase === 'closed') {
     return null;
   }
 
-  const dataState = isClosing ? 'closing' : 'open';
+  const dataState = phase === 'closing' ? 'closing' : 'open';
 
   return (
     <ModalContext.Provider value={contextValue}>

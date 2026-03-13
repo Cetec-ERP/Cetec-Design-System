@@ -1,30 +1,26 @@
-import { Box, type BoxProps } from '../Box';
-//import { Text, type TextProps } from '../Text';
-import { label, type LabelVariantProps } from '@styled-system/recipes';
+import type { ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
+import { label, type LabelVariantProps } from '@styled-system/recipes';
+
 import { splitProps } from '~/utils/splitProps';
 
-export type LabelProps = Omit<BoxProps, keyof LabelVariantProps> & LabelVariantProps & {
-  htmlFor?: string;
-  children?: string | React.ReactNode;
-}
+import { Box, type BoxProps } from '../Box';
 
-export const Label: React.FC<LabelProps> = (
-  { 
-    htmlFor, 
-    children, 
-    ...props 
-  }: LabelProps,
-) => {
-  const [ className, otherProps ] = splitProps(props);
+export type LabelProps = Omit<BoxProps, keyof LabelVariantProps> &
+  LabelVariantProps & {
+    htmlFor: string;
+    children?: string | ReactNode;
+  };
+
+export const Label = (props: LabelProps) => {
+  const { htmlFor, children, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
   return (
     <Box
+      as="label"
       htmlFor={htmlFor}
-      as="label" 
-      className={cx(
-        label({}),
-        className,
-      )} 
+      className={cx(label({}), className)}
       {...otherProps}
     >
       {children}

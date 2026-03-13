@@ -1,30 +1,39 @@
-import { breadcrumbs, BreadcrumbsVariantProps } from "@styled-system/recipes";
-import { type BoxProps } from "../Box";
-import { splitProps } from "~/utils/splitProps";
-import { cx } from "@styled-system/css";
-import { Text } from "../Text";
-import { Link } from "../Link";
-import React from "react";
+import { cx } from '@styled-system/css';
+import type { BreadcrumbsVariantProps } from '@styled-system/recipes';
+import { breadcrumbs } from '@styled-system/recipes';
 
-export type BreadcrumbsProps = Omit<BoxProps, keyof BreadcrumbsVariantProps> & 
-BreadcrumbsVariantProps & {
-    items: {id: string, label: string, href?:string} []
-}
+import { splitProps } from '~/utils/splitProps';
 
-export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
-    items,
-    ...props
-}:BreadcrumbsProps) => {
-    const [className, otherProps] = splitProps(props);
+import { type BoxProps } from '../Box';
+import { Link } from '../Link';
+import { Text } from '../Text';
 
-    return(
-        <Text as="ul" className={cx(breadcrumbs({}), className)} {...otherProps}>
-                {items?.map((item, index)=>(
-                    <Text as="li" key={item.id}>
-                        {item.href ? <Link family={'mono'} size={'14'} href={item.href}>{item.label}</Link> : <Text weight={"bold"} family={'mono'} size={'14'}>{item.label}</Text>}
-                        {index < items?.length - 1 && <Text as="span" family={'mono'} size={'14'}>/</Text>}
-                    </Text>
-                ))}
+export type BreadcrumbsProps = Omit<BoxProps, keyof BreadcrumbsVariantProps> &
+  BreadcrumbsVariantProps & {
+    items: { id: string; label: string; href?: string }[];
+  };
+
+export const Breadcrumbs = (props: BreadcrumbsProps) => {
+  const { items, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
+  const classes = breadcrumbs();
+
+  return (
+    <Text as="ul" className={cx(classes.wrapper, className)} {...otherProps}>
+      {items?.map((item, index) => (
+        <Text as="li" key={item.id}>
+          {item.href ? (
+            <Link href={item.href} className={classes.linkSegment}>
+              {item.label}
+            </Link>
+          ) : (
+            <Text className={classes.currentSegment}>{item.label}</Text>
+          )}
+          {index < items?.length - 1 && (
+            <Text className={classes.slash}>/</Text>
+          )}
         </Text>
-    )
-}
+      ))}
+    </Text>
+  );
+};

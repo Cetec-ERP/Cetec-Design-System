@@ -1,11 +1,14 @@
 import { defineRecipe } from '@pandacss/dev';
+
 import {
   fontSizes as fontSizeTokens,
   fontWeights as fontWeightTokens,
 } from '../styles/primitives';
+import { globalBaseStyles } from '../styles/utilities';
 import { fontVariants } from '../styles/utilities';
 
 const textBase = {
+  ...globalBaseStyles,
   fontFamily: 'body',
   fontVariationSettings: fontVariants.body,
   fontWeight: 'normal',
@@ -112,7 +115,7 @@ const linkBase = {
   alignItems: 'center',
   fontWeight: 'medium',
   gap: '1',
-  color: { base: 'blue.50', _dark: 'blue.40' },
+  color: 'link',
   textDecoration: 'none',
   backgroundImage: 'linear-gradient(90deg, transparent 0% 100%)',
   backgroundSize: '100% 1px',
@@ -125,12 +128,12 @@ const linkBase = {
   width: 'fit-content',
   cursor: 'pointer',
   _hover: {
-    color: { base: 'blue.40', _dark: 'blue.30' },
+    color: 'link',
     backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
   },
-  _focus: {
+  _focusVisible: {
     borderRadius: '4',
-    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
+    outlineColor: 'border.focused',
   },
 };
 
@@ -146,10 +149,11 @@ const linkVariants = {
 };
 
 const labelBase = {
-  fontSize: '14',
+  fontSize: '16',
   fontWeight: 'normal',
-  lineHeight: 'default',
+  lineHeight: 'tight',
   cursor: 'default',
+  color: 'text',
 };
 
 //Copied linkvarients, don't have styles defined for this yet

@@ -1,8 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Avatar } from './Avatar';
+import { Flex } from '@styled-system/jsx';
+
 import { Box } from '../Box';
-import { Text } from '../Text';
 import { Icon } from '../Icon';
+import { Text } from '../Text';
+
+import { Avatar } from './Avatar';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
@@ -91,7 +95,7 @@ export const SizesWithLabels: Story = {
     <Box display="flex" flexDir="column" gap="4">
       {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
         <Box key={size} display="flex" gap="4" alignItems="center">
-          <Text w="80" fontWeight="500">
+          <Text w="80" fontWeight="medium">
             {size}:
           </Text>
           <Avatar size={size} src={sampleImages.user1} name="John Doe" />
@@ -109,7 +113,7 @@ export const Shapes: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="6">
       <Box display="flex" flexDir="column" gap="2">
-        <Text fontWeight="600">Circle (for users)</Text>
+        <Text fontWeight="bold">Circle (for users)</Text>
         <Box display="flex" gap="4" alignItems="center">
           <Avatar shape="circle" size="sm" src={sampleImages.user1} />
           <Avatar shape="circle" size="md" src={sampleImages.user2} />
@@ -117,7 +121,7 @@ export const Shapes: Story = {
         </Box>
       </Box>
       <Box display="flex" flexDir="column" gap="2">
-        <Text fontWeight="600">Square (for projects/entities)</Text>
+        <Text fontWeight="bold">Square (for projects/entities)</Text>
         <Box display="flex" gap="4" alignItems="center">
           <Avatar shape="square" size="sm" src={sampleImages.user4} />
           <Avatar shape="square" size="md" src={sampleImages.user5} />
@@ -125,7 +129,7 @@ export const Shapes: Story = {
         </Box>
       </Box>
       <Box display="flex" flexDir="column" gap="2">
-        <Text fontWeight="600">Hexagon (for an agent entity)</Text>
+        <Text fontWeight="bold">Hexagon (for an agent entity)</Text>
         <Box display="flex" gap="4" alignItems="center">
           <Avatar shape="hexagon" size="sm" src={sampleImages.user4} />
           <Avatar shape="hexagon" size="md" src={sampleImages.user5} />
@@ -156,7 +160,7 @@ export const WithCustomFallback: Story = {
     <Box display="flex" gap="4" alignItems="center">
       <Avatar size="md" fallback={<Icon name="user" />} />
       <Avatar size="md" fallback={<Icon name="user-group" />} />
-      <Avatar size="md" fallback={<Icon name="Building" />} />
+      <Avatar size="md" fallback={<Icon name="building" />} />
       <Avatar size="md" fallback="?" />
     </Box>
   ),
@@ -186,7 +190,7 @@ export const ImageLoadError: Story = {
 export const Presence: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="6">
-      <Text fontWeight="600">
+      <Text fontWeight="bold">
         Presence indicates availability (bottom-right)
       </Text>
       <Box display="flex" gap="6" alignItems="center">
@@ -231,7 +235,7 @@ export const PresenceAllSizes: Story = {
 export const Status: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="6">
-      <Text fontWeight="600">
+      <Text fontWeight="bold">
         Status shows contextual information (top-right)
       </Text>
       <Box display="flex" gap="6" alignItems="center">
@@ -303,7 +307,7 @@ export const PresenceAndStatus: Story = {
 
 export const UserList: Story = {
   render: () => (
-    <Box display="flex" flexDir="column" gap="3">
+    <Box display="flex" flexDir="column" gap="8">
       {[
         {
           name: 'Alice Johnson',
@@ -326,15 +330,17 @@ export const UserList: Story = {
           img: sampleImages.user4,
         },
       ].map((user) => (
-        <Box key={user.name} display="flex" gap="3" alignItems="center">
+        <Box key={user.name} display="flex" gap="8" alignItems="center">
           <Avatar
             size="md"
             src={user.img}
             name={user.name}
             presence={user.presence}
           />
-          <Box>
-            <Text fontWeight="500">{user.name}</Text>
+          <Flex gap="8" alignItems="baseline">
+            <Text fontWeight="medium" color="text">
+              {user.name}
+            </Text>
             <Text fontSize="12" color="text.subtle">
               {user.presence === 'online'
                 ? 'Available'
@@ -344,7 +350,7 @@ export const UserList: Story = {
                     ? 'Do not disturb'
                     : 'Away'}
             </Text>
-          </Box>
+          </Flex>
         </Box>
       ))}
     </Box>
@@ -354,7 +360,7 @@ export const UserList: Story = {
 export const ProjectAvatars: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="4">
-      <Text fontWeight="600">Project/Entity Avatars (Square)</Text>
+      <Text fontWeight="bold">Project/Entity Avatars (Square)</Text>
       <Box display="flex" gap="4">
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
           <Avatar shape="square" size="lg" name="Design System" />
@@ -380,7 +386,7 @@ export const ProjectAvatars: Story = {
 export const AvatarStack: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="4">
-      <Text fontWeight="600">Stacked Avatars</Text>
+      <Text fontWeight="bold">Stacked Avatars</Text>
       <Box display="flex">
         {[
           sampleImages.user1,
@@ -388,16 +394,11 @@ export const AvatarStack: Story = {
           sampleImages.user3,
           sampleImages.user4,
         ].map((src, i) => (
-          <Box
-            key={i}
-            style={{ marginLeft: i > 0 ? '-8px' : '0' }}
-            position="relative"
-            zIndex={4 - i}
-          >
-            <Avatar size="md" src={src} borderColor="var(--colors-bg)" />
+          <Box key={src} ml={i > 0 ? '-8' : '0'} position="relative">
+            <Avatar size="md" src={src} />
           </Box>
         ))}
-        <Box style={{ marginLeft: '-8px' }} position="relative" zIndex={0}>
+        <Box ml="-8" position="relative">
           <Avatar size="md" fallback="+3" />
         </Box>
       </Box>

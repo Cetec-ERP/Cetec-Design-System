@@ -1,13 +1,17 @@
-import { Box, type BoxProps } from '../Box';
+import type { MouseEvent, ReactNode } from 'react';
+
+import { cx } from '@styled-system/css';
 import { link, type LinkVariantProps } from '@styled-system/recipes';
 import {
   type FontSizeToken,
   type FontToken,
   type FontWeightToken,
 } from '@styled-system/tokens';
-import { Icon } from '../Icon/Icon';
-import { cx } from '@styled-system/css';
+
 import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box';
+import { Icon } from '../Icon/Icon';
 
 export type LinkProps = Omit<BoxProps, keyof LinkVariantProps> &
   LinkVariantProps & {
@@ -20,24 +24,25 @@ export type LinkProps = Omit<BoxProps, keyof LinkVariantProps> &
     bold?: boolean;
     weight?: FontWeightToken;
     className?: string;
-    children?: React.ReactNode;
+    children?: ReactNode;
   };
 
-export const Link: React.FC<LinkProps> = ({
-  href,
-  external,
-  disabled,
-  children,
-  size,
-  family,
-  weight,
-  italic,
-  bold,
-  ...props
-}: LinkProps) => {
-  const [className, otherProps] = splitProps(props);
+export const Link = (props: LinkProps) => {
+  const {
+    href,
+    external,
+    disabled,
+    children,
+    size,
+    family,
+    weight,
+    italic,
+    bold,
+    ...rest
+  } = props;
+  const [className, otherProps] = splitProps(rest);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (disabled) {
       e.preventDefault();
       e.stopPropagation();
@@ -50,13 +55,15 @@ export const Link: React.FC<LinkProps> = ({
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
+      // aria-disabled and tabIndex are needed to properly disable the link for accessibility
       aria-disabled={disabled}
+      tabIndex={disabled ? -1 : undefined}
       className={cx(link({ family, italic, bold, size, weight }), className)}
       onClick={handleClick}
       {...otherProps}
     >
       {children}
-      {external && <Icon name="arrow-square-out" size={'20'} fill="current" />}
+      {external && <Icon name="arrow-square-out" size="20" fill="link" />}
     </Box>
   );
 };
