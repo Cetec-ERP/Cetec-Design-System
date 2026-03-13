@@ -29,6 +29,7 @@ old_*
 *.cursorrules
 *.cursor
 *storybook.log
+.opencode
 
 ## Panda
 src/styled-system
