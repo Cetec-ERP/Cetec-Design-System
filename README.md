@@ -176,10 +176,11 @@ Packages are published from the repo root with `dist` included in the published 
 ### Contributing
 
 - **Workflow trigger**: Every push to `main` runs the release workflow.
+- **Automatic labels**: PR title labels are synced automatically from the Conventional Commit title.
 - **Publishing behavior**: A merged change that resolves to a releasable bump publishes a prerelease by default. Add the `release` label to graduate that merge to a stable `latest` release.
-- **Version bump labels**: Use `major`, `minor`, or `patch` to control the semver bump.
-- **Default bump**: If the merged PR has no Auto semver label, Auto defaults the head change to `patch`.
-- **No-release labels**: `internal`, `documentation`, `tests`, and `dependencies` do not publish on their own.
+- **Version bump labels**: `major`, `minor`, and `patch` remain manual labels.
+- **Default bump**: If the merged PR has no semver label, Auto will not publish a release.
+- **No-release labels**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, and `revert` are changelog labels. They do not publish on their own unless paired with a semver label.
 - **Skip label**: Use `skip-release` to prevent publishing.
 - **Changelog**: Auto-generated based on PR labels and titles
 - **PR Titles**: Must follow our defined format for Auto release automation:
@@ -219,25 +220,40 @@ Packages are published from the repo root with `dist` included in the published 
 >
 > Use your best judgement when deciding what type and scope to use for the PR you’re creating.
 
+Auto-applied label behavior:
+
+- Title type `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, and `revert` applies the matching PR-type label.
+- `major`, `minor`, `patch`, `release`, and `skip-release` remain manual labels.
+- PR title scopes such as `major`, `minor`, and `patch` are allowed by validation, but they do not apply labels automatically.
+
 ### Release Labels
 
-- `major` - Major version bump (💥 Breaking Change)
-- `minor` - Minor version bump (🚀 Enhancement)
-- `patch` - Patch version bump (🐛 Bug Fix)
-- `release` - Graduate the publish from prerelease to stable `latest`
-- `skip-release` - Do not publish a release
-- `internal` - Internal changes only (🏠 Internal)
-- `documentation` - Documentation updates only (📝 Documentation)
-- `tests` - Test-only changes (🧪 Tests)
-- `dependencies` - Dependency updates only (🔩 Dependency Updates)
-- `performance` - Performance improvements (🏎 Performance)
+- `major` - Use for breaking changes that should trigger a major version bump when merged
+- `minor` - Use for new functionality that should trigger a minor version bump when merged
+- `patch` - Use for fixes or small improvements that should trigger a patch version bump when merged
+- `release` - Graduate the merge from a prerelease publish to a stable latest release
+- `skip-release` - Prevent Auto from publishing a release for this PR when it is merged
+- `changes` - Fallback changelog section for merged work that does not match a more specific PR type label
+- `feat` - Feature work that adds or expands user-facing functionality
+- `fix` - Bug fix work that corrects broken or incorrect behavior
+- `docs` - Documentation-only work such as guides, examples, or API docs
+- `style` - Visual or formatting changes that do not alter component behavior
+- `refactor` - Code restructuring or cleanup that does not change intended behavior
+- `perf` - Performance-focused work that improves speed, efficiency, or bundle cost
+- `test` - Test-only work such as adding coverage or improving existing test cases
+- `build` - Build, packaging, dependency, or tooling changes affecting how the project is produced
+- `ci` - Continuous integration or deployment workflow changes
+- `chore` - General maintenance work that does not fit a more specific change type
+- `revert` - Reverts a previous change or backs out an earlier merge
 
 Examples:
 
-- `minor` => prerelease minor
-- `minor` + `release` => stable minor release
-- no Auto semver label => prerelease patch
-- `documentation` only => no publish
+- `feat: add modal` => label `feat`, no publish until a semver label is added
+- `ci: update release workflow` => label `ci`, no publish
+- `fix(patch): restore export` => label `fix`, no publish until a semver label is added
+- `refactor(major)!: break input API` => label `refactor`, no publish until a semver label is added
+- `feat: add modal` + manual `minor` label => prerelease minor
+- `feat: add modal` + manual `minor` + `release` labels => stable minor release
 - `skip-release` => no publish
 
 See `.autorc` for the complete configuration.
