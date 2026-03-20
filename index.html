@@ -68,12 +68,17 @@
     
     <link href="./sb-addons/themes-10/manager-bundle.js" rel="modulepreload" />
     
-    <link href="./sb-addons/storybook-11/manager-bundle.js" rel="modulepreload" />
-      <style>
-  .sidebar-header [title*="Design System"] img {
+    <link href="./sb-addons/a11y-11/manager-bundle.js" rel="modulepreload" />
+    
+    <link href="./sb-addons/storybook-12/manager-bundle.js" rel="modulepreload" />
+      <link rel="shortcut icon" href="./storybook.svg" />
+
+<style>
+  .sidebar-header [title*='Design System'] img {
     width: 100%;
   }
-</style> 
+</style>
+ 
 
     <style>
       #storybook-root[hidden] {
@@ -94,7 +99,6 @@
   "argTypeTargetsV7": true,
   "legacyDecoratorFileOrder": false,
   "disallowImplicitActionsInRenderV8": true,
-  "backgrounds": false,
   "backgroundsStoryGlobals": false
 };
         
@@ -178,7 +182,9 @@
       
         import './sb-addons/themes-10/manager-bundle.js';
       
-        import './sb-addons/storybook-11/manager-bundle.js';
+        import './sb-addons/a11y-11/manager-bundle.js';
+      
+        import './sb-addons/storybook-12/manager-bundle.js';
       
       
       import './sb-manager/runtime.js';
