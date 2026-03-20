@@ -1,11 +1,13 @@
-import { ReactNode, MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
 import { HStack } from '@styled-system/jsx';
-import { Box, type BoxProps } from '~/components/Box';
 import { button, type ButtonVariantProps } from '@styled-system/recipes';
-import { splitProps } from '~/utils/splitProps';
-import { Spinner } from '~/components/Spinner';
+
+import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
+import { Spinner } from '~/components/Spinner';
+import { splitProps } from '~/utils/splitProps';
 
 export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
   Omit<ButtonVariantProps, 'iconBefore' | 'iconAfter'> & {
@@ -13,7 +15,7 @@ export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
     iconAfter?: IconNamesList;
     href?: string;
     loading?: boolean;
-    children?: string | ReactNode;
+    children: string | ReactNode; // include ReactNode so we can pass in components like <Badge/>
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
   };
@@ -41,37 +43,43 @@ export const Button = (props: ButtonProps) => {
 
   return (
     <Box
-      as={href ? 'a' : 'button'}
+      {...(href
+        ? ({
+            as: 'a',
+            href,
+            ...(disabled && {
+              onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
+            }),
+          } satisfies BoxProps<'a'>)
+        : ({
+            as: 'button',
+            type,
+            disabled,
+          } satisfies BoxProps<'button'>))}
       className={`${cx(classes.container, className)} group`}
-      {...(href ? { href } : { type })}
-      {...otherProps}
       {...(loading && {
         'aria-busy': true,
         'aria-live': 'polite',
       })}
-      {...(disabled && {
-        disabled: true,
-        'aria-disabled': true,
-        ...(href && {
-          tabIndex: -1,
-          onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
-        }),
-      })}
+      aria-disabled={disabled}
+      {...otherProps}
     >
-      <>
-        <HStack gap="4" opacity={loading ? 0 : 1}>
-          {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
-          {children}
-          {iconAfter && <Icon name={iconAfter} className={classes.icon} />}
-        </HStack>
-        {loading && (
-          <Spinner
-            size="sm"
-            inverse={variant === 'primary' || variant === 'danger'}
-            centered
-          />
-        )}
-      </>
+      <HStack gap="4" opacity={loading ? 0 : 1}>
+        {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
+        {children}
+        {iconAfter && <Icon name={iconAfter} className={classes.icon} />}
+      </HStack>
+      {loading && (
+        <Spinner
+          size="sm"
+          inverse={
+            variant === 'primary' ||
+            variant === 'danger' ||
+            variant === 'selectedBold'
+          }
+          centered
+        />
+      )}
     </Box>
   );
 };

@@ -1,4 +1,5 @@
 import { defineConfig } from '@pandacss/dev';
+
 import { cetecPreset } from './src/cetec-preset';
 
 // Control whether the staticCss is included or not

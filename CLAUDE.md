@@ -80,7 +80,7 @@ Icons are managed as an SVG sprite system:
 
 ### Theme System
 
-- **Provider**: `ThemeProvider` from `src/contexts/ThemeContext.tsx` wraps the app
+- **Provider**: `ThemeProvider` from `src/contexts/ThemeProvider.tsx` wraps the app
 - **Themes**: Defined as Panda CSS conditions (light/dark modes)
 - **Switcher**: `ThemeSwitcher` component for toggling themes
 - **Implementation**: Uses data attributes and CSS conditions for theme switching

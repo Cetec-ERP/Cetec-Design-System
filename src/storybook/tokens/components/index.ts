@@ -8,3 +8,4 @@ export * from './SizeToken';
 export * from './TextStyleToken';
 export * from './TypographyToken';
 export * from './RadiusToken';
+export * from './SizeToken.styles';

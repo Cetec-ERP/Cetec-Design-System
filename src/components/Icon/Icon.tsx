@@ -1,11 +1,16 @@
-import { SVGAttributes } from 'react';
-import { Box, type BoxProps } from '~/components/Box';
+import type { SVGAttributes } from 'react';
+
 import { cx } from '@styled-system/css';
-import { IconNamesList } from './icons';
-import { icon } from '@styled-system/patterns';
-import { numericSizes } from '~/styles/primitives';
-import { ColorToken } from '@styled-system/tokens';
+import { icon, type IconVariantProps } from '@styled-system/recipes';
+import type { ColorToken } from '@styled-system/tokens';
+
+import { Box, type BoxProps } from '~/components/Box';
+import type { numericSizes } from '~/styles/primitives';
 import { splitProps } from '~/utils/splitProps';
+
+import { useIconConfig } from './IconContext';
+
+import type { IconNamesList } from './icons';
 
 /*
  * Using the size prop in this way cannot handle non-numeric sizes,
@@ -14,30 +19,32 @@ import { splitProps } from '~/utils/splitProps';
  */
 export type AllowedIconSizes = keyof typeof numericSizes;
 
-export type IconProps = Omit<BoxProps, 'size'> &
-  SVGAttributes<SVGElement> & {
+export type IconProps = Omit<BoxProps, IconNamesList | 'size'> &
+  SVGAttributes<SVGElement> &
+  IconVariantProps & {
     name: IconNamesList;
     size?: AllowedIconSizes;
     fill?: ColorToken;
   };
 
-export const Icon: React.FC<IconProps> = ({
-  name,
-  size = '24',
-  fill = 'icon.decorative',
-  ...props
-}: IconProps) => {
-  const [className, otherProps] = splitProps(props);
+export const Icon = (props: IconProps) => {
+  const { name, size, fill, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
+  const { spritePath } = useIconConfig();
+  const spriteHref = `${spritePath}#${name}`;
+
   return (
     <Box
       as="svg"
       name={name}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className={cx(icon({ size: size, fill }), className)}
+      {...(size && { width: size })}
+      fill={fill}
+      className={cx(icon(), className)}
       {...otherProps}
     >
-      <use xlinkHref={`${import.meta.env.BASE_URL}sprite.svg#${name}`} />
+      <use xlinkHref={spriteHref} />
     </Box>
   );
 };

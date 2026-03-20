@@ -1,5 +1,5 @@
 import { IconButton } from '~/components/IconButton';
-import { useTheme } from '~/contexts/ThemeContext';
+import { useTheme } from '~/system/context';
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
@@ -10,8 +10,8 @@ export const ThemeSwitcher = () => {
   return (
     <IconButton
       variant="ghost"
+      altText={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
       onClick={toggleTheme}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
       iconName={theme === 'light' ? 'moon' : 'sun'}
     />
   );

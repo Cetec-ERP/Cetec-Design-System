@@ -1,260 +1,494 @@
-import { menu, type MenuVariantProps } from '@styled-system/recipes';
-import { Box, type BoxProps } from '../Box';
-import { useRef, useState } from 'react';
-import { Text } from '../Text';
-import { Divider } from '../Divider';
-import { Icon, type IconNamesList } from '../Icon';
-import { CheckBox } from '../CheckBox';
-import { Toggle } from '../Toggle';
-import { Link } from '../Link';
-import { Spinner } from '../Spinner';
-import { useOnClose } from '~/utils/useOnClose';
+import {
+  Children,
+  cloneElement,
+  type HTMLProps,
+  type CSSProperties,
+  type ReactNode,
+  isValidElement,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-export type MenuProps = Omit<BoxProps, keyof MenuVariantProps> &
-  MenuVariantProps & {
-    loading?: boolean;
-    onClose?: () => void;
-    menuSection: {
-      id?: string;
-      title?: string;
-      divider?: boolean;
-      spacer?: boolean;
-      link?: boolean;
-      items: {
-        id: string;
-        label: string;
-        description?: string;
-        value?: string;
-        iconName?: string;
-        children?: MenuProps['menuSection'];
-        disabled?: boolean;
-        href?: string;
-      }[];
-    }[];
-    iconPlacement?: 'left' | 'right';
-    variant?: 'single-select' | 'multi-select';
-    multiSelectType?: 'checkbox' | 'toggle';
-    onChange?: (selected: string[] | string | null) => void;
+import {
+  FloatingFocusManager,
+  FloatingList,
+  FloatingNode,
+  FloatingPortal,
+  FloatingTree,
+  size,
+  useClick,
+  useDismiss,
+  useInteractions,
+  useHover,
+  useListNavigation,
+  useFloatingNodeId,
+  useRole,
+  safePolygon,
+  useTypeahead,
+} from '@floating-ui/react';
+
+import { cx } from '@styled-system/css';
+import { list, menu } from '@styled-system/recipes';
+
+import {
+  createOverlayMiddleware,
+  useOverlayFloating,
+} from '~/system/floating-ui/floating';
+import { splitProps } from '~/utils/splitProps';
+
+import { Box } from '../Box';
+import { Icon } from '../Icon';
+import { Text } from '../Text';
+
+import {
+  hasMatchingItems,
+  MenuFilterProvider,
+  MenuListProvider,
+  MenuRootProvider,
+  type MenuProps,
+  type MenuRootContextValue,
+} from './context/menuContext';
+
+type DiginLevel = {
+  key: string;
+  title: string;
+  children: ReactNode;
+};
+
+const defaultGetItemText = ({
+  label,
+  description,
+}: {
+  label?: string;
+  description?: string;
+}) => {
+  return [label, description].filter(Boolean).join(' ').trim();
+};
+
+const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
+  return Children.map(nodes, (childNode, index) => {
+    if (!isValidElement(childNode)) {
+      return childNode;
+    }
+
+    const childKey = childNode.key ?? index;
+    return cloneElement(childNode, {
+      key: `${levelKey}-${String(childKey)}`,
+    });
+  });
+};
+
+export const Menu = (props: MenuProps) => {
+  const nodeId = useFloatingNodeId();
+  const {
+    trigger,
+    children,
+    open,
+    defaultOpen,
+    onOpenChange,
+    placement = 'bottom-start',
+    strategy = 'absolute',
+    closeOnSelect = true,
+    inline = false,
+    triggerInteraction = 'click',
+    triggerOpenDelay = 75,
+    triggerCloseDelay = 100,
+    subMenuInteraction = 'hover',
+    density = 'compact',
+    panel,
+    query = '',
+    filterMode = 'none',
+    renderNoResults,
+    highlightMatches = Boolean(query),
+    getItemText = defaultGetItemText,
+    ...rest
+  } = props;
+
+  const [className, otherProps] = splitProps(rest);
+  const userStyle = otherProps.style as CSSProperties | undefined;
+  const classes = menu({ density, panel });
+  const listClassName = list({});
+
+  const hasReference = Boolean(trigger) && !inline;
+
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(
+    defaultOpen ?? false,
+  );
+  const isControlled = open !== undefined;
+  const isOpen = isControlled ? open : uncontrolledOpen;
+  const isMenuVisible = hasReference ? isOpen : true;
+
+  const setOpenState = (nextOpen: boolean, _event?: Event, reason?: string) => {
+    if (
+      triggerInteraction === 'hover' &&
+      !nextOpen &&
+      (reason === 'hover' || reason === 'safe-polygon')
+    ) {
+      return;
+    }
+
+    if (!isControlled) {
+      setUncontrolledOpen(nextOpen);
+    }
+    onOpenChange?.(nextOpen);
   };
 
-export const Menu: React.FC<MenuProps> = ({
-  loading,
-  onClose,
-  menuSection,
-  iconPlacement,
-  variant,
-  multiSelectType,
-  onChange,
-}) => {
-  const {
-    wrapper,
-    wrapperInner,
-    sectionTitle,
-    menuItem,
-    menuLabel,
-    menuDescription,
-    parentLabel,
-    multiLevelIcon,
-    dividerSection,
-    spacerSection,
-    iconSection,
-    loaderContainer,
-  } = menu({
-    iconPlacement,
-    multiSelectType,
+  const [diginLevels, setDiginLevels] = useState<DiginLevel[]>([]);
+  const [wrapperSize, setWrapperSize] = useState<{
+    width: number | null;
+    height: number | null;
+  }>({
+    width: null,
+    height: null,
   });
-  const [selected, setSelected] = useState<string[]>([]);
-  const [isChildren, setIsChildren] = useState([
-    { menu: menuSection, parentLabel: null as string | null },
+  const diginDepth = diginLevels.length;
+
+  useEffect(() => {
+    if (!isOpen) {
+      setDiginLevels([]);
+    }
+  }, [isOpen]);
+
+  const floating = useOverlayFloating({
+    nodeId,
+    open: hasReference ? isOpen : true,
+    onOpenChange: setOpenState,
+    placement,
+    strategy,
+    middleware: createOverlayMiddleware({
+      extras: [size()],
+    }),
+  });
+
+  const listRef = useRef<Array<HTMLElement | null>>([]);
+  const labelsRef = useRef<Array<string | null>>([]);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const hover = useHover(floating.context, {
+    enabled: hasReference && triggerInteraction === 'hover',
+    delay: {
+      open: triggerOpenDelay,
+      close: triggerCloseDelay,
+    },
+    handleClose: safePolygon({
+      blockPointerEvents: true,
+    }),
+  });
+  const click = useClick(floating.context, {
+    enabled: hasReference && triggerInteraction === 'click',
+  });
+  const dismiss = useDismiss(floating.context, { enabled: hasReference });
+  const role = useRole(floating.context, { role: 'menu' });
+  const listNavigation = useListNavigation(floating.context, {
+    listRef,
+    activeIndex,
+    onNavigate: setActiveIndex,
+    loop: true,
+  });
+  const typeahead = useTypeahead(floating.context, {
+    listRef: labelsRef,
+    activeIndex,
+    onMatch: setActiveIndex,
+    resetMs: 600,
+  });
+
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [hover, click, dismiss, role, listNavigation, typeahead],
+  );
+
+  const filterContextValue = useMemo(
+    () => ({
+      query,
+      filterMode,
+      highlightMatches,
+      getItemText,
+    }),
+    [filterMode, getItemText, highlightMatches, query],
+  );
+
+  const activeLevelChildren =
+    diginLevels[diginLevels.length - 1]?.children ?? children;
+
+  const hasVisibleResults = hasMatchingItems(
+    activeLevelChildren,
+    filterContextValue,
+  );
+
+  const rootContextValue: MenuRootContextValue = {
+    density,
+    panel,
+    closeOnSelect,
+    subMenuInteraction,
+    inline,
+    onCloseMenu: () => {
+      setOpenState(false);
+      setDiginLevels([]);
+    },
+    onPushDiginLevel: (title, levelChildren) => {
+      setDiginLevels((prev) => {
+        const activeLevel = prev[prev.length - 1];
+
+        if (
+          activeLevel &&
+          activeLevel.title === title &&
+          activeLevel.children === levelChildren
+        ) {
+          return prev;
+        }
+
+        return [
+          ...prev,
+          {
+            key: `${title}-${prev.length}`,
+            title,
+            children: levelChildren,
+          },
+        ];
+      });
+    },
+    onPopDiginLevel: () => {
+      setDiginLevels((prev) => prev.slice(0, -1));
+    },
+    diginDepth,
+  };
+
+  const menuListContextValue = {
+    activeIndex,
+    getItemProps: (userProps?: HTMLProps<HTMLElement>) =>
+      getItemProps(userProps) as HTMLProps<HTMLElement>,
+  };
+
+  const levels = [{ key: 'root', title: 'Menu', children }, ...diginLevels];
+  const activeLevel = levels[Math.min(diginDepth, levels.length - 1)]!;
+  const levelCount = levels.length;
+  const trackWidthPercent = levelCount * 100;
+  const levelWidthPercent = 100 / levelCount;
+  const trackTranslatePercent = (diginDepth * 100) / levelCount;
+  const shouldUsePanelDiginProbeFill =
+    Boolean(panel) && subMenuInteraction === 'digin';
+  const shouldUseDiginSizing =
+    subMenuInteraction === 'digin' && hasVisibleResults;
+
+  const sizeProbeRef = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (!isMenuVisible || !shouldUseDiginSizing) {
+      setWrapperSize({ width: null, height: null });
+      return;
+    }
+
+    const sizeProbe = sizeProbeRef.current;
+    if (!sizeProbe) {
+      return;
+    }
+
+    const updateWrapperSize = () => {
+      const nextWidth = Math.ceil(sizeProbe.scrollWidth);
+      const nextHeight = Math.ceil(sizeProbe.scrollHeight);
+
+      setWrapperSize((previous) => {
+        if (previous.width === nextWidth && previous.height === nextHeight) {
+          return previous;
+        }
+
+        return {
+          width: nextWidth,
+          height: nextHeight,
+        };
+      });
+    };
+
+    updateWrapperSize();
+
+    const resizeObserver = new ResizeObserver(updateWrapperSize);
+    resizeObserver.observe(sizeProbe);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [
+    activeLevel.children,
+    activeLevel.key,
+    activeLevel.title,
+    density,
+    diginDepth,
+    hasVisibleResults,
+    isMenuVisible,
+    shouldUseDiginSizing,
   ]);
 
-  const current = isChildren[isChildren.length - 1];
+  const diginWrapperStyle: CSSProperties =
+    shouldUseDiginSizing && wrapperSize.width && wrapperSize.height
+      ? {
+          width: `${wrapperSize.width}px`,
+          height: `${wrapperSize.height}px`,
+        }
+      : {};
 
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useOnClose(menuRef, onClose);
-
-  const handleSelect = (id: string) => {
-    if (variant === 'single-select') {
-      if (selected.includes(id)) {
-        setSelected([]);
-        onChange?.(null);
-      } else {
-        setSelected([id]);
-        onChange?.(id);
-      }
-    } else {
-      setSelected((prev) =>
-        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-      );
-      onChange?.(
-        selected.includes(id)
-          ? selected.filter((x) => x !== id)
-          : [...selected, id],
-      );
-    }
+  const floatingStyle = {
+    ...(hasReference && !inline ? floating.floatingStyles : {}),
+    ...diginWrapperStyle,
+    ...(userStyle ?? {}),
   };
+  const diginSizeProbeStyle: CSSProperties = shouldUsePanelDiginProbeFill
+    ? { inset: '0', width: '100%', height: '100%' }
+    : {};
 
-  const handleOpenSubmenu = (
-    children: MenuProps['menuSection'],
-    parentLabel: string,
-  ) => {
-    if (children)
-      setIsChildren([...isChildren, { menu: children, parentLabel }]);
-  };
-
-  const handleBack = () => {
-    setIsChildren(isChildren.slice(0, -1));
-  };
-
-  return (
-    <Box className={wrapper} ref={menuRef}>
-      {isChildren.length > 1 && (
-        <Text
-          onClick={handleBack}
-          className={parentLabel}
-          textStyle={{ base: 'body.lg', md: 'body.md' }}
-          color={{ base: 'slate.90', _dark: 'slate.0' }}
+  const content = (
+    <MenuRootProvider value={rootContextValue}>
+      <MenuFilterProvider value={filterContextValue}>
+        <Box
+          ref={floating.refs.setFloating}
+          className={cx(classes.wrapper, className)}
+          {...getFloatingProps()}
+          {...otherProps}
+          style={floatingStyle}
         >
-          <Icon name="caret-left" />
-          {current?.parentLabel || 'Back'}
-        </Text>
-      )}
-
-      <Box
-        data-anim={isChildren.length > 1 ? 'slide-left' : undefined}
-        className={wrapperInner}
-      >
-        {loading ? (
-          <Box className={loaderContainer}>
-            <Spinner size="md" />
-          </Box>
-        ) : (
-          current?.menu?.map((section) => (
-            <Box key={section.id}>
-              {section.title && (
-                <Box className={sectionTitle}>
-                  <Text textStyle="body.xs">{section?.title}</Text>
-                </Box>
+          {!hasVisibleResults && (
+            <Box className={classes.noResults}>
+              {renderNoResults ?? (
+                <Text textStyle="body.sm">No results found</Text>
               )}
-              <Box>
-                {section?.items?.map((item) => {
-                  const hasChildren = !!item.children?.length;
-                  const isSelected = selected.includes(item.id);
-                  const isDisabled = !!item?.disabled;
-                  const activateItem = () => {
-                    if (isDisabled) return;
-                    if (item?.children) {
-                      handleOpenSubmenu(item.children, item.label);
-                    } else {
-                      handleSelect(item.id);
-                    }
-                  };
-                  return (
-                    <Box
-                      color={{ base: 'slate.100', _dark: 'slate.90' }}
-                      key={item?.id}
-                      className={menuItem}
-                      tabIndex={isDisabled ? -1 : 0}
-                      disabled={item?.disabled}
-                      aria-disabled={item?.disabled}
-                      data-selected={isSelected}
-                      onClick={activateItem}
-                      onKeyDown={(e: {
-                        key: string;
-                        preventDefault: () => void;
-                      }) => {
-                        if (
-                          e.key === ' ' ||
-                          e.key === 'Spacebar' ||
-                          e.key === 'Enter'
-                        ) {
-                          e.preventDefault();
-                          activateItem();
-                        }
-                      }}
-                      role="button"
-                      aria-pressed={isSelected}
-                    >
-                      {(iconPlacement || item?.iconName) && (
-                        <Box
-                          className={iconSection}
-                          color={{ base: 'slate.90', _dark: 'slate.0' }}
-                        >
-                          {item?.iconName && (
-                            <Icon name={`${item?.iconName as IconNamesList}`} />
-                          )}
-                        </Box>
-                      )}
-                      {variant === 'multi-select' &&
-                        multiSelectType === 'checkbox' &&
-                        !section?.link && (
-                          <CheckBox
-                            name={item.id}
-                            id={item.id}
-                            checked={isSelected}
-                            onChange={() => handleSelect(item.id)}
-                          />
-                        )}
-                      {variant === 'multi-select' &&
-                        multiSelectType === 'toggle' &&
-                        !section?.link && (
-                          <Toggle
-                            name={item.id}
-                            id={item.id}
-                            checked={isSelected}
-                            onChange={() => handleSelect(item.id)}
-                          />
-                        )}
-                      {!section?.link && (
-                        <Box>
-                          <Text
-                            textStyle={{ base: 'body.lg', md: 'body.md' }}
-                            className={menuLabel}
-                            color={{ base: 'slate.90', _dark: 'slate.5' }}
-                          >
-                            {item?.label}
-                          </Text>
-                          {item?.description && (
-                            <Text
-                              textStyle="body.xs"
-                              className={menuDescription}
-                            >
-                              {item?.description}
-                            </Text>
-                          )}
-                        </Box>
-                      )}
-                      {section?.link && (
-                        <Link
-                          href={`${item?.href}`}
-                          color={{ base: 'slate.90', _dark: 'slate.0' }}
-                        >
-                          {item?.label} <Icon name="arrow-square-out" />
-                        </Link>
-                      )}
-                      {hasChildren && (
-                        <Box
-                          className={multiLevelIcon}
-                          color={{ base: 'slate.90', _dark: 'slate.0' }}
-                        >
-                          <Icon name="caret-right" />
-                        </Box>
+            </Box>
+          )}
+
+          {hasVisibleResults && (
+            <Box className={classes.levelsViewport}>
+              {shouldUseDiginSizing && (
+                <Box
+                  ref={sizeProbeRef}
+                  className={classes.sizeProbe}
+                  aria-hidden
+                  style={diginSizeProbeStyle}
+                >
+                  <Box className={classes.level}>
+                    {diginDepth > 0 && (
+                      <Box
+                        as="button"
+                        type="button"
+                        className={classes.backHeader}
+                      >
+                        <Icon name="caret-left" fill="icon" />
+                        {activeLevel.title}
+                      </Box>
+                    )}
+                    <Box className={listClassName}>
+                      {withLevelScopedKeys(
+                        activeLevel.children,
+                        `${activeLevel.key}-probe`,
                       )}
                     </Box>
+                  </Box>
+                </Box>
+              )}
+
+              <Box
+                className={classes.levelsTrack}
+                style={{
+                  width: `${trackWidthPercent}%`,
+                  transform: `translateX(-${trackTranslatePercent}%)`,
+                }}
+              >
+                {levels.map((level, index) => {
+                  const isActiveLevel = index === diginDepth;
+                  const levelChildren = withLevelScopedKeys(
+                    level.children,
+                    level.key,
+                  );
+
+                  if (!isActiveLevel) {
+                    return (
+                      <Box
+                        key={level.key}
+                        className={classes.level}
+                        style={{
+                          flex: `0 0 ${levelWidthPercent}%`,
+                        }}
+                        aria-hidden
+                      >
+                        {index > 0 && (
+                          <Box
+                            as="button"
+                            type="button"
+                            className={classes.backHeader}
+                            onClick={rootContextValue.onPopDiginLevel}
+                          >
+                            <Icon name="caret-left" />
+                            {level.title}
+                          </Box>
+                        )}
+                        <Box className={listClassName}>{levelChildren}</Box>
+                      </Box>
+                    );
+                  }
+
+                  return (
+                    <MenuListProvider
+                      key={level.key}
+                      value={menuListContextValue}
+                    >
+                      <FloatingList elementsRef={listRef} labelsRef={labelsRef}>
+                        <Box
+                          className={classes.level}
+                          style={{
+                            flex: `0 0 ${levelWidthPercent}%`,
+                          }}
+                        >
+                          {index > 0 && (
+                            <Box
+                              as="button"
+                              type="button"
+                              className={classes.backHeader}
+                              onClick={rootContextValue.onPopDiginLevel}
+                            >
+                              <Icon name="caret-left" />
+                              {level.title}
+                            </Box>
+                          )}
+                          <Box className={listClassName}>{levelChildren}</Box>
+                        </Box>
+                      </FloatingList>
+                    </MenuListProvider>
                   );
                 })}
               </Box>
-              {section?.divider && (
-                <Box className={dividerSection}>
-                  <Divider color={{ base: 'slate.10', _dark: 'slate.60' }} />
-                </Box>
-              )}
-              {section?.spacer && <Box className={spacerSection}></Box>}
             </Box>
-          ))
+          )}
+        </Box>
+      </MenuFilterProvider>
+    </MenuRootProvider>
+  );
+
+  const shouldRenderInline = inline || !trigger;
+
+  if (shouldRenderInline) {
+    return (
+      <FloatingTree>
+        <FloatingNode id={nodeId}>{content}</FloatingNode>
+      </FloatingTree>
+    );
+  }
+
+  return (
+    <FloatingTree>
+      <FloatingNode id={nodeId}>
+        {cloneElement(
+          trigger,
+          getReferenceProps({
+            ref: floating.refs.setReference,
+          }),
         )}
-      </Box>
-    </Box>
+        {isOpen && (
+          <FloatingPortal>
+            <FloatingFocusManager context={floating.context} modal={false}>
+              {content}
+            </FloatingFocusManager>
+          </FloatingPortal>
+        )}
+      </FloatingNode>
+    </FloatingTree>
   );
 };

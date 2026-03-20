@@ -7,11 +7,7 @@
     "resolveJsonModule": true,
     "noUncheckedIndexedAccess": true,
     "useDefineForClassFields": true,
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.iterable"
-    ],
+    "lib": ["ESNext", "DOM", "DOM.iterable"],
     "module": "ESNext",
     "target": "ESNext",
     /* Bundler mode */
@@ -23,22 +19,16 @@
     "declaration": true,
     /* Linting */
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "baseUrl": "./",
     "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-      "@styled-system/*": [
-        "./src/styled-system/*"
-      ]
+      "~/*": ["./src/*"],
+      "@styled-system/*": ["./src/styled-system/*"]
     }
   },
-  "include": [
-    "./src",
-    "./src/styled-system"
-  ]
+  "include": ["./src", "./src/styled-system"]
 }

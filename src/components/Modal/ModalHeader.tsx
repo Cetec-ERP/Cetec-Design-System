@@ -1,11 +1,16 @@
-import { ReactNode } from 'react';
-import { Box, type BoxProps } from '../Box';
-import { IconButton } from '../IconButton';
-import { modal as modalRecipe } from '@styled-system/recipes';
+import type { ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
+import { modal as modalRecipe } from '@styled-system/recipes';
+
+import { useMediaQuery } from '~/system/hooks';
 import { splitProps } from '~/utils/splitProps';
-import { useModalContext } from './ModalContext';
+
+import { Box, type BoxProps } from '../Box';
 import { Heading } from '../Heading';
+import { IconButton } from '../IconButton';
+
+import { useModalContext } from './ModalContext';
 
 export type ModalHeaderProps = Omit<BoxProps, 'children'> & {
   /** Title text */
@@ -22,6 +27,8 @@ export const ModalHeader = (props: ModalHeaderProps) => {
   const classes = modalRecipe();
   const { onClose } = useModalContext();
 
+  const isSm = useMediaQuery('sm');
+
   return (
     <Box className={cx(classes.header, className)} {...otherProps}>
       {children ? (
@@ -31,7 +38,7 @@ export const ModalHeader = (props: ModalHeaderProps) => {
           {title && (
             <Heading
               level="h3"
-              textStyle="heading.xs"
+              textStyle={{ base: 'heading.sm', sm: 'heading.xs' }}
               className={classes.title}
             >
               {title}
@@ -40,7 +47,9 @@ export const ModalHeader = (props: ModalHeaderProps) => {
           {showCloseButton && (
             <IconButton
               variant="ghost"
+              size={isSm ? 'md' : 'lg'}
               onClick={onClose}
+              altText="Close dialog"
               aria-label="Close dialog"
               className={classes.closeButton}
               iconName="x"

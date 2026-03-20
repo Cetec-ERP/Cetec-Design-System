@@ -1,4 +1,5 @@
 import { defineRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 const textareaBase = {
@@ -6,39 +7,38 @@ const textareaBase = {
   fontSize: '[100%]',
   position: 'relative',
   width: 'full',
-  color: { base: 'slate.90', _dark: 'slate.0' },
+  bg: 'surface',
+  color: 'text',
   borderWidth: '1',
   borderStyle: 'solid',
-  borderColor: 'slate.30',
+  borderColor: 'border.input',
   borderRadius: '4',
   lineHeight: 'tight',
+  fontFamily: 'body',
   outlineWidth: '1',
   outlineStyle: 'solid',
   outlineColor: 'transparent',
   resize: 'both',
+  _placeholder: {
+    color: 'text.placeholder',
+  },
   _focus: {
-    outlineColor: { base: 'slate.90', _dark: 'slate.0' },
-    borderColor: { base: 'slate.90', _dark: 'slate.0' },
+    outlineColor: 'border.focused',
+    borderColor: 'border.focused',
   },
   _error: {
     display: 'inline-grid',
-    borderColor: 'error.default',
+    borderColor: 'border.danger',
     _focus: {
-      borderColor: { base: 'error.default', _dark: 'error.default' },
-      outlineColor: { base: 'error.default', _dark: 'error.default' },
-    },
-  },
-  _placeholder: {
-    color: {
-      base: 'slate.50',
-      _dark: 'slate.40',
+      borderColor: 'border.danger',
+      outlineColor: 'border.danger',
     },
   },
   _disabled: {
     opacity: 0.4,
   },
-  '&[data-error]:focus': {
-    borderColor: 'error.default',
+  _groupDisabled: {
+    opacity: 1, // let FormField handle disabled state opacity
   },
 };
 

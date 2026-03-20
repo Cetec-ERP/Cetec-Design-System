@@ -19,6 +19,11 @@ npm run storybook:build     # Build Storybook for deployment
 
 # Code Quality
 npm run lint                # Run ESLint on all files
+npm run lint:fix            # Run ESLint with autofix
+npm run typecheck           # Run TypeScript type checking
+npm run validate            # Run lint + typecheck
+npm run validate:full       # Run validate + production build
+npm run doctor              # Run react-doctor + storybook doctor
 npm run prepare             # Run Panda CSS codegen (auto-runs on install)
 
 # Icon Generation
@@ -29,6 +34,17 @@ npm run panda-mcp           # Run local Panda CSS MCP server to expose the desig
 ```
 
 **Note:** This project currently has NO test framework configured. Do not attempt to run tests.
+
+## Canonical Standards
+
+The canonical standards set is in `standards/`.
+
+- `standards/components/`
+- `standards/recipes/`
+- `standards/lint/`
+- `standards/index.yml`
+
+Use these files as the source of truth for component, recipe, and lint conventions.
 
 ## Code Style & Conventions
 
@@ -91,7 +107,7 @@ export const Component: FC<ComponentProps> = ({ required, ...props }) => {
 **Type Composition:** Extend base types, use `Omit` for conflicts:
 
 ```tsx
-export type CheckBoxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
+export type CheckboxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
   CheckboxVariantProps & {
     name: string;
   };
@@ -207,6 +223,16 @@ export { buttonRecipe } from './recipes/button';
 **Runtime validation:** Use TypeScript types + PropTypes if needed for consumer DX
 
 ## Component Development Workflow
+
+### Storybook Documentation Strategy
+
+- **Public primitive stories first:** Use primitive component names as Storybook entry points for controls (`Checkbox`, `Radio`, `Toggle`) instead of only wrapper entries.
+- **Wrapper guidance inside primitive stories:** Demonstrate `CheckboxInput`, `RadioInput`, and `ToggleInput` usage inside those primitive stories to teach composition patterns.
+- **Beginner-first story structure:** Each component story should explain when to use it, when not to use it, include a minimal copy-paste snippet, and include at least one realistic app example.
+- **Accessibility is explicit:** Add keyboard and labeling examples in stories for interactive components.
+- **Foundations are visible:** `Box` should have a dedicated story because it is a frequently used primitive; link it to Panda layout/pattern docs.
+- **Patterns docs:** Document Panda native patterns in a single docs page and cross-link relevant component stories.
+- **Legacy components:** Do not create or expand Storybook coverage for `MenuLegacy`.
 
 ### Adding a New Component
 

@@ -6,12 +6,14 @@ import { Flex, Grid, VStack, HStack } from '@styled-system/jsx';
 import { Link } from '../components/Link';
 import { Divider } from '../components/Divider';
 import { Icon } from '../components/Icon';
+import { IconProvider } from '../components/Icon';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import '../styles/font-imports.css';
 
 <Meta title="Intro" />
 
+<IconProvider spritePath="sprite.svg">
 <Unstyled>
 
 <Flex direction="column" gap="24">
@@ -19,7 +21,10 @@ import '../styles/font-imports.css';
 # Cetec ERP Design System
 
 <Text maxW="prose" textStyle="body.lg" display="inline-block">
-  A React component library built with TypeScript and Panda CSS for the Cetec ERP application and marketing website. This design system provides a comprehensive set of accessible, themeable components following a tokens-first approach.
+  A React component library built with TypeScript and Panda CSS for the Cetec
+  ERP application and marketing website. This design system provides a
+  comprehensive set of accessible, themeable components following a tokens-first
+  approach.
 </Text>
 
 <Divider weight="thick" color="border" my="32" />
@@ -35,21 +40,31 @@ import '../styles/font-imports.css';
     <Text>No hard-coded hex colors or pixel values. All styling uses design tokens for consistency and theme support.</Text>
   </Card>
 
-  <Card p="24" variant="flat">
-    <HStack mb="12">
-      <Icon name="widgets" color="icon.info" size="32" />
-      <Text textStyle="body.lg" fontWeight="bold" color="text">Recipe-Based</Text>
-    </HStack>
-    <Text>Components use Panda CSS recipes for style variants, ensuring consistent patterns across the system.</Text>
-  </Card>
+<Card p="24" variant="flat">
+  <HStack mb="12">
+    <Icon name="widgets" color="icon.info" size="32" />
+    <Text textStyle="body.lg" fontWeight="bold" color="text">
+      Recipe-Based
+    </Text>
+  </HStack>
+  <Text>
+    Components use Panda CSS recipes for style variants, ensuring consistent
+    patterns across the system.
+  </Text>
+</Card>
 
-  <Card p="24" variant="flat">
-    <HStack mb="12">
-      <Icon name="devices" color="icon.info" size="32" />
-      <Text textStyle="body.lg" fontWeight="bold" color="text">Responsive by Default</Text>
-    </HStack>
-    <Text>Container queries and breakpoints built-in for responsive design out of the box.</Text>
-  </Card>
+<Card p="24" variant="flat">
+  <HStack mb="12">
+    <Icon name="devices" color="icon.info" size="32" />
+    <Text textStyle="body.lg" fontWeight="bold" color="text">
+      Responsive by Default
+    </Text>
+  </HStack>
+  <Text>
+    Container queries and breakpoints built-in for responsive design out of the
+    box.
+  </Text>
+</Card>
 
   <Card p="24" variant="flat">
     <HStack mb="12">
@@ -153,8 +168,10 @@ import '../styles/font-imports.css';
 
     <Text textStyle="body.sm" fontWeight="bold" color="text" mb="4">Version</Text>
     <Text textStyle="body.sm" color="text">Currently on Storybook version 8.</Text>
+
   </Grid>
 </Box>
 
 </Flex>
 </Unstyled>
+</IconProvider>

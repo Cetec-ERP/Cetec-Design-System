@@ -1,17 +1,21 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+
 import { Flex, Grid, VStack } from '@styled-system/jsx';
-import { Modal } from './Modal';
-import { ModalHeader } from './ModalHeader';
-import { ModalBody } from './ModalBody';
-import { ModalFooter } from './ModalFooter';
+
 import { Button } from '../Button';
-import { Text } from '../Text';
-import { TextInput } from '../TextInput';
-import { Textarea } from '../Textarea';
+import { Divider } from '../Divider';
 import { FormField } from '../FormField';
 import { Icon } from '../Icon';
-import { Divider } from '../Divider';
+import { Text } from '../Text';
+import { Textarea } from '../Textarea';
+import { TextInput } from '../TextInput';
+
+import { Modal } from './Modal';
+import { ModalBody } from './ModalBody';
+import { ModalFooter } from './ModalFooter';
+import { ModalHeader } from './ModalHeader';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Modal> = {
   title: 'Components/Modal',
@@ -27,6 +31,14 @@ const meta: Meta<typeof Modal> = {
       description: 'Modal size',
       table: {
         defaultValue: { summary: 'md' },
+      },
+    },
+    variant: {
+      control: 'select',
+      options: ['defauilt', 'confirmation'],
+      description: 'Modal type',
+      table: {
+        defaultValue: { summary: 'default' },
       },
     },
     preventOverlayClose: {
@@ -425,18 +437,24 @@ export const FormDialog: Story = {
             <ModalHeader title="Edit Profile" showCloseButton />
             <ModalBody>
               <VStack gap="12" alignItems="stretch">
-                <FormField label="Full Name" required>
-                  <TextInput name="name" placeholder="Jane Doe" />
-                </FormField>
-                <FormField label="Email" required>
+                <FormField label="Full Name" labelFor="profile-name" required>
                   <TextInput
+                    id="profile-name"
+                    name="name"
+                    placeholder="Jane Doe"
+                  />
+                </FormField>
+                <FormField label="Email" labelFor="profile-email" required>
+                  <TextInput
+                    id="profile-email"
                     name="email"
                     type="email"
                     placeholder="jane@example.com"
                   />
                 </FormField>
-                <FormField label="Bio">
+                <FormField label="Bio" labelFor="profile-bio">
                   <Textarea
+                    id="profile-bio"
                     name="bio"
                     placeholder="Tell us about yourself..."
                   />
@@ -475,6 +493,7 @@ export const ConfirmationDialog: Story = {
             open={isOpen}
             onOpenChange={setIsOpen}
             size="sm"
+            variant="confirmation"
             preventOverlayClose
           >
             <ModalHeader title="Delete Item" showCloseButton={false} />

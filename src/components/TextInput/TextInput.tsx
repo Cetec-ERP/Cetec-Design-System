@@ -1,38 +1,77 @@
-import { splitProps } from '~/utils/splitProps';
-import { Box, type BoxProps } from '../Box/Box';
-import { textinput, type TextinputVariantProps } from '@styled-system/recipes';
 import { cx } from '@styled-system/css';
-import { AriaAttributes } from 'react';
+import { textInput, type TextInputVariantProps } from '@styled-system/recipes';
 
-export type TextInputProps = Omit<BoxProps, keyof TextinputVariantProps> &
-  TextinputVariantProps & {
+import { Icon, type IconNamesList } from '~/components/Icon';
+import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box/Box';
+
+export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
+  Omit<TextInputVariantProps, 'iconBefore' | 'iconAfter'> & {
     name: string;
-    error?: boolean;
     id?: string;
-    'aria-describedby'?: string;
-  } & AriaAttributes;
+    iconBefore?: IconNamesList;
+    iconAfter?: IconNamesList;
+    error?: boolean;
+    disabled?: boolean;
+    type?:
+      | 'text'
+      | 'number'
+      | 'email'
+      | 'password'
+      | 'search'
+      | 'tel'
+      | 'url'
+      | 'date'
+      | 'time'
+      | 'datetime-local'
+      | 'month'
+      | 'week';
+  };
 
-export const TextInput: React.FC<TextInputProps> = ({
-  size,
-  error,
-  autoSize = false,
-  id,
-  name,
-  'aria-describedby': ariaDescribedBy,
-  ...props
-}: TextInputProps) => {
-  const [className, otherProps] = splitProps(props);
+export const TextInput = (props: TextInputProps) => {
+  const {
+    name,
+    id,
+    iconBefore,
+    iconAfter,
+    error,
+    disabled,
+    type = 'text',
+    size,
+    autoSize = false,
+    autoComplete = 'off',
+    ...rest
+  } = props;
+  const classes = textInput({
+    size,
+    iconBefore: Boolean(iconBefore),
+    iconAfter: Boolean(iconAfter),
+    autoSize,
+  });
+  const [className, otherProps] = splitProps(rest);
   return (
     <Box
-      as="input"
-      id={id}
-      name={name}
-      aria-label={name}
-      aria-invalid={error || undefined}
-      aria-describedby={ariaDescribedBy}
-      {...(error && { 'data-error': true })}
-      className={cx(textinput({ size, autoSize }), className)}
-      {...otherProps}
-    />
+      className={cx(classes.container, className)}
+      aria-disabled={disabled}
+      data-disabled={disabled || undefined}
+      data-error={error}
+    >
+      {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
+      <Box
+        as="input"
+        id={id}
+        name={name}
+        type={type}
+        disabled={disabled}
+        data-error={error}
+        className={cx(classes.input, className)}
+        autoComplete={autoComplete}
+        {...otherProps}
+      />
+      {iconBefore && iconAfter
+        ? ''
+        : iconAfter && <Icon name={iconAfter} className={classes.icon} />}
+    </Box>
   );
 };

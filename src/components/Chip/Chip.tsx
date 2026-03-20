@@ -1,13 +1,22 @@
-import { type ReactNode, useRef, useEffect, type KeyboardEvent } from 'react';
+import {
+  type ReactNode,
+  useRef,
+  useEffect,
+  type KeyboardEvent,
+  type MouseEvent,
+} from 'react';
+
 import { cx } from '@styled-system/css';
-import { splitProps } from '~/utils/splitProps';
 import { HStack } from '@styled-system/jsx';
 import { chip, type ChipVariantProps } from '@styled-system/recipes';
+import type { NumericSizeToken } from '@styled-system/tokens';
+
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type AllowedIconSizes } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
+import { splitProps } from '~/utils/splitProps';
+
 import { useChipGroup } from './ChipGroupContext';
-import { NumericSizeToken } from '@styled-system/tokens';
 
 // Map chip sizes to icon sizes (for internal icons like check/x)
 const chipSizeToIconSize: Record<string, AllowedIconSizes> = {
@@ -86,7 +95,7 @@ export const Chip = (props: ChipProps) => {
   const iconSize = chipSizeToIconSize[size];
 
   // Handle click based on chip type
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (dismissable && onDismiss) {
       onDismiss();
     } else if (isSelectable && groupContext) {
@@ -158,14 +167,11 @@ export const Chip = (props: ChipProps) => {
     <Box
       as="button"
       ref={buttonRef}
-      className={cx(classes.container, className)}
+      className={`${cx(classes.container, className)} group`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={getTabIndex()}
-      {...(disabled && {
-        disabled: true,
-        'aria-disabled': true,
-      })}
+      disabled={disabled}
       aria-label={ariaLabel}
       role={role}
       aria-checked={isSelectable ? isSelected : undefined}
@@ -181,14 +187,19 @@ export const Chip = (props: ChipProps) => {
           <Icon
             name="check"
             size={iconSize}
-            className={classes.icon}
+            className={classes.chipIcon}
             aria-hidden
           />
         )}
         {before}
         {children}
         {dismissable ? (
-          <Icon name="x" size={iconSize} className={classes.icon} aria-hidden />
+          <Icon
+            name="x"
+            size={iconSize}
+            className={classes.chipIcon}
+            aria-hidden
+          />
         ) : (
           after
         )}

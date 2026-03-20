@@ -1,4 +1,4 @@
-name: Deploy Storybook to GitHub Pages
+name: Deploy Docs (Storybook + Playroom) to GitHub Pages
 
 on:
   push:
@@ -18,9 +18,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run validation gate
+        run: npm run validate
+
   # Deploy main branch to root of gh-pages
   deploy-main:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
     runs-on: ubuntu-latest
 
     steps:
@@ -46,17 +66,31 @@ jobs:
           GH_REPO: ${{ github.event.repository.name }}
           STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/
 
+      - name: Build Playroom
+        run: npm run playroom:build
+        env:
+          PLAYROOM_BASE_PATH: /${{ github.event.repository.name }}/playroom/
+
       - name: Deploy to gh-pages (root)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./storybook-static
           destination_dir: .
-          keep_files: true  # Preserve PR preview directories
+          keep_files: true # Preserve PR preview directories
+
+      - name: Deploy Playroom to gh-pages (/playroom)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/playroom
+          destination_dir: playroom
+          keep_files: true
 
   # Deploy PR preview to /pr-<number>/ subdirectory
   deploy-pr-preview:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    needs: validate
     runs-on: ubuntu-latest
 
     steps:
@@ -82,12 +116,25 @@ jobs:
           GH_REPO: ${{ github.event.repository.name }}
           STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/pr-${{ github.event.pull_request.number }}/
 
+      - name: Build Playroom
+        run: npm run playroom:build
+        env:
+          PLAYROOM_BASE_PATH: /${{ github.event.repository.name }}/pr-${{ github.event.pull_request.number }}/playroom/
+
       - name: Deploy PR preview to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./storybook-static
           destination_dir: pr-${{ github.event.pull_request.number }}
+          keep_files: true
+
+      - name: Deploy Playroom PR preview to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/playroom
+          destination_dir: pr-${{ github.event.pull_request.number }}/playroom
           keep_files: true
 
       - name: Comment PR with preview URL
@@ -98,6 +145,7 @@ jobs:
             const repoName = context.repo.repo;
             const owner = context.repo.owner;
             const previewUrl = `https://${owner}.github.io/${repoName}/pr-${prNumber}/`;
+            const playroomUrl = `${previewUrl}playroom/`;
 
             // Check if we already commented
             const comments = await github.rest.issues.listComments({
@@ -108,14 +156,15 @@ jobs:
 
             const botComment = comments.data.find(comment =>
               comment.user.type === 'Bot' &&
-              comment.body.includes('Storybook Preview')
+              comment.body.includes('Storybook + Playroom Preview')
             );
 
-            const body = `## 📚 Storybook Preview
+            const body = `## 📚 Storybook + Playroom Preview
 
             Your preview is ready!
 
-            **Preview URL:** ${previewUrl}
+            **Storybook:** ${previewUrl}
+            **Playroom:** ${playroomUrl}
 
             <sub>This preview will be automatically removed when the PR is closed.</sub>`;
 

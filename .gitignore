@@ -29,6 +29,7 @@ old_*
 *.cursorrules
 *.cursor
 *storybook.log
+.opencode
 
 ## Panda
 src/styled-system
@@ -38,9 +39,18 @@ styled-system-studio
 storybook-static
 
 .env
-.claude
 .plugin-config
 .project-structure.md
+.pair-programming-session.md
 .session-summary.md
 .pair-programming-session.md
 /.tmp
+.claude
+
+# Merge/conflict artifact directories (from GUI tools)
+.auto-resolution/
+.conflict-base-*/
+.conflict-side-*/
+.conflict-ours/
+.conflict-theirs/
+.conflict-files/

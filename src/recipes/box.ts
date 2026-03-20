@@ -1,4 +1,5 @@
 import { defineRecipe } from '@pandacss/dev';
+
 import { globalBaseStyles } from '~/styles/utilities';
 
 const boxBase = {

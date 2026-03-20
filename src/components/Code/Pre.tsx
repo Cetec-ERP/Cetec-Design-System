@@ -1,32 +1,24 @@
-import { Box, type BoxProps } from '~/components/Box';
-import { Code } from './Code';
-import { splitProps } from '~/utils/splitProps';
+import type { ReactNode } from 'react';
+
 import { cx } from '@styled-system/css';
 import { pre } from '@styled-system/recipes';
 
+import { Box, type BoxProps } from '~/components/Box';
+import { splitProps } from '~/utils/splitProps';
+
+import { Code } from './Code';
+
 export type PreProps = BoxProps & {
-  children: string | React.ReactNode;
+  children: string | ReactNode;
   lang?: string;
   as?: string;
-}
+};
 
-export const Pre: React.FC<PreProps> = ( 
-  {
-    children, 
-    lang, 
-    ...props
-  }: PreProps,
-) => {
-  const [className, otherProps] = splitProps(props);
+export const Pre = (props: PreProps) => {
+  const { children, lang, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
   return (
-    <Box
-      as="pre"
-      className={cx(
-        pre({}),
-        className,
-      )}
-      {...otherProps}
-    >
+    <Box as="pre" className={cx(pre({}), className)} {...otherProps}>
       <Code lang={lang} slot="react" bg="transparent" {...otherProps}>
         {children}
       </Code>
