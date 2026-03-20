@@ -156,7 +156,12 @@ Packages are published from the repo root with `dist` included in the published 
 
 ### Contributing
 
-- **Release Labels**: PRs must have a release label (major, minor, patch, or release) to trigger a release
+- **Workflow trigger**: Every push to `main` runs the release workflow.
+- **Publishing behavior**: A merged change that resolves to a releasable bump publishes a prerelease by default. Add the `release` label to graduate that merge to a stable `latest` release.
+- **Version bump labels**: Use `major`, `minor`, or `patch` to control the semver bump.
+- **Default bump**: If the merged PR has no Auto semver label, Auto defaults the head change to `patch`.
+- **No-release labels**: `internal`, `documentation`, `tests`, and `dependencies` do not publish on their own.
+- **Skip label**: Use `skip-release` to prevent publishing.
 - **Changelog**: Auto-generated based on PR labels and titles
 - **PR Titles**: Must follow our defined format for Auto release automation:
 
@@ -197,12 +202,23 @@ Packages are published from the repo root with `dist` included in the published 
 
 ### Release Labels
 
-- `major` - Breaking changes (💥 Breaking Change)
-- `minor` - New features (🚀 Enhancement)
-- `patch` - Bug fixes (🐛 Bug Fix)
-- `skip-release` - No version bump
-- `internal` - Internal changes (🏠 Internal)
-- `documentation` - Documentation updates (📝 Documentation)
+- `major` - Major version bump (💥 Breaking Change)
+- `minor` - Minor version bump (🚀 Enhancement)
+- `patch` - Patch version bump (🐛 Bug Fix)
+- `release` - Graduate the publish from prerelease to stable `latest`
+- `skip-release` - Do not publish a release
+- `internal` - Internal changes only (🏠 Internal)
+- `documentation` - Documentation updates only (📝 Documentation)
+- `tests` - Test-only changes (🧪 Tests)
+- `dependencies` - Dependency updates only (🔩 Dependency Updates)
 - `performance` - Performance improvements (🏎 Performance)
+
+Examples:
+
+- `minor` => prerelease minor
+- `minor` + `release` => stable minor release
+- no Auto semver label => prerelease patch
+- `documentation` only => no publish
+- `skip-release` => no publish
 
 See `.autorc` for the complete configuration.
