@@ -12,9 +12,12 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: read
+      issues: write
+      pull-requests: write
     steps:
-      - uses: amannn/action-semantic-pull-request@v6
+      - id: lint_pr_title
+        uses: amannn/action-semantic-pull-request@v6
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -68,11 +71,16 @@ jobs:
           # Configure which scopes are allowed (newline-delimited).
           # These are regex patterns auto-wrapped in `^ $`.
           scopes: |
+            major
+            minor
+            patch
             component
             config
             new
             change
             ticket
+            script
+            cypress
           # Configure that a scope must always be provided.
           #          requireScope: true
           # Configure which scopes are disallowed in PR titles (newline-delimited).
@@ -104,5 +112,154 @@ jobs:
           # subject. The `headerPattern` should contain a regex where the capturing groups in parentheses
           # correspond to the parts listed in `headerPatternCorrespondence`.
           # See: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser#headerpattern
-          headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
-          headerPatternCorrespondence: type, scope, subject
+          headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?(!)?: (.*)$'
+          headerPatternCorrespondence: type, scope, breaking, subject
+      - uses: actions/github-script@v7
+        if: always()
+        env:
+          PR_TYPE: ${{ steps.lint_pr_title.outputs.type }}
+        with:
+          script: |
+            const managedTypeLabels = [
+              'feat',
+              'fix',
+              'docs',
+              'style',
+              'refactor',
+              'perf',
+              'test',
+              'build',
+              'ci',
+              'chore',
+              'revert',
+            ];
+
+            const managedLabels = [...managedTypeLabels];
+
+            const labelSpecs = {
+              feat: {
+                color: 'F1A60E',
+                description:
+                  'Feature work that adds or expands user-facing functionality',
+              },
+              fix: {
+                color: '870048',
+                description:
+                  'Bug fix work that corrects broken or incorrect behavior',
+              },
+              docs: {
+                color: 'CFD3D7',
+                description:
+                  'Documentation-only work such as guides, examples, or API docs',
+              },
+              style: {
+                color: '5319E7',
+                description:
+                  'Visual or formatting changes that do not alter component behavior',
+              },
+              refactor: {
+                color: '0E8A16',
+                description:
+                  'Code restructuring or cleanup that does not change intended behavior',
+              },
+              perf: {
+                color: 'F4B2D8',
+                description:
+                  'Performance-focused work that improves speed, efficiency, or bundle cost',
+              },
+              test: {
+                color: 'FFD3CC',
+                description:
+                  'Test-only work such as adding coverage or improving existing test cases',
+              },
+              build: {
+                color: '006B75',
+                description:
+                  'Build, packaging, dependency, or tooling changes affecting how the project is produced',
+              },
+              ci: {
+                color: '0052CC',
+                description: 'Continuous integration or deployment workflow changes',
+              },
+              chore: {
+                color: '696969',
+                description:
+                  'General maintenance work that does not fit a more specific change type',
+              },
+              revert: {
+                color: 'B60205',
+                description: 'Reverts a previous change or backs out an earlier merge',
+              },
+            };
+
+            const type = process.env.PR_TYPE || '';
+
+            const desiredLabels = new Set();
+
+            if (managedTypeLabels.includes(type)) {
+              desiredLabels.add(type);
+            }
+
+            const currentLabels =
+              context.payload.pull_request.labels?.map((label) => label.name) ?? [];
+
+            for (const labelName of desiredLabels) {
+              const spec = labelSpecs[labelName];
+
+              if (!spec) {
+                continue;
+              }
+
+              try {
+                await github.rest.issues.getLabel({
+                  ...context.repo,
+                  name: labelName,
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+
+                await github.rest.issues.createLabel({
+                  ...context.repo,
+                  name: labelName,
+                  color: spec.color,
+                  description: spec.description,
+                });
+              }
+            }
+
+            for (const labelName of currentLabels) {
+              if (!managedLabels.includes(labelName) || desiredLabels.has(labelName)) {
+                continue;
+              }
+
+              try {
+                await github.rest.issues.removeLabel({
+                  ...context.repo,
+                  issue_number: context.payload.pull_request.number,
+                  name: labelName,
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+              }
+            }
+
+            const labelsToAdd = [...desiredLabels].filter(
+              (labelName) => !currentLabels.includes(labelName),
+            );
+
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                ...context.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labelsToAdd,
+              });
+            }
+      - name: Fail on invalid PR title
+        if: ${{ steps.lint_pr_title.outputs.error_message != null && steps.lint_pr_title.outputs.error_message != '' }}
+        run: |
+          echo "${{ steps.lint_pr_title.outputs.error_message }}"
+          exit 1

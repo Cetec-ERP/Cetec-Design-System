@@ -83,7 +83,8 @@ Add/verify scripts:
 
 ### 3) Pre-commit guardrails (optional but recommended)
 
-- Use `lint-staged` + `husky` to run eslint on changed files only.
+- Use `lint-staged` + a lightweight git hook runner to run eslint on changed files only.
+
 - Keep hooks fast to avoid developer friction.
 
 ## Proposed Implementation Sequence
