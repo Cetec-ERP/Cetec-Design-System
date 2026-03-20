@@ -6,6 +6,7 @@
       prerelease: true,
       onlyGraduateWithReleaseLabel: true,
     },
+    noDefaultLabels: true,
     versionBranches: false,
     labels: [
       {

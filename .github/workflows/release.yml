@@ -9,6 +9,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@v2
         with:
@@ -30,12 +33,67 @@ jobs:
           restore-keys: |
             npm-deps-${{ hashFiles('package-lock.json') }}
 
-      - name: Create Release
+      - name: Resolve Release Mode
+        id: release_mode
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const semverLabels = new Set(['major', 'minor', 'patch']);
+            const stableReleaseLabel = 'release';
+            const skipReleaseLabel = 'skip-release';
+
+            const { data: pullRequests } =
+              await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                ...context.repo,
+                commit_sha: context.sha,
+              });
+
+            const mergedPr = pullRequests.find(
+              (pr) => pr.merged_at && pr.base.ref === context.ref.replace('refs/heads/', ''),
+            );
+
+            if (!mergedPr) {
+              core.info('No merged PR found for this push. Skipping release.');
+              core.setOutput('mode', 'skip');
+              return;
+            }
+
+            const labels = mergedPr.labels.map((label) => label.name);
+            const hasSemverLabel = labels.some((label) => semverLabels.has(label));
+            const hasStableReleaseLabel = labels.includes(stableReleaseLabel);
+            const hasSkipReleaseLabel = labels.includes(skipReleaseLabel);
+
+            core.info(
+              `Resolved PR #${mergedPr.number} with labels: ${labels.join(', ') || '(none)'}`,
+            );
+
+            if (hasSkipReleaseLabel || !hasSemverLabel) {
+              core.setOutput('mode', 'skip');
+              return;
+            }
+
+            core.setOutput('mode', hasStableReleaseLabel ? 'latest' : 'next');
+
+      - name: Create Stable Release
+        if: steps.release_mode.outputs.mode == 'latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm ci
           npm run build
-          # shipit will only actually release if we've got the label and the PR merges to main
-          npx auto shipit
+          npx auto latest
+
+      - name: Create Prerelease
+        if: steps.release_mode.outputs.mode == 'next'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm ci
+          npm run build
+          npx auto next
+
+      - name: Skip Release
+        if: steps.release_mode.outputs.mode == 'skip'
+        run: echo "No release will be created for this push."
