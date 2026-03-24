@@ -49,7 +49,7 @@ packages/components/dist
 .pair-programming-session.md
 .session-summary.md
 .pair-programming-session.md
-/.tmp
+.tmp/
 .claude
 
 # Merge/conflict artifact directories (from GUI tools)
