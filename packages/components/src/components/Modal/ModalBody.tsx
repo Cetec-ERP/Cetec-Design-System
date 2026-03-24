@@ -1,0 +1,25 @@
+import type { ReactNode } from 'react';
+
+import { cx } from '@cetec/styled-system/css';
+import { modal as modalRecipe } from '@cetec/styled-system/recipes';
+
+import { splitProps } from '~/utils/splitProps';
+
+import { Box, type BoxProps } from '../Box';
+
+export type ModalBodyProps = Omit<BoxProps, 'children'> & {
+  /** Body content */
+  children: ReactNode;
+};
+
+export const ModalBody = (props: ModalBodyProps) => {
+  const { children, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
+  const classes = modalRecipe();
+
+  return (
+    <Box className={cx(classes.body, className)} {...otherProps}>
+      {children}
+    </Box>
+  );
+};

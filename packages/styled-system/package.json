@@ -1,0 +1,77 @@
+{
+  "name": "@cetec/styled-system",
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx panda codegen --watch",
+    "prepare": "npx panda codegen && npx panda emit-pkg",
+    "build": "PANDA_STATIC=true npx panda codegen && npx panda cssgen --splitting && npx panda spec --outdir specs && npx panda emit-pkg"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "default": "./index.mjs"
+    },
+    "./css": {
+      "types": "./css/index.d.ts",
+      "require": "./css/index.mjs",
+      "import": "./css/index.mjs"
+    },
+    "./tokens": {
+      "types": "./tokens/index.d.ts",
+      "require": "./tokens/index.mjs",
+      "import": "./tokens/index.mjs"
+    },
+    "./types": {
+      "types": "./types/index.d.ts",
+      "require": "./types/index.mjs",
+      "import": "./types/index.mjs"
+    },
+    "./patterns": {
+      "types": "./patterns/index.d.ts",
+      "require": "./patterns/index.mjs",
+      "import": "./patterns/index.mjs"
+    },
+    "./recipes": {
+      "types": "./recipes/index.d.ts",
+      "require": "./recipes/index.mjs",
+      "import": "./recipes/index.mjs"
+    },
+    "./jsx": {
+      "types": "./jsx/index.d.ts",
+      "require": "./jsx/index.mjs",
+      "import": "./jsx/index.mjs"
+    },
+    "./styles.css": "./styles.css",
+    "./styles/*": "./styles/*",
+    "./specs/*": "./specs/*",
+    "./*": "./*"
+  },
+  "files": [
+    "css",
+    "jsx",
+    "patterns",
+    "recipes",
+    "tokens",
+    "types",
+    "styles",
+    "specs",
+    "styles.css",
+    "index.mjs",
+    "index.d.ts",
+    "*.css",
+    "*.json",
+    "*.mjs",
+    "*.js",
+    "*.d.ts"
+  ],
+  "devDependencies": {
+    "@pandacss/dev": "^1.8.0",
+    "@types/react": "19.0.8",
+    "react": "19.0.0"
+  },
+  "peerDependencies": {
+    "react": "19.0.0"
+  }
+}

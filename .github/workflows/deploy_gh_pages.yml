@@ -75,7 +75,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./storybook-static
+          publish_dir: ./packages/components/storybook-static
           destination_dir: .
           keep_files: true # Preserve PR preview directories
 
@@ -83,7 +83,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/playroom
+          publish_dir: ./packages/components/dist/playroom
           destination_dir: playroom
           keep_files: true
 
@@ -125,7 +125,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./storybook-static
+          publish_dir: ./packages/components/storybook-static
           destination_dir: pr-${{ github.event.pull_request.number }}
           keep_files: true
 
@@ -133,7 +133,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/playroom
+          publish_dir: ./packages/components/dist/playroom
           destination_dir: pr-${{ github.event.pull_request.number }}/playroom
           keep_files: true
 

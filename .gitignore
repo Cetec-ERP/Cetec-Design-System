@@ -32,11 +32,16 @@ old_*
 .opencode
 
 ## Panda
-src/styled-system
+packages/styled-system/*
+!packages/styled-system/package.json
+!packages/styled-system/index.*
+!packages/styled-system/panda.config.ts
 styled-system-studio
 
 ## Storybook
 storybook-static
+packages/components/storybook-static
+packages/components/dist
 
 .env
 .plugin-config

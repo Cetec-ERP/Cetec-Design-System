@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
+    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM", "DOM.iterable"],
+    "module": "ESNext",
+    "target": "ESNext",
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "declaration": true,
+    /* Linting */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@cetec/styled-system/*": ["../styled-system/*"]
+    }
+  },
+  "include": ["./src", "../styled-system"]
+}

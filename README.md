@@ -119,29 +119,46 @@ The icon system compiles individual SVGs into a sprite for optimal performance.
 
 ## Usage in Consumer Projects
 
+### Consumer Setup
+
 ### Installation
 
 ```bash
-npm install cetec-design-system
+npm install @cetec/components @cetec/styled-system
 ```
 
 ### Panda CSS Configuration
 
-Copy `/panda.config.ts` and adjust the import paths to point to the package in `node_modules`.
-Set up the `include` option to contain the paths where Panda should look when building `styled-system` and `styles.css`.
+In your app's `panda.config.ts`, point Panda at the shared styled-system package and include the shipped build info from components:
+
+```ts
+import { defineConfig } from '@pandacss/dev';
+
+export default defineConfig({
+  // your app settings...
+  importMap: '@styled-system', // Local app's generated styled-system folder
+  outdir: 'styled-system',
+  include: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    './node_modules/@cetec/components/dist/panda.buildinfo.json',
+  ],
+});
+```
+
+This allows Panda in the app to generate the classes used by `@cetec/components` without shipping component source files.
 
 ### Using in Your Project
 
-1. **Import the stylesheet** at the root of your project:
+1. **Import the shared styled-system CSS** at your app root:
 
-```typescript
-import '@styled-system/styles.css';
+```ts
+import '@cetec/styled-system/styles.css';
 ```
 
 2. **Wrap your app with ThemeProvider**:
 
-```typescript
-import { ThemeProvider } from "cetec-design-system";
+```ts
+import { ThemeProvider } from '@cetec/components';
 
 function App() {
   return (
@@ -154,8 +171,8 @@ function App() {
 
 3. **Import and use components**:
 
-```typescript
-import { Button, Text, Icon } from "cetec-design-system";
+```ts
+import { Button, Icon, Text } from '@cetec/components';
 
 function MyComponent() {
   return (

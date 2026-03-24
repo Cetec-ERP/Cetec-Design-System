@@ -54,21 +54,21 @@ Use these files as the source of truth for component, recipe, and lint conventio
 
 ```tsx
 import { FC, ReactNode } from 'react';
-import { cx } from '@styled-system/css';
+import { cx } from '@cetec/styled-system/css';
 import { Box, type BoxProps } from '~/components/Box';
-import { button, type ButtonVariantProps } from '@styled-system/recipes';
+import { button, type ButtonVariantProps } from '@cetec/styled-system/recipes';
 import { splitProps } from '~/utils/splitProps';
 ```
 
 **Path Aliases:**
 
 - `~/*` → `./src/*` (internal imports)
-- `@styled-system/*` → `./styled-system/*` (Panda CSS generated)
+- `@cetec/styled-system/*` → `./styled-system/*` (Panda CSS generated)
 
 **Type Imports:** Use `type` keyword for type-only imports when mixing with value imports:
 
 ```tsx
-import { button, type ButtonVariantProps } from '@styled-system/recipes';
+import { button, type ButtonVariantProps } from '@cetec/styled-system/recipes';
 ```
 
 ### Formatting (Prettier)

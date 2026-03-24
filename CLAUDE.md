@@ -177,7 +177,7 @@ This project uses **Auto** for automated releases:
 Projects consuming this design system must:
 
 1. Install the package and configure Panda CSS with the preset from `panda-preset.ts` or follow the example in README.md
-2. Import `@styled-system/styles.css` at the project root
+2. Import `@cetec/styled-system/styles.css` at the project root
 3. Configure `include` paths in their `panda.config.ts` to watch their source files
 4. Import components: `import { Button, Text } from "cetec-design-system"`
 5. Import icons: `import * as icons from "cetec-design-system/icons"`

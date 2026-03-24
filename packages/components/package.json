@@ -1,0 +1,131 @@
+{
+  "name": "@cetec/components",
+  "version": "2.0.0",
+  "description": "Cetec-ERP Design System",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "npx panda init-mcp --client claude && vite build && npx panda ship --config ../styled-system/panda.config.ts --outfile dist/panda.buildinfo.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:staged": "lint-staged",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm run lint && npm run typecheck",
+    "validate:full": "npm run validate && npm run build",
+    "preview": "vite preview",
+    "generate-sprite": "node src/utils/generate-sprite.js",
+    "storybook": "PANDA_STATIC=true VITE_CJS_IGNORE_WARNING=true storybook dev -p 6006",
+    "storybook:build": "PANDA_STATIC=true VITE_CJS_IGNORE_WARNING=true storybook build",
+    "playroom": "node .playroom/playroom-dev.js",
+    "playroom:css": "node .playroom/playroom-dev.js --css-only",
+    "playroom:build": "node .playroom/playroom-build.js",
+    "panda-mcp": "npx panda mcp -c ../styled-system/panda.config.ts",
+    "doctor": "npm run doctor:react && npm run doctor:storybook",
+    "doctor:react": "npx react-doctor",
+    "doctor:storybook": "npx storybook doctor"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,scss,yml,yaml}": "prettier --write"
+  },
+  "files": [
+    "./dist/",
+    "./src/styles/*",
+    "./src/recipes/*",
+    "./src/tokens/*",
+    "./src/utils/*.ts"
+  ],
+  "peerDependencies": {
+    "@cetec/styled-system": "^2.0.0",
+    "@fontsource-variable/recursive": "^5.1.1",
+    "@fontsource-variable/ruda": "^5.1.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.16"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@eslint/js": "^9.17.0",
+    "@pandacss/dev": "^1.8.0",
+    "@storybook/addon-a11y": "^8.6.17",
+    "@storybook/addon-essentials": "^8.6.17",
+    "@storybook/addon-interactions": "^8.6.17",
+    "@storybook/addon-themes": "^8.6.17",
+    "@storybook/blocks": "^8.6.17",
+    "@storybook/react": "^8.6.17",
+    "@storybook/react-vite": "^8.6.17",
+    "@storybook/test": "^8.6.17",
+    "@types/node": "^22.15.30",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "babel-loader": "^10.0.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "eslint-plugin-storybook": "^0.11.2",
+    "eslint-plugin-unicorn": "^61.0.2",
+    "globals": "^15.14.0",
+    "lint-staged": "^16.2.2",
+    "oxlint": "^1.51.0",
+    "postcss": "^8.5.1",
+    "playroom": "^0.44.0",
+    "prettier": "^3.3.3",
+    "react-doctor": "^0.0.29",
+    "storybook": "^8.6.17",
+    "svg-sprite": "^2.0.4",
+    "svgo": "^3.0.2",
+    "typescript": "~5.7.3",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-static-copy": "^3.1.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./preset": {
+      "types": "./dist/types/preset.d.ts",
+      "import": "./dist/preset.js",
+      "default": "./dist/preset.js"
+    },
+    "./sprite.svg": "./dist/sprite.svg",
+    "./logo.svg": "./dist/cetec-logo.svg",
+    "./styles.css": "./dist/styles.css",
+    "./reset.css": "./dist/reset.css",
+    "./specs/*": "./dist/specs/*",
+    "./panda.buildinfo.json": "./dist/panda.buildinfo.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cetec-ERP/Cetec-Design-System.git"
+  },
+  "author": "Cetec-ERP",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cetec-ERP/Cetec-Design-System/issues"
+  },
+  "homepage": "https://github.com/Cetec-ERP/Cetec-Design-System#readme"
+}
