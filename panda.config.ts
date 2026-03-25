@@ -48,7 +48,6 @@ export default defineConfig({
   jsxFactory: 'styled',
   preflight: false, // do not add Panda's default reset styles
   strictTokens: true,
-  watch: true,
 
   presets: [cetecPreset],
 
