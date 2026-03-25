@@ -134,7 +134,8 @@ jobs:
               'revert',
             ];
 
-            const managedLabels = [...managedTypeLabels];
+            const managedScopeLabels = ['major', 'minor', 'patch'];
+            const managedLabels = [...managedTypeLabels, ...managedScopeLabels];
 
             const labelSpecs = {
               feat: {
@@ -190,14 +191,38 @@ jobs:
                 color: 'B60205',
                 description: 'Reverts a previous change or backs out an earlier merge',
               },
+              major: {
+                color: 'D93F0B',
+                description:
+                  'PR title scope indicates a major release impact',
+              },
+              minor: {
+                color: '1D76DB',
+                description:
+                  'PR title scope indicates a minor release impact',
+              },
+              patch: {
+                color: '0E8A16',
+                description:
+                  'PR title scope indicates a patch release impact',
+              },
             };
 
             const type = process.env.PR_TYPE || '';
+            const title = context.payload.pull_request.title || '';
+            const titleMatch = title.match(
+              /^(\w*)(?:\(([\w$.\-*/ ]*)\))?(!)?: (.*)$/,
+            );
+            const scope = titleMatch?.[2]?.trim() || '';
 
             const desiredLabels = new Set();
 
             if (managedTypeLabels.includes(type)) {
               desiredLabels.add(type);
+            }
+
+            if (managedScopeLabels.includes(scope)) {
+              desiredLabels.add(scope);
             }
 
             const currentLabels =
