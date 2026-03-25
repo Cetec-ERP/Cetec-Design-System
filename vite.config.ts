@@ -49,10 +49,6 @@ export default defineConfig(({ mode: _mode, command }) => {
                   dest: './',
                 },
                 {
-                  src: 'src/styled-system/styles',
-                  dest: './',
-                },
-                {
                   src: 'src/styled-system/styles.css',
                   dest: './',
                 },
@@ -66,6 +62,10 @@ export default defineConfig(({ mode: _mode, command }) => {
                 },
                 {
                   src: 'src/styles/reset.css',
+                  dest: './',
+                },
+                {
+                  src: 'panda.buildinfo.json',
                   dest: './',
                 },
               ],

@@ -54,3 +54,4 @@ storybook-static
 .conflict-ours/
 .conflict-theirs/
 .conflict-files/
+panda.buildinfo.json
