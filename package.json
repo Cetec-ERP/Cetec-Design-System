@@ -1,6 +1,6 @@
 {
   "name": "cetec-design-system",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "Cetec-ERP Design System",
   "type": "module",
   "main": "./dist/index.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "npx panda codegen && npx simple-git-hooks",
     "dev": "npx panda --watch & vite",
-    "build": "rm -rf dist && PANDA_STATIC=true npx panda && npx panda spec && vite build && npx panda ship --outfile dist/panda.buildinfo.json",
+    "build": "rm -rf dist && PANDA_STATIC=true npx panda && npx panda spec && npx panda ship --outfile ./panda.buildinfo.json && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:staged": "lint-staged",
@@ -118,7 +118,8 @@
     },
     "./sprite.svg": "./dist/sprite.svg",
     "./styles.css": "./dist/styles.css",
-    "./reset.css": "./dist/reset.css"
+    "./reset.css": "./dist/reset.css",
+    "./panda.buildinfo.json": "./dist/panda.buildinfo.json"
   },
   "repository": {
     "type": "git",
