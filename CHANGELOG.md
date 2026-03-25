@@ -1,3 +1,25 @@
+# 1.1.0 (Wed Mar 25 2026)
+
+#### 📦 Misc Changes
+
+- ci: auto label PRs based on PR title. Also better group changes in the changelog. [#142](https://github.com/Cetec-ERP/Cetec-Design-System/pull/142) ([@Etwigg](https://github.com/Etwigg))
+
+#### 🏗 Build
+
+- build(minor): build fix [#145](https://github.com/Cetec-ERP/Cetec-Design-System/pull/145) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- build(minor): added buildinfo to dist [#144](https://github.com/Cetec-ERP/Cetec-Design-System/pull/144) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🤖 CI
+
+- ci: auto label [#143](https://github.com/Cetec-ERP/Cetec-Design-System/pull/143) ([@Etwigg](https://github.com/Etwigg))
+
+#### Authors: 2
+
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
 # (Fri Mar 20 2026)
 
 #### 💥 Breaking Change
