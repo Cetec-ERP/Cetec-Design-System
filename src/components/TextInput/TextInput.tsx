@@ -14,6 +14,9 @@ export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
     iconAfter?: IconNamesList;
     error?: boolean;
     disabled?: boolean;
+    readOnly?: boolean;
+    valid?: boolean;
+    invalid?: boolean;
     type?:
       | 'text'
       | 'number'
@@ -37,6 +40,9 @@ export const TextInput = (props: TextInputProps) => {
     iconAfter,
     error,
     disabled,
+    readOnly,
+    valid,
+    invalid,
     type = 'text',
     size,
     autoSize = false,
@@ -53,9 +59,11 @@ export const TextInput = (props: TextInputProps) => {
   return (
     <Box
       className={cx(classes.container, className)}
-      aria-disabled={disabled}
-      data-disabled={disabled || undefined}
+      aria-disabled={disabled || readOnly}
+      data-disabled={disabled || readOnly || undefined}
       data-error={error}
+      data-valid={valid}
+      data-invalid={invalid}
     >
       {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
       <Box
@@ -63,8 +71,10 @@ export const TextInput = (props: TextInputProps) => {
         id={id}
         name={name}
         type={type}
-        disabled={disabled}
+        disabled={disabled || readOnly}
         data-error={error}
+        data-valid={valid}
+        data-invalid={invalid}
         className={cx(classes.input, className)}
         autoComplete={autoComplete}
         {...otherProps}
