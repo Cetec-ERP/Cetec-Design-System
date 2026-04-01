@@ -10,9 +10,10 @@ Repo-specific invariants are enforced via a local ESLint plugin.
 4. Enforce `no-react-fc-components`.
 5. Enforce `no-react-namespace-type-imports`.
 6. Enforce `no-inline-style-prop`.
-7. Enforce `no-pixel-units`.
-8. Enforce `no-raw-font-weight-values`.
-9. Enforce `no-classname-css-call`.
+7. Enforce `no-important`.
+8. Enforce `no-pixel-units`.
+9. Enforce `no-raw-font-weight-values`.
+10. Enforce `no-classname-css-call`.
 
 ## Hard With Exceptions
 
