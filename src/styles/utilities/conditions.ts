@@ -9,7 +9,8 @@ export const conditions = {
   active: '&:is(:active, [data-active=true])',
   visited: '&:visited',
   target: '&:target',
-  readOnly: '&:is(:read-only, [data-read-only=true], [aria-readonly=true])',
+  readOnly:
+    '&:is(:read-only, [readonly], [data-read-only=true], [aria-readonly=true])',
   readWrite: '&:read-write',
   empty: '&:is(:empty, [data-empty=true])',
   checked:
