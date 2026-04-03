@@ -25,7 +25,29 @@ const textInputBase = {
         outlineColor: 'border.danger',
       },
     },
+    _invalid: {
+      borderColor: 'border.danger',
+      _focusWithin: {
+        borderColor: 'border.danger',
+        outlineColor: 'border.danger',
+      },
+    },
+    _valid: {
+      borderColor: 'border.success',
+      _focusWithin: {
+        borderColor: 'border.success',
+        outlineColor: 'border.success',
+      },
+    },
     _disabled: {
+      opacity: 0.4,
+      cursor: 'not-allowed',
+      _focusWithin: {
+        outlineColor: 'transparent',
+        borderColor: 'border.input',
+      },
+    },
+    _readOnly: {
       opacity: 0.4,
       cursor: 'not-allowed',
       _focusWithin: {

@@ -141,7 +141,7 @@ export default tseslint.config(
   },
   {
     files: ['src/recipes/*.ts'],
-    ignores: ['src/recipes/index.ts'],
+    ignores: ['src/recipes/recipes-regular.ts', 'src/recipes/recipes-slot.ts'],
     rules: {
       'unicorn/filename-case': [
         'warn',
