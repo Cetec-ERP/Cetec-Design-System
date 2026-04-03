@@ -1,3 +1,32 @@
+# 1.1.0 (Fri Apr 03 2026)
+
+#### 📦 Misc Changes
+
+- ci: auto label PRs based on PR title. Also better group changes in the changelog. [#142](https://github.com/Cetec-ERP/Cetec-Design-System/pull/142) ([@Etwigg](https://github.com/Etwigg))
+
+#### 🚀 Features
+
+- feat(minor): strict data-attribute conditions, icon size variants, and conditions docs [#147](https://github.com/Cetec-ERP/Cetec-Design-System/pull/147) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(patch): add click-and-hover trigger interaction to Menu [#148](https://github.com/Cetec-ERP/Cetec-Design-System/pull/148) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🏗 Build
+
+- build(minor): build fix [#145](https://github.com/Cetec-ERP/Cetec-Design-System/pull/145) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- build(minor): added buildinfo to dist [#144](https://github.com/Cetec-ERP/Cetec-Design-System/pull/144) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🤖 CI
+
+- ci: permissions [#150](https://github.com/Cetec-ERP/Cetec-Design-System/pull/150) ([@Etwigg](https://github.com/Etwigg))
+- ci: minor auto label changes [#146](https://github.com/Cetec-ERP/Cetec-Design-System/pull/146) ([@Etwigg](https://github.com/Etwigg))
+- ci: auto label [#143](https://github.com/Cetec-ERP/Cetec-Design-System/pull/143) ([@Etwigg](https://github.com/Etwigg))
+
+#### Authors: 2
+
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
 # 1.1.0 (Wed Mar 25 2026)
 
 #### 📦 Misc Changes
