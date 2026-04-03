@@ -308,9 +308,15 @@ export const SubMenuHover: Story = {
   parameters: { controls: { disable: true } },
 };
 
-export const TopNavHoverTrigger: Story = {
-  name: 'Top nav hover trigger',
-  render: () => (
+const TopNavExampleWrapper = () => {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+
+  const getMenuProps = (id: string) => ({
+    open: openMenu === id,
+    onOpenChange: (open: boolean) => setOpenMenu(open ? id : null),
+  });
+
+  return (
     <VStack
       alignItems="stretch"
       minW="3xl"
@@ -329,10 +335,11 @@ export const TopNavHoverTrigger: Story = {
         py="16"
       >
         <Menu
-          triggerInteraction="hover"
+          triggerInteraction="click-and-hover"
           trigger={<Button variant="selectedBold">Sales</Button>}
           subMenuInteraction="hover"
           closeOnSelect={false}
+          {...getMenuProps('sales')}
         >
           <SubMenu label="Quotes">
             <MenuItem label="Open quotes" />
@@ -354,11 +361,54 @@ export const TopNavHoverTrigger: Story = {
           </SubMenu>
         </Menu>
 
-        <Button>Production</Button>
-        <Button>Admin</Button>
+        <Menu
+          triggerInteraction="click-and-hover"
+          trigger={<Button>Production</Button>}
+          subMenuInteraction="hover"
+          closeOnSelect={false}
+          {...getMenuProps('production')}
+        >
+          <SubMenu label="Work Orders">
+            <MenuItem label="Open work orders" />
+            <MenuItem label="Completed" />
+          </SubMenu>
+
+          <SubMenu label="Scheduling">
+            <MenuItem label="Production schedule" />
+            <MenuItem label="Resource calendar" />
+          </SubMenu>
+
+          <MenuItem label="Inventory" />
+        </Menu>
+
+        <Menu
+          triggerInteraction="click-and-hover"
+          trigger={<Button>Admin</Button>}
+          subMenuInteraction="hover"
+          closeOnSelect={false}
+          {...getMenuProps('admin')}
+        >
+          <SubMenu label="Users">
+            <MenuItem label="All users" />
+            <MenuItem label="Roles & permissions" />
+          </SubMenu>
+
+          <SubMenu label="Settings">
+            <MenuItem label="General" />
+            <MenuItem label="Integrations" />
+            <MenuItem label="Billing" />
+          </SubMenu>
+
+          <MenuItem label="Audit log" iconBefore="list-bullets" />
+        </Menu>
       </HStack>
     </VStack>
-  ),
+  );
+};
+
+export const TopNavExample: Story = {
+  name: 'Top nav example',
+  render: () => <TopNavExampleWrapper />,
   parameters: { controls: { disable: true } },
 };
 

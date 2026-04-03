@@ -122,12 +122,13 @@ export const Menu = (props: MenuProps) => {
   const isMenuVisible = hasReference ? isOpen : true;
 
   const setOpenState = (nextOpen: boolean, _event?: Event, reason?: string) => {
-    if (
-      triggerInteraction === 'hover' &&
-      !nextOpen &&
-      (reason === 'hover' || reason === 'safe-polygon')
-    ) {
-      return;
+    if (!nextOpen && (reason === 'hover' || reason === 'safe-polygon')) {
+      if (
+        triggerInteraction === 'hover' ||
+        triggerInteraction === 'click-and-hover'
+      ) {
+        return;
+      }
     }
 
     if (!isControlled) {
@@ -168,7 +169,10 @@ export const Menu = (props: MenuProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const hover = useHover(floating.context, {
-    enabled: hasReference && triggerInteraction === 'hover',
+    enabled:
+      hasReference &&
+      (triggerInteraction === 'hover' ||
+        triggerInteraction === 'click-and-hover'),
     delay: {
       open: triggerOpenDelay,
       close: triggerCloseDelay,
@@ -178,7 +182,10 @@ export const Menu = (props: MenuProps) => {
     }),
   });
   const click = useClick(floating.context, {
-    enabled: hasReference && triggerInteraction === 'click',
+    enabled:
+      hasReference &&
+      (triggerInteraction === 'click' ||
+        triggerInteraction === 'click-and-hover'),
   });
   const dismiss = useDismiss(floating.context, { enabled: hasReference });
   const role = useRole(floating.context, { role: 'menu' });
