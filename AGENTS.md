@@ -40,11 +40,38 @@ npm run panda-mcp           # Run local Panda CSS MCP server to expose the desig
 The canonical standards set is in `standards/`.
 
 - `standards/components/`
+- `standards/figma/`
 - `standards/recipes/`
 - `standards/lint/`
 - `standards/index.yml`
 
 Use these files as the source of truth for component, recipe, and lint conventions.
+
+## Repo Organization
+
+Repository planning and standards docs should follow these paths:
+
+- Active plan files belong in `plans/`
+- Completed plan files belong in `plans/complete/`
+- Standards documents belong in `standards/`
+- Figma-specific standards belong in `standards/figma/`
+
+If a plan or standards document is created in the repo root or another ad hoc folder, move it to the correct location instead of leaving it there.
+
+## Figma MCP Integration
+
+Use this repo's code as the source of truth when syncing to Figma. If code and Figma disagree, update Figma unless the user explicitly asks for a drift report.
+
+- Relevant Figma files live in the "Cetec Design System" project: `https://www.figma.com/files/team/1398315283038910767/project/258973630?fuid=1425146119342731304`
+- For write operations, get the exact Figma file URL or node ID before making changes. Project-level browsing is not enough to target writes safely.
+- Search existing Figma components, variables, and styles before creating new ones.
+- For `use_figma` writes, always load the `figma-use` skill first. Do not call `use_figma` cold.
+- For multi-step design-system creation or sync work, pair `figma-use` with `figma-generate-library`.
+- For Code Connect mapping work, use `figma-code-connect`.
+- For new, beta, or unfamiliar Figma features, check the official Figma Help Center or developer docs before implementing. Do not infer feature behavior from adjacent APIs.
+- Verify that the feature is actually supported by the current MCP or Plugin API surface before building around it. If native support is missing, say so plainly instead of approximating it and presenting the workaround as the real feature.
+- Prefer existing library assets over rebuilding duplicates.
+- Preserve the repo's naming, token hierarchy, variant structure, and light/dark behavior in Figma.
 
 ## Code Style & Conventions
 
@@ -154,7 +181,7 @@ export const Component: FC<ComponentProps> = ({
 **CRITICAL: Tokens-First Approach**
 
 - **NO hard-coded values:** No hex colors, px values, or magic numbers
-- **Use design tokens:** All colors, spacing, radii, typography from `src/styles/tokens.ts`
+- **Use design tokens:** Primitive tokens live in `src/styles/primitives/` and semantic tokens live in `src/styles/semantics/`
 - **strictTokens: true** enforces this at build time
 
 **Styling Priority:**
@@ -247,7 +274,7 @@ export { buttonRecipe } from './recipes/button';
 
 ### Modifying Design Tokens
 
-1. Edit `src/styles/tokens.ts` or `src/styles/semanticTokens.ts`
+1. Edit the relevant file in `src/styles/primitives/` or `src/styles/semantics/`
 2. Run `npm run prepare` to regenerate Panda CSS
 3. Update affected components if breaking changes
 

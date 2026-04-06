@@ -28,14 +28,37 @@ npm run generate-sprite     # Generate SVG sprite from src/components/Icon/svg f
 npm run panda-mcp           # Run local Panda CSS MCP server to expose the design system to AI tools
 ```
 
-## Architecture
+## Repo Organization
+
+Repository planning and standards docs should follow these paths:
+
+- Active plan files belong in `plans/`
+- Completed plan files belong in `plans/complete/`
+- Standards documents belong in `standards/`
+- Figma-specific standards belong in `standards/figma/`
+
+If a plan or standards document is created in the repo root or another ad hoc folder, move it to the correct location instead of leaving it there.
+
+## Figma MCP Integration
+
+When working across this repo and Figma, treat the repo as the source of truth. If code and Figma disagree, prefer the code unless the user explicitly asks for a drift audit.
+
+- Relevant Figma files live in the "Cetec Design System" project: `https://www.figma.com/files/team/1398315283038910767/project/258973630?fuid=1425146119342731304`
+- For write operations, require the exact Figma file URL or node ID before making changes.
+- Search existing Figma variables, styles, and components before creating new ones.
+- Always load the `figma-use` skill before any `use_figma` call.
+- For design-system build or sync workflows, pair `figma-use` with `figma-generate-library`.
+- For Code Connect mapping work, use `figma-code-connect`.
+- For new, beta, or unfamiliar Figma features, check the official Figma Help Center or developer docs before implementing. Do not infer feature behavior from adjacent APIs.
+- Verify that the feature is actually supported by the current MCP or Plugin API surface before building around it. If native support is missing, say so plainly instead of approximating it and presenting the workaround as the real feature.
+- Keep naming, token hierarchy, variants, and light/dark behavior aligned with this repo.
 
 ### Panda CSS Design System
 
 The design system is built on **Panda CSS** with a strict tokens-first approach:
 
-- **Tokens**: Design tokens defined in `src/styles/tokens.ts` (colors, spacing, typography, shadows, etc.)
-- **Semantic Tokens**: Theme-specific tokens in `src/styles/semanticTokens.ts` (color aliases for light/dark themes)
+- **Tokens**: Primitive design tokens defined in `src/styles/primitives/`
+- **Semantic Tokens**: Theme-specific tokens in `src/styles/semantics/` (aliases for light/dark themes)
 - **Recipes**: Component style variants in `src/recipes/` (ex: button, input, text, etc.) - use these instead of ad-hoc CSS
 - **Slot Recipes**: Multi-part component recipes (ex: checkbox, radio, tooltip, menu)
 - **Conditions**: Custom responsive and state conditions in `src/styles/conditions.ts`
@@ -198,7 +221,7 @@ Projects consuming this design system must:
 
 ### Modifying Design Tokens
 
-1. Edit tokens in `src/styles/tokens.ts` or `src/styles/semanticTokens.ts`
+1. Edit the relevant file in `src/styles/primitives/` or `src/styles/semantics/`
 2. Run `npm run prepare` to regenerate Panda CSS
 3. Update affected components if breaking changes
 
