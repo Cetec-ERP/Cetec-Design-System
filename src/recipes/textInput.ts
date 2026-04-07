@@ -47,14 +47,6 @@ const textInputBase = {
         borderColor: 'border.input',
       },
     },
-    _readOnly: {
-      opacity: 0.4,
-      cursor: 'not-allowed',
-      _focusWithin: {
-        outlineColor: 'transparent',
-        borderColor: 'border.input',
-      },
-    },
     _groupDisabled: {
       opacity: 1, // let FormField handle disabled state opacity
     },
