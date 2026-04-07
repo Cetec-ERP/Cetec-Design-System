@@ -46,6 +46,34 @@ The canonical standards set is in `standards/`.
 
 Use these files as the source of truth for component, recipe, and lint conventions.
 
+## Linting
+
+Full linting standards and rule reference: `docs/standards/linting.md`.
+
+### Inline ignore
+
+When a cetec lint rule must be suppressed for a legitimate reason, use a
+`validate-ignore` comment rather than `eslint-disable`. This keeps suppressions
+auditable and rule-specific.
+
+```tsx
+// validate-ignore: rule-name — reason
+<Element offendingProp="value" />
+
+<Element
+  // validate-ignore: rule-name — reason
+  offendingProp="value"
+/>
+```
+
+Multiple rules can be comma-separated:
+
+```tsx
+// validate-ignore: no-pixel-units, no-inline-style-prop — third-party constraint
+```
+
+See `docs/standards/linting.md` for the full rule list and more examples.
+
 ## Code Style & Conventions
 
 ### Imports

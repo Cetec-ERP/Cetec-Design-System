@@ -1,5 +1,7 @@
 import path from 'node:path';
 
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'recipe-export-name-matches-file';
 
 const recipeExportNameMatchesFileRule = {
@@ -75,6 +77,10 @@ const recipeExportNameMatchesFileRule = {
         }
 
         const [{ node, exportName: actual }] = recipeExports;
+
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
+          return;
+        }
 
         context.report({
           node,

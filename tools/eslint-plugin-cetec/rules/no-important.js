@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-important';
 
 const IMPORTANT_PATTERN = /!\s*important\b/;
@@ -25,6 +27,10 @@ const noImportantRule = {
           return;
         }
 
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
+          return;
+        }
+
         context.report({
           node,
           messageId: 'avoidImportant',
@@ -32,6 +38,10 @@ const noImportantRule = {
       },
       TemplateElement(node) {
         if (!containsImportant(node.value.cooked)) {
+          return;
+        }
+
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
           return;
         }
 
