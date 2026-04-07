@@ -291,6 +291,15 @@ Avoid:
 If a surface should not show a fill or stroke, remove that paint instead of
 faking transparency with an arbitrary local color.
 
+For documentation copy and page labels specifically:
+
+- bind text fills directly to the intended text token or local alias variable
+- do not copy fills from arbitrary text nodes inside component instances
+
+Component-instance text can have state-specific or empty paint data that does
+not transfer cleanly to page docs. If the docs copy disappears, inspect the
+text node fills directly before assuming it is a font or layout problem.
+
 ## Component Example Rule
 
 Examples on component pages should use the real component.
