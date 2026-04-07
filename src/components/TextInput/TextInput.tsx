@@ -14,7 +14,6 @@ export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
     iconAfter?: IconNamesList;
     error?: boolean;
     disabled?: boolean;
-    readOnly?: boolean;
     valid?: boolean;
     invalid?: boolean;
     type?:
@@ -40,7 +39,6 @@ export const TextInput = (props: TextInputProps) => {
     iconAfter,
     error,
     disabled,
-    readOnly,
     valid,
     invalid,
     type = 'text',
