@@ -13,12 +13,13 @@ export const iconRecipe = defineRecipe({
   base: {
     aspectRatio: 'square',
     fill: 'icon.decorative',
+    w: '24', // Default size here does not affect the classNames, so it's safe to set
   },
   variants: {
     size: sizeVariants,
   },
   defaultVariants: {
-    size: '24',
+    // Don't set default size because then it's hard to override in recipes
   },
   staticCss: [{ size: ['*'] }],
 });

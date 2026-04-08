@@ -45,10 +45,22 @@ const buttonBaseStyles = {
     },
   },
   icon: {
+    '--icon-size': 'token(sizes.24)',
+    '--icon-margin-outside': 'token(sizes.6)',
+    '--icon-margin-inside': 'token(sizes.1)',
+    w: 'var(--icon-size)',
     aspectRatio: 'square',
     transitionDuration: 'fast',
     transitionProperty: 'fill',
     transitionTimingFunction: 'default',
+  },
+  iconBefore: {
+    ms: 'calc(var(--icon-margin-outside) * -1)',
+    me: 'calc(var(--icon-margin-inside) * -1)',
+  },
+  iconAfter: {
+    ms: 'calc(var(--icon-margin-inside) * -1)',
+    me: 'calc(var(--icon-margin-outside) * -1)',
   },
 };
 
@@ -225,11 +237,23 @@ const buttonVariants = {
 export const buttonRecipe = defineSlotRecipe({
   className: 'button',
   jsx: ['Button'],
-  slots: ['container', 'icon'],
+  slots: ['container', 'icon', 'iconBefore', 'iconAfter'],
   base: buttonBaseStyles,
   variants: {
     ...buttonVariants,
     size: {
+      sm: {
+        container: {
+          fontSize: '14',
+          py: '1',
+          px: '8',
+        },
+        icon: {
+          '--icon-size': 'token(sizes.22)',
+          '--icon-margin-outside': 'token(sizes.5)',
+          '--icon-margin-inside': 'token(sizes.1)',
+        },
+      },
       md: {
         container: {
           fontSize: '16',
@@ -237,19 +261,9 @@ export const buttonRecipe = defineSlotRecipe({
           px: '12',
         },
         icon: {
-          w: '24',
-          h: '24',
-        },
-      },
-      xl: {
-        container: {
-          fontSize: '20',
-          py: '9',
-          px: '16',
-        },
-        icon: {
-          w: '28',
-          h: '28',
+          '--icon-size': 'token(sizes.24)',
+          '--icon-margin-outside': 'token(sizes.8)',
+          '--icon-margin-inside': 'token(sizes.1)',
         },
       },
       lg: {
@@ -259,19 +273,21 @@ export const buttonRecipe = defineSlotRecipe({
           px: '14',
         },
         icon: {
-          w: '24',
-          h: '24',
+          '--icon-size': 'token(sizes.24)',
+          '--icon-margin-outside': 'token(sizes.10)',
+          '--icon-margin-inside': 'token(sizes.1)',
         },
       },
-      sm: {
+      xl: {
         container: {
-          fontSize: '14',
-          py: '1',
-          px: '8',
+          fontSize: '20',
+          py: '9',
+          px: '16',
         },
         icon: {
-          w: '22',
-          h: '22',
+          '--icon-size': 'token(sizes.28)',
+          '--icon-margin-outside': 'token(sizes.10)',
+          '--icon-margin-inside': 'token(sizes.1)',
         },
       },
     },
@@ -282,64 +298,6 @@ export const buttonRecipe = defineSlotRecipe({
       true: { container: {} },
     },
   },
-  compoundVariants: [
-    {
-      size: 'md',
-      iconBefore: true,
-      css: {
-        container: { ps: '3' },
-      },
-    },
-    {
-      size: 'md',
-      iconAfter: true,
-      css: {
-        container: { pe: '3' },
-      },
-    },
-    {
-      size: 'sm',
-      iconBefore: true,
-      css: {
-        container: { ps: '2' },
-      },
-    },
-    {
-      size: 'sm',
-      iconAfter: true,
-      css: {
-        container: { pe: '2' },
-      },
-    },
-    {
-      size: 'lg',
-      iconBefore: true,
-      css: {
-        container: { ps: '5' },
-      },
-    },
-    {
-      size: 'lg',
-      iconAfter: true,
-      css: {
-        container: { pe: '5' },
-      },
-    },
-    {
-      size: 'xl',
-      iconBefore: true,
-      css: {
-        container: { ps: '7' },
-      },
-    },
-    {
-      size: 'xl',
-      iconAfter: true,
-      css: {
-        container: { pe: '7' },
-      },
-    },
-  ],
   defaultVariants: {
     variant: 'standard',
     size: 'md',
