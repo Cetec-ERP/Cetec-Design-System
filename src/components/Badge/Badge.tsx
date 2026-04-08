@@ -31,7 +31,6 @@ export type BadgeProps = Omit<BoxProps, keyof BadgeVariantProps> &
   };
 
 // Animation styles
-// Animation styles
 const animationStyles = {
   pop: css({
     animationName: 'badgePop',
