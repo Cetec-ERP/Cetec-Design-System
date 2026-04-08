@@ -1,7 +1,13 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
+import { globalBaseStyles } from '~/styles/utilities';
+
 const textInputBase = {
   container: {
+    ...globalBaseStyles,
+    '--icon-size': 'token(sizes.24)',
+    '--icon-margin': 'token(sizes.3)',
+    '--input-icon-padding': 'token(sizes.10)',
     position: 'relative',
     width: 'full',
     bg: 'surface',
@@ -47,14 +53,6 @@ const textInputBase = {
         borderColor: 'border.input',
       },
     },
-    _readOnly: {
-      opacity: 0.4,
-      cursor: 'not-allowed',
-      _focusWithin: {
-        outlineColor: 'transparent',
-        borderColor: 'border.input',
-      },
-    },
     _groupDisabled: {
       opacity: 1, // let FormField handle disabled state opacity
     },
@@ -75,6 +73,8 @@ const textInputBase = {
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%)',
+    w: 'var(--icon-size)',
+    mx: 'var(--icon-margin)',
     fill: 'icon.decorative.subtle',
     mixBlendMode: { base: 'multiply', _dark: 'screen' },
     pointerEvents: 'none',
@@ -84,48 +84,76 @@ const textInputBase = {
 
 const textInputVariants = {
   size: {
-    md: {
-      input: {
-        py: 3,
-        px: 10,
-        fontSize: '16',
-      },
-      icon: {
-        mx: '3',
-        w: '24',
-      },
-    },
     sm: {
+      container: {
+        '--icon-size': 'token(sizes.22)',
+        '--icon-margin': 'token(sizes.2)',
+        '--input-icon-padding': '[26px]',
+      },
       input: {
         py: 0,
         px: 8,
         fontSize: '14',
       },
-      icon: {
-        mx: '2',
-        w: '22',
+      inputIconBefore: {
+        ps: 'var(--input-icon-padding)',
+      },
+      inputIconAfter: {
+        pe: 'var(--input-icon-padding)',
+      },
+    },
+    md: {
+      container: {
+        '--icon-size': 'token(sizes.24)',
+        '--icon-margin': 'token(sizes.3)',
+        '--input-icon-padding': '[31px]',
+      },
+      input: {
+        py: 3,
+        px: 10,
+        fontSize: '16',
+      },
+      inputIconBefore: {
+        ps: 'var(--input-icon-padding)',
+      },
+      inputIconAfter: {
+        pe: 'var(--input-icon-padding)',
       },
     },
     lg: {
+      container: {
+        '--icon-size': 'token(sizes.24)',
+        '--icon-margin': 'token(sizes.5)',
+        '--input-icon-padding': '[34px]',
+      },
       input: {
         py: 7,
         px: 12,
         fontSize: '16',
       },
-      icon: {
-        mx: '5',
-        w: '24',
+      inputIconBefore: {
+        ps: 'var(--input-icon-padding)',
+      },
+      inputIconAfter: {
+        pe: 'var(--input-icon-padding)',
       },
     },
     xl: {
+      container: {
+        '--icon-size': 'token(sizes.28)',
+        '--icon-margin': 'token(sizes.7)',
+        '--input-icon-padding': '[42px]',
+      },
       input: {
         py: 9,
         px: 16,
         fontSize: '20',
       },
-      icon: {
-        mx: '7',
-        w: '28',
+      inputIconBefore: {
+        ps: 'var(--input-icon-padding)',
+      },
+      inputIconAfter: {
+        pe: 'var(--input-icon-padding)',
       },
     },
   },
@@ -153,74 +181,12 @@ const textInputVariants = {
   },
 };
 
-const textInputCompoundVariants: NonNullable<
-  Parameters<typeof defineSlotRecipe>[0]['compoundVariants']
-> = [
-  {
-    size: 'md',
-    iconBefore: true,
-    css: {
-      input: { ps: '[31px]' },
-    },
-  },
-  {
-    size: 'md',
-    iconAfter: true,
-    css: {
-      input: { pe: '[31px]' },
-    },
-  },
-  {
-    size: 'sm',
-    iconBefore: true,
-    css: {
-      input: { ps: '[26px]' },
-    },
-  },
-  {
-    size: 'sm',
-    iconAfter: true,
-    css: {
-      input: { pe: '[26px]' },
-    },
-  },
-  {
-    size: 'lg',
-    iconBefore: true,
-    css: {
-      input: { ps: '[34px]' },
-    },
-  },
-  {
-    size: 'lg',
-    iconAfter: true,
-    css: {
-      input: { pe: '[34px]' },
-    },
-  },
-  {
-    size: 'xl',
-    iconBefore: true,
-    css: {
-      input: { ps: '[42px]' },
-    },
-  },
-  {
-    size: 'xl',
-    iconAfter: true,
-    css: {
-      input: { pe: '[42px]' },
-    },
-  },
-];
-
 export const textInputRecipe = defineSlotRecipe({
   className: 'textInput',
   jsx: ['TextInput'],
-  slots: ['container', 'input', 'icon'],
+  slots: ['container', 'input', 'icon', 'inputIconBefore', 'inputIconAfter'],
   base: textInputBase,
   variants: textInputVariants,
-  compoundVariants: textInputCompoundVariants,
   defaultVariants: {
     size: 'md',
   },

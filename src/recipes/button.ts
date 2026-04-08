@@ -5,6 +5,9 @@ import { globalBaseStyles } from '~/styles/utilities';
 const buttonBaseStyles = {
   container: {
     ...globalBaseStyles,
+    '--icon-size': 'token(sizes.24)',
+    '--icon-margin-outside': 'token(sizes.6)',
+    '--icon-margin-inside': 'token(sizes.1)',
     position: 'relative',
     appearance: 'none',
     display: 'flex',
@@ -45,9 +48,6 @@ const buttonBaseStyles = {
     },
   },
   icon: {
-    '--icon-size': 'token(sizes.24)',
-    '--icon-margin-outside': 'token(sizes.6)',
-    '--icon-margin-inside': 'token(sizes.1)',
     w: 'var(--icon-size)',
     aspectRatio: 'square',
     transitionDuration: 'fast',

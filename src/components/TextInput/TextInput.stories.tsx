@@ -1,5 +1,6 @@
 import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
 
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { FormField } from '../FormField';
 import { Text } from '../Text';
 
@@ -103,16 +104,101 @@ type Story = StoryObj<typeof meta>;
 
 export const Sizes: Story = {
   render: () => (
-    <VStack gap="12" alignItems="flex-start">
-      {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
-        <TextInput
-          key={size}
-          size={size}
-          name={size}
-          placeholder={`Size: ${size}`}
-        />
-      ))}
-    </VStack>
+    <Grid columns={3} justifyItems="center" gap="20" maxW="3xl">
+      <TextInput name="sm" placeholder="sm no icon" size="sm" />
+      <TextInput
+        name="sm"
+        placeholder="sm iconBefore"
+        size="sm"
+        iconBefore="at"
+      />
+      <TextInput
+        name="sm"
+        placeholder="sm iconAfter"
+        size="sm"
+        iconAfter="check"
+      />
+
+      <TextInput name="md" placeholder="md no icon" size="md" />
+      <TextInput
+        name="md"
+        placeholder="md iconBefore"
+        size="md"
+        iconBefore="at"
+      />
+      <TextInput
+        name="md"
+        placeholder="md iconAfter"
+        size="md"
+        iconAfter="check"
+      />
+
+      <TextInput name="lg" placeholder="lg no icon" size="lg" />
+      <TextInput
+        name="lg"
+        placeholder="lg iconBefore"
+        size="lg"
+        iconBefore="at"
+      />
+      <TextInput
+        name="lg"
+        placeholder="lg iconAfter"
+        size="lg"
+        iconAfter="check"
+      />
+
+      <TextInput name="xl" placeholder="xl no icon" size="xl" />
+      <TextInput
+        name="xl"
+        placeholder="xl iconBefore"
+        size="xl"
+        iconBefore="at"
+      />
+      <TextInput
+        name="xl"
+        placeholder="xl iconAfter"
+        size="xl"
+        iconAfter="check"
+      />
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      gap="16"
+    >
+      <TextInput
+        name="Conditional Sizes"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        placeholder="Conditional Sizes"
+        iconBefore="arrows-left-right"
+      />
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+    </Grid>
   ),
   parameters: { controls: { disable: true } },
 };

@@ -1,6 +1,6 @@
 import { fn } from '@storybook/test';
 
-import { HStack, Wrap, Grid } from '@styled-system/jsx';
+import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Divider } from '../Divider';
@@ -154,6 +154,10 @@ export const Sizes: Story = {
   parameters: { controls: { disable: true } },
 };
 
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
 export const ConditionalBreakpoints: Story = {
   render: () => (
     <Grid
@@ -164,21 +168,49 @@ export const ConditionalBreakpoints: Story = {
       alignItems="center"
       gap="16"
     >
-      <Button size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        variant={{
+          base: 'primary',
+          xs: 'standard',
+          sm: 'hollow',
+          md: 'danger',
+        }}
+        iconBefore="arrows-left-right"
+      >
         Conditional Button Sizes
       </Button>
-      <Text
-        textAlign="center"
-        textStyle="mono.sm"
-        _after={{
-          display: 'inline',
-          content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
-          color: 'text.bold',
-          fontWeight: 'bold',
-        }}
-      >
-        Size:{' '}
-      </Text>
+      <VStack gap="4">
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Size:{' '}
+        </Text>
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: {
+              base: '"primary"',
+              xs: '"standard"',
+              sm: '"hollow"',
+              md: '"danger"',
+            },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Variant:{' '}
+        </Text>
+      </VStack>
       <BreakpointIndicator position="fixed" bottom="16" right="16" />
     </Grid>
   ),
