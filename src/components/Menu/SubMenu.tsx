@@ -5,6 +5,7 @@ import {
   type MouseEvent,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -56,7 +57,10 @@ import {
   useMenuListContext,
   useMenuRootContext,
 } from './context/menuContext';
-import { navigateListMainAxisLoop } from './utils/navigateListMainAxis';
+import {
+  findFirstEnabledListIndex,
+  navigateListMainAxisLoop,
+} from './utils/navigateListMainAxis';
 
 export const SubMenu = (props: SubMenuProps) => {
   const nodeId = useFloatingNodeId();
@@ -115,6 +119,15 @@ export const SubMenu = (props: SubMenuProps) => {
   const floatingListRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
   const subMenuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  /** True until we apply first-item selection after ArrowRight opens the flyout. */
+  const openedFromParentArrowRightRef = useRef(false);
+  /** After keyboard open, focus the nested item matching `activeIndex` once. */
+  const keyboardFocusFirstNestedItemRef = useRef(false);
+
+  const openNestedFromParentKeyboard = useCallback(() => {
+    openedFromParentArrowRightRef.current = true;
+    setOpen(true);
+  }, []);
 
   const handleOpenChange = (
     nextOpen: boolean,
@@ -169,7 +182,8 @@ export const SubMenu = (props: SubMenuProps) => {
     // steals focus from the submenu trigger so ArrowDown navigates inside the
     // flyout instead of among sibling rows (Quotes → Orders) in the parent
     // menu. Keep focus on the trigger until the user opens into the panel with
-    // ArrowRight (handled below and by the nested reference path).
+    // ArrowRight (handled below and by the nested reference path). After
+    // ArrowRight we set `activeIndex` and focus the first item in a layout effect.
     focusItemOnOpen: false,
   });
   const typeahead = useTypeahead(floating.context, {
@@ -216,6 +230,50 @@ export const SubMenu = (props: SubMenuProps) => {
     }
   }, [tree, open, nodeId, parentId]);
 
+  useEffect(() => {
+    if (!open) {
+      setActiveIndex(null);
+    }
+  }, [open]);
+
+  useLayoutEffect(() => {
+    if (!open || !openedFromParentArrowRightRef.current) {
+      return;
+    }
+    const applyFirst = () => {
+      const idx = findFirstEnabledListIndex(floatingListRef);
+      if (idx === null) {
+        return false;
+      }
+      openedFromParentArrowRightRef.current = false;
+      keyboardFocusFirstNestedItemRef.current = true;
+      setActiveIndex(idx);
+      return true;
+    };
+    if (!applyFirst()) {
+      requestAnimationFrame(() => {
+        if (!applyFirst()) {
+          openedFromParentArrowRightRef.current = false;
+        }
+      });
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      keyboardFocusFirstNestedItemRef.current = false;
+      return;
+    }
+    if (!keyboardFocusFirstNestedItemRef.current || activeIndex === null) {
+      return;
+    }
+    const el = floatingListRef.current[activeIndex];
+    if (el) {
+      el.focus({ preventScroll: true });
+    }
+    keyboardFocusFirstNestedItemRef.current = false;
+  }, [open, activeIndex]);
+
   const nestedFilterContext = useMemo(
     () => ({
       query: filterContext.query,
@@ -261,7 +319,7 @@ export const SubMenu = (props: SubMenuProps) => {
         onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
           if (event.key === 'ArrowRight' && !disabled) {
             event.preventDefault();
-            setOpen(true);
+            openNestedFromParentKeyboard();
           }
         },
       })
@@ -269,7 +327,7 @@ export const SubMenu = (props: SubMenuProps) => {
         onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
           if (event.key === 'ArrowRight' && !disabled) {
             event.preventDefault();
-            setOpen(true);
+            openNestedFromParentKeyboard();
           }
         },
       };

@@ -1,6 +1,34 @@
 import type { RefObject } from 'react';
 
 /**
+ * First traversable index in a FloatingList `elementsRef` (skips disabled items).
+ */
+export function findFirstEnabledListIndex(
+  listRef: RefObject<Array<HTMLElement | null>>,
+): number | null {
+  const items = listRef.current;
+  if (!items?.length) {
+    return null;
+  }
+
+  for (let i = 0; i < items.length; i++) {
+    const el = items[i];
+    if (!el) {
+      continue;
+    }
+    if (
+      el.hasAttribute('disabled') ||
+      el.getAttribute('aria-disabled') === 'true'
+    ) {
+      continue;
+    }
+    return i;
+  }
+
+  return null;
+}
+
+/**
  * Next enabled index along the main axis with wrap (matches Menu useListNavigation loop).
  */
 export function navigateListMainAxisLoop(
