@@ -57,6 +57,7 @@ import {
   useMenuListContext,
   useMenuRootContext,
 } from './context/menuContext';
+import { useBlockPointerEventsForHoverPolygon } from './hooks/useBlockPointerEventsForHoverPolygon';
 import {
   findFirstEnabledListIndex,
   navigateListMainAxisLoop,
@@ -119,6 +120,8 @@ export const SubMenu = (props: SubMenuProps) => {
   const floatingListRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
   const subMenuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const blockPointerEventsForHoverPolygon =
+    useBlockPointerEventsForHoverPolygon();
   /** True until we apply first-item selection after ArrowRight opens the flyout. */
   const openedFromParentArrowRightRef = useRef(false);
   /** After keyboard open, focus the nested item matching `activeIndex` once. */
@@ -162,7 +165,7 @@ export const SubMenu = (props: SubMenuProps) => {
     enabled: !disabled && parentId != null,
     delay: { open: 75 },
     handleClose: safePolygon({
-      blockPointerEvents: true,
+      blockPointerEvents: blockPointerEventsForHoverPolygon,
     }),
   });
   const click = useClick(floating.context, {

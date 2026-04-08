@@ -128,6 +128,75 @@ import { Text } from '~/components/Text';
 
     <Divider weight="thick" color="border.disabled" my="24" />
 
+    <Heading level="h3">Menu hover, safe polygon, and touch</Heading>
+
+    <Text maxW="prose">
+      Floating UI’s{' '}
+      <Text as="span" weight="bold">
+        useHover
+      </Text>{' '}
+      can use{' '}
+      <Text as="span" weight="bold">
+        safePolygon
+      </Text>{' '}
+      as <code>handleClose</code> so the pointer can move from the anchor to the
+      floating menu along a “safe” corridor without the menu dismissing. With{' '}
+      <Text as="span" weight="bold">
+        blockPointerEvents: true
+      </Text>
+      , the library may set <code>document.body</code> to{' '}
+      <code>pointer-events: none</code> and restore hits only on the active
+      reference and floating nodes (see{' '}
+      <Link
+        href="https://github.com/floating-ui/floating-ui/issues/1722"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        floating-ui#1722
+      </Link>
+      ). That path is aimed at mouse travel; on touch and nested{' '}
+      <code>SubMenu</code> flyouts it can prevent taps from reaching deep menu
+      rows or links.
+    </Text>
+
+    <Text maxW="prose">
+      This design system passes{' '}
+      <Text as="span" weight="bold">
+        blockPointerEvents
+      </Text>{' '}
+      only when the viewport has{' '}
+      <Text as="span" weight="bold">
+        no coarse pointer
+      </Text>{' '}
+      (<code>(any-pointer: coarse)</code> is false), via{' '}
+      <code>useBlockPointerEventsForHoverPolygon</code> in{' '}
+      <code>src/components/Menu/hooks/useBlockPointerEventsForHoverPolygon.ts</code>
+      . <code>Menu</code> and <code>SubMenu</code> both use it for{' '}
+      <code>safePolygon(&#123; blockPointerEvents &#125;)</code>. Hybrid devices
+      (touch + mouse) often report a coarse pointer; in those cases the global
+      body block stays off, and users rely on the polygon logic without that
+      extra layer.
+    </Text>
+
+    <Text maxW="prose">
+      Keyboard navigation (including nested menubar patterns) does not depend on
+      this pointer-events behavior; it is unchanged by this policy.
+    </Text>
+
+    <Text maxW="prose" size="14" color="text.muted">
+      Manual check: Chrome DevTools → device toolbar (mobile preset) → open{' '}
+      <Link href="/?path=/story/components-menu--sub-menu-hover">
+        Components / Menu → Sub Menu Hover
+      </Link>
+      , open the menu, open <strong>More actions</strong> →{' '}
+      <strong>Advanced</strong>, then tap <strong>Audit log</strong> or{' '}
+      <strong>Settings</strong>. With emulation active,{' '}
+      <code>matchMedia(&apos;(any-pointer: coarse)&apos;).matches</code> should be{' '}
+      <code>true</code> in the console.
+    </Text>
+
+    <Divider weight="thick" color="border.disabled" my="24" />
+
     <Heading level="h3">Semantics boundaries</Heading>
 
     <Text maxW="prose">Share mechanics, not semantics:</Text>
@@ -176,7 +245,9 @@ import { Text } from '~/components/Text';
         <Text weight="bold">Nested actions</Text>
         <Text size="14">
           Use <code>Menu</code> + <code>SubMenu</code> with hover or dig-in
-          interaction.
+          interaction. For touch-heavy UIs, <code>subMenuInteraction="digin"</code>{' '}
+          remains a supported pattern; hover flyouts use the safe-polygon policy
+          above on coarse pointers.
         </Text>
       </Card>
 
@@ -247,6 +318,12 @@ import { Text } from '~/components/Text';
       </Box>
       <Box as="li" listStyleType="disc">
         <Text>Menu context layer: <code>src/components/Menu/context/menuContext.ts</code></Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          Menu hover / safe polygon (touch vs mouse):{' '}
+          <code>src/components/Menu/hooks/useBlockPointerEventsForHoverPolygon.ts</code>
+        </Text>
       </Box>
       <Box as="li" listStyleType="disc">
         <Text>List primitives: <code>src/components/List/</code></Text>

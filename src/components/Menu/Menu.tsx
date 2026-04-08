@@ -57,6 +57,7 @@ import {
   type MenuProps,
   type MenuRootContextValue,
 } from './context/menuContext';
+import { useBlockPointerEventsForHoverPolygon } from './hooks/useBlockPointerEventsForHoverPolygon';
 import { navigateListMainAxisLoop } from './utils/navigateListMainAxis';
 
 type DiginLevel = {
@@ -175,6 +176,8 @@ export const Menu = (props: MenuProps) => {
   const listRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const blockPointerEventsForHoverPolygon =
+    useBlockPointerEventsForHoverPolygon();
 
   const hover = useHover(floating.context, {
     enabled:
@@ -186,7 +189,7 @@ export const Menu = (props: MenuProps) => {
       close: triggerCloseDelay,
     },
     handleClose: safePolygon({
-      blockPointerEvents: true,
+      blockPointerEvents: blockPointerEventsForHoverPolygon,
     }),
   });
   const click = useClick(floating.context, {

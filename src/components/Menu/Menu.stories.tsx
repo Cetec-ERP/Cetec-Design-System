@@ -469,7 +469,12 @@ const TopNavExampleWrapper = () => {
 
           <SubMenu label="Scheduling">
             <MenuItem label="Production schedule" />
-            <MenuItem label="Resource calendar" />
+            <MenuItem
+              href="https://www.google.com"
+              label="Resource calendar"
+              target="_blank"
+              rel="noopener noreferrer"
+            />
           </SubMenu>
 
           <MenuItem label="Inventory" />
