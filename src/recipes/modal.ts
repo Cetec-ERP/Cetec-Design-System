@@ -19,25 +19,17 @@ const modalBase = {
   container: {
     ...globalBaseStyles,
     position: 'fixed',
-    top: '50%',
     left: '50%',
     display: 'flex',
     flexDirection: 'column',
     width: 'full',
+    maxW: '95vw',
     maxHeight: '95vh',
     bg: 'surface.overlay',
     borderRadius: '12',
     boxShadow: 'overlay',
     outline: 'none',
     zIndex: 1101,
-    // Initial state matches animation start
-    opacity: '0',
-    transform: 'translate(-50%, -50%) scale(0.95) translateY(-10px)',
-    // Animation handled via data-state
-    animation: 'modalScaleIn 150ms ease-out forwards',
-    '&[data-state="closing"]': {
-      animation: 'modalScaleOut 150ms ease-out forwards',
-    },
   },
   header: {
     display: 'flex',
@@ -76,31 +68,41 @@ const modalBase = {
   },
 };
 
+/** Base-like positioning when `position: top` would fight a full-viewport sheet */
+const modalContainerCenteredOverlay = {
+  top: '50%',
+  transform: 'translate(-50%, -50%) scale(0.95) translateY(-10px)',
+  animation: 'modalScaleIn 150ms ease-out forwards',
+  '&[data-state="closing"]': {
+    animation: 'modalScaleOut 150ms ease-out forwards',
+  },
+};
+
 const modalVariants = {
   size: {
     sm: {
       container: {
-        maxWidth: 'md',
+        w: 'md',
       },
     },
     md: {
       container: {
-        maxWidth: 'xl',
+        w: 'xl',
       },
     },
     lg: {
       container: {
-        maxWidth: '3xl',
+        w: '3xl',
       },
     },
     xl: {
       container: {
-        maxWidth: '5xl',
+        w: '5xl',
       },
     },
     full: {
       container: {
-        maxWidth: '95vw',
+        w: '95vw',
       },
     },
     mobile: {
@@ -110,6 +112,24 @@ const modalVariants = {
         maxWidth: '100vw',
         maxHeight: '100vh',
         borderRadius: '0',
+      },
+    },
+  },
+  position: {
+    centered: {
+      container: modalContainerCenteredOverlay,
+    },
+    top: {
+      container: {
+        top: 'min(2.5vh, token(spacing.64))',
+        transform: 'translate(-50%, 0) scale(0.95) translateY(-10px)',
+        animation: 'modalScaleInTop 150ms ease-out forwards',
+        '&[data-state="closing"]': {
+          animation: 'modalScaleOutTop 150ms ease-out forwards',
+        },
+        // Align with default centered overlay at `xsDown` (full-viewport sheet):
+        // without this, `top` + fixed offset leaves a gap above the sheet.
+        xsDown: modalContainerCenteredOverlay,
       },
     },
   },
@@ -149,8 +169,18 @@ export const modalRecipe = defineSlotRecipe({
   ],
   base: modalBase,
   variants: modalVariants,
+  compoundVariants: [
+    {
+      position: 'top',
+      size: 'mobile',
+      css: {
+        container: modalContainerCenteredOverlay,
+      },
+    },
+  ],
   defaultVariants: {
     variant: 'default',
     size: 'md',
+    position: 'centered',
   },
 });
