@@ -1,4 +1,4 @@
-import { type ChangeEvent, useState } from 'react';
+import { type ChangeEvent, type KeyboardEvent, useState } from 'react';
 
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
@@ -308,13 +308,82 @@ export const SubMenuHover: Story = {
   parameters: { controls: { disable: true } },
 };
 
+/**
+ * Example of composing multiple `Menu` components into a top navigation bar with
+ * APG-aligned semantics. See "Top Nav Keyboard UI" documentation.
+ */
 const TopNavExampleWrapper = () => {
+  /** Stable ids so Top nav example can move focus between menubar triggers (APG horizontal navigation). */
+  const TOP_NAV_MENUBAR_TRIGGER_IDS = [
+    'story-topnav-menubar-sales',
+    'story-topnav-menubar-production',
+    'story-topnav-menubar-admin',
+  ] as const;
+
+  const TOP_NAV_ORDER = ['sales', 'production', 'admin'] as const;
+
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const getMenuProps = (id: string) => ({
     open: openMenu === id,
-    onOpenChange: (open: boolean) => setOpenMenu(open ? id : null),
+    onOpenChange: (nextOpen: boolean) => {
+      if (nextOpen) {
+        setOpenMenu(id);
+        return;
+      }
+      // When roving focus between section triggers, the previous Menu can emit
+      // onOpenChange(false) from focus-out after openMenu already points at the
+      // next section. Only clear if this Menu was still the open one.
+      setOpenMenu((current) => (current === id ? null : current));
+    },
   });
+
+  const navigateTopNavMenubar = (
+    direction: 1 | -1,
+    fromKey: (typeof TOP_NAV_ORDER)[number],
+  ) => {
+    const idx = TOP_NAV_ORDER.indexOf(fromKey);
+    const len = TOP_NAV_ORDER.length;
+    const nextIndex = (idx + direction + len * 10) % len;
+    const nextKey = TOP_NAV_ORDER[nextIndex];
+    const nextId = TOP_NAV_MENUBAR_TRIGGER_IDS[nextIndex];
+    if (nextKey === undefined) {
+      return;
+    }
+
+    // APG Navigation Menubar: when no section menu is open, Left/Right only
+    // rove focus between triggers. When any menu is open, moving to another
+    // trigger also opens that section’s menu (see example JS: openPopup when
+    // isAnyPopupOpen / menubar expanded).
+    const shouldOpenNextMenu = openMenu !== null;
+
+    if (!shouldOpenNextMenu) {
+      window.requestAnimationFrame(() => {
+        if (nextId) {
+          document.getElementById(nextId)?.focus();
+        }
+      });
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      setOpenMenu(nextKey);
+      if (nextId) {
+        document.getElementById(nextId)?.focus();
+      }
+    });
+  };
+
+  const handleMenubarTriggerKeyDown =
+    (menuKey: (typeof TOP_NAV_ORDER)[number]) =>
+    (event: KeyboardEvent<HTMLButtonElement>) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+        return;
+      }
+      event.preventDefault();
+      event.stopPropagation();
+      navigateTopNavMenubar(event.key === 'ArrowRight' ? 1 : -1, menuKey);
+    };
 
   return (
     <VStack
@@ -325,7 +394,11 @@ const TopNavExampleWrapper = () => {
       p="24"
       gap="16"
     >
-      <HStack
+      <Box
+        role="menubar"
+        aria-label="Example site sections"
+        display="flex"
+        flexDirection="row"
         alignItems="center"
         gap="12"
         borderWidth="1"
@@ -336,9 +409,20 @@ const TopNavExampleWrapper = () => {
       >
         <Menu
           triggerInteraction="click-and-hover"
-          trigger={<Button variant="selectedBold">Sales</Button>}
+          trigger={
+            <Button
+              id={TOP_NAV_MENUBAR_TRIGGER_IDS[0]}
+              variant="selectedBold"
+              onKeyDown={handleMenubarTriggerKeyDown('sales')}
+            >
+              Sales
+            </Button>
+          }
           subMenuInteraction="hover"
           closeOnSelect={false}
+          onMenubarEdgeNavigate={(direction) =>
+            navigateTopNavMenubar(direction, 'sales')
+          }
           {...getMenuProps('sales')}
         >
           <SubMenu label="Quotes">
@@ -363,9 +447,19 @@ const TopNavExampleWrapper = () => {
 
         <Menu
           triggerInteraction="click-and-hover"
-          trigger={<Button>Production</Button>}
+          trigger={
+            <Button
+              id={TOP_NAV_MENUBAR_TRIGGER_IDS[1]}
+              onKeyDown={handleMenubarTriggerKeyDown('production')}
+            >
+              Production
+            </Button>
+          }
           subMenuInteraction="hover"
           closeOnSelect={false}
+          onMenubarEdgeNavigate={(direction) =>
+            navigateTopNavMenubar(direction, 'production')
+          }
           {...getMenuProps('production')}
         >
           <SubMenu label="Work Orders">
@@ -383,9 +477,19 @@ const TopNavExampleWrapper = () => {
 
         <Menu
           triggerInteraction="click-and-hover"
-          trigger={<Button>Admin</Button>}
+          trigger={
+            <Button
+              id={TOP_NAV_MENUBAR_TRIGGER_IDS[2]}
+              onKeyDown={handleMenubarTriggerKeyDown('admin')}
+            >
+              Admin
+            </Button>
+          }
           subMenuInteraction="hover"
           closeOnSelect={false}
+          onMenubarEdgeNavigate={(direction) =>
+            navigateTopNavMenubar(direction, 'admin')
+          }
           {...getMenuProps('admin')}
         >
           <SubMenu label="Users">
@@ -401,7 +505,7 @@ const TopNavExampleWrapper = () => {
 
           <MenuItem label="Audit log" iconBefore="list-bullets" />
         </Menu>
-      </HStack>
+      </Box>
     </VStack>
   );
 };
