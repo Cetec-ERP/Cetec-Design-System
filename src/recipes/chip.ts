@@ -5,6 +5,7 @@ import { globalBaseStyles } from '~/styles/utilities';
 const chipBase = {
   container: {
     ...globalBaseStyles,
+    '--with-item-padding': 'token(sizes.2)',
     position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',
@@ -22,7 +23,7 @@ const chipBase = {
     transitionTimingFunction: 'default',
     userSelect: 'none',
     border: 'none',
-    outlineWidth: 2,
+    outlineWidth: '2',
     outlineStyle: 'solid',
     outlineColor: 'transparent',
     bg: 'bg.neutral',
@@ -43,7 +44,7 @@ const chipBase = {
     _deleted: {
       textDecoration: 'line-through',
       cursor: 'not-allowed',
-      opacity: 0.6,
+      opacity: '[0.6]',
     },
     _disabled: {
       cursor: 'not-allowed',
@@ -60,14 +61,11 @@ const chipBase = {
     _selected: {
       bg: 'bg.neutral.boldest',
       color: 'text.inverse',
-      // chipIcon: { fill: 'icon.decorative.inverse' },
       _hover: {
         bg: 'bg.neutral.bold.hovered',
-        // chipIcon: { fill: 'icon.inverse' },
       },
       _active: {
         bg: 'bg.neutral.bold.pressed',
-        // chipIcon: { fill: 'icon.inverse' },
       },
     },
   },
@@ -97,21 +95,9 @@ export const chipRecipe = defineSlotRecipe({
   base: chipBase,
   variants: {
     size: {
-      md: {
-        container: {
-          gap: '4',
-          h: '24',
-          px: '8',
-          py: '1',
-          fontSize: '14',
-        },
-        chipIcon: {
-          w: '20',
-          h: '20',
-        },
-      },
       sm: {
         container: {
+          '--with-item-padding': 'token(sizes.2)',
           gap: '2',
           h: '20',
           px: '6',
@@ -121,10 +107,27 @@ export const chipRecipe = defineSlotRecipe({
         chipIcon: {
           w: '20',
           h: '20',
+          flexShrink: '0',
+        },
+      },
+      md: {
+        container: {
+          '--with-item-padding': 'token(sizes.2)',
+          gap: '4',
+          h: '24',
+          px: '8',
+          py: '1',
+          fontSize: '14',
+        },
+        chipIcon: {
+          w: '20',
+          h: '20',
+          flexShrink: '0',
         },
       },
       lg: {
         container: {
+          '--with-item-padding': 'token(sizes.4)',
           gap: '4',
           h: '32',
           px: '10',
@@ -134,60 +137,25 @@ export const chipRecipe = defineSlotRecipe({
         chipIcon: {
           w: '24',
           h: '24',
+          flexShrink: '0',
         },
       },
     },
     before: {
-      true: { container: {} },
+      true: {
+        container: {
+          ps: 'var(--with-item-padding)',
+        },
+      },
     },
     after: {
-      true: { container: {} },
+      true: {
+        container: {
+          pe: 'var(--with-item-padding)',
+        },
+      },
     },
   },
-  compoundVariants: [
-    {
-      size: 'md',
-      before: true,
-      css: {
-        container: { ps: '2' },
-      },
-    },
-    {
-      size: 'md',
-      after: true,
-      css: {
-        container: { pe: '2' },
-      },
-    },
-    {
-      size: 'sm',
-      before: true,
-      css: {
-        container: { ps: '2' },
-      },
-    },
-    {
-      size: 'sm',
-      after: true,
-      css: {
-        container: { pe: '2' },
-      },
-    },
-    {
-      size: 'lg',
-      before: true,
-      css: {
-        container: { ps: '4' },
-      },
-    },
-    {
-      size: 'lg',
-      after: true,
-      css: {
-        container: { pe: '4' },
-      },
-    },
-  ],
   defaultVariants: {
     size: 'md',
   },

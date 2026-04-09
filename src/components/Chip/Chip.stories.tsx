@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
-import { Flex, Grid } from '@styled-system/jsx';
+import { Flex, Grid, Wrap } from '@styled-system/jsx';
 
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { Box } from '../Box';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 
@@ -79,12 +80,116 @@ export const Default: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <Flex gap="4" alignItems="center">
-      <Chip size="sm">Small</Chip>
-      <Chip>Medium (default)</Chip>
-      <Chip size="lg">Large</Chip>
-    </Flex>
+    <Grid columns={5} justifyItems="center" gap="20">
+      <Chip size="sm">sm Chip</Chip>
+      <Chip size="sm" before={<Icon name="hash" />}>
+        sm Chip
+      </Chip>
+      <Chip size="sm" after={<Icon name="read-doc" />}>
+        sm Chip
+      </Chip>
+      <Chip
+        size="sm"
+        before={<Avatar src={sampleImages.user1} name="John Doe" />}
+      >
+        sm Chip
+      </Chip>
+      <Chip size="sm" after={<Badge count={3} />}>
+        sm Chip
+      </Chip>
+      <Chip size="md">md Chip</Chip>
+      <Chip size="md" before={<Icon name="hash" />}>
+        md Chip
+      </Chip>
+      <Chip size="md" after={<Icon name="read-doc" />}>
+        md Chip
+      </Chip>
+      <Chip
+        size="md"
+        before={<Avatar src={sampleImages.user1} name="John Doe" />}
+      >
+        md Chip
+      </Chip>
+      <Chip size="md" after={<Badge count={3} />}>
+        md Chip
+      </Chip>
+      <Chip size="lg">lg Chip</Chip>
+      <Chip size="lg" before={<Icon name="hash" />}>
+        lg Chip
+      </Chip>
+      <Chip size="lg" after={<Icon name="read-doc" />}>
+        lg Chip
+      </Chip>
+      <Chip
+        size="lg"
+        before={<Avatar src={sampleImages.user1} name="John Doe" />}
+      >
+        lg Chip
+      </Chip>
+      <Chip size="lg" after={<Badge count={3} />}>
+        lg Chip
+      </Chip>
+    </Grid>
   ),
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      gap="16"
+    >
+      <Wrap justifyContent="center">
+        <Chip size={{ base: 'lg', xs: 'md', sm: 'sm' }}>sm Chip</Chip>
+        <Chip
+          size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+          before={<Icon name="hash" />}
+        >
+          sm Chip
+        </Chip>
+        <Chip
+          size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+          after={<Icon name="read-doc" />}
+        >
+          sm Chip
+        </Chip>
+        <Chip
+          size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+        >
+          sm Chip
+        </Chip>
+        <Chip
+          size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+          after={<Badge count={3} />}
+        >
+          sm Chip
+        </Chip>
+      </Wrap>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"lg"', xs: '"md"', sm: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
 };
 
 // =============================================================================
@@ -126,11 +231,11 @@ export const WithBefore: Story = {
         </Chip>
       </Flex>
       <Flex gap="4" alignItems="center">
-        <Chip size="sm" before={<Icon name="file" size="20" />}>
+        <Chip size="sm" before={<Icon name="file" />}>
           Small
         </Chip>
-        <Chip before={<Icon name="file" size="20" />}>Medium</Chip>
-        <Chip size="lg" before={<Icon name="file" size="24" />}>
+        <Chip before={<Icon name="file" />}>Medium</Chip>
+        <Chip size="lg" before={<Icon name="file" />}>
           Large
         </Chip>
       </Flex>
