@@ -8,7 +8,7 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type AllowedIconSizes } from '~/components/Icon';
 import { splitProps } from '~/utils/splitProps';
 
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type AvatarSize = AvatarVariantProps['size'];
 
 export type AvatarShape = 'circle' | 'square' | 'hexagon';
 

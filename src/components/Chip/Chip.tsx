@@ -1,5 +1,8 @@
 import {
+  cloneElement,
   type ReactNode,
+  isValidElement,
+  type ReactElement,
   useRef,
   useEffect,
   type KeyboardEvent,
@@ -7,10 +10,10 @@ import {
 } from 'react';
 
 import { cx } from '@styled-system/css';
-import { HStack } from '@styled-system/jsx';
 import { chip, type ChipVariantProps } from '@styled-system/recipes';
-import type { NumericSizeToken } from '@styled-system/tokens';
 
+import { Avatar } from '~/components/Avatar';
+import { Badge } from '~/components/Badge';
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type AllowedIconSizes } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
@@ -25,6 +28,11 @@ const chipSizeToIconSize: Record<string, AllowedIconSizes> = {
   lg: '24',
 };
 
+const isChipSizeKey = (
+  size: unknown,
+): size is keyof typeof chipSizeToIconSize =>
+  typeof size === 'string' && size in chipSizeToIconSize;
+
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   Omit<ChipVariantProps, 'before' | 'after'> & {
     children: string | ReactNode;
@@ -38,7 +46,6 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     dismissable?: boolean;
     onDismiss?: () => void;
     value?: string;
-    gap?: NumericSizeToken;
   };
 
 export const Chip = (props: ChipProps) => {
@@ -53,7 +60,6 @@ export const Chip = (props: ChipProps) => {
     dismissable,
     onDismiss,
     value,
-    gap,
     onClick,
     ...rest
   } = props;
@@ -92,7 +98,25 @@ export const Chip = (props: ChipProps) => {
     before: hasBefore,
     after: hasAfter,
   });
-  const iconSize = chipSizeToIconSize[size];
+
+  const renderSlotItem = (slot: ReactNode) => {
+    if (!isValidElement(slot)) return slot;
+
+    const element = slot as ReactElement<{ className?: string }>;
+    const slotClassName =
+      element.type === Icon
+        ? classes.chipIcon
+        : element.type === Badge
+          ? classes.chipBadge
+          : element.type === Avatar
+            ? classes.chipAvatar
+            : classes.slotItem;
+
+    return cloneElement(element, {
+      className: cx(slotClassName, element.props.className),
+    });
+  };
+  const iconSize = chipSizeToIconSize[isChipSizeKey(size) ? size : 'md'];
 
   // Handle click based on chip type
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -182,7 +206,11 @@ export const Chip = (props: ChipProps) => {
       data-deleted={deleted ? true : undefined}
       {...otherProps}
     >
-      <HStack gap={gap || '4'} opacity={loading ? 0 : 1}>
+      <Box
+        className={classes.innerWrapper}
+        // gap={gap}
+        opacity={loading ? 0 : 1}
+      >
         {isMultiSelected && (
           <Icon
             name="check"
@@ -191,7 +219,7 @@ export const Chip = (props: ChipProps) => {
             aria-hidden
           />
         )}
-        {before}
+        {renderSlotItem(before)}
         {children}
         {dismissable ? (
           <Icon
@@ -201,9 +229,9 @@ export const Chip = (props: ChipProps) => {
             aria-hidden
           />
         ) : (
-          after
+          renderSlotItem(after)
         )}
-      </HStack>
+      </Box>
       {loading && <Spinner size="xs" centered />}
     </Box>
   );

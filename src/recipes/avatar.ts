@@ -119,8 +119,8 @@ export const avatarRecipe = defineSlotRecipe({
       },
       lg: {
         root: {
-          w: '32',
-          h: '32',
+          w: '28',
+          h: '28',
         },
         fallback: {
           fontSize: '14',
@@ -136,8 +136,8 @@ export const avatarRecipe = defineSlotRecipe({
       },
       xl: {
         root: {
-          w: '48',
-          h: '48',
+          w: '36',
+          h: '36',
         },
         fallback: {
           fontSize: '20',
@@ -153,8 +153,8 @@ export const avatarRecipe = defineSlotRecipe({
       },
       '2xl': {
         root: {
-          w: '64',
-          h: '64',
+          w: '48',
+          h: '48',
         },
         fallback: {
           fontSize: '24',

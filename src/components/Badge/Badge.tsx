@@ -28,6 +28,7 @@ export type BadgeProps = Omit<BoxProps, keyof BadgeVariantProps> &
     variant?: BadgeVariant;
     /** Content to wrap with the badge */
     children?: ReactNode;
+    size?: BadgeVariantProps['size'];
   };
 
 // Animation styles
@@ -58,7 +59,7 @@ export const Badge = (props: BadgeProps) => {
     showZero = false,
     overflowCount = 99,
     variant = 'danger',
-    size = 'md',
+    size,
     children,
     ref,
     ...rest

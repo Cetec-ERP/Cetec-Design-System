@@ -33,7 +33,7 @@ export const badgeRecipe = defineSlotRecipe({
       sm: {
         indicator: {
           '--indicator-min-width': 'token(sizes.16)',
-          h: '6',
+          minH: '6',
           fontSize: '10',
           p: '3',
         },
@@ -41,7 +41,7 @@ export const badgeRecipe = defineSlotRecipe({
       md: {
         indicator: {
           '--indicator-min-width': 'token(sizes.20)',
-          h: '8',
+          minH: '8',
           fontSize: '12',
           p: '4',
         },
@@ -49,9 +49,17 @@ export const badgeRecipe = defineSlotRecipe({
       lg: {
         indicator: {
           '--indicator-min-width': 'token(sizes.24)',
-          h: '10',
+          minH: '10',
           fontSize: '14',
           p: '5',
+        },
+      },
+      xl: {
+        indicator: {
+          '--indicator-min-width': 'token(sizes.28)',
+          minH: '12',
+          fontSize: '16',
+          p: '6',
         },
       },
     },
@@ -91,6 +99,7 @@ export const badgeRecipe = defineSlotRecipe({
       // Count mode
       false: {
         indicator: {
+          h: 'fit',
           minW: 'var(--indicator-min-width)',
         },
       },

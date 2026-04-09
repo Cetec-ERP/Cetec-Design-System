@@ -151,25 +151,35 @@ export const ConditionalBreakpoints: Story = {
         <Chip size={{ base: 'lg', xs: 'md', sm: 'sm' }}>sm Chip</Chip>
         <Chip
           size={{ base: 'lg', xs: 'md', sm: 'sm' }}
-          before={<Icon name="hash" />}
+          before={
+            <Icon name="hash" size={{ base: '24', xs: '20', sm: '20' }} />
+          }
         >
           sm Chip
         </Chip>
         <Chip
           size={{ base: 'lg', xs: 'md', sm: 'sm' }}
-          after={<Icon name="read-doc" />}
+          after={
+            <Icon name="read-doc" size={{ base: '24', xs: '20', sm: '20' }} />
+          }
         >
           sm Chip
         </Chip>
         <Chip
           size={{ base: 'lg', xs: 'md', sm: 'sm' }}
-          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+          before={
+            <Avatar
+              src={sampleImages.user1}
+              name="John Doe"
+              size={{ base: 'lg', xs: 'sm', sm: 'xs' }}
+            />
+          }
         >
           sm Chip
         </Chip>
         <Chip
           size={{ base: 'lg', xs: 'md', sm: 'sm' }}
-          after={<Badge count={3} />}
+          after={<Badge count={3} size={{ base: 'lg', xs: 'md', sm: 'sm' }} />}
         >
           sm Chip
         </Chip>
@@ -225,7 +235,7 @@ export const WithBefore: Story = {
         </Chip>
         <Chip
           size="lg"
-          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+          before={<Avatar size="lg" src={sampleImages.user1} name="John Doe" />}
         >
           Large
         </Chip>
