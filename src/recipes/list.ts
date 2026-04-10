@@ -2,6 +2,8 @@ import { defineRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
+import { listDensityVars } from './listDensity';
+
 export const listRecipe = defineRecipe({
   className: 'list',
   jsx: ['List'],
@@ -13,5 +15,11 @@ export const listRecipe = defineRecipe({
     justifyContent: 'start',
     gap: '0',
   },
-  variants: {},
+  variants: {
+    density: listDensityVars,
+  },
+  defaultVariants: {
+    density: 'compact',
+  },
+  staticCss: [{ density: ['*'] }],
 });

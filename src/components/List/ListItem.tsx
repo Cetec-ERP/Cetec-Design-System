@@ -14,7 +14,7 @@ import { Text } from '../Text';
 import { Toggle } from '../Toggle';
 
 import { HighlightText } from './HighlightText';
-import { useListContext } from './listContext';
+import { type ListDensity, useListContext } from './listContext';
 
 export type ListItemProps = Omit<
   BoxProps<'button'>,
@@ -29,7 +29,7 @@ export type ListItemProps = Omit<
     onControlChange?: ChangeEventHandler<HTMLInputElement>;
     selected?: boolean;
     variant?: ListItemVariantProps['variant'];
-    density?: ListItemVariantProps['density'];
+    density?: ListDensity;
     iconBefore?: IconNamesList;
     iconAfter?: IconNamesList;
   };
@@ -96,6 +96,7 @@ export const ListItem = (props: ListItemProps) => {
           {variant === 'checkbox' && (
             <Checkbox
               name={controlName}
+              className={classes.beforeSlot}
               checked={isSelected}
               onChange={handleControlChange}
               tabIndex={-1}
@@ -105,6 +106,7 @@ export const ListItem = (props: ListItemProps) => {
           {variant === 'toggle' && (
             <Toggle
               name={controlName}
+              className={classes.beforeSlot}
               checked={isSelected}
               onChange={handleControlChange}
               mr="4"
@@ -112,7 +114,12 @@ export const ListItem = (props: ListItemProps) => {
             />
           )}
 
-          {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
+          {iconBefore && (
+            <Icon
+              className={cx(classes.icon, classes.beforeSlot)}
+              name={iconBefore}
+            />
+          )}
 
           <Box className={classes.itemMain}>
             {label && (
@@ -137,7 +144,11 @@ export const ListItem = (props: ListItemProps) => {
           </Box>
 
           {iconAfter && (
-            <Icon className={classes.icon} name={iconAfter} ml="auto" />
+            <Icon
+              className={cx(classes.icon, classes.afterSlot)}
+              name={iconAfter}
+              ml="auto"
+            />
           )}
         </>
       )}
