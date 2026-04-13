@@ -1,6 +1,7 @@
-import { Flex } from '@styled-system/jsx';
+import { Flex, Grid } from '@styled-system/jsx';
 
 import { Box } from '../Box';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 
@@ -299,6 +300,45 @@ export const PresenceAndStatus: Story = {
       </Box>
     </Box>
   ),
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      gap="16"
+    >
+      <Avatar
+        src={sampleImages.user1}
+        presence="online"
+        status="approved"
+        size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+        shape={{ base: 'circle', xs: 'square', sm: 'hexagon' }}
+      />
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"lg"', xs: '"md"', sm: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
 };
 
 // =============================================================================

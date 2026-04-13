@@ -17,11 +17,6 @@ export const listItemRecipe = defineSlotRecipe({
     'itemDescription',
     'divider',
   ],
-  staticCss: [
-    {
-      selected: ['*'],
-    },
-  ],
   base: {
     wrapper: {
       ...globalBaseStyles,
@@ -176,5 +171,10 @@ export const listItemRecipe = defineSlotRecipe({
     variant: 'default',
     density: 'compact',
   },
-  staticCss: [{ density: ['*'] }],
+  staticCss: [
+    {
+      density: ['*'],
+      selected: ['*'],
+    },
+  ],
 });
