@@ -34,5 +34,4 @@ export const listItemGroupRecipe = defineSlotRecipe({
   defaultVariants: {
     density: 'compact',
   },
-  staticCss: [{ density: ['*'] }],
 });

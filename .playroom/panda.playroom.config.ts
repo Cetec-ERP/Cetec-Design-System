@@ -1,6 +1,28 @@
 import { defineConfig } from '@pandacss/dev';
 
 import { cetecPreset } from '../src/cetec-preset';
+import * as regularRecipes from '../src/recipes/recipes-regular';
+import * as slotRecipes from '../src/recipes/recipes-slot';
+
+import type { RecipeRule } from '@pandacss/types';
+
+const recipeNames = [
+  ...Object.keys(regularRecipes),
+  ...Object.keys(slotRecipes),
+].map((key) => key.replace(/Recipe$/, ''));
+
+const recipeOverrides: Record<string, RecipeRule[]> = {
+  avatar: [{ size: ['*'], responsive: true }, { shape: ['*'] }],
+  badge: [{ size: ['*'], responsive: true }],
+  chip: [{ size: ['*'], responsive: true }],
+  list: [{ density: ['*'] }],
+  listItem: [{ density: ['*'], selected: ['*'] }],
+  listItemGroup: [{ density: ['*'] }],
+};
+
+const staticCssRecipes: Record<string, RecipeRule[]> = Object.fromEntries(
+  recipeNames.map((name) => [name, ['*'] as unknown as RecipeRule[]]),
+);
 
 export default defineConfig({
   eject: true,
@@ -83,7 +105,10 @@ export default defineConfig({
         responsive: true,
       },
     ],
-    recipes: '*',
+    recipes: {
+      ...staticCssRecipes,
+      ...recipeOverrides,
+    },
   },
 
   hooks: {

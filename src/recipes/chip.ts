@@ -87,9 +87,14 @@ export const chipRecipe = defineSlotRecipe({
       display: 'flex',
       alignItems: 'center',
     },
+    slotItem: {
+      display: 'inline-flex',
+      alignItems: 'center',
+    },
     chipIcon: {
       fill: 'icon.decorative',
       aspectRatio: 'square',
+      flexShrink: '0',
       transitionDuration: 'fast',
       transitionProperty: 'fill',
       transitionTimingFunction: 'default',
@@ -121,8 +126,6 @@ export const chipRecipe = defineSlotRecipe({
         },
         chipIcon: {
           w: '20',
-          h: '20',
-          flexShrink: '0',
         },
       },
       md: {
@@ -139,8 +142,6 @@ export const chipRecipe = defineSlotRecipe({
         },
         chipIcon: {
           w: '20',
-          h: '20',
-          flexShrink: '0',
         },
       },
       lg: {
@@ -157,8 +158,6 @@ export const chipRecipe = defineSlotRecipe({
         },
         chipIcon: {
           w: '24',
-          h: '24',
-          flexShrink: '0',
         },
       },
     },

@@ -21,5 +21,4 @@ export const listRecipe = defineRecipe({
   defaultVariants: {
     density: 'compact',
   },
-  staticCss: [{ density: ['*'] }],
 });

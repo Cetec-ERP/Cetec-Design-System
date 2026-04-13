@@ -171,10 +171,4 @@ export const listItemRecipe = defineSlotRecipe({
     variant: 'default',
     density: 'compact',
   },
-  staticCss: [
-    {
-      density: ['*'],
-      selected: ['*'],
-    },
-  ],
 });

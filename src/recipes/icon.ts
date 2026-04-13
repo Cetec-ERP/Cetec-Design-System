@@ -21,5 +21,4 @@ export const iconRecipe = defineRecipe({
   defaultVariants: {
     // Don't set default size because then it's hard to override in recipes
   },
-  staticCss: [{ size: ['*'] }],
 });

@@ -92,11 +92,7 @@ export const badgeRecipe = defineSlotRecipe({
     },
     // Dot mode: smaller, no text
     dot: {
-      // Dot mode
-      true: {
-        indicator: {},
-      },
-      // Count mode
+      true: {},
       false: {
         indicator: {
           h: 'fit',

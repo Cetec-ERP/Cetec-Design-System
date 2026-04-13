@@ -4,12 +4,6 @@ export const avatarRecipe = defineSlotRecipe({
   className: 'avatar',
   jsx: ['Avatar'],
   slots: ['root', 'image', 'fallback', 'presence', 'status'],
-  staticCss: [
-    {
-      size: ['xs', 'sm', 'md', 'lx', 'xl', '2xl'],
-      shape: ['circle', 'square', 'hexagon'],
-    },
-  ],
   base: {
     root: {
       display: 'inline-flex',
@@ -25,7 +19,7 @@ export const avatarRecipe = defineSlotRecipe({
     },
     image: {
       w: 'full',
-      h: 'full',
+      aspectRatio: 'square',
       objectFit: 'cover',
       overflow: 'hidden',
     },
@@ -34,7 +28,7 @@ export const avatarRecipe = defineSlotRecipe({
       alignItems: 'center',
       justifyContent: 'center',
       w: 'full',
-      h: 'full',
+      aspectRatio: 'square',
       fontFamily: 'body',
       fontWeight: 'medium',
       textTransform: 'uppercase',
@@ -44,6 +38,7 @@ export const avatarRecipe = defineSlotRecipe({
       position: 'absolute',
       bottom: '0',
       right: '0',
+      aspectRatio: 'square',
       borderRadius: '100',
       borderWidth: '1',
       borderStyle: 'solid',
@@ -54,6 +49,7 @@ export const avatarRecipe = defineSlotRecipe({
       position: 'absolute',
       top: '0',
       right: '0',
+      aspectRatio: 'square',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -69,103 +65,85 @@ export const avatarRecipe = defineSlotRecipe({
       xs: {
         root: {
           w: '16',
-          h: '16',
         },
         fallback: {
           fontSize: '8',
         },
         presence: {
           w: '6',
-          h: '6',
         },
         status: {
           w: '8',
-          h: '8',
         },
       },
       sm: {
         root: {
           w: '20',
-          h: '20',
         },
         fallback: {
           fontSize: '10',
         },
         presence: {
           w: '8',
-          h: '8',
         },
         status: {
           w: '10',
-          h: '10',
         },
       },
       md: {
         root: {
           w: '24',
-          h: '24',
         },
         fallback: {
           fontSize: '12',
         },
         presence: {
           w: '8',
-          h: '8',
         },
         status: {
           w: '10',
-          h: '10',
         },
       },
       lg: {
         root: {
           w: '28',
-          h: '28',
         },
         fallback: {
           fontSize: '14',
         },
         presence: {
           w: '10',
-          h: '10',
         },
         status: {
           w: '12',
-          h: '12',
         },
       },
       xl: {
         root: {
           w: '36',
-          h: '36',
         },
         fallback: {
           fontSize: '20',
         },
         presence: {
           w: '12',
-          h: '12',
         },
         status: {
           w: '16',
-          h: '16',
         },
       },
       '2xl': {
         root: {
           w: '48',
-          h: '48',
         },
         fallback: {
           fontSize: '24',
         },
         presence: {
           w: '14',
-          h: '14',
         },
         status: {
           w: '20',
-          h: '20',
         },
       },
     },

@@ -1,8 +1,5 @@
 import {
-  cloneElement,
   type ReactNode,
-  isValidElement,
-  type ReactElement,
   useRef,
   useEffect,
   type KeyboardEvent,
@@ -12,34 +9,120 @@ import {
 import { cx } from '@styled-system/css';
 import { chip, type ChipVariantProps } from '@styled-system/recipes';
 
-import { Avatar } from '~/components/Avatar';
-import { Badge } from '~/components/Badge';
+import { Avatar, type AvatarProps } from '~/components/Avatar';
+import { Badge, type BadgeProps } from '~/components/Badge';
 import { Box, type BoxProps } from '~/components/Box';
-import { Icon, type AllowedIconSizes } from '~/components/Icon';
+import { Icon, type IconNamesList, type IconProps } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
 import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
 
-// Map chip sizes to icon sizes (for internal icons like check/x)
-const chipSizeToIconSize: Record<string, AllowedIconSizes> = {
+export type ChipIconSlot = {
+  name: IconNamesList;
+  fill?: IconProps['fill'];
+};
+
+export type ChipAvatarSlot = {
+  src?: string;
+  alt?: string;
+  name?: string;
+  fallback?: ReactNode;
+};
+
+export type ChipBadgeSlot = {
+  count?: number;
+  variant?: BadgeProps['variant'];
+};
+
+type ChipSize = NonNullable<ChipProps['size']>;
+
+type ChipSizeKeys = Extract<ChipSize, string>;
+
+const chipSizeToIconSize: Record<ChipSizeKeys, IconProps['size']> = {
   sm: '20',
   md: '20',
   lg: '24',
 };
 
-const isChipSizeKey = (
-  size: unknown,
-): size is keyof typeof chipSizeToIconSize =>
+const chipSizeToAvatarSize: Record<ChipSizeKeys, AvatarProps['size']> = {
+  sm: 'xs',
+  md: 'sm',
+  lg: 'lg',
+};
+
+const chipSizeToBadgeSize: Record<ChipSizeKeys, BadgeProps['size']> = {
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+};
+
+const isChipSizeKey = (size: unknown): size is ChipSizeKeys =>
   typeof size === 'string' && size in chipSizeToIconSize;
+
+const mapChiptoAvatarSize = (size: ChipProps['size']): AvatarProps['size'] => {
+  if (isChipSizeKey(size)) {
+    return chipSizeToAvatarSize[size];
+  }
+
+  if (size && typeof size === 'object') {
+    const mapped: Record<string, AvatarProps['size']> = {};
+
+    Object.entries(size as Record<string, unknown>).forEach(([key, value]) => {
+      mapped[key] = chipSizeToAvatarSize[value as ChipSizeKeys];
+    });
+
+    return mapped;
+  }
+
+  return chipSizeToAvatarSize.md;
+};
+
+const mapChiptoBadgeSize = (size: ChipProps['size']): BadgeProps['size'] => {
+  if (isChipSizeKey(size)) {
+    return chipSizeToBadgeSize[size];
+  }
+
+  if (size && typeof size === 'object') {
+    const mapped: Record<string, BadgeProps['size']> = {};
+
+    Object.entries(size as Record<string, unknown>).forEach(([key, value]) => {
+      mapped[key] = chipSizeToBadgeSize[value as ChipSizeKeys];
+    });
+
+    return mapped;
+  }
+
+  return chipSizeToBadgeSize.md;
+};
+
+const getStructuredSlotCount = (slots: Array<unknown>) =>
+  slots.filter(Boolean).length;
+
+const resolveBeforeSlot = (
+  avatarBefore?: ChipAvatarSlot,
+  iconBefore?: ChipIconSlot,
+  badgeBefore?: ChipBadgeSlot,
+) => avatarBefore ?? iconBefore ?? badgeBefore;
+
+const resolveAfterSlot = (
+  iconAfter?: ChipIconSlot,
+  badgeAfter?: ChipBadgeSlot,
+) => iconAfter ?? badgeAfter;
 
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   Omit<ChipVariantProps, 'before' | 'after'> & {
-    children: string | ReactNode;
-    /** Content to render before the label (e.g., Icon, Avatar) */
-    before?: ReactNode;
-    /** Content to render after the label (e.g., Badge, Icon) */
-    after?: ReactNode;
+    children: ReactNode;
+    /** Structured icon slot rendered before the label */
+    iconBefore?: ChipIconSlot;
+    /** Structured icon slot rendered after the label */
+    iconAfter?: ChipIconSlot;
+    /** Structured avatar slot rendered before the label */
+    avatarBefore?: ChipAvatarSlot;
+    /** Structured badge slot rendered before the label */
+    badgeBefore?: ChipBadgeSlot;
+    /** Structured badge slot rendered after the label */
+    badgeAfter?: ChipBadgeSlot;
     disabled?: boolean;
     loading?: boolean;
     deleted?: boolean;
@@ -55,8 +138,11 @@ export const Chip = (props: ChipProps) => {
     loading,
     disabled,
     deleted,
-    before,
-    after,
+    iconBefore,
+    iconAfter,
+    avatarBefore,
+    badgeBefore,
+    badgeAfter,
     dismissable,
     onDismiss,
     value,
@@ -69,6 +155,9 @@ export const Chip = (props: ChipProps) => {
 
   // Determine if this chip is selectable (has value and is inside ChipGroup)
   const isSelectable = value !== undefined && groupContext !== null;
+
+  const avatarSize = mapChiptoAvatarSize(size);
+  const badgeSize = mapChiptoBadgeSize(size);
 
   // Register/unregister with ChipGroup for keyboard navigation
   useEffect(() => {
@@ -89,9 +178,44 @@ export const Chip = (props: ChipProps) => {
   const isMultiSelected =
     isSelectable && groupContext.type === 'multi' && isSelected;
 
+  // Error if more than one before or after slot is used
+  if (import.meta.env.DEV) {
+    const beforeSlotCount = getStructuredSlotCount([
+      avatarBefore,
+      iconBefore,
+      badgeBefore,
+    ]);
+    const afterSlotCount = getStructuredSlotCount([iconAfter, badgeAfter]);
+
+    if (beforeSlotCount > 1) {
+      throw new Error(
+        'Chip accepts only one before-side slot. Use one of avatarBefore, iconBefore, badgeBefore, or before.',
+      );
+    }
+
+    if (afterSlotCount > 1) {
+      throw new Error(
+        'Chip accepts only one after-side slot. Use one of iconAfter, badgeAfter, or after.',
+      );
+    }
+
+    if (dismissable && afterSlotCount > 0) {
+      throw new Error(
+        'Chip cannot render after-side content when dismissable is true. The dismiss affordance owns the after slot.',
+      );
+    }
+  }
+
+  const resolvedBefore = resolveBeforeSlot(
+    avatarBefore,
+    iconBefore,
+    badgeBefore,
+  );
+  const resolvedAfter = resolveAfterSlot(iconAfter, badgeAfter);
+
   // Determine if there's content before/after for padding adjustments
-  const hasBefore = Boolean(before) || isMultiSelected;
-  const hasAfter = Boolean(after) || dismissable;
+  const hasBefore = Boolean(resolvedBefore) || isMultiSelected;
+  const hasAfter = Boolean(resolvedAfter) || dismissable;
 
   const classes = chip({
     size,
@@ -99,24 +223,48 @@ export const Chip = (props: ChipProps) => {
     after: hasAfter,
   });
 
-  const renderSlotItem = (slot: ReactNode) => {
-    if (!isValidElement(slot)) return slot;
+  const renderBeforeSlot = () => {
+    if (avatarBefore) {
+      return (
+        <Avatar
+          {...avatarBefore}
+          size={avatarSize}
+          className={classes.chipAvatar}
+        />
+      );
+    }
 
-    const element = slot as ReactElement<{ className?: string }>;
-    const slotClassName =
-      element.type === Icon
-        ? classes.chipIcon
-        : element.type === Badge
-          ? classes.chipBadge
-          : element.type === Avatar
-            ? classes.chipAvatar
-            : classes.slotItem;
+    if (iconBefore) {
+      return <Icon {...iconBefore} className={classes.chipIcon} />;
+    }
 
-    return cloneElement(element, {
-      className: cx(slotClassName, element.props.className),
-    });
+    if (badgeBefore) {
+      return (
+        <Badge
+          {...badgeBefore}
+          size={badgeSize}
+          className={classes.chipBadge}
+        />
+      );
+    }
+
+    return null;
   };
-  const iconSize = chipSizeToIconSize[isChipSizeKey(size) ? size : 'md'];
+
+  const renderAfterSlot = () => {
+    if (iconAfter) {
+      return <Icon {...iconAfter} className={classes.chipIcon} />;
+    }
+
+    if (badgeAfter) {
+      return (
+        <Badge {...badgeAfter} size={badgeSize} className={classes.chipBadge} />
+      );
+    }
+
+    return null;
+  };
+  // const dismissIconSize = chipSizeToIconSize[isChipSizeKey(size) ? size : 'md'];
 
   // Handle click based on chip type
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -212,24 +360,14 @@ export const Chip = (props: ChipProps) => {
         opacity={loading ? 0 : 1}
       >
         {isMultiSelected && (
-          <Icon
-            name="check"
-            size={iconSize}
-            className={classes.chipIcon}
-            aria-hidden
-          />
+          <Icon name="check" className={classes.chipIcon} aria-hidden />
         )}
-        {renderSlotItem(before)}
+        {renderBeforeSlot()}
         {children}
         {dismissable ? (
-          <Icon
-            name="x"
-            size={iconSize}
-            className={classes.chipIcon}
-            aria-hidden
-          />
+          <Icon name="x" className={classes.chipIcon} aria-hidden />
         ) : (
-          renderSlotItem(after)
+          renderAfterSlot()
         )}
       </Box>
       {loading && <Spinner size="xs" centered />}
