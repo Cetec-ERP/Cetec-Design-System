@@ -45,6 +45,15 @@ const meta: Meta<typeof Modal> = {
       control: 'boolean',
       description: 'Prevent closing when clicking overlay',
     },
+    position: {
+      control: 'select',
+      options: ['centered', 'top'],
+      description:
+        'Centered in the viewport, or fixed below the top edge (horizontally centered)',
+      table: {
+        defaultValue: { summary: 'centered' },
+      },
+    },
   },
 };
 
@@ -596,6 +605,54 @@ export const CustomHeader: Story = {
             <ModalFooter>
               <Button variant="ghost" onClick={() => setIsOpen(false)}>
                 Close
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </>
+      );
+    };
+    return <Component />;
+  },
+};
+
+// ============================================================================
+// TOP POSITION
+// ============================================================================
+
+export const TopPosition: Story = {
+  render: () => {
+    const Component = () => {
+      const [isOpen, setIsOpen] = useState(false);
+
+      return (
+        <>
+          <Flex p="8" justify="center">
+            <Button onClick={() => setIsOpen(true)}>Open Top-Positioned</Button>
+          </Flex>
+          <Modal
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            position="top"
+            size="md"
+          >
+            <ModalHeader title="Top-Positioned Modal" showCloseButton />
+            <ModalBody>
+              <Text>
+                This modal uses{' '}
+                <Text as="span" fontWeight="semibold">
+                  position=&quot;top&quot;
+                </Text>
+                . It is offset from the top of the viewport and centered on the
+                x-axis. Resize the preview or compare with the default story to
+                see the difference from centered placement.
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="ghost" onClick={() => setIsOpen(false)}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => setIsOpen(false)}>
+                OK
               </Button>
             </ModalFooter>
           </Modal>
