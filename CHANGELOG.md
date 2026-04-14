@@ -1,3 +1,20 @@
+# 1.2.1 (Wed Apr 08 2026)
+
+#### 🚀 Features
+
+- feat(patch): add position prop to Modal [#152](https://github.com/Cetec-ERP/Cetec-Design-System/pull/152) ([@atkinsdavid](https://github.com/atkinsdavid) [@Etwigg](https://github.com/Etwigg))
+
+#### 🐛 Bug Fixes
+
+- fix: make sure CSS for selected list items is generated [#151](https://github.com/Cetec-ERP/Cetec-Design-System/pull/151) ([@atkinsdavid](https://github.com/atkinsdavid))
+
+#### Authors: 2
+
+- David ([@atkinsdavid](https://github.com/atkinsdavid))
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+
+---
+
 # 1.1.0 (Fri Apr 03 2026)
 
 #### 📦 Misc Changes

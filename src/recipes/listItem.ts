@@ -13,6 +13,11 @@ export const listItemRecipe = defineSlotRecipe({
     'itemDescription',
     'divider',
   ],
+  staticCss: [
+    {
+      selected: ['*'],
+    },
+  ],
   base: {
     wrapper: {
       ...globalBaseStyles,

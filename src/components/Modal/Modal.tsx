@@ -74,10 +74,11 @@ export const Modal = (props: ModalProps) => {
     children,
     id,
     variant = 'default',
+    position = 'centered',
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
-  const classes = modalRecipe({ size, variant });
+  const classes = modalRecipe({ size, variant, position });
   const [{ phase }, dispatch] = useReducer(modalStateReducer, {
     phase: open ? 'open' : 'closed',
   });
