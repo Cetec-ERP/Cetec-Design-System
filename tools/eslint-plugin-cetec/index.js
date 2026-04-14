@@ -1,7 +1,15 @@
 import {
+  RULE_NAME as avoidCompoundVariantsInRecipesRuleName,
+  avoidCompoundVariantsInRecipesRule,
+} from './rules/avoid-compound-variants-in-recipes.js';
+import {
   RULE_NAME as noHardcodedDesignValuesInRecipesRuleName,
   noHardcodedDesignValuesInRecipesRule,
 } from './rules/no-hardcoded-design-values-in-recipes.js';
+import {
+  RULE_NAME as noStaticCssInRecipeFilesRuleName,
+  noStaticCssInRecipeFilesRule,
+} from './rules/no-static-css-in-recipe-files.js';
 import {
   RULE_NAME as noInlineStylePropRuleName,
   noInlineStylePropRule,
@@ -38,6 +46,10 @@ import {
   RULE_NAME as recipeExportNameMatchesFileRuleName,
   recipeExportNameMatchesFileRule,
 } from './rules/recipe-export-name-matches-file.js';
+import {
+  RULE_NAME as useCorrectConditionalVariantTypeRuleName,
+  useCorrectConditionalVariantTypeRule,
+} from './rules/use-correct-conditional-variant-type.js';
 
 /**
  * Local Cetec ESLint plugin.
@@ -53,6 +65,8 @@ const cetecPlugin = {
     version: '0.0.0-local',
   },
   rules: {
+    [avoidCompoundVariantsInRecipesRuleName]:
+      avoidCompoundVariantsInRecipesRule,
     [discourageCssVariableStylingRuleName]: discourageCssVariableStylingRule,
     [noClassnameCssCallRuleName]: noClassnameCssCallRule,
     [noHardcodedDesignValuesInRecipesRuleName]:
@@ -62,8 +76,11 @@ const cetecPlugin = {
     [noRawFontWeightValuesRuleName]: noRawFontWeightValuesRule,
     [noReactFcComponentsRuleName]: noReactFcComponentsRule,
     [noReactNamespaceTypeImportsRuleName]: noReactNamespaceTypeImportsRule,
+    [noStaticCssInRecipeFilesRuleName]: noStaticCssInRecipeFilesRule,
     [recipeExportNameMatchesFileRuleName]: recipeExportNameMatchesFileRule,
     [recipeJsxNameMatchesComponentRuleName]: recipeJsxNameMatchesComponentRule,
+    [useCorrectConditionalVariantTypeRuleName]:
+      useCorrectConditionalVariantTypeRule,
   },
 };
 
