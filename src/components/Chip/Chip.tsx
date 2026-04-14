@@ -133,7 +133,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
 
 export const Chip = (props: ChipProps) => {
   const {
-    size = 'md',
+    size: sizeProp,
     children,
     loading,
     disabled,
@@ -152,6 +152,7 @@ export const Chip = (props: ChipProps) => {
   const [className, otherProps] = splitProps(rest);
   const groupContext = useChipGroup();
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const size = sizeProp ?? groupContext?.size ?? 'md';
 
   // Determine if this chip is selectable (has value and is inside ChipGroup)
   const isSelectable = value !== undefined && groupContext !== null;

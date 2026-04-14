@@ -41,7 +41,6 @@ export const chipRecipe = defineSlotRecipe({
       outlineStyle: 'solid',
       outlineColor: 'transparent',
       bg: 'bg.neutral',
-      color: 'text',
       _hover: {
         bg: 'bg.neutral.hovered',
       },
@@ -74,7 +73,6 @@ export const chipRecipe = defineSlotRecipe({
       },
       _selected: {
         bg: 'bg.neutral.boldest',
-        color: 'text.inverse',
         _hover: {
           bg: 'bg.neutral.bold.hovered',
         },
@@ -84,8 +82,12 @@ export const chipRecipe = defineSlotRecipe({
       },
     },
     innerWrapper: {
+      color: 'text',
       display: 'flex',
       alignItems: 'center',
+      '[data-selected=true] &': {
+        color: 'text.inverse',
+      },
     },
     slotItem: {
       display: 'inline-flex',
@@ -122,7 +124,7 @@ export const chipRecipe = defineSlotRecipe({
           fontSize: '14',
         },
         innerWrapper: {
-          gap: '2',
+          gap: '3',
         },
         chipIcon: {
           w: '20',
@@ -138,7 +140,7 @@ export const chipRecipe = defineSlotRecipe({
           fontSize: '14',
         },
         innerWrapper: {
-          gap: '4',
+          gap: '5',
         },
         chipIcon: {
           w: '20',
@@ -154,7 +156,7 @@ export const chipRecipe = defineSlotRecipe({
           fontSize: '16',
         },
         innerWrapper: {
-          gap: '4',
+          gap: '8',
         },
         chipIcon: {
           w: '24',

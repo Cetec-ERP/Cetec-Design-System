@@ -155,8 +155,6 @@ export const Sizes: Story = {
 // ============================================================================
 
 export const ConditionalBreakpoints = () => {
-  const [selected, setSelected] = useState('');
-
   return (
     <Grid
       w="full"
@@ -186,21 +184,6 @@ export const ConditionalBreakpoints = () => {
           Chip
         </Chip>
       </Wrap>
-      <ChipGroup
-        type="single"
-        value={selected}
-        onChange={(value) => setSelected(value as string)}
-        label="Size selection"
-        size={{ base: 'lg', xs: 'md', sm: 'sm' }}
-      >
-        <Chip value="icon" iconBefore={{ name: 'hash' }}>
-          Icon
-        </Chip>
-        <Chip avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}>
-          Avatar
-        </Chip>
-        <Chip badgeAfter={{ count: 3 }}>Badge</Chip>
-      </ChipGroup>
       <Text
         textAlign="center"
         textStyle="mono.sm"
@@ -681,25 +664,21 @@ const ChipGroupSizesExample = () => {
         <Text textStyle="mono.xs">Small</Text>
         <ChipGroup
           type="single"
+          size="sm"
           value={smValue}
           onChange={(v) => setSmValue(v as string)}
           label="Small chip group"
         >
-          <Chip value="option-a" size="sm">
-            Option A
-          </Chip>
-          <Chip value="option-b" size="sm">
-            Option B
-          </Chip>
-          <Chip value="option-c" size="sm">
-            Option C
-          </Chip>
+          <Chip value="option-a">Option A</Chip>
+          <Chip value="option-b">Option B</Chip>
+          <Chip value="option-c">Option C</Chip>
         </ChipGroup>
       </Flex>
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">Medium</Text>
         <ChipGroup
           type="single"
+          size="md"
           value={mdValue}
           onChange={(v) => setMdValue(v as string)}
           label="Medium chip group"
@@ -713,19 +692,14 @@ const ChipGroupSizesExample = () => {
         <Text textStyle="mono.xs">Large</Text>
         <ChipGroup
           type="single"
+          size="lg"
           value={lgValue}
           onChange={(v) => setLgValue(v as string)}
           label="Large chip group"
         >
-          <Chip value="option-a" size="lg">
-            Option A
-          </Chip>
-          <Chip value="option-b" size="lg">
-            Option B
-          </Chip>
-          <Chip value="option-c" size="lg">
-            Option C
-          </Chip>
+          <Chip value="option-a">Option A</Chip>
+          <Chip value="option-b">Option B</Chip>
+          <Chip value="option-c">Option C</Chip>
         </ChipGroup>
       </Flex>
     </Flex>
@@ -734,6 +708,57 @@ const ChipGroupSizesExample = () => {
 
 export const ChipGroupSizes: Story = {
   render: () => <ChipGroupSizesExample />,
+};
+
+const ChipGroupResponsiveSizesExample = () => {
+  const [selected, setSelected] = useState('assignee');
+
+  return (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      gap="16"
+    >
+      <ChipGroup
+        type="single"
+        size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+        value={selected}
+        onChange={(v) => setSelected(v as string)}
+        label="Responsive chip group"
+      >
+        <Chip value="assignee" avatarBefore={{ name: 'John Doe' }}>
+          Assignee
+        </Chip>
+        <Chip value="mentions" iconBefore={{ name: 'hash' }}>
+          Mentions
+        </Chip>
+        <Chip value="alerts" badgeAfter={{ count: 3 }}>
+          Alerts
+        </Chip>
+      </ChipGroup>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"lg"', xs: '"md"', sm: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Group size:{' '}
+      </Text>
+      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+    </Grid>
+  );
+};
+
+export const ChipGroupResponsiveSizes: Story = {
+  render: () => <ChipGroupResponsiveSizesExample />,
+  parameters: { controls: { disable: true } },
 };
 
 // =============================================================================
