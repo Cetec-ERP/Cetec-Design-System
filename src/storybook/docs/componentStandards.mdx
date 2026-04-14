@@ -1,104 +1,94 @@
-import { Meta, Title, Unstyled } from '@storybook/blocks';
+import { Meta, Unstyled } from '@storybook/blocks';
 import { Flex } from '@styled-system/jsx';
 import { Divider } from '~/components/Divider';
+import { Link } from '~/components/Link';
+import { Text } from '~/components/Text';
 
 <Meta title="Docs / Component Standards" />
 
 <Unstyled>
+<Flex direction="column" gap="16">
+# Component Standards
 
-<Flex direction="column" gap="12">
+This page is the short version: one rule, a brief reason, and a real example. The deeper standards live in <code>/standards</code> and the related Storybook docs linked below.
 
-# Component standards
+<Divider weight="thick" color="border.disabled" my="48" />
 
-<Divider weight="thick" color="border.disabled" mb="48"/>
+## 1. Start prop types from `BoxProps` and recipe variant props
 
-### splitProps & className
-
-The `splitProps` function separates all style props and classNames from the rest of the props, so they can be passed to Panda. This is used in combination with Panda's `cx` function, which does a deep merge of the style props with the component's default styles. So you also don't need to include `className` in your component's props.
+Use <code>Omit&lt;BoxProps, keyof VariantProps&gt;</code> first, then add component-specific props. This keeps HTML props, `as`, and ref typing consistent.
 
 ```tsx
-// Recipe example
-
-import { Box, type BoxProps } from '~/components/Box';
-import { splitProps } from '~/utils/splitProps';
-import { tag, type TagVariantProps } from '@styled-system/recipes';
-
-export type TagProps = TagVariantProps & BoxProps;
-
-export const Tag = (props: TagProps) => {
-  const [className, otherProps] = splitProps(props);
-  return (
-    <Box
-      className={cx(tag({ any_variants }), className)}
-      {...otherProps}
-    />
-  );
-}
+export type ChipProps =
+  Omit<BoxProps, keyof ChipVariantProps> &
+  ChipVariantProps & {
+  // ...
+};
 ```
 
+Related: <Link href="/?path=/docs/docs-controlled-components-philosophy--documentation">Controlled Components Philosophy</Link>
+
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 2. Render through `Box`, not raw HTML
+
+Components should use the design-system base primitive so polymorphism, style props, and ref handling stay consistent.
+
 ```tsx
-// SlotRecipe example
-
-import { Box, type BoxProps } from '~/components/Box';
-import { splitProps } from '~/utils/splitProps';
-import { tag, type TagVariantProps } from '@styled-system/recipes';
-
-export type TagProps = TagVariantProps & BoxProps;
-
-export const Tag = (props: TagProps) => {
-  const { wrapper, content } = tag();
-  const [className, otherProps] = splitProps(props);
-  return (
-    <Box
-      className={cx(wrapper, className)}
-      {...otherProps}
-    >
-      <Box className={content} />
-    </Box>
-  );
-}
+return (
+  <Box
+    as="button"
+    ref={buttonRef}
+    className={cx(classes.container, className)}
+    type="button"
+    {...otherProps}
+  >
+    {children}
+  </Box>
+);
 ```
 
-<Divider weight="thick" color="border.disabled" my="48"/>
+If you need element-specific behavior, branch typed props instead of splitting the component into unrelated render paths.
 
-### as prop
+Related: <Link href="/?path=/docs/docs-accessibility-decisions--documentation">Accessibility Decisions</Link>
 
-Components should always extend BoxProps, which already handles the `as` prop for correct typing.
-You should only explicitly define the `as` prop when you want to restrict the allowed HTML elements for a component, and therefore should `Omit` the default `as` prop that comes with BoxProps.
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 3. Always use `splitProps(rest)` and merge classes with `cx(...)`
+
+Generated classes go first, consumer `className` goes last. `splitProps` keeps Panda style props separate from everything else.
 
 ```tsx
-export type TagProps = TagVariantProps & Omit<BoxProps, 'as'>;
+const [className, otherProps] = splitProps(rest);
 
-export const Tag = (props: TagProps) => {
-  const { wrapper, content } = tag();
-  const [className, otherProps] = splitProps(props);
-  return (
-    <Box
-      className={cx(wrapper, className)}
-      {...otherProps}
-    >
-      <Box className={content} />
-    </Box>
-  );
-}
+return (
+  <Box className={cx(classes.root, className)} {...otherProps}>
+    {children}
+  </Box>
+);
+```
+
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 4. Use React 19 ref-as-prop typing
+
+Do not default to `forwardRef`. In this repo, components read `ref` directly from props unless an external integration genuinely requires the wrapper.
+
+```tsx
+export const Avatar = (props: AvatarProps) => {
+  const { ref, ...rest } = props;
+
+  return <Box as="span" ref={ref} {...rest} />;
+};
 ```
 
 <Divider weight="thick" color="border.disabled" my="48"/>
 
-### ref
+## 5. `onClick` does not need to be explicitly defined in the component's props.
 
-As of React 19, you can access ref directly as a prop in function components - no forwardRef wrapper needed.
-
-([source](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forward_and_create_ref/))
-
-<Divider weight="thick" color="border.disabled" my="48"/>
-
-### onClick
-
-`onClick` does not need to be explicitly defined in the component's props.
 `BoxProps` is based on `ComponentPropsWithRef`, which includes all HTML element props, so `onClick` is automatically inherited based on the element type.
 
-([source](https://react-typescript-cheatsheet.netlify.app/docs/react-types/componentprops/))
+Related: <Link href="https://react-typescript-cheatsheet.netlify.app/docs/react-types/componentprops/>React 19 componentprops</Link>
 
 ```tsx
 // The inherited type would be:
@@ -106,8 +96,123 @@ onClick?: React.MouseEventHandler<HTMLElement>
 // i.e., (event: React.MouseEvent<HTMLElement>) => void
 ```
 
-<Divider weight="thick" color="border.disabled" my="48"/>
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 6. Do not use `React.FC` or React namespace types
+
+Type the function parameter directly and import named React types like `ReactNode` from `react`.
+
+```tsx
+import type { ReactNode } from 'react';
+
+export type ComponentProps = {
+  children?: ReactNode;
+};
+```
+
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 7. Keep conditional variant props typed from recipe variant props
+
+For usual suspects like `size` and `variant`, derive the public prop type from `*VariantProps[...]` so responsive and conditional values remain accepted.
+
+```tsx
+export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> & ButtonVariantProps & {
+  variant?: ButtonVariantProps['variant'];
+  size?: ButtonVariantProps['size'];
+};
+```
+
+If you manually redefine `size` or `variant`, you are usually breaking conditional values.
+
+Related: <Link href="/?path=/docs/docs-using-conditions--documentation">Using Conditions</Link>
+
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 8. Avoid using `compoundVariants` in recipes
+
+Panda is unable to predictably compose conditional variants with recipe `compoundVariants`, so recipes which contain `compoundVariants` are automatically disabled from using responsive values in the variants.
+
+Consider using booleans or component-local CSS variables when combined styling is required.
+
+```tsx
+// Ex: we often want to make buttons larger on
+// smaller screens so they're easier to touch
+<Button size={{ base: 'xl', sm: 'md' }} iconBefore="cursor-click">Click me</Button>
+
+// Example using local CSS variables in recipe
+export const buttonRecipe = defineSlotRecipe({
+  base: {
+    container: {
+      '--icon-size': 'token(sizes.24)',
+      '--icon-margin': 'token(sizes.6)',
+    },
+    icon: {
+      w: 'var(--icon-size)',
+    }
+  },
+  variants: {
+    size: {
+      sm: {
+        icon: {
+          '--icon-size': 'token(sizes.22)',
+          '--icon-margin': 'token(sizes.5)',
+        },
+      },
+      md: {
+        icon: {
+          '--icon-size': 'token(sizes.24)',
+          '--icon-margin': 'token(sizes.8)',
+        },
+      },
+      lg: {
+        icon: {
+          '--icon-size': 'token(sizes.24)',
+          '--icon-margin': 'token(sizes.10)',
+        },
+      },
+      xl: {
+        icon: {
+          '--icon-size': 'token(sizes.28)',
+          '--icon-margin': 'token(sizes.10)',
+        },
+      },
+    },
+  }
+}
+```
+
+Related: <Link href="https://panda-css.com/docs/concepts/recipes#limitations" external>Recipe Limitations</Link>
+
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 9. Keep recipe static CSS in `panda.config.ts`, not recipe files
+
+Central static CSS registration is what actually affects Panda output in this repo. Recipe-file `staticCss` declarations are not the source of truth here.
+
+```ts
+// in panda.config.ts
+const recipeOverrides = {
+  avatar: [{ size: ['*'], responsive: true }, { shape: ['*'] }],
+  // ...
+};
+```
+
+Related: <Link href="/?path=/docs/docs-build-reasoning--documentation">Build Reasoning</Link>
+
+<Divider weight="thick" color="border.disabled" my="48" />
+
+## 20. Share mechanics, keep semantics local
+
+Reuse layout, row, or floating primitives where it helps, but do not blur the semantic contract of the component you are building.
+
+```tsx
+// ChipGroup owns selection mechanics.
+// Chip still owns chip semantics and rendering.
+const size = sizeProp ?? groupContext?.size ?? 'md';
+```
+
+Related: <Link href="/?path=/docs/docs-floating-ui-architecture--documentation">Floating UI Architecture</Link>
 
 </Flex>
-
 </Unstyled>
