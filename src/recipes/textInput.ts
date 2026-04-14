@@ -91,8 +91,8 @@ const textInputVariants = {
         '--input-icon-padding': '[26px]',
       },
       input: {
-        py: 0,
-        px: 8,
+        py: '0',
+        px: '8',
         fontSize: '14',
       },
       inputIconBefore: {
@@ -109,8 +109,8 @@ const textInputVariants = {
         '--input-icon-padding': '[31px]',
       },
       input: {
-        py: 3,
-        px: 10,
+        py: '3',
+        px: '10',
         fontSize: '16',
       },
       inputIconBefore: {
@@ -127,8 +127,8 @@ const textInputVariants = {
         '--input-icon-padding': '[34px]',
       },
       input: {
-        py: 7,
-        px: 12,
+        py: '7',
+        px: '12',
         fontSize: '16',
       },
       inputIconBefore: {
@@ -145,8 +145,8 @@ const textInputVariants = {
         '--input-icon-padding': '[42px]',
       },
       input: {
-        py: 9,
-        px: 16,
+        py: '9',
+        px: '16',
         fontSize: '20',
       },
       inputIconBefore: {

@@ -16,6 +16,7 @@ const buttonBaseStyles = {
     minWidth: '0',
     width: 'fit',
     height: 'fit',
+    flexShrink: 0,
     transitionDuration: 'fast',
     transitionProperty: 'background, border-color, color, box-shadow',
     transitionTimingFunction: 'default',
@@ -245,7 +246,7 @@ export const buttonRecipe = defineSlotRecipe({
       sm: {
         container: {
           fontSize: '14',
-          py: '1',
+          py: '0',
           px: '8',
         },
         icon: {

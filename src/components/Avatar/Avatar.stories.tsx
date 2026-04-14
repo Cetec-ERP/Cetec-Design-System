@@ -1,4 +1,4 @@
-import { Flex, Grid } from '@styled-system/jsx';
+import { Flex, Grid, HStack } from '@styled-system/jsx';
 
 import { Box } from '../Box';
 import { BreakpointIndicator } from '../BreakpointIndicator';
@@ -13,6 +13,9 @@ const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
   component: Avatar,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+  },
   argTypes: {
     size: {
       control: 'select',
@@ -314,21 +317,66 @@ export const ConditionalBreakpoints: Story = {
       position="relative"
       placeContent="center"
       alignItems="center"
+      justifyItems="center"
       gap="16"
     >
-      <Avatar
-        src={sampleImages.user1}
-        presence="online"
-        status="approved"
-        size={{ base: 'lg', xs: 'md', sm: 'sm' }}
-        shape={{ base: 'circle', xs: 'square', sm: 'hexagon' }}
-      />
+      <HStack gap="20">
+        <Avatar
+          src={sampleImages.user1}
+          presence="online"
+          status="approved"
+          size={{
+            base: '2xl',
+            xs: 'xl',
+            sm: 'lg',
+            md: 'md',
+            lg: 'sm',
+            xl: 'xs',
+          }}
+          shape="circle"
+        />
+        <Avatar
+          src={sampleImages.user2}
+          presence="online"
+          status="approved"
+          size={{
+            base: '2xl',
+            xs: 'xl',
+            sm: 'lg',
+            md: 'md',
+            lg: 'sm',
+            xl: 'xs',
+          }}
+          shape="square"
+        />
+        <Avatar
+          src={sampleImages.user3}
+          presence="online"
+          status="approved"
+          size={{
+            base: '2xl',
+            xs: 'xl',
+            sm: 'lg',
+            md: 'md',
+            lg: 'sm',
+            xl: 'xs',
+          }}
+          shape="hexagon"
+        />
+      </HStack>
       <Text
         textAlign="center"
         textStyle="mono.sm"
         _after={{
           display: 'inline',
-          content: { base: '"lg"', xs: '"md"', sm: '"sm"' },
+          content: {
+            base: '"2xl"',
+            xs: '"xl"',
+            sm: '"lg"',
+            md: '"md"',
+            lg: '"sm"',
+            xl: '"xs"',
+          },
           color: 'text.bold',
           fontWeight: 'bold',
         }}

@@ -112,6 +112,12 @@ const modalVariants = {
         maxWidth: '100vw',
         maxHeight: '100vh',
         borderRadius: '0',
+        top: '0',
+        transform: 'translate(-50%, -50%) scale(0.95) translateY(-10px)',
+        animation: 'modalScaleIn 150ms ease-out forwards',
+        '&[data-state="closing"]': {
+          animation: 'modalScaleOut 150ms ease-out forwards',
+        },
       },
     },
   },
@@ -169,15 +175,6 @@ export const modalRecipe = defineSlotRecipe({
   ],
   base: modalBase,
   variants: modalVariants,
-  compoundVariants: [
-    {
-      position: 'top',
-      size: 'mobile',
-      css: {
-        container: modalContainerCenteredOverlay,
-      },
-    },
-  ],
   defaultVariants: {
     variant: 'default',
     size: 'md',

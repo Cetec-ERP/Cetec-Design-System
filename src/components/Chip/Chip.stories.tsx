@@ -710,7 +710,7 @@ export const ChipGroupSizes: Story = {
   render: () => <ChipGroupSizesExample />,
 };
 
-const ChipGroupResponsiveSizesExample = () => {
+export const ChipGroupResponsiveSizes = () => {
   const [selected, setSelected] = useState('assignee');
 
   return (
@@ -754,11 +754,6 @@ const ChipGroupResponsiveSizesExample = () => {
       <BreakpointIndicator position="fixed" bottom="16" right="16" />
     </Grid>
   );
-};
-
-export const ChipGroupResponsiveSizes: Story = {
-  render: () => <ChipGroupResponsiveSizesExample />,
-  parameters: { controls: { disable: true } },
 };
 
 // =============================================================================

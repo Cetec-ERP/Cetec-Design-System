@@ -178,23 +178,30 @@ const datePickerVariants = {
   size: {
     sm: {
       input: {
-        py: 0,
-        px: 8,
+        py: '0',
+        px: '8',
         fontSize: '14',
       },
     },
     md: {
       input: {
-        py: 3,
-        px: 10,
+        py: '3',
+        px: '10',
         fontSize: '16',
       },
     },
     lg: {
       input: {
-        py: 7,
-        px: 12,
+        py: '7',
+        px: '12',
         fontSize: '16',
+      },
+    },
+    xl: {
+      input: {
+        py: '9',
+        px: '16',
+        fontSize: '20',
       },
     },
   },

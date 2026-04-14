@@ -45,7 +45,7 @@
     }
   }
 
-  h1 {
+  h1:not([class*='cetec-']) {
     font-size: var(--cetec-font-sizes-40);
 
     &.sbdocs-title {
@@ -53,15 +53,15 @@
     }
   }
 
-  h2:not(#stories) {
+  h2:not([class*='cetec-'], #stories) {
     font-size: var(--cetec-font-sizes-32);
   }
 
-  h3 {
+  h3:not([class*='cetec-']) {
     font-size: var(--cetec-font-sizes-24);
   }
 
-  h4 {
+  h4:not([class*='cetec-']) {
     font-size: var(--cetec-font-sizes-20);
   }
 
@@ -69,7 +69,7 @@
     margin-bottom: 0.5rem;
   }
 
-  mark {
+  mark:not([class*='cetec-']) {
     background-color: var(--cetec-colors-bg-accent-gold-subtlest);
     color: var(--cetec-colors-text);
     padding: 0.125rem 0.25rem;
@@ -88,22 +88,6 @@ p + h4 {
   }
 }
 
-h1 {
-  font-size: var(--cetec-font-sizes-40);
-}
-
-h2 {
-  font-size: var(--cetec-font-sizes-32);
-}
-
-h3 {
-  font-size: var(--cetec-font-sizes-24);
-}
-
-h4 {
-  font-size: var(--cetec-font-sizes-20);
-}
-
 p:not([class*='cetec-']) {
   margin-bottom: 0.5rem;
   max-width: var(--cetec-sizes-prose);
@@ -113,21 +97,23 @@ code,
 kbd,
 samp,
 pre {
-  font-family: var(--cetec-fonts-mono);
-  font-variation-settings:
-    'MONO' 1,
-    'CRSV' 0,
-    'CASL' 0,
-    'slnt' 0;
-  font-size: 0.9em;
-  margin: 0;
-
-  .docblock-source {
+  &:not([class*='cetec-']) {
+    font-family: var(--cetec-fonts-mono);
+    font-variation-settings:
+      'MONO' 1,
+      'CRSV' 0,
+      'CASL' 0,
+      'slnt' 0;
+    font-size: 0.9em;
     margin: 0;
+
+    .docblock-source {
+      margin: 0;
+    }
   }
 }
 
-code {
+code:not([class*='cetec-']) {
   background: var(--cetec-colors-bg-accent-blue-subtlest);
   color: var(--cetec-colors-text);
   padding: 0.125rem 0.25rem;
@@ -144,17 +130,21 @@ pre > div {
 
 b,
 strong {
-  font-weight: bold;
+  &:not([class*='cetec-']) {
+    font-weight: bold;
+  }
 }
 
 i,
 em {
-  font-style: italic;
-  font-variation-settings:
-    'MONO' 0,
-    'CRSV' 1,
-    'CASL' 0,
-    'slnt' -15;
+  &:not([class*='cetec-']) {
+    font-style: italic;
+    font-variation-settings:
+      'MONO' 0,
+      'CRSV' 1,
+      'CASL' 0,
+      'slnt' -15;
+  }
 }
 
 ul,
