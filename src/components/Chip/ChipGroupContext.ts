@@ -1,9 +1,13 @@
 import { createContext, useContext, type RefObject } from 'react';
 
+import type { ChipVariantProps } from '@styled-system/recipes';
+
 export type ChipGroupType = 'single' | 'multi';
+export type ChipGroupSize = ChipVariantProps['size'];
 
 export type ChipGroupContextValue = {
   type: ChipGroupType;
+  size?: ChipGroupSize;
   value: string | string[];
   onChange: (value: string | string[]) => void;
   name?: string;

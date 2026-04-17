@@ -7,7 +7,9 @@ import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
 
-import { type ListDensity, ListProvider } from './listContext';
+import { ListProvider } from './listContext';
+
+import type { ListDensity } from './listContext';
 
 export type ListProps = Omit<BoxProps, keyof ListVariantProps | 'children'> &
   ListVariantProps & {
@@ -38,7 +40,7 @@ export const List = (props: ListProps) => {
 
   return (
     <ListProvider value={value}>
-      <Box {...otherProps} className={cx(list({}), className)}>
+      <Box {...otherProps} className={cx(list({ density }), className)}>
         {children}
       </Box>
     </ListProvider>

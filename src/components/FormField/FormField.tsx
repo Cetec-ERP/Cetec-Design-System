@@ -5,6 +5,7 @@ import { cx } from '@styled-system/css';
 import { Flex } from '@styled-system/jsx';
 import { formField, type FormFieldVariantProps } from '@styled-system/recipes';
 
+import type { numericSizes } from '~/styles/primitives';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -13,7 +14,10 @@ import { Label } from '../Label';
 import { Text } from '../Text';
 import { Tooltip } from '../Tooltip';
 
-export type FormFieldProps = Omit<BoxProps, keyof FormFieldVariantProps> &
+export type FormFieldProps = Omit<
+  BoxProps,
+  keyof FormFieldVariantProps | 'gap'
+> &
   FormFieldVariantProps & {
     label: string;
     labelFor: string;
@@ -25,13 +29,15 @@ export type FormFieldProps = Omit<BoxProps, keyof FormFieldVariantProps> &
     disabled?: boolean;
     tooltipTitle?: string;
     tooltipText?: string;
-    size?: 'sm' | 'md' | 'lg' | 'xl';
+    size?: FormFieldVariantProps['size'];
+    layout?: FormFieldVariantProps['layout'];
+    gap?: keyof typeof numericSizes;
   };
 
 type FormFieldChildProps = {
   error?: boolean;
   disabled?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: FormFieldVariantProps['size'];
 };
 
 export const Required = () => {
@@ -52,6 +58,7 @@ export const FormField = (props: FormFieldProps) => {
     tooltipTitle,
     tooltipText,
     size,
+    gap,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -104,7 +111,9 @@ export const FormField = (props: FormFieldProps) => {
         </Text>
       )}
 
-      <Box className={classes.inputs}>{enhancedChildren}</Box>
+      <Box className={classes.inputs} gap={gap || '8'}>
+        {enhancedChildren}
+      </Box>
       {layout === 'inline' && helpText && (
         <Text
           textStyle="body.xs"

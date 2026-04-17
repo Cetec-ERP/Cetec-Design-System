@@ -19,6 +19,8 @@ recipes:
     description: Recipe naming/export/registration contract
   token-only-styling:
     description: Tokens-first styling and theme-aware value rules
+  conditional-variants:
+    description: Conditional variant constraints for recipes and component prop typing
 
 lint:
   baseline-rules:

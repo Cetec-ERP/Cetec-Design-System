@@ -2,6 +2,8 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
+import { listDensityWrapperVars } from './listDensity';
+
 export const listItemGroupRecipe = defineSlotRecipe({
   className: 'listItemGroup',
   jsx: ['ListItemGroup'],
@@ -13,51 +15,21 @@ export const listItemGroupRecipe = defineSlotRecipe({
     groupLabel: {
       ...globalBaseStyles,
       color: 'text.subtlest',
+      px: 'var(--list-group-label-padding-x)',
+      pt: 'var(--list-group-label-padding-top)',
+      pb: 'var(--list-group-label-padding-bottom)',
+      fontSize: 'var(--list-group-label-size)',
       borderStyle: 'solid',
       borderWidth: '1',
       borderColor: 'transparent',
     },
-    divider: {},
+    divider: {
+      my: 'var(--list-group-divider-margin-y)',
+      mx: 'var(--list-group-divider-margin-x)',
+    },
   },
   variants: {
-    density: {
-      compact: {
-        groupLabel: {
-          px: '10',
-          pt: '8',
-          pb: '2',
-          fontSize: '12',
-        },
-        divider: {
-          my: '4',
-          mx: '10',
-        },
-      },
-      comfortable: {
-        groupLabel: {
-          px: '12',
-          pt: '12',
-          pb: '4',
-          fontSize: '14',
-        },
-        divider: {
-          my: '6',
-          mx: '12',
-        },
-      },
-      spacious: {
-        groupLabel: {
-          px: '16',
-          pt: '16',
-          pb: '6',
-          fontSize: '16',
-        },
-        divider: {
-          my: '8',
-          mx: '16',
-        },
-      },
-    },
+    density: listDensityWrapperVars,
   },
   defaultVariants: {
     density: 'compact',

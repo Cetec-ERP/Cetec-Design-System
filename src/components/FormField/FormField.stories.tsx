@@ -1,7 +1,13 @@
 import { useState, type ChangeEvent } from 'react';
 
+import { Grid } from '@styled-system/jsx';
+
 import { Box } from '../Box';
+import { BreakpointIndicator } from '../BreakpointIndicator';
+import { Button } from '../Button';
 import { CheckboxInput } from '../CheckboxInput';
+import { Text } from '../Text';
+import { Textarea } from '../Textarea';
 import { TextInput } from '../TextInput';
 
 import { FormField } from './FormField';
@@ -73,6 +79,49 @@ export const InlineLayout: Story = {
       </FormField>
     );
   },
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <FormField
+        label="Order Number"
+        labelFor="order-number"
+        helpText="Used for matching external invoices."
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        // gap="12"
+      >
+        <TextInput name="pizza" placeholder="Fave pizza" maxW="md" />
+        <Textarea
+          name="description"
+          placeholder="Describe how pizza makes you feel..."
+        />
+        <Button iconAfter="send">Button, yo</Button>
+      </FormField>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
+  ),
   parameters: { controls: { disable: true } },
 };
 

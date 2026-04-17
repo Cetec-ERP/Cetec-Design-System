@@ -135,6 +135,7 @@ export default tseslint.config(
         },
       ],
       'cetec/no-react-fc-components': 'warn',
+      'cetec/use-correct-conditional-variant-type': 'warn',
     },
     plugins: {
       cetec: cetecPlugin,
@@ -155,7 +156,9 @@ export default tseslint.config(
       ],
       'cetec/recipe-export-name-matches-file': 'warn',
       'cetec/recipe-jsx-name-matches-component': 'warn',
+      'cetec/avoid-compound-variants-in-recipes': 'warn',
       'cetec/no-hardcoded-design-values-in-recipes': 'warn',
+      'cetec/no-static-css-in-recipe-files': 'warn',
     },
     plugins: {
       cetec: cetecPlugin,

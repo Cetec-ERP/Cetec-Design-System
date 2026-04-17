@@ -33,6 +33,8 @@ export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
     children: ReactNode;
     /** Optional ID for ARIA attributes */
     id?: string;
+    size?: ModalVariantProps['size'];
+    position?: ModalVariantProps['position'];
   };
 
 type ModalPhase = 'open' | 'closing' | 'closed';

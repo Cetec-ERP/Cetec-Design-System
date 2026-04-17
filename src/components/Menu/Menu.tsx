@@ -110,7 +110,7 @@ export const Menu = (props: MenuProps) => {
   const [className, otherProps] = splitProps(rest);
   const userStyle = otherProps.style as CSSProperties | undefined;
   const classes = menu({ density, panel });
-  const listClassName = list({});
+  const listClassName = list({ density });
 
   const hasReference = Boolean(trigger) && !inline;
 

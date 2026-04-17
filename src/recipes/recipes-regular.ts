@@ -8,8 +8,6 @@ export { toggleRecipe } from './toggle';
 export { toggleInputRecipe } from './toggleInput';
 export { cardRecipe } from './card';
 export { listRecipe } from './list';
-export { listItemRecipe } from './listItem';
-export { listItemGroupRecipe } from './listItemGroup';
 export { highlightTextRecipe } from './highlightText';
 export { tagRecipe } from './tag';
 export { radioInputRecipe } from './radioInput';

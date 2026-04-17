@@ -1,11 +1,9 @@
+import type { DatePickerVariantProps } from '@styled-system/recipes';
+
 import { Box } from '~/components/Box';
 import { Text } from '~/components/Text';
 
-import {
-  DatePicker,
-  type DatePickerProps,
-  type DateValue,
-} from '../DatePicker/DatePicker';
+import { DatePicker, type DateValue } from '../DatePicker/DatePicker';
 
 export type DateRangePickerProps = {
   /** Start date value */
@@ -23,7 +21,7 @@ export type DateRangePickerProps = {
   disabled?: boolean;
   error?: boolean;
   /** Size passed to both DatePickers */
-  size?: DatePickerProps['size'];
+  size?: DatePickerVariantProps['size'];
   /** Accessible label prefix — used to build "Start date" and "End date" labels */
   label?: string;
 };

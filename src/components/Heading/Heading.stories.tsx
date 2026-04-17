@@ -1,5 +1,6 @@
-import { Flex, VStack } from '@styled-system/jsx';
+import { Flex, VStack, Grid } from '@styled-system/jsx';
 
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Text } from '../Text';
 
 import { Heading } from './Heading';
@@ -32,6 +33,63 @@ export const Levels: Story = {
       <Heading level="h3">Heading 3</Heading>
       <Heading level="h4">Heading 4</Heading>
     </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      justifyItems="center"
+      gap="12"
+    >
+      <Heading
+        level="h1"
+        fontSize={{ base: '64', xs: '40', sm: '20', md: '12' }}
+        color={{
+          base: 'text.accent.cyan',
+          xs: 'text.accent.indigo',
+          sm: 'text.accent.purple',
+          md: 'text.accent.violet',
+        }}
+      >
+        Heading 1
+      </Heading>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"64"', xs: '"40"', sm: '"20"', md: '"12"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: {
+            base: '"text.accent.cyan"',
+            xs: '"text.accent.indigo"',
+            sm: '"text.accent.purple"',
+            md: '"text.accent.violet"',
+          },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Color:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
   ),
   parameters: { controls: { disable: true } },
 };

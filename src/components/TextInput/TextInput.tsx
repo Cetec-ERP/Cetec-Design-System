@@ -73,7 +73,12 @@ export const TextInput = (props: TextInputProps) => {
         data-error={error}
         data-valid={valid}
         data-invalid={invalid}
-        className={cx(classes.input, className)}
+        className={cx(
+          classes.input,
+          iconBefore && classes.inputIconBefore,
+          iconAfter && classes.inputIconAfter,
+          className,
+        )}
         autoComplete={autoComplete}
         {...otherProps}
       />
