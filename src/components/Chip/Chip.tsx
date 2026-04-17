@@ -112,7 +112,7 @@ const resolveAfterSlot = (
 
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   Omit<ChipVariantProps, 'before' | 'after'> & {
-    children: ReactNode;
+    children: string | ReactNode;
     /** Structured icon slot rendered before the label */
     iconBefore?: ChipIconSlot;
     /** Structured icon slot rendered after the label */

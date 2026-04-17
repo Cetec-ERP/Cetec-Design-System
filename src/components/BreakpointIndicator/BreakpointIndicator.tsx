@@ -1,8 +1,7 @@
-import { css } from '@styled-system/css';
+import { cva } from '@styled-system/css';
 
 import { useMediaQuery } from '~/system/hooks';
 
-import { Box } from '../Box';
 import { Tag } from '../Tag';
 
 import type { BoxProps } from '../Box';
@@ -19,56 +18,72 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   const isXl = useMediaQuery('xl');
   const is2Xl = useMediaQuery('2xl');
 
-  const styles = css({
-    position: 'fixed',
-    bottom: '40',
-    right: '16',
-    zIndex: '1100',
+  const styles = cva({
+    base: {
+      zIndex: '1100',
+    },
+    variants: {
+      variant: {
+        default: {
+          position: 'relative',
+          bottom: 'auto',
+          right: 'auto',
+        },
+        fixed: {
+          position: 'fixed',
+          bottom: '40',
+          right: '16',
+        },
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
   });
 
   // Find the largest matching breakpoint
   let breakpoint = (
-    <Tag className={styles} hue="red" variant="bold">
+    <Tag className={styles} hue="red" variant="bold" {...props}>
       @media/base
     </Tag>
   );
   if (is2Xl) {
     breakpoint = (
-      <Tag className={styles} hue="blue" variant="bold">
+      <Tag className={styles} hue="blue" variant="bold" {...props}>
         @media/2xl
       </Tag>
     );
   } else if (isXl) {
     breakpoint = (
-      <Tag className={styles} hue="magenta" variant="bold">
+      <Tag className={styles} hue="magenta" variant="bold" {...props}>
         @media/xl
       </Tag>
     );
   } else if (isLg) {
     breakpoint = (
-      <Tag className={styles} hue="green" variant="bold">
+      <Tag className={styles} hue="green" variant="bold" {...props}>
         @media/lg
       </Tag>
     );
   } else if (isMd) {
     breakpoint = (
-      <Tag className={styles} hue="indigo" variant="bold">
+      <Tag className={styles} hue="indigo" variant="bold" {...props}>
         @media/md
       </Tag>
     );
   } else if (isSm) {
     breakpoint = (
-      <Tag className={styles} hue="yellow" variant="bold">
+      <Tag className={styles} hue="yellow" variant="bold" {...props}>
         @media/sm
       </Tag>
     );
   } else if (isXs) {
     breakpoint = (
-      <Tag className={styles} hue="orange" variant="bold">
+      <Tag className={styles} hue="orange" variant="bold" {...props}>
         @media/xs
       </Tag>
     );
   }
 
-  return <Box {...props}>{breakpoint}</Box>;
+  return <>{breakpoint}</>;
 };

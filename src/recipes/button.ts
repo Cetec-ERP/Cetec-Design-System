@@ -70,6 +70,7 @@ const buttonVariants = {
     standard: {
       container: {
         bg: 'bg.neutral',
+        borderColor: 'transparent',
         color: 'text',
         _hover: {
           bg: 'bg.neutral.hovered',
@@ -88,6 +89,7 @@ const buttonVariants = {
     primary: {
       container: {
         bg: 'bg.neutral.boldest',
+        borderColor: 'transparent',
         color: 'text.inverse',
         _hover: {
           bg: 'bg.neutral.bold.hovered',
@@ -128,6 +130,7 @@ const buttonVariants = {
     ghost: {
       container: {
         bg: 'bg.neutral.subtle',
+        borderColor: 'transparent',
         color: 'text',
         _hover: {
           bg: 'bg.neutral.subtle.hovered',
@@ -146,6 +149,7 @@ const buttonVariants = {
     cta: {
       container: {
         bg: 'gold.20',
+        borderColor: 'transparent',
         color: 'neutral.90',
         _hover: {
           bg: 'gold.15',
@@ -167,6 +171,7 @@ const buttonVariants = {
     danger: {
       container: {
         bg: 'red.50',
+        borderColor: 'transparent',
         color: 'neutral.0',
         _hover: {
           bg: 'red.40',
@@ -188,6 +193,7 @@ const buttonVariants = {
     selected: {
       container: {
         bg: 'bg.selected',
+        borderColor: 'transparent',
         color: 'text.selected',
         icon: { fill: 'icon.selected' },
         _hover: {
@@ -214,6 +220,7 @@ const buttonVariants = {
     selectedBold: {
       container: {
         bg: 'bg.selected.bold',
+        borderColor: 'transparent',
         color: 'text.inverse',
         _hover: {
           bg: 'bg.selected.bold.hovered',

@@ -5,6 +5,45 @@
 
 .sbdocs-content {
   padding: var(--cetec-sizes-48);
+
+  ul,
+  ol {
+    &:not([class*='cetec-']) {
+      margin: 0 0 1rem 1.5rem;
+      padding-inline-start: 1rem;
+    }
+  }
+
+  ul:not([class*='cetec-']) {
+    list-style-type: disc;
+  }
+
+  ol:not([class*='cetec-']) {
+    list-style-type: decimal;
+  }
+}
+
+.sbdocs-content + [class*='css-'],
+.sbdocs-content + [class*='css-'] > [class*='css-'] {
+  width: min(220px, 100%);
+
+  .toc-list-item {
+    width: 100%;
+    margin: 0;
+    padding-left: 8px;
+  }
+
+  .toc-list-item::before {
+    transform: translateX(calc(-2px));
+  }
+
+  .toc-link {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
 .sbdocs {
@@ -145,22 +184,6 @@ em {
       'CASL' 0,
       'slnt' -15;
   }
-}
-
-ul,
-ol {
-  &:not([class*='cetec-']) {
-    margin: 0 0 1rem 1.5rem;
-    padding-inline-start: 1rem;
-  }
-}
-
-ul:not([class*='cetec-']) {
-  list-style-type: disc;
-}
-
-ol:not([class*='cetec-']) {
-  list-style-type: decimal;
 }
 
 .cetec-d_grid.definitions-grid {

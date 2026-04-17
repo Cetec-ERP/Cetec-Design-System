@@ -383,7 +383,7 @@ export const ConditionalBreakpoints: Story = {
       >
         Size:{' '}
       </Text>
-      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+      <BreakpointIndicator />
     </Grid>
   ),
   parameters: { controls: { disable: true } },

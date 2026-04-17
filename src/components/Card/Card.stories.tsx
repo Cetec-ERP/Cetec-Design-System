@@ -250,6 +250,7 @@ export const ConditionalBreakpoints: Story = {
       position="relative"
       placeContent="center"
       alignItems="center"
+      justifyItems="center"
       gap="16"
     >
       <Card
@@ -292,7 +293,7 @@ export const ConditionalBreakpoints: Story = {
           Variant:{' '}
         </Text>
       </VStack>
-      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+      <BreakpointIndicator />
     </Grid>
   ),
   parameters: { controls: { disable: true } },

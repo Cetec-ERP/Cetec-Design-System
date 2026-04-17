@@ -162,6 +162,7 @@ export const ConditionalBreakpoints = () => {
       position="relative"
       placeContent="center"
       alignItems="center"
+      justifyItems="center"
       gap="16"
     >
       <Wrap justifyContent="center">
@@ -196,7 +197,7 @@ export const ConditionalBreakpoints = () => {
       >
         Size:{' '}
       </Text>
-      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+      <BreakpointIndicator />
     </Grid>
   );
 };
@@ -720,6 +721,7 @@ export const ChipGroupResponsiveSizes = () => {
       position="relative"
       placeContent="center"
       alignItems="center"
+      justifyItems="center"
       gap="16"
     >
       <ChipGroup
@@ -751,7 +753,7 @@ export const ChipGroupResponsiveSizes = () => {
       >
         Group size:{' '}
       </Text>
-      <BreakpointIndicator position="fixed" bottom="16" right="16" />
+      <BreakpointIndicator />
     </Grid>
   );
 };
