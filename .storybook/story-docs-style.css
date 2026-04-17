@@ -159,12 +159,8 @@ code:not([class*='cetec-']) {
   border-radius: 0.25rem;
   margin-block: -0.25rem;
   mix-blend-mode: multiply;
-  white-space: wrap !important;
+  white-space: wrap;
   max-width: 100%;
-}
-
-pre > div {
-  margin-top: 0 !important;
 }
 
 b,

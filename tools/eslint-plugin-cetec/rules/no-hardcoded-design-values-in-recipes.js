@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-hardcoded-design-values-in-recipes';
 
 const HEX_COLOR_PATTERN =
@@ -99,6 +101,10 @@ const noHardcodedDesignValuesInRecipesRule = {
         COLOR_FUNCTION_PATTERN.test(value) ||
         ABSOLUTE_UNIT_PATTERN.test(value)
       ) {
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
+          return;
+        }
+
         context.report({
           node,
           messageId: 'hardcodedString',
@@ -119,6 +125,10 @@ const noHardcodedDesignValuesInRecipesRule = {
 
         if (typeof node.value === 'number') {
           if (node.value === 0 || node.value === 1) {
+            return;
+          }
+
+          if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
             return;
           }
 

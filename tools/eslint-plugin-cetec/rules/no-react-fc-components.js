@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-react-fc-components';
 
 const isReactFcTypeReference = (node) => {
@@ -50,6 +52,10 @@ const noReactFcComponentsRule = {
         const typeAnnotationNode = node.id.typeAnnotation.typeAnnotation;
 
         if (!isReactFcTypeReference(typeAnnotationNode)) {
+          return;
+        }
+
+        if (hasValidateIgnoreComment(context, typeAnnotationNode, RULE_NAME)) {
           return;
         }
 

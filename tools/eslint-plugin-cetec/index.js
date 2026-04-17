@@ -15,6 +15,10 @@ import {
   noInlineStylePropRule,
 } from './rules/no-inline-style-prop.js';
 import {
+  RULE_NAME as noImportantRuleName,
+  noImportantRule,
+} from './rules/no-important.js';
+import {
   RULE_NAME as noPixelUnitsRuleName,
   noPixelUnitsRule,
 } from './rules/no-pixel-units.js';
@@ -71,6 +75,7 @@ const cetecPlugin = {
     [noClassnameCssCallRuleName]: noClassnameCssCallRule,
     [noHardcodedDesignValuesInRecipesRuleName]:
       noHardcodedDesignValuesInRecipesRule,
+    [noImportantRuleName]: noImportantRule,
     [noInlineStylePropRuleName]: noInlineStylePropRule,
     [noPixelUnitsRuleName]: noPixelUnitsRule,
     [noRawFontWeightValuesRuleName]: noRawFontWeightValuesRule,

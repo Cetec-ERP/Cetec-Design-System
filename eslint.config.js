@@ -62,6 +62,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': 'warn',
       'cetec/discourage-css-variable-styling': 'warn',
       'cetec/no-classname-css-call': 'error',
+      'cetec/no-important': 'error',
       'cetec/no-inline-style-prop': 'error',
       'cetec/no-pixel-units': 'error',
       'cetec/no-raw-font-weight-values': 'error',

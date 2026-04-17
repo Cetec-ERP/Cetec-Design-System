@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-react-namespace-type-imports';
 
 const noReactNamespaceTypeImportsRule = {
@@ -28,6 +30,10 @@ const noReactNamespaceTypeImportsRule = {
             specifier.type === 'ImportDefaultSpecifier' ||
             specifier.type === 'ImportNamespaceSpecifier'
           ) {
+            if (hasValidateIgnoreComment(context, specifier, RULE_NAME)) {
+              continue;
+            }
+
             context.report({
               node: specifier,
               messageId: 'noReactDefaultImport',
@@ -41,6 +47,10 @@ const noReactNamespaceTypeImportsRule = {
           node.left.name === 'React' &&
           node.right.type === 'Identifier'
         ) {
+          if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
+            return;
+          }
+
           context.report({
             node,
             messageId: 'noReactNamespaceType',
