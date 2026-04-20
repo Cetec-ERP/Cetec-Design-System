@@ -44,6 +44,17 @@ export type MenuProps = {
   highlightMatches?: boolean;
   getItemText?: (item: { label?: string; description?: string }) => string;
   panel?: MenuVariantProps['panel'];
+  /**
+   * When this `Menu` is used as one section of a horizontal menubar, pass a
+   * handler so Arrow Left / Arrow Right on **leaf** items and at the first
+   * submenu level can move to the previous/next menubar section (APG Navigation
+   * Menubar pattern). Typically closes this menu then focuses/opens the
+   * adjacent section’s trigger.
+   * Also enables focus order so the trigger keeps focus while the panel is open
+   * until the user arrows into the list (otherwise focus would jump to the first
+   * row and horizontal menubar keys would not run on the trigger).
+   */
+  onMenubarEdgeNavigate?: (direction: 1 | -1) => void;
 } & BoxProps;
 
 export type MenuItemVariant = 'default' | 'checkbox' | 'toggle' | 'divider';
@@ -105,11 +116,19 @@ export type MenuRootContextValue = {
   onPushDiginLevel: (title: string, levelChildren: ReactNode) => void;
   onPopDiginLevel: () => void;
   diginDepth: number;
+  /** See `Menu` prop `onMenubarEdgeNavigate`. */
+  onMenubarEdgeNavigate?: (direction: 1 | -1) => void;
 };
 
 export type MenuListContextValue = {
   activeIndex: number | null;
   getItemProps: (userProps?: HTMLProps<HTMLElement>) => HTMLProps<HTMLElement>;
+  /** Move active item along the list main axis (looping), for nested submenu delegation. */
+  navigateMainAxis?: (direction: 1 | -1) => void;
+  /** 0 = root menu panel; each nested `SubMenu` flyout increments by 1. */
+  nestedMenuDepth: number;
+  /** Close the flyout for this list’s parent `SubMenu` and focus its trigger (APG popout Left). */
+  closeParentSubMenuFlyout?: () => void;
 };
 
 export type MenuProviderProps = {
