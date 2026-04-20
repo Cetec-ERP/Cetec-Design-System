@@ -16,6 +16,7 @@ const modalBase = {
     p: 'var(--wrapper-p)',
     w: '100vw',
     h: '100vh',
+    zIndex: 1100,
   },
   overlay: {
     position: 'fixed',
