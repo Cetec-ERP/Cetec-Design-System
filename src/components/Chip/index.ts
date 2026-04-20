@@ -6,4 +6,4 @@ export {
   type ChipBadgeSlot,
 } from './Chip';
 export { ChipGroup, type ChipGroupProps } from './ChipGroup';
-export { type ChipGroupType } from './ChipGroupContext';
+export type { ChipGroupType, useChipGroup } from './ChipGroupContext';

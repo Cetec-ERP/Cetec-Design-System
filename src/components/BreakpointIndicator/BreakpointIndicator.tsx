@@ -1,12 +1,23 @@
-import { cva } from '@styled-system/css';
+import { cx } from '@styled-system/css';
+import {
+  breakpointIndicator,
+  type BreakpointIndicatorVariantProps,
+} from '@styled-system/recipes';
 
 import { useMediaQuery } from '~/system/hooks';
+import { splitProps } from '~/utils/splitProps';
 
 import { Tag } from '../Tag';
 
 import type { BoxProps } from '../Box';
 
-type BreakpointIndicatorProps = BoxProps & {};
+export type BreakpointIndicatorProps = Omit<
+  BoxProps,
+  keyof BreakpointIndicatorVariantProps
+> &
+  BreakpointIndicatorVariantProps & {
+    variant: BreakpointIndicatorVariantProps['variant'];
+  };
 
 export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   // breakpoint labels: [base, xs, sm, md, lg, xl, 2xl]
@@ -18,68 +29,83 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   const isXl = useMediaQuery('xl');
   const is2Xl = useMediaQuery('2xl');
 
-  const styles = cva({
-    base: {
-      zIndex: '1100',
-    },
-    variants: {
-      variant: {
-        default: {
-          position: 'relative',
-          bottom: 'auto',
-          right: 'auto',
-        },
-        fixed: {
-          position: 'fixed',
-          bottom: '40',
-          right: '16',
-        },
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  });
+  const { variant, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
 
   // Find the largest matching breakpoint
   let breakpoint = (
-    <Tag className={styles} hue="red" variant="bold" {...props}>
+    <Tag
+      className={cx(breakpointIndicator({ variant }), className)}
+      hue="red"
+      variant="bold"
+      {...otherProps}
+    >
       @media/base
     </Tag>
   );
   if (is2Xl) {
     breakpoint = (
-      <Tag className={styles} hue="blue" variant="bold" {...props}>
+      <Tag
+        className={cx(breakpointIndicator({ variant }), className)}
+        hue="blue"
+        variant="bold"
+        {...otherProps}
+      >
         @media/2xl
       </Tag>
     );
   } else if (isXl) {
     breakpoint = (
-      <Tag className={styles} hue="magenta" variant="bold" {...props}>
+      <Tag
+        className={cx(breakpointIndicator({ variant }), className)}
+        hue="magenta"
+        variant="bold"
+        {...otherProps}
+      >
         @media/xl
       </Tag>
     );
   } else if (isLg) {
     breakpoint = (
-      <Tag className={styles} hue="green" variant="bold" {...props}>
+      <Tag
+        className={cx(breakpointIndicator({ variant }), className)}
+        hue="green"
+        variant="bold"
+        {...otherProps}
+      >
         @media/lg
       </Tag>
     );
   } else if (isMd) {
     breakpoint = (
-      <Tag className={styles} hue="indigo" variant="bold" {...props}>
+      <Tag
+        className={cx(breakpointIndicator({ variant }), className)}
+        hue="indigo"
+        variant="bold"
+        {...otherProps}
+      >
         @media/md
       </Tag>
     );
   } else if (isSm) {
     breakpoint = (
-      <Tag className={styles} hue="yellow" variant="bold" {...props}>
+      <Tag
+        className={cx(breakpointIndicator({ variant }), className)}
+        hue="yellow"
+        variant="bold"
+        {...otherProps}
+      >
         @media/sm
       </Tag>
     );
   } else if (isXs) {
     breakpoint = (
-      <Tag className={styles} hue="orange" variant="bold" {...props}>
+      <Tag
+        className={cx(breakpointIndicator({ variant }), className)}
+        hue="orange"
+        variant="bold"
+        {...otherProps}
+      >
         @media/xs
       </Tag>
     );

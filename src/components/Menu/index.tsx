@@ -11,4 +11,12 @@ export type {
   MenuProps,
   MenuProviderProps,
   SubMenuProps,
+  useMenuFilterContext,
+  useMenuRootContext,
+  useMenuListContext,
+  getHighlightedTextParts,
+  hasMatchingItems,
+  isItemMatch,
+  deriveItemTextValue,
+  getComponentType,
 } from './context/menuContext';

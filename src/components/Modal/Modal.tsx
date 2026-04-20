@@ -141,27 +141,31 @@ export const Modal = (props: ModalProps) => {
   return (
     <ModalContext.Provider value={contextValue}>
       <FloatingPortal>
-        <FloatingOverlay
-          lockScroll
-          className={cx(classes.overlay)}
-          data-state={dataState}
-          onClick={preventOverlayClose ? undefined : () => onOpenChange(false)}
-          aria-hidden="true"
-        />
-        <FloatingFocusManager context={context} modal={true}>
-          <Box
-            ref={refs.setFloating}
-            className={cx(classes.container, className)}
+        <Box className={classes.positionWrapper}>
+          <FloatingOverlay
+            lockScroll
+            className={classes.overlay}
             data-state={dataState}
-            id={id}
-            role="dialog"
-            aria-modal="true"
-            {...(getFloatingProps() as Record<string, unknown>)}
-            {...otherProps}
-          >
-            {children}
-          </Box>
-        </FloatingFocusManager>
+            onClick={
+              preventOverlayClose ? undefined : () => onOpenChange(false)
+            }
+            aria-hidden="true"
+          />
+          <FloatingFocusManager context={context} modal={true}>
+            <Box
+              ref={refs.setFloating}
+              className={cx(classes.container, className)}
+              data-state={dataState}
+              id={id}
+              role="dialog"
+              aria-modal="true"
+              {...(getFloatingProps() as Record<string, unknown>)}
+              {...otherProps}
+            >
+              {children}
+            </Box>
+          </FloatingFocusManager>
+        </Box>
       </FloatingPortal>
     </ModalContext.Provider>
   );

@@ -13,3 +13,4 @@ export { tagRecipe } from './tag';
 export { radioInputRecipe } from './radioInput';
 export { checkboxInputRecipe } from './checkboxInput';
 export { iconRecipe } from './icon';
+export { breakpointIndicatorRecipe } from './breakpointIndicator';

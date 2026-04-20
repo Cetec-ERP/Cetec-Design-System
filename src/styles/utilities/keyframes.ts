@@ -69,42 +69,42 @@ export const keyframes = defineKeyframes({
   modalScaleIn: {
     '0%': {
       opacity: '0',
-      transform: 'translate(-50%, -50%) scale(0.95) translateY(-10px)',
+      transform: 'scale(0.95) translateY(20px)',
     },
     '100%': {
       opacity: '1',
-      transform: 'translate(-50%, -50%) scale(1) translateY(0)',
+      transform: 'scale(1) translateY(0)',
     },
   },
   modalScaleOut: {
     '0%': {
       opacity: '1',
-      transform: 'translate(-50%, -50%) scale(1) translateY(0)',
+      transform: 'scale(1) translateY(0)',
     },
     '100%': {
       opacity: '0',
-      transform: 'translate(-50%, -50%) scale(0.95) translateY(-10px)',
+      transform: 'scale(0.95) translateY(20px)',
     },
   },
   /** Top-aligned modal: horizontal center only (see modal recipe `position: top`) */
   modalScaleInTop: {
     '0%': {
       opacity: '0',
-      transform: 'translateX(-50%) scale(0.95) translateY(-10px)',
+      transform: 'scale(0.97) translateY(-40px)',
     },
     '100%': {
       opacity: '1',
-      transform: 'translateX(-50%) scale(1) translateY(0)',
+      transform: 'scale(1) translateY(0)',
     },
   },
   modalScaleOutTop: {
     '0%': {
       opacity: '1',
-      transform: 'translateX(-50%) scale(1) translateY(0)',
+      transform: 'scale(1) translateY(0)',
     },
     '100%': {
       opacity: '0',
-      transform: 'translateX(-50%) scale(0.95) translateY(-10px)',
+      transform: 'scale(0.97) translateY(-40px)',
     },
   },
 });

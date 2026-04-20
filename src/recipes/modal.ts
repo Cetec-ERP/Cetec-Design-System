@@ -3,6 +3,20 @@ import { defineSlotRecipe } from '@pandacss/dev';
 import { globalBaseStyles } from '~/styles/utilities';
 
 const modalBase = {
+  positionWrapper: {
+    '--wrapper-p': {
+      base: 'token(sizes.0)',
+      xs: 'token(sizes.12)',
+      sm: 'token(sizes.32)',
+      md: 'token(sizes.56)',
+    },
+    position: 'fixed',
+    inset: '0',
+    display: 'grid',
+    p: 'var(--wrapper-p)',
+    w: '100vw',
+    h: '100vh',
+  },
   overlay: {
     position: 'fixed',
     inset: '0',
@@ -18,13 +32,10 @@ const modalBase = {
   },
   container: {
     ...globalBaseStyles,
-    position: 'fixed',
-    left: '50%',
     display: 'flex',
     flexDirection: 'column',
-    width: 'full',
-    maxW: '95vw',
-    maxHeight: '95vh',
+    maxW: 'calc(100vw - (2 * var(--wrapper-p)))',
+    maxH: 'calc(100vh - (2 * var(--wrapper-p)))',
     bg: 'surface.overlay',
     borderRadius: '12',
     boxShadow: 'overlay',
@@ -68,13 +79,13 @@ const modalBase = {
   },
 };
 
-/** Base-like positioning when `position: top` would fight a full-viewport sheet */
-const modalContainerCenteredOverlay = {
-  top: '50%',
-  transform: 'translate(-50%, -50%) scale(0.95) translateY(-10px)',
-  animation: 'modalScaleIn 150ms ease-out forwards',
-  '&[data-state="closing"]': {
-    animation: 'modalScaleOut 150ms ease-out forwards',
+const mobile = {
+  xsDown: {
+    width: '100vw',
+    height: '100vh',
+    maxWidth: '100vw',
+    maxHeight: '100vh',
+    borderRadius: '0',
   },
 };
 
@@ -83,79 +94,68 @@ const modalVariants = {
     sm: {
       container: {
         w: 'md',
+        ...mobile,
       },
     },
     md: {
       container: {
         w: 'xl',
+        ...mobile,
       },
     },
     lg: {
       container: {
         w: '3xl',
+        ...mobile,
       },
     },
     xl: {
       container: {
         w: '5xl',
+        ...mobile,
       },
     },
     full: {
       container: {
         w: '95vw',
+        ...mobile,
       },
     },
-    mobile: {
+    fullPage: {
+      positionWrapper: {
+        '--wrapper-p': 'token(sizes.0)',
+      },
       container: {
-        width: 'full',
-        height: 'full',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
+        w: '100vw',
+        h: '100vh',
+        maxW: '100vw',
+        maxH: '100vh',
         borderRadius: '0',
-        top: '0',
-        transform: 'translate(-50%, -50%) scale(0.95) translateY(-10px)',
+        ...mobile,
+      },
+    },
+  },
+  position: {
+    centered: {
+      positionWrapper: {
+        placeContent: 'center',
+      },
+      container: {
         animation: 'modalScaleIn 150ms ease-out forwards',
         '&[data-state="closing"]': {
           animation: 'modalScaleOut 150ms ease-out forwards',
         },
       },
     },
-  },
-  position: {
-    centered: {
-      container: modalContainerCenteredOverlay,
-    },
     top: {
+      positionWrapper: {
+        placeContent: 'start center',
+      },
       container: {
-        top: 'min(2.5vh, token(spacing.64))',
-        transform: 'translate(-50%, 0) scale(0.95) translateY(-10px)',
         animation: 'modalScaleInTop 150ms ease-out forwards',
         '&[data-state="closing"]': {
           animation: 'modalScaleOutTop 150ms ease-out forwards',
         },
-        // Align with default centered overlay at `xsDown` (full-viewport sheet):
-        // without this, `top` + fixed offset leaves a gap above the sheet.
-        xsDown: modalContainerCenteredOverlay,
-      },
-    },
-  },
-  variant: {
-    default: {
-      container: {
-        xsDown: {
-          width: 'full',
-          height: 'full',
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          borderRadius: '0',
-        },
-      },
-    },
-    confirmation: {
-      container: {
-        height: 'fit',
-        width: 'md',
-        maxWidth: '90vw',
       },
     },
   },
@@ -165,6 +165,7 @@ export const modalRecipe = defineSlotRecipe({
   className: 'modal',
   jsx: ['Modal', 'ModalHeader', 'ModalBody', 'ModalFooter'],
   slots: [
+    'positionWrapper',
     'overlay',
     'container',
     'header',
@@ -176,7 +177,6 @@ export const modalRecipe = defineSlotRecipe({
   base: modalBase,
   variants: modalVariants,
   defaultVariants: {
-    variant: 'default',
     size: 'md',
     position: 'centered',
   },
