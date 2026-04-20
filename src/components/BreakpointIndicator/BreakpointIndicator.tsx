@@ -16,7 +16,7 @@ export type BreakpointIndicatorProps = Omit<
   keyof BreakpointIndicatorVariantProps
 > &
   BreakpointIndicatorVariantProps & {
-    variant: BreakpointIndicatorVariantProps['variant'];
+    variant?: BreakpointIndicatorVariantProps['variant'];
   };
 
 export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {

@@ -1,1 +1,4 @@
-export { BreakpointIndicator } from './BreakpointIndicator';
+export {
+  BreakpointIndicator,
+  type BreakpointIndicatorProps,
+} from './BreakpointIndicator';
