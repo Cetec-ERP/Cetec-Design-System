@@ -3,7 +3,9 @@ import {
   type HTMLProps,
   type KeyboardEvent,
   type MouseEvent,
+  useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -55,6 +57,11 @@ import {
   useMenuListContext,
   useMenuRootContext,
 } from './context/menuContext';
+import { useBlockPointerEventsForHoverPolygon } from './hooks/useBlockPointerEventsForHoverPolygon';
+import {
+  findFirstEnabledListIndex,
+  navigateListMainAxisLoop,
+} from './utils/navigateListMainAxis';
 
 export const SubMenu = (props: SubMenuProps) => {
   const nodeId = useFloatingNodeId();
@@ -112,6 +119,18 @@ export const SubMenu = (props: SubMenuProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const floatingListRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
+  const subMenuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const blockPointerEventsForHoverPolygon =
+    useBlockPointerEventsForHoverPolygon();
+  /** True until we apply first-item selection after ArrowRight opens the flyout. */
+  const openedFromParentArrowRightRef = useRef(false);
+  /** After keyboard open, focus the nested item matching `activeIndex` once. */
+  const keyboardFocusFirstNestedItemRef = useRef(false);
+
+  const openNestedFromParentKeyboard = useCallback(() => {
+    openedFromParentArrowRightRef.current = true;
+    setOpen(true);
+  }, []);
 
   const handleOpenChange = (
     nextOpen: boolean,
@@ -146,7 +165,7 @@ export const SubMenu = (props: SubMenuProps) => {
     enabled: !disabled && parentId != null,
     delay: { open: 75 },
     handleClose: safePolygon({
-      blockPointerEvents: true,
+      blockPointerEvents: blockPointerEventsForHoverPolygon,
     }),
   });
   const click = useClick(floating.context, {
@@ -161,6 +180,14 @@ export const SubMenu = (props: SubMenuProps) => {
     activeIndex,
     onNavigate: setActiveIndex,
     nested: true,
+    // Default nested behavior focuses the first child when the flyout opens
+    // (see Floating UI useListNavigation sync when nested is true). That
+    // steals focus from the submenu trigger so ArrowDown navigates inside the
+    // flyout instead of among sibling rows (Quotes → Orders) in the parent
+    // menu. Keep focus on the trigger until the user opens into the panel with
+    // ArrowRight (handled below and by the nested reference path). After
+    // ArrowRight we set `activeIndex` and focus the first item in a layout effect.
+    focusItemOnOpen: false,
   });
   const typeahead = useTypeahead(floating.context, {
     listRef: labelsRef,
@@ -206,6 +233,50 @@ export const SubMenu = (props: SubMenuProps) => {
     }
   }, [tree, open, nodeId, parentId]);
 
+  useEffect(() => {
+    if (!open) {
+      setActiveIndex(null);
+    }
+  }, [open]);
+
+  useLayoutEffect(() => {
+    if (!open || !openedFromParentArrowRightRef.current) {
+      return;
+    }
+    const applyFirst = () => {
+      const idx = findFirstEnabledListIndex(floatingListRef);
+      if (idx === null) {
+        return false;
+      }
+      openedFromParentArrowRightRef.current = false;
+      keyboardFocusFirstNestedItemRef.current = true;
+      setActiveIndex(idx);
+      return true;
+    };
+    if (!applyFirst()) {
+      requestAnimationFrame(() => {
+        if (!applyFirst()) {
+          openedFromParentArrowRightRef.current = false;
+        }
+      });
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      keyboardFocusFirstNestedItemRef.current = false;
+      return;
+    }
+    if (!keyboardFocusFirstNestedItemRef.current || activeIndex === null) {
+      return;
+    }
+    const el = floatingListRef.current[activeIndex];
+    if (el) {
+      el.focus({ preventScroll: true });
+    }
+    keyboardFocusFirstNestedItemRef.current = false;
+  }, [open, activeIndex]);
+
   const nestedFilterContext = useMemo(
     () => ({
       query: filterContext.query,
@@ -216,10 +287,29 @@ export const SubMenu = (props: SubMenuProps) => {
     [filterContext],
   );
 
+  const navigateNestedMainAxis = useCallback((direction: 1 | -1) => {
+    setActiveIndex((prev) =>
+      navigateListMainAxisLoop(floatingListRef, direction, prev),
+    );
+  }, []);
+
+  const closeNestedFlyout = useCallback(() => {
+    setOpen(false);
+    queueMicrotask(() => {
+      subMenuTriggerRef.current?.focus();
+    });
+  }, []);
+
+  const parentNestedDepth = parentListContext?.nestedMenuDepth ?? 0;
+  const nestedMenuDepth = parentNestedDepth + 1;
+
   const nestedListContext = {
     activeIndex,
     getItemProps: (userProps?: HTMLProps<HTMLElement>) =>
       getItemProps(userProps) as HTMLProps<HTMLElement>,
+    navigateMainAxis: navigateNestedMainAxis,
+    nestedMenuDepth,
+    closeParentSubMenuFlyout: closeNestedFlyout,
   };
 
   const floatingStyle = {
@@ -232,7 +322,7 @@ export const SubMenu = (props: SubMenuProps) => {
         onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
           if (event.key === 'ArrowRight' && !disabled) {
             event.preventDefault();
-            setOpen(true);
+            openNestedFromParentKeyboard();
           }
         },
       })
@@ -240,14 +330,59 @@ export const SubMenu = (props: SubMenuProps) => {
         onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
           if (event.key === 'ArrowRight' && !disabled) {
             event.preventDefault();
-            setOpen(true);
+            openNestedFromParentKeyboard();
           }
         },
       };
 
   const referenceProps = getReferenceProps(parentItemProps);
+  const referenceOnKeyDown = referenceProps.onKeyDown;
   const referencePropsWithoutRef: Omit<HTMLProps<HTMLElement>, 'ref'> = {
     ...referenceProps,
+    onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+      // APG Navigation Menubar: Left from a nested submenu trigger closes the flyout
+      // and keeps focus on that trigger; at the root menu panel, Left moves to the
+      // previous menubar section when onMenubarEdgeNavigate is provided.
+      if (resolvedInteraction !== 'digin' && parentListContext) {
+        const depth = parentListContext.nestedMenuDepth ?? 0;
+        if (event.key === 'ArrowLeft') {
+          if (open) {
+            event.preventDefault();
+            event.stopPropagation();
+            setOpen(false);
+            queueMicrotask(() => subMenuTriggerRef.current?.focus());
+            return;
+          }
+          if (depth === 0 && rootContext.onMenubarEdgeNavigate) {
+            event.preventDefault();
+            event.stopPropagation();
+            rootContext.onCloseMenu();
+            rootContext.onMenubarEdgeNavigate(-1);
+            return;
+          }
+        }
+      }
+      // APG: Arrow Down/Up move among siblings in the parent menu (Quotes → Orders).
+      // Delegate to the parent list always from the submenu trigger — not only when
+      // the nested flyout is open — so Down never descends into nested items before
+      // Arrow Right / Enter (Floating UI bubble alone is unreliable here).
+      if (
+        resolvedInteraction !== 'digin' &&
+        parentListContext?.navigateMainAxis &&
+        (event.key === 'ArrowDown' || event.key === 'ArrowUp')
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (open) {
+          setOpen(false);
+        }
+        parentListContext.navigateMainAxis(event.key === 'ArrowDown' ? 1 : -1);
+        return;
+      }
+      if (typeof referenceOnKeyDown === 'function') {
+        referenceOnKeyDown(event);
+      }
+    },
   };
 
   if (!isVisible) {
@@ -373,6 +508,7 @@ export const SubMenu = (props: SubMenuProps) => {
         disabled={disabled}
         className={itemClassName.wrapper}
         ref={(node: HTMLButtonElement | null) => {
+          subMenuTriggerRef.current = node;
           listItemData.ref(node as HTMLElement | null);
           floating.refs.setReference(node);
         }}
@@ -438,6 +574,9 @@ export const SubMenu = (props: SubMenuProps) => {
                       if (event.key === 'ArrowLeft') {
                         event.preventDefault();
                         setOpen(false);
+                        queueMicrotask(() =>
+                          subMenuTriggerRef.current?.focus(),
+                        );
                       }
                     },
                   })}

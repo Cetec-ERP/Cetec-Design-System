@@ -1,0 +1,234 @@
+import { Meta, Unstyled } from '@storybook/blocks';
+import { VStack } from '@styled-system/jsx';
+import { Box } from '~/components/Box';
+import { Divider } from '~/components/Divider';
+import { Heading } from '~/components/Heading';
+import { Link } from '~/components/Link';
+import { Text } from '~/components/Text';
+
+<Meta title="Docs / Top Nav Keyboard UI" />
+
+<Unstyled>
+  <VStack alignItems="stretch" gap="16">
+    <Heading level="h1">Top Nav Keyboard UI</Heading>
+
+    <Text maxW="prose">
+      How to compose <code>Menu</code>, <code>SubMenu</code>, and <code>MenuItem</code> into an
+      APG-aligned horizontal menubar: one section trigger per top-level area, shared keyboard
+      behavior inside each dropdown, and controlled state so focus and open menus stay in sync.
+    </Text>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">Overview</Heading>
+
+    <Text maxW="prose">
+      These components implement keyboard behavior inside each dropdown (arrow navigation,
+      typeahead, nested submenus, Escape) using Floating UI and WAI-ARIA roles such as{' '}
+      <code>role=&quot;menu&quot;</code> on the panel.
+    </Text>
+
+    <Text maxW="prose">
+      A horizontal row of section triggers is <strong>not</strong> a single <code>Menu</code>.
+      Per the{' '}
+      <Link
+        href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WAI-ARIA APG Menu and Menubar pattern
+      </Link>
+      , the top strip is a <strong>menubar</strong> (<code>role=&quot;menubar&quot;</code>)
+      containing one menuitem per section. Compose <strong>one</strong> <code>Menu</code> per
+      section and wrap them in a flex (or similar) container marked up as the menubar.
+    </Text>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">1. Wrap the row of triggers</Heading>
+
+    <Box as="ul" pl="24" display="grid" gap="6" maxW="prose">
+      <Box as="li" listStyleType="disc">
+        <Text>
+          Put all section <code>Menu</code> components inside one element with{' '}
+          <code>role=&quot;menubar&quot;</code>.
+        </Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          Give it an accessible name, e.g. <code>aria-label=&quot;Main&quot;</code> or{' '}
+          <code>aria-labelledby</code> pointing at a visible heading.
+        </Text>
+      </Box>
+    </Box>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">2. Optional: only one dropdown open at a time</Heading>
+
+    <Box as="ul" pl="24" display="grid" gap="6" maxW="prose">
+      <Box as="li" listStyleType="disc">
+        <Text>
+          Track which section is open in React state (e.g. <code>openMenu: string | null</code>).
+        </Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          Pass <code>open</code> and <code>onOpenChange</code> into each <code>Menu</code> so
+          opening one section closes another. This matches common UX and avoids overlapping
+          flyouts.
+        </Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          When closing, use a <strong>functional</strong> state update (e.g.{' '}
+          <code>setOpenMenu((current) =&gt; (current === id ? null : current))</code>) so a{' '}
+          <strong>stale</strong> <code>onOpenChange(false)</code> from the previous section—after
+          focus moved to the next trigger—does not wipe <code>openMenu</code> before the new
+          section&apos;s menu opens.
+        </Text>
+      </Box>
+    </Box>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">3. Horizontal Arrow Left / Right (APG menubar)</Heading>
+
+    <Box as="ul" pl="24" display="grid" gap="6" maxW="prose">
+      <Box as="li" listStyleType="disc">
+        <Text>
+          APG expects Arrow Left and Arrow Right to move focus between menubar items (the
+          triggers), with optional wrapping.
+        </Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          The design system does <strong>not</strong> add this automatically—you implement it on
+          each trigger <code>Button</code> (or equivalent):
+        </Text>
+        <Box as="ul" pl="24" display="grid" gap="4" mt="4">
+          <Box as="li" listStyleType="disc">
+            <Text>
+              Give each trigger a stable <code>id</code> so you can move focus to the
+              previous/next trigger after <code>preventDefault</code> /{' '}
+              <code>stopPropagation</code>.
+            </Text>
+          </Box>
+          <Box as="li" listStyleType="disc">
+            <Text>
+              Add an <code>onKeyDown</code> handler for <code>ArrowLeft</code> /{' '}
+              <code>ArrowRight</code>. If <strong>no</strong> section menu is open, only{' '}
+              <strong>move focus</strong> to the previous/next trigger—do <strong>not</strong>{' '}
+              open those menus. If a menu is already open (your controlled <code>open</code>{' '}
+              state), move focus <strong>and</strong> open the newly focused section&apos;s menu,
+              matching the{' '}
+              <Link
+                href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/examples/menubar-navigation/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Navigation Menubar Example
+              </Link>
+              .
+            </Text>
+          </Box>
+        </Box>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          <strong>Merging with Menu:</strong> <code>Menu</code> merges its own props onto the
+          trigger via <code>cloneElement</code>. Supplying <code>onKeyDown</code> on your{' '}
+          <code>Button</code> composes with the library&apos;s handlers so Down/Up/Enter still
+          work as expected.
+        </Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          <strong>Inside an open dropdown:</strong> pass <code>onMenubarEdgeNavigate</code> on
+          each section&apos;s <code>Menu</code>. The library keeps keyboard focus on the section
+          trigger while the panel is visible until Arrow Down / Arrow Up moves into the menu (via{' '}
+          <code>FloatingFocusManager</code> with <code>order=&#91;&quot;reference&quot;, &quot;content&quot;&#93;</code>
+          ). That way Arrow Left / Arrow Right still move between top menubar triggers with the
+          dropdown open. Arrow Left / Arrow Right on leaf <code>MenuItem</code>s (and Arrow Left on
+          a top-level <code>SubMenu</code> row when not in a nested flyout) call your handler to
+          jump sections per the Navigation Menubar Example.
+        </Text>
+      </Box>
+    </Box>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">4. Vertical keys inside the dropdown</Heading>
+
+    <Text maxW="prose">
+      Arrow Down / Up move among items in that section&apos;s menu; Arrow Right opens a nested{' '}
+      <code>SubMenu</code>; Arrow Left closes a nested flyout or moves along the menubar when{' '}
+      <code>onMenubarEdgeNavigate</code> is set. See the{' '}
+      <Link
+        href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        menubar pattern
+      </Link>{' '}
+      for the full key table.
+    </Text>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">5. Disclosure vs full menubar</Heading>
+
+    <Box as="ul" pl="24" display="grid" gap="6" maxW="prose">
+      <Box as="li" listStyleType="disc">
+        <Text>
+          Many marketing sites only need the simpler{' '}
+          <Link
+            href="https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Disclosure Navigation example
+          </Link>{' '}
+          (expand/collapse sections without full menubar semantics).
+        </Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          A full roving tabindex for the entire bar (only one trigger in the tab order, rest{' '}
+          <code>{'tabIndex={-1}'}</code>) is not shown in the Storybook example; add it if your
+          accessibility requirements call for strict APG menubar focus management.
+        </Text>
+      </Box>
+    </Box>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">References</Heading>
+
+    <Box display="flex" flexDirection="column" gap="8">
+      <Link
+        href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/examples/menubar-navigation/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Navigation Menubar Example (APG)
+      </Link>
+      <Link
+        href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Menu and Menubar pattern (APG)
+      </Link>
+    </Box>
+
+    <Divider weight="thick" color="border.disabled" my="8" />
+
+    <Heading level="h3">Related design-system docs</Heading>
+
+    <Box display="grid" gap="4">
+      <Link href="/?path=/docs/docs-floating-ui-architecture--documentation">Floating UI Architecture</Link>
+      <Link href="/?path=/docs/docs-panda-patterns--documentation">Panda Patterns</Link>
+    </Box>
+  </VStack>
+</Unstyled>
