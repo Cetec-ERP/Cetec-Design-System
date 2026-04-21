@@ -2,11 +2,7 @@ import type { MouseEvent, ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { link, type LinkVariantProps } from '@styled-system/recipes';
-import {
-  type FontSizeToken,
-  type FontToken,
-  type FontWeightToken,
-} from '@styled-system/tokens';
+import { type FontToken, type FontWeightToken } from '@styled-system/tokens';
 
 import { splitProps } from '~/utils/splitProps';
 
@@ -18,7 +14,7 @@ export type LinkProps = Omit<BoxProps, keyof LinkVariantProps> &
     href: string;
     external?: boolean;
     disabled?: boolean;
-    size?: FontSizeToken;
+    size?: LinkVariantProps['size'];
     family?: FontToken;
     italic?: boolean;
     bold?: boolean;

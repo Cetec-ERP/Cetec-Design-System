@@ -8,6 +8,8 @@ export { formFieldRecipe } from './formField';
 export { avatarRecipe } from './avatar';
 export { badgeRecipe } from './badge';
 export { chipRecipe } from './chip';
+export { listItemRecipe } from './listItem';
+export { listItemGroupRecipe } from './listItemGroup';
 export { modalRecipe } from './modal';
 export { datePickerRecipe } from './datePicker';
 export { timePickerRecipe } from './timePicker';

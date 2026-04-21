@@ -93,7 +93,7 @@ export const SubMenu = (props: SubMenuProps) => {
   const resolvedDensity =
     typeof density === 'string' ? density : rootContext.density;
   const classes = menu({ density: resolvedDensity });
-  const listClassName = list({});
+  const listClassName = list({ density: resolvedDensity });
   const itemClassName = listItemRecipe({
     density: resolvedDensity,
     iconBefore: Boolean(iconBefore),
@@ -469,7 +469,10 @@ export const SubMenu = (props: SubMenuProps) => {
         type="button"
       >
         {iconBefore && (
-          <Icon className={itemClassName.icon} name={iconBefore} />
+          <Icon
+            className={cx(itemClassName.icon, itemClassName.beforeSlot)}
+            name={iconBefore}
+          />
         )}
 
         <Box className={itemClassName.itemMain}>
@@ -492,7 +495,11 @@ export const SubMenu = (props: SubMenuProps) => {
           )}
         </Box>
 
-        <Icon className={itemClassName.icon} name="caret-right" ml="auto" />
+        <Icon
+          className={cx(itemClassName.icon, itemClassName.afterSlot)}
+          name="caret-right"
+          ml="auto"
+        />
       </button>
     );
   }
@@ -530,7 +537,10 @@ export const SubMenu = (props: SubMenuProps) => {
         type="button"
       >
         {iconBefore && (
-          <Icon className={itemClassName.icon} name={iconBefore} />
+          <Icon
+            className={cx(itemClassName.icon, itemClassName.beforeSlot)}
+            name={iconBefore}
+          />
         )}
 
         <Box className={itemClassName.itemMain}>
@@ -553,7 +563,11 @@ export const SubMenu = (props: SubMenuProps) => {
           )}
         </Box>
 
-        <Icon className={itemClassName.icon} name="caret-right" ml="auto" />
+        <Icon
+          className={cx(itemClassName.icon, itemClassName.afterSlot)}
+          name="caret-right"
+          ml="auto"
+        />
       </button>
 
       {open && (

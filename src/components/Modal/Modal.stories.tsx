@@ -27,18 +27,10 @@ const meta: Meta<typeof Modal> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', 'full'],
+      options: ['sm', 'md', 'lg', 'xl', 'full', 'fullPage'],
       description: 'Modal size',
       table: {
         defaultValue: { summary: 'md' },
-      },
-    },
-    variant: {
-      control: 'select',
-      options: ['defauilt', 'confirmation'],
-      description: 'Modal type',
-      table: {
-        defaultValue: { summary: 'default' },
       },
     },
     preventOverlayClose: {
@@ -314,25 +306,39 @@ export const FullWidth: Story = {
 };
 
 // ============================================================================
-// Mobile
+// FULL Page
 // ============================================================================
 
-export const Mobile: Story = {
+export const FullPage: Story = {
   render: () => {
     const Component = () => {
       const [isOpen, setIsOpen] = useState(false);
 
       return (
         <>
-          <Button onClick={() => setIsOpen(true)}>Open Mobile Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="mobile">
-            <ModalHeader title="Mobile Dialog" showCloseButton />
+          <Button onClick={() => setIsOpen(true)}>Open Full Page Modal</Button>
+          <Modal open={isOpen} onOpenChange={setIsOpen} size="fullPage">
+            <ModalHeader title="Full Page Dialog" showCloseButton />
             <ModalBody>
-              <Grid>
+              <Grid gridTemplateColumns="1fr auto 1fr" alignItems="start">
                 <Text>
-                  This modal stretches to the full available width. Should be
-                  used for mobile use-cases.
+                  This modal stretches to the 100% of the available width and
+                  height. Useful for dashboards, data tables, or content that
+                  benefits from maximum horizontal space.
                 </Text>
+                <Divider direction="vertical" mx="8" />
+                <VStack>
+                  <Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    euismod, nisl eget aliquam aliquet, nisl nisl aliquet nisl,
+                    eget aliquam nisl nisl eget nisl.
+                  </Text>
+                  <Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    euismod, nisl eget aliquam aliquet, nisl nisl aliquet nisl,
+                    eget aliquam nisl nisl eget nisl.
+                  </Text>
+                </VStack>
               </Grid>
             </ModalBody>
             <ModalFooter>

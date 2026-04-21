@@ -236,6 +236,7 @@ export const MenuItem = (props: MenuItemProps) => {
       {variant === 'checkbox' && (
         <Checkbox
           name={controlName}
+          className={classes.beforeSlot}
           checked={Boolean(selected)}
           onChange={handleControlChange}
           tabIndex={-1}
@@ -245,6 +246,7 @@ export const MenuItem = (props: MenuItemProps) => {
       {variant === 'toggle' && (
         <Toggle
           name={controlName}
+          className={classes.beforeSlot}
           checked={Boolean(selected)}
           onChange={handleControlChange}
           mr="4"
@@ -252,7 +254,12 @@ export const MenuItem = (props: MenuItemProps) => {
         />
       )}
 
-      {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
+      {iconBefore && (
+        <Icon
+          className={cx(classes.icon, classes.beforeSlot)}
+          name={iconBefore}
+        />
+      )}
 
       <Box className={classes.itemMain}>
         {label && (
@@ -277,7 +284,11 @@ export const MenuItem = (props: MenuItemProps) => {
       </Box>
 
       {iconAfter && (
-        <Icon className={classes.icon} name={iconAfter} ml="auto" />
+        <Icon
+          className={cx(classes.icon, classes.afterSlot)}
+          name={iconAfter}
+          ml="auto"
+        />
       )}
     </Box>
   );

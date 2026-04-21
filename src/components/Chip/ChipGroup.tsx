@@ -6,7 +6,11 @@ import { Wrap, type WrapProps } from '@styled-system/jsx';
 import { type BoxProps } from '~/components/Box';
 import { splitProps } from '~/utils/splitProps';
 
-import { ChipGroupContext, type ChipGroupType } from './ChipGroupContext';
+import {
+  ChipGroupContext,
+  type ChipGroupSize,
+  type ChipGroupType,
+} from './ChipGroupContext';
 
 export type ChipGroupProps = Omit<WrapProps, 'role'> &
   Omit<BoxProps, keyof WrapProps> & {
@@ -14,6 +18,7 @@ export type ChipGroupProps = Omit<WrapProps, 'role'> &
     value: string | string[];
     onChange: (value: string | string[]) => void;
     children: ReactNode;
+    size?: ChipGroupSize;
     label?: string;
     id?: string;
     name?: string;
@@ -25,6 +30,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
     value,
     onChange,
     children,
+    size,
     label,
     id,
     name,
@@ -91,6 +97,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
     <ChipGroupContext.Provider
       value={{
         type,
+        size,
         value,
         onChange,
         name,

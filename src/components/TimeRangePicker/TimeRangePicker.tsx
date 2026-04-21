@@ -1,11 +1,8 @@
+import type { TimePickerVariantProps } from '@styled-system/recipes';
+
 import { Box } from '~/components/Box';
 
-import {
-  TimePicker,
-  type HourCycle,
-  type TimePickerProps,
-  type TimeValue,
-} from '../TimePicker';
+import { TimePicker, type HourCycle, type TimeValue } from '../TimePicker';
 
 export type TimeRangePickerProps = {
   /** Start time value (hour in 24h format, 0–23) */
@@ -21,7 +18,7 @@ export type TimeRangePickerProps = {
   disabled?: boolean;
   error?: boolean;
   /** Size passed to both TimePickers */
-  size?: TimePickerProps['size'];
+  size?: TimePickerVariantProps['size'];
   /** Accessible label prefix — used to build "Start time" and "End time" labels */
   label?: string;
 };

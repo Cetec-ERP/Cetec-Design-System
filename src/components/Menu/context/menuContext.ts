@@ -13,10 +13,11 @@ import type { MenuVariantProps } from '@styled-system/recipes';
 
 import type { BoxProps } from '~/components/Box';
 import type { IconNamesList } from '~/components/Icon';
+import type { ListDensity } from '~/components/List';
 
 import type { Placement } from '@floating-ui/react';
 
-export type MenuDensity = 'compact' | 'comfortable' | 'spacious';
+export type MenuDensity = ListDensity;
 export type MenuFilterMode = 'none' | 'contains';
 export type SubMenuInteraction = 'hover' | 'digin';
 export type MenuTriggerInteraction = 'click' | 'hover' | 'click-and-hover';

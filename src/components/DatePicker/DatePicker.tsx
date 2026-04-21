@@ -191,6 +191,7 @@ export type DatePickerProps = Omit<
     /** Controlled popover open state */
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
+    size?: DatePickerVariantProps['size'];
   };
 
 // ─── DatePicker ────────────────────────────────────────────────────────────────

@@ -23,7 +23,7 @@ export type IconProps = Omit<BoxProps, IconNamesList | 'size'> &
   SVGAttributes<SVGElement> &
   IconVariantProps & {
     name: IconNamesList;
-    size?: AllowedIconSizes;
+    size?: IconVariantProps['size'];
     fill?: ColorToken;
   };
 

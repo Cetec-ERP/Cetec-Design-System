@@ -5,12 +5,12 @@ import { cx, css } from '@styled-system/css';
 import { avatar, type AvatarVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
-import { Icon, type AllowedIconSizes } from '~/components/Icon';
+import { Icon, type AllowedIconSizes, type IconProps } from '~/components/Icon';
 import { splitProps } from '~/utils/splitProps';
 
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type AvatarSize = NonNullable<AvatarVariantProps['size']>;
 
-export type AvatarShape = 'circle' | 'square' | 'hexagon';
+export type AvatarShape = AvatarVariantProps['shape'];
 
 export type AvatarPresence = 'online' | 'busy' | 'offline' | 'focus';
 
@@ -53,14 +53,42 @@ const statusStyles: Record<AvatarStatus, string> = {
   locked: css({ bg: 'bg.neutral.bold', fill: 'icon.inverse' }),
 };
 
+type AvatarSizeKey = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+
 // Map size to status icon size
-const sizeToStatusIconSize: Record<AvatarSize, AllowedIconSizes> = {
+const sizeToStatusIconSize: Record<AvatarSizeKey, AllowedIconSizes> = {
   xs: '8',
   sm: '10',
   md: '12',
   lg: '14',
   xl: '16',
   '2xl': '20',
+};
+
+const isAvatarStatusIconSizeKey = (size: unknown): size is AvatarSizeKey =>
+  typeof size === 'string' &&
+  Object.prototype.hasOwnProperty.call(sizeToStatusIconSize, size);
+
+const mapAvatarSizeToStatusIconSize = (
+  size: AvatarProps['size'],
+): AllowedIconSizes | IconProps['size'] => {
+  if (isAvatarStatusIconSizeKey(size)) {
+    return sizeToStatusIconSize[size];
+  }
+
+  if (size && typeof size === 'object' && !Array.isArray(size)) {
+    const mapped: Record<string, AllowedIconSizes> = {};
+
+    Object.entries(size as Record<string, unknown>).forEach(([key, value]) => {
+      if (isAvatarStatusIconSizeKey(value)) {
+        mapped[key] = sizeToStatusIconSize[value];
+      }
+    });
+
+    return Object.keys(mapped).length > 0 ? mapped : sizeToStatusIconSize.md;
+  }
+
+  return sizeToStatusIconSize.md;
 };
 
 /**
@@ -104,8 +132,7 @@ export const Avatar = (props: AvatarProps) => {
   const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
 
   // Type-safe size for indexing
-  const safeSize = size as AvatarSize;
-  const classes = avatar({ size: safeSize, shape });
+  const classes = avatar({ size, shape });
 
   // Determine what to show: image, fallback, or initials
   const showImage = Boolean(src) && failedSrc !== src;
@@ -113,7 +140,7 @@ export const Avatar = (props: AvatarProps) => {
   const initials = name ? getInitials(name) : null;
 
   // Get icon size based on avatar size
-  const iconSize = sizeToStatusIconSize[safeSize];
+  const iconSize = mapAvatarSizeToStatusIconSize(size);
 
   return (
     <Box

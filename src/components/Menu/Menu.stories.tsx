@@ -3,8 +3,10 @@ import { type ChangeEvent, type KeyboardEvent, useState } from 'react';
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
 import { Box } from '../Box';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Button } from '../Button';
 import { FormField } from '../FormField';
+import { Text } from '../Text';
 import { TextInput } from '../TextInput';
 
 import { Menu } from './Menu';
@@ -279,6 +281,45 @@ export const Density: Story = {
         <MenuItem label="Third row" iconBefore="settings" />
       </Menu>
     </HStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <VStack>
+      <Menu
+        inline
+        closeOnSelect={false}
+        density={{ base: 'spacious', xs: 'comfortable', sm: 'compact' }}
+      >
+        <MenuGroup label="Actions" divider>
+          <MenuItem label="Edit profile" iconBefore="pencil" />
+          <MenuItem label="Notifications" iconBefore="bell" />
+        </MenuGroup>
+        <SubMenu label="More actions" iconBefore="apps">
+          <MenuItem label="Export" />
+          <MenuItem label="Share" />
+          <SubMenu label="Advanced">
+            <MenuItem label="Audit log" />
+            <MenuItem label="Settings" />
+          </SubMenu>
+        </SubMenu>
+      </Menu>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"spacious"', xs: '"comfortable"', sm: '"compact"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </VStack>
   ),
   parameters: { controls: { disable: true } },
 };

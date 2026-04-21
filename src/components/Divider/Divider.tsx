@@ -7,8 +7,8 @@ import { Box, type BoxProps } from '../Box/Box';
 
 export type DividerProps = Omit<BoxProps, keyof DividerVariantProps> &
   DividerVariantProps & {
-    direction?: string;
-    weight?: string;
+    direction?: DividerVariantProps['direction'];
+    weight?: DividerVariantProps['weight'];
   };
 
 export const Divider = (props: DividerProps) => {

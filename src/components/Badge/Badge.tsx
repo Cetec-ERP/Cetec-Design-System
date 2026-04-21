@@ -25,12 +25,12 @@ export type BadgeProps = Omit<BoxProps, keyof BadgeVariantProps> &
     /** Max count to show. Displays "99+" when exceeded. Default: 99 */
     overflowCount?: number;
     /** Color scheme of the badge. Default: 'danger' */
-    variant?: BadgeVariant;
+    variant?: BadgeVariantProps['variant'];
     /** Content to wrap with the badge */
     children?: ReactNode;
+    size?: BadgeVariantProps['size'];
   };
 
-// Animation styles
 // Animation styles
 const animationStyles = {
   pop: css({
@@ -59,7 +59,7 @@ export const Badge = (props: BadgeProps) => {
     showZero = false,
     overflowCount = 99,
     variant = 'danger',
-    size = 'md',
+    size,
     children,
     ref,
     ...rest

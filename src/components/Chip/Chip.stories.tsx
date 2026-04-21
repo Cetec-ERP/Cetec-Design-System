@@ -1,11 +1,9 @@
 import { useState } from 'react';
 
-import { Flex, Grid } from '@styled-system/jsx';
+import { Flex, Grid, Wrap } from '@styled-system/jsx';
 
-import { Avatar } from '../Avatar';
-import { Badge } from '../Badge';
 import { Box } from '../Box';
-import { Icon } from '../Icon';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Text } from '../Text';
 
 import { Chip } from './Chip';
@@ -32,13 +30,33 @@ const meta: Meta<typeof Chip> = {
       options: ['md', 'sm', 'lg'],
       description: 'Size variants of chip',
     },
+    iconBefore: {
+      control: false,
+      description: 'Structured icon slot rendered before the label',
+    },
+    iconAfter: {
+      control: false,
+      description: 'Structured icon slot rendered after the label',
+    },
+    avatarBefore: {
+      control: false,
+      description: 'Structured avatar slot rendered before the label',
+    },
+    badgeBefore: {
+      control: false,
+      description: 'Structured badge slot rendered before the label',
+    },
+    badgeAfter: {
+      control: false,
+      description: 'Structured badge slot rendered after the label',
+    },
     before: {
       control: false,
-      description: 'Content to render before the label (e.g., Icon, Avatar)',
+      description: 'Escape hatch content to render before the label',
     },
     after: {
       control: false,
-      description: 'Content to render after the label (e.g., Badge, Icon)',
+      description: 'Escape hatch content to render after the label',
     },
     disabled: {
       control: 'boolean',
@@ -79,12 +97,109 @@ export const Default: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <Flex gap="4" alignItems="center">
-      <Chip size="sm">Small</Chip>
-      <Chip>Medium (default)</Chip>
-      <Chip size="lg">Large</Chip>
-    </Flex>
+    <Grid columns={5} justifyItems="center" gap="20">
+      <Chip size="sm">sm Chip</Chip>
+      <Chip size="sm" iconBefore={{ name: 'hash' }}>
+        sm Chip
+      </Chip>
+      <Chip size="sm" iconAfter={{ name: 'read-doc' }}>
+        sm Chip
+      </Chip>
+      <Chip
+        size="sm"
+        avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}
+      >
+        sm Chip
+      </Chip>
+      <Chip size="sm" badgeAfter={{ count: 3 }}>
+        sm Chip
+      </Chip>
+      <Chip size="md">md Chip</Chip>
+      <Chip size="md" iconBefore={{ name: 'hash' }}>
+        md Chip
+      </Chip>
+      <Chip size="md" iconAfter={{ name: 'read-doc' }}>
+        md Chip
+      </Chip>
+      <Chip
+        size="md"
+        avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}
+      >
+        md Chip
+      </Chip>
+      <Chip size="md" badgeAfter={{ count: 3 }}>
+        md Chip
+      </Chip>
+      <Chip size="lg">lg Chip</Chip>
+      <Chip size="lg" iconBefore={{ name: 'hash' }}>
+        lg Chip
+      </Chip>
+      <Chip size="lg" iconAfter={{ name: 'read-doc' }}>
+        lg Chip
+      </Chip>
+      <Chip
+        size="lg"
+        avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}
+      >
+        lg Chip
+      </Chip>
+      <Chip size="lg" badgeAfter={{ count: 3 }}>
+        lg Chip
+      </Chip>
+    </Grid>
   ),
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints = () => {
+  return (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <Wrap justifyContent="center">
+        <Chip
+          size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+          iconBefore={{ name: 'hash' }}
+        >
+          Chip
+        </Chip>
+        <Chip
+          size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+          avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}
+        >
+          Chip
+        </Chip>
+        <Chip
+          size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+          badgeAfter={{ count: 3 }}
+        >
+          Chip
+        </Chip>
+      </Wrap>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"lg"', xs: '"md"', sm: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
+  );
 };
 
 // =============================================================================
@@ -95,42 +210,37 @@ export const WithBefore: Story = {
   render: () => (
     <Flex gap="4" flexDir="column" alignItems="center">
       <Flex gap="4" alignItems="center">
-        <Chip
-          size="sm"
-          before={<Badge count={2} size="sm" variant="success" />}
-        >
+        <Chip size="sm" badgeBefore={{ count: 2, variant: 'success' }}>
           Small
         </Chip>
-        <Chip before={<Badge count={30} variant="neutral" />}>Medium</Chip>
-        <Chip size="lg" before={<Badge count={100} size="lg" />}>
+        <Chip badgeBefore={{ count: 30, variant: 'neutral' }}>Medium</Chip>
+        <Chip size="lg" badgeBefore={{ count: 100 }}>
           Large
         </Chip>
       </Flex>
       <Flex gap="4" alignItems="center">
         <Chip
           size="sm"
-          before={<Avatar size="xs" src={sampleImages.user1} name="John Doe" />}
+          avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}
         >
           Small
         </Chip>
-        <Chip
-          before={<Avatar size="sm" src={sampleImages.user1} name="John Doe" />}
-        >
+        <Chip avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}>
           Medium
         </Chip>
         <Chip
           size="lg"
-          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+          avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}
         >
           Large
         </Chip>
       </Flex>
       <Flex gap="4" alignItems="center">
-        <Chip size="sm" before={<Icon name="file" size="20" />}>
+        <Chip size="sm" iconBefore={{ name: 'file' }}>
           Small
         </Chip>
-        <Chip before={<Icon name="file" size="20" />}>Medium</Chip>
-        <Chip size="lg" before={<Icon name="file" size="24" />}>
+        <Chip iconBefore={{ name: 'file' }}>Medium</Chip>
+        <Chip size="lg" iconBefore={{ name: 'file' }}>
           Large
         </Chip>
       </Flex>
@@ -141,11 +251,11 @@ export const WithBefore: Story = {
 export const WithAfter: Story = {
   render: () => (
     <Flex gap="4" alignItems="center">
-      <Chip size="sm" after={<Icon name="x" size="20" />}>
+      <Chip size="sm" iconAfter={{ name: 'x' }}>
         Small
       </Chip>
-      <Chip after={<Icon name="x" size="20" />}>Medium</Chip>
-      <Chip size="lg" after={<Icon name="x" size="24" />}>
+      <Chip iconAfter={{ name: 'x' }}>Medium</Chip>
+      <Chip size="lg" iconAfter={{ name: 'x' }}>
         Large
       </Chip>
     </Flex>
@@ -155,24 +265,13 @@ export const WithAfter: Story = {
 export const WithBeforeAndAfter: Story = {
   render: () => (
     <Flex gap="4" alignItems="center">
-      <Chip
-        size="sm"
-        before={<Icon name="user" size="20" />}
-        after={<Icon name="x" size="20" />}
-      >
+      <Chip size="sm" iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
         Small
       </Chip>
-      <Chip
-        before={<Icon name="user" size="20" />}
-        after={<Icon name="x" size="20" />}
-      >
+      <Chip iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
         Medium
       </Chip>
-      <Chip
-        size="lg"
-        before={<Icon name="user" size="24" />}
-        after={<Icon name="x" size="24" />}
-      >
+      <Chip size="lg" iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
         Large
       </Chip>
     </Flex>
@@ -187,17 +286,17 @@ export const States: Story = {
   render: () => (
     <Grid gridTemplateColumns="auto auto" gap="24">
       <Text textStyle="mono.xs">Default:</Text>
-      <Chip before={<Icon name="file" size="20" />}>Interactive</Chip>
+      <Chip iconBefore={{ name: 'file' }}>Interactive</Chip>
       <Text textStyle="mono.xs">Disabled:</Text>
-      <Chip disabled before={<Icon name="file" size="20" />}>
+      <Chip disabled iconBefore={{ name: 'file' }}>
         Disabled
       </Chip>
       <Text textStyle="mono.xs">Loading:</Text>
-      <Chip loading before={<Icon name="file" size="20" />}>
+      <Chip loading iconBefore={{ name: 'file' }}>
         Loading...
       </Chip>
       <Text textStyle="mono.xs">Deleted:</Text>
-      <Chip deleted before={<Icon name="file" size="20" />}>
+      <Chip deleted iconBefore={{ name: 'file' }}>
         Deleted Item
       </Chip>
     </Grid>
@@ -215,13 +314,13 @@ export const Interactive: Story = {
       <Flex gap="2">
         <Chip onClick={() => alert('Clicked!')}>Click Me</Chip>
         <Chip
-          before={<Icon name="plus" size="20" />}
+          iconBefore={{ name: 'plus' }}
           onClick={() => alert('Add clicked!')}
         >
           Add Item
         </Chip>
         <Chip
-          after={<Icon name="x" size="20" />}
+          iconAfter={{ name: 'x' }}
           onClick={() => alert('Remove clicked!')}
         >
           Remove
@@ -249,11 +348,11 @@ export const SizesMatrix: Story = {
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">With Before</Text>
         <Flex gap="4" alignItems="center">
-          <Chip size="sm" before={<Icon name="file" size="20" />}>
+          <Chip size="sm" iconBefore={{ name: 'file' }}>
             Small
           </Chip>
-          <Chip before={<Icon name="file" size="20" />}>Medium</Chip>
-          <Chip size="lg" before={<Icon name="file" size="24" />}>
+          <Chip iconBefore={{ name: 'file' }}>Medium</Chip>
+          <Chip size="lg" iconBefore={{ name: 'file' }}>
             Large
           </Chip>
         </Flex>
@@ -261,11 +360,11 @@ export const SizesMatrix: Story = {
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">With After</Text>
         <Flex gap="4" alignItems="center">
-          <Chip size="sm" after={<Icon name="x" size="20" />}>
+          <Chip size="sm" iconAfter={{ name: 'x' }}>
             Small
           </Chip>
-          <Chip after={<Icon name="x" size="20" />}>Medium</Chip>
-          <Chip size="lg" after={<Icon name="x" size="24" />}>
+          <Chip iconAfter={{ name: 'x' }}>Medium</Chip>
+          <Chip size="lg" iconAfter={{ name: 'x' }}>
             Large
           </Chip>
         </Flex>
@@ -275,21 +374,18 @@ export const SizesMatrix: Story = {
         <Flex gap="4" alignItems="center">
           <Chip
             size="sm"
-            before={<Icon name="user" size="20" />}
-            after={<Icon name="x" size="20" />}
+            iconBefore={{ name: 'user' }}
+            iconAfter={{ name: 'x' }}
           >
             Small
           </Chip>
-          <Chip
-            before={<Icon name="user" size="20" />}
-            after={<Icon name="x" size="20" />}
-          >
+          <Chip iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
             Medium
           </Chip>
           <Chip
             size="lg"
-            before={<Icon name="user" size="24" />}
-            after={<Icon name="x" size="24" />}
+            iconBefore={{ name: 'user' }}
+            iconAfter={{ name: 'x' }}
           >
             Large
           </Chip>
@@ -308,9 +404,8 @@ export const InlineWithText: Story = {
     <Box maxW="lg">
       <Text>
         Chips can appear inline within text, like tagging{' '}
-        <Chip before={<Icon name="user" size="20" />}>John Doe</Chip> in a
-        conversation or referencing{' '}
-        <Chip before={<Icon name="file" size="20" />}>Project Plan</Chip> in
+        <Chip iconBefore={{ name: 'user' }}>John Doe</Chip> in a conversation or
+        referencing <Chip iconBefore={{ name: 'file' }}>Project Plan</Chip> in
         your notes.
       </Text>
     </Box>
@@ -327,25 +422,25 @@ export const UseCases: Story = {
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">Filter Tags</Text>
         <Flex gap="4" flexWrap="wrap">
-          <Chip after={<Icon name="x" size="20" />}>React</Chip>
-          <Chip after={<Icon name="x" size="20" />}>TypeScript</Chip>
-          <Chip after={<Icon name="x" size="20" />}>Panda CSS</Chip>
-          <Chip before={<Icon name="plus" size="20" />}>Add Filter</Chip>
+          <Chip iconAfter={{ name: 'x' }}>React</Chip>
+          <Chip iconAfter={{ name: 'x' }}>TypeScript</Chip>
+          <Chip iconAfter={{ name: 'x' }}>Panda CSS</Chip>
+          <Chip iconBefore={{ name: 'plus' }}>Add Filter</Chip>
         </Flex>
       </Flex>
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">Categories</Text>
         <Flex gap="4" flexWrap="wrap">
-          <Chip before={<Icon name="file" size="20" />}>Documentation</Chip>
-          <Chip before={<Icon name="calendar" size="20" />}>Events</Chip>
-          <Chip before={<Icon name="user" size="20" />}>People</Chip>
+          <Chip iconBefore={{ name: 'file' }}>Documentation</Chip>
+          <Chip iconBefore={{ name: 'calendar' }}>Events</Chip>
+          <Chip iconBefore={{ name: 'user' }}>People</Chip>
         </Flex>
       </Flex>
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">Actions</Text>
         <Flex gap="4" flexWrap="wrap">
-          <Chip before={<Icon name="plus" size="20" />}>New Item</Chip>
-          <Chip before={<Icon name="check" size="20" />}>Approve</Chip>
+          <Chip iconBefore={{ name: 'plus' }}>New Item</Chip>
+          <Chip iconBefore={{ name: 'check' }}>Approve</Chip>
           <Chip deleted>Archived</Chip>
         </Flex>
       </Flex>
@@ -391,25 +486,13 @@ export const Dismissable: Story = {
 export const DismissableWithBefore: Story = {
   render: () => (
     <Flex gap="4">
-      <Chip
-        dismissable
-        before={<Icon name="file" size="20" />}
-        onDismiss={() => {}}
-      >
+      <Chip dismissable iconBefore={{ name: 'file' }} onDismiss={() => {}}>
         Document
       </Chip>
-      <Chip
-        dismissable
-        before={<Icon name="user" size="20" />}
-        onDismiss={() => {}}
-      >
+      <Chip dismissable iconBefore={{ name: 'user' }} onDismiss={() => {}}>
         Person
       </Chip>
-      <Chip
-        dismissable
-        before={<Icon name="calendar" size="20" />}
-        onDismiss={() => {}}
-      >
+      <Chip dismissable iconBefore={{ name: 'calendar' }} onDismiss={() => {}}>
         Event
       </Chip>
     </Flex>
@@ -458,13 +541,13 @@ const SingleSelectWithBeforeExample = () => {
         onChange={(value) => setSelected(value as string)}
         label="View selection"
       >
-        <Chip value="list" before={<Icon name="menu" size="20" />}>
+        <Chip value="list" iconBefore={{ name: 'menu' }}>
           List
         </Chip>
-        <Chip value="grid" before={<Icon name="view-grid" size="20" />}>
+        <Chip value="grid" iconBefore={{ name: 'view-grid' }}>
           Grid
         </Chip>
-        <Chip value="calendar" before={<Icon name="calendar" size="20" />}>
+        <Chip value="calendar" iconBefore={{ name: 'calendar' }}>
           Calendar
         </Chip>
       </ChipGroup>
@@ -522,16 +605,16 @@ const MultiSelectWithBeforeExample = () => {
         onChange={(value) => setSelected(value as string[])}
         label="Category filter"
       >
-        <Chip value="docs" before={<Icon name="file" size="20" />}>
+        <Chip value="docs" iconBefore={{ name: 'file' }}>
           Documents
         </Chip>
-        <Chip value="images" before={<Icon name="image" size="20" />}>
+        <Chip value="images" iconBefore={{ name: 'image' }}>
           Images
         </Chip>
-        <Chip value="videos" before={<Icon name="video" size="20" />}>
+        <Chip value="videos" iconBefore={{ name: 'video' }}>
           Videos
         </Chip>
-        <Chip value="audio" before={<Icon name="broadcast" size="20" />}>
+        <Chip value="audio" iconBefore={{ name: 'broadcast' }}>
           Audio
         </Chip>
       </ChipGroup>
@@ -582,25 +665,21 @@ const ChipGroupSizesExample = () => {
         <Text textStyle="mono.xs">Small</Text>
         <ChipGroup
           type="single"
+          size="sm"
           value={smValue}
           onChange={(v) => setSmValue(v as string)}
           label="Small chip group"
         >
-          <Chip value="option-a" size="sm">
-            Option A
-          </Chip>
-          <Chip value="option-b" size="sm">
-            Option B
-          </Chip>
-          <Chip value="option-c" size="sm">
-            Option C
-          </Chip>
+          <Chip value="option-a">Option A</Chip>
+          <Chip value="option-b">Option B</Chip>
+          <Chip value="option-c">Option C</Chip>
         </ChipGroup>
       </Flex>
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">Medium</Text>
         <ChipGroup
           type="single"
+          size="md"
           value={mdValue}
           onChange={(v) => setMdValue(v as string)}
           label="Medium chip group"
@@ -614,19 +693,14 @@ const ChipGroupSizesExample = () => {
         <Text textStyle="mono.xs">Large</Text>
         <ChipGroup
           type="single"
+          size="lg"
           value={lgValue}
           onChange={(v) => setLgValue(v as string)}
           label="Large chip group"
         >
-          <Chip value="option-a" size="lg">
-            Option A
-          </Chip>
-          <Chip value="option-b" size="lg">
-            Option B
-          </Chip>
-          <Chip value="option-c" size="lg">
-            Option C
-          </Chip>
+          <Chip value="option-a">Option A</Chip>
+          <Chip value="option-b">Option B</Chip>
+          <Chip value="option-c">Option C</Chip>
         </ChipGroup>
       </Flex>
     </Flex>
@@ -635,6 +709,53 @@ const ChipGroupSizesExample = () => {
 
 export const ChipGroupSizes: Story = {
   render: () => <ChipGroupSizesExample />,
+};
+
+export const ChipGroupResponsiveSizes = () => {
+  const [selected, setSelected] = useState('assignee');
+
+  return (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <ChipGroup
+        type="single"
+        size={{ base: 'lg', xs: 'md', sm: 'sm' }}
+        value={selected}
+        onChange={(v) => setSelected(v as string)}
+        label="Responsive chip group"
+      >
+        <Chip value="assignee" avatarBefore={{ name: 'John Doe' }}>
+          Assignee
+        </Chip>
+        <Chip value="mentions" iconBefore={{ name: 'hash' }}>
+          Mentions
+        </Chip>
+        <Chip value="alerts" badgeAfter={{ count: 3 }}>
+          Alerts
+        </Chip>
+      </ChipGroup>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"lg"', xs: '"md"', sm: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Group size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
+  );
 };
 
 // =============================================================================

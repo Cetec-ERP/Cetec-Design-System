@@ -3,6 +3,7 @@ import { fn } from '@storybook/test';
 import { HStack, VStack, Grid, Flex, Wrap } from '@styled-system/jsx';
 
 import { Box } from '../Box';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Button } from '../Button';
 import { Heading } from '../Heading';
 import { Icon } from '../Icon';
@@ -236,6 +237,63 @@ export const SemanticElements: Story = {
           <Text>For supplementary content</Text>
         </VStack>
       </Card>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <Card
+        p={{ base: '56', xs: '40', sm: '24', md: '16' }}
+        variant={{
+          base: 'sunken',
+          xs: 'flat',
+          sm: 'default',
+        }}
+      >
+        Conditional Card
+      </Card>
+      <VStack gap="4">
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: { base: '"56"', xs: '"40"', sm: '"24"', md: '"16"' },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Padding:{' '}
+        </Text>
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: {
+              base: '"sunken"',
+              xs: '"flat"',
+              sm: '"default"',
+            },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Variant:{' '}
+        </Text>
+      </VStack>
+      <BreakpointIndicator />
     </Grid>
   ),
   parameters: { controls: { disable: true } },

@@ -33,6 +33,8 @@ export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
     children: ReactNode;
     /** Optional ID for ARIA attributes */
     id?: string;
+    size?: ModalVariantProps['size'];
+    position?: ModalVariantProps['position'];
   };
 
 type ModalPhase = 'open' | 'closing' | 'closed';
@@ -73,12 +75,11 @@ export const Modal = (props: ModalProps) => {
     preventOverlayClose = false,
     children,
     id,
-    variant = 'default',
     position = 'centered',
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
-  const classes = modalRecipe({ size, variant, position });
+  const classes = modalRecipe({ size, position });
   const [{ phase }, dispatch] = useReducer(modalStateReducer, {
     phase: open ? 'open' : 'closed',
   });
@@ -139,27 +140,31 @@ export const Modal = (props: ModalProps) => {
   return (
     <ModalContext.Provider value={contextValue}>
       <FloatingPortal>
-        <FloatingOverlay
-          lockScroll
-          className={cx(classes.overlay)}
-          data-state={dataState}
-          onClick={preventOverlayClose ? undefined : () => onOpenChange(false)}
-          aria-hidden="true"
-        />
-        <FloatingFocusManager context={context} modal={true}>
-          <Box
-            ref={refs.setFloating}
-            className={cx(classes.container, className)}
+        <Box className={classes.positionWrapper}>
+          <FloatingOverlay
+            lockScroll
+            className={classes.overlay}
             data-state={dataState}
-            id={id}
-            role="dialog"
-            aria-modal="true"
-            {...(getFloatingProps() as Record<string, unknown>)}
-            {...otherProps}
-          >
-            {children}
-          </Box>
-        </FloatingFocusManager>
+            onClick={
+              preventOverlayClose ? undefined : () => onOpenChange(false)
+            }
+            aria-hidden="true"
+          />
+          <FloatingFocusManager context={context} modal={true}>
+            <Box
+              ref={refs.setFloating}
+              className={cx(classes.container, className)}
+              data-state={dataState}
+              id={id}
+              role="dialog"
+              aria-modal="true"
+              {...(getFloatingProps() as Record<string, unknown>)}
+              {...otherProps}
+            >
+              {children}
+            </Box>
+          </FloatingFocusManager>
+        </Box>
       </FloatingPortal>
     </ModalContext.Provider>
   );
