@@ -1,9 +1,0 @@
-import{j as o}from"./jsx-runtime-D_zvdyIk.js";import{m as y,e as k,s as C,c as x,g as b,b as j,B as r,d as v}from"./Box-DON8OdPK.js";import{I as E}from"./Icon-BjyDhYXA.js";import"./IconConfig-CigF0iOf.js";const i={},N=[],q=[["container","toggle__container"],["input","toggle__input"],["indicator","toggle__indicator"]],V=q.map(([e,t])=>[e,x(t,i,b(N,e))]),I=y((e={})=>Object.fromEntries(V.map(([t,n])=>[t,n.recipeFn(e)]))),c=[],P=e=>({...i,...k(e)}),M=Object.assign(I,{__recipe__:!1,__name__:"toggle",raw:e=>e,classNameMap:{},variantKeys:c,variantMap:{},splitVariantProps(e){return C(e,c)},getVariantProps:P}),S=e=>{const{name:t,checked:n,onChange:p,id:g,error:s,disabled:l,container:m,input:d,indicator:u,...h}=e,[_,T]=j(h),a=M({container:m,input:d,indicator:u}),f=n?"circle-check":"circle";return o.jsxs(r,{className:v(a.container,_),...s&&{"data-error":!0},children:[o.jsx(r,{as:"input",type:"checkbox",className:a.input,name:t,id:g,checked:n,onChange:p,disabled:l,...s&&{"data-error":!0},...T}),o.jsx(E,{className:a.indicator,name:f})]})};S.__docgenInfo={description:`Toggle is a controlled component.
-You must pass \`checked\` and \`onChange\` props.
-
-@example
-const [checked, setChecked] = useState(false);
-<Toggle
-  checked={checked}
-  onChange={(e) => setChecked(e.target.checked)}
-/>`,methods:[],displayName:"Toggle",props:{name:{required:!0,tsType:{name:"string"},description:""},checked:{required:!0,tsType:{name:"boolean"},description:""},onChange:{required:!0,tsType:{name:"signature",type:"function",raw:"(e: ToggleChangeEvent) => void",signature:{arguments:[{type:{name:"ChangeEvent",elements:[{name:"HTMLInputElement"}],raw:"ChangeEvent<HTMLInputElement>"},name:"e"}],return:{name:"void"}}},description:""},id:{required:!1,tsType:{name:"string"},description:""},error:{required:!1,tsType:{name:"boolean"},description:""},disabled:{required:!1,tsType:{name:"boolean"},description:""}}};export{S as T};
