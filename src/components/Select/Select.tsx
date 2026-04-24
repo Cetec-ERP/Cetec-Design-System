@@ -450,7 +450,7 @@ export const Select = (props: SelectProps) => {
             modal={false}
             initialFocus={-1}
           >
-            {/* biome-ignore lint/a11y/useSemanticElements: custom select popup uses an ARIA listbox on a non-native container */}
+            {/* validate-ignore: useSemanticElements — custom select popup uses ARIA listbox semantics on a non-native container */}
             <List
               ref={floating.refs.setFloating}
               id={listboxId}
