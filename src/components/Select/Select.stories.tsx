@@ -56,6 +56,11 @@ const meta = {
       control: 'select',
       options: ['compact', 'comfortable', 'spacious'],
     },
+    autoSize: {
+      control: 'boolean',
+      description:
+        'Allow the trigger content to grow vertically instead of staying on one scrollable line',
+    },
   },
 } satisfies Meta<typeof Select>;
 
@@ -163,7 +168,7 @@ export const Multiple: Story = {
     ]);
 
     return (
-      <Box display="grid" gap="12" maxW="xs" bg="[pink]">
+      <Box display="grid" gap="12" maxW="xs">
         <Select
           multiple
           value={value}
@@ -181,6 +186,111 @@ export const Multiple: Story = {
         <Text size="14" color="text.subtle">
           Selected: {value?.join(', ') || 'none'}
         </Text>
+      </Box>
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ExAutoSize: Story = {
+  name: 'Ex: Auto Size',
+  render: function ExAutoSizeRender() {
+    const [singleValue, setSingleValue] = useState<string | string[] | null>(
+      'long',
+    );
+    const [multiScrollValue, setMultiScrollValue] = useState<string[] | null>([
+      'react',
+      'typescript',
+      'storybook',
+      'text',
+    ]);
+    const [multiWrapValue, setMultiWrapValue] = useState<string[] | null>([
+      'react',
+      'typescript',
+      'storybook',
+      'text',
+    ]);
+
+    return (
+      <Box display="grid" gap="24" w="full" maxW="2xl">
+        <Box display="grid" gap="12" gridTemplateColumns="repeat(2, 1fr)">
+          <Box display="grid" gap="8">
+            <Text size="14" color="text.subtle">
+              autoSize=&#34;false&#34;
+            </Text>
+            <Box maxW="xs">
+              <Select
+                multiple
+                value={multiScrollValue}
+                onChange={(nextValue) =>
+                  setMultiScrollValue(
+                    Array.isArray(nextValue) ? nextValue : null,
+                  )
+                }
+                placeholder="Choose tags..."
+              >
+                <SelectOption value="react" label="React" />
+                <SelectOption value="typescript" label="TypeScript" />
+                <SelectOption value="storybook" label="Storybook" />
+                <SelectOption value="text" label="Text" />
+              </Select>
+            </Box>
+          </Box>
+
+          <Box display="grid" gap="8">
+            <Text size="14" color="text.subtle">
+              autoSize=&#34;true&#34;
+            </Text>
+            <Box maxW="xs">
+              <Select
+                multiple
+                autoSize
+                value={multiWrapValue}
+                onChange={(nextValue) =>
+                  setMultiWrapValue(Array.isArray(nextValue) ? nextValue : null)
+                }
+                placeholder="Choose tags..."
+              >
+                <SelectOption value="react" label="React" />
+                <SelectOption value="typescript" label="TypeScript" />
+                <SelectOption value="storybook" label="Storybook" />
+                <SelectOption value="text" label="Text" />
+              </Select>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box display="grid" gap="12" gridTemplateColumns="repeat(2, 1fr)">
+          <Box display="grid" gap="8">
+            <Text size="14" color="text.subtle">
+              Single select default
+            </Text>
+            <Box maxW="xs">
+              <Select value={singleValue} onChange={setSingleValue}>
+                <SelectOption
+                  value="long"
+                  label="Enim qui laboris sunt qui laborum veniam minim dolor veniam"
+                />
+                <SelectOption value="short" label="Short label" />
+              </Select>
+            </Box>
+          </Box>
+
+          <Box display="grid" gap="8">
+            <Text size="14" color="text.subtle">
+              Single select autoSize
+            </Text>
+            <Box maxW="xs">
+              <Select autoSize value={singleValue} onChange={setSingleValue}>
+                <SelectOption
+                  value="long"
+                  label="Enim qui laboris sunt qui laborum veniam minim dolor veniam"
+                />
+                <SelectOption value="short" label="Short label" />
+              </Select>
+            </Box>
+          </Box>
+        </Box>
       </Box>
     );
   },
@@ -267,7 +377,8 @@ export const A11yKeyboardInteraction: Story = {
   },
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
-    const trigger = canvas.getByRole('button', {
+    const screen = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('combobox', {
       name: /choose an option/i,
     });
 
@@ -276,13 +387,13 @@ export const A11yKeyboardInteraction: Story = {
 
     await userEvent.keyboard('{ArrowDown}');
 
-    const listbox = canvas.getByRole('listbox');
+    const listbox = screen.getByRole('listbox');
     expect(listbox).toBeVisible();
 
     await userEvent.keyboard('{ArrowDown}{Enter}');
 
     expect(
-      canvas.getByRole('button', {
+      canvas.getByRole('combobox', {
         name: /growth/i,
       }),
     ).toBeVisible();

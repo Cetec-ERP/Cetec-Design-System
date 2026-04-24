@@ -3,6 +3,7 @@ import {
   type HTMLProps,
   isValidElement,
   type KeyboardEvent,
+  type MouseEvent,
   type ReactElement,
   type ReactNode,
   useCallback,
@@ -37,6 +38,7 @@ import {
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
+import { Chip } from '../Chip';
 import { Icon } from '../Icon';
 import { List, ListItem } from '../List';
 
@@ -45,6 +47,25 @@ import type { SelectOptionProps } from './SelectOption';
 type SelectValue = string | string[] | null;
 
 const defaultDensity: MenuDensity = 'compact';
+const chipSizeBySelectSize = {
+  sm: 'sm',
+  md: 'sm',
+  lg: 'md',
+  xl: 'md',
+} as const;
+
+const resolveChipSize = (size: SelectProps['size']): 'sm' | 'md' => {
+  if (!size || typeof size === 'string') {
+    return chipSizeBySelectSize[size ?? 'md'];
+  }
+
+  const firstSize = Object.values(size as Record<string, unknown>).find(
+    (value): value is keyof typeof chipSizeBySelectSize =>
+      typeof value === 'string' && value in chipSizeBySelectSize,
+  );
+
+  return firstSize ? chipSizeBySelectSize[firstSize] : 'sm';
+};
 
 const isSelectOptionElement = (
   child: ReactNode,
@@ -92,6 +113,21 @@ const getSelectedDisplay = (
   return selectedOption ? getOptionText(selectedOption) : placeholder;
 };
 
+const getSelectedOptions = (
+  options: ReactElement<SelectOptionProps>[],
+  value: SelectValue,
+  multiple: boolean,
+) => {
+  if (!multiple) {
+    return [];
+  }
+
+  const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
+  return options.filter((option) =>
+    selectedValues.includes(option.props.value),
+  );
+};
+
 export type SelectProps = Omit<
   BoxProps<'button'>,
   keyof SelectVariantProps | 'children' | 'onChange' | 'type' | 'value'
@@ -111,6 +147,7 @@ export type SelectProps = Omit<
     disabled?: boolean;
     error?: boolean;
     density?: MenuDensity;
+    autoSize?: boolean;
   };
 
 export const Select = (props: SelectProps) => {
@@ -130,6 +167,7 @@ export const Select = (props: SelectProps) => {
     error = false,
     size = 'md',
     density = defaultDensity,
+    autoSize = false,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -268,11 +306,17 @@ export const Select = (props: SelectProps) => {
     multiple,
     placeholder,
   );
-  const classes = select({ size });
+  const selectedOptions = getSelectedOptions(options, value, multiple);
+  const classes = select({ size, multiple, autoSize });
   const menuClasses = menu({ density });
   const hasValue = value !== null && value !== undefined && value !== '';
+  const chipSize = resolveChipSize(size);
+  const accessibleName =
+    typeof displayValue === 'string' && displayValue.length > 0
+      ? displayValue
+      : placeholder;
 
-  const handleTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+  const handleTriggerKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (disabled) {
       return;
     }
@@ -313,6 +357,19 @@ export const Select = (props: SelectProps) => {
     setOpenState(false);
   };
 
+  const handleChipDismiss = (optionValue: string) => {
+    if (!multiple) {
+      return;
+    }
+
+    const currentValues = Array.isArray(value) ? value : value ? [value] : [];
+    const nextValues = currentValues.filter(
+      (currentValue) => currentValue !== optionValue,
+    );
+
+    handleValueChange(nextValues.length > 0 ? nextValues : null);
+  };
+
   return (
     <Box className={classes.root}>
       {name &&
@@ -327,18 +384,19 @@ export const Select = (props: SelectProps) => {
         ))}
 
       <Box
-        as="button"
-        type="button"
+        as="div"
         id={triggerId}
         ref={floating.refs.setReference}
-        className={cx(classes.trigger, className)}
+        className={`${cx(classes.trigger, className)} peer`}
+        role="combobox"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={accessibleName}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-controls={isOpen ? listboxId : undefined}
         aria-activedescendant={isOpen ? activeOptionId : undefined}
         aria-disabled={disabled}
         aria-invalid={error || undefined}
-        disabled={disabled}
         data-disabled={disabled || undefined}
         data-error={error || undefined}
         data-open={isOpen || undefined}
@@ -347,15 +405,42 @@ export const Select = (props: SelectProps) => {
         }) as Record<string, unknown>)}
         {...otherProps}
       >
-        <Box className={hasValue ? classes.value : classes.placeholder}>
-          {displayValue}
-        </Box>
-        <Icon
-          name="caret-down"
-          className={classes.icon}
-          data-open={isOpen}
-          aria-hidden
-        />
+        {multiple && selectedOptions.length > 0 ? (
+          <Box className={cx(classes.content, classes.chips)}>
+            {selectedOptions.map((option) => (
+              <Box
+                key={option.props.value}
+                onMouseDown={(event: MouseEvent<HTMLElement>) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }}
+                onClick={(event: MouseEvent<HTMLElement>) => {
+                  event.stopPropagation();
+                }}
+              >
+                <Chip
+                  size={chipSize}
+                  dismissable
+                  onDismiss={() => handleChipDismiss(option.props.value)}
+                >
+                  {option.props.label}
+                </Chip>
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <Box
+            className={cx(
+              classes.content,
+              hasValue ? classes.value : classes.placeholder,
+            )}
+          >
+            {displayValue}
+          </Box>
+        )}
+      </Box>
+      <Box as="span" className={classes.icon} data-open={isOpen} aria-hidden>
+        <Icon name="caret-down" />
       </Box>
 
       {isOpen && !disabled && (

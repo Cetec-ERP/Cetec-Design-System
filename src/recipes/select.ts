@@ -2,19 +2,24 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 const selectBase = {
   root: {
-    display: 'inline-flex',
-    flexDirection: 'column',
-    position: 'relative',
-    maxW: 'full',
-  },
-  trigger: {
     '--icon-size': 'token(sizes.24)',
     '--icon-margin': 'token(sizes.3)',
     '--input-icon-padding': 'token(sizes.10)',
+    display: 'inline-flex',
+    flexDirection: 'column',
+    position: 'relative',
+    minWidth: '0',
+    maxW: 'full',
+    width: 'fit',
+  },
+  trigger: {
     position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',
     width: 'fit',
+    minWidth: '0',
+    maxWidth: 'full',
+    pe: 'var(--input-icon-padding)',
     borderWidth: '1',
     borderStyle: 'solid',
     borderColor: 'border.input',
@@ -67,24 +72,42 @@ const selectBase = {
       },
     },
   },
+  content: {
+    display: 'flex',
+    alignItems: 'center',
+    minWidth: '0',
+    width: 'full',
+    flex: '1',
+  },
   value: {
     flex: 1,
+    minWidth: '0',
     textAlign: 'left',
     truncate: true,
     color: 'text',
-    pe: 'var(--input-icon-padding)',
   },
   placeholder: {
     flex: 1,
+    minWidth: '0',
     textAlign: 'left',
     truncate: true,
     color: 'text.placeholder',
-    pe: 'var(--input-icon-padding)',
+  },
+  chips: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4',
+    minWidth: '0',
+    width: 'full',
+    flex: '1',
+    overflowX: 'auto',
+    overflowY: 'hidden',
+    scrollbarWidth: 'thin',
   },
   icon: {
     position: 'absolute',
     top: '50%',
-    right: '0',
+    right: '1',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -92,13 +115,25 @@ const selectBase = {
     height: 'var(--icon-size)',
     marginInline: 'var(--icon-margin)',
     transform: 'translateY(-50%)',
+    bg: 'bg.input',
     fill: 'icon.decorative',
-    transitionDuration: 'normal',
-    transitionProperty: 'transform',
-    transitionTimingFunction: 'default',
     pointerEvents: 'none',
-    '&[data-open="true"]': {
-      transform: 'translateY(-50%) rotate(180deg)',
+    transitionDuration: 'fast',
+    transitionProperty: 'all',
+    transitionTimingFunction: 'default',
+    _icon: {
+      width: 'var(--icon-size)',
+      height: 'var(--icon-size)',
+      transitionDuration: 'fast',
+      transitionProperty: 'all',
+      transitionTimingFunction: 'default',
+    },
+    _peerHover: {
+      bg: 'bg.input.hovered',
+    },
+    '&[data-open="true"] > svg': {
+      transform: 'rotate(-180deg)',
+      transformOrigin: 'center',
     },
   },
 };
@@ -106,43 +141,106 @@ const selectBase = {
 const selectVariants = {
   size: {
     sm: {
-      trigger: {
+      root: {
         '--icon-size': 'token(sizes.22)',
         '--icon-margin': 'token(sizes.2)',
         '--input-icon-padding': '[26px]',
+      },
+      content: {
         py: '0',
-        px: '8',
+        ps: '8',
         fontSize: '14',
+      },
+      chips: {
+        gap: '3',
+        py: '2',
       },
     },
     md: {
-      trigger: {
+      root: {
         '--icon-size': 'token(sizes.24)',
         '--icon-margin': 'token(sizes.3)',
         '--input-icon-padding': '[31px]',
+      },
+      content: {
         py: '3',
-        px: '10',
+        ps: '10',
         fontSize: '16',
+      },
+      chips: {
+        gap: '4',
+        py: '5',
       },
     },
     lg: {
-      trigger: {
+      root: {
         '--icon-size': 'token(sizes.24)',
         '--icon-margin': 'token(sizes.5)',
         '--input-icon-padding': '[34px]',
+      },
+      content: {
         py: '7',
-        px: '12',
+        ps: '12',
         fontSize: '16',
+      },
+      chips: {
+        gap: '5',
+        py: '0',
       },
     },
     xl: {
-      trigger: {
+      root: {
         '--icon-size': 'token(sizes.28)',
         '--icon-margin': 'token(sizes.7)',
         '--input-icon-padding': '[42px]',
+      },
+      content: {
         py: '9',
-        px: '16',
+        ps: '16',
         fontSize: '20',
+      },
+      chips: {
+        gap: '6',
+        py: '2',
+      },
+    },
+  },
+  multiple: {
+    true: {
+      trigger: {
+        alignItems: 'flex-start',
+      },
+      content: {
+        alignItems: 'flex-start',
+      },
+    },
+  },
+  autoSize: {
+    true: {
+      trigger: {
+        height: 'auto',
+      },
+      value: {
+        whiteSpace: 'normal',
+        textWrap: 'wrap',
+        overflow: 'visible',
+        textOverflow: 'clip',
+      },
+      placeholder: {
+        whiteSpace: 'normal',
+        textWrap: 'wrap',
+        overflow: 'visible',
+        textOverflow: 'clip',
+      },
+      chips: {
+        flexWrap: 'wrap',
+        overflowX: 'visible',
+        overflowY: 'visible',
+      },
+    },
+    false: {
+      chips: {
+        flexWrap: 'nowrap',
       },
     },
   },
@@ -151,7 +249,15 @@ const selectVariants = {
 export const selectRecipe = defineSlotRecipe({
   className: 'select',
   jsx: ['Select'],
-  slots: ['root', 'trigger', 'value', 'placeholder', 'icon'],
+  slots: [
+    'root',
+    'trigger',
+    'content',
+    'value',
+    'placeholder',
+    'chips',
+    'icon',
+  ],
   base: selectBase,
   variants: selectVariants,
   defaultVariants: {
