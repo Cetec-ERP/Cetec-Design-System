@@ -1,35 +1,49 @@
-import { defineRecipe } from '@pandacss/dev';
+import { defineSlotRecipe } from '@pandacss/dev';
 
-export const kbdRecipe = defineRecipe({
+export const kbdRecipe = defineSlotRecipe({
   className: 'kbd',
-  jsx: ['Kbd'],
+  slots: ['kbdGroup', 'key'],
   base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '1',
-    h: '16',
-    w: 'fit',
-    minW: '16',
-    rounded: '6',
-    cornerShape: 'squircle',
-    bg: 'bg.neutral',
-    px: '4',
-    fontFamily: 'mono',
-    fontVariant: 'mono',
-    lineHeight: 'tight',
-    fontWeight: 'bold',
-    color: 'text.subtle',
-    userSelect: 'none',
-    pointerEvents: 'none',
+    kbdGroup: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: '2',
+      verticalAlign: 'middle',
+    },
+    key: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '1',
+      h: '16',
+      w: 'fit',
+      minW: '16',
+      rounded: '6',
+      cornerShape: 'squircle',
+      bg: 'bg.neutral',
+      px: '4',
+      fontFamily: 'mono',
+      fontVariant: 'mono',
+      lineHeight: 'tight',
+      fontWeight: 'bold',
+      color: 'text.subtle',
+      userSelect: 'none',
+      pointerEvents: 'none',
+      fontSize: '10',
+    },
   },
   variants: {
     variant: {
       default: {
-        fontSize: '10',
+        key: {
+          fontSize: '10',
+        },
       },
       symbol: {
-        fontSize: '12',
+        key: {
+          fontSize: '12',
+        },
       },
     },
   },

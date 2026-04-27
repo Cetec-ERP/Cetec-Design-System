@@ -3,7 +3,6 @@ import { Card } from '../Card';
 import { Text } from '../Text';
 
 import { Kbd } from './Kbd';
-import { KbdGroup } from './KbdGroup';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -15,7 +14,7 @@ const meta = {
     layout: 'centered',
   },
   args: {
-    value: '⌘',
+    keys: ['⌘', 'K'],
   },
 } satisfies Meta<typeof Kbd>;
 
@@ -27,7 +26,7 @@ export const Default: Story = {};
 export const InlineUsage: Story = {
   render: () => (
     <Text>
-      Press <KbdGroup keys={['⌘', 'K']} /> to open global search.
+      Press <Kbd keys={['⌘', 'K']} /> to open global search.
     </Text>
   ),
   parameters: { controls: { disable: true } },
@@ -41,15 +40,15 @@ export const ExShortcutReference: Story = {
       <Box display="grid" gap="8">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Text>Search</Text>
-          <KbdGroup keys={['⌘', 'K']} />
+          <Kbd keys={['⌘', 'K']} />
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Text>Save draft</Text>
-          <KbdGroup keys={['⌘', 'S']} />
+          <Kbd keys={['⌘', 'S']} />
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Text>Open command menu</Text>
-          <KbdGroup keys={['Shift', '?']} />
+          <Kbd keys={['⇪', '?']} />
         </Box>
       </Box>
     </Card>
@@ -62,7 +61,7 @@ export const A11ySemanticKeyboardInput: Story = {
   render: () => (
     <Box display="grid" gap="10">
       <Text>
-        Use <Kbd value="Esc" /> to close the dialog and return focus to the
+        Use <Kbd keys={['Esc']} /> to close the dialog and return focus to the
         trigger.
       </Text>
       <Text size="14" color="text.subtle">
@@ -70,21 +69,6 @@ export const A11ySemanticKeyboardInput: Story = {
         status labels or decorative pills.
       </Text>
     </Box>
-  ),
-  parameters: { controls: { disable: true } },
-};
-
-export const ExManualComposition: Story = {
-  name: 'Ex: Manual Composition',
-  render: () => (
-    <Text>
-      Press{' '}
-      <KbdGroup>
-        <Kbd value="⌃" />
-        <Kbd value="P" />
-      </KbdGroup>{' '}
-      to print the current view.
-    </Text>
   ),
   parameters: { controls: { disable: true } },
 };

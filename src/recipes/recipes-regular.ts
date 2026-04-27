@@ -14,5 +14,3 @@ export { radioInputRecipe } from './radioInput';
 export { checkboxInputRecipe } from './checkboxInput';
 export { iconRecipe } from './icon';
 export { breakpointIndicatorRecipe } from './breakpointIndicator';
-export { kbdRecipe } from './kbd';
-export { kbdGroupRecipe } from './kbdGroup';

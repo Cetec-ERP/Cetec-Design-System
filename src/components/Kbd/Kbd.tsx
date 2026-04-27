@@ -1,55 +1,49 @@
-import type { ReactNode } from 'react';
-
 import { cx } from '@styled-system/css';
-import { kbd, type KbdVariantProps } from '@styled-system/recipes';
+import { kbd } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
+import { Tooltip } from '../Tooltip';
 
-const specialSymbols = {
-  '⌘': ['command', 'cmd', 'meta'],
-  '⌥': ['option', 'alt'],
-  '⌃': ['control', 'ctrl', 'meta'],
-  '⇪': ['shift'],
-  '⎋': ['escape', 'esc'],
-  '⌫': ['delete', 'backspace'],
-  '↩': ['enter', 'return'],
-  '⇥': ['tab'],
-  '←': ['left', 'arrowLeft', 'arrow'],
-  '→': ['right', 'arrowRight', 'arrow'],
-  '↑': ['up', 'arrowUp', 'arrow'],
-  '↓': ['down', 'arrowDown', 'arrow'],
-} as const;
+import { getKbdLabel, isSpecialSymbol, type KbdValue } from './kbdUtils';
 
-export type KbdSpecialSymbol = keyof typeof specialSymbols;
-export type KbdValue = string;
+export type KbdProps = Omit<BoxProps, 'children'> & {
+  keys: KbdValue[];
+};
 
-const isSpecialSymbol = (value: KbdValue): value is KbdSpecialSymbol =>
-  value in specialSymbols;
+const defaultClasses = kbd({});
+const symbolClasses = kbd({ variant: 'symbol' });
 
-export type KbdProps = Omit<BoxProps, keyof KbdVariantProps> &
-  KbdVariantProps & {
-    value?: KbdValue;
-    children?: ReactNode | string;
-  };
-
+/**
+ * Used to display keyboard shortcuts.
+ * Supported special symbols: ⌘ command, ⌥ option, ⌃ control, ⇪ shift,
+ * ⎋ escape, ⌫ delete, ↩ return, ⇥ tab, ← left, → right, ↑ up, ↓ down.
+ * Example: <Kbd keys={['⌘', 'K']} />
+ */
 export const Kbd = (props: KbdProps) => {
-  const { children, value, variant, ...rest } = props;
+  const { keys, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
-  const resolvedValue = value ?? children;
-  const resolvedVariant =
-    variant ?? (typeof resolvedValue === 'string' && isSpecialSymbol(resolvedValue)
-      ? 'symbol'
-      : undefined);
-
-  return (
+  const tooltipText = keys.map(getKbdLabel).join(' + ');
+  const content = (
     <Box
-      as="kbd"
-      className={cx(kbd({ variant: resolvedVariant }), className)}
+      as="span"
+      className={cx(defaultClasses.kbdGroup, className)}
       {...otherProps}
     >
-      {resolvedValue}
+      {keys.map((keyValue, index) => (
+        <Box
+          as="kbd"
+          key={`${keyValue}-${index}`}
+          className={
+            isSpecialSymbol(keyValue) ? symbolClasses.key : defaultClasses.key
+          }
+        >
+          {keyValue}
+        </Box>
+      ))}
     </Box>
   );
+
+  return <Tooltip text={tooltipText}>{content}</Tooltip>;
 };
