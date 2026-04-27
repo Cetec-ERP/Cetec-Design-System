@@ -1,12 +1,9 @@
 import { defineRecipe } from '@pandacss/dev';
 
-import { globalBaseStyles } from '~/styles/utilities';
-
 export const kbdRecipe = defineRecipe({
   className: 'kbd',
   jsx: ['Kbd'],
   base: {
-    ...globalBaseStyles,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -14,15 +11,29 @@ export const kbdRecipe = defineRecipe({
     h: '16',
     w: 'fit',
     minW: '16',
-    rounded: '4',
+    rounded: '6',
+    cornerShape: 'squircle',
     bg: 'bg.neutral',
-    px: '1',
+    px: '4',
     fontFamily: 'mono',
-    fontSize: '12',
-    fontWeight: 'medium',
-    color: 'text',
+    fontVariant: 'mono',
+    lineHeight: 'tight',
+    fontWeight: 'bold',
+    color: 'text.subtle',
     userSelect: 'none',
     pointerEvents: 'none',
   },
-  variants: {},
+  variants: {
+    variant: {
+      default: {
+        fontSize: '10',
+      },
+      symbol: {
+        fontSize: '12',
+      },
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
 });
