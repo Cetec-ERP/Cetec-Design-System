@@ -22,6 +22,7 @@ export {
   type useIconConfig,
 } from './components/Icon';
 export { IconButton } from './components/IconButton';
+export { Kbd, type KbdProps } from './components/Kbd';
 export { Label } from './components/Label';
 export { Link } from './components/Link';
 export {
