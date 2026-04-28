@@ -1,9 +1,9 @@
 import {
-  type ReactNode,
-  useRef,
-  useEffect,
   type KeyboardEvent,
   type MouseEvent,
+  type ReactNode,
+  useEffect,
+  useRef,
 } from 'react';
 
 import { cx } from '@styled-system/css';
@@ -111,7 +111,10 @@ const resolveAfterSlot = (
 ) => iconAfter ?? badgeAfter;
 
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
-  Omit<ChipVariantProps, 'before' | 'after'> & {
+  Omit<
+    ChipVariantProps,
+    'before' | 'after' | 'beforeKind' | 'afterKind' | 'dismissable'
+  > & {
     children: string | ReactNode;
     /** Structured icon slot rendered before the label */
     iconBefore?: ChipIconSlot;
@@ -127,7 +130,11 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     loading?: boolean;
     deleted?: boolean;
     dismissable?: boolean;
+    dismissLabel?: string;
+    error?: boolean;
+    invalid?: boolean;
     onDismiss?: () => void;
+    type?: 'submit' | 'reset' | 'button';
     value?: string;
   };
 
@@ -144,9 +151,11 @@ export const Chip = (props: ChipProps) => {
     badgeBefore,
     badgeAfter,
     dismissable,
+    dismissLabel,
     onDismiss,
     value,
     onClick,
+    type = 'button',
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -154,13 +163,12 @@ export const Chip = (props: ChipProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const size = sizeProp ?? groupContext?.size ?? 'md';
 
-  // Determine if this chip is selectable (has value and is inside ChipGroup)
   const isSelectable = value !== undefined && groupContext !== null;
+  const hasPrimaryAction = Boolean(onClick) || isSelectable;
 
   const avatarSize = mapChiptoAvatarSize(size);
   const badgeSize = mapChiptoBadgeSize(size);
 
-  // Register/unregister with ChipGroup for keyboard navigation
   useEffect(() => {
     if (isSelectable && value && groupContext) {
       groupContext.registerChip(value, buttonRef);
@@ -168,18 +176,15 @@ export const Chip = (props: ChipProps) => {
     }
   }, [isSelectable, value, groupContext]);
 
-  // Determine if selected
   const isSelected = isSelectable
     ? groupContext.type === 'single'
       ? groupContext.value === value
       : Array.isArray(groupContext.value) && groupContext.value.includes(value)
     : false;
 
-  // MultiSelect shows check icon when selected
   const isMultiSelected =
     isSelectable && groupContext.type === 'multi' && isSelected;
 
-  // Error if more than one before or after slot is used
   if (import.meta.env.DEV) {
     const beforeSlotCount = getStructuredSlotCount([
       avatarBefore,
@@ -205,6 +210,11 @@ export const Chip = (props: ChipProps) => {
         'Chip cannot render after-side content when dismissable is true. The dismiss affordance owns the after slot.',
       );
     }
+    if (dismissable && typeof children !== 'string' && !dismissLabel) {
+      throw new Error(
+        'Chip requires dismissLabel when dismissable is true and children is not plain text.',
+      );
+    }
   }
 
   const resolvedBefore = resolveBeforeSlot(
@@ -213,8 +223,17 @@ export const Chip = (props: ChipProps) => {
     badgeBefore,
   );
   const resolvedAfter = resolveAfterSlot(iconAfter, badgeAfter);
+  const beforeKind = isMultiSelected
+    ? 'check'
+    : avatarBefore
+      ? 'avatar'
+      : iconBefore
+        ? 'icon'
+        : badgeBefore
+          ? 'badge'
+          : undefined;
+  const afterKind = iconAfter ? 'icon' : badgeAfter ? 'badge' : undefined;
 
-  // Determine if there's content before/after for padding adjustments
   const hasBefore = Boolean(resolvedBefore) || isMultiSelected;
   const hasAfter = Boolean(resolvedAfter) || dismissable;
 
@@ -222,25 +241,26 @@ export const Chip = (props: ChipProps) => {
     size,
     before: hasBefore,
     after: hasAfter,
+    beforeKind,
+    afterKind,
+    dismissable,
   });
 
   const renderBeforeSlot = () => {
+    let slotContent: ReactNode = null;
+
     if (avatarBefore) {
-      return (
+      slotContent = (
         <Avatar
           {...avatarBefore}
           size={avatarSize}
           className={classes.chipAvatar}
         />
       );
-    }
-
-    if (iconBefore) {
-      return <Icon {...iconBefore} className={classes.chipIcon} />;
-    }
-
-    if (badgeBefore) {
-      return (
+    } else if (iconBefore) {
+      slotContent = <Icon {...iconBefore} className={classes.chipIcon} />;
+    } else if (badgeBefore) {
+      slotContent = (
         <Badge
           {...badgeBefore}
           size={badgeSize}
@@ -249,33 +269,36 @@ export const Chip = (props: ChipProps) => {
       );
     }
 
-    return null;
+    return slotContent ? (
+      <Box as="span" className={classes.beforeSlot}>
+        {slotContent}
+      </Box>
+    ) : null;
   };
 
   const renderAfterSlot = () => {
-    if (iconAfter) {
-      return <Icon {...iconAfter} className={classes.chipIcon} />;
-    }
+    let slotContent: ReactNode = null;
 
-    if (badgeAfter) {
-      return (
+    if (iconAfter) {
+      slotContent = <Icon {...iconAfter} className={classes.chipIcon} />;
+    } else if (badgeAfter) {
+      slotContent = (
         <Badge {...badgeAfter} size={badgeSize} className={classes.chipBadge} />
       );
     }
 
-    return null;
+    return slotContent ? (
+      <Box as="span" className={classes.afterSlot}>
+        {slotContent}
+      </Box>
+    ) : null;
   };
-  // const dismissIconSize = chipSizeToIconSize[isChipSizeKey(size) ? size : 'md'];
 
-  // Handle click based on chip type
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (dismissable && onDismiss) {
-      onDismiss();
-    } else if (isSelectable && groupContext) {
+  const handleBodyClick = (e: MouseEvent<HTMLButtonElement>) => {
+    if (isSelectable && groupContext) {
       if (groupContext.type === 'single') {
         groupContext.onChange(value);
       } else {
-        // Multi-select: toggle value in array
         const currentValues = Array.isArray(groupContext.value)
           ? groupContext.value
           : [];
@@ -285,16 +308,13 @@ export const Chip = (props: ChipProps) => {
         groupContext.onChange(newValues);
       }
     } else if (onClick) {
-      // Forward the event to the onClick prop
       onClick(e);
     }
   };
 
-  // Handle keyboard navigation for selectable chips
   const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (!isSelectable || !groupContext || !value) return;
 
-    // Single select: arrow keys navigate and select
     if (groupContext.type === 'single') {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault();
@@ -304,73 +324,140 @@ export const Chip = (props: ChipProps) => {
         groupContext.focusChip('prev', value);
       }
     }
-    // Space/Enter handled by native button click
   };
 
-  // Build aria-label for dismissable chips
-  const childText = typeof children === 'string' ? children : undefined;
-  const ariaLabel =
-    dismissable && childText ? `${childText}, dismiss` : undefined;
-
-  // Determine role for selectable chips
   const role = isSelectable
     ? groupContext.type === 'single'
       ? 'radio'
       : 'checkbox'
     : undefined;
 
-  // Roving tabindex for single select (only selected or first is tabbable)
   const getTabIndex = () => {
     if (!isSelectable || !groupContext) return undefined;
     if (groupContext.type === 'single') {
-      // If this chip is selected, it's tabbable
       if (isSelected) return 0;
-      // If nothing is selected and this is the first chip, it's tabbable
+
       const hasSelection =
         groupContext.value !== undefined && groupContext.value !== '';
       if (!hasSelection && groupContext.chipValues[0] === value) return 0;
-      // Otherwise not tabbable
+
       return -1;
     }
-    // Multi-select: all chips are tabbable
+
     return 0;
   };
+
+  const resolvedDismissLabel =
+    dismissLabel ??
+    (typeof children === 'string' ? `Remove ${children}` : undefined);
+  const dismissDisabled = disabled || loading || !onDismiss;
+  const bodyClassName = `${classes.body} group`;
+
+  const bodyContent = (
+    <Box className={classes.innerWrapper} opacity={loading ? 0 : 1}>
+      {isMultiSelected && (
+        <Box as="span" className={classes.beforeSlot}>
+          <Icon name="check" className={classes.chipIcon} aria-hidden />
+        </Box>
+      )}
+      {renderBeforeSlot()}
+      {children}
+      {!dismissable && renderAfterSlot()}
+    </Box>
+  );
+
+  if (dismissable) {
+    return (
+      <Box
+        className={cx(classes.container, className)}
+        data-loading={loading ? true : undefined}
+        data-deleted={deleted ? true : undefined}
+        data-error={error || undefined}
+        data-invalid={invalid || undefined}
+        data-disabled={disabled || undefined}
+        {...otherProps}
+      >
+        {hasPrimaryAction ? (
+          <Box
+            as="button"
+            ref={buttonRef}
+            className={bodyClassName}
+            onClick={handleBodyClick}
+            onKeyDown={handleKeyDown}
+            tabIndex={getTabIndex()}
+            disabled={disabled || loading}
+            role={role}
+            aria-checked={isSelectable ? isSelected : undefined}
+            aria-busy={loading ? true : undefined}
+            aria-invalid={invalid || undefined}
+            data-selected={isSelected ? true : undefined}
+            data-loading={loading ? true : undefined}
+            data-deleted={deleted ? true : undefined}
+            data-error={error || undefined}
+            data-invalid={invalid || undefined}
+            type={type}
+          >
+            {bodyContent}
+          </Box>
+        ) : (
+          <Box
+            as="span"
+            className={bodyClassName}
+            aria-invalid={invalid || undefined}
+            data-loading={loading ? true : undefined}
+            data-deleted={deleted ? true : undefined}
+            data-error={error || undefined}
+            data-invalid={invalid || undefined}
+            data-disabled={disabled || undefined}
+          >
+            {bodyContent}
+          </Box>
+        )}
+        <Box
+          as="button"
+          type="button"
+          className={`${cx(classes.dismissButton)} group`}
+          aria-label={resolvedDismissLabel}
+          disabled={dismissDisabled}
+          data-selected={isSelected ? true : undefined}
+          data-loading={loading ? true : undefined}
+          data-deleted={deleted ? true : undefined}
+          data-error={error || undefined}
+          data-invalid={invalid || undefined}
+          onClick={onDismiss}
+        >
+          <Icon
+            name="x"
+            size={chipSizeToIconSize[isChipSizeKey(size) ? size : 'md']}
+            className={classes.chipIcon}
+            aria-hidden
+            opacity={loading ? 0 : 1}
+          />
+        </Box>
+        {loading && <Spinner size="xs" centered />}
+      </Box>
+    );
+  }
 
   return (
     <Box
       as="button"
       ref={buttonRef}
-      className={`${cx(classes.container, className)} group`}
-      onClick={handleClick}
+      className={`${cx(classes.container, classes.body, className)} group`}
+      onClick={handleBodyClick}
       onKeyDown={handleKeyDown}
       tabIndex={getTabIndex()}
       disabled={disabled}
-      aria-label={ariaLabel}
       role={role}
       aria-checked={isSelectable ? isSelected : undefined}
       data-selected={isSelected ? true : undefined}
       data-loading={loading ? true : undefined}
       aria-busy={loading ? true : undefined}
-      type="button"
+      type={type}
       data-deleted={deleted ? true : undefined}
       {...otherProps}
     >
-      <Box
-        className={classes.innerWrapper}
-        // gap={gap}
-        opacity={loading ? 0 : 1}
-      >
-        {isMultiSelected && (
-          <Icon name="check" className={classes.chipIcon} aria-hidden />
-        )}
-        {renderBeforeSlot()}
-        {children}
-        {dismissable ? (
-          <Icon name="x" className={classes.chipIcon} aria-hidden />
-        ) : (
-          renderAfterSlot()
-        )}
-      </Box>
+      {bodyContent}
       {loading && <Spinner size="xs" centered />}
     </Box>
   );

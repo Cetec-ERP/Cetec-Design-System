@@ -7,14 +7,56 @@ export const chipRecipe = defineSlotRecipe({
   jsx: ['Chip'],
   slots: [
     'container',
+    'body',
     'innerWrapper',
+    'dismissButton',
+    'beforeSlot',
+    'afterSlot',
     'chipIcon',
     'chipBadge',
     'chipAvatar',
-    'slotItem',
   ],
   base: {
     container: {
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'stretch',
+      width: 'fit',
+      borderRadius: '999',
+      bg: 'bg.neutral',
+      fontFamily: 'body',
+      lineHeight: 'default',
+      fontWeight: 'medium',
+      whiteSpace: 'nowrap',
+      verticalAlign: 'middle',
+      userSelect: 'none',
+      // overflow: 'hidden',
+      _loading: {
+        animation: 'pulse',
+      },
+      // '&:has([class*="__body"]:focus-visible)': {
+      //   outlineWidth: '2',
+      //   outlineStyle: 'solid',
+      //   outlineColor: 'border.focused',
+      // },
+      '&:has([data-selected=true])': {
+        bg: 'bg.neutral.boldest',
+        color: 'text.inverse',
+      },
+      _disabled: {
+        cursor: 'not-allowed',
+        bg: 'bg.disabled',
+        color: 'text.disabled',
+        opacity: '[0.3]',
+      },
+      '.group:disabled &': {
+        cursor: 'not-allowed',
+        bg: 'bg.disabled',
+        color: 'text.disabled',
+        opacity: '[0.3]',
+      },
+    },
+    body: {
       ...globalBaseStyles,
       '--slotItem-margin': 'token(sizes.2)',
       '--chipIcon-margin': 'var(--slotItem-margin)',
@@ -24,23 +66,19 @@ export const chipRecipe = defineSlotRecipe({
       display: 'inline-flex',
       alignItems: 'center',
       appearance: 'none',
-      width: 'fit',
+      minW: '0',
+      border: 'none',
       borderRadius: '999',
-      fontFamily: 'body',
-      lineHeight: 'default',
-      fontWeight: 'medium',
-      whiteSpace: 'nowrap',
-      verticalAlign: 'middle',
+      outlineWidth: '2',
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 'calc(token(sizes.2) * -1)',
+      color: 'text',
+      // bg: 'bg.neutral',
       cursor: 'pointer',
       transitionDuration: 'fast',
       transitionProperty: 'background, color',
       transitionTimingFunction: 'default',
-      userSelect: 'none',
-      border: 'none',
-      outlineWidth: '2',
-      outlineStyle: 'solid',
-      outlineColor: 'transparent',
-      bg: 'bg.neutral',
       _hover: {
         bg: 'bg.neutral.hovered',
       },
@@ -50,46 +88,92 @@ export const chipRecipe = defineSlotRecipe({
       _focusVisible: {
         outlineColor: 'border.focused',
       },
-      _loading: {
-        cursor: 'wait',
-        animation: 'pulse',
-      },
-      _deleted: {
+      // _disabled: {
+      //   cursor: 'not-allowed',
+      //   bg: 'bg.disabled',
+      //   color: 'text.disabled',
+      // },
+      // '&[data-disabled=true]': {
+      //   cursor: 'default',
+      //   bg: 'bg.disabled',
+      //   color: 'text.disabled',
+      // },
+      '&[data-deleted=true]': {
         textDecoration: 'line-through',
-        cursor: 'not-allowed',
         opacity: '[0.6]',
       },
-      _disabled: {
-        cursor: 'not-allowed',
-        bg: 'bg.disabled',
-        color: 'text.disabled',
-        borderColor: 'border.disabled',
-        _hover: {
-          bg: 'bg.disabled',
-          color: 'text.disabled',
-          borderColor: 'border.disabled',
-          chipIcon: { fill: 'icon.disabled' },
-        },
-      },
-      _selected: {
+      '&[data-selected=true]': {
         bg: 'bg.neutral.boldest',
-        _hover: {
-          bg: 'bg.neutral.bold.hovered',
-        },
-        _active: {
-          bg: 'bg.neutral.bold.pressed',
-        },
+        color: 'text.inverse',
+      },
+      '&[data-selected=true]:is(:hover, [data-hover])': {
+        bg: 'bg.neutral.bold.hovered',
+      },
+      '&[data-selected=true]:is(:active, [data-active])': {
+        bg: 'bg.neutral.bold.pressed',
       },
     },
     innerWrapper: {
-      color: 'text',
       display: 'flex',
       alignItems: 'center',
+      color: 'text',
       '[data-selected=true] &': {
         color: 'text.inverse',
       },
     },
-    slotItem: {
+    dismissButton: {
+      ...globalBaseStyles,
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      appearance: 'none',
+      aspectRatio: 'square',
+      border: 'none',
+      borderRadius: '999',
+      outlineWidth: '2',
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 'calc(token(sizes.2) * -1)',
+      color: 'text',
+      // bg: 'bg.neutral',
+      cursor: 'pointer',
+      transitionDuration: 'fast',
+      transitionProperty: 'background, color',
+      transitionTimingFunction: 'default',
+      _hover: {
+        bg: 'bg.neutral.hovered',
+      },
+      _active: {
+        bg: 'bg.neutral.pressed',
+      },
+      _focusVisible: {
+        outlineColor: 'border.focused',
+      },
+      // _disabled: {
+      //   cursor: 'not-allowed',
+      //   bg: 'bg.disabled',
+      //   color: 'text.disabled',
+      // },
+      '&[data-deleted=true]': {
+        opacity: '[0.6]',
+      },
+      '&[data-selected=true]': {
+        bg: 'bg.neutral.boldest',
+        color: 'text.inverse',
+      },
+      '&[data-selected=true]:is(:hover, [data-hover])': {
+        bg: 'bg.neutral.bold.hovered',
+      },
+      '&[data-selected=true]:is(:active, [data-active])': {
+        bg: 'bg.neutral.bold.pressed',
+      },
+    },
+    beforeSlot: {
+      display: 'inline-flex',
+      alignItems: 'center',
+    },
+    afterSlot: {
       display: 'inline-flex',
       alignItems: 'center',
     },
@@ -103,19 +187,24 @@ export const chipRecipe = defineSlotRecipe({
       _groupHover: { fill: 'icon.decorative.hovered' },
       _groupActive: { fill: 'icon.decorative.hovered' },
       _groupDisabled: { fill: 'icon.decorative' },
-
       '[data-selected=true] &': {
         fill: 'icon.decorative.inverse',
       },
       '.group:is(:hover, [data-hover])[data-selected=true] &': {
         fill: 'icon.decorative.inverse.hovered',
       },
+      // '[data-disabled=true] &': {
+      //   fill: 'icon.disabled',
+      // },
+      // '.group:disabled &': {
+      //   fill: 'icon.disabled',
+      // },
     },
   },
   variants: {
     size: {
       sm: {
-        container: {
+        body: {
           '--slotItem-margin': 'token(sizes.2)',
           '--chipAvatar-margin': 'token(sizes.4)',
           h: '20',
@@ -126,12 +215,16 @@ export const chipRecipe = defineSlotRecipe({
         innerWrapper: {
           gap: '3',
         },
+        dismissButton: {
+          h: '20',
+          // px: '4',
+        },
         chipIcon: {
           w: '20',
         },
       },
       md: {
-        container: {
+        body: {
           '--slotItem-margin': 'token(sizes.4)',
           '--chipAvatar-margin': 'token(sizes.6)',
           h: '24',
@@ -142,12 +235,16 @@ export const chipRecipe = defineSlotRecipe({
         innerWrapper: {
           gap: '5',
         },
+        dismissButton: {
+          h: '24',
+          // px: '6',
+        },
         chipIcon: {
           w: '20',
         },
       },
       lg: {
-        container: {
+        body: {
           '--slotItem-margin': 'token(sizes.6)',
           '--chipAvatar-margin': 'token(sizes.8)',
           h: '32',
@@ -158,6 +255,10 @@ export const chipRecipe = defineSlotRecipe({
         innerWrapper: {
           gap: '8',
         },
+        dismissButton: {
+          h: '32',
+          // px: '8',
+        },
         chipIcon: {
           w: '24',
         },
@@ -165,33 +266,57 @@ export const chipRecipe = defineSlotRecipe({
     },
     before: {
       true: {
-        slotItem: {
-          ms: 'calc(var(--slotItem-margin) * -1)',
-        },
-        chipIcon: {
-          ms: 'calc(var(--chipIcon-margin) * -1)',
-        },
-        chipBadge: {
-          ms: 'calc(var(--chipBadge-margin) * -1)',
-        },
-        chipAvatar: {
-          ms: 'calc(var(--chipAvatar-margin) * -1)',
-        },
+        beforeSlot: {},
       },
     },
     after: {
       true: {
-        slotItem: {
-          me: 'calc(var(--slotItem-margin) * -1)',
+        afterSlot: {},
+      },
+    },
+    beforeKind: {
+      icon: {
+        beforeSlot: {
+          ms: 'calc(var(--chipIcon-margin) * -1)',
         },
-        chipIcon: {
+      },
+      avatar: {
+        beforeSlot: {
+          ms: 'calc(var(--chipAvatar-margin) * -1)',
+        },
+      },
+      badge: {
+        beforeSlot: {
+          ms: 'calc(var(--chipBadge-margin) * -1)',
+        },
+      },
+      check: {
+        beforeSlot: {
+          ms: 'calc(var(--chipIcon-margin) * -1)',
+        },
+      },
+    },
+    afterKind: {
+      icon: {
+        afterSlot: {
           me: 'calc(var(--chipIcon-margin) * -1)',
         },
-        chipBadge: {
+      },
+      badge: {
+        afterSlot: {
           me: 'calc(var(--chipBadge-margin) * -1)',
         },
-        chipAvatar: {
-          me: 'calc(var(--chipAvatar-margin) * -1)',
+      },
+    },
+    dismissable: {
+      true: {
+        body: {
+          // borderTopRightRadius: '0',
+          // borderBottomRightRadius: '0',
+        },
+        dismissButton: {
+          // borderTopLeftRadius: '0',
+          // borderBottomLeftRadius: '0',
         },
       },
     },
