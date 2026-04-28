@@ -2,6 +2,7 @@ import { cx } from '@styled-system/css';
 import { textInput, type TextInputVariantProps } from '@styled-system/recipes';
 
 import { Icon, type IconNamesList } from '~/components/Icon';
+import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -32,21 +33,26 @@ export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
   };
 
 export const TextInput = (props: TextInputProps) => {
+  const fieldContext = useFieldContext();
   const {
     name,
     id,
     iconBefore,
     iconAfter,
-    error,
-    disabled,
+    error: errorProp,
+    disabled: disabledProp,
     valid,
-    invalid,
+    invalid: invalidProp,
     type = 'text',
-    size,
+    size: sizeProp,
     autoSize = false,
     autoComplete = 'off',
     ...rest
   } = props;
+  const size = sizeProp ?? fieldContext?.size;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
+  const disabled = disabledProp ?? fieldContext?.disabled;
   const classes = textInput({
     size,
     iconBefore: Boolean(iconBefore),
@@ -60,8 +66,9 @@ export const TextInput = (props: TextInputProps) => {
       aria-disabled={disabled}
       data-disabled={disabled || undefined}
       data-error={error}
-      data-valid={valid}
       data-invalid={invalid}
+      data-valid={valid}
+      aria-invalid={invalid || undefined}
     >
       {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
       <Box
@@ -73,6 +80,7 @@ export const TextInput = (props: TextInputProps) => {
         data-error={error}
         data-valid={valid}
         data-invalid={invalid}
+        aria-invalid={invalid || undefined}
         className={cx(
           classes.input,
           iconBefore && classes.inputIconBefore,

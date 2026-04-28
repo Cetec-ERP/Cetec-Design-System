@@ -3,6 +3,7 @@ import { type ChangeEvent } from 'react';
 import { cx } from '@styled-system/css';
 import { toggle, type ToggleVariantProps } from '@styled-system/recipes';
 
+import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -18,6 +19,7 @@ export type ToggleProps = Omit<
     onChange: ToggleChangeHandler;
     id?: string;
     error?: boolean;
+    invalid?: boolean;
     disabled?: boolean;
   };
 
@@ -48,18 +50,23 @@ export type ToggleChangeHandler = (e: ToggleChangeEvent) => void;
  */
 
 export const Toggle = (props: ToggleProps) => {
+  const fieldContext = useFieldContext();
   const {
     name,
     checked,
     onChange,
     id,
-    error,
-    disabled,
+    error: errorProp,
+    invalid: invalidProp,
+    disabled: disabledProp,
     container,
     input,
     indicator,
     ...rest
   } = props;
+  const disabled = disabledProp ?? fieldContext?.disabled;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
   const [className, otherProps] = splitProps(rest);
   const classes = toggle({
     container,
@@ -74,6 +81,7 @@ export const Toggle = (props: ToggleProps) => {
     <Box
       className={cx(classes.container, className)}
       {...(error && { 'data-error': true })}
+      {...(invalid && { 'data-invalid': true })}
     >
       <Box
         as="input"
@@ -85,6 +93,7 @@ export const Toggle = (props: ToggleProps) => {
         onChange={onChange}
         disabled={disabled}
         {...(error && { 'data-error': true })}
+        {...(invalid && { 'data-invalid': true, 'aria-invalid': true })}
         {...otherProps}
       />
       <Icon className={classes.indicator} name={iconName} />

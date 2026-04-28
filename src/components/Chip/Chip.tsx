@@ -14,6 +14,7 @@ import { Badge, type BadgeProps } from '~/components/Badge';
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList, type IconProps } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
+import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
@@ -127,16 +128,19 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     loading?: boolean;
     deleted?: boolean;
     dismissable?: boolean;
+    error?: boolean;
+    invalid?: boolean;
     onDismiss?: () => void;
     value?: string;
   };
 
 export const Chip = (props: ChipProps) => {
+  const fieldContext = useFieldContext();
   const {
     size: sizeProp,
     children,
     loading,
-    disabled,
+    disabled: disabledProp,
     deleted,
     iconBefore,
     iconAfter,
@@ -146,13 +150,23 @@ export const Chip = (props: ChipProps) => {
     dismissable,
     onDismiss,
     value,
+    error: errorProp,
+    invalid: invalidProp,
     onClick,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
   const groupContext = useChipGroup();
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const size = sizeProp ?? groupContext?.size ?? 'md';
+  const fieldSize = fieldContext?.size;
+  const size =
+    sizeProp ??
+    groupContext?.size ??
+    (isChipSizeKey(fieldSize) ? fieldSize : undefined) ??
+    'md';
+  const disabled = disabledProp ?? fieldContext?.disabled;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
 
   // Determine if this chip is selectable (has value and is inside ChipGroup)
   const isSelectable = value !== undefined && groupContext !== null;
@@ -353,6 +367,9 @@ export const Chip = (props: ChipProps) => {
       aria-busy={loading ? true : undefined}
       type="button"
       data-deleted={deleted ? true : undefined}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
+      aria-invalid={invalid || undefined}
       {...otherProps}
     >
       <Box

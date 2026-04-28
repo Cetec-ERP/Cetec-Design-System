@@ -6,6 +6,7 @@ import { Flex } from '@styled-system/jsx';
 import { formField, type FormFieldVariantProps } from '@styled-system/recipes';
 
 import type { numericSizes } from '~/styles/primitives';
+import { FieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -25,6 +26,7 @@ export type FormFieldProps = Omit<
     helpText?: string;
     required?: boolean;
     error?: boolean;
+    invalid?: boolean;
     errorText?: string;
     disabled?: boolean;
     tooltipTitle?: string;
@@ -36,6 +38,7 @@ export type FormFieldProps = Omit<
 
 type FormFieldChildProps = {
   error?: boolean;
+  invalid?: boolean;
   disabled?: boolean;
   size?: FormFieldVariantProps['size'];
 };
@@ -53,6 +56,7 @@ export const FormField = (props: FormFieldProps) => {
     helpText,
     required,
     error,
+    invalid,
     errorText,
     disabled,
     tooltipTitle,
@@ -74,6 +78,7 @@ export const FormField = (props: FormFieldProps) => {
       const c = child as ReactElement<FormFieldChildProps>;
       return cloneElement(c, {
         error: error ?? c.props.error,
+        invalid: invalid ?? c.props.invalid,
         disabled: disabled ?? c.props.disabled,
         size: size ?? c.props.size,
       });
@@ -86,7 +91,8 @@ export const FormField = (props: FormFieldProps) => {
       className={`${cx(classes.container, className)} group`}
       aria-disabled={disabled}
       data-disabled={disabled || undefined}
-      data-error={error}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
       data-size={size}
       {...otherProps}
     >
@@ -111,9 +117,11 @@ export const FormField = (props: FormFieldProps) => {
         </Text>
       )}
 
-      <Box className={classes.inputs} gap={gap || '8'}>
-        {enhancedChildren}
-      </Box>
+      <FieldContext.Provider value={{ size, error, invalid, disabled }}>
+        <Box className={classes.inputs} gap={gap || '8'}>
+          {enhancedChildren}
+        </Box>
+      </FieldContext.Provider>
       {layout === 'inline' && helpText && (
         <Text
           textStyle="body.xs"
@@ -124,7 +132,7 @@ export const FormField = (props: FormFieldProps) => {
           {helpText}
         </Text>
       )}
-      {error && (
+      {(error || invalid) && (
         <Text
           textStyle="body.xs"
           lineHeight="tight"
