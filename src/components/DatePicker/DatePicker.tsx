@@ -24,6 +24,7 @@ import {
 } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
+import { useFieldContext } from '~/system/context/FieldContext';
 import { useOverlayFloating } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
@@ -186,6 +187,7 @@ export type DatePickerProps = Omit<
     label?: string;
     disabled?: boolean;
     error?: boolean;
+    invalid?: boolean;
     id?: string;
     name?: string;
     /** Controlled popover open state */
@@ -197,20 +199,26 @@ export type DatePickerProps = Omit<
 // ─── DatePicker ────────────────────────────────────────────────────────────────
 
 export const DatePicker = (props: DatePickerProps) => {
+  const fieldContext = useFieldContext();
   const {
     value,
     onChange,
     minDate,
     maxDate,
     label = 'Date',
-    disabled = false,
-    error = false,
+    disabled: disabledProp,
+    error: errorProp,
+    invalid: invalidProp,
     id,
-    size,
+    size: sizeProp,
     open: controlledOpen,
     onOpenChange,
     ...rest
   } = props;
+  const disabled = disabledProp ?? fieldContext?.disabled ?? false;
+  const error = errorProp ?? fieldContext?.error ?? false;
+  const invalid = invalidProp ?? fieldContext?.invalid ?? false;
+  const size = sizeProp ?? fieldContext?.size;
 
   const [className, otherProps] = splitProps(rest);
 
@@ -460,8 +468,10 @@ export const DatePicker = (props: DatePickerProps) => {
         role="group"
         aria-label={label}
         aria-disabled={disabled}
+        aria-invalid={invalid || undefined}
         data-disabled={disabled || undefined}
         data-error={error || undefined}
+        data-invalid={invalid || undefined}
         data-open={isOpen || undefined}
         onClick={(e: MouseEvent<HTMLDivElement>) => {
           if (e.target === e.currentTarget && !disabled)
