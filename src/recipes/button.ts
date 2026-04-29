@@ -5,6 +5,9 @@ import { globalBaseStyles } from '~/styles/utilities';
 const buttonBaseStyles = {
   container: {
     ...globalBaseStyles,
+    '--icon-size': 'token(sizes.24)',
+    '--icon-margin-outside': 'token(sizes.6)',
+    '--icon-margin-inside': 'token(sizes.1)',
     position: 'relative',
     appearance: 'none',
     display: 'flex',
@@ -13,6 +16,7 @@ const buttonBaseStyles = {
     minWidth: '0',
     width: 'fit',
     height: 'fit',
+    flexShrink: 0,
     transitionDuration: 'fast',
     transitionProperty: 'background, border-color, color, box-shadow',
     transitionTimingFunction: 'default',
@@ -45,10 +49,19 @@ const buttonBaseStyles = {
     },
   },
   icon: {
+    w: 'var(--icon-size)',
     aspectRatio: 'square',
     transitionDuration: 'fast',
     transitionProperty: 'fill',
     transitionTimingFunction: 'default',
+  },
+  iconBefore: {
+    ms: 'calc(var(--icon-margin-outside) * -1)',
+    me: 'calc(var(--icon-margin-inside) * -1)',
+  },
+  iconAfter: {
+    ms: 'calc(var(--icon-margin-inside) * -1)',
+    me: 'calc(var(--icon-margin-outside) * -1)',
   },
 };
 
@@ -57,6 +70,7 @@ const buttonVariants = {
     standard: {
       container: {
         bg: 'bg.neutral',
+        borderColor: 'transparent',
         color: 'text',
         _hover: {
           bg: 'bg.neutral.hovered',
@@ -75,6 +89,7 @@ const buttonVariants = {
     primary: {
       container: {
         bg: 'bg.neutral.boldest',
+        borderColor: 'transparent',
         color: 'text.inverse',
         _hover: {
           bg: 'bg.neutral.bold.hovered',
@@ -115,6 +130,7 @@ const buttonVariants = {
     ghost: {
       container: {
         bg: 'bg.neutral.subtle',
+        borderColor: 'transparent',
         color: 'text',
         _hover: {
           bg: 'bg.neutral.subtle.hovered',
@@ -133,6 +149,7 @@ const buttonVariants = {
     cta: {
       container: {
         bg: 'gold.20',
+        borderColor: 'transparent',
         color: 'neutral.90',
         _hover: {
           bg: 'gold.15',
@@ -154,6 +171,7 @@ const buttonVariants = {
     danger: {
       container: {
         bg: 'red.50',
+        borderColor: 'transparent',
         color: 'neutral.0',
         _hover: {
           bg: 'red.40',
@@ -175,6 +193,7 @@ const buttonVariants = {
     selected: {
       container: {
         bg: 'bg.selected',
+        borderColor: 'transparent',
         color: 'text.selected',
         icon: { fill: 'icon.selected' },
         _hover: {
@@ -201,6 +220,7 @@ const buttonVariants = {
     selectedBold: {
       container: {
         bg: 'bg.selected.bold',
+        borderColor: 'transparent',
         color: 'text.inverse',
         _hover: {
           bg: 'bg.selected.bold.hovered',
@@ -225,11 +245,23 @@ const buttonVariants = {
 export const buttonRecipe = defineSlotRecipe({
   className: 'button',
   jsx: ['Button'],
-  slots: ['container', 'icon'],
+  slots: ['container', 'icon', 'iconBefore', 'iconAfter'],
   base: buttonBaseStyles,
   variants: {
     ...buttonVariants,
     size: {
+      sm: {
+        container: {
+          fontSize: '14',
+          py: '0',
+          px: '8',
+        },
+        icon: {
+          '--icon-size': 'token(sizes.22)',
+          '--icon-margin-outside': 'token(sizes.5)',
+          '--icon-margin-inside': 'token(sizes.1)',
+        },
+      },
       md: {
         container: {
           fontSize: '16',
@@ -237,19 +269,9 @@ export const buttonRecipe = defineSlotRecipe({
           px: '12',
         },
         icon: {
-          w: '24',
-          h: '24',
-        },
-      },
-      xl: {
-        container: {
-          fontSize: '20',
-          py: '9',
-          px: '16',
-        },
-        icon: {
-          w: '28',
-          h: '28',
+          '--icon-size': 'token(sizes.24)',
+          '--icon-margin-outside': 'token(sizes.8)',
+          '--icon-margin-inside': 'token(sizes.1)',
         },
       },
       lg: {
@@ -259,19 +281,21 @@ export const buttonRecipe = defineSlotRecipe({
           px: '14',
         },
         icon: {
-          w: '24',
-          h: '24',
+          '--icon-size': 'token(sizes.24)',
+          '--icon-margin-outside': 'token(sizes.10)',
+          '--icon-margin-inside': 'token(sizes.1)',
         },
       },
-      sm: {
+      xl: {
         container: {
-          fontSize: '14',
-          py: '1',
-          px: '8',
+          fontSize: '20',
+          py: '9',
+          px: '16',
         },
         icon: {
-          w: '22',
-          h: '22',
+          '--icon-size': 'token(sizes.28)',
+          '--icon-margin-outside': 'token(sizes.10)',
+          '--icon-margin-inside': 'token(sizes.1)',
         },
       },
     },
@@ -282,64 +306,6 @@ export const buttonRecipe = defineSlotRecipe({
       true: { container: {} },
     },
   },
-  compoundVariants: [
-    {
-      size: 'md',
-      iconBefore: true,
-      css: {
-        container: { ps: '3' },
-      },
-    },
-    {
-      size: 'md',
-      iconAfter: true,
-      css: {
-        container: { pe: '3' },
-      },
-    },
-    {
-      size: 'sm',
-      iconBefore: true,
-      css: {
-        container: { ps: '2' },
-      },
-    },
-    {
-      size: 'sm',
-      iconAfter: true,
-      css: {
-        container: { pe: '2' },
-      },
-    },
-    {
-      size: 'lg',
-      iconBefore: true,
-      css: {
-        container: { ps: '5' },
-      },
-    },
-    {
-      size: 'lg',
-      iconAfter: true,
-      css: {
-        container: { pe: '5' },
-      },
-    },
-    {
-      size: 'xl',
-      iconBefore: true,
-      css: {
-        container: { ps: '7' },
-      },
-    },
-    {
-      size: 'xl',
-      iconAfter: true,
-      css: {
-        container: { pe: '7' },
-      },
-    },
-  ],
   defaultVariants: {
     variant: 'standard',
     size: 'md',

@@ -1,6 +1,7 @@
-import { Flex } from '@styled-system/jsx';
+import { Flex, Grid, HStack } from '@styled-system/jsx';
 
 import { Box } from '../Box';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 
@@ -12,6 +13,9 @@ const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
   component: Avatar,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+  },
   argTypes: {
     size: {
       control: 'select',
@@ -299,6 +303,90 @@ export const PresenceAndStatus: Story = {
       </Box>
     </Box>
   ),
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <HStack gap="20">
+        <Avatar
+          src={sampleImages.user1}
+          presence="online"
+          status="approved"
+          size={{
+            base: '2xl',
+            xs: 'xl',
+            sm: 'lg',
+            md: 'md',
+            lg: 'sm',
+            xl: 'xs',
+          }}
+          shape="circle"
+        />
+        <Avatar
+          src={sampleImages.user2}
+          presence="online"
+          status="approved"
+          size={{
+            base: '2xl',
+            xs: 'xl',
+            sm: 'lg',
+            md: 'md',
+            lg: 'sm',
+            xl: 'xs',
+          }}
+          shape="square"
+        />
+        <Avatar
+          src={sampleImages.user3}
+          presence="online"
+          status="approved"
+          size={{
+            base: '2xl',
+            xs: 'xl',
+            sm: 'lg',
+            md: 'md',
+            lg: 'sm',
+            xl: 'xs',
+          }}
+          shape="hexagon"
+        />
+      </HStack>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: {
+            base: '"2xl"',
+            xs: '"xl"',
+            sm: '"lg"',
+            md: '"md"',
+            lg: '"sm"',
+            xl: '"xs"',
+          },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
 };
 
 // =============================================================================

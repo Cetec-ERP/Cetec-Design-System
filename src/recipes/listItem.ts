@@ -2,12 +2,16 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
+import { listDensityWrapperVars } from './listDensity';
+
 export const listItemRecipe = defineSlotRecipe({
   className: 'listItem',
   jsx: ['ListItem'],
   slots: [
     'wrapper',
     'icon',
+    'beforeSlot',
+    'afterSlot',
     'itemMain',
     'itemLabel',
     'itemDescription',
@@ -21,6 +25,8 @@ export const listItemRecipe = defineSlotRecipe({
       justifyContent: 'start',
       gap: '4',
       width: 'full',
+      py: 'var(--list-item-padding-y)',
+      px: 'var(--list-item-padding-x)',
       textAlign: 'left',
       borderWidth: '1',
       borderStyle: 'solid',
@@ -49,15 +55,14 @@ export const listItemRecipe = defineSlotRecipe({
         pointerEvents: 'none',
       },
     },
-    divider: {
-      width: 'full',
-    },
     icon: {
       aspectRatio: 'square',
       transitionDuration: 'fast',
       transitionProperty: 'fill',
       transitionTimingFunction: 'default',
       flexShrink: '0',
+      w: 'var(--list-item-icon-size)',
+      h: 'var(--list-item-icon-size)',
     },
     itemMain: {
       display: 'flex',
@@ -67,10 +72,23 @@ export const listItemRecipe = defineSlotRecipe({
     },
     itemLabel: {
       color: 'text',
+      fontSize: 'var(--list-item-label-size)',
     },
     itemDescription: {
       color: 'text.subtlest',
+      fontSize: 'var(--list-item-description-size)',
       lineHeight: 'tight',
+    },
+    beforeSlot: {
+      ms: 'calc(var(--list-item-slot-margin) * -1)',
+    },
+    afterSlot: {
+      me: 'calc(var(--list-item-slot-margin) * -1)',
+    },
+    divider: {
+      width: 'full',
+      py: 'var(--list-item-padding-y)',
+      px: 'var(--list-item-padding-x)',
     },
   },
   variants: {
@@ -122,74 +140,7 @@ export const listItemRecipe = defineSlotRecipe({
       },
       divider: {},
     },
-    density: {
-      compact: {
-        wrapper: {
-          py: '3',
-          px: '10',
-        },
-        itemLabel: {
-          textStyle: 'body.md',
-          color: 'text',
-        },
-        itemDescription: {
-          textStyle: 'body.xs',
-          lineHeight: 'tight',
-        },
-        icon: {
-          w: '24',
-          h: '24',
-        },
-        divider: {
-          py: '3',
-          px: '10',
-        },
-      },
-      comfortable: {
-        wrapper: {
-          py: '7',
-          px: '12',
-        },
-        itemLabel: {
-          textStyle: 'body.md',
-          color: 'text',
-        },
-        itemDescription: {
-          textStyle: 'body.xs',
-          lineHeight: 'tight',
-        },
-        icon: {
-          w: '24',
-          h: '24',
-        },
-        divider: {
-          py: '7',
-          px: '12',
-        },
-      },
-      spacious: {
-        wrapper: {
-          py: '9',
-          px: '16',
-        },
-        itemLabel: {
-          textStyle: 'body.lg',
-          color: 'text',
-        },
-        itemDescription: {
-          textStyle: 'body.sm',
-          lineHeight: 'tight',
-        },
-        icon: {
-          w: '28',
-          h: '28',
-        },
-        divider: {
-          py: '9',
-          px: '16',
-        },
-      },
-    },
+    density: listDensityWrapperVars,
     selected: {
       true: {
         wrapper: {
@@ -216,92 +167,8 @@ export const listItemRecipe = defineSlotRecipe({
       false: {},
     },
   },
-  compoundVariants: [
-    {
-      density: 'compact',
-      iconBefore: true,
-      css: {
-        wrapper: {
-          ps: '5',
-        },
-      },
-    },
-    {
-      density: 'compact',
-      iconAfter: true,
-      css: {
-        wrapper: {
-          pe: '5',
-        },
-      },
-    },
-    {
-      density: 'compact',
-      variant: 'checkbox',
-      css: {
-        wrapper: {
-          ps: '5',
-        },
-      },
-    },
-    {
-      density: 'comfortable',
-      iconBefore: true,
-      css: {
-        wrapper: {
-          ps: '7',
-        },
-      },
-    },
-    {
-      density: 'comfortable',
-      iconAfter: true,
-      css: {
-        wrapper: {
-          pe: '7',
-        },
-      },
-    },
-    {
-      density: 'comfortable',
-      variant: 'checkbox',
-      css: {
-        wrapper: {
-          ps: '7',
-        },
-      },
-    },
-    {
-      density: 'spacious',
-      iconBefore: true,
-      css: {
-        wrapper: {
-          ps: '9',
-        },
-      },
-    },
-    {
-      density: 'spacious',
-      iconAfter: true,
-      css: {
-        wrapper: {
-          pe: '9',
-        },
-      },
-    },
-    {
-      density: 'spacious',
-      variant: 'checkbox',
-      css: {
-        wrapper: {
-          ps: '9',
-        },
-      },
-    },
-  ],
   defaultVariants: {
     variant: 'default',
     density: 'compact',
-    selected: false,
   },
 });

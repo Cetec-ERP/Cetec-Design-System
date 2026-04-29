@@ -120,5 +120,5 @@ Add/verify scripts:
 ## Suggested Follow-up Tasks
 
 - Add a small fixture-based test harness for custom ESLint rules.
-- Add a `docs/standards/linting.md` reference with examples.
+- ~~Add a `docs/standards/linting.md` reference with examples.~~ Done — see `docs/standards/linting.md`.
 - Consider adding a codemod for import casing normalization if needed.

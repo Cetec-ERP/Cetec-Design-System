@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'recipe-jsx-name-matches-component';
 
 const toPascalCase = (value) =>
@@ -24,6 +26,10 @@ const recipeJsxNameMatchesComponentRule = {
   },
   create(context) {
     const reportIfMissingExpectedJsx = (node, exportName, jsxValues) => {
+      if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
+        return;
+      }
+
       const recipeSuffix = 'Recipe';
 
       if (!exportName.endsWith(recipeSuffix)) {

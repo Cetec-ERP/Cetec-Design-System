@@ -1,4 +1,9 @@
-import type { ChangeEventHandler, HTMLProps, MouseEvent } from 'react';
+import type {
+  ChangeEventHandler,
+  HTMLProps,
+  KeyboardEvent,
+  MouseEvent,
+} from 'react';
 
 import { useFloatingTree, useListItem } from '@floating-ui/react';
 
@@ -46,6 +51,12 @@ export const MenuItem = (props: MenuItemProps) => {
   } = props;
 
   const [className, otherProps] = splitProps(rest);
+  const restProps = { ...otherProps };
+  const userOnKeyDown =
+    'onKeyDown' in restProps && typeof restProps.onKeyDown === 'function'
+      ? restProps.onKeyDown
+      : undefined;
+  delete (restProps as { onKeyDown?: unknown }).onKeyDown;
 
   const rootContext = useMenuRootContext();
   const tree = useFloatingTree();
@@ -122,6 +133,48 @@ export const MenuItem = (props: MenuItemProps) => {
         }
   ) as MenuInteractionProps;
 
+  const { onKeyDown: itemOnKeyDown, ...itemPropsRest } = itemProps;
+
+  const handleItemKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      if (href) {
+        itemOnKeyDown?.(event);
+        return;
+      }
+      const depth = listContext?.nestedMenuDepth ?? 0;
+      if (
+        event.key === 'ArrowLeft' &&
+        depth > 0 &&
+        listContext?.closeParentSubMenuFlyout
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+        listContext.closeParentSubMenuFlyout();
+        return;
+      }
+      if (
+        event.key === 'ArrowLeft' &&
+        depth === 0 &&
+        rootContext.onMenubarEdgeNavigate
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+        rootContext.onCloseMenu();
+        rootContext.onMenubarEdgeNavigate(-1);
+        return;
+      }
+      if (event.key === 'ArrowRight' && rootContext.onMenubarEdgeNavigate) {
+        event.preventDefault();
+        event.stopPropagation();
+        rootContext.onCloseMenu();
+        rootContext.onMenubarEdgeNavigate(1);
+        return;
+      }
+    }
+    itemOnKeyDown?.(event);
+    userOnKeyDown?.(event);
+  };
+
   const role =
     variant === 'checkbox' || variant === 'toggle'
       ? 'menuitemcheckbox'
@@ -176,12 +229,14 @@ export const MenuItem = (props: MenuItemProps) => {
             : -1
           : 0
       }
-      {...itemProps}
-      {...otherProps}
+      {...itemPropsRest}
+      onKeyDown={handleItemKeyDown}
+      {...restProps}
     >
       {variant === 'checkbox' && (
         <Checkbox
           name={controlName}
+          className={classes.beforeSlot}
           checked={Boolean(selected)}
           onChange={handleControlChange}
           tabIndex={-1}
@@ -191,6 +246,7 @@ export const MenuItem = (props: MenuItemProps) => {
       {variant === 'toggle' && (
         <Toggle
           name={controlName}
+          className={classes.beforeSlot}
           checked={Boolean(selected)}
           onChange={handleControlChange}
           mr="4"
@@ -198,7 +254,12 @@ export const MenuItem = (props: MenuItemProps) => {
         />
       )}
 
-      {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
+      {iconBefore && (
+        <Icon
+          className={cx(classes.icon, classes.beforeSlot)}
+          name={iconBefore}
+        />
+      )}
 
       <Box className={classes.itemMain}>
         {label && (
@@ -223,7 +284,11 @@ export const MenuItem = (props: MenuItemProps) => {
       </Box>
 
       {iconAfter && (
-        <Icon className={classes.icon} name={iconAfter} ml="auto" />
+        <Icon
+          className={cx(classes.icon, classes.afterSlot)}
+          name={iconAfter}
+          ml="auto"
+        />
       )}
     </Box>
   );

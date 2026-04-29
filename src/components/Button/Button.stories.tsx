@@ -1,7 +1,8 @@
 import { fn } from '@storybook/test';
 
-import { HStack, Wrap, Grid } from '@styled-system/jsx';
+import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Divider } from '../Divider';
 import { IconButton } from '../IconButton';
 import { Text } from '../Text';
@@ -119,12 +120,100 @@ export const Variants: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <Wrap gap="12" alignItems="center">
+    <Grid columns={3} justifyItems="center" gap="20">
       <Button size="sm">Small</Button>
+      <Button size="sm" iconBefore="arrow-left">
+        Small
+      </Button>
+      <Button size="sm" iconAfter="arrow-square-out">
+        Small
+      </Button>
       <Button size="md">Medium</Button>
+      <Button size="md" iconBefore="arrow-left">
+        Medium
+      </Button>
+      <Button size="md" iconAfter="arrow-square-out">
+        Medium
+      </Button>
       <Button size="lg">Large</Button>
+      <Button size="lg" iconBefore="arrow-left">
+        Large
+      </Button>
+      <Button size="lg" iconAfter="arrow-square-out">
+        Large
+      </Button>
       <Button size="xl">Extra Large</Button>
-    </Wrap>
+      <Button size="xl" iconBefore="arrow-left">
+        Extra Large
+      </Button>
+      <Button size="xl" iconAfter="arrow-square-out">
+        Extra Large
+      </Button>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        variant={{
+          base: 'primary',
+          xs: 'standard',
+          sm: 'hollow',
+          md: 'danger',
+        }}
+        iconBefore="arrows-left-right"
+      >
+        Conditional Button Sizes
+      </Button>
+      <VStack gap="4">
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Size:{' '}
+        </Text>
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: {
+              base: '"primary"',
+              xs: '"standard"',
+              sm: '"hollow"',
+              md: '"danger"',
+            },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Variant:{' '}
+        </Text>
+      </VStack>
+      <BreakpointIndicator />
+    </Grid>
   ),
   parameters: { controls: { disable: true } },
 };

@@ -46,6 +46,7 @@ export type TooltipProps = Omit<
     delay?: number | { open: number; close: number };
     /** Trigger element. Wrapped in a <span> to attach the floating ref. */
     children?: ReactNode;
+    size?: TooltipVariantProps['size'];
   };
 
 export const Tooltip = (props: TooltipProps) => {

@@ -9,6 +9,7 @@ export const badgeRecipe = defineSlotRecipe({
   base: {
     root: {
       ...globalBaseStyles,
+      '--indicator-min-width': 'token(sizes.16)',
       display: 'inline-flex',
       position: 'relative',
       verticalAlign: 'middle',
@@ -17,6 +18,7 @@ export const badgeRecipe = defineSlotRecipe({
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
+      h: 'fit',
       borderRadius: '999',
       fontWeight: 'medium',
       fontFamily: 'body',
@@ -30,23 +32,34 @@ export const badgeRecipe = defineSlotRecipe({
     size: {
       sm: {
         indicator: {
-          h: '6',
+          '--indicator-min-width': 'token(sizes.16)',
+          minH: '6',
           fontSize: '10',
           p: '3',
         },
       },
       md: {
         indicator: {
-          h: '8',
+          '--indicator-min-width': 'token(sizes.20)',
+          minH: '8',
           fontSize: '12',
           p: '4',
         },
       },
       lg: {
         indicator: {
-          h: '10',
+          '--indicator-min-width': 'token(sizes.24)',
+          minH: '10',
           fontSize: '14',
           p: '5',
+        },
+      },
+      xl: {
+        indicator: {
+          '--indicator-min-width': 'token(sizes.28)',
+          minH: '12',
+          fontSize: '16',
+          p: '6',
         },
       },
     },
@@ -59,6 +72,7 @@ export const badgeRecipe = defineSlotRecipe({
         indicator: {
           position: 'static',
           transform: 'none',
+          h: 'fit',
         },
       },
       false: {
@@ -72,19 +86,17 @@ export const badgeRecipe = defineSlotRecipe({
           top: '0',
           right: '0',
           transform: 'translate(50%, -50%)',
+          h: 'fit',
         },
       },
     },
     // Dot mode: smaller, no text
     dot: {
-      true: {
-        indicator: {
-          // Dot mode styles handled by base + size variants
-        },
-      },
+      true: {},
       false: {
         indicator: {
-          // Count mode - compound variants handle sizing
+          h: 'fit',
+          minW: 'var(--indicator-min-width)',
         },
       },
     },
@@ -140,39 +152,6 @@ export const badgeRecipe = defineSlotRecipe({
       },
     },
   },
-  compoundVariants: [
-    // Count mode sizes (smaller than count mode)
-    {
-      dot: false,
-      size: 'sm',
-      css: {
-        indicator: {
-          minW: '16',
-          h: 'fit',
-        },
-      },
-    },
-    {
-      dot: false,
-      size: 'md',
-      css: {
-        indicator: {
-          minW: '20',
-          h: 'fit',
-        },
-      },
-    },
-    {
-      dot: false,
-      size: 'lg',
-      css: {
-        indicator: {
-          minW: '24',
-          h: 'fit',
-        },
-      },
-    },
-  ],
   defaultVariants: {
     size: 'md',
     variant: 'danger',

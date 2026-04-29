@@ -1,15 +1,15 @@
 import { createContext, useContext } from 'react';
 
-import { type IconNamesList } from '../Icon';
+import type { ListItemVariantProps } from '@styled-system/recipes';
 
-export type ListDensity = 'compact' | 'comfortable' | 'spacious';
-export type ListVariant = 'default' | 'checkbox' | 'toggle';
+import { type IconNamesList } from '../Icon';
+export type ListDensity = ListItemVariantProps['density'];
 
 export type ListContextValue = {
   density: ListDensity;
   query: string;
   highlightMatches: boolean;
-  variant?: ListVariant;
+  variant?: ListItemVariantProps['variant'];
   iconBefore?: IconNamesList;
   iconAfter?: IconNamesList;
 };

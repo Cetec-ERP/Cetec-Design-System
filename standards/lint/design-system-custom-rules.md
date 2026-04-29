@@ -13,6 +13,9 @@ Repo-specific invariants are enforced via a local ESLint plugin.
 7. Enforce `no-pixel-units`.
 8. Enforce `no-raw-font-weight-values`.
 9. Enforce `no-classname-css-call`.
+10. Enforce `avoid-compound-variants-in-recipes`.
+11. Enforce `use-correct-conditional-variant-type`.
+12. Enforce `no-static-css-in-recipe-files`.
 
 ## Hard With Exceptions
 
@@ -20,3 +23,7 @@ Enforce `no-hardcoded-design-values-in-recipes`, with narrowly documented except
 
 Warn on `discourage-css-variable-styling` to guide migration from
 `var(--...)` references toward semantic tokens.
+
+Warn first on the conditional-variant migration rules when introducing them to
+legacy files, then promote to errors once the current recipe and component set
+has been cleaned up.

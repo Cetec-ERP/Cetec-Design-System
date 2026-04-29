@@ -9,6 +9,7 @@ export type SpinnerProps = Omit<BoxProps, keyof SpinnerVariantProps> &
   SpinnerVariantProps & {
     inverse?: boolean;
     centered?: boolean;
+    size?: SpinnerVariantProps['size'];
   };
 
 export const Spinner = (props: SpinnerProps) => {

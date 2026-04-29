@@ -64,10 +64,20 @@ export const Button = (props: ButtonProps) => {
       aria-disabled={disabled}
       {...otherProps}
     >
-      <HStack gap="4" opacity={loading ? 0 : 1}>
-        {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
+      <HStack gap={size === 'xl' ? '6' : '4'} opacity={loading ? 0 : 1}>
+        {iconBefore && (
+          <Icon
+            name={iconBefore}
+            className={cx(classes.icon, classes.iconBefore)}
+          />
+        )}
         {children}
-        {iconAfter && <Icon name={iconAfter} className={classes.icon} />}
+        {iconAfter && (
+          <Icon
+            name={iconAfter}
+            className={cx(classes.icon, classes.iconAfter)}
+          />
+        )}
       </HStack>
       {loading && (
         <Spinner

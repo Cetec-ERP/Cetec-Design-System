@@ -1,7 +1,8 @@
 import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
 
-import * as componentRecipes from './recipes/index';
+import * as regularRecipes from './recipes/recipes-regular';
+import * as slotRecipes from './recipes/recipes-slot';
 import * as tokens from './styles/primitives';
 import * as semanticTokens from './styles/semantics';
 import {
@@ -17,40 +18,21 @@ import {
   transitionProperty,
 } from './styles/utilities';
 
-// Separate slotRecipes from regular recipes
-const {
-  badgeRecipe,
-  buttonRecipe,
-  iconButtonRecipe,
-  checkboxRecipe,
-  radioRecipe,
-  tooltipRecipe,
-  menuRecipe,
-  toggleRecipe,
-  chipRecipe,
-  avatarRecipe,
-  modalRecipe,
-  formFieldRecipe,
-  spinnerRecipe,
-  textInputRecipe,
-  datePickerRecipe,
-  timePickerRecipe,
-  breadcrumbsRecipe,
-  listRecipe,
-  listItemRecipe,
-  highlightTextRecipe,
-  listItemGroupRecipe,
-  ...regularRecipes
-} = componentRecipes;
+import type { RecipeConfig, SlotRecipeConfig } from '@pandacss/types';
 
-// Transform recipe keys: remove 'Recipe' suffix to match component imports
-// e.g., { boxRecipe: {...} } becomes { box: {...} }
-const transformedRecipes = Object.fromEntries(
+const presetRecipes = Object.fromEntries(
   Object.entries(regularRecipes).map(([key, value]) => [
     key.replace(/Recipe$/, ''),
     value,
   ]),
-);
+) as unknown as Record<string, Partial<RecipeConfig>>;
+
+const presetSlotRecipes = Object.fromEntries(
+  Object.entries(slotRecipes).map(([key, value]) => [
+    key.replace(/Recipe$/, ''),
+    value,
+  ]),
+) as unknown as Record<string, Partial<SlotRecipeConfig>>;
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
 // Omit default patterns here
@@ -91,32 +73,8 @@ export const cetecPreset: Preset = definePreset({
       keyframes: keyframes,
       layerStyles: layerStyles,
       textStyles: textStyles,
-      recipes: {
-        ...transformedRecipes,
-        list: listRecipe,
-        listItem: listItemRecipe,
-        highlightText: highlightTextRecipe,
-      },
-      slotRecipes: {
-        badge: badgeRecipe,
-        button: buttonRecipe,
-        iconButton: iconButtonRecipe,
-        checkbox: checkboxRecipe,
-        radio: radioRecipe,
-        tooltip: tooltipRecipe,
-        menu: menuRecipe,
-        toggle: toggleRecipe,
-        chip: chipRecipe,
-        avatar: avatarRecipe,
-        modal: modalRecipe,
-        formField: formFieldRecipe,
-        spinner: spinnerRecipe,
-        textInput: textInputRecipe,
-        datePicker: datePickerRecipe,
-        timePicker: timePickerRecipe,
-        breadcrumbs: breadcrumbsRecipe,
-        listItemGroup: listItemGroupRecipe,
-      },
+      recipes: presetRecipes,
+      slotRecipes: presetSlotRecipes,
     },
   },
   utilities: {

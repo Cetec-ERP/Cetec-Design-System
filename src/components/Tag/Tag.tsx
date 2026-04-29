@@ -11,6 +11,8 @@ export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
     children: string;
     iconBefore?: IconNamesList;
     iconAfter?: IconNamesList;
+    variant?: TagVariantProps['variant'];
+    hue?: TagVariantProps['hue'];
   };
 
 export const Tag = (props: TagProps) => {

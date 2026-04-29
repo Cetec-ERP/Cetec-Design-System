@@ -13,9 +13,9 @@ import { useIconConfig } from './IconContext';
 import type { IconNamesList } from './icons';
 
 /*
- * Using the size prop in this way cannot handle non-numeric sizes,
- * so importing this list of keys directly from the tokens to ensure
- * that only valid sizes are allowed.
+ * Size is constrained to numeric token keys so it maps 1:1 to recipe
+ * variants in the icon recipe. Non-numeric sizes (full, auto, etc.)
+ * are excluded because they don't have corresponding variant entries.
  */
 export type AllowedIconSizes = keyof typeof numericSizes;
 
@@ -23,7 +23,7 @@ export type IconProps = Omit<BoxProps, IconNamesList | 'size'> &
   SVGAttributes<SVGElement> &
   IconVariantProps & {
     name: IconNamesList;
-    size?: AllowedIconSizes;
+    size?: IconVariantProps['size'];
     fill?: ColorToken;
   };
 
@@ -39,9 +39,8 @@ export const Icon = (props: IconProps) => {
       name={name}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...(size && { width: size })}
       fill={fill}
-      className={cx(icon(), className)}
+      className={cx(icon({ size }), className)}
       {...otherProps}
     >
       <use xlinkHref={spriteHref} />

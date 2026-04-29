@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { HStack } from '@styled-system/jsx';
+import { HStack, VStack } from '@styled-system/jsx';
 
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Card } from '../Card';
+import { Text } from '../Text';
 
 import { List, ListItem, ListItemGroup } from './index';
 
@@ -240,6 +242,90 @@ export const SelectionControls: Story = {
 export const Highlighting: Story = {
   args: {},
   render: () => <HighlightingExample />,
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpoints: Story = {
+  args: {},
+  render: () => (
+    <VStack>
+      <Card variant="flat" minW="2xs">
+        <List density={{ base: 'spacious', xs: 'comfortable', sm: 'compact' }}>
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map((item) => (
+              <ListItem
+                key={`item-${item.id}`}
+                label={item.label}
+                description={item.desc}
+              />
+            ))}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
+        </List>
+      </Card>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"spacious"', xs: '"comfortable"', sm: '"compact"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpointsStandalone: Story = {
+  args: {},
+  render: () => (
+    <VStack>
+      <Card variant="flat" minW="2xs">
+        <VStack alignItems="stretch" gap="0">
+          <ListItemGroup
+            label="Account Settings"
+            divider
+            density={{ base: 'spacious', xs: 'comfortable', sm: 'compact' }}
+          >
+            {items.slice(0, 2).map((item) => (
+              <ListItem
+                key={`standalone-group-${item.id}`}
+                label={item.label}
+                description={item.desc}
+              />
+            ))}
+          </ListItemGroup>
+          <ListItem
+            density={{ base: 'spacious', xs: 'comfortable', sm: 'compact' }}
+            iconAfter="arrow-square-out"
+            label="Logout"
+            description="Close the current session"
+          />
+        </VStack>
+      </Card>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"spacious"', xs: '"comfortable"', sm: '"compact"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </VStack>
+  ),
   parameters: { controls: { disable: true } },
 };
 
