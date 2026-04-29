@@ -76,25 +76,182 @@ jobs:
 
             core.setOutput('mode', hasStableReleaseLabel ? 'latest' : 'next');
 
-      - name: Create Stable Release
-        if: steps.release_mode.outputs.mode == 'latest'
+      - name: Resolve Publish Version
+        if: steps.release_mode.outputs.mode != 'skip'
+        id: publish_version
+        uses: actions/github-script@v7
         env:
-          GITHUB_TOKEN: ${{ secrets.ADMIN_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm ci
-          npm run build
-          npx auto latest
+          RELEASE_MODE: ${{ steps.release_mode.outputs.mode }}
+        with:
+          script: |
+            const { readFileSync } = require('node:fs');
+            const { execFileSync } = require('node:child_process');
 
-      - name: Create Prerelease
-        if: steps.release_mode.outputs.mode == 'next'
+            const releaseMode = process.env.RELEASE_MODE;
+            const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
+            const packageName = packageJson.name;
+            const rawVersion = packageJson.version;
+
+            const versionPattern =
+              /^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<prerelease>[0-9A-Za-z.-]+))?$/;
+
+            const parseVersion = (version) => {
+              const match = version.match(versionPattern);
+
+              if (!match?.groups) {
+                throw new Error(`Unsupported version format: ${version}`);
+              }
+
+              return {
+                major: Number(match.groups.major),
+                minor: Number(match.groups.minor),
+                patch: Number(match.groups.patch),
+                prerelease: match.groups.prerelease ?? '',
+              };
+            };
+
+            const formatVersion = ({ major, minor, patch, prerelease }) =>
+              `${major}.${minor}.${patch}${prerelease ? `-${prerelease}` : ''}`;
+
+            const incrementPatch = (version) => {
+              const parsed = parseVersion(version);
+
+              return formatVersion({
+                major: parsed.major,
+                minor: parsed.minor,
+                patch: parsed.patch + 1,
+                prerelease: '',
+              });
+            };
+
+            const incrementPrerelease = (version) => {
+              const parsed = parseVersion(version);
+
+              if (!parsed.prerelease) {
+                return `${formatVersion(parsed)}-0`;
+              }
+
+              const segments = parsed.prerelease.split('.');
+              const lastSegment = segments.at(-1);
+
+              if (lastSegment && /^\d+$/.test(lastSegment)) {
+                segments[segments.length - 1] = String(Number(lastSegment) + 1);
+              } else {
+                segments.push('1');
+              }
+
+              return formatVersion({
+                major: parsed.major,
+                minor: parsed.minor,
+                patch: parsed.patch,
+                prerelease: segments.join('.'),
+              });
+            };
+
+            const listTags = (pattern) =>
+              execFileSync('git', ['tag', '--list', pattern], {
+                encoding: 'utf8',
+              })
+                .trim()
+                .split('\n')
+                .filter(Boolean);
+
+            const hasTag = (version) =>
+              listTags(version).length > 0 || listTags(`v${version}`).length > 0;
+
+            const listPublishedVersions = () => {
+              try {
+                const output = execFileSync(
+                  'npm',
+                  ['view', packageName, 'versions', '--json'],
+                  { encoding: 'utf8' },
+                ).trim();
+
+                if (!output) {
+                  return [];
+                }
+
+                const parsed = JSON.parse(output);
+
+                if (Array.isArray(parsed)) {
+                  return parsed;
+                }
+
+                return typeof parsed === 'string' ? [parsed] : [];
+              } catch (error) {
+                throw new Error(
+                  `Failed to resolve published versions for ${packageName}: ${error.message}`,
+                );
+              }
+            };
+
+            const publishedVersions = new Set(listPublishedVersions());
+
+            const hasPublishedVersion = (version) =>
+              publishedVersions.has(version);
+
+            const versionExists = (version) =>
+              hasTag(version) || hasPublishedVersion(version);
+
+            const baseVersion = parseVersion(rawVersion);
+            let candidateVersion = rawVersion;
+
+            if (releaseMode === 'next' && !baseVersion.prerelease) {
+              const prereleaseTags = [
+                ...listTags(`${rawVersion}-*`),
+                ...listTags(`v${rawVersion}-*`),
+              ];
+              const normalizedVersions = prereleaseTags.map((tag) =>
+                tag.startsWith('v') ? tag.slice(1) : tag,
+              );
+
+              if (normalizedVersions.length === 0) {
+                candidateVersion = `${rawVersion}-0`;
+              } else {
+                const sortedVersions = normalizedVersions.sort((left, right) => {
+                  const leftParsed = parseVersion(left);
+                  const rightParsed = parseVersion(right);
+                  const leftSegments = leftParsed.prerelease.split('.');
+                  const rightSegments = rightParsed.prerelease.split('.');
+                  const leftLast = leftSegments.at(-1) ?? '';
+                  const rightLast = rightSegments.at(-1) ?? '';
+                  const leftNumber = /^\d+$/.test(leftLast) ? Number(leftLast) : -1;
+                  const rightNumber = /^\d+$/.test(rightLast) ? Number(rightLast) : -1;
+
+                  return leftNumber - rightNumber;
+                });
+
+                candidateVersion = incrementPrerelease(
+                  sortedVersions.at(-1) ?? `${rawVersion}-0`,
+                );
+              }
+            }
+
+            while (versionExists(candidateVersion)) {
+              core.info(
+                `Version ${candidateVersion} already exists in git tags or npm. Resolving next candidate.`,
+              );
+              candidateVersion =
+                releaseMode === 'latest'
+                  ? incrementPatch(candidateVersion)
+                  : incrementPrerelease(candidateVersion);
+            }
+
+            const prereleaseFlag = releaseMode === 'next' ? '--prerelease' : '';
+
+            core.info(`Resolved publish version ${candidateVersion} for ${releaseMode} release mode.`);
+            core.setOutput('version', candidateVersion);
+            core.setOutput('shipit_args', prereleaseFlag);
+
+      - name: Create Release
+        if: steps.release_mode.outputs.mode != 'skip'
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm ci
           npm run build
-          npx auto next
+          npx auto shipit --use-version "${{ steps.publish_version.outputs.version }}" ${{ steps.publish_version.outputs.shipit_args }}
 
       - name: Skip Release
         if: steps.release_mode.outputs.mode == 'skip'
