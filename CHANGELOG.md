@@ -11,6 +11,39 @@
 
 #### 🐛 Bug Fixes
 
+- fix: try to fix versioning again [#164](https://github.com/Cetec-ERP/Cetec-Design-System/pull/164) ([@Etwigg](https://github.com/Etwigg))
+- fix(patch): block !important in validation checks [#149](https://github.com/Cetec-ERP/Cetec-Design-System/pull/149) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+
+#### 🤖 CI
+
+- ci: better version resolution [#161](https://github.com/Cetec-ERP/Cetec-Design-System/pull/161) ([@Etwigg](https://github.com/Etwigg))
+
+#### 🏠 Chores
+
+- chore(major): trigger prerelease for #154 [#157](https://github.com/Cetec-ERP/Cetec-Design-System/pull/157) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- chore(minor): trigger prerelease for #154 [#156](https://github.com/Cetec-ERP/Cetec-Design-System/pull/156) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### Authors: 3
+
+- David ([@atkinsdavid](https://github.com/atkinsdavid))
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
+# 2.0.0 (Wed Apr 29 2026)
+
+#### 📦 Misc Changes
+
+- refactor(minor): remove compound variants and support responsive sizing [#154](https://github.com/Cetec-ERP/Cetec-Design-System/pull/154) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🚀 Features
+
+- feat: keyboard-component [#159](https://github.com/Cetec-ERP/Cetec-Design-System/pull/159) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): add keyboard UI for Menu components [#153](https://github.com/Cetec-ERP/Cetec-Design-System/pull/153) ([@atkinsdavid](https://github.com/atkinsdavid))
+
+#### 🐛 Bug Fixes
+
 - fix(patch): block !important in validation checks [#149](https://github.com/Cetec-ERP/Cetec-Design-System/pull/149) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
 
 #### 🤖 CI
