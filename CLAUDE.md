@@ -165,10 +165,14 @@ Icons are managed as an SVG sprite system:
 
 This project uses **Auto** for automated releases:
 
-- **Trigger**: PRs must have a release label (major, minor, patch, release) from `.autorc`
+- **Trigger**: Every push to `main` runs the release workflow
 - **Main branch**: `main` is the release branch
-- **Prerelease mode**: All releases are prereleases
+- **Merge strategy**: Release resolution assumes squash merges and reads the PR number from the squash commit title when possible
+- **Publishing behavior**: A merged PR with a manual `major`, `minor`, or `patch` label publishes a prerelease by default
+- **Stable releases**: Add the manual `release` label to promote that PR to a stable `latest` release
+- **Version source of truth**: Published npm versions are used to choose the next version; `package.json` is only a fallback when there is no published history yet
 - **Version format**: No `v` prefix (e.g., `0.0.38-0`)
+- **Automatic labels**: Conventional Commit title types sync PR-type labels automatically, but `major`, `minor`, `patch`, `release`, and `skip-release` remain manual labels
 - **Labels**: Defined in `.autorc` for changelog generation (💥 Breaking Change, 🚀 Enhancement, 🐛 Bug Fix, etc.)
 - **CHANGELOG**: Auto-generated in `CHANGELOG.md`
 

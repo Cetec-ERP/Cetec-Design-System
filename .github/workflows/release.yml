@@ -43,16 +43,48 @@ jobs:
             const semverLabels = new Set(['major', 'minor', 'patch']);
             const stableReleaseLabel = 'release';
             const skipReleaseLabel = 'skip-release';
+            const targetBranch = context.ref.replace('refs/heads/', '');
+            const headCommitMessage = context.payload.head_commit?.message ?? '';
+            const headCommitTitle = headCommitMessage.split('\n')[0] ?? '';
 
-            const { data: pullRequests } =
-              await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                ...context.repo,
-                commit_sha: context.sha,
-              });
+            const resolveMergedPr = async () => {
+              const squashMergePrMatch = headCommitTitle.match(/\(#(\d+)\)\s*$/);
 
-            const mergedPr = pullRequests.find(
-              (pr) => pr.merged_at && pr.base.ref === context.ref.replace('refs/heads/', ''),
-            );
+              if (squashMergePrMatch) {
+                const pull_number = Number(squashMergePrMatch[1]);
+                const { data: pullRequest } = await github.rest.pulls.get({
+                  ...context.repo,
+                  pull_number,
+                });
+
+                if (pullRequest.merged_at && pullRequest.base.ref === targetBranch) {
+                  core.info(`Resolved PR #${pullRequest.number} from squash commit message.`);
+                  return pullRequest;
+                }
+
+                core.info(
+                  `PR #${pull_number} from squash commit message does not match merged target ${targetBranch}. Falling back to associated PR lookup.`,
+                );
+              }
+
+              const { data: pullRequests } =
+                await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  ...context.repo,
+                  commit_sha: context.sha,
+                });
+
+              const mergedPr = pullRequests.find(
+                (pr) => pr.merged_at && pr.base.ref === targetBranch,
+              );
+
+              if (mergedPr) {
+                core.info(`Resolved PR #${mergedPr.number} from associated PR lookup.`);
+              }
+
+              return mergedPr;
+            };
+
+            const mergedPr = await resolveMergedPr();
 
             if (!mergedPr) {
               core.info('No merged PR found for this push. Skipping release.');
@@ -64,6 +96,7 @@ jobs:
             const hasSemverLabel = labels.some((label) => semverLabels.has(label));
             const hasStableReleaseLabel = labels.includes(stableReleaseLabel);
             const hasSkipReleaseLabel = labels.includes(skipReleaseLabel);
+            const semverLabel = labels.find((label) => semverLabels.has(label)) ?? '';
 
             core.info(
               `Resolved PR #${mergedPr.number} with labels: ${labels.join(', ') || '(none)'}`,
@@ -75,6 +108,7 @@ jobs:
             }
 
             core.setOutput('mode', hasStableReleaseLabel ? 'latest' : 'next');
+            core.setOutput('semver_label', semverLabel);
 
       - name: Resolve Publish Version
         if: steps.release_mode.outputs.mode != 'skip'
@@ -82,12 +116,14 @@ jobs:
         uses: actions/github-script@v7
         env:
           RELEASE_MODE: ${{ steps.release_mode.outputs.mode }}
+          RELEASE_SEMVER_LABEL: ${{ steps.release_mode.outputs.semver_label }}
         with:
           script: |
             const { readFileSync } = require('node:fs');
             const { execFileSync } = require('node:child_process');
 
             const releaseMode = process.env.RELEASE_MODE;
+            const releaseSemverLabel = process.env.RELEASE_SEMVER_LABEL;
             const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
             const packageName = packageJson.name;
             const rawVersion = packageJson.version;
@@ -113,8 +149,94 @@ jobs:
             const formatVersion = ({ major, minor, patch, prerelease }) =>
               `${major}.${minor}.${patch}${prerelease ? `-${prerelease}` : ''}`;
 
-            const incrementPatch = (version) => {
+            const compareIdentifiers = (left, right) => {
+              const leftNumeric = /^\d+$/.test(left);
+              const rightNumeric = /^\d+$/.test(right);
+
+              if (leftNumeric && rightNumeric) {
+                return Number(left) - Number(right);
+              }
+
+              if (leftNumeric) {
+                return -1;
+              }
+
+              if (rightNumeric) {
+                return 1;
+              }
+
+              return left.localeCompare(right);
+            };
+
+            const compareVersions = (left, right) => {
+              const keys = ['major', 'minor', 'patch'];
+
+              for (const key of keys) {
+                const diff = left[key] - right[key];
+
+                if (diff !== 0) {
+                  return diff;
+                }
+              }
+
+              if (!left.prerelease && !right.prerelease) {
+                return 0;
+              }
+
+              if (!left.prerelease) {
+                return 1;
+              }
+
+              if (!right.prerelease) {
+                return -1;
+              }
+
+              const leftSegments = left.prerelease.split('.');
+              const rightSegments = right.prerelease.split('.');
+              const maxLength = Math.max(leftSegments.length, rightSegments.length);
+
+              for (let index = 0; index < maxLength; index += 1) {
+                const leftSegment = leftSegments[index];
+                const rightSegment = rightSegments[index];
+
+                if (leftSegment === undefined) {
+                  return -1;
+                }
+
+                if (rightSegment === undefined) {
+                  return 1;
+                }
+
+                const diff = compareIdentifiers(leftSegment, rightSegment);
+
+                if (diff !== 0) {
+                  return diff;
+                }
+              }
+
+              return 0;
+            };
+
+            const applyBump = (version, bump) => {
               const parsed = parseVersion(version);
+
+              if (bump === 'major') {
+                return formatVersion({
+                  major: parsed.major + 1,
+                  minor: 0,
+                  patch: 0,
+                  prerelease: '',
+                });
+              }
+
+              if (bump === 'minor') {
+                return formatVersion({
+                  major: parsed.major,
+                  minor: parsed.minor + 1,
+                  patch: 0,
+                  prerelease: '',
+                });
+              }
 
               return formatVersion({
                 major: parsed.major,
@@ -124,28 +246,15 @@ jobs:
               });
             };
 
-            const incrementPrerelease = (version) => {
+            const toPrereleaseVersion = (version) => {
               const parsed = parseVersion(version);
 
-              if (!parsed.prerelease) {
-                return `${formatVersion(parsed)}-0`;
-              }
-
-              const segments = parsed.prerelease.split('.');
-              const lastSegment = segments.at(-1);
-
-              if (lastSegment && /^\d+$/.test(lastSegment)) {
-                segments[segments.length - 1] = String(Number(lastSegment) + 1);
-              } else {
-                segments.push('1');
-              }
-
-              return formatVersion({
+              return `${formatVersion({
                 major: parsed.major,
                 minor: parsed.minor,
                 patch: parsed.patch,
-                prerelease: segments.join('.'),
-              });
+                prerelease: '',
+              })}-0`;
             };
 
             const listTags = (pattern) =>
@@ -185,56 +294,67 @@ jobs:
               }
             };
 
-            const publishedVersions = new Set(listPublishedVersions());
+            const publishedVersions = listPublishedVersions();
+            const publishedVersionSet = new Set(publishedVersions);
+            const parsedPublishedVersions = publishedVersions.map(parseVersion);
+            const stablePublishedVersions = parsedPublishedVersions.filter(
+              (version) => !version.prerelease,
+            );
 
             const hasPublishedVersion = (version) =>
-              publishedVersions.has(version);
+              publishedVersionSet.has(version);
 
             const versionExists = (version) =>
               hasTag(version) || hasPublishedVersion(version);
 
-            const baseVersion = parseVersion(rawVersion);
-            let candidateVersion = rawVersion;
+            if (!['major', 'minor', 'patch'].includes(releaseSemverLabel)) {
+              throw new Error(`Unsupported release semver label: ${releaseSemverLabel}`);
+            }
 
-            if (releaseMode === 'next' && !baseVersion.prerelease) {
-              const prereleaseTags = [
-                ...listTags(`${rawVersion}-*`),
-                ...listTags(`v${rawVersion}-*`),
-              ];
-              const normalizedVersions = prereleaseTags.map((tag) =>
-                tag.startsWith('v') ? tag.slice(1) : tag,
+            const packageVersion = parseVersion(rawVersion);
+            const highestPublishedVersion =
+              parsedPublishedVersions.length > 0
+                ? parsedPublishedVersions.sort(compareVersions).at(-1)
+                : packageVersion;
+            const highestStableVersion =
+              stablePublishedVersions.length > 0
+                ? stablePublishedVersions.sort(compareVersions).at(-1)
+                : packageVersion;
+
+            if (!highestPublishedVersion || !highestStableVersion) {
+              throw new Error('Failed to resolve a release baseline version.');
+            }
+
+            let candidateVersion;
+
+            if (releaseMode === 'latest') {
+              candidateVersion = applyBump(
+                formatVersion(highestStableVersion),
+                releaseSemverLabel,
               );
-
-              if (normalizedVersions.length === 0) {
-                candidateVersion = `${rawVersion}-0`;
-              } else {
-                const sortedVersions = normalizedVersions.sort((left, right) => {
-                  const leftParsed = parseVersion(left);
-                  const rightParsed = parseVersion(right);
-                  const leftSegments = leftParsed.prerelease.split('.');
-                  const rightSegments = rightParsed.prerelease.split('.');
-                  const leftLast = leftSegments.at(-1) ?? '';
-                  const rightLast = rightSegments.at(-1) ?? '';
-                  const leftNumber = /^\d+$/.test(leftLast) ? Number(leftLast) : -1;
-                  const rightNumber = /^\d+$/.test(rightLast) ? Number(rightLast) : -1;
-
-                  return leftNumber - rightNumber;
-                });
-
-                candidateVersion = incrementPrerelease(
-                  sortedVersions.at(-1) ?? `${rawVersion}-0`,
-                );
-              }
+            } else {
+              candidateVersion = toPrereleaseVersion(
+                applyBump(formatVersion(highestPublishedVersion), releaseSemverLabel),
+              );
             }
 
             while (versionExists(candidateVersion)) {
+              if (releaseMode === 'latest') {
+                core.info(
+                  `Stable version ${candidateVersion} already exists in git tags or npm. Skipping release.`,
+                );
+                core.setOutput('skip_reason', 'stable-version-exists');
+                core.setOutput('version', candidateVersion);
+                core.setOutput('shipit_args', '');
+                return;
+              }
+
               core.info(
-                `Version ${candidateVersion} already exists in git tags or npm. Resolving next candidate.`,
+                `Prerelease version ${candidateVersion} already exists in git tags or npm. Advancing patch version.`,
               );
-              candidateVersion =
-                releaseMode === 'latest'
-                  ? incrementPatch(candidateVersion)
-                  : incrementPrerelease(candidateVersion);
+              candidateVersion = toPrereleaseVersion(
+                applyBump(candidateVersion, 'patch'),
+              );
             }
 
             const prereleaseFlag = releaseMode === 'next' ? '--prerelease' : '';
@@ -244,7 +364,7 @@ jobs:
             core.setOutput('shipit_args', prereleaseFlag);
 
       - name: Create Release
-        if: steps.release_mode.outputs.mode != 'skip'
+        if: steps.release_mode.outputs.mode != 'skip' && steps.publish_version.outputs.skip_reason == ''
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -252,6 +372,10 @@ jobs:
           npm ci
           npm run build
           npx auto shipit --use-version "${{ steps.publish_version.outputs.version }}" ${{ steps.publish_version.outputs.shipit_args }}
+
+      - name: Skip Existing Stable Release
+        if: steps.publish_version.outputs.skip_reason == 'stable-version-exists'
+        run: echo "Stable version already exists. Skipping release."
 
       - name: Skip Release
         if: steps.release_mode.outputs.mode == 'skip'
