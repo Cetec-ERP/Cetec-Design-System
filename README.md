@@ -177,11 +177,15 @@ Packages are published from the repo root with `dist` included in the published 
 
 - **Workflow trigger**: Every push to `main` runs the release workflow.
 - **Automatic labels**: PR title labels are synced automatically from the Conventional Commit title.
+- **Merge strategy**: Release resolution assumes squash merges and reads the PR number from the squash commit title when possible.
 - **Publishing behavior**: A merged change that resolves to a releasable bump publishes a prerelease by default. Add the `release` label to graduate that merge to a stable `latest` release.
 - **Version bump labels**: `major`, `minor`, and `patch` remain manual labels.
 - **Default bump**: If the merged PR has no semver label, Auto will not publish a release.
 - **No-release labels**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, and `revert` are changelog labels. They do not publish on their own unless paired with a semver label.
 - **Skip label**: Use `skip-release` to prevent publishing.
+- **Version source of truth**: Publish version selection is based on versions already published to npm. `package.json` is only a fallback when there is no published history yet.
+- **Stable releases**: A `release` label promotes the PR’s semver bump from the highest published stable version.
+- **Prereleases**: Without `release`, the workflow bumps from the highest published version overall, including existing prereleases, then publishes the next prerelease for that line.
 - **Changelog**: Auto-generated based on PR labels and titles
 - **PR Titles**: Must follow our defined format for Auto release automation:
 
@@ -254,6 +258,8 @@ Examples:
 - `refactor(major)!: break input API` => label `refactor`, no publish until a semver label is added
 - `feat: add modal` + manual `minor` label => prerelease minor
 - `feat: add modal` + manual `minor` + `release` labels => stable minor release
+- highest published version `2.0.0-next.0` + manual `patch` label => `2.0.1-next.0`
+- highest published stable version `2.0.0` + manual `patch` + `release` labels => `2.0.1`
 - `skip-release` => no publish
 
 See `.autorc` for the complete configuration.
