@@ -10,6 +10,7 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
 import { Tooltip } from '~/components/Tooltip';
+import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
@@ -18,22 +19,31 @@ export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
     altText: string;
     href?: string;
     loading?: boolean;
+    error?: boolean;
+    invalid?: boolean;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
   };
 
 export const IconButton = (props: IconButtonProps) => {
+  const fieldContext = useFieldContext();
   const {
     iconName,
     altText,
     variant,
-    size,
+    size: sizeProp,
     href,
     loading,
-    disabled,
+    error: errorProp,
+    invalid: invalidProp,
+    disabled: disabledProp,
     type = 'button',
     ...rest
   } = props;
+  const size = sizeProp ?? fieldContext?.size;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
+  const disabled = disabledProp ?? fieldContext?.disabled;
   const classes = iconButton({ variant, size });
   const [className, otherProps] = splitProps(rest);
 
@@ -60,7 +70,10 @@ export const IconButton = (props: IconButtonProps) => {
           'aria-live': 'polite',
         })}
         aria-disabled={disabled}
+        aria-invalid={invalid || undefined}
         aria-label={altText}
+        data-error={error || undefined}
+        data-invalid={invalid || undefined}
         {...otherProps}
       >
         <Icon

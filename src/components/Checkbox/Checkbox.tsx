@@ -3,6 +3,7 @@ import { type ChangeEvent } from 'react';
 import { cx } from '@styled-system/css';
 import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
 
+import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -18,6 +19,7 @@ export type CheckboxProps = Omit<
     onChange: CheckboxChangeHandler;
     id?: string;
     error?: boolean;
+    invalid?: boolean;
     disabled?: boolean;
     indeterminate?: boolean;
   };
@@ -49,20 +51,25 @@ export type CheckboxChangeHandler = (e: CheckboxChangeEvent) => void;
  */
 
 export const Checkbox = (props: CheckboxProps) => {
+  const fieldContext = useFieldContext();
   const {
     name,
     checked,
     onChange,
     id,
     indeterminate,
-    disabled,
-    error,
+    disabled: disabledProp,
+    error: errorProp,
+    invalid: invalidProp,
     container,
     input,
     indicator,
     checkBg,
     ...rest
   } = props;
+  const disabled = disabledProp ?? fieldContext?.disabled;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
   const [className, otherProps] = splitProps(rest);
   const classes = checkbox({
     container,
@@ -82,6 +89,7 @@ export const Checkbox = (props: CheckboxProps) => {
     <Box
       className={cx(classes.container, className)}
       {...(error && { 'data-error': true })}
+      {...(invalid && { 'data-invalid': true })}
     >
       <Box
         as="input"
@@ -94,6 +102,7 @@ export const Checkbox = (props: CheckboxProps) => {
         disabled={disabled}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}
+        {...(invalid && { 'data-invalid': true, 'aria-invalid': true })}
         {...otherProps}
       />
       <Icon className={classes.checkBg} name="square" />

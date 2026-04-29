@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { Wrap, type WrapProps } from '@styled-system/jsx';
 
 import { type BoxProps } from '~/components/Box';
+import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import {
@@ -24,13 +25,19 @@ export type ChipGroupProps = Omit<WrapProps, 'role'> &
     name?: string;
   };
 
+const isChipGroupSize = (
+  size: unknown,
+): size is Extract<ChipGroupSize, string> =>
+  size === 'sm' || size === 'md' || size === 'lg';
+
 export const ChipGroup = (props: ChipGroupProps) => {
+  const fieldContext = useFieldContext();
   const {
     type,
     value,
     onChange,
     children,
-    size,
+    size: sizeProp,
     label,
     id,
     name,
@@ -38,6 +45,8 @@ export const ChipGroup = (props: ChipGroupProps) => {
     className,
     ...rest
   } = props;
+  const fieldSize = fieldContext?.size;
+  const size = sizeProp ?? (isChipGroupSize(fieldSize) ? fieldSize : undefined);
   const [stylesClassName, otherProps] = splitProps(rest);
   const role = type === 'single' ? 'radiogroup' : 'group';
 
