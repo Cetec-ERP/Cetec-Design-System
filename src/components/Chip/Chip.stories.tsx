@@ -70,6 +70,15 @@ const meta: Meta<typeof Chip> = {
       control: 'boolean',
       description: 'Shows deleted state with strikethrough',
     },
+    dismissable: {
+      control: 'boolean',
+      description:
+        'Renders a trailing remove button instead of whole-chip dismiss',
+    },
+    dismissLabel: {
+      control: 'text',
+      description: 'Accessible label for the trailing remove button',
+    },
   },
   args: {
     children: 'Chip Label',
@@ -251,11 +260,11 @@ export const WithBefore: Story = {
 export const WithAfter: Story = {
   render: () => (
     <Flex gap="4" alignItems="center">
-      <Chip size="sm" iconAfter={{ name: 'x' }}>
+      <Chip size="sm" iconAfter={{ name: 'skull' }}>
         Small
       </Chip>
-      <Chip iconAfter={{ name: 'x' }}>Medium</Chip>
-      <Chip size="lg" iconAfter={{ name: 'x' }}>
+      <Chip iconAfter={{ name: 'skull' }}>Medium</Chip>
+      <Chip size="lg" iconAfter={{ name: 'skull' }}>
         Large
       </Chip>
     </Flex>
@@ -265,13 +274,21 @@ export const WithAfter: Story = {
 export const WithBeforeAndAfter: Story = {
   render: () => (
     <Flex gap="4" alignItems="center">
-      <Chip size="sm" iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
+      <Chip
+        size="sm"
+        iconBefore={{ name: 'user' }}
+        iconAfter={{ name: 'skull' }}
+      >
         Small
       </Chip>
-      <Chip iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
+      <Chip iconBefore={{ name: 'user' }} iconAfter={{ name: 'skull' }}>
         Medium
       </Chip>
-      <Chip size="lg" iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
+      <Chip
+        size="lg"
+        iconBefore={{ name: 'user' }}
+        iconAfter={{ name: 'skull' }}
+      >
         Large
       </Chip>
     </Flex>
@@ -300,33 +317,6 @@ export const States: Story = {
         Deleted Item
       </Chip>
     </Grid>
-  ),
-};
-
-// =============================================================================
-// INTERACTIVE
-// =============================================================================
-
-export const Interactive: Story = {
-  render: () => (
-    <Flex flexDir="column" gap="12">
-      <Text textStyle="mono.xs">Chips can be interactive buttons:</Text>
-      <Flex gap="2">
-        <Chip onClick={() => alert('Clicked!')}>Click Me</Chip>
-        <Chip
-          iconBefore={{ name: 'plus' }}
-          onClick={() => alert('Add clicked!')}
-        >
-          Add Item
-        </Chip>
-        <Chip
-          iconAfter={{ name: 'x' }}
-          onClick={() => alert('Remove clicked!')}
-        >
-          Remove
-        </Chip>
-      </Flex>
-    </Flex>
   ),
 };
 
@@ -360,11 +350,11 @@ export const SizesMatrix: Story = {
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">With After</Text>
         <Flex gap="4" alignItems="center">
-          <Chip size="sm" iconAfter={{ name: 'x' }}>
+          <Chip size="sm" iconAfter={{ name: 'skull' }}>
             Small
           </Chip>
-          <Chip iconAfter={{ name: 'x' }}>Medium</Chip>
-          <Chip size="lg" iconAfter={{ name: 'x' }}>
+          <Chip iconAfter={{ name: 'skull' }}>Medium</Chip>
+          <Chip size="lg" iconAfter={{ name: 'skull' }}>
             Large
           </Chip>
         </Flex>
@@ -375,17 +365,17 @@ export const SizesMatrix: Story = {
           <Chip
             size="sm"
             iconBefore={{ name: 'user' }}
-            iconAfter={{ name: 'x' }}
+            iconAfter={{ name: 'skull' }}
           >
             Small
           </Chip>
-          <Chip iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
+          <Chip iconBefore={{ name: 'user' }} iconAfter={{ name: 'skull' }}>
             Medium
           </Chip>
           <Chip
             size="lg"
             iconBefore={{ name: 'user' }}
-            iconAfter={{ name: 'x' }}
+            iconAfter={{ name: 'skull' }}
           >
             Large
           </Chip>
@@ -422,9 +412,15 @@ export const UseCases: Story = {
       <Flex flexDir="column" gap="2">
         <Text textStyle="mono.xs">Filter Tags</Text>
         <Flex gap="4" flexWrap="wrap">
-          <Chip iconAfter={{ name: 'x' }}>React</Chip>
-          <Chip iconAfter={{ name: 'x' }}>TypeScript</Chip>
-          <Chip iconAfter={{ name: 'x' }}>Panda CSS</Chip>
+          <Chip dismissable onDismiss={() => {}}>
+            React
+          </Chip>
+          <Chip dismissable onDismiss={() => {}}>
+            TypeScript
+          </Chip>
+          <Chip dismissable onDismiss={() => {}}>
+            Panda CSS
+          </Chip>
           <Chip iconBefore={{ name: 'plus' }}>Add Filter</Chip>
         </Flex>
       </Flex>
@@ -496,6 +492,71 @@ export const DismissableWithBefore: Story = {
         Event
       </Chip>
     </Flex>
+  ),
+};
+
+export const DismissableWithPrimaryAction: Story = {
+  render: () => (
+    <Flex flexDir="column" gap="12">
+      <Text textStyle="mono.xs">
+        Body clicks stay on the chip action. The trailing X is the only dismiss
+        target.
+      </Text>
+      <Flex gap="4" flexWrap="wrap">
+        <Chip
+          dismissable
+          iconBefore={{ name: 'file' }}
+          onClick={() => alert('Opened document')}
+          onDismiss={() => alert('Removed document')}
+        >
+          Document
+        </Chip>
+        <Chip
+          dismissable
+          iconBefore={{ name: 'user' }}
+          onClick={() => alert('Opened person')}
+          onDismiss={() => alert('Removed person')}
+        >
+          Person
+        </Chip>
+      </Flex>
+    </Flex>
+  ),
+};
+
+export const DismissableStates: Story = {
+  render: () => (
+    <Grid gridTemplateColumns="auto auto" gap="24">
+      <Text textStyle="mono.xs">Default:</Text>
+      <Chip dismissable onDismiss={() => {}}>
+        Default
+      </Chip>
+      <Text textStyle="mono.xs">Disabled:</Text>
+      <Chip dismissable disabled onDismiss={() => {}}>
+        Disabled
+      </Chip>
+      <Text textStyle="mono.xs">Loading:</Text>
+      <Chip dismissable loading onDismiss={() => {}}>
+        Loading...
+      </Chip>
+      <Text textStyle="mono.xs">Deleted:</Text>
+      <Chip dismissable deleted onDismiss={() => {}}>
+        Deleted Item
+      </Chip>
+    </Grid>
+  ),
+};
+
+export const DismissableWithCustomLabel: Story = {
+  render: () => (
+    <Chip
+      dismissable
+      dismissLabel="Remove assignee John Doe"
+      avatarBefore={{ src: sampleImages.user1, name: 'John Doe' }}
+      onDismiss={() => {}}
+    >
+      John Doe
+    </Chip>
   ),
 };
 
