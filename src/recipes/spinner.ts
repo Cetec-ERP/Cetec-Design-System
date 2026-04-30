@@ -1,53 +1,59 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
 const spinnerBase = {
-  spinnerDiv: {
+  container: {
+    position: 'relative',
+    display: 'grid',
+    placeContent: 'center',
+    zIndex: '100',
+    w: 'fit',
+    h: 'fit',
+    flex: '0',
+  },
+  spinnerSvg: {
     aspectRatio: 'square',
-    rounded: '100',
-    borderWidth: '3',
-    borderStyle: 'solid',
-    borderColor: 'transparent',
-    borderTopColor: 'icon',
-    borderBottomColor: 'icon',
     animation: 'spin',
+    fill: 'icon',
     isolation: 'isolate',
+    flex: '0',
   },
 };
 
 const spinnerVariants = {
   size: {
-    xs: {
-      spinnerDiv: {
-        height: '16',
-        minHeight: '16',
-        borderWidth: '2',
-      },
-    },
     sm: {
-      spinnerDiv: {
-        height: '20',
-        minHeight: '20',
-        borderWidth: '2',
+      spinnerSvg: {
+        h: '16',
+        w: '16',
+        minHeight: '16',
       },
     },
     md: {
-      spinnerDiv: {
-        height: '24',
-        minHeight: '24',
+      spinnerSvg: {
+        h: '20',
+        w: '20',
+        minHeight: '20',
       },
     },
     lg: {
-      spinnerDiv: {
-        height: '32',
-        minHeight: '32',
+      spinnerSvg: {
+        h: '24',
+        w: '24',
+        minHeight: '24',
+      },
+    },
+    xl: {
+      spinnerSvg: {
+        h: '28',
+        w: '28',
+        minHeight: '28',
       },
     },
   },
   inverse: {
     true: {
-      spinnerDiv: {
-        borderTopColor: 'icon.inverse',
-        borderBottomColor: 'icon.inverse',
+      spinnerSvg: {
+        fill: 'icon.inverse',
       },
     },
   },
@@ -56,11 +62,13 @@ const spinnerVariants = {
       container: {
         position: 'absolute',
         inset: '0',
-        display: 'grid',
-        placeContent: 'center',
         width: 'full',
         height: 'full',
-        zIndex: '100',
+      },
+    },
+    false: {
+      container: {
+        position: 'relative',
       },
     },
   },
@@ -69,7 +77,7 @@ const spinnerVariants = {
 export const spinnerRecipe = defineSlotRecipe({
   className: 'spinner',
   jsx: ['Spinner'],
-  slots: ['container', 'spinnerDiv'],
+  slots: ['container', 'spinnerSvg'],
   base: spinnerBase,
   variants: spinnerVariants,
   defaultVariants: {

@@ -3,7 +3,8 @@ import { spinner, type SpinnerVariantProps } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box/Box';
+import { Box, type BoxProps } from '../Box';
+import { Icon } from '../Icon';
 
 export type SpinnerProps = Omit<BoxProps, keyof SpinnerVariantProps> &
   SpinnerVariantProps & {
@@ -23,9 +24,9 @@ export const Spinner = (props: SpinnerProps) => {
 
   return (
     <Box className={cx(classes.container, className)} {...otherProps}>
-      <Box
-        as="div"
-        className={classes.spinnerDiv}
+      <Icon
+        name="spinner"
+        className={classes.spinnerSvg}
         data-inverse={inverse ? 'true' : undefined}
       />
     </Box>

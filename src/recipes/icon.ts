@@ -16,7 +16,13 @@ export const iconRecipe = defineRecipe({
     w: '24', // Default size here does not affect the classNames, so it's safe to set
   },
   variants: {
-    size: sizeVariants,
+    size: {
+      ...sizeVariants,
+      sm: { w: '16' },
+      md: { w: '20' },
+      lg: { w: '24' },
+      xl: { w: '28' },
+    },
   },
   defaultVariants: {
     // Don't set default size because then it's hard to override in recipes
