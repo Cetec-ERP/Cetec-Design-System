@@ -1,5 +1,8 @@
 import {
   type ReactNode,
+  type ReactElement,
+  cloneElement,
+  isValidElement,
   useRef,
   useEffect,
   type KeyboardEvent,
@@ -15,6 +18,7 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList, type IconProps } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
@@ -37,6 +41,11 @@ export type ChipBadgeSlot = {
 };
 
 type ChipSize = NonNullable<ChipProps['size']>;
+
+type SlotElementProps = {
+  className?: string;
+  size?: unknown;
+};
 
 type ChipSizeKeys = Extract<ChipSize, string>;
 
@@ -114,6 +123,10 @@ const resolveAfterSlot = (
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   Omit<ChipVariantProps, 'before' | 'after'> & {
     children: string | ReactNode;
+    /** Escape hatch content rendered before the label */
+    before?: ReactNode;
+    /** Escape hatch content rendered after the label */
+    after?: ReactNode;
     /** Structured icon slot rendered before the label */
     iconBefore?: ChipIconSlot;
     /** Structured icon slot rendered after the label */
@@ -139,6 +152,8 @@ export const Chip = (props: ChipProps) => {
   const {
     size: sizeProp,
     children,
+    before,
+    after,
     loading,
     disabled: disabledProp,
     deleted,
@@ -193,7 +208,15 @@ export const Chip = (props: ChipProps) => {
   const isMultiSelected =
     isSelectable && groupContext.type === 'multi' && isSelected;
 
-  // Error if more than one before or after slot is used
+  const structuredBeforeSlot = resolveBeforeSlot(
+    avatarBefore,
+    iconBefore,
+    badgeBefore,
+  );
+  const structuredAfterSlot = resolveAfterSlot(iconAfter, badgeAfter);
+  const resolvedBefore = before ?? structuredBeforeSlot;
+  const resolvedAfter = after ?? structuredAfterSlot;
+
   if (import.meta.env.DEV) {
     const beforeSlotCount = getStructuredSlotCount([
       avatarBefore,
@@ -202,13 +225,13 @@ export const Chip = (props: ChipProps) => {
     ]);
     const afterSlotCount = getStructuredSlotCount([iconAfter, badgeAfter]);
 
-    if (beforeSlotCount > 1) {
+    if (!before && beforeSlotCount > 1) {
       throw new Error(
         'Chip accepts only one before-side slot. Use one of avatarBefore, iconBefore, badgeBefore, or before.',
       );
     }
 
-    if (afterSlotCount > 1) {
+    if (!after && afterSlotCount > 1) {
       throw new Error(
         'Chip accepts only one after-side slot. Use one of iconAfter, badgeAfter, or after.',
       );
@@ -219,14 +242,19 @@ export const Chip = (props: ChipProps) => {
         'Chip cannot render after-side content when dismissable is true. The dismiss affordance owns the after slot.',
       );
     }
-  }
 
-  const resolvedBefore = resolveBeforeSlot(
-    avatarBefore,
-    iconBefore,
-    badgeBefore,
-  );
-  const resolvedAfter = resolveAfterSlot(iconAfter, badgeAfter);
+    if (before && structuredBeforeSlot) {
+      console.warn(
+        'Chip received both "before" and a structured before-side prop. "before" takes precedence.',
+      );
+    }
+
+    if (after && structuredAfterSlot) {
+      console.warn(
+        'Chip received both "after" and a structured after-side prop. "after" takes precedence.',
+      );
+    }
+  }
 
   // Determine if there's content before/after for padding adjustments
   const hasBefore = Boolean(resolvedBefore) || isMultiSelected;
@@ -237,49 +265,51 @@ export const Chip = (props: ChipProps) => {
     before: hasBefore,
     after: hasAfter,
   });
+  type SlotElement = ReactElement<SlotElementProps>;
 
-  const renderBeforeSlot = () => {
-    if (avatarBefore) {
-      return (
-        <Avatar
-          {...avatarBefore}
-          size={avatarSize}
-          className={classes.chipAvatar}
-        />
-      );
+  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
+    if (!slot) {
+      return null;
     }
 
-    if (iconBefore) {
-      return <Icon {...iconBefore} className={classes.chipIcon} />;
+    let content = slot;
+
+    if (isValidElement(slot) && slot.type === Avatar) {
+      const slotElement = slot as SlotElement;
+      content = cloneElement(slotElement, {
+        className: cx(classes.chipAvatar, slotElement.props.className),
+        size: slotElement.props.size ?? avatarSize,
+      });
+    } else if (isValidElement(slot) && slot.type === Badge) {
+      const slotElement = slot as SlotElement;
+      content = cloneElement(slotElement, {
+        className: cx(classes.chipBadge, slotElement.props.className),
+        size: slotElement.props.size ?? badgeSize,
+      });
+    } else if (isValidElement(slot) && slot.type === Icon) {
+      const slotElement = slot as SlotElement;
+      content = cloneElement(slotElement, {
+        className: cx(classes.chipIcon, slotElement.props.className),
+      });
     }
 
-    if (badgeBefore) {
-      return (
-        <Badge
-          {...badgeBefore}
-          size={badgeSize}
-          className={classes.chipBadge}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <SlotContext.Provider
+        value={{
+          owner: 'Chip',
+          placement,
+          size,
+          disabled,
+          error,
+          invalid,
+        }}
+      >
+        <Box as="span" className={classes.slotItem}>
+          {content}
+        </Box>
+      </SlotContext.Provider>
+    );
   };
-
-  const renderAfterSlot = () => {
-    if (iconAfter) {
-      return <Icon {...iconAfter} className={classes.chipIcon} />;
-    }
-
-    if (badgeAfter) {
-      return (
-        <Badge {...badgeAfter} size={badgeSize} className={classes.chipBadge} />
-      );
-    }
-
-    return null;
-  };
-  // const dismissIconSize = chipSizeToIconSize[isChipSizeKey(size) ? size : 'md'];
 
   // Handle click based on chip type
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -380,12 +410,23 @@ export const Chip = (props: ChipProps) => {
         {isMultiSelected && (
           <Icon name="check" className={classes.chipIcon} aria-hidden />
         )}
-        {renderBeforeSlot()}
+        {renderSlot(
+          before ??
+            (avatarBefore ? <Avatar {...avatarBefore} /> : undefined) ??
+            (iconBefore ? <Icon {...iconBefore} /> : undefined) ??
+            (badgeBefore ? <Badge {...badgeBefore} /> : undefined),
+          'before',
+        )}
         {children}
         {dismissable ? (
           <Icon name="x" className={classes.chipIcon} aria-hidden />
         ) : (
-          renderAfterSlot()
+          renderSlot(
+            after ??
+              (iconAfter ? <Icon {...iconAfter} /> : undefined) ??
+              (badgeAfter ? <Badge {...badgeAfter} /> : undefined),
+            'after',
+          )
         )}
       </Box>
       {loading && <Spinner size="xs" centered />}

@@ -2,8 +2,11 @@ import { useState } from 'react';
 
 import { Flex, Grid, Wrap } from '@styled-system/jsx';
 
+import { Avatar } from '../Avatar';
+import { Badge } from '../Badge';
 import { Box } from '../Box';
 import { BreakpointIndicator } from '../BreakpointIndicator';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 
 import { Chip } from './Chip';
@@ -274,6 +277,27 @@ export const WithBeforeAndAfter: Story = {
       <Chip size="lg" iconBefore={{ name: 'user' }} iconAfter={{ name: 'x' }}>
         Large
       </Chip>
+    </Flex>
+  ),
+};
+
+export const WithSlots: Story = {
+  render: () => (
+    <Flex gap="4" flexDir="column" alignItems="center">
+      <Flex gap="4" alignItems="center">
+        <Chip before={<Icon name="hash" />}>Icon Slot</Chip>
+        <Chip after={<Badge count={3} variant="success" />}>Badge Slot</Chip>
+        <Chip
+          before={<Avatar src={sampleImages.user2} name="Jane Doe" />}
+          after={<Icon name="x" />}
+        >
+          Avatar Slot
+        </Chip>
+      </Flex>
+      <Flex gap="4" alignItems="center">
+        <Chip iconBefore={{ name: 'hash' }}>Alias Before</Chip>
+        <Chip badgeAfter={{ count: 4, variant: 'warning' }}>Alias After</Chip>
+      </Flex>
     </Flex>
   ),
 };

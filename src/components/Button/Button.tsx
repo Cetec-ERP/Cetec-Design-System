@@ -1,4 +1,10 @@
-import type { MouseEvent, ReactNode } from 'react';
+import {
+  type MouseEvent,
+  type ReactNode,
+  type ReactElement,
+  cloneElement,
+  isValidElement,
+} from 'react';
 
 import { cx } from '@styled-system/css';
 import { HStack } from '@styled-system/jsx';
@@ -8,10 +14,13 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
   Omit<ButtonVariantProps, 'iconBefore' | 'iconAfter'> & {
+    before?: ReactNode;
+    after?: ReactNode;
     iconBefore?: IconNamesList;
     iconAfter?: IconNamesList;
     href?: string;
@@ -29,6 +38,8 @@ export const Button = (props: ButtonProps) => {
     variant,
     size: sizeProp,
     href,
+    before,
+    after,
     iconBefore,
     iconAfter,
     children,
@@ -43,13 +54,72 @@ export const Button = (props: ButtonProps) => {
   const error = errorProp ?? fieldContext?.error;
   const invalid = invalidProp ?? fieldContext?.invalid;
   const disabled = disabledProp ?? fieldContext?.disabled;
+  const resolvedBefore =
+    before ?? (iconBefore ? <Icon name={iconBefore} aria-hidden /> : undefined);
+  const resolvedAfter =
+    after ?? (iconAfter ? <Icon name={iconAfter} aria-hidden /> : undefined);
+
+  if (import.meta.env.DEV) {
+    if (before && iconBefore) {
+      console.warn(
+        'Button received both "before" and "iconBefore". "before" takes precedence.',
+      );
+    }
+
+    if (after && iconAfter) {
+      console.warn(
+        'Button received both "after" and "iconAfter". "after" takes precedence.',
+      );
+    }
+  }
+
   const classes = button({
     variant,
     size,
-    iconBefore: Boolean(iconBefore),
-    iconAfter: Boolean(iconAfter),
+    iconBefore: Boolean(resolvedBefore),
+    iconAfter: Boolean(resolvedAfter),
   });
   const [className, otherProps] = splitProps(rest);
+  type IconElement = ReactElement<{
+    className?: string;
+  }>;
+
+  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
+    if (!slot) {
+      return null;
+    }
+
+    const content =
+      isValidElement(slot) && slot.type === Icon
+        ? cloneElement(slot as IconElement, {
+            className: cx(classes.icon, (slot as IconElement).props.className),
+          })
+        : slot;
+
+    return (
+      <SlotContext.Provider
+        value={{
+          owner: 'Button',
+          placement,
+          size,
+          disabled,
+          error,
+          invalid,
+        }}
+      >
+        <Box
+          as="span"
+          className={
+            placement === 'before' ? classes.iconBefore : classes.iconAfter
+          }
+          display="inline-flex"
+          alignItems="center"
+        >
+          {content}
+        </Box>
+      </SlotContext.Provider>
+    );
+  };
 
   return (
     <Box
@@ -78,19 +148,9 @@ export const Button = (props: ButtonProps) => {
       {...otherProps}
     >
       <HStack gap={size === 'xl' ? '6' : '4'} opacity={loading ? 0 : 1}>
-        {iconBefore && (
-          <Icon
-            name={iconBefore}
-            className={cx(classes.icon, classes.iconBefore)}
-          />
-        )}
+        {renderSlot(resolvedBefore, 'before')}
         {children}
-        {iconAfter && (
-          <Icon
-            name={iconAfter}
-            className={cx(classes.icon, classes.iconAfter)}
-          />
-        )}
+        {renderSlot(resolvedAfter, 'after')}
       </HStack>
       {loading && (
         <Spinner

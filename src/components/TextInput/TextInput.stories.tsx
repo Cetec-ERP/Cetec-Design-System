@@ -1,7 +1,9 @@
 import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
 
+import { Badge } from '../Badge';
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { FormField } from '../FormField';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 
 import { TextInput } from './TextInput';
@@ -13,7 +15,7 @@ import type { Meta, StoryObj } from '@storybook/react';
  *
  * Features:
  * - Four sizes (sm, md, lg, xl)
- * - Optional leading/trailing icons
+ * - Optional `before` / `after` slots, with icon aliases for shorthand
  * - Error and disabled states
  * - Auto-sizing via `fieldSizing: content`
  * - Explicit input type support (text, email, password, search, etc.)
@@ -56,12 +58,20 @@ const meta = {
     iconBefore: {
       control: 'select',
       options: [undefined, 'search', 'user', 'mail', 'lock'],
-      description: 'Icon name to display before input',
+      description: 'Legacy shorthand icon name for before slot',
     },
     iconAfter: {
       control: 'select',
       options: [undefined, 'check', 'x', 'eye', 'chevron-down'],
-      description: 'Icon name to display after input',
+      description: 'Legacy shorthand icon name for after slot',
+    },
+    before: {
+      control: false,
+      description: 'Preferred slot for content before the input',
+    },
+    after: {
+      control: false,
+      description: 'Preferred slot for content after the input',
     },
     type: {
       control: 'select',
@@ -279,6 +289,50 @@ export const WithIcons: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const WithSlots: Story = {
+  render: () => (
+    <Grid
+      gridTemplateColumns="auto 1fr"
+      columnGap="12"
+      rowGap="32"
+      alignItems="center"
+    >
+      <Text textStyle="mono.md" mr="16">
+        before / after
+      </Text>
+      <VStack gap="8" alignItems="flex-start">
+        <TextInput
+          name="slot-email"
+          before={<Icon name="at" />}
+          placeholder="Email"
+        />
+        <TextInput
+          name="slot-check"
+          after={<Icon name="check" />}
+          placeholder="Validated"
+        />
+        <TextInput
+          name="slot-badge"
+          after={<Badge count={2} variant="warning" />}
+          placeholder="Needs review"
+        />
+      </VStack>
+      <Text textStyle="mono.md" mr="16">
+        aliases
+      </Text>
+      <VStack gap="8" alignItems="flex-start">
+        <TextInput
+          name="alias-before"
+          iconBefore="search"
+          placeholder="Search"
+        />
+        <TextInput name="alias-after" iconAfter="check" placeholder="Done" />
+      </VStack>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 export const IconSizes: Story = {
   render: () => (
     <VStack gap="12" alignItems="flex-start">
@@ -323,7 +377,7 @@ export const WithFormField: Story = {
         <TextInput
           name="fullName"
           id="fullName"
-          iconBefore="user"
+          before={<Icon name="user" />}
           placeholder="John Doe"
         />
       </FormField>
@@ -336,7 +390,7 @@ export const WithFormField: Story = {
         <TextInput
           name="email"
           id="email"
-          iconBefore="envelope"
+          before={<Icon name="envelope" />}
           placeholder="john@example.com"
           type="email"
         />
@@ -370,7 +424,7 @@ export const InlineFormField: Story = {
         <TextInput
           name="fullName"
           id="fullName"
-          iconBefore="user"
+          before={<Icon name="user" />}
           placeholder="John Doe"
         />
       </FormField>
@@ -384,7 +438,7 @@ export const InlineFormField: Story = {
         <TextInput
           name="email2"
           id="email2"
-          iconBefore="envelope"
+          before={<Icon name="envelope" />}
           placeholder="john@example.com"
           type="email"
         />
