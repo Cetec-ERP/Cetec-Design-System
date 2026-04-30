@@ -212,8 +212,17 @@ function validateIconMetadata(iconNames, iconMetadata) {
   );
   if (missingMetadataIcons.length > 0) {
     console.warn(
-      `Icons without metadata: ${missingMetadataIcons.length}. ` +
-        `Add aliases/tags over time for better search quality.`,
+      `\n---------------------------\n`,
+      `\nIcons without metadata: ${missingMetadataIcons.length}`,
+      `\n> ${missingMetadataIcons.join(', ')}\n`,
+      `\nAdd aliases/tags over time for better search quality.\n`,
+      `\n---------------------------\n`,
+    );
+  } else {
+    console.log(
+      `\n---------------------------\n`,
+      `\n✅ All icons have metadata.\n`,
+      `\n---------------------------\n`,
     );
   }
 }
