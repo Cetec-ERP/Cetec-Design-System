@@ -13,6 +13,7 @@ export const iconRecipe = defineRecipe({
   base: {
     aspectRatio: 'square',
     fill: 'icon.decorative',
+    flexShrink: 0,
     w: '24', // Default size here does not affect the classNames, so it's safe to set
   },
   variants: {
