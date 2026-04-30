@@ -3,7 +3,7 @@ import type { ChangeEventHandler } from 'react';
 import { cx } from '@styled-system/css';
 import { listItem, type ListItemVariantProps } from '@styled-system/recipes';
 
-import { type IconNamesList } from '~/components/Icon';
+import { type IconNamesList, type IconProps } from '~/components/Icon';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -32,6 +32,8 @@ export type ListItemProps = Omit<
     density?: ListDensity;
     iconBefore?: IconNamesList;
     iconAfter?: IconNamesList;
+    iconBeforeFill?: IconProps['fill'];
+    iconAfterFill?: IconProps['fill'];
   };
 
 export const ListItem = (props: ListItemProps) => {
@@ -48,6 +50,8 @@ export const ListItem = (props: ListItemProps) => {
     children,
     iconBefore,
     iconAfter,
+    iconBeforeFill,
+    iconAfterFill,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -118,6 +122,7 @@ export const ListItem = (props: ListItemProps) => {
             <Icon
               className={cx(classes.icon, classes.beforeSlot)}
               name={iconBefore}
+              fill={iconBeforeFill}
             />
           )}
 
@@ -147,6 +152,7 @@ export const ListItem = (props: ListItemProps) => {
             <Icon
               className={cx(classes.icon, classes.afterSlot)}
               name={iconAfter}
+              fill={iconAfterFill}
               ml="auto"
             />
           )}

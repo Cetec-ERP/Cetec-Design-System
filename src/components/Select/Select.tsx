@@ -353,6 +353,12 @@ export const Select = (props: SelectProps) => {
       return;
     }
 
+    if (value === optionValue) {
+      handleValueChange(null);
+      setOpenState(false);
+      return;
+    }
+
     handleValueChange(optionValue);
     setOpenState(false);
   };
@@ -481,7 +487,20 @@ export const Select = (props: SelectProps) => {
                     variant={multiple ? 'checkbox' : 'default'}
                     label={optionLabel}
                     description={option.props.description}
-                    iconBefore={option.props.iconLeft}
+                    iconBefore={
+                      !multiple
+                        ? (option.props.iconLeft ?? 'check')
+                        : option.props.iconLeft
+                    }
+                    iconBeforeFill={
+                      !multiple
+                        ? isSelected
+                          ? 'icon'
+                          : option.props.iconLeft
+                            ? undefined
+                            : 'transparent'
+                        : undefined
+                    }
                     iconAfter={option.props.iconRight}
                     {...(getItemProps({
                       onClick: () => {
