@@ -13,7 +13,10 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../Box/Box';
 
 export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
-  Omit<TextInputVariantProps, 'iconBefore' | 'iconAfter'> & {
+  Omit<
+    TextInputVariantProps,
+    'before' | 'after' | 'iconBefore' | 'iconAfter'
+  > & {
     name: string;
     id?: string;
     before?: ReactNode;

@@ -16,7 +16,7 @@ import {
 import { splitProps } from '~/utils/splitProps';
 
 export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
-  Omit<ButtonVariantProps, 'iconBefore' | 'iconAfter'> & {
+  Omit<ButtonVariantProps, 'before' | 'after' | 'iconBefore' | 'iconAfter'> & {
     before?: ReactNode;
     after?: ReactNode;
     iconBefore?: IconNamesList;
