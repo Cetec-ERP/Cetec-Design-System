@@ -53,7 +53,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   spinner: [{ size: ['*'], responsive: true }],
   tag: [{ variant: ['*'], hue: ['*'] }],
   textarea: [{ size: ['*'], responsive: true }],
-  textInput: [{ size: ['*'], responsive: true }],
+  textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
   timePicker: [{ size: ['*'], responsive: true }],
   tooltip: [{ size: ['*'], responsive: true }],
 };

@@ -6,6 +6,7 @@ import { Box } from '../Box';
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Button } from '../Button';
 import { CheckboxInput } from '../CheckboxInput';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Textarea } from '../Textarea';
 import { TextInput } from '../TextInput';
@@ -98,9 +99,13 @@ export const ConditionalBreakpoints: Story = {
         labelFor="order-number"
         helpText="Used for matching external invoices."
         size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
-        // gap="12"
+        maxW="md"
       >
-        <TextInput name="pizza" placeholder="Fave pizza" maxW="md" />
+        <TextInput
+          name="pizza"
+          placeholder="Fave pizza"
+          before={<Icon name="question-mark" />}
+        />
         <Textarea
           name="description"
           placeholder="Describe how pizza makes you feel..."

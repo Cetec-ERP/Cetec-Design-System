@@ -11,6 +11,7 @@ import { Icon, type IconNamesList } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
 import { Tooltip } from '~/components/Tooltip';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { useSlotContext } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
@@ -27,6 +28,7 @@ export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
 
 export const IconButton = (props: IconButtonProps) => {
   const fieldContext = useFieldContext();
+  const slotContext = useSlotContext();
   const {
     iconName,
     altText,
@@ -40,10 +42,14 @@ export const IconButton = (props: IconButtonProps) => {
     type = 'button',
     ...rest
   } = props;
-  const size = sizeProp ?? fieldContext?.size;
-  const error = errorProp ?? fieldContext?.error;
-  const invalid = invalidProp ?? fieldContext?.invalid;
-  const disabled = disabledProp ?? fieldContext?.disabled;
+  const size =
+    sizeProp ??
+    (slotContext?.size as IconButtonVariantProps['size'] | undefined) ??
+    fieldContext?.size;
+  const error = errorProp ?? slotContext?.error ?? fieldContext?.error;
+  const invalid = invalidProp ?? slotContext?.invalid ?? fieldContext?.invalid;
+  const disabled =
+    disabledProp ?? slotContext?.disabled ?? fieldContext?.disabled;
   const classes = iconButton({ variant, size });
   const [className, otherProps] = splitProps(rest);
 

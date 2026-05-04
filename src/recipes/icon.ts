@@ -23,6 +23,9 @@ export const iconRecipe = defineRecipe({
       lg: { w: '24' },
       xl: { w: '28' },
     },
+    contextFill: {
+      true: {},
+    },
   },
   defaultVariants: {
     // Don't set default size because then it's hard to override in recipes

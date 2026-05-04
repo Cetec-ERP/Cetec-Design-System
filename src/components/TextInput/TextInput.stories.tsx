@@ -2,8 +2,11 @@ import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
 
 import { Badge } from '../Badge';
 import { BreakpointIndicator } from '../BreakpointIndicator';
+import { Button } from '../Button';
 import { FormField } from '../FormField';
 import { Icon } from '../Icon';
+import { IconButton } from '../IconButton';
+import { Spinner } from '../Spinner';
 import { Text } from '../Text';
 
 import { TextInput } from './TextInput';
@@ -196,6 +199,39 @@ export const ConditionalBreakpoints: Story = {
         placeholder="Conditional Sizes"
         iconBefore="arrows-left-right"
       />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton variant="ghost" iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton variant="hollow" iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton variant="primary" iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Spinner />}
+        after={<Button>Submit</Button>}
+        placeholder="Enter username"
+        defaultValue="tom"
+        disabled
+      />
       <Text
         textAlign="center"
         textStyle="mono.sm"
@@ -315,6 +351,11 @@ export const WithSlots: Story = {
           name="slot-badge"
           after={<Badge count={2} variant="warning" />}
           placeholder="Needs review"
+        />
+        <TextInput
+          name="slot-button"
+          after={<IconButton variant="ghost" iconName="eye" altText="eye" />}
+          placeholder="Enter password"
         />
       </VStack>
       <Text textStyle="mono.md" mr="16">

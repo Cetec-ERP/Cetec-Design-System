@@ -1,6 +1,6 @@
 import type { SVGAttributes } from 'react';
 
-import { css, cx } from '@styled-system/css';
+import { cx } from '@styled-system/css';
 import { icon, type IconVariantProps } from '@styled-system/recipes';
 import type { ColorToken } from '@styled-system/tokens';
 
@@ -37,9 +37,12 @@ export const Icon = (props: IconProps) => {
 
   const spriteHref = `${spritePath}#${name}`;
 
-  const size = sizeProp ?? (slotContext?.size as IconProps['size'] | undefined);
-  const fill = fillProp;
-  const inheritSlotFill = Boolean(slotContext && !fillProp);
+  const slotSize = slotContext?.size as IconProps['size'] | undefined;
+  const slotFill = slotContext?.fill as IconProps['fill'] | undefined;
+
+  const size = sizeProp ?? slotSize;
+  const fill = fillProp ?? slotFill;
+  const useContextFill = Boolean(slotFill && !fillProp);
 
   return (
     <Box
@@ -50,7 +53,7 @@ export const Icon = (props: IconProps) => {
       fill={fill}
       className={cx(
         icon({ size }),
-        inheritSlotFill && css({ fill: 'inherit' }),
+        useContextFill ? icon({ size, contextFill: true }) : icon({ size }),
         className,
       )}
       {...otherProps}

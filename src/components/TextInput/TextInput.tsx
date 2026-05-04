@@ -1,9 +1,11 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, isValidElement } from 'react';
 
 import { cx } from '@styled-system/css';
 import { textInput, type TextInputVariantProps } from '@styled-system/recipes';
 
+import { Button } from '~/components/Button';
 import { Icon, type IconNamesList } from '~/components/Icon';
+import { IconButton } from '~/components/IconButton';
 import { useFieldContext } from '~/system/context/FieldContext';
 import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
@@ -81,11 +83,14 @@ export const TextInput = (props: TextInputProps) => {
 
   const classes = textInput({
     size,
-    iconBefore: Boolean(resolvedBefore),
-    iconAfter: Boolean(resolvedAfter),
+    before: Boolean(resolvedBefore),
+    after: Boolean(resolvedAfter),
     autoSize,
   });
   const [className, otherProps] = splitProps(rest);
+
+  const isButtonLikeSlot = (slot: ReactNode) =>
+    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
 
   const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
     if (!slot) {
@@ -104,11 +109,7 @@ export const TextInput = (props: TextInputProps) => {
         }}
       >
         <Box
-          as="span"
-          className={classes.icon}
-          {...(placement === 'before'
-            ? ({ left: '0' } as const)
-            : ({ right: '0' } as const))}
+          className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
         >
           {slot}
         </Box>
@@ -137,12 +138,7 @@ export const TextInput = (props: TextInputProps) => {
         data-valid={valid}
         data-invalid={invalid}
         aria-invalid={invalid || undefined}
-        className={cx(
-          classes.input,
-          iconBefore && classes.inputIconBefore,
-          iconAfter && classes.inputIconAfter,
-          className,
-        )}
+        className={cx(classes.input, className)}
         autoComplete={autoComplete}
         {...otherProps}
       />

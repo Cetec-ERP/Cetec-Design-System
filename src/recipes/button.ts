@@ -63,17 +63,11 @@ const buttonBaseStyles = {
     display: 'inline-flex',
     alignItems: 'center',
     transitionDuration: 'fast',
-    transitionProperty: 'fill',
+    transitionProperty: 'all',
     transitionTimingFunction: 'default',
     flex: '0 0 var(--slot-size)',
     px: 'var(--slot-px)',
   },
-  // before: {
-  //   px: 'var(--slot-px)',
-  // },
-  // after: {
-  //   px: 'var(--slot-px)',
-  // },
 };
 
 // Variants only hold color-related styles

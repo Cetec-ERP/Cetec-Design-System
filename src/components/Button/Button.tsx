@@ -8,7 +8,11 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
 import { useFieldContext } from '~/system/context/FieldContext';
-import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
+import {
+  SlotContext,
+  type SlotPlacement,
+  useSlotContext,
+} from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
@@ -28,6 +32,7 @@ export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
 
 export const Button = (props: ButtonProps) => {
   const fieldContext = useFieldContext();
+  const slotContext = useSlotContext();
   const {
     variant,
     size: sizeProp,
@@ -44,10 +49,14 @@ export const Button = (props: ButtonProps) => {
     type = 'button',
     ...rest
   } = props;
-  const size = sizeProp ?? fieldContext?.size;
-  const error = errorProp ?? fieldContext?.error;
-  const invalid = invalidProp ?? fieldContext?.invalid;
-  const disabled = disabledProp ?? fieldContext?.disabled;
+  const size =
+    sizeProp ??
+    (slotContext?.size as ButtonVariantProps['size'] | undefined) ??
+    fieldContext?.size;
+  const error = errorProp ?? slotContext?.error ?? fieldContext?.error;
+  const invalid = invalidProp ?? slotContext?.invalid ?? fieldContext?.invalid;
+  const disabled =
+    disabledProp ?? slotContext?.disabled ?? fieldContext?.disabled;
 
   // Temporary compatibility. Will be removed in future versions.
   const resolvedBefore =
