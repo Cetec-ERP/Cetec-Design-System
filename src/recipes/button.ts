@@ -60,19 +60,20 @@ const buttonBaseStyles = {
     fontSize: 'var(--main-fs)',
   },
   slot: {
-    w: 'fit',
-    h: 'fit',
+    display: 'inline-flex',
+    alignItems: 'center',
     transitionDuration: 'fast',
     transitionProperty: 'fill',
     transitionTimingFunction: 'default',
     flex: '0 0 var(--slot-size)',
-  },
-  before: {
     px: 'var(--slot-px)',
   },
-  after: {
-    px: 'var(--slot-px)',
-  },
+  // before: {
+  //   px: 'var(--slot-px)',
+  // },
+  // after: {
+  //   px: 'var(--slot-px)',
+  // },
 };
 
 // Variants only hold color-related styles
@@ -114,12 +115,12 @@ const buttonVariants = {
         color: 'text.inverse',
       },
       slot: {
-        fill: 'icon.decorative.inverse.subtle',
+        fill: 'icon.decorative.inverse',
         mixBlendMode: { base: 'screen', _dark: 'multiply' },
-        _groupHover: { fill: 'icon.decorative.inverse' },
-        _groupActive: { fill: 'icon.decorative.inverse' },
+        _groupHover: { fill: 'icon.decorative.inverse.hovered' },
+        _groupActive: { fill: 'icon.decorative.inverse.hovered' },
         _groupDisabled: {
-          fill: 'icon.decorative.inverse.subtle',
+          fill: 'icon.decorative.inverse',
         },
       },
     },
@@ -206,8 +207,8 @@ const buttonVariants = {
       slot: {
         fill: 'icon.decorative.inverse',
         mixBlendMode: 'screen',
-        _groupHover: { fill: 'icon.decorative.inverse' },
-        _groupActive: { fill: 'icon.decorative.inverse' },
+        _groupHover: { fill: 'icon.decorative.inverse.hovered' },
+        _groupActive: { fill: 'icon.decorative.inverse.hovered' },
         _groupDisabled: {
           fill: 'icon.decorative.inverse',
         },
@@ -254,12 +255,12 @@ const buttonVariants = {
         color: 'text.inverse',
       },
       slot: {
-        fill: 'icon.inverse',
+        fill: 'icon.decorative.inverse',
         mixBlendMode: { base: 'screen', _dark: 'multiply' },
-        _groupHover: { fill: 'icon.inverse' },
-        _groupActive: { fill: 'icon.inverse' },
+        _groupHover: { fill: 'icon.decorative.inverse.hovered' },
+        _groupActive: { fill: 'icon.decorative.inverse.hovered' },
         _groupDisabled: {
-          fill: 'icon.inverse',
+          fill: 'icon.decorative.inverse',
         },
       },
     },

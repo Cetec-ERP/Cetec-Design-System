@@ -8,6 +8,7 @@ export type SlotContextValue = {
   owner: SlotOwner;
   placement: SlotPlacement;
   size?: unknown;
+  fill?: unknown;
   disabled?: boolean;
   error?: boolean;
   invalid?: boolean;

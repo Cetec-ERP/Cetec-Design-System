@@ -1,11 +1,12 @@
 import type { SVGAttributes } from 'react';
 
-import { cx } from '@styled-system/css';
+import { css, cx } from '@styled-system/css';
 import { icon, type IconVariantProps } from '@styled-system/recipes';
 import type { ColorToken } from '@styled-system/tokens';
 
 import { Box, type BoxProps } from '~/components/Box';
 import type { numericSizes } from '~/styles/primitives';
+import { useSlotContext } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { useIconConfig } from './IconContext';
@@ -28,10 +29,17 @@ export type IconProps = Omit<BoxProps, IconNamesList | 'size'> &
   };
 
 export const Icon = (props: IconProps) => {
-  const { name, size, fill, ...rest } = props;
-  const [className, otherProps] = splitProps(rest);
+  const slotContext = useSlotContext();
   const { spritePath } = useIconConfig();
+
+  const { name, size: sizeProp, fill: fillProp, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
+
   const spriteHref = `${spritePath}#${name}`;
+
+  const size = sizeProp ?? (slotContext?.size as IconProps['size'] | undefined);
+  const fill = fillProp;
+  const inheritSlotFill = Boolean(slotContext && !fillProp);
 
   return (
     <Box
@@ -40,7 +48,11 @@ export const Icon = (props: IconProps) => {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       fill={fill}
-      className={cx(icon({ size }), className)}
+      className={cx(
+        icon({ size }),
+        inheritSlotFill && css({ fill: 'inherit' }),
+        className,
+      )}
       {...otherProps}
     >
       <use xlinkHref={spriteHref} />

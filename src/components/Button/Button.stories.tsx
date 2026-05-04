@@ -2,12 +2,14 @@ import { fn } from '@storybook/test';
 
 import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
+import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Divider } from '../Divider';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
 import { Kbd } from '../Kbd';
+import { Spinner } from '../Spinner';
 import { Text } from '../Text';
 
 import { Button } from './Button';
@@ -195,6 +197,27 @@ export const ConditionalBreakpoints: Story = {
       <Button
         size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
         before={<Badge count={5} />}
+      >
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={
+          <Avatar name="John Doe" src="https://i.pravatar.cc/150?img=1" />
+        }
+      >
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Spinner />}
+      >
+        Button
+      </Button>
+      <Button
+        variant="ghost"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Icon name="circle-check" fill="icon.success" />}
       >
         Button
       </Button>

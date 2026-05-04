@@ -1,10 +1,4 @@
-import {
-  type MouseEvent,
-  type ReactNode,
-  type ReactElement,
-  cloneElement,
-  isValidElement,
-} from 'react';
+import { type MouseEvent, type ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { HStack } from '@styled-system/jsx';
@@ -82,21 +76,11 @@ export const Button = (props: ButtonProps) => {
     after: Boolean(resolvedAfter),
   });
   const [className, otherProps] = splitProps(rest);
-  type IconElement = ReactElement<{
-    className?: string;
-  }>;
 
   const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
     if (!slot) {
       return null;
     }
-
-    const content =
-      isValidElement(slot) && slot.type === Icon
-        ? cloneElement(slot as IconElement, {
-            className: cx(classes.slot, (slot as IconElement).props.className),
-          })
-        : slot;
 
     return (
       <SlotContext.Provider
@@ -109,13 +93,7 @@ export const Button = (props: ButtonProps) => {
           invalid,
         }}
       >
-        <Box
-          className={placement === 'before' ? classes.before : classes.after}
-          display="inline-flex"
-          alignItems="center"
-        >
-          {content}
-        </Box>
+        <Box className={classes.slot}>{slot}</Box>
       </SlotContext.Provider>
     );
   };

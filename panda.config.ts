@@ -44,6 +44,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   datePicker: [{ size: ['*'], responsive: true }],
   divider: [{ size: ['*'], responsive: true }],
   formField: [{ size: ['*'], layout: ['*'], responsive: true }],
+  icon: [{ size: ['*'], responsive: true }],
   iconButton: [{ size: ['*'], variant: ['*'], responsive: true }],
   list: [{ density: ['*'], responsive: true }],
   listItem: [{ density: ['*'], responsive: true }, { selected: ['*'] }],
