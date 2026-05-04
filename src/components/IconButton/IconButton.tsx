@@ -76,11 +76,13 @@ export const IconButton = (props: IconButtonProps) => {
         data-invalid={invalid || undefined}
         {...otherProps}
       >
-        <Icon
-          name={iconName}
-          className={classes.icon}
-          opacity={loading ? 0 : 1}
-        />
+        <Box className={classes.mainContent}>
+          <Icon
+            name={iconName}
+            className={classes.slot}
+            opacity={loading ? 0 : 1}
+          />
+        </Box>
         {loading && (
           <Spinner
             size="sm"

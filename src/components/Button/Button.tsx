@@ -25,7 +25,7 @@ export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
     iconAfter?: IconNamesList;
     href?: string;
     loading?: boolean;
-    children: string | ReactNode; // include ReactNode so we can pass in components like <Badge/>
+    children: string | ReactNode; // include ReactNode so we can pass in components
     error?: boolean;
     invalid?: boolean;
     disabled?: boolean;
@@ -54,6 +54,8 @@ export const Button = (props: ButtonProps) => {
   const error = errorProp ?? fieldContext?.error;
   const invalid = invalidProp ?? fieldContext?.invalid;
   const disabled = disabledProp ?? fieldContext?.disabled;
+
+  // Temporary compatibility. Will be removed in future versions.
   const resolvedBefore =
     before ?? (iconBefore ? <Icon name={iconBefore} aria-hidden /> : undefined);
   const resolvedAfter =
@@ -76,8 +78,8 @@ export const Button = (props: ButtonProps) => {
   const classes = button({
     variant,
     size,
-    iconBefore: Boolean(resolvedBefore),
-    iconAfter: Boolean(resolvedAfter),
+    before: Boolean(resolvedBefore),
+    after: Boolean(resolvedAfter),
   });
   const [className, otherProps] = splitProps(rest);
   type IconElement = ReactElement<{
@@ -92,7 +94,7 @@ export const Button = (props: ButtonProps) => {
     const content =
       isValidElement(slot) && slot.type === Icon
         ? cloneElement(slot as IconElement, {
-            className: cx(classes.icon, (slot as IconElement).props.className),
+            className: cx(classes.slot, (slot as IconElement).props.className),
           })
         : slot;
 
@@ -108,10 +110,7 @@ export const Button = (props: ButtonProps) => {
         }}
       >
         <Box
-          as="span"
-          className={
-            placement === 'before' ? classes.iconBefore : classes.iconAfter
-          }
+          className={placement === 'before' ? classes.before : classes.after}
           display="inline-flex"
           alignItems="center"
         >
@@ -147,9 +146,9 @@ export const Button = (props: ButtonProps) => {
       data-invalid={invalid || undefined}
       {...otherProps}
     >
-      <HStack gap={size === 'xl' ? '6' : '4'} opacity={loading ? 0 : 1}>
+      <HStack gap="0" opacity={loading ? 0 : 1}>
         {renderSlot(resolvedBefore, 'before')}
-        {children}
+        <Box className={classes.mainContent}>{children}</Box>
         {renderSlot(resolvedAfter, 'after')}
       </HStack>
       {loading && (

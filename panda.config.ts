@@ -29,7 +29,15 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
       variant: ['*'],
     },
   ],
-  button: [{ size: ['*'], variant: ['*'], responsive: true }],
+  button: [
+    {
+      size: ['*'],
+      variant: ['*'],
+      before: ['*'],
+      after: ['*'],
+      responsive: true,
+    },
+  ],
   card: [{ size: ['*'], variant: ['*'], responsive: true }],
   chip: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
   chipGroup: [{ size: ['*'], responsive: true }],

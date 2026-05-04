@@ -7,6 +7,7 @@ import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Divider } from '../Divider';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
+import { Kbd } from '../Kbd';
 import { Text } from '../Text';
 
 import { Button } from './Button';
@@ -189,7 +190,13 @@ export const ConditionalBreakpoints: Story = {
         }}
         iconBefore="arrows-left-right"
       >
-        Conditional Button Sizes
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Badge count={5} />}
+      >
+        Button
       </Button>
       <VStack gap="4">
         <Text
@@ -388,6 +395,12 @@ export const WithSlots: Story = {
           after={<Icon name="arrow-right" />}
         >
           Review
+        </Button>
+        <Button
+          before={<Icon name="search" />}
+          after={<Kbd keys={['⌘', 'K']} />}
+        >
+          Search
         </Button>
       </Wrap>
       <Text textStyle="mono.md" mr="16">
