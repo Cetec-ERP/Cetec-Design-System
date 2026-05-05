@@ -1,7 +1,7 @@
 import {
   type ReactNode,
-  useRef,
   useEffect,
+  useRef,
   type KeyboardEvent,
   type MouseEvent,
 } from 'react';
@@ -24,7 +24,7 @@ import { useChipGroup } from './ChipGroupContext';
 
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   Omit<ChipVariantProps, 'before' | 'after' | 'dismissable'> & {
-    children: string | ReactNode;
+    children: string;
     before?: ReactNode;
     after?: ReactNode;
     disabled?: boolean;
@@ -40,6 +40,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   };
 
 export const Chip = (props: ChipProps) => {
+  const groupContext = useChipGroup();
   const fieldContext = useFieldContext();
   const slotContext = useSlotContext();
   const {
@@ -61,44 +62,62 @@ export const Chip = (props: ChipProps) => {
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
-  const groupContext = useChipGroup();
+
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const registerChip = groupContext?.registerChip;
+  const unregisterChip = groupContext?.unregisterChip;
+
   const size =
     sizeProp ??
     groupContext?.size ??
     (slotContext?.size as ChipVariantProps['size'] | undefined) ??
-    fieldContext?.size;
+    fieldContext?.size ??
+    undefined;
   const error = errorProp ?? slotContext?.error ?? fieldContext?.error;
   const invalid = invalidProp ?? slotContext?.invalid ?? fieldContext?.invalid;
   const disabled =
     disabledProp ?? slotContext?.disabled ?? fieldContext?.disabled;
+  const isDisabled = disabled || loading;
 
-  // Determine if this chip is selectable (has value and is inside ChipGroup)
   const isSelectable = value !== undefined && groupContext !== null;
   const hasPrimaryAction = Boolean(onClick) || isSelectable;
 
-  // Register/unregister with ChipGroup for keyboard navigation
-  useEffect(() => {
-    if (isSelectable && value && groupContext) {
-      groupContext.registerChip(value, buttonRef);
-      return () => groupContext.unregisterChip(value);
-    }
-  }, [isSelectable, value, groupContext]);
-
-  // Determine if selected
-  const isSelected = isSelectable
-    ? groupContext.type === 'single'
-      ? groupContext.value === value
-      : Array.isArray(groupContext.value) && groupContext.value.includes(value)
-    : false;
-
-  // MultiSelect shows check icon when selected
   const isMultiSelected =
-    isSelectable && groupContext.type === 'multi' && isSelected;
+    isSelectable &&
+    value !== undefined &&
+    groupContext !== null &&
+    groupContext.type === 'multi' &&
+    Array.isArray(groupContext.value) &&
+    groupContext.value.includes(value);
 
-  // Determine if there's content before/after for padding adjustments
+  const isSelected =
+    isSelectable && groupContext !== null
+      ? groupContext.type === 'single'
+        ? groupContext.value === value
+        : isMultiSelected
+      : false;
+
   const hasBefore = Boolean(before) || isMultiSelected;
   const hasAfter = Boolean(after) || dismissable;
+
+  useEffect(() => {
+    if (
+      !isSelectable ||
+      isDisabled ||
+      !registerChip ||
+      !unregisterChip ||
+      value === undefined
+    ) {
+      return;
+    }
+
+    registerChip(value, buttonRef);
+
+    return () => {
+      unregisterChip(value);
+    };
+  }, [isDisabled, isSelectable, registerChip, unregisterChip, value]);
 
   const classes = chip({
     size,
@@ -129,7 +148,7 @@ export const Chip = (props: ChipProps) => {
   };
 
   const handleBodyClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (isSelectable && groupContext) {
+    if (isSelectable && groupContext && value !== undefined) {
       if (groupContext.type === 'single') {
         groupContext.onChange(value);
       } else {
@@ -137,21 +156,19 @@ export const Chip = (props: ChipProps) => {
           ? groupContext.value
           : [];
         const newValues = currentValues.includes(value)
-          ? currentValues.filter((v) => v !== value)
+          ? currentValues.filter((currentValue) => currentValue !== value)
           : [...currentValues, value];
         groupContext.onChange(newValues);
       }
-    } else if (onClick) {
-      onClick(e);
     }
+
+    onClick?.(e);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
-    // Handle keyboard navigation for selectable chips
-    if (!isSelectable || !groupContext || !value) return;
+    if (!isSelectable || !groupContext || value === undefined) return;
 
     if (groupContext.type === 'single') {
-      // Single select: arrow keys navigate and select
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault();
         groupContext.focusChip('next', value);
@@ -162,28 +179,37 @@ export const Chip = (props: ChipProps) => {
     }
   };
 
-  const role = isSelectable
-    ? groupContext.type === 'single'
-      ? 'radio'
-      : 'checkbox'
-    : undefined;
+  const role =
+    isSelectable && groupContext !== null
+      ? groupContext.type === 'single'
+        ? 'radio'
+        : 'checkbox'
+      : undefined;
 
   const getTabIndex = () => {
-    if (!isSelectable || !groupContext) return undefined;
+    if (!isSelectable || !groupContext || isDisabled || value === undefined) {
+      return undefined;
+    }
+
     if (groupContext.type === 'single') {
       if (isSelected) return 0;
+
       const hasSelection =
         groupContext.value !== undefined && groupContext.value !== '';
       if (!hasSelection && groupContext.chipValues[0] === value) return 0;
+
       return -1;
     }
+
     return 0;
   };
 
-  const resolvedDismissLabel =
-    dismissLabel ??
-    (typeof children === 'string' ? `Remove ${children}` : undefined);
-  const dismissDisabled = disabled || loading || !onDismiss;
+  const resolvedDismissLabel = dismissLabel || `Remove ${children}`;
+
+  const handleDismissClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onDismiss?.();
+  };
 
   const dismissButton = (
     <Box
@@ -191,96 +217,87 @@ export const Chip = (props: ChipProps) => {
       type="button"
       className={classes.dismissButton}
       aria-label={resolvedDismissLabel}
-      disabled={dismissDisabled}
-      onClick={onDismiss}
+      aria-hidden={dismissable ? undefined : true}
+      disabled={isDisabled || !onDismiss}
+      onClick={handleDismissClick}
       opacity={loading ? 0 : 1}
+      data-selected={isSelected ? true : undefined}
+      data-deleted={deleted ? true : undefined}
+      data-disabled={isDisabled || undefined}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
     >
-      <Icon name="x" className={classes.chipIcon} aria-hidden />
+      <Icon name="x" aria-hidden />
     </Box>
   );
-
-  // const innerWrapper = (
-  //   <Box className={classes.innerWrapper} opacity={loading ? 0 : 1}>
-  //     {children}
-  //   </Box>
-  // );
 
   const bodyContent = (
-    <Box className={classes.innerWrapper} opacity={loading ? 0 : 1}>
+    <>
       {isMultiSelected && (
         <Box as="span" className={classes.slot}>
-          <Icon name="check" className={classes.chipIcon} aria-hidden />
+          <Icon name="check" fill="icon.inverse" aria-hidden />
         </Box>
       )}
-      {before && renderSlot(before, 'before')}
-      {children}
-      {after && renderSlot(after, 'after')}
-    </Box>
+      {renderSlot(before, 'before')}
+      <Box as="span" className={classes.mainContent}>
+        {children}
+      </Box>
+      {renderSlot(after, 'after')}
+    </>
   );
 
-  if (dismissable) {
-    return (
-      <Box
-        className={`${cx(classes.container, className)} group`}
-        data-loading={loading ? true : undefined}
-        data-deleted={deleted ? true : undefined}
-        data-disabled={disabled || undefined}
-        {...otherProps}
-      >
-        {hasPrimaryAction ? (
-          <Box
-            as="button"
-            ref={buttonRef}
-            className={classes.body}
-            onClick={handleBodyClick}
-            onKeyDown={handleKeyDown}
-            tabIndex={getTabIndex()}
-            disabled={disabled || loading}
-            role={role}
-            aria-checked={isSelectable ? isSelected : undefined}
-            aria-busy={loading ? true : undefined}
-            data-selected={isSelected ? true : undefined}
-            // data-loading={loading ? true : undefined}
-            // data-deleted={deleted ? true : undefined}
-            type={type}
-          >
-            {bodyContent}
-          </Box>
-        ) : (
-          <Box as="span" className={classes.body}>
-            {bodyContent}
-          </Box>
-        )}
-        {dismissButton}
-        {loading && <Spinner size="sm" centered />}
-      </Box>
-    );
-  }
-
-  return (
+  const body = hasPrimaryAction ? (
     <Box
       as="button"
       ref={buttonRef}
-      className={`${cx(classes.container, className)} group`}
+      className={classes.body}
       onClick={handleBodyClick}
       onKeyDown={handleKeyDown}
       tabIndex={getTabIndex()}
-      disabled={disabled}
+      disabled={isDisabled}
       role={role}
       aria-checked={isSelectable ? isSelected : undefined}
+      aria-busy={loading ? true : undefined}
       data-selected={isSelected ? true : undefined}
       data-loading={loading ? true : undefined}
-      aria-busy={loading ? true : undefined}
-      type={type}
       data-deleted={deleted ? true : undefined}
+      data-disabled={isDisabled || undefined}
       data-error={error || undefined}
       data-invalid={invalid || undefined}
+      type={type}
+      opacity={loading ? 0 : 1}
+    >
+      {bodyContent}
+    </Box>
+  ) : (
+    <Box
+      as="span"
+      className={classes.body}
+      data-deleted={deleted ? true : undefined}
+      data-disabled={isDisabled || undefined}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
+      opacity={loading ? 0 : 1}
+    >
+      {bodyContent}
+    </Box>
+  );
+
+  return (
+    <Box
+      className={`${cx(classes.container, className)} group`}
+      data-loading={loading ? true : undefined}
+      data-deleted={deleted ? true : undefined}
+      data-disabled={disabled || undefined}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
+      aria-busy={loading ? true : undefined}
+      aria-disabled={disabled || undefined}
       aria-invalid={invalid || undefined}
       {...otherProps}
     >
-      <Box as="span" className={classes.body}>
-        {bodyContent}
-      </Box>
+      {body}
+      {dismissable && dismissButton}
       {loading && <Spinner size="sm" centered />}
     </Box>
   );

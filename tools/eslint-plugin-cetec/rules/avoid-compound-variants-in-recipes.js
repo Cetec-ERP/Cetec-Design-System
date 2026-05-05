@@ -1,5 +1,16 @@
 const RULE_NAME = 'avoid-compound-variants-in-recipes';
 
+// tag.ts intentionally keeps compoundVariants for the hue/variant matrix.
+const EXCLUDED_FILES = new Set(['src/recipes/tag.ts']);
+
+const isExcludedFile = (context) => {
+  const filename = context.getFilename().replaceAll('\\', '/');
+
+  return [...EXCLUDED_FILES].some((excludedFile) =>
+    filename.endsWith(excludedFile),
+  );
+};
+
 const isRecipeDefinitionCall = (node) => {
   if (!node || node.type !== 'CallExpression') {
     return false;
@@ -44,6 +55,10 @@ const avoidCompoundVariantsInRecipesRule = {
     },
   },
   create(context) {
+    if (isExcludedFile(context)) {
+      return {};
+    }
+
     return {
       CallExpression(node) {
         if (!isRecipeDefinitionCall(node)) {

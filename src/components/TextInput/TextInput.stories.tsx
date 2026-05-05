@@ -6,6 +6,7 @@ import { Button } from '../Button';
 import { FormField } from '../FormField';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
+import { Kbd } from '../Kbd';
 import { Spinner } from '../Spinner';
 import { Text } from '../Text';
 
@@ -337,6 +338,12 @@ export const WithSlots: Story = {
         before / after
       </Text>
       <VStack gap="8" alignItems="flex-start">
+        <TextInput
+          name="slot-search"
+          before={<Icon name="search" />}
+          after={<Kbd keys={['⌘', 'K']} />}
+          placeholder="Search"
+        />
         <TextInput
           name="slot-email"
           before={<Icon name="at" />}
