@@ -245,6 +245,26 @@ export const Highlighting: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const WithHrefs: Story = {
+  args: {},
+  render: () => (
+    <Card variant="flat" minW="2xs">
+      <List role="listbox" aria-label="Navigation links">
+        {items.map((item) => (
+          <ListItem
+            key={`link-${item.id}`}
+            href={`#${item.id}`}
+            iconAfter="arrow-square-out"
+            label={item.label}
+            description={item.desc}
+          />
+        ))}
+      </List>
+    </Card>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 export const ConditionalBreakpoints: Story = {
   args: {},
   render: () => (
