@@ -27,6 +27,14 @@ export const keyframes = defineKeyframes({
       animationTimingFunction: 'cubic-bezier(0,0,0.2,1)',
     },
   },
+  skeletonWave: {
+    '0%': {
+      backgroundPosition: '200% 0',
+    },
+    '100%': {
+      backgroundPosition: '-200% 0',
+    },
+  },
   badgePop: {
     '0%': {
       transform: 'translate(50%, -50%) scale(1)',
