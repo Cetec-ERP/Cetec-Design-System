@@ -13,4 +13,7 @@ export const animations = defineTokens.animations({
   bounce: {
     value: 'bounce 1s infinite',
   },
+  skeletonWave: {
+    value: 'skeletonWave 2s linear 0.5s infinite',
+  },
 });
