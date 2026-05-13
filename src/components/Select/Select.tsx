@@ -79,9 +79,7 @@ const isSelectOptionElement = (
 };
 
 const getOptionText = (option: ReactElement<SelectOptionProps>) => {
-  return typeof option.props.label === 'string'
-    ? option.props.label
-    : option.props.value;
+  return option.props.label;
 };
 
 const getSelectedDisplay = (
@@ -174,6 +172,7 @@ export const Select = (props: SelectProps) => {
 
   const generatedId = useId();
   const triggerId = id ?? `select-${generatedId}`;
+  const labelId = `${triggerId}-label`;
   const listboxId = `${triggerId}-listbox`;
 
   const [internalOpen, setInternalOpen] = useState(false);
@@ -386,6 +385,7 @@ export const Select = (props: SelectProps) => {
             type="hidden"
             name={name}
             value={selectedValue}
+            disabled={disabled}
           />
         ))}
 
@@ -396,6 +396,7 @@ export const Select = (props: SelectProps) => {
         className={`${cx(classes.trigger, className)} peer`}
         role="combobox"
         tabIndex={disabled ? -1 : 0}
+        aria-labelledby={labelId}
         aria-label={accessibleName}
         aria-haspopup="listbox"
         aria-expanded={isOpen}

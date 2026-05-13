@@ -91,7 +91,7 @@ export const FormField = (props: FormFieldProps) => {
       {...otherProps}
     >
       <Flex className={classes.labelWrapper}>
-        <Label htmlFor={labelFor}>
+        <Label htmlFor={labelFor} id={`${labelFor}-label`}>
           {label} {required && <Required />}
         </Label>
 

@@ -1,11 +1,9 @@
-import type { ReactNode } from 'react';
-
 import type { BoxProps } from '../Box';
 import type { IconNamesList } from '../Icon';
 
 export type SelectOptionProps = Omit<BoxProps, 'children'> & {
   value: string;
-  label: string | ReactNode;
+  label: string;
   disabled?: boolean;
   description?: string;
   iconLeft?: IconNamesList;
