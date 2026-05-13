@@ -95,10 +95,6 @@ const textInputBase = {
     px: '0',
     zIndex: 1,
     m: '-1',
-    '& button': {
-      borderTopLeftRadius: '0',
-      borderBottomLeftRadius: '0',
-    },
   },
 };
 
@@ -150,12 +146,24 @@ const textInputVariants = {
       input: {
         ps: '0',
       },
+      buttonSlot: {
+        '& button': {
+          borderTopRightRadius: '0',
+          borderBottomRightRadius: '0',
+        },
+      },
     },
   },
   after: {
     true: {
       input: {
         pe: '0',
+      },
+      buttonSlot: {
+        '& button': {
+          borderTopLeftRadius: '0',
+          borderBottomLeftRadius: '0',
+        },
       },
     },
   },

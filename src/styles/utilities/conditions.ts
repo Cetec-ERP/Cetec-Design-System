@@ -80,6 +80,7 @@ export const conditions = {
   valid: '&:is(:valid, [data-valid=true])',
   invalid: '&:is(:invalid, [data-invalid=true], [aria-invalid=true])',
   error: '&:is([data-error=true])',
+  success: '&:is([data-success=true])',
   autofill: '&:autofill',
   inRange: '&:is(:in-range, [data-in-range=true])',
   outOfRange: '&:is(:out-of-range, [data-outside-range=true])',

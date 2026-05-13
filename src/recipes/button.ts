@@ -264,15 +264,7 @@ const buttonVariants = {
 export const buttonRecipe = defineSlotRecipe({
   className: 'button',
   jsx: ['Button'],
-  slots: [
-    'container',
-    'mainContent',
-    'slot',
-    'before',
-    'after',
-    'iconBefore',
-    'iconAfter',
-  ],
+  slots: ['container', 'mainContent', 'slot'],
   base: buttonBaseStyles,
   variants: {
     ...buttonVariants,
