@@ -74,6 +74,7 @@ export { TimePicker } from './components/TimePicker';
 export { TimeRangePicker } from './components/TimeRangePicker';
 export { Toggle } from './components/Toggle';
 export { ToggleInput } from './components/ToggleInput';
+export { Skeleton } from './components/Skeleton';
 export { Tooltip } from './components/Tooltip';
 
 // Theme handling

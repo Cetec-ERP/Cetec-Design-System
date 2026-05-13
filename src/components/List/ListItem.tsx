@@ -18,9 +18,10 @@ import { type ListDensity, useListContext } from './listContext';
 
 export type ListItemProps = Omit<
   BoxProps<'button'>,
-  keyof ListItemVariantProps | 'as' | 'type'
+  keyof ListItemVariantProps | 'as' | 'type' | 'href'
 > &
   Omit<ListItemVariantProps, 'selected' | 'iconBefore' | 'iconAfter'> & {
+    href?: string;
     label?: string;
     description?: string;
     query?: string;
@@ -52,6 +53,7 @@ export const ListItem = (props: ListItemProps) => {
     iconAfter,
     iconBeforeFill,
     iconAfterFill,
+    href,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -85,8 +87,15 @@ export const ListItem = (props: ListItemProps) => {
 
   return (
     <Box
-      as="button"
-      type="button"
+      {...(href
+        ? ({
+            as: 'a',
+            href,
+          } satisfies BoxProps<'a'>)
+        : ({
+            as: 'button',
+            type: 'button',
+          } satisfies BoxProps<'button'>))}
       className={cx(classes.wrapper, className)}
       role="option"
       aria-selected={isSelected}
