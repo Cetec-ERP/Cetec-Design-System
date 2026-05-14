@@ -46,7 +46,7 @@ const meta: Meta<typeof Badge> = {
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg', 'xl'],
       description: 'Size of the badge',
     },
   },
@@ -70,6 +70,7 @@ export const DotStandalone: Story = {
       <Badge size="sm" />
       <Badge size="md" />
       <Badge size="lg" />
+      <Badge size="xl" />
     </Box>
   ),
 };
@@ -103,6 +104,7 @@ export const CountStandalone: Story = {
         <Badge count={5} size="sm" />
         <Badge count={12} size="md" />
         <Badge count={99} size="lg" />
+        <Badge count={999} size="xl" />
       </Flex>
       <Flex gap="16">
         <Button>

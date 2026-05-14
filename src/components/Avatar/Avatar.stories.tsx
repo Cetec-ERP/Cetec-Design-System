@@ -19,7 +19,7 @@ const meta: Meta<typeof Avatar> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl'],
       description: 'Size of the avatar',
     },
     shape: {
@@ -84,12 +84,12 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="xs" src={sampleImages.user1} name="John Doe" />
       <Avatar size="sm" src={sampleImages.user1} name="John Doe" />
       <Avatar size="md" src={sampleImages.user1} name="John Doe" />
       <Avatar size="lg" src={sampleImages.user1} name="John Doe" />
       <Avatar size="xl" src={sampleImages.user1} name="John Doe" />
       <Avatar size="2xl" src={sampleImages.user1} name="John Doe" />
+      <Avatar size="3xl" src={sampleImages.user1} name="John Doe" />
     </Box>
   ),
 };
@@ -97,7 +97,7 @@ export const Sizes: Story = {
 export const SizesWithLabels: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="4">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
+      {(['sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const).map((size) => (
         <Box key={size} display="flex" gap="4" alignItems="center">
           <Text w="80" fontWeight="medium">
             {size}:
@@ -222,12 +222,12 @@ export const Presence: Story = {
 export const PresenceAllSizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="xs" src={sampleImages.user1} presence="online" />
       <Avatar size="sm" src={sampleImages.user1} presence="online" />
       <Avatar size="md" src={sampleImages.user1} presence="online" />
       <Avatar size="lg" src={sampleImages.user1} presence="online" />
       <Avatar size="xl" src={sampleImages.user1} presence="online" />
       <Avatar size="2xl" src={sampleImages.user1} presence="online" />
+      <Avatar size="3xl" src={sampleImages.user1} presence="online" />
     </Box>
   ),
 };
@@ -263,12 +263,12 @@ export const Status: Story = {
 export const StatusAllSizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="xs" src={sampleImages.user1} status="approved" />
       <Avatar size="sm" src={sampleImages.user1} status="approved" />
       <Avatar size="md" src={sampleImages.user1} status="approved" />
       <Avatar size="lg" src={sampleImages.user1} status="approved" />
       <Avatar size="xl" src={sampleImages.user1} status="approved" />
       <Avatar size="2xl" src={sampleImages.user1} status="approved" />
+      <Avatar size="3xl" src={sampleImages.user1} status="approved" />
     </Box>
   ),
 };
@@ -326,12 +326,12 @@ export const ConditionalBreakpoints: Story = {
           presence="online"
           status="approved"
           size={{
-            base: '2xl',
-            xs: 'xl',
-            sm: 'lg',
-            md: 'md',
-            lg: 'sm',
-            xl: 'xs',
+            base: '3xl',
+            xs: '2xl',
+            sm: 'xl',
+            md: 'lg',
+            lg: 'md',
+            xl: 'sm',
           }}
           shape="circle"
         />
@@ -340,12 +340,12 @@ export const ConditionalBreakpoints: Story = {
           presence="online"
           status="approved"
           size={{
-            base: '2xl',
-            xs: 'xl',
-            sm: 'lg',
-            md: 'md',
-            lg: 'sm',
-            xl: 'xs',
+            base: '3xl',
+            xs: '2xl',
+            sm: 'xl',
+            md: 'lg',
+            lg: 'md',
+            xl: 'sm',
           }}
           shape="square"
         />
@@ -354,12 +354,12 @@ export const ConditionalBreakpoints: Story = {
           presence="online"
           status="approved"
           size={{
-            base: '2xl',
-            xs: 'xl',
-            sm: 'lg',
-            md: 'md',
-            lg: 'sm',
-            xl: 'xs',
+            base: '3xl',
+            xs: '2xl',
+            sm: 'xl',
+            md: 'lg',
+            lg: 'md',
+            xl: 'sm',
           }}
           shape="hexagon"
         />

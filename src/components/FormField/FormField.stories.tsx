@@ -6,6 +6,7 @@ import { Box } from '../Box';
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Button } from '../Button';
 import { CheckboxInput } from '../CheckboxInput';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Textarea } from '../Textarea';
 import { TextInput } from '../TextInput';
@@ -98,9 +99,13 @@ export const ConditionalBreakpoints: Story = {
         labelFor="order-number"
         helpText="Used for matching external invoices."
         size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
-        // gap="12"
+        maxW="md"
       >
-        <TextInput name="pizza" placeholder="Fave pizza" maxW="md" />
+        <TextInput
+          name="pizza"
+          placeholder="Fave pizza"
+          before={<Icon name="question-mark" />}
+        />
         <Textarea
           name="description"
           placeholder="Describe how pizza makes you feel..."
@@ -148,6 +153,31 @@ export const ExFieldWithError: Story = {
           }
           placeholder="team@company.com"
           type="email"
+        />
+      </FormField>
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ExFieldWithSuccess: Story = {
+  name: 'Ex: Validation Success',
+  render: function ExFieldWithSuccessRender() {
+    return (
+      <FormField
+        label="Enter your domain"
+        labelFor="domain"
+        success={true}
+        successText="This domain is available"
+        w="xs"
+        size="lg"
+      >
+        <TextInput
+          id="domain"
+          name="domain"
+          placeholder="name.com"
+          defaultValue="shauns-pizza-company.com"
+          before={<Icon name="check" fill="icon.success" />}
         />
       </FormField>
     );
