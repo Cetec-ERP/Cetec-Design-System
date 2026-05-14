@@ -257,7 +257,6 @@ export const Chip = (props: ChipProps) => {
       disabled={isDisabled}
       role={role}
       aria-checked={isSelectable ? isSelected : undefined}
-      aria-busy={loading ? true : undefined}
       data-selected={isSelected ? true : undefined}
       data-loading={loading ? true : undefined}
       data-deleted={deleted ? true : undefined}

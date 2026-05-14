@@ -125,9 +125,9 @@ export const TextInput = (props: TextInputProps) => {
       className={cx(classes.container, className)}
       aria-disabled={disabled}
       data-disabled={disabled || undefined}
-      data-error={error}
-      data-invalid={invalid}
-      data-valid={valid}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
+      data-valid={valid || undefined}
       aria-invalid={invalid || undefined}
     >
       {renderSlot(resolvedBefore, 'before')}
@@ -137,9 +137,9 @@ export const TextInput = (props: TextInputProps) => {
         name={name}
         type={type}
         disabled={disabled}
-        data-error={error}
-        data-valid={valid}
-        data-invalid={invalid}
+        data-error={error || undefined}
+        data-valid={valid || undefined}
+        data-invalid={invalid || undefined}
         aria-invalid={invalid || undefined}
         className={cx(classes.input, className)}
         autoComplete={autoComplete}

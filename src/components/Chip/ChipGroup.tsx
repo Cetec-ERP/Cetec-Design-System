@@ -139,6 +139,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
         className={cx(stylesClassName, className)}
         role={role}
         aria-label={label}
+        aria-labelledby={id ? `${id}-label` : undefined}
         id={id}
         gap={gap}
         {...otherProps}

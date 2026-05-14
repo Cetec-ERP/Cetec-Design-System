@@ -42,7 +42,6 @@ export const Icon = (props: IconProps) => {
 
   const size = sizeProp ?? slotSize;
   const fill = fillProp ?? slotFill;
-  const useContextFill = Boolean(slotFill && !fillProp);
 
   return (
     <Box
@@ -51,11 +50,7 @@ export const Icon = (props: IconProps) => {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       fill={fill}
-      className={cx(
-        icon({ size }),
-        useContextFill ? icon({ size, contextFill: true }) : icon({ size }),
-        className,
-      )}
+      className={cx(icon({ size }), className)}
       {...otherProps}
     >
       <use xlinkHref={spriteHref} />

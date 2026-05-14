@@ -118,7 +118,7 @@ export const FormField = (props: FormFieldProps) => {
       )}
 
       <FieldContext.Provider value={{ size, error, invalid, disabled }}>
-        <Box className={classes.inputs} gap={gap || '8'}>
+        <Box className={classes.inputs} gap={gap}>
           {enhancedChildren}
         </Box>
       </FieldContext.Provider>
