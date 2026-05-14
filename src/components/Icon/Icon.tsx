@@ -6,6 +6,7 @@ import type { ColorToken } from '@styled-system/tokens';
 
 import { Box, type BoxProps } from '~/components/Box';
 import type { numericSizes } from '~/styles/primitives';
+import { useSlotContext } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { useIconConfig } from './IconContext';
@@ -28,10 +29,19 @@ export type IconProps = Omit<BoxProps, IconNamesList | 'size'> &
   };
 
 export const Icon = (props: IconProps) => {
-  const { name, size, fill, ...rest } = props;
-  const [className, otherProps] = splitProps(rest);
+  const slotContext = useSlotContext();
   const { spritePath } = useIconConfig();
+
+  const { name, size: sizeProp, fill: fillProp, ...rest } = props;
+  const [className, otherProps] = splitProps(rest);
+
   const spriteHref = `${spritePath}#${name}`;
+
+  const slotSize = slotContext?.size as IconProps['size'] | undefined;
+  const slotFill = slotContext?.fill as IconProps['fill'] | undefined;
+
+  const size = sizeProp ?? slotSize;
+  const fill = fillProp ?? slotFill;
 
   return (
     <Box

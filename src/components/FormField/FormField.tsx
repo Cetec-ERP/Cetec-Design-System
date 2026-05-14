@@ -1,11 +1,12 @@
-import type { ReactNode, ReactElement } from 'react';
-import { Children, isValidElement, cloneElement } from 'react';
+import type { ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { Flex } from '@styled-system/jsx';
 import { formField, type FormFieldVariantProps } from '@styled-system/recipes';
 
-import type { numericSizes } from '~/styles/primitives';
+import type { SpacingToken } from '@styled-system/tokens';
+
+import { FieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -25,23 +26,24 @@ export type FormFieldProps = Omit<
     helpText?: string;
     required?: boolean;
     error?: boolean;
+    invalid?: boolean;
+    success?: boolean;
     errorText?: string;
+    successText?: string;
     disabled?: boolean;
     tooltipTitle?: string;
     tooltipText?: string;
     size?: FormFieldVariantProps['size'];
     layout?: FormFieldVariantProps['layout'];
-    gap?: keyof typeof numericSizes;
+    gap?: SpacingToken;
   };
 
-type FormFieldChildProps = {
-  error?: boolean;
-  disabled?: boolean;
-  size?: FormFieldVariantProps['size'];
-};
-
 export const Required = () => {
-  return <Text color="text.danger">*</Text>;
+  return (
+    <Text color="text.danger" fontSize="inherit" lineHeight="tight">
+      *
+    </Text>
+  );
 };
 
 export const FormField = (props: FormFieldProps) => {
@@ -53,7 +55,10 @@ export const FormField = (props: FormFieldProps) => {
     helpText,
     required,
     error,
+    invalid,
+    success,
     errorText,
+    successText,
     disabled,
     tooltipTitle,
     tooltipText,
@@ -69,24 +74,14 @@ export const FormField = (props: FormFieldProps) => {
     size,
   });
 
-  const enhancedChildren = Children.map(children, (child) => {
-    if (isValidElement(child)) {
-      const c = child as ReactElement<FormFieldChildProps>;
-      return cloneElement(c, {
-        error: error ?? c.props.error,
-        disabled: disabled ?? c.props.disabled,
-        size: size ?? c.props.size,
-      });
-    }
-    return child;
-  });
-
   return (
     <Box
       className={`${cx(classes.container, className)} group`}
       aria-disabled={disabled}
       data-disabled={disabled || undefined}
-      data-error={error}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
+      data-success={success || undefined}
       data-size={size}
       {...otherProps}
     >
@@ -111,9 +106,11 @@ export const FormField = (props: FormFieldProps) => {
         </Text>
       )}
 
-      <Box className={classes.inputs} gap={gap || '8'}>
-        {enhancedChildren}
-      </Box>
+      <FieldContext.Provider value={{ size, error, invalid, disabled }}>
+        <Box className={classes.inputs} gap={gap}>
+          {children}
+        </Box>
+      </FieldContext.Provider>
       {layout === 'inline' && helpText && (
         <Text
           textStyle="body.xs"
@@ -124,14 +121,14 @@ export const FormField = (props: FormFieldProps) => {
           {helpText}
         </Text>
       )}
-      {error && (
+      {(error || invalid || success) && (
         <Text
           textStyle="body.xs"
           lineHeight="tight"
-          color="text.danger"
+          color={success ? `text.success` : `text.danger`}
           gridColumn="2 / 3"
         >
-          {errorText}
+          {success ? successText : errorText}
         </Text>
       )}
     </Box>

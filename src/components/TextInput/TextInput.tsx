@@ -1,15 +1,26 @@
+import { type ReactNode, isValidElement } from 'react';
+
 import { cx } from '@styled-system/css';
 import { textInput, type TextInputVariantProps } from '@styled-system/recipes';
 
+import { Button } from '~/components/Button';
 import { Icon, type IconNamesList } from '~/components/Icon';
+import { IconButton } from '~/components/IconButton';
+import { useFieldContext } from '~/system/context/FieldContext';
+import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
 
 export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
-  Omit<TextInputVariantProps, 'iconBefore' | 'iconAfter'> & {
+  Omit<
+    TextInputVariantProps,
+    'before' | 'after' | 'iconBefore' | 'iconAfter'
+  > & {
     name: string;
     id?: string;
+    before?: ReactNode;
+    after?: ReactNode;
     iconBefore?: IconNamesList;
     iconAfter?: IconNamesList;
     error?: boolean;
@@ -32,59 +43,109 @@ export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
   };
 
 export const TextInput = (props: TextInputProps) => {
+  const fieldContext = useFieldContext();
   const {
     name,
     id,
+    before,
+    after,
     iconBefore,
     iconAfter,
-    error,
-    disabled,
+    error: errorProp,
+    disabled: disabledProp,
     valid,
-    invalid,
+    invalid: invalidProp,
     type = 'text',
-    size,
+    size: sizeProp,
     autoSize = false,
     autoComplete = 'off',
     ...rest
   } = props;
+  const size = sizeProp ?? fieldContext?.size;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
+  const disabled = disabledProp ?? fieldContext?.disabled;
+  const resolvedBefore =
+    before ?? (iconBefore ? <Icon name={iconBefore} aria-hidden /> : undefined);
+  const resolvedAfter =
+    after ?? (iconAfter ? <Icon name={iconAfter} aria-hidden /> : undefined);
+
+  if (import.meta.env.DEV) {
+    if (before && iconBefore) {
+      console.warn(
+        'TextInput received both "before" and "iconBefore". "before" takes precedence.',
+      );
+    }
+
+    if (after && iconAfter) {
+      console.warn(
+        'TextInput received both "after" and "iconAfter". "after" takes precedence.',
+      );
+    }
+  }
+
   const classes = textInput({
     size,
-    iconBefore: Boolean(iconBefore),
-    iconAfter: Boolean(iconAfter),
+    before: Boolean(resolvedBefore),
+    after: Boolean(resolvedAfter),
     autoSize,
   });
   const [className, otherProps] = splitProps(rest);
+
+  const isButtonLikeSlot = (slot: ReactNode) =>
+    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
+
+  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
+    if (!slot) {
+      return null;
+    }
+
+    return (
+      <SlotContext.Provider
+        value={{
+          owner: 'TextInput',
+          placement,
+          size,
+          disabled,
+          error,
+          invalid,
+        }}
+      >
+        <Box
+          className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
+        >
+          {slot}
+        </Box>
+      </SlotContext.Provider>
+    );
+  };
+
   return (
     <Box
       className={cx(classes.container, className)}
       aria-disabled={disabled}
       data-disabled={disabled || undefined}
-      data-error={error}
-      data-valid={valid}
-      data-invalid={invalid}
+      data-error={error || undefined}
+      data-invalid={invalid || undefined}
+      data-valid={valid || undefined}
+      aria-invalid={invalid || undefined}
     >
-      {iconBefore && <Icon name={iconBefore} className={classes.icon} />}
+      {renderSlot(resolvedBefore, 'before')}
       <Box
         as="input"
         id={id}
         name={name}
         type={type}
         disabled={disabled}
-        data-error={error}
-        data-valid={valid}
-        data-invalid={invalid}
-        className={cx(
-          classes.input,
-          iconBefore && classes.inputIconBefore,
-          iconAfter && classes.inputIconAfter,
-          className,
-        )}
+        data-error={error || undefined}
+        data-valid={valid || undefined}
+        data-invalid={invalid || undefined}
+        aria-invalid={invalid || undefined}
+        className={cx(classes.input, className)}
         autoComplete={autoComplete}
         {...otherProps}
       />
-      {iconBefore && iconAfter
-        ? ''
-        : iconAfter && <Icon name={iconAfter} className={classes.icon} />}
+      {renderSlot(resolvedAfter, 'after')}
     </Box>
   );
 };
