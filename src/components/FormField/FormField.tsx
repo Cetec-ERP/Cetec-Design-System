@@ -4,7 +4,8 @@ import { cx } from '@styled-system/css';
 import { Flex } from '@styled-system/jsx';
 import { formField, type FormFieldVariantProps } from '@styled-system/recipes';
 
-import type { numericSizes } from '~/styles/primitives';
+import type { SpacingToken } from '@styled-system/tokens';
+
 import { FieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
@@ -34,7 +35,7 @@ export type FormFieldProps = Omit<
     tooltipText?: string;
     size?: FormFieldVariantProps['size'];
     layout?: FormFieldVariantProps['layout'];
-    gap?: keyof typeof numericSizes;
+    gap?: SpacingToken;
   };
 
 export const Required = () => {
@@ -107,7 +108,7 @@ export const FormField = (props: FormFieldProps) => {
 
       <FieldContext.Provider value={{ size, error, invalid, disabled }}>
         <Box className={classes.inputs} gap={gap}>
-          {enhancedChildren}
+          {children}
         </Box>
       </FieldContext.Provider>
       {layout === 'inline' && helpText && (
