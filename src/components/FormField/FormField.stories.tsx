@@ -160,6 +160,31 @@ export const ExFieldWithError: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ExFieldWithSuccess: Story = {
+  name: 'Ex: Validation Success',
+  render: function ExFieldWithSuccessRender() {
+    return (
+      <FormField
+        label="Enter your domain"
+        labelFor="domain"
+        success={true}
+        successText="This domain is available"
+        w="xs"
+        size="lg"
+      >
+        <TextInput
+          id="domain"
+          name="domain"
+          placeholder="name.com"
+          defaultValue="shauns-pizza-company.com"
+          before={<Icon name="check" fill="icon.success" />}
+        />
+      </FormField>
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const ExWithInputWrappers: Story = {
   name: 'Ex: Label + Input Wrapper Composition',
   render: function ExWithInputWrappersRender() {

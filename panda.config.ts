@@ -51,6 +51,15 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   listItemGroup: [{ density: ['*'], responsive: true }],
   menu: [{ density: ['*'], responsive: true }],
   spinner: [{ size: ['*'], responsive: true }],
+  skeleton: [
+    {
+      variant: ['*'],
+      animation: ['*'],
+      hasChildren: ['*'],
+      fitContent: ['*'],
+      heightAuto: ['*'],
+    },
+  ],
   tag: [{ variant: ['*'], hue: ['*'] }],
   textarea: [{ size: ['*'], responsive: true }],
   textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],

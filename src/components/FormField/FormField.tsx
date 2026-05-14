@@ -1,5 +1,4 @@
-import type { ReactNode, ReactElement } from 'react';
-import { Children, isValidElement, cloneElement } from 'react';
+import type { ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { Flex } from '@styled-system/jsx';
@@ -27,7 +26,9 @@ export type FormFieldProps = Omit<
     required?: boolean;
     error?: boolean;
     invalid?: boolean;
+    success?: boolean;
     errorText?: string;
+    successText?: string;
     disabled?: boolean;
     tooltipTitle?: string;
     tooltipText?: string;
@@ -36,15 +37,12 @@ export type FormFieldProps = Omit<
     gap?: keyof typeof numericSizes;
   };
 
-type FormFieldChildProps = {
-  error?: boolean;
-  invalid?: boolean;
-  disabled?: boolean;
-  size?: FormFieldVariantProps['size'];
-};
-
 export const Required = () => {
-  return <Text color="text.danger">*</Text>;
+  return (
+    <Text color="text.danger" fontSize="inherit" lineHeight="tight">
+      *
+    </Text>
+  );
 };
 
 export const FormField = (props: FormFieldProps) => {
@@ -57,7 +55,9 @@ export const FormField = (props: FormFieldProps) => {
     required,
     error,
     invalid,
+    success,
     errorText,
+    successText,
     disabled,
     tooltipTitle,
     tooltipText,
@@ -73,19 +73,6 @@ export const FormField = (props: FormFieldProps) => {
     size,
   });
 
-  const enhancedChildren = Children.map(children, (child) => {
-    if (isValidElement(child)) {
-      const c = child as ReactElement<FormFieldChildProps>;
-      return cloneElement(c, {
-        error: error ?? c.props.error,
-        invalid: invalid ?? c.props.invalid,
-        disabled: disabled ?? c.props.disabled,
-        size: size ?? c.props.size,
-      });
-    }
-    return child;
-  });
-
   return (
     <Box
       className={`${cx(classes.container, className)} group`}
@@ -93,6 +80,7 @@ export const FormField = (props: FormFieldProps) => {
       data-disabled={disabled || undefined}
       data-error={error || undefined}
       data-invalid={invalid || undefined}
+      data-success={success || undefined}
       data-size={size}
       {...otherProps}
     >
@@ -132,14 +120,14 @@ export const FormField = (props: FormFieldProps) => {
           {helpText}
         </Text>
       )}
-      {(error || invalid) && (
+      {(error || invalid || success) && (
         <Text
           textStyle="body.xs"
           lineHeight="tight"
-          color="text.danger"
+          color={success ? `text.success` : `text.danger`}
           gridColumn="2 / 3"
         >
-          {errorText}
+          {success ? successText : errorText}
         </Text>
       )}
     </Box>
