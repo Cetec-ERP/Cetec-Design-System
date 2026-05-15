@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 
+import type { ConditionalValue } from '@styled-system/types';
+
 export type SlotOwner = 'Button' | 'Chip' | 'TextInput';
 
 export type SlotPlacement = 'before' | 'after';
@@ -7,8 +9,8 @@ export type SlotPlacement = 'before' | 'after';
 export type SlotContextValue = {
   owner: SlotOwner;
   placement: SlotPlacement;
-  size?: string | Record<string, string>;
-  fill?: string | Record<string, string>;
+  size?: ConditionalValue<string>;
+  fill?: ConditionalValue<string>;
   disabled?: boolean;
   error?: boolean;
   invalid?: boolean;
