@@ -371,7 +371,7 @@ jobs:
         run: |
           npm ci
           npm run build
-          npx auto shipit --use-version "${{ steps.publish_version.outputs.version }}" ${{ steps.publish_version.outputs.shipit_args }}
+          npx auto shipit --use-version "${{ steps.publish_version.outputs.version }}" --only-graduate-with-release-label ${{ steps.publish_version.outputs.shipit_args }}
 
       - name: Skip Existing Stable Release
         if: steps.publish_version.outputs.skip_reason == 'stable-version-exists'
