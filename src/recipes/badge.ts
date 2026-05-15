@@ -13,6 +13,9 @@ export const badgeRecipe = defineSlotRecipe({
       display: 'inline-flex',
       position: 'relative',
       verticalAlign: 'middle',
+      w: 'fit',
+      h: 'fit',
+      flex: '0',
     },
     indicator: {
       display: 'inline-flex',

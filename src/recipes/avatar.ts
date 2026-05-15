@@ -62,7 +62,7 @@ export const avatarRecipe = defineSlotRecipe({
   },
   variants: {
     size: {
-      xs: {
+      sm: {
         root: {
           w: '16',
         },
@@ -76,7 +76,7 @@ export const avatarRecipe = defineSlotRecipe({
           w: '8',
         },
       },
-      sm: {
+      md: {
         root: {
           w: '20',
         },
@@ -90,7 +90,7 @@ export const avatarRecipe = defineSlotRecipe({
           w: '10',
         },
       },
-      md: {
+      lg: {
         root: {
           w: '24',
         },
@@ -104,7 +104,7 @@ export const avatarRecipe = defineSlotRecipe({
           w: '10',
         },
       },
-      lg: {
+      xl: {
         root: {
           w: '28',
         },
@@ -118,7 +118,7 @@ export const avatarRecipe = defineSlotRecipe({
           w: '12',
         },
       },
-      xl: {
+      '2xl': {
         root: {
           w: '36',
         },
@@ -132,7 +132,7 @@ export const avatarRecipe = defineSlotRecipe({
           w: '16',
         },
       },
-      '2xl': {
+      '3xl': {
         root: {
           w: '48',
         },

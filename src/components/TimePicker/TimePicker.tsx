@@ -23,6 +23,7 @@ import {
 } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
+import { useFieldContext } from '~/system/context/FieldContext';
 import { useOverlayFloating } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
@@ -265,6 +266,7 @@ export type TimePickerProps = Omit<
     label?: string;
     disabled?: boolean;
     error?: boolean;
+    invalid?: boolean;
     id?: string;
     name?: string;
     /** Controlled popover open state */
@@ -276,19 +278,25 @@ export type TimePickerProps = Omit<
 // ─── TimePicker ────────────────────────────────────────────────────────────────
 
 export const TimePicker = (props: TimePickerProps) => {
+  const fieldContext = useFieldContext();
   const {
     value,
     onChange,
     hourCycle = '12',
     minuteStep = 1,
     label = 'Time',
-    disabled = false,
-    error = false,
-    size,
+    disabled: disabledProp,
+    error: errorProp,
+    invalid: invalidProp,
+    size: sizeProp,
     open: controlledOpen,
     onOpenChange,
     ...rest
   } = props;
+  const disabled = disabledProp ?? fieldContext?.disabled ?? false;
+  const error = errorProp ?? fieldContext?.error ?? false;
+  const invalid = invalidProp ?? fieldContext?.invalid ?? false;
+  const size = sizeProp ?? fieldContext?.size;
 
   const [className, otherProps] = splitProps(rest);
 
@@ -569,7 +577,10 @@ export const TimePicker = (props: TimePickerProps) => {
         role="group"
         aria-label={label}
         aria-disabled={disabled}
+        aria-invalid={invalid || undefined}
+        data-disabled={disabled || undefined}
         data-error={error ? true : undefined}
+        data-invalid={invalid ? true : undefined}
         data-open={isOpen || undefined}
         onClick={(e: MouseEvent<HTMLDivElement>) => {
           if (e.target === e.currentTarget && !disabled)

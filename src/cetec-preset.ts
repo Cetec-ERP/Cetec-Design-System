@@ -51,6 +51,7 @@ const theme = {
   },
   semanticTokens: {
     colors: semanticTokens.colors,
+    fontSizes: semanticTokens.fontSizes,
     shadows: semanticTokens.shadows,
     zIndex: semanticTokens.zIndex,
   },
@@ -65,6 +66,7 @@ export const cetecPreset: Preset = definePreset({
       },
       semanticTokens: {
         colors: theme.semanticTokens.colors,
+        fontSizes: theme.semanticTokens.fontSizes,
         shadows: theme.semanticTokens.shadows,
         zIndex: theme.semanticTokens.zIndex,
       },

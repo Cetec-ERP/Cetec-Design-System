@@ -2,9 +2,14 @@ import { fn } from '@storybook/test';
 
 import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
+import { Avatar } from '../Avatar';
+import { Badge } from '../Badge';
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Divider } from '../Divider';
+import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
+import { Kbd } from '../Kbd';
+import { Spinner } from '../Spinner';
 import { Text } from '../Text';
 
 import { Button } from './Button';
@@ -17,7 +22,7 @@ import type { Meta, StoryObj } from '@storybook/react';
  * Features:
  * - Multiple visual variants (standard, primary, hollow, ghost, cta, danger)
  * - Four sizes (sm, md, lg, xl)
- * - Icon support via string names (iconBefore, iconAfter, iconName)
+ * - Slot support via `before` and `after`, with icon aliases for shorthand
  * - Loading and disabled states
  * - Auto-renders as anchor when href is provided
  */
@@ -65,12 +70,20 @@ const meta = {
     iconBefore: {
       control: 'select',
       options: [undefined, 'plus', 'check', 'arrow-left', 'edit', 'search'],
-      description: 'Icon name to display before text',
+      description: 'Legacy shorthand icon name for before slot',
     },
     iconAfter: {
       control: 'select',
       options: [undefined, 'arrow-right', 'chevron-down', 'arrow-square-out'],
-      description: 'Icon name to display after text',
+      description: 'Legacy shorthand icon name for after slot',
+    },
+    before: {
+      control: false,
+      description: 'Preferred slot for content before button text',
+    },
+    after: {
+      control: false,
+      description: 'Preferred slot for content after button text',
     },
     href: {
       control: 'text',
@@ -179,7 +192,34 @@ export const ConditionalBreakpoints: Story = {
         }}
         iconBefore="arrows-left-right"
       >
-        Conditional Button Sizes
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Badge count={5} />}
+      >
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={
+          <Avatar name="John Doe" src="https://i.pravatar.cc/150?img=1" />
+        }
+      >
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Spinner />}
+      >
+        Button
+      </Button>
+      <Button
+        variant="ghost"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Icon name="circle-check" fill="icon.success" />}
+      >
+        Button
       </Button>
       <VStack gap="4">
         <Text
@@ -349,6 +389,49 @@ export const WithIcon: Story = {
           variant="danger"
           altText="This cannot be undone"
         />
+      </Wrap>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const WithSlots: Story = {
+  render: () => (
+    <Grid
+      gridTemplateColumns="auto 1fr"
+      columnGap="12"
+      rowGap="32"
+      alignItems="center"
+    >
+      <Text textStyle="mono.md" mr="16">
+        before / after
+      </Text>
+      <Wrap gap="12">
+        <Button before={<Icon name="plus" />} variant="primary">
+          New Record
+        </Button>
+        <Button after={<Badge count={3} variant="success" />} variant="hollow">
+          Pending
+        </Button>
+        <Button
+          before={<Badge count={12} variant="warning" />}
+          after={<Icon name="arrow-right" />}
+        >
+          Review
+        </Button>
+        <Button
+          before={<Icon name="search" />}
+          after={<Kbd keys={['⌘', 'K']} />}
+        >
+          Search
+        </Button>
+      </Wrap>
+      <Text textStyle="mono.md" mr="16">
+        aliases
+      </Text>
+      <Wrap gap="12">
+        <Button iconBefore="plus">Alias Before</Button>
+        <Button iconAfter="arrow-right">Alias After</Button>
       </Wrap>
     </Grid>
   ),

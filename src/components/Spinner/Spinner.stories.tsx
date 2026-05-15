@@ -14,7 +14,7 @@ const meta = {
     layout: 'centered',
   },
   args: {
-    size: 'md',
+    size: 'lg',
   },
 } satisfies Meta<typeof Spinner>;
 
@@ -26,10 +26,10 @@ export const Default: Story = {};
 export const Sizes: Story = {
   render: () => (
     <Box display="flex" gap="16" alignItems="center">
-      <Spinner size="xs" />
       <Spinner size="sm" />
       <Spinner size="md" />
       <Spinner size="lg" />
+      <Spinner size="xl" />
     </Box>
   ),
   parameters: { controls: { disable: true } },
@@ -38,9 +38,9 @@ export const Sizes: Story = {
 export const ExCenteredOverlay: Story = {
   name: 'Ex: Centered Overlay',
   render: () => (
-    <Card position="relative" p="16" w="sm" h="120" overflow="hidden">
+    <Card position="relative" p="16" w="md" h="120" overflow="hidden">
       <Text>Saving invoice updates...</Text>
-      <Spinner centered size="md" />
+      <Spinner centered size="lg" />
     </Card>
   ),
   parameters: { controls: { disable: true } },
@@ -50,7 +50,7 @@ export const ExInverseOnDarkSurface: Story = {
   name: 'Ex: Inverse Spinner',
   render: () => (
     <Box p="16" borderRadius="8" bg="bg.neutral.boldest">
-      <Spinner size="md" inverse />
+      <Spinner size="lg" inverse />
     </Box>
   ),
   parameters: { controls: { disable: true } },
