@@ -65,7 +65,12 @@ export { Radio } from './components/Radio';
 export { RadioInput } from './components/RadioInput';
 export { Spinner } from './components/Spinner';
 export { Tag } from './components/Tag';
-export { Select, SelectOption } from './components/Select';
+export {
+  Select,
+  type SelectProps,
+  SelectOption,
+  type SelectOptionProps,
+} from './components/Select';
 export { Text } from './components/Text';
 export { TextInput } from './components/TextInput';
 export { Textarea } from './components/Textarea';

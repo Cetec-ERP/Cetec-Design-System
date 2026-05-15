@@ -31,24 +31,6 @@ const getPropertyName = (property) => {
   return null;
 };
 
-const hasInlineValidateIgnore = (context, node, ruleName) => {
-  const sourceCode = context.sourceCode ?? context.getSourceCode();
-  const nodeLine = node.loc.start.line;
-  const lines = sourceCode.getText().split('\n');
-  const candidateLines = [lines[nodeLine - 2], lines[nodeLine - 1]].filter(
-    Boolean,
-  );
-
-  return candidateLines.some((line) => {
-    const match = line.match(/validate-ignore:\s*(.+?)(?:\s*[—–\-]{1,2}.+)?$/);
-    if (!match) {
-      return false;
-    }
-
-    return match[1].split(/\s*,\s*/).some((value) => value.trim() === ruleName);
-  });
-};
-
 const avoidCompoundVariantsInRecipesRule = {
   meta: {
     type: 'problem',
@@ -81,10 +63,7 @@ const avoidCompoundVariantsInRecipesRule = {
             continue;
           }
 
-          if (
-            hasValidateIgnoreComment(context, property, RULE_NAME) ||
-            hasInlineValidateIgnore(context, property, RULE_NAME)
-          ) {
+          if (hasValidateIgnoreComment(context, property, RULE_NAME)) {
             continue;
           }
 

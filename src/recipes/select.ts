@@ -131,9 +131,11 @@ const selectBase = {
     _peerHover: {
       bg: 'bg.input.hovered',
     },
-    '&[data-open="true"] > svg': {
-      transform: 'rotate(-180deg)',
-      transformOrigin: 'center',
+    _open: {
+      '& > svg': {
+        transform: 'rotate(-180deg)',
+        transformOrigin: 'center',
+      },
     },
   },
 };

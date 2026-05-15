@@ -42,7 +42,7 @@ import { Chip } from '../Chip';
 import { Icon } from '../Icon';
 import { List, ListItem } from '../List';
 
-import type { SelectOptionProps } from './SelectOption';
+import { SelectOption, type SelectOptionProps } from './SelectOption';
 
 type SelectValue = string | string[] | null;
 
@@ -59,7 +59,11 @@ const resolveChipSize = (size: SelectProps['size']): 'sm' | 'md' => {
     return chipSizeBySelectSize[size ?? 'md'];
   }
 
-  const firstSize = Object.values(size as Record<string, unknown>).find(
+  const values = Array.isArray(size)
+    ? (size as Array<string | null>)
+    : Object.values(size as Record<string, unknown>);
+
+  const firstSize = values.find(
     (value): value is keyof typeof chipSizeBySelectSize =>
       typeof value === 'string' && value in chipSizeBySelectSize,
   );
@@ -70,12 +74,7 @@ const resolveChipSize = (size: SelectProps['size']): 'sm' | 'md' => {
 const isSelectOptionElement = (
   child: ReactNode,
 ): child is ReactElement<SelectOptionProps> => {
-  return (
-    isValidElement(child) &&
-    typeof child.props === 'object' &&
-    child.props !== null &&
-    'value' in child.props
-  );
+  return isValidElement(child) && child.type === SelectOption;
 };
 
 const getOptionText = (option: ReactElement<SelectOptionProps>) => {
@@ -446,7 +445,12 @@ export const Select = (props: SelectProps) => {
           </Box>
         )}
       </Box>
-      <Box as="span" className={classes.icon} data-open={isOpen} aria-hidden>
+      <Box
+        as="span"
+        className={classes.icon}
+        data-open={isOpen || undefined}
+        aria-hidden
+      >
         <Icon name="caret-down" />
       </Box>
 
