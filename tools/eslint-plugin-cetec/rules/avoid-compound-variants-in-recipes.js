@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'avoid-compound-variants-in-recipes';
 
 // tag.ts intentionally keeps compoundVariants for the hue/variant matrix.
@@ -73,6 +75,10 @@ const avoidCompoundVariantsInRecipesRule = {
 
         for (const property of firstArg.properties) {
           if (getPropertyName(property) !== 'compoundVariants') {
+            continue;
+          }
+
+          if (hasValidateIgnoreComment(context, property, RULE_NAME)) {
             continue;
           }
 

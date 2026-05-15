@@ -14,4 +14,5 @@ export { modalRecipe } from './modal';
 export { datePickerRecipe } from './datePicker';
 export { timePickerRecipe } from './timePicker';
 export { breadcrumbsRecipe } from './breadcrumbs';
+export { selectRecipe } from './select';
 export { kbdRecipe } from './kbd';
