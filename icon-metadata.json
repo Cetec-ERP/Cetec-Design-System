@@ -442,9 +442,19 @@
     "deprecated": false
   },
   "barcode-off": {
-    "aliases": [],
+    "aliases": [
+      "upc",
+      "qr",
+      "products",
+      "shopping",
+      "scanner",
+      "barcode",
+      "offline",
+      "off",
+      "unavailable"
+    ],
     "tags": [],
-    "category": null,
+    "category": "System objects",
     "deprecated": false
   },
   "barcode-reader": {
@@ -4204,6 +4214,17 @@
     ],
     "tags": [],
     "category": "Other",
+    "deprecated": false
+  },
+  "spinner": {
+    "aliases": [
+      "spinner",
+      "loading",
+      "progress",
+      "circle"
+    ],
+    "tags": [],
+    "category": "Status",
     "deprecated": false
   },
   "square": {
