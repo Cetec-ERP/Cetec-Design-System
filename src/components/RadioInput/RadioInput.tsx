@@ -6,6 +6,7 @@ import {
   type RadioInputVariantProps,
 } from '@styled-system/recipes';
 
+import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { type BoxProps } from '../Box';
@@ -21,13 +22,27 @@ export type RadioInputProps = Omit<BoxProps, keyof RadioInputVariantProps> &
     onChange: RadioChangeHandler;
     id?: string;
     error?: boolean;
+    invalid?: boolean;
     children?: string | ReactNode;
     disabled?: boolean;
   };
 
 export const RadioInput = (props: RadioInputProps) => {
-  const { name, checked, onChange, id, children, error, disabled, ...rest } =
-    props;
+  const fieldContext = useFieldContext();
+  const {
+    name,
+    checked,
+    onChange,
+    id,
+    children,
+    error: errorProp,
+    invalid: invalidProp,
+    disabled: disabledProp,
+    ...rest
+  } = props;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
+  const disabled = disabledProp ?? fieldContext?.disabled;
   const [className, otherProps] = splitProps(rest);
   const generatedId = useId();
   const resolvedId = id ?? generatedId;
@@ -44,6 +59,7 @@ export const RadioInput = (props: RadioInputProps) => {
         onChange={onChange}
         id={resolvedId}
         error={error}
+        invalid={invalid}
         disabled={disabled}
       />
       {children}

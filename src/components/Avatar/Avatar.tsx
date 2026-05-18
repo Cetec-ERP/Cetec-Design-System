@@ -6,6 +6,7 @@ import { avatar, type AvatarVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type AllowedIconSizes, type IconProps } from '~/components/Icon';
+import { useSlotContext } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 export type AvatarSize = NonNullable<AvatarVariantProps['size']>;
@@ -53,16 +54,16 @@ const statusStyles: Record<AvatarStatus, string> = {
   locked: css({ bg: 'bg.neutral.bold', fill: 'icon.inverse' }),
 };
 
-type AvatarSizeKey = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+type AvatarSizeKey = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
 // Map size to status icon size
 const sizeToStatusIconSize: Record<AvatarSizeKey, AllowedIconSizes> = {
-  xs: '8',
-  sm: '10',
-  md: '12',
-  lg: '14',
-  xl: '16',
-  '2xl': '20',
+  sm: '8',
+  md: '10',
+  lg: '12',
+  xl: '14',
+  '2xl': '16',
+  '3xl': '20',
 };
 
 const isAvatarStatusIconSizeKey = (size: unknown): size is AvatarSizeKey =>
@@ -113,11 +114,12 @@ function getInitials(name: string): string {
  * presence and status indicators.
  */
 export const Avatar = (props: AvatarProps) => {
+  const slotContext = useSlotContext();
   const {
     src,
     alt = '',
     name,
-    size = 'md' as AvatarSize,
+    size: sizeProp,
     shape = 'circle' as AvatarShape,
     presence,
     status,
@@ -126,6 +128,8 @@ export const Avatar = (props: AvatarProps) => {
     ref,
     ...rest
   } = props;
+  const size =
+    sizeProp ?? (slotContext?.size as AvatarProps['size'] | undefined);
 
   const [className, otherProps] = splitProps(rest);
   const [failedSrc, setFailedSrc] = useState<string | null>(null);

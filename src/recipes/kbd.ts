@@ -7,7 +7,6 @@ export const kbdRecipe = defineSlotRecipe({
     kbdGroup: {
       display: 'inline-flex',
       alignItems: 'center',
-      flexWrap: 'wrap',
       gap: '2',
       verticalAlign: 'middle',
     },
@@ -27,6 +26,7 @@ export const kbdRecipe = defineSlotRecipe({
       fontVariant: 'mono',
       lineHeight: 'tight',
       fontWeight: 'bold',
+      textTransform: 'uppercase',
       color: 'text.subtle',
       userSelect: 'none',
       pointerEvents: 'none',
