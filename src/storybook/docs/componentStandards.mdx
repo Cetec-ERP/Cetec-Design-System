@@ -2,7 +2,6 @@ import { Meta, Unstyled } from '@storybook/blocks';
 import { Flex } from '@styled-system/jsx';
 import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
-import { Text } from '~/components/Text';
 
 <Meta title="Docs / Component Standards" />
 
@@ -19,14 +18,13 @@ This page is the short version: one rule, a brief reason, and a real example. Th
 Use <code>Omit&lt;BoxProps, keyof VariantProps&gt;</code> first, then add component-specific props. This keeps HTML props, `as`, and ref typing consistent.
 
 ```tsx
-export type ChipProps =
-  Omit<BoxProps, keyof ChipVariantProps> &
+export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   ChipVariantProps & {
-  // ...
-};
+    // ...
+  };
 ```
 
-Related: <Link href="/?path=/docs/docs-controlled-components-philosophy--documentation">Controlled Components Philosophy</Link>
+Related: <Link href="/?path=/docs/docs-controlled-and-uncontrolled-components-philosophy--documentation">Controlled and Uncontrolled Components Philosophy</Link>
 
 <Divider weight="thick" color="border.disabled" my="48" />
 
@@ -82,7 +80,7 @@ export const Avatar = (props: AvatarProps) => {
 };
 ```
 
-<Divider weight="thick" color="border.disabled" my="48"/>
+<Divider weight="thick" color="border.disabled" my="48" />
 
 ## 5. `onClick` does not need to be explicitly defined in the component's props.
 
@@ -117,10 +115,11 @@ export type ComponentProps = {
 For usual suspects like `size` and `variant`, derive the public prop type from `*VariantProps[...]` so responsive and conditional values remain accepted.
 
 ```tsx
-export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> & ButtonVariantProps & {
-  variant?: ButtonVariantProps['variant'];
-  size?: ButtonVariantProps['size'];
-};
+export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
+  ButtonVariantProps & {
+    variant?: ButtonVariantProps['variant'];
+    size?: ButtonVariantProps['size'];
+  };
 ```
 
 If you manually redefine `size` or `variant`, you are usually breaking conditional values.
