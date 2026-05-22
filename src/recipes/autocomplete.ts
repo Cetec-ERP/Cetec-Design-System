@@ -2,6 +2,31 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
+const dangerStateStyles = {
+  borderColor: 'border.danger',
+  _focusWithin: {
+    borderColor: 'border.danger',
+    outlineColor: 'border.danger',
+  },
+};
+
+const successStateStyles = {
+  borderColor: 'border.success',
+  _focusWithin: {
+    borderColor: 'border.success',
+    outlineColor: 'border.success',
+  },
+};
+
+const disabledStateStyles = {
+  opacity: 0.4,
+  cursor: 'not-allowed',
+  _focusWithin: {
+    outlineColor: 'transparent',
+    borderColor: 'border.input',
+  },
+};
+
 const autocompleteBase = {
   root: {
     ...globalBaseStyles,
@@ -28,35 +53,10 @@ const autocompleteBase = {
       borderColor: 'border.focused',
       outlineColor: 'border.focused',
     },
-    _error: {
-      borderColor: 'border.danger',
-      _focusWithin: {
-        borderColor: 'border.danger',
-        outlineColor: 'border.danger',
-      },
-    },
-    _invalid: {
-      borderColor: 'border.danger',
-      _focusWithin: {
-        borderColor: 'border.danger',
-        outlineColor: 'border.danger',
-      },
-    },
-    _valid: {
-      borderColor: 'border.success',
-      _focusWithin: {
-        borderColor: 'border.success',
-        outlineColor: 'border.success',
-      },
-    },
-    _disabled: {
-      opacity: 0.4,
-      cursor: 'not-allowed',
-      _focusWithin: {
-        outlineColor: 'transparent',
-        borderColor: 'border.input',
-      },
-    },
+    _error: dangerStateStyles,
+    _invalid: dangerStateStyles,
+    _valid: successStateStyles,
+    _disabled: disabledStateStyles,
     _groupDisabled: {
       opacity: 1,
     },
@@ -120,6 +120,12 @@ const autocompleteBase = {
       transitionDuration: 'fast',
       transitionProperty: 'all',
       transitionTimingFunction: 'default',
+    },
+    _open: {
+      '& > svg': {
+        transform: 'rotate(-180deg)',
+        transformOrigin: 'center',
+      },
     },
   },
 };

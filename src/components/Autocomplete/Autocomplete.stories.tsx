@@ -208,7 +208,7 @@ export const AddOptions: Story = {
 
 export const InfiniteLoading: Story = {
   render: function InfiniteLoadingRender(args) {
-    const [options, setOptions] = useState(baseOptions.slice(0, 4));
+    const [options, setOptions] = useState(() => baseOptions.slice(0, 4));
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [value, setValue] = useState<string | string[] | null>(null);
@@ -276,6 +276,141 @@ export const InFormField: Story = {
         </FormField>
       </Box>
     );
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const KeyboardSelection: Story = {
+  name: 'Ex: Keyboard Selection',
+  render: function KeyboardSelectionRender() {
+    const [value, setValue] = useState<string | string[] | null>(null);
+
+    return (
+      <Box w="sm">
+        <Autocomplete
+          value={value}
+          onChange={setValue}
+          name="keyboard-select"
+          placeholder="Use keyboard..."
+        >
+          {renderOptions()}
+        </Autocomplete>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.click(input);
+    await expect(input).toHaveAttribute('aria-activedescendant');
+    await userEvent.keyboard('{Enter}');
+
+    await expect(input).toHaveValue('React');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const DisabledMultiple: Story = {
+  name: 'Ex: Disabled Multiple',
+  render: function DisabledMultipleRender() {
+    const [value, setValue] = useState<string[] | null>(['react']);
+
+    return (
+      <Box w="sm">
+        <Autocomplete
+          multiple
+          disabled
+          value={value}
+          onChange={(nextValue) =>
+            setValue(Array.isArray(nextValue) ? nextValue : null)
+          }
+          name="disabled-stack"
+          placeholder="Disabled stack..."
+        >
+          {renderOptions()}
+        </Autocomplete>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const removeButton = canvas.getByRole('button', {
+      name: /remove react/i,
+    });
+
+    await expect(removeButton).toBeDisabled();
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const KeyboardChipRemoval: Story = {
+  name: 'Ex: Keyboard Chip Removal',
+  render: function KeyboardChipRemovalRender() {
+    const [value, setValue] = useState<string[] | null>([
+      'react',
+      'typescript',
+    ]);
+
+    return (
+      <Box w="sm">
+        <Autocomplete
+          multiple
+          value={value}
+          onChange={(nextValue) =>
+            setValue(Array.isArray(nextValue) ? nextValue : null)
+          }
+          name="keyboard-remove"
+          placeholder="Remove with keyboard..."
+        >
+          {renderOptions()}
+        </Autocomplete>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.click(input);
+    await userEvent.keyboard('{Backspace}');
+
+    await expect(canvas.queryByText('TypeScript')).not.toBeInTheDocument();
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const AddOptionsWithKeyboard: Story = {
+  name: 'Ex: Add Options With Keyboard',
+  render: function AddOptionsWithKeyboardRender() {
+    const [value, setValue] = useState<string[] | null>(['react']);
+
+    return (
+      <Box w="sm">
+        <Autocomplete
+          multiple
+          addOptions
+          value={value}
+          onChange={(nextValue) =>
+            setValue(Array.isArray(nextValue) ? nextValue : null)
+          }
+          name="keyboard-add"
+          placeholder="Add your own tags..."
+        >
+          {renderOptions()}
+        </Autocomplete>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.click(input);
+    await userEvent.type(input, 'Svelte');
+    await userEvent.keyboard('{Enter}');
+
+    await expect(canvas.getByText('Svelte')).toBeInTheDocument();
   },
   parameters: { controls: { disable: true } },
 };

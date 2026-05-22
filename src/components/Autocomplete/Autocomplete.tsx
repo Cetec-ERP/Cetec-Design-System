@@ -28,12 +28,12 @@ import {
 import { cx } from '@styled-system/css';
 import {
   autocomplete,
-  highlightText,
   menu,
   type AutocompleteVariantProps,
 } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu';
+import { useFieldContext } from '~/system/context/FieldContext';
 import {
   createOverlayMiddleware,
   useOverlayFloating,
@@ -44,7 +44,6 @@ import { Box, type BoxProps } from '../Box';
 import { Chip } from '../Chip';
 import { Icon } from '../Icon';
 import { List, ListItem } from '../List';
-import { Text } from '../Text';
 
 import type { OptionProps } from './Option';
 
@@ -69,7 +68,11 @@ const resolveChipSize = (size: AutocompleteProps['size']): 'sm' | 'md' => {
     return chipSizeByAutocompleteSize[size ?? 'md'];
   }
 
-  const firstSize = Object.values(size as Record<string, unknown>).find(
+  const values = Array.isArray(size)
+    ? (size as Array<string | null>)
+    : Object.values(size as Record<string, unknown>);
+
+  const firstSize = values.find(
     (value): value is keyof typeof chipSizeByAutocompleteSize =>
       typeof value === 'string' && value in chipSizeByAutocompleteSize,
   );
@@ -146,98 +149,6 @@ const isFuzzyMatch = (text: string, query: string) => {
   return true;
 };
 
-type HighlightPart = {
-  text: string;
-  match: boolean;
-};
-
-const getFuzzyHighlightParts = (
-  value: string,
-  query: string,
-): HighlightPart[] => {
-  const normalizedQuery = normalizeText(query);
-  if (!normalizedQuery) {
-    return [{ text: value, match: false }];
-  }
-
-  const normalizedValue = value.toLowerCase();
-  const substringIndex = normalizedValue.indexOf(normalizedQuery);
-  if (substringIndex >= 0) {
-    return [
-      { text: value.slice(0, substringIndex), match: false },
-      {
-        text: value.slice(
-          substringIndex,
-          substringIndex + normalizedQuery.length,
-        ),
-        match: true,
-      },
-      {
-        text: value.slice(substringIndex + normalizedQuery.length),
-        match: false,
-      },
-    ].filter((part) => part.text.length > 0);
-  }
-
-  const matchedIndices: number[] = [];
-  let textIndex = 0;
-
-  for (
-    let queryIndex = 0;
-    queryIndex < normalizedQuery.length;
-    queryIndex += 1
-  ) {
-    const queryChar = normalizedQuery[queryIndex];
-    let matched = false;
-
-    while (textIndex < normalizedValue.length) {
-      if (normalizedValue[textIndex] === queryChar) {
-        matchedIndices.push(textIndex);
-        textIndex += 1;
-        matched = true;
-        break;
-      }
-
-      textIndex += 1;
-    }
-
-    if (!matched) {
-      return [{ text: value, match: false }];
-    }
-  }
-
-  if (matchedIndices.length === 0) {
-    return [{ text: value, match: false }];
-  }
-
-  const parts: HighlightPart[] = [];
-  let cursor = 0;
-
-  matchedIndices.forEach((index) => {
-    if (index > cursor) {
-      parts.push({
-        text: value.slice(cursor, index),
-        match: false,
-      });
-    }
-
-    parts.push({
-      text: value.slice(index, index + 1),
-      match: true,
-    });
-    cursor = index + 1;
-  });
-
-  if (cursor < value.length) {
-    parts.push({
-      text: value.slice(cursor),
-      match: false,
-    });
-  }
-
-  return parts.filter((part) => part.text.length > 0);
-};
-
 const mergeOptions = (options: AutocompleteOptionData[]) => {
   const map = new Map<string, AutocompleteOptionData>();
 
@@ -297,22 +208,6 @@ const getSelectedOptionLabel = (
   return option?.label ?? value;
 };
 
-const renderHighlightedText = (value: string, query: string) => {
-  const parts = getFuzzyHighlightParts(value, query);
-
-  return parts.map((part, index) => {
-    if (!part.match) {
-      return <span key={`${part.text}-${index}`}>{part.text}</span>;
-    }
-
-    return (
-      <Box as="mark" key={`${part.text}-${index}`} className={highlightText()}>
-        {part.text}
-      </Box>
-    );
-  });
-};
-
 export type AutocompleteProps = Omit<
   BoxProps<'div'>,
   keyof AutocompleteVariantProps | 'children' | 'onChange' | 'value'
@@ -346,6 +241,7 @@ export type AutocompleteProps = Omit<
   };
 
 export const Autocomplete = (props: AutocompleteProps) => {
+  const fieldContext = useFieldContext();
   const {
     value: controlledValue,
     onChange,
@@ -361,11 +257,11 @@ export const Autocomplete = (props: AutocompleteProps) => {
     children,
     id,
     name,
-    disabled = false,
-    error = false,
+    disabled: disabledProp,
+    error: errorProp,
     valid = false,
-    invalid = false,
-    size = 'md',
+    invalid: invalidProp,
+    size: sizeProp,
     density = 'compact',
     autoSize = false,
     limitTags = false,
@@ -375,6 +271,10 @@ export const Autocomplete = (props: AutocompleteProps) => {
     addOptions = false,
     ...rest
   } = props;
+  const disabled = disabledProp ?? fieldContext?.disabled ?? false;
+  const error = errorProp ?? fieldContext?.error ?? false;
+  const invalid = invalidProp ?? fieldContext?.invalid ?? false;
+  const size = sizeProp ?? fieldContext?.size ?? 'md';
   const [className, otherProps] = splitProps(rest);
 
   const generatedId = useId();
@@ -407,12 +307,19 @@ export const Autocomplete = (props: AutocompleteProps) => {
       : internalInputValue;
 
   const baseOptions = useMemo(() => {
-    return Children.toArray(children)
-      .filter(isOptionElement)
-      .map((child) => ({
-        ...child.props,
-        created: false,
-      }));
+    return Children.toArray(children).reduce<AutocompleteOptionData[]>(
+      (accumulator, child) => {
+        if (isOptionElement(child)) {
+          accumulator.push({
+            ...child.props,
+            created: false,
+          });
+        }
+
+        return accumulator;
+      },
+      [],
+    );
   }, [children]);
 
   const options = useMemo(
@@ -556,7 +463,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
   const handleOptionSelect = useCallback(
     (option: AutocompleteOptionData) => {
-      if (option.disabled) {
+      if (disabled || option.disabled) {
         return;
       }
 
@@ -586,6 +493,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
     },
     [
       currentValue,
+      disabled,
       multiple,
       selectedValues,
       setInputState,
@@ -596,6 +504,10 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
   const createCustomOption = useCallback(
     (rawQuery: string) => {
+      if (disabled) {
+        return;
+      }
+
       const trimmedQuery = rawQuery.trim();
       if (!trimmedQuery) {
         return;
@@ -625,11 +537,15 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
       handleOptionSelect(createdOption);
     },
-    [handleOptionSelect, options],
+    [disabled, handleOptionSelect, options],
   );
 
   const removeSelectedValue = useCallback(
     (selectedValue: string) => {
+      if (disabled) {
+        return;
+      }
+
       if (multiple) {
         const nextValues = selectedValues.filter(
           (value) => value !== selectedValue,
@@ -643,7 +559,14 @@ export const Autocomplete = (props: AutocompleteProps) => {
         setInputState('');
       }
     },
-    [currentValue, multiple, selectedValues, setInputState, setValueState],
+    [
+      currentValue,
+      disabled,
+      multiple,
+      selectedValues,
+      setInputState,
+      setValueState,
+    ],
   );
 
   const focusChip = useCallback((index: number) => {
@@ -885,9 +808,9 @@ export const Autocomplete = (props: AutocompleteProps) => {
       {...otherProps}
     >
       {name &&
-        selectedValues.map((selectedValue, index) => (
+        selectedValues.map((selectedValue) => (
           <Box
-            key={`${selectedValue}-${index}`}
+            key={`hidden-${selectedValue}`}
             as="input"
             type="hidden"
             name={name}
@@ -905,7 +828,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
               return (
                 <Box
-                  key={`${selectedValue}-${index}`}
+                  key={`chip-${selectedValue}`}
                   onMouseDown={handleOptionMouseDown}
                 >
                   <Chip
@@ -914,6 +837,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
                     }}
                     size={chipSize}
                     dismissable
+                    disabled={disabled}
                     tabIndex={-1}
                     onDismiss={() => removeSelectedValue(selectedValue)}
                     onKeyDown={(event: KeyboardEvent<HTMLButtonElement>) =>
@@ -928,7 +852,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
             {hiddenTagCount > 0 && (
               <Chip size={chipSize} tabIndex={-1} aria-hidden disabled>
-                +{hiddenTagCount}
+                {`+${hiddenTagCount}`}
               </Chip>
             )}
           </Box>
@@ -970,7 +894,12 @@ export const Autocomplete = (props: AutocompleteProps) => {
         />
       </Box>
 
-      <Box as="span" className={classes.icon} data-open={isOpen} aria-hidden>
+      <Box
+        as="span"
+        className={classes.icon}
+        data-open={isOpen || undefined}
+        aria-hidden
+      >
         <Icon name="caret-down" />
       </Box>
 
@@ -991,8 +920,9 @@ export const Autocomplete = (props: AutocompleteProps) => {
               aria-labelledby={inputId}
               aria-multiselectable={multiple || undefined}
               density={density}
+              query={currentInputValue}
+              highlightMatches
               className={menu({ density }).wrapper}
-              maxH="80"
               overflowY="auto"
               data-loading={isLoading || undefined}
               style={floating.floatingStyles}
@@ -1014,11 +944,16 @@ export const Autocomplete = (props: AutocompleteProps) => {
                     <ListItem
                       key={option.value}
                       id={`${baseId}-option-${index}`}
-                      aria-selected={isSelected}
                       disabled={option.disabled}
                       selected={isSelected}
                       density={density}
                       variant={multiple ? 'checkbox' : 'default'}
+                      label={option.label}
+                      description={option.description}
+                      iconBefore={option.iconLeft}
+                      iconAfter={option.iconRight}
+                      highlightMatchMode="fuzzy"
+                      tabIndex={-1}
                       bg={isActive ? 'bg.neutral.hovered' : undefined}
                       onMouseDown={handleOptionMouseDown}
                       onClick={() => {
@@ -1026,91 +961,14 @@ export const Autocomplete = (props: AutocompleteProps) => {
                           handleOptionSelect(option);
                         }
                       }}
-                    >
-                      <Box
-                        display="flex"
-                        alignItems="start"
-                        gap="4"
-                        minW="0"
-                        w="full"
-                      >
-                        {multiple && (
-                          <Box
-                            display="inline-flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            w="20"
-                            flexShrink="0"
-                            color={
-                              isSelected ? 'text' : 'icon.decorative.subtle'
-                            }
-                          >
-                            <Icon name={isSelected ? 'check' : 'checkbox'} />
-                          </Box>
-                        )}
-
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          gap="0"
-                          minW="0"
-                          flex="1"
-                        >
-                          <Text color="text" size="14">
-                            {renderHighlightedText(
-                              option.label,
-                              currentInputValue,
-                            )}
-                          </Text>
-
-                          {option.description && (
-                            <Text
-                              color="text.subtlest"
-                              size="12"
-                              lineHeight="tight"
-                            >
-                              {renderHighlightedText(
-                                option.description,
-                                currentInputValue,
-                              )}
-                            </Text>
-                          )}
-                        </Box>
-
-                        {option.iconLeft && !multiple && (
-                          <Box
-                            as="span"
-                            display="inline-flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            flexShrink="0"
-                            color="icon.decorative.subtle"
-                          >
-                            <Icon name={option.iconLeft} />
-                          </Box>
-                        )}
-
-                        {option.iconRight && (
-                          <Box
-                            as="span"
-                            display="inline-flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            flexShrink="0"
-                            color="icon.decorative.subtle"
-                          >
-                            <Icon name={option.iconRight} />
-                          </Box>
-                        )}
-                      </Box>
-                    </ListItem>
+                    />
                   );
                 })
               )}
 
               {isLoading && (
                 <Box px="12" py="10" color="text.subtlest">
-                  Loading more...
+                  Loading more…
                 </Box>
               )}
             </List>
