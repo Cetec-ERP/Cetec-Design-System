@@ -177,6 +177,8 @@ export type DatePickerProps = Omit<
   DatePickerVariantProps & {
     /** Controlled value */
     value?: DateValue | null;
+    /** Initial uncontrolled value */
+    defaultValue?: DateValue | null;
     /** Called when the date changes */
     onChange?: (value: DateValue | null) => void;
     /** Earliest selectable date */
@@ -192,6 +194,8 @@ export type DatePickerProps = Omit<
     name?: string;
     /** Controlled popover open state */
     open?: boolean;
+    /** Initial uncontrolled popover state */
+    defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     size?: DatePickerVariantProps['size'];
   };
@@ -202,6 +206,7 @@ export const DatePicker = (props: DatePickerProps) => {
   const fieldContext = useFieldContext();
   const {
     value,
+    defaultValue = null,
     onChange,
     minDate,
     maxDate,
@@ -212,6 +217,7 @@ export const DatePicker = (props: DatePickerProps) => {
     id,
     size: sizeProp,
     open: controlledOpen,
+    defaultOpen = false,
     onOpenChange,
     ...rest
   } = props;
@@ -221,12 +227,13 @@ export const DatePicker = (props: DatePickerProps) => {
   const size = sizeProp ?? fieldContext?.size;
 
   const [className, otherProps] = splitProps(rest);
+  const initialValue = value !== undefined ? value : defaultValue;
 
   // ── Segment state ──────────────────────────────────────────────────────────
   const [segments, setSegments] = useState<SegmentValues>(() => ({
-    month: value?.month ?? null,
-    day: value?.day ?? null,
-    year: value?.year ?? null,
+    month: initialValue?.month ?? null,
+    day: initialValue?.day ?? null,
+    year: initialValue?.year ?? null,
   }));
   const [rawInput, setRawInput] = useState<SegmentRaw>({
     month: '',
@@ -243,12 +250,12 @@ export const DatePicker = (props: DatePickerProps) => {
     return { year: now.getFullYear(), month: now.getMonth() + 1 };
   }, []);
   const [viewDate, setViewDate] = useState({
-    year: value?.year ?? today.year,
-    month: value?.month ?? today.month,
+    year: initialValue?.year ?? today.year,
+    month: initialValue?.month ?? today.month,
   });
 
   // ── Popover state ──────────────────────────────────────────────────────────
-  const [internalOpen, setInternalOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = controlledOpen ?? internalOpen;
 
   const handleOpenChange = useCallback(

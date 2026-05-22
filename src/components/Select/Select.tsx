@@ -131,10 +131,12 @@ export type SelectProps = Omit<
 > &
   SelectVariantProps & {
     value?: SelectValue;
+    defaultValue?: SelectValue;
     onChange?: (value: SelectValue) => void;
     multiple?: boolean;
     placeholder?: string;
     open?: boolean;
+    defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     placement?: Placement;
     offset?: number;
@@ -150,10 +152,12 @@ export type SelectProps = Omit<
 export const Select = (props: SelectProps) => {
   const {
     value: controlledValue,
+    defaultValue = null,
     onChange,
     multiple = false,
     placeholder = 'Select...',
     open: controlledOpen,
+    defaultOpen = false,
     onOpenChange,
     placement = 'bottom-start',
     offset = 4,
@@ -174,8 +178,8 @@ export const Select = (props: SelectProps) => {
   const labelId = `${triggerId}-label`;
   const listboxId = `${triggerId}-listbox`;
 
-  const [internalOpen, setInternalOpen] = useState(false);
-  const [internalValue, setInternalValue] = useState<SelectValue>(null);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const [internalValue, setInternalValue] = useState<SelectValue>(defaultValue);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const isOpenControlled = controlledOpen !== undefined;

@@ -11,12 +11,13 @@ import { Icon } from '../Icon';
 
 export type RadioProps = Omit<
   BoxProps,
-  'checked' | 'onChange' | keyof RadioVariantProps
+  'checked' | 'defaultChecked' | 'onChange' | keyof RadioVariantProps
 > &
   RadioVariantProps & {
-    name: string;
-    checked: boolean;
-    onChange: RadioChangeHandler;
+    name?: string;
+    checked?: boolean;
+    defaultChecked?: boolean;
+    onChange?: RadioChangeHandler;
     id?: string;
     error?: boolean;
     invalid?: boolean;
@@ -38,21 +39,21 @@ export type RadioChangeEvent = ChangeEvent<HTMLInputElement>;
 export type RadioChangeHandler = (e: RadioChangeEvent) => void;
 
 /**
- * Radio is a controlled component.
- * You must pass `checked` and `onChange` props.
+ * Radio supports both controlled and uncontrolled usage.
+ *
+ * @example
+ * <Radio defaultChecked />
  *
  * @example
  * const [checked, setChecked] = useState(false);
- * <Radio
- *   checked={checked}
- *   onChange={(e) => setChecked(e.target.checked)}
- * />
+ * <Radio checked={checked} onChange={(e) => setChecked(e.target.checked)} />
  */
 export const Radio = (props: RadioProps) => {
   const fieldContext = useFieldContext();
   const {
     name,
     checked,
+    defaultChecked,
     onChange,
     id,
     error: errorProp,
@@ -74,9 +75,7 @@ export const Radio = (props: RadioProps) => {
     indicator,
     radioBg,
   });
-
-  // Determine which icon to render based on state
-  const iconName = checked ? 'radio-checked' : 'radio';
+  const isControlled = checked !== undefined;
 
   return (
     <Box
@@ -90,16 +89,19 @@ export const Radio = (props: RadioProps) => {
         className={classes.input}
         name={name}
         id={id}
-        checked={checked}
+        {...(isControlled
+          ? { checked }
+          : { defaultChecked: defaultChecked ?? false })}
         onChange={onChange}
         disabled={disabled}
         {...(error && { 'data-error': true })}
         {...(invalid && { 'data-invalid': true, 'aria-invalid': true })}
         {...otherProps}
       />
-      <Icon className={classes.radioBg} name="circle" />
-      <Icon className={classes.indicator} name={iconName} />
-      <Icon className={classes.indicator} name="radio-focus" />
+      <Icon className={classes.radioBg} name="circle" aria-hidden />
+      <Icon className={classes.indicator} name="radio" aria-hidden />
+      <Icon className={classes.indicator} name="radio-checked" aria-hidden />
+      <Icon className={classes.indicator} name="radio-focus" aria-hidden />
     </Box>
   );
 };

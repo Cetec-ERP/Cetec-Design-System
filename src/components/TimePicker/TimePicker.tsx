@@ -256,6 +256,8 @@ export type TimePickerProps = Omit<
   TimePickerVariantProps & {
     /** Controlled value — hour is always 24h (0–23) internally */
     value?: TimeValue | null;
+    /** Initial uncontrolled value — hour is always 24h (0–23) internally */
+    defaultValue?: TimeValue | null;
     /** Called when the time changes */
     onChange?: (value: TimeValue | null) => void;
     /** 12-hour or 24-hour display */
@@ -271,6 +273,8 @@ export type TimePickerProps = Omit<
     name?: string;
     /** Controlled popover open state */
     open?: boolean;
+    /** Initial uncontrolled popover state */
+    defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     size?: TimePickerVariantProps['size'];
   };
@@ -281,6 +285,7 @@ export const TimePicker = (props: TimePickerProps) => {
   const fieldContext = useFieldContext();
   const {
     value,
+    defaultValue = null,
     onChange,
     hourCycle = '12',
     minuteStep = 1,
@@ -290,6 +295,7 @@ export const TimePicker = (props: TimePickerProps) => {
     invalid: invalidProp,
     size: sizeProp,
     open: controlledOpen,
+    defaultOpen = false,
     onOpenChange,
     ...rest
   } = props;
@@ -299,6 +305,7 @@ export const TimePicker = (props: TimePickerProps) => {
   const size = sizeProp ?? fieldContext?.size;
 
   const [className, otherProps] = splitProps(rest);
+  const initialValue = value !== undefined ? value : defaultValue;
 
   const segments = getSegments(hourCycle);
 
@@ -323,19 +330,21 @@ export const TimePicker = (props: TimePickerProps) => {
   );
 
   const [numericVals, setNumericVals] = useState<NumericValues>(() =>
-    initNumericValues(value),
+    initNumericValues(initialValue),
   );
   const [rawInput, setRawInput] = useState<NumericRaw>({
     hour: '',
     minute: '',
   });
-  const [ampm, setAmpm] = useState<'AM' | 'PM' | null>(() => initAmpm(value));
+  const [ampm, setAmpm] = useState<'AM' | 'PM' | null>(() =>
+    initAmpm(initialValue),
+  );
   const [_focusedSegment, setFocusedSegment] = useState<SegmentType | null>(
     null,
   );
 
   // ── Popover state ──────────────────────────────────────────────────────────
-  const [internalOpen, setInternalOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = controlledOpen ?? internalOpen;
 
   const handleOpenChange = useCallback(
