@@ -27,6 +27,12 @@ export const checkboxRecipe = defineSlotRecipe({
         display: 'inline-grid',
         zIndex: '3',
       },
+      "& ~ [name='checkbox-checked']": {
+        display: 'none',
+      },
+      "& ~ [name='checkbox-indeterminate']": {
+        display: 'none',
+      },
       _checked: {
         "& ~ [name='checkbox-checked']": {
           display: 'inline-grid',
@@ -36,15 +42,20 @@ export const checkboxRecipe = defineSlotRecipe({
         "& ~ [name='checkbox']": {
           display: 'none',
         },
+        "& ~ [name='checkbox-indeterminate']": {
+          display: 'none',
+        },
       },
-      _indeterminate: {
+      '&[data-indeterminate]': {
         "& ~ [name='checkbox-indeterminate']": {
           display: 'inline-grid',
           fill: 'icon',
           zIndex: '3',
-          _disabled: {},
         },
         "& ~ [name='checkbox']": {
+          display: 'none',
+        },
+        "& ~ [name='checkbox-checked']": {
           display: 'none',
         },
       },

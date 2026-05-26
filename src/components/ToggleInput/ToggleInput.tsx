@@ -18,8 +18,9 @@ import type { ToggleChangeHandler } from '../Toggle';
 export type ToggleInputProps = Omit<BoxProps, keyof ToggleInputVariantProps> &
   ToggleInputVariantProps & {
     name: string;
-    checked: boolean;
-    onChange: ToggleChangeHandler;
+    checked?: boolean;
+    defaultChecked?: boolean;
+    onChange?: ToggleChangeHandler;
     id?: string;
     error?: boolean;
     invalid?: boolean;
@@ -32,6 +33,7 @@ export const ToggleInput = (props: ToggleInputProps) => {
   const {
     name,
     checked,
+    defaultChecked,
     onChange,
     id,
     children,
@@ -57,6 +59,7 @@ export const ToggleInput = (props: ToggleInputProps) => {
       <Toggle
         name={name}
         checked={checked}
+        defaultChecked={defaultChecked}
         onChange={onChange}
         id={resolvedId}
         error={error}

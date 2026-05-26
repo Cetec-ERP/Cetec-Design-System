@@ -1,4 +1,4 @@
-import { type ChangeEvent } from 'react';
+import { useEffect, useRef, type ChangeEvent } from 'react';
 
 import { cx } from '@styled-system/css';
 import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
@@ -11,12 +11,13 @@ import { Icon } from '../Icon';
 
 export type CheckboxProps = Omit<
   BoxProps,
-  'checked' | 'onChange' | keyof CheckboxVariantProps
+  'checked' | 'defaultChecked' | 'onChange' | keyof CheckboxVariantProps
 > &
   CheckboxVariantProps & {
     name: string;
-    checked: boolean;
-    onChange: CheckboxChangeHandler;
+    checked?: boolean;
+    defaultChecked?: boolean;
+    onChange?: CheckboxChangeHandler;
     id?: string;
     error?: boolean;
     invalid?: boolean;
@@ -39,22 +40,23 @@ export type CheckboxChangeEvent = ChangeEvent<HTMLInputElement>;
 export type CheckboxChangeHandler = (e: CheckboxChangeEvent) => void;
 
 /**
- * Checkbox is a controlled component.
- * You must pass `checked` and `onChange` props.
+ * Checkbox supports both controlled and uncontrolled usage.
+ *
+ * @example
+ * <Checkbox defaultChecked />
  *
  * @example
  * const [checked, setChecked] = useState(false);
- * <Checkbox
- *   checked={checked}
- *   onChange={(e) => setChecked(e.target.checked)}
- * />
+ * <Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} />
  */
 
 export const Checkbox = (props: CheckboxProps) => {
   const fieldContext = useFieldContext();
+  const inputRef = useRef<HTMLInputElement>(null);
   const {
     name,
     checked,
+    defaultChecked,
     onChange,
     id,
     indeterminate,
@@ -78,12 +80,13 @@ export const Checkbox = (props: CheckboxProps) => {
     checkBg,
   });
 
-  // Determine which icon to render based on state
-  const iconName = indeterminate
-    ? 'checkbox-indeterminate'
-    : checked
-      ? 'checkbox-checked'
-      : 'checkbox';
+  const isControlled = checked !== undefined;
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.indeterminate = Boolean(indeterminate);
+    }
+  }, [indeterminate]);
 
   return (
     <Box
@@ -93,21 +96,31 @@ export const Checkbox = (props: CheckboxProps) => {
     >
       <Box
         as="input"
+        ref={inputRef}
         type="checkbox"
         className={classes.input}
         name={name}
         id={id}
-        checked={checked}
+        {...(isControlled
+          ? { checked }
+          : { defaultChecked: defaultChecked ?? false })}
         onChange={onChange}
         disabled={disabled}
+        aria-checked={indeterminate ? 'mixed' : undefined}
         {...(indeterminate && { 'data-indeterminate': true })}
         {...(error && { 'data-error': true })}
         {...(invalid && { 'data-invalid': true, 'aria-invalid': true })}
         {...otherProps}
       />
-      <Icon className={classes.checkBg} name="square" />
-      <Icon className={classes.indicator} name={iconName} />
-      <Icon className={classes.indicator} name="checkbox-focus" />
+      <Icon className={classes.checkBg} name="square" aria-hidden />
+      <Icon className={classes.indicator} name="checkbox" aria-hidden />
+      <Icon className={classes.indicator} name="checkbox-checked" aria-hidden />
+      <Icon
+        className={classes.indicator}
+        name="checkbox-indeterminate"
+        aria-hidden
+      />
+      <Icon className={classes.indicator} name="checkbox-focus" aria-hidden />
     </Box>
   );
 };

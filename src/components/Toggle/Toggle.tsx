@@ -11,12 +11,13 @@ import { Icon } from '../Icon';
 
 export type ToggleProps = Omit<
   BoxProps,
-  'checked' | 'onChange' | keyof ToggleVariantProps
+  'checked' | 'defaultChecked' | 'onChange' | keyof ToggleVariantProps
 > &
   ToggleVariantProps & {
     name: string;
-    checked: boolean;
-    onChange: ToggleChangeHandler;
+    checked?: boolean;
+    defaultChecked?: boolean;
+    onChange?: ToggleChangeHandler;
     id?: string;
     error?: boolean;
     invalid?: boolean;
@@ -38,15 +39,14 @@ export type ToggleChangeEvent = ChangeEvent<HTMLInputElement>;
 export type ToggleChangeHandler = (e: ToggleChangeEvent) => void;
 
 /**
- * Toggle is a controlled component.
- * You must pass `checked` and `onChange` props.
+ * Toggle supports both controlled and uncontrolled usage.
+ *
+ * @example
+ * <Toggle defaultChecked />
  *
  * @example
  * const [checked, setChecked] = useState(false);
- * <Toggle
- *   checked={checked}
- *   onChange={(e) => setChecked(e.target.checked)}
- * />
+ * <Toggle checked={checked} onChange={(e) => setChecked(e.target.checked)} />
  */
 
 export const Toggle = (props: ToggleProps) => {
@@ -54,6 +54,7 @@ export const Toggle = (props: ToggleProps) => {
   const {
     name,
     checked,
+    defaultChecked,
     onChange,
     id,
     error: errorProp,
@@ -73,9 +74,7 @@ export const Toggle = (props: ToggleProps) => {
     input,
     indicator,
   });
-
-  // Determine which icon to render based on state
-  const iconName = checked ? 'circle-check' : 'circle';
+  const isControlled = checked !== undefined;
 
   return (
     <Box
@@ -89,14 +88,17 @@ export const Toggle = (props: ToggleProps) => {
         className={classes.input}
         name={name}
         id={id}
-        checked={checked}
+        {...(isControlled
+          ? { checked }
+          : { defaultChecked: defaultChecked ?? false })}
         onChange={onChange}
         disabled={disabled}
         {...(error && { 'data-error': true })}
         {...(invalid && { 'data-invalid': true, 'aria-invalid': true })}
         {...otherProps}
       />
-      <Icon className={classes.indicator} name={iconName} />
+      <Icon className={classes.indicator} name="circle" aria-hidden />
+      <Icon className={classes.indicator} name="circle-check" aria-hidden />
     </Box>
   );
 };

@@ -70,6 +70,13 @@ export const WithValue: Story = {
   ),
 };
 
+export const WithDefaultValue: Story = {
+  name: 'With Default Value',
+  render: () => (
+    <TimePicker hourCycle="12" defaultValue={{ hour: 14, minute: 30 }} />
+  ),
+};
+
 export const MinuteStep15: Story = {
   name: 'Minute Step: 15',
   render: () => (

@@ -20,7 +20,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Custom listbox-style select for controlled single and multi-select flows. Use with `FormField` for labels, help text, and error messaging.',
+          'Custom listbox-style select for controlled and uncontrolled single and multi-select flows. Use with `FormField` for labels, help text, and error messaging.',
       },
     },
   },
@@ -78,6 +78,22 @@ export const Default: Story = {
         </Select>
       </Box>
     );
+  },
+};
+
+export const Uncontrolled: Story = {
+  name: 'Uncontrolled',
+  render: () => (
+    <Box w="xs">
+      <Select defaultValue="growth" placeholder="Choose an option...">
+        <SelectOption value="starter" label="Starter" />
+        <SelectOption value="growth" label="Growth" />
+        <SelectOption value="enterprise" label="Enterprise" />
+      </Select>
+    </Box>
+  ),
+  parameters: {
+    controls: { disable: true },
   },
 };
 

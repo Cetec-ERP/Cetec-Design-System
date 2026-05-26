@@ -104,6 +104,8 @@ This design system is built on **Panda CSS** with a strict tokens-first approach
 - Type props with TypeScript strict mode
 - Style with Panda recipes (no inline styles or hard-coded values)
 - Follow accessibility guidelines (semantic HTML, keyboard support, ARIA when needed)
+- Native form controls support both controlled and uncontrolled usage where it fits the element semantics. Use `checked` / `value` when React owns the state, and `defaultChecked` / `defaultValue` / `defaultOpen` when the browser or widget should own the initial state.
+- Binary and group-based controls (`Checkbox`, `Radio`, `Toggle`, `Select`, `DatePicker`, `TimePicker`, `ChipGroup`) now expose explicit uncontrolled entrypoints so static pages can avoid hydration when they do not need React state.
 
 Also see [Component Standards](./src/storybook/docs/componentStandards.mdx)
 
