@@ -379,8 +379,9 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm ci
-          npm run build
           npm version "${{ steps.publish_version.outputs.version }}" --no-git-tag-version --allow-same-version
+          git update-index --assume-unchanged package.json package-lock.json
+          npm run build
           npx auto shipit --only-graduate-with-release-label ${{ steps.publish_version.outputs.shipit_args }}
 
       - name: Skip Existing Stable Release
