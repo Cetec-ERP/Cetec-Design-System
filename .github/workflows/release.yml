@@ -304,8 +304,17 @@ jobs:
             const hasPublishedVersion = (version) =>
               publishedVersionSet.has(version);
 
-            const versionExists = (version) =>
-              hasTag(version) || hasPublishedVersion(version);
+            const versionExists = (version) => {
+              if (hasTag(version) || hasPublishedVersion(version)) return true;
+              // Auto publishes with its own -next.0 format instead of our -0 suffix.
+              // Treat the Auto-format equivalent as a collision to avoid duplicate versions.
+              const parsed = parseVersion(version);
+              if (parsed.prerelease === '0') {
+                const autoFormat = `${parsed.major}.${parsed.minor}.${parsed.patch}-next.0`;
+                return hasTag(autoFormat) || hasPublishedVersion(autoFormat);
+              }
+              return false;
+            };
 
             if (!['major', 'minor', 'patch'].includes(releaseSemverLabel)) {
               throw new Error(`Unsupported release semver label: ${releaseSemverLabel}`);
@@ -371,7 +380,8 @@ jobs:
         run: |
           npm ci
           npm run build
-          npx auto shipit --use-version "${{ steps.publish_version.outputs.version }}" --only-graduate-with-release-label ${{ steps.publish_version.outputs.shipit_args }}
+          npm version "${{ steps.publish_version.outputs.version }}" --no-git-tag-version --allow-same-version
+          npx auto shipit --only-graduate-with-release-label ${{ steps.publish_version.outputs.shipit_args }}
 
       - name: Skip Existing Stable Release
         if: steps.publish_version.outputs.skip_reason == 'stable-version-exists'
