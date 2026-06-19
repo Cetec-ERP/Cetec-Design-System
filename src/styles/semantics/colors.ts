@@ -1105,68 +1105,86 @@ export const colors = defineSemanticTokens.colors({
     raised: {
       1: {
         value: {
-          base: '{colors.shadow.raised.1.light}',
-          _dark: '{colors.shadow.raised.1.dark}',
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
         },
       },
       2: {
         value: {
-          base: '{colors.shadow.raised.2.light}',
-          _dark: '{colors.shadow.raised.2.dark}',
+          base: '{colors.shadow.32}',
+          _dark: '{colors.shadow.40}',
         },
       },
     },
     elevated: {
       1: {
         value: {
-          base: '{colors.shadow.elevated.1.light}',
-          _dark: '{colors.shadow.elevated.1.dark}',
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
         },
       },
       2: {
         value: {
-          base: '{colors.shadow.elevated.2.light}',
-          _dark: '{colors.shadow.elevated.2.dark}',
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.24}',
         },
       },
       3: {
         value: {
-          base: '{colors.shadow.elevated.3.light}',
-          _dark: '{colors.shadow.elevated.3.dark}',
+          base: '{colors.shadow.24}',
+          _dark: '{colors.shadow.40}',
         },
       },
     },
     overlay: {
       1: {
         value: {
-          base: '{colors.shadow.overlay.1.light}',
-          _dark: '{colors.shadow.overlay.1.dark}',
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
         },
       },
       2: {
         value: {
-          base: '{colors.shadow.overlay.2.light}',
-          _dark: '{colors.shadow.overlay.2.dark}',
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.24}',
         },
       },
       3: {
         value: {
-          base: '{colors.shadow.overlay.3.light}',
-          _dark: '{colors.shadow.overlay.3.dark}',
+          base: '{colors.shadow.24}',
+          _dark: '{colors.shadow.32}',
+        },
+      },
+      4: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.24}',
+        },
+      },
+      5: {
+        value: {
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.16}',
         },
       },
     },
     overflow: {
       1: {
         value: {
-          base: '{colors.shadow.overflow.1.light}',
-          _dark: '{colors.shadow.overflow.1.dark}',
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
         },
       },
       2: {
         value: {
-          base: '{colors.shadow.overflow.2.light}',
-          _dark: '{colors.shadow.overflow.2.dark}',
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.24}',
+        },
+      },
+      3: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
         },
       },
     },

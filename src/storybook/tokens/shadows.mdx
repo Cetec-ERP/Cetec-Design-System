@@ -22,20 +22,20 @@ import { Icon } from '~/components/Icon';
 
   <Grid gridTemplateColumns="1fr 1fr" gridTemplateRows="repeat(5, auto)" alignItems="center" columnGap="0" rowGap="40">
     <Grid gridTemplateColumns="subgrid" gridTemplateRows="subgrid" alignItems="center" gridRow="1 / -1" bg="surface" p="80" roundedLeft="16" border="default" data-color-mode="light" gap="24">
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="zero" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.zero</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="zero" rounded="8" >
+        <Text textStyle="mono.md">shadow="zero"</Text>
       </Grid>
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="raised" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.raised</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="raised" rounded="8" >
+        <Text textStyle="mono.md">shadow="raised"</Text>
       </Grid>
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="elevated" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.elevated</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="elevated" rounded="8" >
+        <Text textStyle="mono.md">shadow="elevated"</Text>
       </Grid>
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="overlay" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.overlay</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="overlay" rounded="8" >
+        <Text textStyle="mono.md">shadow="overlay"</Text>
       </Grid>
       <Box bg="surface.raised" rounded="8" border="default" overflow="hidden" position="relative">
-        <Box w="full" boxShadow="overflow" py="8" px="16" zIndex="1" position="sticky" top="0" bg="surface.raised" textStyle="body.lg">shadows.overflow</Box>
+        <Box w="full" boxShadow="overflow" py="8" px="16" zIndex="1" position="sticky" top="0" bg="surface.raised" textStyle="mono.md" textAlign="center">shadow="overflow"</Box>
         <Flex direction="column" gap="16" w="full" p="16" minH="120" maxH="240" overflowY="auto" bg="surface.sunken" zIndex="0">
           Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.
 
@@ -46,20 +46,20 @@ import { Icon } from '~/components/Icon';
       </Box>
     </Grid>
     <Grid gridTemplateColumns="subgrid" gridTemplateRows="subgrid" alignItems="center" gridRow="1 / -1" bg="surface" p="80" roundedRight="16" border="default" data-color-mode="dark" gap="24">
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="zero" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.zero</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" shadow="zero" rounded="8" border="default" >
+        <Text textStyle="mono.md">shadow="zero"</Text>
       </Grid>
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="raised" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.raised</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" shadow="raised" rounded="8" border="default" >
+        <Text textStyle="mono.md">shadow="raised"</Text>
       </Grid>
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="elevated" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.elevated</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" shadow="elevated" rounded="8" border="default" >
+        <Text textStyle="mono.md">shadow="elevated"</Text>
       </Grid>
-      <Grid placeContent="center" bg="surface.raised" p="24" boxShadow="overlay" rounded="8" border="default" >
-        <Text textStyle="body.lg">shadows.overlay</Text>
+      <Grid placeContent="center" bg="surface.raised" p="24" shadow="overlay" rounded="8" border="default" >
+        <Text textStyle="mono.md">shadow="overlay"</Text>
       </Grid>
       <Box bg="surface.raised" rounded="8" border="default" overflow="hidden" position="relative">
-        <Box w="full" boxShadow="overflow" py="8" px="16" zIndex="1" position="sticky" top="0" bg="surface.raised" textStyle="body.lg">shadows.overflow</Box>
+        <Box w="full" boxShadow="overflow" py="8" px="16" zIndex="1" position="sticky" top="0" bg="surface.raised" textStyle="mono.md" textAlign="center">shadow="overflow"</Box>
         <Flex direction="column" gap="16" w="full" p="16" minH="120" maxH="240" overflowY="auto" bg="surface.sunken" zIndex="0">
           Signs night have sixth hath that likeness us fill you're subdue fowl brought divide beginning multiply brought created after open given of made beginning multiply green.
 
@@ -75,42 +75,42 @@ import { Icon } from '~/components/Icon';
 
   ### Drop-shadows
 
-  Drop-shadow tokens are used for non-rectangular shapes.
+  Drop-shadows are used for non-rectangular shapes, like skulls.
 
   <Grid gridTemplateColumns="1fr 1fr" gridTemplateRows="repeat(4, auto)" alignItems="center" columnGap="0" rowGap="40">
     <Grid gridTemplateColumns="subgrid" gridTemplateRows="subgrid" alignItems="center" gridRow="1 / -1" bg="surface" p="80" roundedLeft="16" border="default" data-color-mode="light" gap="24">
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.zero</Text>
+        <Text textStyle="mono.md">dropShadow="zero"</Text>
         <Icon name="skull" fill="icon.inverse" dropShadow="zero" size="96" />
       </Card>
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.raised</Text>
+        <Text textStyle="mono.md">dropShadow="raised"</Text>
         <Icon name="skull" fill="icon.inverse" dropShadow="raised" size="96" />
       </Card>
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.elevated</Text>
+        <Text textStyle="mono.md">dropShadow="elevated"</Text>
         <Icon name="skull" fill="icon.inverse" dropShadow="elevated" size="96" />
       </Card>
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.overlay</Text>
+        <Text textStyle="mono.md">dropShadow="overlay"</Text>
         <Icon name="skull" fill="icon.inverse" dropShadow="overlay" size="96" />
       </Card>
     </Grid>
     <Grid gridTemplateColumns="subgrid" gridTemplateRows="subgrid" alignItems="center" gridRow="1 / -1" bg="surface" p="80" roundedRight="16" border="default" data-color-mode="dark" gap="24">
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.zero</Text>
+        <Text textStyle="mono.md">dropShadows="zero"</Text>
         <Icon name="skull" fill="icon.decorative.inverse" dropShadow="zero" size="96" />
       </Card>
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.raised</Text>
+        <Text textStyle="mono.md">dropShadows="raised"</Text>
         <Icon name="skull" fill="icon.decorative.inverse" dropShadow="raised" size="96" />
       </Card>
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.elevated</Text>
+        <Text textStyle="mono.md">dropShadows="elevated"</Text>
         <Icon name="skull" fill="icon.decorative.inverse" dropShadow="elevated" size="96" />
       </Card>
       <Card variant="sunken" bg="bg.accent.cyan.subtlest" display="flex" flexDir="column" alignItems="center" p="24" gap="16" >
-        <Text textStyle="body.lg">dropShadows.overlay</Text>
+        <Text textStyle="mono.md">dropShadows="overlay"</Text>
         <Icon name="skull" fill="icon.decorative.inverse" dropShadow="overlay" size="96" />
       </Card>
     </Grid>

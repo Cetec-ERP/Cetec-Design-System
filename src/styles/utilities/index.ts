@@ -12,5 +12,6 @@ export * from './filters';
 export * from './fontVariants';
 export * from './transitions';
 export * from './dropShadows';
+export * from './shadowDefinitions';
 
 export * from './recipeGlobalStyles';

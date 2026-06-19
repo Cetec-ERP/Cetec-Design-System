@@ -70,6 +70,7 @@ export const cetecPreset: Preset = definePreset({
   },
   utilities: {
     ...pandaBasePresetUtilities,
+    // replaces (not extends) Panda's half-baked dropShadow utility
     dropShadow: dropShadowProperty,
     // Custom utilities
     // https://panda-css.com/docs/references/config#utilities
