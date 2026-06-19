@@ -1101,6 +1101,76 @@ export const colors = defineSemanticTokens.colors({
       },
     },
   },
+  shadow: {
+    raised: {
+      1: {
+        value: {
+          base: '{colors.shadow.raised.1.light}',
+          _dark: '{colors.shadow.raised.1.dark}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.raised.2.light}',
+          _dark: '{colors.shadow.raised.2.dark}',
+        },
+      },
+    },
+    elevated: {
+      1: {
+        value: {
+          base: '{colors.shadow.elevated.1.light}',
+          _dark: '{colors.shadow.elevated.1.dark}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.elevated.2.light}',
+          _dark: '{colors.shadow.elevated.2.dark}',
+        },
+      },
+      3: {
+        value: {
+          base: '{colors.shadow.elevated.3.light}',
+          _dark: '{colors.shadow.elevated.3.dark}',
+        },
+      },
+    },
+    overlay: {
+      1: {
+        value: {
+          base: '{colors.shadow.overlay.1.light}',
+          _dark: '{colors.shadow.overlay.1.dark}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.overlay.2.light}',
+          _dark: '{colors.shadow.overlay.2.dark}',
+        },
+      },
+      3: {
+        value: {
+          base: '{colors.shadow.overlay.3.light}',
+          _dark: '{colors.shadow.overlay.3.dark}',
+        },
+      },
+    },
+    overflow: {
+      1: {
+        value: {
+          base: '{colors.shadow.overflow.1.light}',
+          _dark: '{colors.shadow.overflow.1.dark}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.overflow.2.light}',
+          _dark: '{colors.shadow.overflow.2.dark}',
+        },
+      },
+    },
+  },
   utility: {
     shadowColor: {
       value: { base: '{colors.slate.90/20}', _dark: '{colors.slate.100/40}' },

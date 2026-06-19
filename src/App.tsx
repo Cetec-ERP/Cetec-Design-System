@@ -45,7 +45,7 @@ const Header: FC = () => {
       position="sticky"
       top="0"
       zIndex="1000"
-      boxShadow="medium"
+      boxShadow="overflow"
     >
       <Container maxW="5xl">
         <HStack justify="space-between">

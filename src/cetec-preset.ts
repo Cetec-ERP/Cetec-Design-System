@@ -9,6 +9,7 @@ import {
   breakpoints,
   conditions,
   containerSizes,
+  dropShadowProperty,
   filtersProperty,
   fontVariantsProperty,
   globalCss,
@@ -45,30 +46,18 @@ const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
-const theme = {
-  tokens: {
-    ...tokens,
-  },
-  semanticTokens: {
-    colors: semanticTokens.colors,
-    fontSizes: semanticTokens.fontSizes,
-    shadows: semanticTokens.shadows,
-    zIndex: semanticTokens.zIndex,
-  },
-};
-
 export const cetecPreset: Preset = definePreset({
   name: 'cetecPreset',
   theme: {
     extend: {
       tokens: {
-        ...theme.tokens,
+        ...tokens,
       },
       semanticTokens: {
-        colors: theme.semanticTokens.colors,
-        fontSizes: theme.semanticTokens.fontSizes,
-        shadows: theme.semanticTokens.shadows,
-        zIndex: theme.semanticTokens.zIndex,
+        colors: semanticTokens.colors,
+        fontSizes: semanticTokens.fontSizes,
+        shadows: semanticTokens.shadows,
+        zIndex: semanticTokens.zIndex,
       },
       breakpoints: breakpoints,
       containerSizes: containerSizes,
@@ -81,6 +70,7 @@ export const cetecPreset: Preset = definePreset({
   },
   utilities: {
     ...pandaBasePresetUtilities,
+    dropShadow: dropShadowProperty,
     // Custom utilities
     // https://panda-css.com/docs/references/config#utilities
     extend: {
