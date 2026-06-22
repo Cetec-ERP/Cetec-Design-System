@@ -71,7 +71,6 @@ export const tagRecipe = defineRecipe({
     hue: 'slate',
   },
   // validate-ignore: avoid-compound-variants-in-recipes — tag color pairing is a fixed token matrix and clearer as declarative compound variants
-  // eslint-disable-next-line cetec/avoid-compound-variants-in-recipes
   compoundVariants: [
     {
       hue: 'slate',

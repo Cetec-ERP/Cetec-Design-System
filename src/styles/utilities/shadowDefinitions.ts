@@ -1,13 +1,16 @@
+import type { NumericSizeToken } from '~/styled-system/tokens';
+import type { ColorToken } from '~/styled-system/tokens';
+
 type ShadowLayer = {
-  x: string;
-  y: string;
-  blur: string;
-  color: string;
-  spread?: string;
+  x: NumericSizeToken;
+  y: NumericSizeToken;
+  blur: NumericSizeToken;
+  color: `colors.${ColorToken}`;
+  spread?: NumericSizeToken;
 };
 
-const sizeToken = (value: string) => `{sizes.${value}}`;
-const colorToken = (value: string) => `{${value}}`;
+const sizeToken = (value: NumericSizeToken) => `{sizes.${value}}`;
+const colorToken = (value: ShadowLayer['color']) => `{${value}}`;
 
 const formatBoxShadowLayer = (layer: ShadowLayer) =>
   [
@@ -46,7 +49,7 @@ export const elevationShadowDefinitions = {
     { x: '0', y: '1', blur: '2', color: 'colors.shadow.overflow.2' },
     { x: '0', y: '2', blur: '6', color: 'colors.shadow.overflow.3' },
   ],
-} as const;
+} as const satisfies Record<string, readonly ShadowLayer[]>;
 
 export type ElevationShadowName = keyof typeof elevationShadowDefinitions;
 export type DropShadowName = Exclude<ElevationShadowName, 'overflow'>;
