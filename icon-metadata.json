@@ -4622,6 +4622,18 @@
     "category": "Time",
     "deprecated": false
   },
+  "to-date-backward": {
+    "aliases": [],
+    "tags": [],
+    "category": null,
+    "deprecated": false
+  },
+  "to-date-forward": {
+    "aliases": [],
+    "tags": [],
+    "category": null,
+    "deprecated": false
+  },
   "toolbox": {
     "aliases": [
       "tools",
