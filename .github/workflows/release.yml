@@ -4,11 +4,21 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Merged PR number to release using its current labels'
+        required: true
+        type: number
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
+    if: github.event_name == 'workflow_dispatch' || (!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci'))
     permissions:
       contents: write
       issues: write
@@ -18,6 +28,7 @@ jobs:
         with:
           # Ensure that git uses your token with admin access to the repo
           token: ${{ secrets.ADMIN_TOKEN }}
+          ref: main
       - name: Prepare repository
         run: git fetch --unshallow --tags
 
@@ -43,21 +54,58 @@ jobs:
             const semverLabels = new Set(['major', 'minor', 'patch']);
             const stableReleaseLabel = 'release';
             const skipReleaseLabel = 'skip-release';
-            const targetBranch = context.ref.replace('refs/heads/', '');
+            const targetBranch = 'main';
             const headCommitMessage = context.payload.head_commit?.message ?? '';
             const headCommitTitle = headCommitMessage.split('\n')[0] ?? '';
 
+            const getPr = async (pull_number) => {
+              const { data: pullRequest } = await github.rest.pulls.get({
+                ...context.repo,
+                pull_number,
+              });
+
+              return pullRequest;
+            };
+
+            const isMergedIntoTarget = (pullRequest) =>
+              Boolean(pullRequest.merged_at) && pullRequest.base.ref === targetBranch;
+
+            const resolveManualPr = async () => {
+              const rawPrNumber = context.payload.inputs?.pr_number;
+              const pull_number = Number(rawPrNumber);
+
+              if (!Number.isInteger(pull_number) || pull_number <= 0) {
+                throw new Error(`Invalid PR number: ${rawPrNumber}`);
+              }
+
+              const pullRequest = await getPr(pull_number);
+
+              if (!pullRequest.merged_at) {
+                throw new Error(`PR #${pull_number} has not been merged.`);
+              }
+
+              if (pullRequest.base.ref !== targetBranch) {
+                throw new Error(
+                  `PR #${pull_number} targets ${pullRequest.base.ref}, not ${targetBranch}.`,
+                );
+              }
+
+              core.info(`Resolved PR #${pullRequest.number} from manual input.`);
+              return pullRequest;
+            };
+
             const resolveMergedPr = async () => {
+              if (context.eventName === 'workflow_dispatch') {
+                return resolveManualPr();
+              }
+
               const squashMergePrMatch = headCommitTitle.match(/\(#(\d+)\)\s*$/);
 
               if (squashMergePrMatch) {
                 const pull_number = Number(squashMergePrMatch[1]);
-                const { data: pullRequest } = await github.rest.pulls.get({
-                  ...context.repo,
-                  pull_number,
-                });
+                const pullRequest = await getPr(pull_number);
 
-                if (pullRequest.merged_at && pullRequest.base.ref === targetBranch) {
+                if (isMergedIntoTarget(pullRequest)) {
                   core.info(`Resolved PR #${pullRequest.number} from squash commit message.`);
                   return pullRequest;
                 }
