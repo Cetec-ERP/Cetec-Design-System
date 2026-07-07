@@ -29,26 +29,26 @@ const buttonStyles = {
   _disabled: {
     cursor: 'not-allowed',
   },
-  '&[data-disabled=true]': {
+  '&:has([data-disabled=true])': {
     cursor: 'not-allowed',
   },
-  '&[data-deleted=true]': {
+  '&:has([data-deleted=true])': {
     textDecoration: 'line-through',
     opacity: '[0.6]',
   },
-  '&[data-selected=true]': {
+  '&:has([data-selected=true])': {
     bg: 'bg.neutral.boldest',
     _icon: {
       fill: 'icon.decorative.inverse',
     },
   },
-  '&[data-selected=true]:is(:hover, [data-hover])': {
+  '&:has([data-selected=true]):is(:hover, [data-hover])': {
     bg: 'bg.neutral.bold.hovered',
     _icon: {
       fill: 'icon.decorative.inverse.hovered',
     },
   },
-  '&[data-selected=true]:is(:active, [data-active])': {
+  '&:has([data-selected=true]):is(:active, [data-active])': {
     bg: 'bg.neutral.bold.pressed',
     _icon: {
       fill: 'icon.decorative.inverse.hovered',
@@ -92,7 +92,7 @@ export const chipRecipe = defineSlotRecipe({
         bg: 'bg.neutral.boldest',
         color: 'text.inverse',
       },
-      '&[data-disabled=true]': {
+      '&:has([data-disabled=true]': {
         cursor: 'not-allowed',
         bg: 'bg.disabled',
         color: 'text.disabled',
@@ -125,7 +125,7 @@ export const chipRecipe = defineSlotRecipe({
       px: 'var(--main-px)',
       fontSize: 'var(--main-fs)',
       color: 'text',
-      '[data-selected=true] &': {
+      '[data-selected=true] > &': {
         color: 'text.inverse',
       },
     },
