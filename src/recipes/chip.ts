@@ -92,7 +92,7 @@ export const chipRecipe = defineSlotRecipe({
         bg: 'bg.neutral.boldest',
         color: 'text.inverse',
       },
-      '&:has([data-disabled=true]': {
+      '&:has([data-disabled=true])': {
         cursor: 'not-allowed',
         bg: 'bg.disabled',
         color: 'text.disabled',
