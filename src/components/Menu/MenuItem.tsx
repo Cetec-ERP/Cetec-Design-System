@@ -1,13 +1,8 @@
-import type {
-  ChangeEventHandler,
-  HTMLProps,
-  KeyboardEvent,
-  MouseEvent,
-} from 'react';
+import type { HTMLProps, KeyboardEvent, MouseEvent } from 'react';
 
 import { useFloatingTree, useListItem } from '@floating-ui/react';
 
-import { cx } from '@styled-system/css';
+import { css, cx } from '@styled-system/css';
 import { listItem as listItemRecipe } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
@@ -113,11 +108,6 @@ export const MenuItem = (props: MenuItemProps) => {
     }
   };
 
-  const handleControlChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
   type MenuInteractionProps = Pick<
     HTMLProps<HTMLElement>,
     'onClick' | 'onKeyDown' | 'onPointerMove' | 'onMouseMove' | 'onFocus'
@@ -180,9 +170,6 @@ export const MenuItem = (props: MenuItemProps) => {
       ? 'menuitemcheckbox'
       : 'menuitem';
 
-  // const selectionControl =
-  //   variant === 'checkbox' || variant === 'toggle' ? variant : 'none';
-
   const elementProps: BoxProps<'a'> | BoxProps<'button'> = href
     ? ({
         as: 'a',
@@ -236,21 +223,23 @@ export const MenuItem = (props: MenuItemProps) => {
       {variant === 'checkbox' && (
         <Checkbox
           name={controlName}
-          className={classes.beforeSlot}
+          className={cx(classes.beforeSlot, css({ pointerEvents: 'none' }))}
           checked={Boolean(selected)}
-          onChange={handleControlChange}
+          readOnly
           tabIndex={-1}
+          aria-hidden
         />
       )}
 
       {variant === 'toggle' && (
         <Toggle
           name={controlName}
-          className={classes.beforeSlot}
+          className={cx(classes.beforeSlot, css({ pointerEvents: 'none' }))}
           checked={Boolean(selected)}
-          onChange={handleControlChange}
+          readOnly
           mr="4"
           tabIndex={-1}
+          aria-hidden
         />
       )}
 
