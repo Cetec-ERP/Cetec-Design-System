@@ -43,6 +43,18 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   chip: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
   chipGroup: [{ size: ['*'], responsive: true }],
   datePicker: [{ size: ['*'], responsive: true }],
+  dateInputs: [
+    {
+      size: ['*'],
+      before: ['*'],
+      after: ['*'],
+      range: ['*'],
+      responsive: true,
+    },
+  ],
+  dateTimeInputs: [
+    { size: ['*'], before: ['*'], after: ['*'], responsive: true },
+  ],
   divider: [{ size: ['*'], responsive: true }],
   formField: [{ size: ['*'], layout: ['*'], responsive: true }],
   icon: [{ size: ['*'], responsive: true }],
@@ -65,6 +77,15 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   tag: [{ variant: ['*'], hue: ['*'] }],
   textarea: [{ size: ['*'], responsive: true }],
   textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
+  timeInputs: [
+    {
+      size: ['*'],
+      before: ['*'],
+      after: ['*'],
+      range: ['*'],
+      responsive: true,
+    },
+  ],
   timePicker: [{ size: ['*'], responsive: true }],
   tooltip: [{ size: ['*'], responsive: true }],
 };

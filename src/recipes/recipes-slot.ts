@@ -21,3 +21,6 @@ export { calendarRecipe } from './calendar';
 export { dateInputsRecipe } from './dateInputs';
 export { timeInputsRecipe } from './timeInputs';
 export { dateTimeInputsRecipe } from './dateTimeInputs';
+export { dateMenusRecipe } from './dateMenus';
+export { timeMenusRecipe } from './timeMenus';
+export { dateTimeMenusRecipe } from './dateTimeMenus';
