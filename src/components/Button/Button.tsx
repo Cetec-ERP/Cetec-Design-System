@@ -15,7 +15,10 @@ import {
 } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
-export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
+export type ButtonProps = Omit<
+  BoxProps,
+  keyof ButtonVariantProps | 'fontVariant'
+> &
   Omit<ButtonVariantProps, 'before' | 'after' | 'iconBefore' | 'iconAfter'> & {
     before?: ReactNode;
     after?: ReactNode;
@@ -28,6 +31,7 @@ export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
     invalid?: boolean;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
+    fontVariant?: BoxProps['fontVariant'];
   };
 
 export const Button = (props: ButtonProps) => {
@@ -47,6 +51,7 @@ export const Button = (props: ButtonProps) => {
     invalid: invalidProp,
     disabled: disabledProp,
     type = 'button',
+    fontVariant,
     ...rest
   } = props;
   const size =
@@ -135,7 +140,9 @@ export const Button = (props: ButtonProps) => {
     >
       <HStack gap="0" opacity={loading ? 0 : 1}>
         {renderSlot(resolvedBefore, 'before')}
-        <Box className={classes.mainContent}>{children}</Box>
+        <Box className={classes.mainContent} fontVariant={fontVariant}>
+          {children}
+        </Box>
         {renderSlot(resolvedAfter, 'after')}
       </HStack>
       {loading && (
