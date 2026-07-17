@@ -16,3 +16,4 @@ export { timePickerRecipe } from './timePicker';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { selectRecipe } from './select';
 export { kbdRecipe } from './kbd';
+export { segmentedInputsRecipe } from './segmentedInputs';

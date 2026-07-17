@@ -50,6 +50,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   listItem: [{ density: ['*'], responsive: true }, { selected: ['*'] }],
   listItemGroup: [{ density: ['*'], responsive: true }],
   menu: [{ density: ['*'], responsive: true }],
+  segmentedInputs: [{ size: ['*'], bare: ['*'], responsive: true }],
   spinner: [{ size: ['*'], responsive: true }],
   skeleton: [
     {
