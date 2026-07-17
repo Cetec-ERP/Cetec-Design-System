@@ -1,27 +1,18 @@
-import {
-  useState,
-  type HTMLAttributes,
-  type ReactElement,
-  type Ref,
-} from 'react';
+import { useState, type Ref } from 'react';
 
 import { Box } from '~/components/Box';
 import { Calendar } from '~/components/Calendar';
-import { Menu } from '~/components/Menu';
+import { Menu, type MenuProps } from '~/components/Menu';
+import { splitProps } from '~/utils/splitProps';
 
 import type { DateValue } from '../helpers/types';
-import type { Placement } from '@floating-ui/react';
 
 type ViewDate = { year: number; month: number };
 
-export type DateMenuProps = {
-  /** The element that opens the menu */
-  trigger?: ReactElement<HTMLAttributes<HTMLElement>>;
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  placement?: Placement;
-  inline?: boolean;
+export type DateMenuProps = Omit<
+  MenuProps,
+  'children' | 'onChange' | 'value'
+> & {
   value?: DateValue | null;
   /** Commits immediately on day selection, then closes the menu */
   onChange?: (value: DateValue | null) => void;
@@ -47,7 +38,6 @@ export const DateMenu = (props: DateMenuProps) => {
     defaultOpen = false,
     onOpenChange,
     placement = 'bottom-start',
-    inline = false,
     value,
     onChange,
     minDate,
@@ -58,12 +48,15 @@ export const DateMenu = (props: DateMenuProps) => {
     disabled = false,
     label,
     contentRef,
+    ...rest
   } = props;
+  const isInline = rest.inline === true;
+  const [className, otherProps] = splitProps(rest);
 
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpenControlled = controlledOpen !== undefined;
   const isOpen = isOpenControlled ? controlledOpen : internalOpen;
-  const menuOpen = inline ? true : isOpen;
+  const menuOpen = isInline ? true : isOpen;
 
   const setOpenState = (nextOpen: boolean) => {
     if (!isOpenControlled) {
@@ -78,11 +71,12 @@ export const DateMenu = (props: DateMenuProps) => {
 
   return (
     <Menu
+      className={className}
+      {...otherProps}
       trigger={trigger}
       open={menuOpen}
       onOpenChange={setOpenState}
       placement={placement}
-      inline={inline}
       closeOnSelect={false}
       // Opts into Menu's order={['reference', 'content']} focus management
       // (see Menu's own doc comment on this prop) so opening the popover

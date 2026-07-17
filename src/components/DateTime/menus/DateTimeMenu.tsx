@@ -3,8 +3,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type HTMLAttributes,
-  type ReactElement,
   type Ref,
   type RefObject,
 } from 'react';
@@ -16,7 +14,8 @@ import { Button } from '~/components/Button';
 import { Calendar } from '~/components/Calendar';
 import { Divider } from '~/components/Divider';
 import { List, ListItem } from '~/components/List';
-import { Menu } from '~/components/Menu';
+import { Menu, type MenuProps } from '~/components/Menu';
+import { splitProps } from '~/utils/splitProps';
 
 import { to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
@@ -27,18 +26,13 @@ import type {
   Meridiem,
   TimeValue,
 } from '../helpers/types';
-import type { Placement } from '@floating-ui/react';
 
 type ViewDate = { year: number; month: number };
 
-export type DateTimeMenuProps = {
-  /** The element that opens the menu */
-  trigger?: ReactElement<HTMLAttributes<HTMLElement>>;
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  placement?: Placement;
-  inline?: boolean;
+export type DateTimeMenuProps = Omit<
+  MenuProps,
+  'children' | 'onChange' | 'value'
+> & {
   value?: DateTimeValue | null;
   /** Committed only when Apply is pressed — Cancel discards the pending selection */
   onChange?: (value: DateTimeValue | null) => void;
@@ -92,7 +86,6 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
     defaultOpen = false,
     onOpenChange,
     placement = 'bottom-start',
-    inline = false,
     value,
     onChange,
     minDate,
@@ -105,12 +98,15 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
     disabled = false,
     dateLabel,
     contentRef,
+    ...rest
   } = props;
+  const isInline = rest.inline === true;
+  const [className, otherProps] = splitProps(rest);
 
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpenControlled = controlledOpen !== undefined;
   const isOpen = isOpenControlled ? controlledOpen : internalOpen;
-  const menuOpen = inline ? true : isOpen;
+  const menuOpen = isInline ? true : isOpen;
 
   const setOpenState = (nextOpen: boolean) => {
     if (!isOpenControlled) {
@@ -250,11 +246,12 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
 
   return (
     <Menu
+      className={className}
+      {...otherProps}
       trigger={trigger}
       open={menuOpen}
       onOpenChange={setOpenState}
       placement={placement}
-      inline={inline}
       closeOnSelect={false}
       // Opts into Menu's order={['reference', 'content']} focus management
       // (see Menu's own doc comment on this prop) so opening the popover
