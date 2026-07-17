@@ -17,6 +17,10 @@ const segmentedInputsBase = {
     lineHeight: 'default',
     cursor: 'text',
     userSelect: 'none',
+    flexGrow: '0',
+    flexShrink: '0',
+    flexBasis: 'fit',
+    minW: '0',
     _disabled: {
       color: 'text.disabled',
       cursor: 'not-allowed',

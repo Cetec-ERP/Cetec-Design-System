@@ -18,3 +18,6 @@ export { selectRecipe } from './select';
 export { kbdRecipe } from './kbd';
 export { segmentedInputsRecipe } from './segmentedInputs';
 export { calendarRecipe } from './calendar';
+export { dateInputsRecipe } from './dateInputs';
+export { timeInputsRecipe } from './timeInputs';
+export { dateTimeInputsRecipe } from './dateTimeInputs';
