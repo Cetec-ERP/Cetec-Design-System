@@ -17,3 +17,4 @@ export { breadcrumbsRecipe } from './breadcrumbs';
 export { selectRecipe } from './select';
 export { kbdRecipe } from './kbd';
 export { segmentedInputsRecipe } from './segmentedInputs';
+export { calendarRecipe } from './calendar';

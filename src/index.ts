@@ -4,6 +4,7 @@ export { Box, type BoxProps } from './components/Box';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { BreakpointIndicator } from './components/BreakpointIndicator';
 export { Button } from './components/Button';
+export { Calendar, type CalendarProps } from './components/Calendar';
 export { Card } from './components/Card';
 export { Checkbox } from './components/Checkbox';
 export { CheckboxInput } from './components/CheckboxInput';

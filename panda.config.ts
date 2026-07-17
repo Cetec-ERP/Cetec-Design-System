@@ -38,6 +38,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
       responsive: true,
     },
   ],
+  calendar: [{ type: ['*'] }],
   card: [{ size: ['*'], variant: ['*'], responsive: true }],
   chip: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
   chipGroup: [{ size: ['*'], responsive: true }],
