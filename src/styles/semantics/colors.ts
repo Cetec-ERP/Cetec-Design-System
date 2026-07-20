@@ -514,6 +514,104 @@ export const colors = defineSemanticTokens.colors({
         },
       },
     },
+    slate: {
+      '0': {
+        value: {
+          base: '{colors.slate.0}',
+          _dark: '{colors.slate_inverse.0}',
+        },
+      },
+      '1': {
+        value: {
+          base: '{colors.slate.1}',
+          _dark: '{colors.slate_inverse.1}',
+        },
+      },
+      '2': {
+        value: {
+          base: '{colors.slate.2}',
+          _dark: '{colors.slate_inverse.2}',
+        },
+      },
+      '3': {
+        value: {
+          base: '{colors.slate.3}',
+          _dark: '{colors.slate_inverse.3}',
+        },
+      },
+      '4': {
+        value: {
+          base: '{colors.slate.4}',
+          _dark: '{colors.slate_inverse.4}',
+        },
+      },
+      '5': {
+        value: {
+          base: '{colors.slate.5}',
+          _dark: '{colors.slate_inverse.5}',
+        },
+      },
+      '10': {
+        value: {
+          base: '{colors.slate.10}',
+          _dark: '{colors.slate_inverse.10}',
+        },
+      },
+      '20': {
+        value: {
+          base: '{colors.slate.20}',
+          _dark: '{colors.slate_inverse.20}',
+        },
+      },
+      '30': {
+        value: {
+          base: '{colors.slate.30}',
+          _dark: '{colors.slate_inverse.30}',
+        },
+      },
+      '40': {
+        value: {
+          base: '{colors.slate.40}',
+          _dark: '{colors.slate_inverse.40}',
+        },
+      },
+      '50': {
+        value: {
+          base: '{colors.slate.50}',
+          _dark: '{colors.slate_inverse.50}',
+        },
+      },
+      '60': {
+        value: {
+          base: '{colors.slate.60}',
+          _dark: '{colors.slate_inverse.60}',
+        },
+      },
+      '70': {
+        value: {
+          base: '{colors.slate.70}',
+          _dark: '{colors.slate_inverse.70}',
+        },
+      },
+      '80': {
+        value: {
+          base: '{colors.slate.80}',
+          _dark: '{colors.slate_inverse.80}',
+        },
+      },
+      '90': {
+        value: {
+          base: '{colors.slate.90}',
+          _dark: '{colors.slate_inverse.90}',
+        },
+      },
+      '100': {
+        value: {
+          base: '{colors.slate.100}',
+          _dark: '{colors.slate_inverse.100}',
+        },
+      },
+    },
   },
   blanket: {
     DEFAULT: { value: { base: '#17171775', _dark: '#10121499' } },
@@ -1098,6 +1196,94 @@ export const colors = defineSemanticTokens.colors({
       value: {
         base: '{colors.blue.70}',
         _dark: '{colors.blue.70}',
+      },
+    },
+  },
+  shadow: {
+    raised: {
+      1: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.32}',
+          _dark: '{colors.shadow.40}',
+        },
+      },
+    },
+    elevated: {
+      1: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.24}',
+        },
+      },
+      3: {
+        value: {
+          base: '{colors.shadow.24}',
+          _dark: '{colors.shadow.40}',
+        },
+      },
+    },
+    overlay: {
+      1: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.24}',
+        },
+      },
+      3: {
+        value: {
+          base: '{colors.shadow.24}',
+          _dark: '{colors.shadow.32}',
+        },
+      },
+      4: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.24}',
+        },
+      },
+      5: {
+        value: {
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.16}',
+        },
+      },
+    },
+    overflow: {
+      1: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
+        },
+      },
+      2: {
+        value: {
+          base: '{colors.shadow.8}',
+          _dark: '{colors.shadow.24}',
+        },
+      },
+      3: {
+        value: {
+          base: '{colors.shadow.16}',
+          _dark: '{colors.shadow.32}',
+        },
       },
     },
   },
