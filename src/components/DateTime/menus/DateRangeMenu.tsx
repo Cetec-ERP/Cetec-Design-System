@@ -1,4 +1,4 @@
-import { useEffect, useState, type Ref } from 'react';
+import { useEffect, useState } from 'react';
 
 import { dateMenus } from '@styled-system/recipes';
 
@@ -31,12 +31,6 @@ export type DateRangeMenuProps = Omit<
   disabled?: boolean;
   startLabel?: string;
   endLabel?: string;
-  /**
-   * Ref to the popover's content wrapper — lets a wrapping Picker tell
-   * whether a blur's newly-focused element landed inside the popover so it
-   * doesn't close the menu focus just moved into.
-   */
-  contentRef?: Ref<HTMLDivElement>;
 };
 
 const EMPTY_RANGE: DateRangeValue = { start: null, end: null };
@@ -58,7 +52,6 @@ export const DateRangeMenu = (props: DateRangeMenuProps) => {
     disabled = false,
     startLabel = 'Start date',
     endLabel = 'End date',
-    contentRef,
     ...rest
   } = props;
   const isInline = rest.inline === true;
@@ -152,13 +145,8 @@ export const DateRangeMenu = (props: DateRangeMenuProps) => {
       onOpenChange={setOpenState}
       placement={placement}
       closeOnSelect={false}
-      // Opts into Menu's order={['reference', 'content']} focus management
-      // (see Menu's own doc comment on this prop) so opening the popover
-      // doesn't yank focus off the segment the user just clicked/typed into
-      // and onto the Calendar's first button.
-      onMenubarEdgeNavigate={() => {}}
     >
-      <Box ref={contentRef}>
+      <Box>
         <Box className={classes.calendars}>
           <Calendar
             label={startLabel}

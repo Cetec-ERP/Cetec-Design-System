@@ -26,9 +26,8 @@ import type { Meta, StoryObj } from '@storybook/react';
  * menus and DateTimeMenu hold a pending/draft selection with Cancel/Apply
  * footer actions; DateMenu/TimeMenu commit immediately on selection.
  *
- * `hourCycle` is a real prop, not a toggle — each 12h/24h story just passes
- * a different fixed value, matching the legacy TimePicker stories' own
- * Default12h/Default24h convention.
+ * `timeFormat` is a real prop, not a toggle — each 12h/24h story just passes
+ * a different fixed value.
  */
 const meta = {
   title: 'Components/DateTime/Menus',
@@ -116,7 +115,7 @@ export const TimeMenus: Story = {
               Selected: {formatTime(value)}
             </Text>
           </VStack>
-          <TimeMenu inline value={value} onChange={setValue} hourCycle="12" />
+          <TimeMenu inline value={value} onChange={setValue} timeFormat="12" />
         </VStack>
         <VStack gap="8" alignItems="flex-start">
           <VStack gap="0" alignItems="flex-start">
@@ -125,7 +124,7 @@ export const TimeMenus: Story = {
               Selected: {formatTime(value)}
             </Text>
           </VStack>
-          <TimeMenu inline value={value} onChange={setValue} hourCycle="24" />
+          <TimeMenu inline value={value} onChange={setValue} timeFormat="24" />
         </VStack>
       </Grid>
     );
@@ -154,7 +153,7 @@ export const TimeRangeMenus: Story = {
             inline
             value={value}
             onChange={setValue}
-            hourCycle="12"
+            timeFormat="12"
           />
         </VStack>
         <VStack gap="8" alignItems="flex-start">
@@ -168,7 +167,7 @@ export const TimeRangeMenus: Story = {
             inline
             value={value}
             onChange={setValue}
-            hourCycle="24"
+            timeFormat="24"
           />
         </VStack>
       </Grid>
@@ -198,7 +197,7 @@ export const DateTimeMenus: Story = {
             inline
             value={value}
             onChange={setValue}
-            hourCycle="12"
+            timeFormat="12"
           />
         </VStack>
         <VStack gap="8" alignItems="flex-start">
@@ -212,7 +211,7 @@ export const DateTimeMenus: Story = {
             inline
             value={value}
             onChange={setValue}
-            hourCycle="24"
+            timeFormat="24"
           />
         </VStack>
       </Grid>

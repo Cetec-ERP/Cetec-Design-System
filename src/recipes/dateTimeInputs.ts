@@ -153,7 +153,7 @@ const dateTimeInputsVariants = {
 // validate-ignore: recipe-jsx-name-matches-component — recipe name is plural by file-shape convention, but covers a single DateTimeInput component
 export const dateTimeInputsRecipe = defineSlotRecipe({
   className: 'dateTimeInputs',
-  jsx: ['DateTimeInput'],
+  jsx: ['DateTimeInputs', 'DateTimeInput'],
   slots: ['container', 'slot', 'buttonSlot'],
   base: dateTimeInputsBase,
   variants: dateTimeInputsVariants,

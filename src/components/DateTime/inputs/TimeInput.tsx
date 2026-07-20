@@ -16,7 +16,7 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../../Box';
 import { SegmentedTime } from '../../SegmentedInputs';
 
-import type { HourCycle, TimeValue } from '../helpers/types';
+import type { TimeFormat, TimeValue } from '../helpers/types';
 
 export type TimeInputProps = Omit<
   BoxProps,
@@ -27,7 +27,7 @@ export type TimeInputProps = Omit<
     value?: TimeValue | null;
     defaultValue?: TimeValue | null;
     onChange?: (value: TimeValue | null) => void;
-    hourCycle?: HourCycle;
+    timeFormat?: TimeFormat;
     minuteStep?: number;
     label?: string;
     before?: ReactNode;
@@ -52,7 +52,7 @@ export const TimeInput = (props: TimeInputProps) => {
     value,
     defaultValue,
     onChange,
-    hourCycle,
+    timeFormat,
     minuteStep,
     label,
     before,
@@ -131,7 +131,7 @@ export const TimeInput = (props: TimeInputProps) => {
         value={value}
         defaultValue={defaultValue}
         onChange={onChange}
-        hourCycle={hourCycle}
+        timeFormat={timeFormat}
         minuteStep={minuteStep}
         size={size}
         disabled={disabled}

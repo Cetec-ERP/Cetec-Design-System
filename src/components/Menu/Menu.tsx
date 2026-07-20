@@ -26,6 +26,7 @@ import {
   size,
   useClick,
   useDismiss,
+  useFocus,
   useInteractions,
   useHover,
   useListNavigation,
@@ -74,6 +75,51 @@ const defaultGetItemText = ({
   description?: string;
 }) => {
   return [label, description].filter(Boolean).join(' ').trim();
+};
+
+const tabbableSelector = [
+  'a[href]',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  '[tabindex]',
+  '[contenteditable="true"]',
+].join(',');
+
+const isTabbable = (element: HTMLElement) => {
+  if (element.hasAttribute('disabled')) return false;
+  if (element.getAttribute('aria-hidden') === 'true') return false;
+  if (element.getAttribute('tabindex') === '-1') return false;
+  if (element.hasAttribute('data-floating-ui-focus-guard')) return false;
+
+  const style = element.ownerDocument.defaultView?.getComputedStyle(element);
+  if (style?.display === 'none' || style?.visibility === 'hidden') {
+    return false;
+  }
+
+  return element.getClientRects().length > 0;
+};
+
+const getNextTabbableOutsideFloating = ({
+  target,
+  floatingElement,
+  direction,
+}: {
+  target: HTMLElement;
+  floatingElement: HTMLElement | null;
+  direction: 1 | -1;
+}) => {
+  const candidates = Array.from(
+    target.ownerDocument.querySelectorAll<HTMLElement>(tabbableSelector),
+  ).filter((element) => {
+    return isTabbable(element) && !floatingElement?.contains(element);
+  });
+
+  const currentIndex = candidates.indexOf(target);
+  if (currentIndex === -1) return null;
+
+  return candidates[currentIndex + direction] ?? null;
 };
 
 const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
@@ -196,7 +242,12 @@ export const Menu = (props: MenuProps) => {
     enabled:
       hasReference &&
       (triggerInteraction === 'click' ||
+        triggerInteraction === 'focus' ||
         triggerInteraction === 'click-and-hover'),
+    toggle: triggerInteraction !== 'focus',
+  });
+  const focus = useFocus(floating.context, {
+    enabled: hasReference && triggerInteraction === 'focus',
   });
   const dismiss = useDismiss(floating.context, { enabled: hasReference });
   const role = useRole(floating.context, { role: 'menu' });
@@ -214,7 +265,7 @@ export const Menu = (props: MenuProps) => {
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
-    [hover, click, dismiss, role, listNavigation, typeahead],
+    [hover, click, focus, dismiss, role, listNavigation, typeahead],
   );
 
   const filterContextValue = useMemo(
@@ -542,6 +593,33 @@ export const Menu = (props: MenuProps) => {
   });
 
   const composedTriggerOnKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (isOpen && triggerInteraction === 'focus' && event.key === 'Tab') {
+      const target = event.target;
+      const referenceElement = floating.elements.domReference;
+
+      if (target instanceof HTMLElement && referenceElement) {
+        const nextElement = getNextTabbableOutsideFloating({
+          target,
+          floatingElement: floating.elements.floating,
+          direction: event.shiftKey ? -1 : 1,
+        });
+
+        if (nextElement && !referenceElement.contains(nextElement)) {
+          event.preventDefault();
+          setOpenState(false);
+          nextElement.focus();
+          return;
+        }
+
+        if (!nextElement) {
+          event.preventDefault();
+          setOpenState(false);
+          target.blur();
+          return;
+        }
+      }
+    }
+
     // When the menu is open, Floating UI's reference key handler often runs
     // before the consumer's onKeyDown, so menubar Left/Right (on the trigger)
     // never fires. Run the trigger handler first for horizontal navigation.
@@ -585,6 +663,8 @@ export const Menu = (props: MenuProps) => {
               order={
                 onMenubarEdgeNavigate ? ['reference', 'content'] : undefined
               }
+              initialFocus={triggerInteraction === 'focus' ? -1 : undefined}
+              returnFocus={triggerInteraction === 'focus' ? false : undefined}
             >
               {content}
             </FloatingFocusManager>

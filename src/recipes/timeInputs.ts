@@ -159,7 +159,7 @@ const timeInputsVariants = {
 // validate-ignore: recipe-jsx-name-matches-component — covers a component family, not a single "TimeInputs" component
 export const timeInputsRecipe = defineSlotRecipe({
   className: 'timeInputs',
-  jsx: ['TimeInput', 'TimeRangeInput'],
+  jsx: ['TimeInputs', 'TimeInput', 'TimeRangeInput'],
   slots: ['container', 'slot', 'buttonSlot'],
   base: timeInputsBase,
   variants: timeInputsVariants,

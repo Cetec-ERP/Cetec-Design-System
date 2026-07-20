@@ -3,7 +3,10 @@ import { useMemo, type Ref } from 'react';
 import { type SegmentedInputsVariantProps } from '@styled-system/recipes';
 
 import { type BoxProps } from '~/components/Box';
-import type { DateValue } from '~/components/DateTime/helpers/types';
+import type {
+  DateFormat,
+  DateValue,
+} from '~/components/DateTime/helpers/types';
 
 import { SegmentedInput } from './SegmentedInput';
 
@@ -13,7 +16,7 @@ import type {
   SeparatorGap,
 } from './types';
 
-export type SegmentedDateFormat = 'MM/DD/YYYY' | 'YYYY-MM-DD';
+export type SegmentedDateFormat = DateFormat;
 type SegmentedInputVariantProps = Omit<SegmentedInputsVariantProps, 'bare'>;
 
 export type SegmentedDateProps = Omit<

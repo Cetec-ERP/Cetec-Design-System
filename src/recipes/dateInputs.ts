@@ -159,7 +159,7 @@ const dateInputsVariants = {
 // validate-ignore: recipe-jsx-name-matches-component — covers a component family, not a single "DateInputs" component
 export const dateInputsRecipe = defineSlotRecipe({
   className: 'dateInputs',
-  jsx: ['DateInput', 'DateRangeInput'],
+  jsx: ['DateInputs', 'DateInput', 'DateRangeInput'],
   slots: ['container', 'slot', 'buttonSlot'],
   base: dateInputsBase,
   variants: dateInputsVariants,

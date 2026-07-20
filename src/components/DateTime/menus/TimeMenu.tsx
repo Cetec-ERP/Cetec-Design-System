@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Ref, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 
 import { timeMenus } from '@styled-system/recipes';
 
@@ -9,7 +9,7 @@ import { splitProps } from '~/utils/splitProps';
 
 import { to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
-import type { HourCycle, Meridiem, TimeValue } from '../helpers/types';
+import type { Meridiem, TimeFormat, TimeValue } from '../helpers/types';
 
 export type TimeMenuProps = Omit<
   MenuProps,
@@ -17,15 +17,9 @@ export type TimeMenuProps = Omit<
 > & {
   value?: TimeValue | null;
   onChange?: (value: TimeValue | null) => void;
-  hourCycle?: HourCycle;
+  timeFormat?: TimeFormat;
   minuteStep?: number;
   disabled?: boolean;
-  /**
-   * Ref to the popover's content wrapper — lets a wrapping Picker tell
-   * whether a blur's newly-focused element landed inside the popover so it
-   * doesn't close the menu focus just moved into.
-   */
-  contentRef?: Ref<HTMLDivElement>;
 };
 
 const range = (count: number, step = 1, offset = 0) =>
@@ -64,10 +58,9 @@ export const TimeMenu = (props: TimeMenuProps) => {
     placement = 'bottom-start',
     value,
     onChange,
-    hourCycle = '12',
+    timeFormat = '12',
     minuteStep = 1,
     disabled = false,
-    contentRef,
     ...rest
   } = props;
   const isInline = rest.inline === true;
@@ -90,29 +83,31 @@ export const TimeMenu = (props: TimeMenuProps) => {
   };
 
   const classes = timeMenus();
+  const resolvedTimeFormat = timeFormat;
 
   const displayHour =
-    value && hourCycle === '12'
+    value && resolvedTimeFormat === '12'
       ? to12Hour(value.hour).hour12
       : (value?.hour ?? null);
   const displayMeridiem =
-    value && hourCycle === '12' ? to12Hour(value.hour).meridiem : null;
+    value && resolvedTimeFormat === '12' ? to12Hour(value.hour).meridiem : null;
   const displayMinute = value?.minute ?? null;
 
   // Commits immediately with sensible fallback defaults for whatever hasn't
   // been picked yet (hour → 12/0, minute → current or 0, meridiem → current
-  // or AM) — matches the legacy TimePicker's TimeList selection handlers, so
-  // a single click always produces a valid time instead of requiring all
-  // three pieces to be set first.
+  // or AM), so a single click always produces a valid time instead of requiring
+  // all three pieces to be set first.
   const emitHour = (hour: number) => {
     const hour24 =
-      hourCycle === '12' ? to24Hour(hour, displayMeridiem ?? 'AM') : hour;
+      resolvedTimeFormat === '12'
+        ? to24Hour(hour, displayMeridiem ?? 'AM')
+        : hour;
     onChange?.({ hour: hour24, minute: displayMinute ?? 0 });
   };
 
   const emitMinute = (minute: number) => {
     const hour24 =
-      hourCycle === '12'
+      resolvedTimeFormat === '12'
         ? to24Hour(displayHour ?? 12, displayMeridiem ?? 'AM')
         : (displayHour ?? 0);
     onChange?.({ hour: hour24, minute });
@@ -123,7 +118,8 @@ export const TimeMenu = (props: TimeMenuProps) => {
     onChange?.({ hour: hour24, minute: displayMinute ?? 0 });
   };
 
-  const hourValues = hourCycle === '12' ? range(12, 1, 1) : range(24, 1, 0);
+  const hourValues =
+    resolvedTimeFormat === '12' ? range(12, 1, 1) : range(24, 1, 0);
   const minuteValues = range(Math.ceil(60 / minuteStep), minuteStep, 0);
 
   const hourColRef = useRef<HTMLDivElement>(null);
@@ -140,10 +136,10 @@ export const TimeMenu = (props: TimeMenuProps) => {
     const raf = requestAnimationFrame(() => {
       scrollSelectedIntoView(hourColRef);
       scrollSelectedIntoView(minuteColRef);
-      if (hourCycle === '12') scrollSelectedIntoView(meridiemColRef);
+      if (resolvedTimeFormat === '12') scrollSelectedIntoView(meridiemColRef);
     });
     return () => cancelAnimationFrame(raf);
-  }, [menuOpen, hourCycle]);
+  }, [menuOpen, resolvedTimeFormat]);
 
   if (disabled) {
     return trigger;
@@ -158,13 +154,8 @@ export const TimeMenu = (props: TimeMenuProps) => {
       onOpenChange={setOpenState}
       placement={placement}
       closeOnSelect={false}
-      // Opts into Menu's order={['reference', 'content']} focus management
-      // (see Menu's own doc comment on this prop) so opening the popover
-      // doesn't yank focus off the segment the user just clicked/typed into
-      // and onto the first HR list item.
-      onMenubarEdgeNavigate={() => {}}
     >
-      <Box ref={contentRef} className={classes.columns}>
+      <Box className={classes.columns}>
         <Box
           ref={hourColRef}
           className={classes.column}
@@ -207,7 +198,7 @@ export const TimeMenu = (props: TimeMenuProps) => {
             ))}
           </List>
         </Box>
-        {hourCycle === '12' && (
+        {resolvedTimeFormat === '12' && (
           <Box
             ref={meridiemColRef}
             className={classes.column}

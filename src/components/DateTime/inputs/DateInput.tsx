@@ -16,7 +16,7 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../../Box';
 import { SegmentedDate } from '../../SegmentedInputs';
 
-import type { DateValue } from '../helpers/types';
+import type { DateFormat, DateValue } from '../helpers/types';
 
 export type DateInputProps = Omit<
   BoxProps,
@@ -27,6 +27,7 @@ export type DateInputProps = Omit<
     value?: DateValue | null;
     defaultValue?: DateValue | null;
     onChange?: (value: DateValue | null) => void;
+    dateFormat?: DateFormat;
     label?: string;
     before?: ReactNode;
     after?: ReactNode;
@@ -50,6 +51,7 @@ export const DateInput = (props: DateInputProps) => {
     value,
     defaultValue,
     onChange,
+    dateFormat,
     label,
     before,
     after,
@@ -125,6 +127,7 @@ export const DateInput = (props: DateInputProps) => {
         value={value}
         defaultValue={defaultValue}
         onChange={onChange}
+        format={dateFormat}
         size={size}
         disabled={disabled}
         onFocusWithin={onFocusWithin}

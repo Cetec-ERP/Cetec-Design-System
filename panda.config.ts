@@ -42,7 +42,6 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   card: [{ size: ['*'], variant: ['*'], responsive: true }],
   chip: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
   chipGroup: [{ size: ['*'], responsive: true }],
-  datePicker: [{ size: ['*'], responsive: true }],
   dateInputs: [
     {
       size: ['*'],
@@ -86,7 +85,6 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
       responsive: true,
     },
   ],
-  timePicker: [{ size: ['*'], responsive: true }],
   tooltip: [{ size: ['*'], responsive: true }],
 };
 

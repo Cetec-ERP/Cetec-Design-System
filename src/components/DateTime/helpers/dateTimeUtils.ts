@@ -1,7 +1,7 @@
 import type {
   DateSegmentType,
   DateValue,
-  HourCycle,
+  TimeFormat,
   Meridiem,
   NumericSegmentDef,
   SegmentDef,
@@ -139,11 +139,11 @@ export function getDateSegmentDefs(): NumericSegmentDef[] {
 }
 
 export function getTimeSegmentDefs(
-  hourCycle: HourCycle,
+  timeFormat: TimeFormat,
   minuteStep = 1,
 ): SegmentDef[] {
-  const hourMax = hourCycle === '12' ? 12 : 23;
-  const hourMin = hourCycle === '12' ? 1 : 0;
+  const hourMax = timeFormat === '12' ? 12 : 23;
+  const hourMin = timeFormat === '12' ? 1 : 0;
   const defs: SegmentDef[] = [
     {
       kind: 'numeric',
@@ -163,7 +163,7 @@ export function getTimeSegmentDefs(
       step: minuteStep,
     },
   ];
-  if (hourCycle === '12') {
+  if (timeFormat === '12') {
     defs.push({ kind: 'ampm', type: 'ampm', placeholder: 'AM' });
   }
   return defs;
@@ -178,8 +178,7 @@ export function getTimeSegmentDefs(
  * `step` and wrapping at the boundary. Matches the WAI-ARIA spinbutton
  * pattern: 'increment' == Arrow Up, 'decrement' == Arrow Down.
  *
- * (The legacy DatePicker/TimePicker implementations had this inverted —
- * Arrow Up decremented and Arrow Down incremented. Fixed here.)
+ * Arrow Up increments and Arrow Down decrements.
  */
 export function stepSegmentValue(
   current: number | null,

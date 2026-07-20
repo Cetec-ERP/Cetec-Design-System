@@ -4,8 +4,8 @@ import { type SegmentedInputsVariantProps } from '@styled-system/recipes';
 
 import { type BoxProps } from '~/components/Box';
 import type {
-  HourCycle,
   Meridiem,
+  TimeFormat,
   TimeValue,
 } from '~/components/DateTime/helpers/types';
 
@@ -28,7 +28,7 @@ export type SegmentedTimeProps = Omit<
     value?: TimeValue | null;
     defaultValue?: TimeValue | null;
     onChange?: (value: TimeValue | null) => void;
-    hourCycle?: HourCycle;
+    timeFormat?: TimeFormat;
     minuteStep?: number;
     separators?: {
       time?: SeparatorConfig;
@@ -57,7 +57,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
     value,
     defaultValue = null,
     onChange,
-    hourCycle = '12',
+    timeFormat,
     minuteStep = 1,
     separators,
     label = 'Time',
@@ -66,27 +66,30 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
     onBlurWithin,
     ...rest
   } = props;
+  const resolvedTimeFormat = timeFormat ?? '12';
   const resolvedValue = value !== undefined ? value : defaultValue;
   const valueMap =
     value !== undefined
       ? {
           hour:
-            value && hourCycle === '12'
+            value && resolvedTimeFormat === '12'
               ? to12Hour(value.hour).hour
               : (value?.hour ?? null),
           minute: value?.minute ?? null,
           meridiem:
-            value && hourCycle === '12' ? to12Hour(value.hour).meridiem : null,
+            value && resolvedTimeFormat === '12'
+              ? to12Hour(value.hour).meridiem
+              : null,
         }
       : undefined;
 
   const items = useMemo<SegmentedInputItem[]>(() => {
     const displayHour =
-      resolvedValue && hourCycle === '12'
+      resolvedValue && resolvedTimeFormat === '12'
         ? to12Hour(resolvedValue.hour).hour
         : (resolvedValue?.hour ?? null);
     const meridiem =
-      resolvedValue && hourCycle === '12'
+      resolvedValue && resolvedTimeFormat === '12'
         ? to12Hour(resolvedValue.hour).meridiem
         : null;
     const timeGap: SeparatorGap = separators?.time?.gap ?? 'tight';
@@ -101,8 +104,8 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
         placeholder: 'HH',
         value: displayHour,
         digits: 2,
-        min: hourCycle === '12' ? 1 : 0,
-        max: hourCycle === '12' ? 12 : 23,
+        min: resolvedTimeFormat === '12' ? 1 : 0,
+        max: resolvedTimeFormat === '12' ? 12 : 23,
       },
       {
         type: 'separator',
@@ -124,7 +127,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
       },
     ];
 
-    if (hourCycle === '12') {
+    if (resolvedTimeFormat === '12') {
       nextItems.push(
         {
           type: 'separator',
@@ -149,7 +152,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
     }
 
     return nextItems;
-  }, [hourCycle, minuteStep, resolvedValue, separators]);
+  }, [minuteStep, resolvedTimeFormat, resolvedValue, separators]);
 
   return (
     <SegmentedInput
@@ -165,7 +168,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
         const minute = values.minute;
         if (typeof hour !== 'number' || typeof minute !== 'number') return;
 
-        if (hourCycle === '12') {
+        if (resolvedTimeFormat === '12') {
           onChange?.({
             hour: to24Hour(hour, (values.meridiem as string | null) ?? 'AM'),
             minute,

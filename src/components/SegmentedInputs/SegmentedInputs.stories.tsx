@@ -86,7 +86,7 @@ export const TimeFormats: Story = {
     return (
       <VStack gap="8" alignItems="flex-start">
         <SegmentedTime value={time} onChange={setTime} />
-        <SegmentedTime hourCycle="24" value={time} onChange={setTime} />
+        <SegmentedTime timeFormat="24" value={time} onChange={setTime} />
       </VStack>
     );
   },

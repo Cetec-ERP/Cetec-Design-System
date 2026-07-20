@@ -3,7 +3,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type Ref,
   type RefObject,
 } from 'react';
 
@@ -22,8 +21,8 @@ import { to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 import type {
   DateTimeValue,
   DateValue,
-  HourCycle,
   Meridiem,
+  TimeFormat,
   TimeValue,
 } from '../helpers/types';
 
@@ -41,23 +40,17 @@ export type DateTimeMenuProps = Omit<
   viewDate?: ViewDate;
   defaultViewDate?: ViewDate;
   onViewDateChange?: (viewDate: ViewDate) => void;
-  hourCycle?: HourCycle;
+  timeFormat?: TimeFormat;
   minuteStep?: number;
   disabled?: boolean;
   dateLabel?: string;
-  /**
-   * Ref to the popover's content wrapper — lets a wrapping Picker tell
-   * whether a blur's newly-focused element landed inside the popover so it
-   * doesn't close the menu focus just moved into.
-   */
-  contentRef?: Ref<HTMLDivElement>;
 };
 
 const range = (count: number, step = 1, offset = 0) =>
   Array.from({ length: count }, (_, i) => offset + i * step);
 
 // Scrolls the currently-selected item in a column into view, centered below
-// the sticky header — matches the legacy TimePicker's TimeList behavior.
+// the sticky header.
 const scrollSelectedIntoView = (colRef: RefObject<HTMLDivElement | null>) => {
   const col = colRef.current;
   const el = col?.querySelector('[aria-selected="true"]') as HTMLElement | null;
@@ -93,11 +86,10 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
     viewDate,
     defaultViewDate,
     onViewDateChange,
-    hourCycle = '12',
+    timeFormat = '12',
     minuteStep = 1,
     disabled = false,
     dateLabel,
-    contentRef,
     ...rest
   } = props;
   const isInline = rest.inline === true;
@@ -117,6 +109,7 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
 
   const classes = dateTimeMenus();
   const columnClasses = timeMenus({ stretch: true });
+  const resolvedTimeFormat = timeFormat;
 
   // Pending selection, separate from the committed `value` — only Apply
   // commits it via onChange; Cancel discards it.
@@ -148,11 +141,13 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
   };
 
   const displayHour =
-    draftTime && hourCycle === '12'
+    draftTime && resolvedTimeFormat === '12'
       ? to12Hour(draftTime.hour).hour12
       : (draftTime?.hour ?? null);
   const displayMeridiem =
-    draftTime && hourCycle === '12' ? to12Hour(draftTime.hour).meridiem : null;
+    draftTime && resolvedTimeFormat === '12'
+      ? to12Hour(draftTime.hour).meridiem
+      : null;
   const displayMinute = draftTime?.minute ?? null;
 
   // Commits immediately with sensible fallback defaults for whatever hasn't
@@ -160,13 +155,15 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
   // TimePicker's TimeList selection handlers.
   const emitHour = (hour: number) => {
     const hour24 =
-      hourCycle === '12' ? to24Hour(hour, displayMeridiem ?? 'AM') : hour;
+      resolvedTimeFormat === '12'
+        ? to24Hour(hour, displayMeridiem ?? 'AM')
+        : hour;
     setDraftTime({ hour: hour24, minute: displayMinute ?? 0 });
   };
 
   const emitMinute = (minute: number) => {
     const hour24 =
-      hourCycle === '12'
+      resolvedTimeFormat === '12'
         ? to24Hour(displayHour ?? 12, displayMeridiem ?? 'AM')
         : (displayHour ?? 0);
     setDraftTime({ hour: hour24, minute });
@@ -177,7 +174,8 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
     setDraftTime({ hour: hour24, minute: displayMinute ?? 0 });
   };
 
-  const hourValues = hourCycle === '12' ? range(12, 1, 1) : range(24, 1, 0);
+  const hourValues =
+    resolvedTimeFormat === '12' ? range(12, 1, 1) : range(24, 1, 0);
   const minuteValues = range(Math.ceil(60 / minuteStep), minuteStep, 0);
 
   const hourColRef = useRef<HTMLDivElement>(null);
@@ -193,10 +191,10 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
     const raf = requestAnimationFrame(() => {
       scrollSelectedIntoView(hourColRef);
       scrollSelectedIntoView(minuteColRef);
-      if (hourCycle === '12') scrollSelectedIntoView(meridiemColRef);
+      if (resolvedTimeFormat === '12') scrollSelectedIntoView(meridiemColRef);
     });
     return () => cancelAnimationFrame(raf);
-  }, [menuOpen, hourCycle]);
+  }, [menuOpen, resolvedTimeFormat]);
 
   // Time columns need to match the Calendar's real rendered height, not
   // just stretch to it — a flex item's own content height still wins a
@@ -253,15 +251,8 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
       onOpenChange={setOpenState}
       placement={placement}
       closeOnSelect={false}
-      // Opts into Menu's order={['reference', 'content']} focus management
-      // (see Menu's own doc comment on this prop) so opening the popover
-      // doesn't yank focus off the segment the user just clicked/typed into
-      // and onto the Calendar's first button — this trigger is a composite
-      // multi-segment field, not a single button, so keeping focus where the
-      // user put it matters far more than it would for a typical menu.
-      onMenubarEdgeNavigate={() => {}}
     >
-      <Box ref={contentRef}>
+      <Box>
         <Box className={classes.content}>
           <Calendar
             ref={calendarRef}
@@ -328,7 +319,7 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
                 ))}
               </List>
             </Box>
-            {hourCycle === '12' && (
+            {resolvedTimeFormat === '12' && (
               <Box
                 ref={meridiemColRef}
                 className={columnClasses.column}

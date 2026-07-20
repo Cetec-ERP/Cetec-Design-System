@@ -4,10 +4,9 @@ import { defineSlotRecipe } from '@pandacss/dev';
 // column picker — the popover chrome itself (bg/radius/shadow) comes from
 // `<Menu>`, not from a slot here, so it isn't duplicated. Reused directly by
 // DateTimeMenu for its own time columns (see `dateTimeMenus.ts`) so the
-// column look only lives in one place. Structure/sizing deliberately mirrors
-// the legacy `timePicker` recipe's `column`/`columnLabel` (maxHeight, border
-// separators instead of a standalone divider element, hidden scrollbar) —
-// that recipe is the proven-correct reference for this exact pattern.
+// column look only lives in one place. Structure/sizing preserves the
+// established picker column treatment (maxHeight, border separators instead
+// of a standalone divider element, hidden scrollbar).
 const timeMenusBase = {
   // Row of columns (HR | MIN | AM-PM), doubled with its own divider for range.
   // minH: '0' overrides the flexbox default of min-height:auto on a flex
@@ -25,8 +24,8 @@ const timeMenusBase = {
   // levelsTrack > level > list) doesn't propagate a concrete height down to
   // this element, so `h: 'full'` resolves to "as tall as my content" and
   // `overflowY: auto` never actually engages; an explicit cap makes the
-  // column bound itself regardless of what any ancestor does. `200` matches
-  // the legacy `timePicker` recipe's own column cap exactly.
+  // column bound itself regardless of what any ancestor does. `200` keeps
+  // the existing picker column cap exactly.
   column: {
     display: 'flex',
     flexDirection: 'column',
@@ -104,7 +103,7 @@ const timeMenusVariants = {
 
 export const timeMenusRecipe = defineSlotRecipe({
   className: 'timeMenus',
-  jsx: ['TimeMenu', 'TimeRangeMenu'],
+  jsx: ['TimeMenus', 'TimeMenu', 'TimeRangeMenu'],
   slots: ['columns', 'column', 'columnHeader', 'footer'],
   base: timeMenusBase,
   variants: timeMenusVariants,

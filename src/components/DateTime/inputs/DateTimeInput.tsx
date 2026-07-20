@@ -24,9 +24,10 @@ import { Box, type BoxProps } from '../../Box';
 import { SegmentedDate, SegmentedTime } from '../../SegmentedInputs';
 
 import type {
+  DateFormat,
   DateTimeValue,
   DateValue,
-  HourCycle,
+  TimeFormat,
   TimeValue,
 } from '../helpers/types';
 
@@ -39,7 +40,8 @@ export type DateTimeInputProps = Omit<
     value?: DateTimeValue | null;
     defaultValue?: DateTimeValue | null;
     onChange?: (value: DateTimeValue | null) => void;
-    hourCycle?: HourCycle;
+    dateFormat?: DateFormat;
+    timeFormat?: TimeFormat;
     minuteStep?: number;
     dateLabel?: string;
     timeLabel?: string;
@@ -65,7 +67,8 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
     value,
     defaultValue,
     onChange,
-    hourCycle,
+    dateFormat,
+    timeFormat,
     minuteStep,
     dateLabel = 'Date',
     timeLabel = 'Time',
@@ -186,6 +189,7 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
         label={dateLabel}
         value={dateValue}
         onChange={(nextDate) => emitChange(nextDate, timeValue)}
+        format={dateFormat}
         size={size}
         disabled={disabled}
         onFocusWithin={onFocusWithin}
@@ -204,7 +208,7 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
         label={timeLabel}
         value={timeValue}
         onChange={(nextTime) => emitChange(dateValue, nextTime)}
-        hourCycle={hourCycle}
+        timeFormat={timeFormat}
         minuteStep={minuteStep}
         size={size}
         disabled={disabled}

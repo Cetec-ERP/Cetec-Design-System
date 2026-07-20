@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Ref, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 
 import { timeMenus } from '@styled-system/recipes';
 
@@ -12,8 +12,8 @@ import { splitProps } from '~/utils/splitProps';
 import { to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
 import type {
-  HourCycle,
   Meridiem,
+  TimeFormat,
   TimeRangeValue,
   TimeValue,
 } from '../helpers/types';
@@ -25,17 +25,11 @@ export type TimeRangeMenuProps = Omit<
   value?: TimeRangeValue | null;
   /** Committed only when Apply is pressed — Cancel discards the pending selection */
   onChange?: (value: TimeRangeValue | null) => void;
-  hourCycle?: HourCycle;
+  timeFormat?: TimeFormat;
   minuteStep?: number;
   disabled?: boolean;
   startLabel?: string;
   endLabel?: string;
-  /**
-   * Ref to the popover's content wrapper — lets a wrapping Picker tell
-   * whether a blur's newly-focused element landed inside the popover so it
-   * doesn't close the menu focus just moved into.
-   */
-  contentRef?: Ref<HTMLDivElement>;
 };
 
 const EMPTY_RANGE: TimeRangeValue = { start: null, end: null };
@@ -44,7 +38,7 @@ const range = (count: number, step = 1, offset = 0) =>
   Array.from({ length: count }, (_, i) => offset + i * step);
 
 // Scrolls the currently-selected item in a column into view, centered below
-// the sticky header — matches the legacy TimePicker's TimeList behavior.
+// the sticky header.
 const scrollSelectedIntoView = (colRef: RefObject<HTMLDivElement | null>) => {
   const col = colRef.current;
   const el = col?.querySelector('[aria-selected="true"]') as HTMLElement | null;
@@ -72,7 +66,7 @@ const scrollSelectedIntoView = (colRef: RefObject<HTMLDivElement | null>) => {
 type ColumnsProps = {
   classes: ReturnType<typeof timeMenus>;
   label: string;
-  hourCycle: HourCycle;
+  timeFormat: TimeFormat;
   hourValues: number[];
   minuteValues: number[];
   value: TimeValue | null;
@@ -82,29 +76,29 @@ type ColumnsProps = {
 const TimeColumns = ({
   classes,
   label,
-  hourCycle,
+  timeFormat,
   hourValues,
   minuteValues,
   value,
   onChange,
 }: ColumnsProps) => {
   const displayHour =
-    value && hourCycle === '12'
+    value && timeFormat === '12'
       ? to12Hour(value.hour).hour12
       : (value?.hour ?? null);
   const displayMeridiem =
-    value && hourCycle === '12' ? to12Hour(value.hour).meridiem : null;
+    value && timeFormat === '12' ? to12Hour(value.hour).meridiem : null;
   const displayMinute = value?.minute ?? null;
 
   const emitHour = (hour: number) => {
     const hour24 =
-      hourCycle === '12' ? to24Hour(hour, displayMeridiem ?? 'AM') : hour;
+      timeFormat === '12' ? to24Hour(hour, displayMeridiem ?? 'AM') : hour;
     onChange({ hour: hour24, minute: displayMinute ?? 0 });
   };
 
   const emitMinute = (minute: number) => {
     const hour24 =
-      hourCycle === '12'
+      timeFormat === '12'
         ? to24Hour(displayHour ?? 12, displayMeridiem ?? 'AM')
         : (displayHour ?? 0);
     onChange({ hour: hour24, minute });
@@ -127,7 +121,7 @@ const TimeColumns = ({
     const raf = requestAnimationFrame(() => {
       scrollSelectedIntoView(hourColRef);
       scrollSelectedIntoView(minuteColRef);
-      if (hourCycle === '12') scrollSelectedIntoView(meridiemColRef);
+      if (timeFormat === '12') scrollSelectedIntoView(meridiemColRef);
     });
     return () => cancelAnimationFrame(raf);
     // Runs once per mount (the columns remount whenever the menu opens,
@@ -179,7 +173,7 @@ const TimeColumns = ({
           ))}
         </List>
       </Box>
-      {hourCycle === '12' && (
+      {timeFormat === '12' && (
         <Box
           ref={meridiemColRef}
           className={classes.column}
@@ -215,12 +209,11 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
     placement = 'bottom-start',
     value,
     onChange,
-    hourCycle = '12',
+    timeFormat = '12',
     minuteStep = 1,
     disabled = false,
     startLabel = 'Start time',
     endLabel = 'End time',
-    contentRef,
     ...rest
   } = props;
   const isInline = rest.inline === true;
@@ -239,6 +232,7 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
   };
 
   const classes = timeMenus();
+  const resolvedTimeFormat = timeFormat;
 
   const [draft, setDraft] = useState<TimeRangeValue>(value ?? EMPTY_RANGE);
 
@@ -258,7 +252,8 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
     setOpenState(false);
   };
 
-  const hourValues = hourCycle === '12' ? range(12, 1, 1) : range(24, 1, 0);
+  const hourValues =
+    resolvedTimeFormat === '12' ? range(12, 1, 1) : range(24, 1, 0);
   const minuteValues = range(Math.ceil(60 / minuteStep), minuteStep, 0);
 
   if (disabled) {
@@ -274,18 +269,13 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
       onOpenChange={setOpenState}
       placement={placement}
       closeOnSelect={false}
-      // Opts into Menu's order={['reference', 'content']} focus management
-      // (see Menu's own doc comment on this prop) so opening the popover
-      // doesn't yank focus off the segment the user just clicked/typed into
-      // and onto the first HR list item.
-      onMenubarEdgeNavigate={() => {}}
     >
-      <Box ref={contentRef}>
+      <Box>
         <Box className={classes.columns}>
           <TimeColumns
             classes={classes}
             label={startLabel}
-            hourCycle={hourCycle}
+            timeFormat={resolvedTimeFormat}
             hourValues={hourValues}
             minuteValues={minuteValues}
             value={draft.start}
@@ -297,7 +287,7 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
           <TimeColumns
             classes={classes}
             label={endLabel}
-            hourCycle={hourCycle}
+            timeFormat={resolvedTimeFormat}
             hourValues={hourValues}
             minuteValues={minuteValues}
             value={draft.end}

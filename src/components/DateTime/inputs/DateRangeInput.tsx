@@ -23,7 +23,7 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../../Box';
 import { SegmentedDate } from '../../SegmentedInputs';
 
-import type { DateRangeValue, DateValue } from '../helpers/types';
+import type { DateFormat, DateRangeValue, DateValue } from '../helpers/types';
 
 export type DateRangeInputProps = Omit<
   BoxProps,
@@ -34,6 +34,7 @@ export type DateRangeInputProps = Omit<
     value?: DateRangeValue | null;
     defaultValue?: DateRangeValue | null;
     onChange?: (value: DateRangeValue | null) => void;
+    dateFormat?: DateFormat;
     startLabel?: string;
     endLabel?: string;
     before?: ReactNode;
@@ -60,6 +61,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
     value,
     defaultValue,
     onChange,
+    dateFormat,
     startLabel = 'Start date',
     endLabel = 'End date',
     before,
@@ -172,6 +174,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
         label={startLabel}
         value={range.start}
         onChange={(nextStart) => emitChange(nextStart, range.end)}
+        format={dateFormat}
         size={size}
         disabled={disabled}
         onFocusWithin={onFocusWithin}
@@ -191,6 +194,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
         label={endLabel}
         value={range.end}
         onChange={(nextEnd) => emitChange(range.start, nextEnd)}
+        format={dateFormat}
         size={size}
         disabled={disabled}
         onFocusWithin={onFocusWithin}

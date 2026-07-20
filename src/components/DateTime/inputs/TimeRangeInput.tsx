@@ -23,7 +23,7 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../../Box';
 import { SegmentedTime } from '../../SegmentedInputs';
 
-import type { HourCycle, TimeRangeValue, TimeValue } from '../helpers/types';
+import type { TimeFormat, TimeRangeValue, TimeValue } from '../helpers/types';
 
 export type TimeRangeInputProps = Omit<
   BoxProps,
@@ -34,7 +34,7 @@ export type TimeRangeInputProps = Omit<
     value?: TimeRangeValue | null;
     defaultValue?: TimeRangeValue | null;
     onChange?: (value: TimeRangeValue | null) => void;
-    hourCycle?: HourCycle;
+    timeFormat?: TimeFormat;
     minuteStep?: number;
     startLabel?: string;
     endLabel?: string;
@@ -62,7 +62,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
     value,
     defaultValue,
     onChange,
-    hourCycle,
+    timeFormat,
     minuteStep,
     startLabel = 'Start time',
     endLabel = 'End time',
@@ -176,7 +176,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
         label={startLabel}
         value={range.start}
         onChange={(nextStart) => emitChange(nextStart, range.end)}
-        hourCycle={hourCycle}
+        timeFormat={timeFormat}
         minuteStep={minuteStep}
         size={size}
         disabled={disabled}
@@ -197,7 +197,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
         label={endLabel}
         value={range.end}
         onChange={(nextEnd) => emitChange(range.start, nextEnd)}
-        hourCycle={hourCycle}
+        timeFormat={timeFormat}
         minuteStep={minuteStep}
         size={size}
         disabled={disabled}

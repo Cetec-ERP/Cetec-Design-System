@@ -34,7 +34,7 @@ const dateMenusBase = {
 
 export const dateMenusRecipe = defineSlotRecipe({
   className: 'dateMenus',
-  jsx: ['DateMenu', 'DateRangeMenu'],
+  jsx: ['DateMenus', 'DateMenu', 'DateRangeMenu'],
   slots: ['calendars', 'calendarsDivider', 'footer'],
   base: dateMenusBase,
 });

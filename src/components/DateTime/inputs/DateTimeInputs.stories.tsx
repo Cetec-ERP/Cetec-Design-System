@@ -8,12 +8,13 @@ import { Text } from '~/components/Text';
 
 import { DateInput } from './DateInput';
 import { DateRangeInput } from './DateRangeInput';
-import { DateTimeInput, type DateTimeValue } from './DateTimeInput';
+import { DateTimeInput } from './DateTimeInput';
 import { TimeInput } from './TimeInput';
 import { TimeRangeInput } from './TimeRangeInput';
 
 import type {
   DateRangeValue,
+  DateTimeValue,
   DateValue,
   TimeRangeValue,
   TimeValue,

@@ -96,7 +96,7 @@ const segmentedInputsVariants = {
 
 export const segmentedInputsRecipe = defineSlotRecipe({
   className: 'segmentedInputs',
-  jsx: ['SegmentedInput', 'SegmentedDate', 'SegmentedTime'],
+  jsx: ['SegmentedInputs', 'SegmentedInput', 'SegmentedDate', 'SegmentedTime'],
   slots: ['root', 'segment', 'separator'],
   base: segmentedInputsBase,
   variants: segmentedInputsVariants,

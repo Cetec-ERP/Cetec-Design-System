@@ -39,7 +39,8 @@ export interface DateTimeRangeValue {
   end: DateTimeValue | null;
 }
 
-export type HourCycle = '12' | '24';
+export type TimeFormat = '12' | '24';
+export type DateFormat = 'MM/DD/YYYY' | 'YYYY-MM-DD';
 export type Meridiem = 'AM' | 'PM';
 
 export type DateSegmentType = 'month' | 'day' | 'year';
