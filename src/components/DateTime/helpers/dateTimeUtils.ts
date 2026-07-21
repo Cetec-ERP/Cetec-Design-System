@@ -107,6 +107,23 @@ export function getTodayTime(): TimeValue {
   return { hour: now.getHours(), minute: now.getMinutes() };
 }
 
+/** Clamps an arbitrary `minuteStep` to a safe divisor of 60 (1-60) so menu generation can't hang or emit out-of-range minutes. */
+export function normalizeMinuteStep(minuteStep: number): number {
+  const step = Math.floor(minuteStep);
+  if (!Number.isFinite(step) || step < 1) return 1;
+  return Math.min(step, 60);
+}
+
+/** Minute options for a time menu, always within [0, 59] regardless of `minuteStep`. */
+export function getMinuteValues(minuteStep: number): number[] {
+  const step = normalizeMinuteStep(minuteStep);
+  const values: number[] = [];
+  for (let minute = 0; minute < 60; minute += step) {
+    values.push(minute);
+  }
+  return values;
+}
+
 // ─── Segment definitions ────────────────────────────────────────────────────
 
 export function getDateSegmentDefs(): NumericSegmentDef[] {

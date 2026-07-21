@@ -9,7 +9,7 @@ import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
 import { splitProps } from '~/utils/splitProps';
 
-import { to12Hour, to24Hour } from '../helpers/dateTimeUtils';
+import { getMinuteValues, to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
 import type {
   Meridiem,
@@ -254,7 +254,7 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
 
   const hourValues =
     resolvedTimeFormat === '12' ? range(12, 1, 1) : range(24, 1, 0);
-  const minuteValues = range(Math.ceil(60 / minuteStep), minuteStep, 0);
+  const minuteValues = getMinuteValues(minuteStep);
 
   if (disabled) {
     return trigger;

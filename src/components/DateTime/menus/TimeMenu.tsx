@@ -7,7 +7,7 @@ import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
 import { splitProps } from '~/utils/splitProps';
 
-import { to12Hour, to24Hour } from '../helpers/dateTimeUtils';
+import { getMinuteValues, to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
 import type { Meridiem, TimeFormat, TimeValue } from '../helpers/types';
 
@@ -120,7 +120,7 @@ export const TimeMenu = (props: TimeMenuProps) => {
 
   const hourValues =
     resolvedTimeFormat === '12' ? range(12, 1, 1) : range(24, 1, 0);
-  const minuteValues = range(Math.ceil(60 / minuteStep), minuteStep, 0);
+  const minuteValues = getMinuteValues(minuteStep);
 
   const hourColRef = useRef<HTMLDivElement>(null);
   const minuteColRef = useRef<HTMLDivElement>(null);

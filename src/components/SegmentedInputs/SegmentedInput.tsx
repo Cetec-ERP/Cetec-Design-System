@@ -261,6 +261,7 @@ export const SegmentedInput = (props: SegmentedInputProps) => {
               data-gap={item.gap}
               aria-hidden="true"
               onClick={() => {
+                if (disabled) return;
                 const ownIndex = items.indexOf(item);
                 const nextSegment = items
                   .slice(ownIndex + 1)
@@ -313,6 +314,7 @@ export const SegmentedInput = (props: SegmentedInputProps) => {
             }}
             onBlur={handleBlur}
             onKeyDown={(event: KeyboardEvent) => {
+              if (segmentDisabled) return;
               handleKeyDown(event, segment, segmentIndex);
             }}
           >
