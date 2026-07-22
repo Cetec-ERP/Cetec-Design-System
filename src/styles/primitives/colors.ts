@@ -70,6 +70,24 @@ export const colors = defineTokens.colors({
     '90': { value: '#1E1E1E' },
     '100': { value: '#000000' },
   },
+  slate_inverse: {
+    '0': { value: '#000000' },
+    '1': { value: '#383838' },
+    '2': { value: '#474643' },
+    '3': { value: '#53504c' },
+    '4': { value: '#5d5954' },
+    '5': { value: '#66605e' },
+    '10': { value: '#8a8985' },
+    '20': { value: '#acabaa' },
+    '30': { value: '#cbc8c4' },
+    '40': { value: '#dfdcdb' },
+    '50': { value: '#eaeaea' },
+    '60': { value: '#f2f2f2' },
+    '70': { value: '#f8f8f8' },
+    '80': { value: '#fcfcfc' },
+    '90': { value: '#fefefe' },
+    '100': { value: '#ffffff' },
+  },
   gold: {
     '1': { value: '#FFFCF4' },
     '2': { value: '#FFF9E9' },
@@ -308,53 +326,13 @@ export const colors = defineTokens.colors({
     '90': { value: '#432134' },
   },
   shadow: {
-    raised: {
-      1: {
-        light: { value: 'rgba(30, 31, 33, 0.25)' },
-        dark: { value: 'rgba(1, 4, 4, 0.5)' },
-      },
-      2: {
-        light: { value: 'rgba(30, 31, 33, 0.31)' },
-        dark: { value: 'rgba(1, 4, 4, 0.5)' },
-      },
-    },
-    elevated: {
-      1: {
-        light: { value: 'rgba(0, 0, 0, 0)' },
-        dark: { value: 'rgba(95, 95, 95, 0.06)' },
-      },
-      2: {
-        light: { value: 'rgba(30, 31, 33, 0.2)' },
-        dark: { value: 'rgba(1, 4, 4, 0.43)' },
-      },
-      3: {
-        light: { value: 'rgba(30, 31, 33, 0.31)' },
-        dark: { value: 'rgba(1, 4, 4, 0.5)' },
-      },
-    },
-    overlay: {
-      1: {
-        light: { value: 'rgba(0, 0, 0, 0)' },
-        dark: { value: 'rgba(189, 189, 189, 0.12)' },
-      },
-      2: {
-        light: { value: 'rgba(30, 31, 33, 0.15)' },
-        dark: { value: 'rgba(1, 4, 4, 0.36)' },
-      },
-      3: {
-        light: { value: 'rgba(30, 31, 33, 0.31)' },
-        dark: { value: 'rgba(1, 4, 4, 0.5)' },
-      },
-    },
-    overflow: {
-      1: {
-        light: { value: 'rgba(30, 31, 33, 0.16)' },
-        dark: { value: 'rgba(1, 4, 4, 0.56)' },
-      },
-      2: {
-        light: { value: 'rgba(30, 31, 33, 0.12)' },
-        dark: { value: 'rgba(1, 4, 4, 0.5)' },
-      },
-    },
+    '8': { value: 'hsl(0deg 0% 0% / 0.08)' },
+    '16': { value: 'hsl(0deg 0% 0% / 0.16)' },
+    '24': { value: 'hsl(0deg 0% 0% / 0.24)' },
+    '32': { value: 'hsl(0deg 0% 0% / 0.32)' },
+    '40': { value: 'hsl(0deg 0% 0% / 0.40)' },
+    '48': { value: 'hsl(0deg 0% 0% / 0.48)' },
+    '56': { value: 'hsl(0deg 0% 0% / 0.56)' },
+    '64': { value: 'hsl(0deg 0% 0% / 0.64)' },
   },
 });

@@ -50,6 +50,11 @@ export const WithValue: Story = {
   render: () => <DatePicker value={{ year: 2026, month: 2, day: 19 }} />,
 };
 
+export const WithDefaultValue: Story = {
+  name: 'With Default Value',
+  render: () => <DatePicker defaultValue={{ year: 2026, month: 2, day: 19 }} />,
+};
+
 export const WithMinMax: Story = {
   name: 'With Min/Max',
   render: () => (

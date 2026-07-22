@@ -82,6 +82,15 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       ))}
     </Flex>
 
+    <Text textStyle="mono.sm" fontWeight="bold" gridColumnStart="2" mt="4" textAlign="right">slate_inverse</Text>
+    <Flex gap="8">
+      {Object.entries(colors.slate_inverse).map(([key]) => (
+        <Flex key={key} direction="column" align="center" gap="2">
+          <ColorToken tokenKey={`slate_inverse.${key}`} />
+        </Flex>
+      ))}
+    </Flex>
+
     <Text textStyle="mono.sm" fontWeight="bold" gridColumnStart="2" mt="4" textAlign="right">gold</Text>
     <Flex gap="8">
       {Object.entries(colors.gold).map(([key]) => (
@@ -299,6 +308,29 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       <Flex direction="column" gap="8" w="fit">
         bg.neutral.boldest
         <SemanticColorToken token="bg.neutral.boldest" />
+      </Flex>
+    </Grid>
+    <Grid gridTemplateColumns="subgrid" gap="40" gridColumn="2 / -1">
+      <Flex direction="column" gap="8" w="full" gridColumn="1 / -1">
+        bg.slate
+        <Grid gridTemplateColumns="repeat(auto-fill, minmax(min(220px, 100%), 1fr))" columnGap="40" rowGap="8" gridColumn="1 / -1">
+          <SemanticColorToken token="bg.slate.0" />
+          <SemanticColorToken token="bg.slate.1" />
+          <SemanticColorToken token="bg.slate.2" />
+          <SemanticColorToken token="bg.slate.3" />
+          <SemanticColorToken token="bg.slate.4" />
+          <SemanticColorToken token="bg.slate.5" />
+          <SemanticColorToken token="bg.slate.10" />
+          <SemanticColorToken token="bg.slate.20" />
+          <SemanticColorToken token="bg.slate.30" />
+          <SemanticColorToken token="bg.slate.40" />
+          <SemanticColorToken token="bg.slate.50" />
+          <SemanticColorToken token="bg.slate.60" />
+          <SemanticColorToken token="bg.slate.70" />
+          <SemanticColorToken token="bg.slate.80" />
+          <SemanticColorToken token="bg.slate.90" />
+          <SemanticColorToken token="bg.slate.100" />
+        </Grid>
       </Flex>
     </Grid>
 

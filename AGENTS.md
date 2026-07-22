@@ -145,7 +145,7 @@ export type CheckboxProps = Omit<BoxProps, keyof CheckboxVariantProps> &
 
 **Function Components Only:** No class components, use hooks for state/effects
 
-**Controlled Components:** Use controlled pattern for all form inputs (checkboxes, radios, text inputs)
+**Controlled vs Uncontrolled:** Prefer controlled state when the UI needs React to own the current value. Use uncontrolled entrypoints when the browser can own the value safely, especially for native inputs and binary controls (`Checkbox`, `Radio`, `Toggle`) and for group/value components that expose `defaultChecked`, `defaultValue`, or `defaultOpen`.
 
 **Accessibility Baseline:**
 
@@ -255,7 +255,8 @@ export { buttonRecipe } from './recipes/button';
 ### Storybook Documentation Strategy
 
 - **Public primitive stories first:** Use primitive component names as Storybook entry points for controls (`Checkbox`, `Radio`, `Toggle`) instead of only wrapper entries.
-- **Wrapper guidance inside primitive stories:** Demonstrate `CheckboxInput`, `RadioInput`, and `ToggleInput` usage inside those primitive stories to teach composition patterns.
+- **Wrapper guidance inside primitive stories:** Demonstrate `CheckboxInput`, `RadioInput`, and `ToggleInput` usage inside those primitive stories to teach composition patterns, and show both controlled and uncontrolled examples where the API supports both.
+- **Static-safe examples:** When a component supports `defaultChecked`, `defaultValue`, or `defaultOpen`, include at least one story that exercises the uncontrolled path so consumers can see what works without hydration.
 - **Beginner-first story structure:** Each component story should explain when to use it, when not to use it, include a minimal copy-paste snippet, and include at least one realistic app example.
 - **Accessibility is explicit:** Add keyboard and labeling examples in stories for interactive components.
 - **Foundations are visible:** `Box` should have a dedicated story because it is a frequently used primitive; link it to Panda layout/pattern docs.

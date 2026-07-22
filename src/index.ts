@@ -61,7 +61,7 @@ export {
   ModalBody,
   type useModalContext,
 } from './components/Modal';
-export { Radio } from './components/Radio';
+export { Radio, RadioGroup } from './components/Radio';
 export { RadioInput } from './components/RadioInput';
 export { Spinner } from './components/Spinner';
 export { Tag } from './components/Tag';

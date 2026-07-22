@@ -83,6 +83,20 @@ export const Default: Story = {
   render: () => <Chip>Default</Chip>,
 };
 
+export const UncontrolledGroup: Story = {
+  name: 'Uncontrolled Group',
+  render: () => (
+    <ChipGroup type="single" defaultValue="growth" label="Plan size">
+      <Chip value="starter">Starter</Chip>
+      <Chip value="growth">Growth</Chip>
+      <Chip value="enterprise">Enterprise</Chip>
+    </ChipGroup>
+  ),
+  parameters: {
+    controls: { disable: true },
+  },
+};
+
 // =============================================================================
 // SIZES
 // =============================================================================

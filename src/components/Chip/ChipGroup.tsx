@@ -13,6 +13,7 @@ import { Wrap, type WrapProps } from '@styled-system/jsx';
 import { type BoxProps } from '~/components/Box';
 import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
+import { useControllableState } from '~/utils/useControllableState';
 
 import {
   ChipGroupContext,
@@ -23,8 +24,9 @@ import {
 export type ChipGroupProps = Omit<WrapProps, 'role'> &
   Omit<BoxProps, keyof WrapProps> & {
     type: ChipGroupType;
-    value: string | string[];
-    onChange: (value: string | string[]) => void;
+    value?: string | string[];
+    defaultValue?: string | string[];
+    onChange?: (value: string | string[]) => void;
     children: ReactNode;
     size?: ChipGroupSize;
     label?: string;
@@ -42,6 +44,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
   const {
     type,
     value,
+    defaultValue,
     onChange,
     children,
     size: sizeProp,
@@ -60,6 +63,11 @@ export const ChipGroup = (props: ChipGroupProps) => {
   const chipRefs = useRef<Map<string, RefObject<HTMLButtonElement | null>>>(
     new Map(),
   );
+  const [selectedValue, setSelectedValue] = useControllableState({
+    value,
+    defaultValue: defaultValue ?? (type === 'single' ? '' : ([] as string[])),
+    onChange,
+  });
   const [chipValues, setChipValues] = useState<string[]>([]);
 
   const registerChip = useCallback(
@@ -101,19 +109,19 @@ export const ChipGroup = (props: ChipGroupProps) => {
         nextRef?.current?.focus();
 
         if (type === 'single') {
-          onChange(nextValue);
+          setSelectedValue(nextValue);
         }
       }
     },
-    [chipValues, onChange, type],
+    [chipValues, setSelectedValue, type],
   );
 
   const contextValue = useMemo(
     () => ({
       type,
       size,
-      value,
-      onChange,
+      value: selectedValue,
+      onChange: setSelectedValue,
       name,
       registerChip,
       unregisterChip,
@@ -124,12 +132,12 @@ export const ChipGroup = (props: ChipGroupProps) => {
       chipValues,
       focusChip,
       name,
-      onChange,
+      selectedValue,
+      setSelectedValue,
       registerChip,
       size,
       type,
       unregisterChip,
-      value,
     ],
   );
 

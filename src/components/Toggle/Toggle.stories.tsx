@@ -20,7 +20,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Use `ToggleInput` in product settings and forms so label association and spacing are consistent. Use `Toggle` when composing custom wrappers only.',
+          'Use `ToggleInput` in product settings and forms so label association and spacing are consistent. Use `Toggle` when composing custom wrappers only. Both controlled and uncontrolled usage are supported.',
       },
     },
   },
@@ -63,6 +63,22 @@ export const Default: Story = {
           'Recommended default for app settings: controlled `ToggleInput` with clear label text.',
       },
     },
+  },
+};
+
+export const Uncontrolled: Story = {
+  name: 'Uncontrolled',
+  render: () => (
+    <ToggleInput
+      name="uncontrolled-toggle"
+      id="uncontrolled-toggle"
+      defaultChecked
+    >
+      Enable compact mode
+    </ToggleInput>
+  ),
+  parameters: {
+    controls: { disable: true },
   },
 };
 

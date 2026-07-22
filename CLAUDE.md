@@ -116,7 +116,7 @@ Icons are managed as an SVG sprite system:
 - **Strict TypeScript**: No ambient `any`; isolate escapes with TODO comments
 - **Composition > prop soup**: Small components that compose; avoid mega-props
 - **Function components only**: Hooks for state/effects; no legacy lifecycles
-- **Controlled components**: Use controlled components as the standard pattern for form inputs, including checkboxes, radios, text inputs, and other interactive elements.
+- **Controlled vs uncontrolled**: Prefer controlled state when the UI needs React to own the current value. Use uncontrolled entrypoints when the browser can own the value safely, especially for native inputs and binary controls (`Checkbox`, `Radio`, `Toggle`) and for group/value components that expose `defaultChecked`, `defaultValue`, or `defaultOpen`.
 - **Props typing**: Use `React.ComponentProps<"element">` for intrinsic elements
 
 ### Git Conventions (from `.cursor/rules/git.mdc`)
@@ -197,7 +197,7 @@ Projects consuming this design system must:
 4. Standard `recipes` are registered automatically, but new `slotRecipes` need to be manually registered in `panda.config.ts` under `theme.extend.recipes`
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
-7. Create Storybook stories
+7. Create Storybook stories, including uncontrolled examples when the API supports them
 8. Export from `src/index.ts`
 
 ### Modifying Design Tokens

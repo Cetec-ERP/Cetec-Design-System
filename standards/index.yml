@@ -6,7 +6,7 @@ components:
   polymorphic-box:
     description: Box + splitProps + cx conventions for all components
   controlled-state:
-    description: Controlled-first state model for inputs, overlays, and pickers
+    description: Controlled-first state model for inputs, overlays, and pickers with dual-mode support where native semantics or static rendering benefit
   floating-ui-integration:
     description: Canonical Floating UI wiring and accessibility requirements
   multi-part-composition:

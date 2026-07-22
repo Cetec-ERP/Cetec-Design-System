@@ -1,14 +1,12 @@
 import { Meta, Unstyled } from '@storybook/blocks';
 import { Box } from '../components/Box';
 import { Text } from '../components/Text';
-import { Heading } from '../components/Heading';
 import { Flex, Grid, VStack, HStack } from '@styled-system/jsx';
 import { Link } from '../components/Link';
 import { Divider } from '../components/Divider';
 import { Icon } from '../components/Icon';
 import { IconProvider } from '../components/Icon';
 import { Card } from '../components/Card';
-import { Button } from '../components/Button';
 import '../styles/font-imports.css';
 
 <Meta title="Intro" />
@@ -20,12 +18,38 @@ import '../styles/font-imports.css';
 
 # Cetec ERP Design System
 
-<Text textStyle="body.lg">A React component library built with TypeScript and Panda CSS for the Cetec ERP application and marketing website. This design system provides a comprehensive set of accessible, themeable components following a tokens-first approach.</Text>
+<Text textStyle="body.lg">
+  A React component library built with TypeScript and Panda CSS for the Cetec
+  ERP application and marketing website. This design system provides a
+  comprehensive set of accessible, themeable components following a tokens-first
+  approach.
+</Text>
 
-<Card display="flex" gap="24" px="20" py="12" variant="flat" borderColor="blue.20" borderStyle="dashed" w="fit">
+<Card
+  display="flex"
+  gap="24"
+  px="20"
+  py="12"
+  variant="flat"
+  borderColor="blue.20"
+  borderStyle="dashed"
+  w="fit"
+>
   <Text textStyle="mono.md">origin/main:</Text>
-  <Link href="https://cetec-erp.github.io/Cetec-Design-System/" target="_blank" external>Storybook</Link>
-  <Link href="https://cetec-erp.github.io/Cetec-Design-System/playroom" target="_blank" external>Playroom</Link>
+  <Link
+    href="https://cetec-erp.github.io/Cetec-Design-System/"
+    target="_blank"
+    external
+  >
+    Storybook
+  </Link>
+  <Link
+    href="https://cetec-erp.github.io/Cetec-Design-System/playroom"
+    target="_blank"
+    external
+  >
+    Playroom
+  </Link>
 </Card>
 
 <Divider weight="thick" color="border" my="32" />
@@ -92,7 +116,7 @@ import '../styles/font-imports.css';
       </HStack>
       <HStack gap="8">
         <Icon name="check" size="16" />
-        <Text textStyle="body.sm">Form inputs (TextInput, Textarea, Checkbox, Radio, Toggle)</Text>
+        <Text textStyle="body.sm">Form inputs (TextInput, Textarea, Checkbox, Radio, Toggle, Select, DatePicker, TimePicker, ChipGroup)</Text>
       </HStack>
       <HStack gap="8">
         <Icon name="check" size="16" />
