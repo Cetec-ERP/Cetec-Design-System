@@ -2,61 +2,39 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
-const dangerStateStyles = {
-  borderColor: 'border.danger',
-  _focusWithin: {
+const validationStyles = {
+  danger: {
     borderColor: 'border.danger',
     outlineColor: 'border.danger',
   },
-};
-
-const successStateStyles = {
-  borderColor: 'border.success',
-  _focusWithin: {
+  success: {
     borderColor: 'border.success',
     outlineColor: 'border.success',
-  },
-};
-
-const disabledStateStyles = {
-  opacity: 0.4,
-  cursor: 'not-allowed',
-  _focusWithin: {
-    outlineColor: 'transparent',
-    borderColor: 'border.input',
   },
 };
 
 const autocompleteBase = {
   root: {
     ...globalBaseStyles,
-    '--icon-size': 'token(sizes.24)',
-    '--icon-margin': 'token(sizes.3)',
-    '--input-icon-padding': 'token(sizes.10)',
+    '--control-py': 'token(sizes.3)',
+    '--control-px': 'token(sizes.10)',
+    '--control-fs': 'token(sizes.16)',
+    '--control-min-height': 'token(sizes.32)',
+    '--value-gap': 'token(sizes.4)',
+    '--input-min-width': 'token(sizes.80)',
+    '--loading-size': 'token(sizes.20)',
     position: 'relative',
     display: 'inline-flex',
     flexDirection: 'column',
     width: 'full',
     minWidth: '0',
-    maxW: 'full',
-    bg: 'surface',
-    borderWidth: '1',
-    borderStyle: 'solid',
-    borderColor: 'border.input',
-    borderRadius: '4',
-    outlineWidth: '1',
-    outlineStyle: 'solid',
-    outlineColor: 'transparent',
-    overflow: 'hidden',
-    lineHeight: 'none',
-    _focusWithin: {
-      borderColor: 'border.focused',
-      outlineColor: 'border.focused',
+    maxWidth: 'full',
+    fontFamily: 'body',
+    lineHeight: 'default',
+    _disabled: {
+      opacity: 0.4,
+      cursor: 'not-allowed',
     },
-    _error: dangerStateStyles,
-    _invalid: dangerStateStyles,
-    _valid: successStateStyles,
-    _disabled: disabledStateStyles,
     _groupDisabled: {
       opacity: 1,
     },
@@ -65,68 +43,136 @@ const autocompleteBase = {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    minWidth: '0',
     width: 'full',
-    gap: '4',
-    pe: 'var(--input-icon-padding)',
+    minWidth: '0',
+    minHeight: 'var(--control-min-height)',
+    py: 'var(--control-py)',
+    ps: 'var(--control-px)',
+    pe: 'var(--control-px)',
     bg: 'surface',
     color: 'text',
-    fontFamily: 'body',
-    lineHeight: 'default',
+    borderWidth: '1',
+    borderStyle: 'solid',
+    borderColor: 'border.input',
+    borderRadius: '4',
+    outlineWidth: '1',
+    outlineStyle: 'solid',
+    outlineColor: 'transparent',
+    cursor: 'text',
+    transitionDuration: 'fast',
+    transitionProperty: 'background, border-color, outline-color',
+    transitionTimingFunction: 'default',
+    _focusWithin: {
+      borderColor: 'border.focused',
+      outlineColor: 'border.focused',
+    },
+    _open: {
+      borderColor: 'border.focused',
+      outlineColor: 'border.focused',
+    },
+    _error: validationStyles.danger,
+    _invalid: validationStyles.danger,
+    _valid: validationStyles.success,
+    _disabled: {
+      bg: 'bg.disabled',
+      borderColor: 'border.disabled',
+      color: 'text.disabled',
+      cursor: 'not-allowed',
+      pointerEvents: 'none',
+      _focusWithin: {
+        borderColor: 'border.disabled',
+        outlineColor: 'transparent',
+      },
+    },
   },
-  chips: {
+  valueContainer: {
     display: 'flex',
     alignItems: 'center',
-    minWidth: '0',
+    alignContent: 'center',
     flex: '1',
-    gap: '4',
-    overflowX: 'auto',
-    overflowY: 'hidden',
-    scrollbarWidth: 'thin',
+    flexWrap: 'wrap',
+    minWidth: '0',
+    gap: 'var(--value-gap)',
   },
   input: {
-    flex: '1',
-    minWidth: '8',
+    flexGrow: '1',
+    flexShrink: '0',
+    flexBasis: 'var(--input-min-width)',
+    minWidth: 'var(--input-min-width)',
+    maxWidth: 'full',
+    p: '0',
+    marginBlock: '-3',
     bg: 'transparent',
     color: 'text',
     fontFamily: 'body',
+    fontSize: 'var(--control-fs)',
     lineHeight: 'default',
     border: 'none',
     outline: 'none',
     _placeholder: {
       color: 'text.placeholder',
     },
+    _disabled: {
+      color: 'text.disabled',
+      cursor: 'not-allowed',
+    },
   },
-  icon: {
-    position: 'absolute',
-    top: '50%',
-    right: '1',
+  token: {
+    minWidth: '0',
+    maxWidth: 'full',
+    flex: '0 1 auto',
+  },
+  overflowIndicator: {
     display: 'inline-flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    width: 'var(--icon-size)',
-    height: 'var(--icon-size)',
-    marginInline: 'var(--icon-margin)',
-    transform: 'translateY(-50%)',
-    bg: 'surface',
-    fill: 'icon.decorative.subtle',
-    pointerEvents: 'none',
-    transitionDuration: 'fast',
-    transitionProperty: 'all',
-    transitionTimingFunction: 'default',
+    flexShrink: '0',
+    minHeight: 'var(--loading-size)',
+    px: '6',
+    bg: 'bg.neutral',
+    color: 'text.subtle',
+    borderRadius: '999',
+    fontSize: '14',
+    fontWeight: 'medium',
+    lineHeight: 'default',
+    whiteSpace: 'nowrap',
+  },
+  loadingIndicator: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    alignSelf: 'center',
+    flexShrink: '0',
+    ms: 'var(--control-py)',
+    width: 'var(--loading-size)',
+    height: 'var(--loading-size)',
     _icon: {
-      width: 'var(--icon-size)',
-      height: 'var(--icon-size)',
-      transitionDuration: 'fast',
-      transitionProperty: 'all',
-      transitionTimingFunction: 'default',
+      width: 'var(--loading-size)',
+      height: 'var(--loading-size)',
     },
-    _open: {
-      '& > svg': {
-        transform: 'rotate(-180deg)',
-        transformOrigin: 'center',
-      },
-    },
+  },
+  listbox: {
+    ...globalBaseStyles,
+    width: 'full',
+    maxHeight: '192',
+    overflowY: 'auto',
+    bg: 'surface',
+    borderRadius: '4',
+    boxShadow: 'overlay',
+    outline: 'none',
+    zIndex: 'elevated',
+  },
+  status: {
+    display: 'flex',
+    alignItems: 'center',
+    width: 'full',
+    minHeight: '40',
+    px: '12',
+    py: '8',
+    color: 'text.subtle',
+    fontSize: '14',
+    lineHeight: 'default',
+  },
+  liveRegion: {
+    srOnly: true,
   },
 };
 
@@ -134,113 +180,46 @@ const autocompleteVariants = {
   size: {
     sm: {
       root: {
-        '--icon-size': 'token(sizes.22)',
-        '--icon-margin': 'token(sizes.2)',
-        '--input-icon-padding': '[26px]',
-      },
-      control: {
-        py: '0',
-        px: '8',
-        fontSize: '14',
-      },
-      chips: {
-        gap: '3',
-      },
-      input: {
-        py: '0',
-        fontSize: '14',
+        '--control-py': 'token(sizes.0)',
+        '--control-px': 'token(sizes.8)',
+        '--control-fs': 'token(sizes.14)',
+        '--control-min-height': 'token(sizes.24)',
+        '--value-gap': 'token(sizes.3)',
+        '--input-min-width': 'token(sizes.64)',
+        '--loading-size': 'token(sizes.16)',
       },
     },
     md: {
       root: {
-        '--icon-size': 'token(sizes.24)',
-        '--icon-margin': 'token(sizes.3)',
-        '--input-icon-padding': '[31px]',
-      },
-      control: {
-        py: '3',
-        px: '10',
-        fontSize: '16',
-      },
-      chips: {
-        gap: '4',
-      },
-      input: {
-        py: '0',
-        fontSize: '16',
+        '--control-py': 'token(sizes.3)',
+        '--control-px': 'token(sizes.10)',
+        '--control-fs': 'token(sizes.16)',
+        '--control-min-height': 'token(sizes.32)',
+        '--value-gap': 'token(sizes.4)',
+        '--input-min-width': 'token(sizes.80)',
+        '--loading-size': 'token(sizes.20)',
       },
     },
     lg: {
       root: {
-        '--icon-size': 'token(sizes.24)',
-        '--icon-margin': 'token(sizes.5)',
-        '--input-icon-padding': '[34px]',
-      },
-      control: {
-        py: '7',
-        px: '12',
-        fontSize: '16',
-      },
-      chips: {
-        gap: '5',
-      },
-      input: {
-        py: '0',
-        fontSize: '16',
+        '--control-py': 'token(sizes.7)',
+        '--control-px': 'token(sizes.12)',
+        '--control-fs': 'token(sizes.16)',
+        '--control-min-height': 'token(sizes.40)',
+        '--value-gap': 'token(sizes.5)',
+        '--input-min-width': 'token(sizes.96)',
+        '--loading-size': 'token(sizes.20)',
       },
     },
     xl: {
       root: {
-        '--icon-size': 'token(sizes.28)',
-        '--icon-margin': 'token(sizes.7)',
-        '--input-icon-padding': '[42px]',
-      },
-      control: {
-        py: '9',
-        px: '16',
-        fontSize: '20',
-      },
-      chips: {
-        gap: '6',
-      },
-      input: {
-        py: '0',
-        fontSize: '20',
-      },
-    },
-  },
-  multiple: {
-    true: {
-      control: {
-        alignItems: 'flex-start',
-      },
-      chips: {
-        alignItems: 'flex-start',
-      },
-    },
-  },
-  autoSize: {
-    true: {
-      root: {
-        height: 'auto',
-        overflow: 'visible',
-      },
-      control: {
-        flexWrap: 'wrap',
-      },
-      chips: {
-        flexWrap: 'wrap',
-        overflowX: 'visible',
-        overflowY: 'visible',
-      },
-      input: {
-        fieldSizing: 'content',
-        maxW: 'full',
-      },
-    },
-    false: {
-      chips: {
-        flexWrap: 'nowrap',
+        '--control-py': 'token(sizes.9)',
+        '--control-px': 'token(sizes.16)',
+        '--control-fs': 'token(sizes.20)',
+        '--control-min-height': 'token(sizes.48)',
+        '--value-gap': 'token(sizes.6)',
+        '--input-min-width': 'token(sizes.112)',
+        '--loading-size': 'token(sizes.24)',
       },
     },
   },
@@ -249,7 +228,18 @@ const autocompleteVariants = {
 export const autocompleteRecipe = defineSlotRecipe({
   className: 'autocomplete',
   jsx: ['Autocomplete'],
-  slots: ['root', 'control', 'chips', 'input', 'icon'],
+  slots: [
+    'root',
+    'control',
+    'valueContainer',
+    'input',
+    'token',
+    'overflowIndicator',
+    'loadingIndicator',
+    'listbox',
+    'status',
+    'liveRegion',
+  ],
   base: autocompleteBase,
   variants: autocompleteVariants,
   defaultVariants: {

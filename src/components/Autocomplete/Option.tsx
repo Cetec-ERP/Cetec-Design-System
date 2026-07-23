@@ -1,7 +1,6 @@
-import type { BoxProps } from '../Box';
 import type { IconNamesList } from '../Icon';
 
-export type OptionProps = Omit<BoxProps, 'children'> & {
+export type OptionProps = {
   value: string;
   label: string;
   disabled?: boolean;
