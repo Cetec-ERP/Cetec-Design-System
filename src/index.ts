@@ -66,6 +66,16 @@ export { RadioInput } from './components/RadioInput';
 export { Spinner } from './components/Spinner';
 export { Tag } from './components/Tag';
 export {
+  Autocomplete,
+  type AutocompleteChangeReason,
+  type AutocompleteInputChangeReason,
+  type AutocompleteOpenChangeReason,
+  type AutocompleteProps,
+  type AutocompleteValue,
+  Option,
+  type OptionProps,
+} from './components/Autocomplete';
+export {
   Select,
   type SelectProps,
   SelectOption,

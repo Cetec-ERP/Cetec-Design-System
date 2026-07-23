@@ -13,7 +13,7 @@ import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Toggle } from '../Toggle';
 
-import { HighlightText } from './HighlightText';
+import { HighlightText, type HighlightTextProps } from './HighlightText';
 import { type ListDensity, useListContext } from './listContext';
 
 export type ListItemProps = Omit<
@@ -26,6 +26,7 @@ export type ListItemProps = Omit<
     description?: string;
     query?: string;
     highlightMatches?: boolean;
+    highlightMatchMode?: HighlightTextProps['matchMode'];
     controlName?: string;
     onControlChange?: ChangeEventHandler<HTMLInputElement>;
     selected?: boolean;
@@ -46,6 +47,7 @@ export const ListItem = (props: ListItemProps) => {
     description,
     query,
     highlightMatches,
+    highlightMatchMode = 'substring',
     controlName = 'list-item',
     onControlChange,
     children,
@@ -142,6 +144,7 @@ export const ListItem = (props: ListItemProps) => {
                   value={label}
                   query={resolvedQuery}
                   enabled={shouldHighlight}
+                  matchMode={highlightMatchMode}
                 />
               </Text>
             )}
@@ -152,6 +155,7 @@ export const ListItem = (props: ListItemProps) => {
                   value={description}
                   query={resolvedQuery}
                   enabled={shouldHighlight}
+                  matchMode={highlightMatchMode}
                 />
               </Text>
             )}

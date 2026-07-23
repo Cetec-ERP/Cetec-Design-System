@@ -60,6 +60,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
       heightAuto: ['*'],
     },
   ],
+  autocomplete: [{ size: ['*'], responsive: true }],
   tag: [{ variant: ['*'], hue: ['*'] }],
   textarea: [{ size: ['*'], responsive: true }],
   textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
