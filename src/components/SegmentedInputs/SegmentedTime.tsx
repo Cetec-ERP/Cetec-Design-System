@@ -3,6 +3,7 @@ import { useMemo, type Ref } from 'react';
 import { type SegmentedInputsVariantProps } from '@styled-system/recipes';
 
 import { type BoxProps } from '~/components/Box';
+import { normalizeMinuteStep } from '~/components/DateTime/helpers';
 import type {
   Meridiem,
   TimeFormat,
@@ -67,6 +68,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
     ...rest
   } = props;
   const resolvedTimeFormat = timeFormat ?? '12';
+  const resolvedMinuteStep = normalizeMinuteStep(minuteStep);
   const resolvedValue = value !== undefined ? value : defaultValue;
   const valueMap =
     value !== undefined
@@ -123,7 +125,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
         digits: 2,
         min: 0,
         max: 59,
-        step: minuteStep,
+        step: resolvedMinuteStep,
       },
     ];
 
@@ -152,7 +154,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
     }
 
     return nextItems;
-  }, [minuteStep, resolvedTimeFormat, resolvedValue, separators]);
+  }, [resolvedMinuteStep, resolvedTimeFormat, resolvedValue, separators]);
 
   return (
     <SegmentedInput
