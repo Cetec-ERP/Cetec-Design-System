@@ -2,8 +2,8 @@ import { type ReactNode, isValidElement } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
-  dateInputs,
-  type DateInputsVariantProps,
+  segmentedFields,
+  type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
 import { Button } from '~/components/Button';
@@ -20,9 +20,9 @@ import type { DateFormat, DateValue } from '../helpers/types';
 
 export type DateInputProps = Omit<
   BoxProps,
-  keyof DateInputsVariantProps | 'children'
+  keyof SegmentedFieldsVariantProps | 'children'
 > &
-  Omit<DateInputsVariantProps, 'range' | 'before' | 'after'> & {
+  Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
     id?: string;
     value?: DateValue | null;
     defaultValue?: DateValue | null;
@@ -75,8 +75,9 @@ export const DateInput = (props: DateInputProps) => {
   const resolvedAfter =
     after ?? (iconAfter ? <Icon name={iconAfter} aria-hidden /> : undefined);
 
-  const classes = dateInputs({
+  const classes = segmentedFields({
     size,
+    field: 'date',
     before: Boolean(resolvedBefore),
     after: Boolean(resolvedAfter),
   });

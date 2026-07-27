@@ -8,6 +8,7 @@ import { Calendar } from '~/components/Calendar';
 import { Divider } from '~/components/Divider';
 import { Menu, type MenuProps } from '~/components/Menu';
 import { splitProps } from '~/utils/splitProps';
+import { useControllableState } from '~/utils/useControllableState';
 
 import {
   compareDates,
@@ -57,17 +58,12 @@ export const DateRangeMenu = (props: DateRangeMenuProps) => {
   const isInline = rest.inline === true;
   const [className, otherProps] = splitProps(rest);
 
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : internalOpen;
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
   const menuOpen = isInline ? true : isOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setInternalOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
 
   const classes = dateMenus();
 

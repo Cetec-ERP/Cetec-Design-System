@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useControllableState } from '~/utils/useControllableState';
 
 import {
   DateTimeInput,
@@ -74,16 +74,11 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
     onOpenChange,
   } = props;
 
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : uncontrolledOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setUncontrolledOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const openMenu = () => {
     if (!isOpen) {
@@ -94,32 +89,21 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
   // DateTimeInput commits immediately per typed segment; DateTimeMenu only
   // commits (via its own Cancel/Apply draft) when Apply is pressed. Both
   // write to the same place.
-  const [internalValue, setInternalValue] = useState<DateTimeValue | null>(
-    value !== undefined ? value : (defaultValue ?? null),
+  const [currentValue, emitChange] = useControllableState<DateTimeValue | null>(
+    {
+      value,
+      defaultValue: defaultValue ?? null,
+      onChange,
+    },
   );
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setInternalValue(value);
-    }
-  }, [value]);
-
-  const currentValue =
-    value !== undefined
-      ? (value ?? EMPTY_VALUE)
-      : (internalValue ?? EMPTY_VALUE);
-
-  const emitChange = (next: DateTimeValue | null) => {
-    setInternalValue(next);
-    onChange?.(next);
-  };
+  const resolvedValue = currentValue ?? EMPTY_VALUE;
 
   return (
     <DateTimeMenu
       trigger={
         <DateTimeInput
           id={id}
-          value={currentValue}
+          value={resolvedValue}
           onChange={emitChange}
           dateLabel={dateLabel}
           timeLabel={timeLabel}
@@ -142,7 +126,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
       onOpenChange={setOpenState}
       triggerInteraction="focus"
       placement={placement}
-      value={currentValue}
+      value={resolvedValue}
       onChange={emitChange}
       minDate={minDate}
       maxDate={maxDate}

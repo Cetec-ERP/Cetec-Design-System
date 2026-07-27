@@ -8,9 +8,9 @@ import {
 
 import { cx } from '@styled-system/css';
 import {
+  segmentedFields,
   segmentedInputs,
-  timeInputs,
-  type TimeInputsVariantProps,
+  type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
 import { Button } from '~/components/Button';
@@ -27,9 +27,9 @@ import type { TimeFormat, TimeRangeValue, TimeValue } from '../helpers/types';
 
 export type TimeRangeInputProps = Omit<
   BoxProps,
-  keyof TimeInputsVariantProps | 'children'
+  keyof SegmentedFieldsVariantProps | 'children'
 > &
-  Omit<TimeInputsVariantProps, 'range' | 'before' | 'after'> & {
+  Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
     id?: string;
     value?: TimeRangeValue | null;
     defaultValue?: TimeRangeValue | null;
@@ -88,9 +88,10 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
   const resolvedAfter =
     after ?? (iconAfter ? <Icon name={iconAfter} aria-hidden /> : undefined);
 
-  const classes = timeInputs({
+  const classes = segmentedFields({
     size,
-    range: true,
+    field: 'time',
+    range: 'time',
     before: Boolean(resolvedBefore),
     after: Boolean(resolvedAfter),
   });

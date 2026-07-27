@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useControllableState } from '~/utils/useControllableState';
 
 import {
   DateRangeInput,
@@ -62,16 +62,11 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
     onOpenChange,
   } = props;
 
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : uncontrolledOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setUncontrolledOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const openMenu = () => {
     if (!isOpen) {
@@ -82,32 +77,20 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
   // The picker owns the committed range — DateRangeInput commits immediately
   // per typed endpoint, DateRangeMenu only commits (via its own Cancel/Apply
   // draft) when Apply is pressed. Both write to the same place.
-  const [internalValue, setInternalValue] = useState<DateRangeValue | null>(
-    value !== undefined ? value : (defaultValue ?? null),
-  );
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setInternalValue(value);
-    }
-  }, [value]);
-
-  const currentValue =
-    value !== undefined
-      ? (value ?? EMPTY_RANGE)
-      : (internalValue ?? EMPTY_RANGE);
-
-  const emitChange = (next: DateRangeValue | null) => {
-    setInternalValue(next);
-    onChange?.(next);
-  };
+  const [currentValue, emitChange] =
+    useControllableState<DateRangeValue | null>({
+      value,
+      defaultValue: defaultValue ?? null,
+      onChange,
+    });
+  const resolvedValue = currentValue ?? EMPTY_RANGE;
 
   return (
     <DateRangeMenu
       trigger={
         <DateRangeInput
           id={id}
-          value={currentValue}
+          value={resolvedValue}
           onChange={emitChange}
           startLabel={startLabel}
           endLabel={endLabel}
@@ -128,7 +111,7 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
       onOpenChange={setOpenState}
       triggerInteraction="focus"
       placement={placement}
-      value={currentValue}
+      value={resolvedValue}
       onChange={emitChange}
       minDate={minDate}
       maxDate={maxDate}

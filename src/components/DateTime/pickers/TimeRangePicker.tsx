@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useControllableState } from '~/utils/useControllableState';
 
 import {
   TimeRangeInput,
@@ -60,16 +60,11 @@ export const TimeRangePicker = (props: TimeRangePickerProps) => {
     onOpenChange,
   } = props;
 
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : uncontrolledOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setUncontrolledOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const openMenu = () => {
     if (!isOpen) {
@@ -77,32 +72,20 @@ export const TimeRangePicker = (props: TimeRangePickerProps) => {
     }
   };
 
-  const [internalValue, setInternalValue] = useState<TimeRangeValue | null>(
-    value !== undefined ? value : (defaultValue ?? null),
-  );
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setInternalValue(value);
-    }
-  }, [value]);
-
-  const currentValue =
-    value !== undefined
-      ? (value ?? EMPTY_RANGE)
-      : (internalValue ?? EMPTY_RANGE);
-
-  const emitChange = (next: TimeRangeValue | null) => {
-    setInternalValue(next);
-    onChange?.(next);
-  };
+  const [currentValue, emitChange] =
+    useControllableState<TimeRangeValue | null>({
+      value,
+      defaultValue: defaultValue ?? null,
+      onChange,
+    });
+  const resolvedValue = currentValue ?? EMPTY_RANGE;
 
   return (
     <TimeRangeMenu
       trigger={
         <TimeRangeInput
           id={id}
-          value={currentValue}
+          value={resolvedValue}
           onChange={emitChange}
           startLabel={startLabel}
           endLabel={endLabel}
@@ -124,7 +107,7 @@ export const TimeRangePicker = (props: TimeRangePickerProps) => {
       onOpenChange={setOpenState}
       triggerInteraction="focus"
       placement={placement}
-      value={currentValue}
+      value={resolvedValue}
       onChange={emitChange}
       timeFormat={timeFormat}
       minuteStep={minuteStep}

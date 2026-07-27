@@ -2,11 +2,7 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
-// Wraps SegmentedTime in a bordered field with before/after slot support,
-// mirroring textInput's container/slot/buttonSlot mechanics. Covers both
-// TimeInput (range: false) and TimeRangeInput (range: true) — a single
-// recipe file per the recommended file shape, not one recipe per component.
-const timeInputsBase = {
+const segmentedFieldsBase = {
   container: {
     ...globalBaseStyles,
     '--input-py': 'token(sizes.3)',
@@ -17,7 +13,6 @@ const timeInputsBase = {
     display: 'flex',
     alignItems: 'center',
     width: 'full',
-    minW: '104',
     py: 'var(--input-py)',
     px: 'var(--input-px)',
     bg: 'bg.input',
@@ -85,7 +80,7 @@ const timeInputsBase = {
   },
 };
 
-const timeInputsVariants = {
+const segmentedFieldsVariants = {
   size: {
     sm: {
       container: {
@@ -120,9 +115,30 @@ const timeInputsVariants = {
       },
     },
   },
-  // TimeRangeInput — 200px per the confirmed Figma symbol width.
+  field: {
+    date: {
+      container: {
+        minW: '128',
+      },
+    },
+    time: {
+      container: {
+        minW: '104',
+      },
+    },
+    dateTime: {
+      container: {
+        minW: '216',
+      },
+    },
+  },
   range: {
-    true: {
+    date: {
+      container: {
+        minW: '248',
+      },
+    },
+    time: {
       container: {
         minW: '200',
       },
@@ -156,13 +172,20 @@ const timeInputsVariants = {
   },
 };
 
-// validate-ignore: recipe-jsx-name-matches-component — covers a component family, not a single "TimeInputs" component
-export const timeInputsRecipe = defineSlotRecipe({
-  className: 'timeInputs',
-  jsx: ['TimeInputs', 'TimeInput', 'TimeRangeInput'],
+// validate-ignore: recipe-jsx-name-matches-component — shared chrome for the segmented date/time field family
+export const segmentedFieldsRecipe = defineSlotRecipe({
+  className: 'segmentedFields',
+  jsx: [
+    'SegmentedFields',
+    'DateInput',
+    'DateRangeInput',
+    'TimeInput',
+    'TimeRangeInput',
+    'DateTimeInput',
+  ],
   slots: ['container', 'slot', 'buttonSlot'],
-  base: timeInputsBase,
-  variants: timeInputsVariants,
+  base: segmentedFieldsBase,
+  variants: segmentedFieldsVariants,
   defaultVariants: {
     size: 'md',
   },

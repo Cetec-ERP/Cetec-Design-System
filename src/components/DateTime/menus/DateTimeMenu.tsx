@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type RefObject,
@@ -15,6 +16,7 @@ import { Divider } from '~/components/Divider';
 import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
 import { splitProps } from '~/utils/splitProps';
+import { useControllableState } from '~/utils/useControllableState';
 
 import { getMinuteValues, to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
@@ -95,17 +97,12 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
   const isInline = rest.inline === true;
   const [className, otherProps] = splitProps(rest);
 
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : internalOpen;
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
   const menuOpen = isInline ? true : isOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setInternalOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
 
   const classes = dateTimeMenus();
   const columnClasses = timeMenus({ stretch: true });
@@ -205,13 +202,13 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
   // around. Measuring the Calendar directly and applying that height
   // explicitly sidesteps the auto-sizing ambiguity entirely.
   //
-  // This has to be a ref callback, not a useEffect/useLayoutEffect keyed on
-  // `isOpen` — Menu's FloatingPortal mounts its content a tick after `isOpen`
-  // itself flips true, so an effect keyed on `isOpen` fires before Calendar
-  // actually exists in the DOM and (since `isOpen` doesn't change again)
-  // never gets a chance to re-run once it does. A ref callback fires exactly
-  // when the node attaches/detaches, regardless of the portal's timing.
-  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+  // Track the actual node rather than `isOpen`: Menu's FloatingPortal mounts
+  // its content after the open state changes, so an effect keyed only on open
+  // can run before Calendar exists. Updating this state from the callback ref
+  // makes the observer effect run when the portal node actually attaches.
+  const [calendarElement, setCalendarElement] = useState<HTMLDivElement | null>(
+    null,
+  );
   const timeColumnsRef = useRef<HTMLDivElement>(null);
 
   const setTimeColumnsHeight = useCallback((height: number) => {
@@ -220,23 +217,19 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
     }
   }, []);
 
-  const calendarRef = useCallback(
-    (el: HTMLDivElement | null) => {
-      resizeObserverRef.current?.disconnect();
-      resizeObserverRef.current = null;
-      if (!el) {
-        setTimeColumnsHeight(0);
-        return;
-      }
-      setTimeColumnsHeight(el.getBoundingClientRect().height);
-      const observer = new ResizeObserver(([entry]) => {
-        if (entry) setTimeColumnsHeight(entry.contentRect.height);
-      });
-      observer.observe(el);
-      resizeObserverRef.current = observer;
-    },
-    [setTimeColumnsHeight],
-  );
+  useLayoutEffect(() => {
+    if (!calendarElement) {
+      setTimeColumnsHeight(0);
+      return;
+    }
+
+    setTimeColumnsHeight(calendarElement.getBoundingClientRect().height);
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setTimeColumnsHeight(entry.contentRect.height);
+    });
+    observer.observe(calendarElement);
+    return () => observer.disconnect();
+  }, [calendarElement, setTimeColumnsHeight]);
 
   if (disabled) {
     return trigger;
@@ -255,7 +248,7 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
       <Box>
         <Box className={classes.content}>
           <Calendar
-            ref={calendarRef}
+            ref={setCalendarElement}
             label={dateLabel}
             value={draftDate}
             onChange={setDraftDate}

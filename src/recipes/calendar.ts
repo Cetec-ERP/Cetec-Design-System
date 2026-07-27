@@ -48,10 +48,6 @@ export const calendarRecipe = defineSlotRecipe({
       width: '32',
       height: '32',
       minWidth: '32',
-      // ↓↓↓ I don't like it, but it's the simplest way right now [SF]
-      '& > div > div': {
-        '--main-fs': 'token(sizes.14)',
-      },
       _today: {
         outline: '1px solid {colors.border.focused}',
         outlineOffset: '1',

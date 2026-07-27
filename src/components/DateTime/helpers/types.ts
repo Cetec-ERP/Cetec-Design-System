@@ -42,32 +42,3 @@ export interface DateTimeRangeValue {
 export type TimeFormat = '12' | '24';
 export type DateFormat = 'MM/DD/YYYY' | 'YYYY-MM-DD';
 export type Meridiem = 'AM' | 'PM';
-
-export type DateSegmentType = 'month' | 'day' | 'year';
-export type TimeSegmentType = 'hour' | 'minute' | 'ampm';
-export type SegmentType = DateSegmentType | TimeSegmentType;
-
-/** A segment whose value is a number rendered with fixed digit padding (MM, DD, YYYY, HH, MM). */
-export interface NumericSegmentDef {
-  kind: 'numeric';
-  type: Exclude<SegmentType, 'ampm'>;
-  placeholder: string;
-  digits: number;
-  min: number;
-  max: number;
-  /** Snap interval for arrow-key stepping and typed values. Defaults to 1. */
-  step?: number;
-}
-
-/** The AM/PM segment in a 12-hour field. */
-export interface MeridiemSegmentDef {
-  kind: 'ampm';
-  type: 'ampm';
-  placeholder: string;
-}
-
-export type SegmentDef = NumericSegmentDef | MeridiemSegmentDef;
-
-export type SegmentValue = number | Meridiem | null;
-export type SegmentValueMap = Record<string, SegmentValue>;
-export type SegmentRawInputMap = Record<string, string>;

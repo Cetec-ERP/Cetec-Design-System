@@ -300,6 +300,7 @@ export const Calendar = (props: CalendarProps) => {
       role="gridcell"
       variant={getCellVariant(state)}
       className={classes.day}
+      fontSize="14"
       fontVariant="mono"
       data-today={state.isToday || undefined}
       data-range-start={state.isRangeStart || undefined}

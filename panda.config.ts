@@ -42,18 +42,6 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   card: [{ size: ['*'], variant: ['*'], responsive: true }],
   chip: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
   chipGroup: [{ size: ['*'], responsive: true }],
-  dateInputs: [
-    {
-      size: ['*'],
-      before: ['*'],
-      after: ['*'],
-      range: ['*'],
-      responsive: true,
-    },
-  ],
-  dateTimeInputs: [
-    { size: ['*'], before: ['*'], after: ['*'], responsive: true },
-  ],
   divider: [{ size: ['*'], responsive: true }],
   formField: [{ size: ['*'], layout: ['*'], responsive: true }],
   icon: [{ size: ['*'], responsive: true }],
@@ -62,6 +50,16 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   listItem: [{ density: ['*'], responsive: true }, { selected: ['*'] }],
   listItemGroup: [{ density: ['*'], responsive: true }],
   menu: [{ density: ['*'], responsive: true }],
+  segmentedFields: [
+    {
+      size: ['*'],
+      field: ['*'],
+      range: ['*'],
+      before: ['*'],
+      after: ['*'],
+      responsive: true,
+    },
+  ],
   segmentedInputs: [{ size: ['*'], bare: ['*'], responsive: true }],
   spinner: [{ size: ['*'], responsive: true }],
   skeleton: [
@@ -76,15 +74,6 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   tag: [{ variant: ['*'], hue: ['*'] }],
   textarea: [{ size: ['*'], responsive: true }],
   textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
-  timeInputs: [
-    {
-      size: ['*'],
-      before: ['*'],
-      after: ['*'],
-      range: ['*'],
-      responsive: true,
-    },
-  ],
   tooltip: [{ size: ['*'], responsive: true }],
 };
 

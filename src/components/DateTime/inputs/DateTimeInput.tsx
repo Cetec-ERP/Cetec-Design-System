@@ -8,9 +8,9 @@ import {
 
 import { cx } from '@styled-system/css';
 import {
-  dateTimeInputs,
-  type DateTimeInputsVariantProps,
+  segmentedFields,
   segmentedInputs,
+  type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
 import { Button } from '~/components/Button';
@@ -33,9 +33,9 @@ import type {
 
 export type DateTimeInputProps = Omit<
   BoxProps,
-  keyof DateTimeInputsVariantProps | 'children'
+  keyof SegmentedFieldsVariantProps | 'children'
 > &
-  Omit<DateTimeInputsVariantProps, 'before' | 'after'> & {
+  Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
     id?: string;
     value?: DateTimeValue | null;
     defaultValue?: DateTimeValue | null;
@@ -94,8 +94,9 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
   const resolvedAfter =
     after ?? (iconAfter ? <Icon name={iconAfter} aria-hidden /> : undefined);
 
-  const classes = dateTimeInputs({
+  const classes = segmentedFields({
     size,
+    field: 'dateTime',
     before: Boolean(resolvedBefore),
     after: Boolean(resolvedAfter),
   });

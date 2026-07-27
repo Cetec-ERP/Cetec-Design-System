@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 
 import { timeMenus } from '@styled-system/recipes';
 
@@ -6,6 +6,7 @@ import { Box } from '~/components/Box';
 import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
 import { splitProps } from '~/utils/splitProps';
+import { useControllableState } from '~/utils/useControllableState';
 
 import { getMinuteValues, to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
@@ -70,17 +71,12 @@ export const TimeMenu = (props: TimeMenuProps) => {
   // unlike the range/DateTime menus) so the scroll-into-view effect below can
   // detect "just opened" in the uncontrolled case too, where Menu manages its
   // own internal open state that isn't otherwise visible to this component.
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : internalOpen;
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
   const menuOpen = isInline ? true : isOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setInternalOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
 
   const classes = timeMenus();
   const resolvedTimeFormat = timeFormat;

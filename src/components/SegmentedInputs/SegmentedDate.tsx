@@ -61,7 +61,7 @@ export const SegmentedDate = (props: SegmentedDateProps) => {
     value,
     defaultValue = null,
     onChange,
-    format = 'MM/DD/YYYY',
+    format = 'YYYY-MM-DD',
     separators,
     label = 'Date',
     disabled,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useControllableState } from '~/utils/useControllableState';
 
 import { DateInput, type DateInputProps } from '../inputs/DateInput';
 import { DateMenu } from '../menus/DateMenu';
@@ -63,16 +63,11 @@ export const DatePicker = (props: DatePickerProps) => {
     onOpenChange,
   } = props;
 
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : uncontrolledOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setUncontrolledOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const openMenu = () => {
     if (!isOpen) {
@@ -83,22 +78,11 @@ export const DatePicker = (props: DatePickerProps) => {
   // The picker owns the committed value so both the typed segmented field
   // and the calendar's day-click write to the same place — DateInput commits
   // immediately per keystroke, DateMenu commits immediately on day select.
-  const [internalValue, setInternalValue] = useState<DateValue | null>(
-    value !== undefined ? value : (defaultValue ?? null),
-  );
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setInternalValue(value);
-    }
-  }, [value]);
-
-  const currentValue = value !== undefined ? value : internalValue;
-
-  const emitChange = (next: DateValue | null) => {
-    setInternalValue(next);
-    onChange?.(next);
-  };
+  const [currentValue, emitChange] = useControllableState<DateValue | null>({
+    value,
+    defaultValue: defaultValue ?? null,
+    onChange,
+  });
 
   return (
     <DateMenu

@@ -2,8 +2,8 @@ import { type ReactNode, isValidElement } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
-  timeInputs,
-  type TimeInputsVariantProps,
+  segmentedFields,
+  type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
 import { Button } from '~/components/Button';
@@ -20,9 +20,9 @@ import type { TimeFormat, TimeValue } from '../helpers/types';
 
 export type TimeInputProps = Omit<
   BoxProps,
-  keyof TimeInputsVariantProps | 'children'
+  keyof SegmentedFieldsVariantProps | 'children'
 > &
-  Omit<TimeInputsVariantProps, 'range' | 'before' | 'after'> & {
+  Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
     id?: string;
     value?: TimeValue | null;
     defaultValue?: TimeValue | null;
@@ -77,8 +77,9 @@ export const TimeInput = (props: TimeInputProps) => {
   const resolvedAfter =
     after ?? (iconAfter ? <Icon name={iconAfter} aria-hidden /> : undefined);
 
-  const classes = timeInputs({
+  const classes = segmentedFields({
     size,
+    field: 'time',
     before: Boolean(resolvedBefore),
     after: Boolean(resolvedAfter),
   });

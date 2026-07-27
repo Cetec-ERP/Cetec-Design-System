@@ -1,9 +1,8 @@
-import { useState } from 'react';
-
 import { Box } from '~/components/Box';
 import { Calendar } from '~/components/Calendar';
 import { Menu, type MenuProps } from '~/components/Menu';
 import { splitProps } from '~/utils/splitProps';
+import { useControllableState } from '~/utils/useControllableState';
 
 import type { DateValue } from '../helpers/types';
 
@@ -46,17 +45,12 @@ export const DateMenu = (props: DateMenuProps) => {
   const isInline = rest.inline === true;
   const [className, otherProps] = splitProps(rest);
 
-  const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : internalOpen;
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
   const menuOpen = isInline ? true : isOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setInternalOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
 
   if (disabled) {
     return trigger;

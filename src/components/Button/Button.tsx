@@ -17,7 +17,7 @@ import { splitProps } from '~/utils/splitProps';
 
 export type ButtonProps = Omit<
   BoxProps,
-  keyof ButtonVariantProps | 'fontVariant'
+  keyof ButtonVariantProps | 'fontSize' | 'fontVariant'
 > &
   Omit<ButtonVariantProps, 'before' | 'after' | 'iconBefore' | 'iconAfter'> & {
     before?: ReactNode;
@@ -31,6 +31,7 @@ export type ButtonProps = Omit<
     invalid?: boolean;
     disabled?: boolean;
     type?: 'submit' | 'reset' | 'button';
+    fontSize?: BoxProps['fontSize'];
     fontVariant?: BoxProps['fontVariant'];
   };
 
@@ -51,6 +52,7 @@ export const Button = (props: ButtonProps) => {
     invalid: invalidProp,
     disabled: disabledProp,
     type = 'button',
+    fontSize,
     fontVariant,
     ...rest
   } = props;
@@ -140,7 +142,11 @@ export const Button = (props: ButtonProps) => {
     >
       <HStack gap="0" opacity={loading ? 0 : 1}>
         {renderSlot(resolvedBefore, 'before')}
-        <Box className={classes.mainContent} fontVariant={fontVariant}>
+        <Box
+          className={classes.mainContent}
+          fontSize={fontSize}
+          fontVariant={fontVariant}
+        >
           {children}
         </Box>
         {renderSlot(resolvedAfter, 'after')}

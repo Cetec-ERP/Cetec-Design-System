@@ -68,7 +68,7 @@ export const DateFormats: Story = {
     return (
       <VStack gap="8" alignItems="flex-start">
         <SegmentedDate value={date} onChange={setDate} />
-        <SegmentedDate format="YYYY-MM-DD" value={date} onChange={setDate} />
+        <SegmentedDate format="MM/DD/YYYY" value={date} onChange={setDate} />
       </VStack>
     );
   },

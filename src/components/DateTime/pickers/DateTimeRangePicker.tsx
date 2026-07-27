@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Box } from '~/components/Box';
+import { useControllableState } from '~/utils/useControllableState';
 
 import { DateTimePicker } from './DateTimePicker';
 
@@ -17,7 +18,7 @@ import type { Placement } from '@floating-ui/react';
 // matching the Figma wrapping-behavior frame (296-6020): full width shows
 // both fields side by side with a dash between them; below that they stack
 // vertically with no separator; each field's own minW (216px, from
-// dateTimeInputs.ts) is what makes the narrowest stacked state work.
+// segmentedFields.ts) is what makes the narrowest stacked state work.
 const WRAP_BREAKPOINT = 458;
 
 export type DateTimeRangePickerProps = Pick<
@@ -73,20 +74,13 @@ export const DateTimeRangePicker = (props: DateTimeRangePickerProps) => {
     placement,
   } = props;
 
-  const [internalValue, setInternalValue] = useState<DateTimeRangeValue | null>(
-    value !== undefined ? value : (defaultValue ?? null),
-  );
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setInternalValue(value);
-    }
-  }, [value]);
-
-  const currentValue =
-    value !== undefined
-      ? (value ?? EMPTY_RANGE)
-      : (internalValue ?? EMPTY_RANGE);
+  const [currentValue, setCurrentValue] =
+    useControllableState<DateTimeRangeValue | null>({
+      value,
+      defaultValue: defaultValue ?? null,
+      onChange,
+    });
+  const resolvedValue = currentValue ?? EMPTY_RANGE;
 
   const emitChange = (
     nextStart: DateTimeValue | null,
@@ -96,8 +90,7 @@ export const DateTimeRangePicker = (props: DateTimeRangePickerProps) => {
       nextStart === null && nextEnd === null
         ? null
         : { start: nextStart, end: nextEnd };
-    setInternalValue(next);
-    onChange?.(next);
+    setCurrentValue(next);
   };
 
   // Measures the container so the separator can be hidden below the full
@@ -146,8 +139,8 @@ export const DateTimeRangePicker = (props: DateTimeRangePickerProps) => {
           minuteStep={minuteStep}
           minDate={minDate}
           maxDate={maxDate}
-          value={currentValue.start}
-          onChange={(next) => emitChange(next, currentValue.end)}
+          value={resolvedValue.start}
+          onChange={(next) => emitChange(next, resolvedValue.end)}
           placement={placement}
         />
       </Box>
@@ -173,8 +166,8 @@ export const DateTimeRangePicker = (props: DateTimeRangePickerProps) => {
           minuteStep={minuteStep}
           minDate={minDate}
           maxDate={maxDate}
-          value={currentValue.end}
-          onChange={(next) => emitChange(currentValue.start, next)}
+          value={resolvedValue.end}
+          onChange={(next) => emitChange(resolvedValue.start, next)}
           placement={placement}
         />
       </Box>

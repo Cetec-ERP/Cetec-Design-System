@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useControllableState } from '~/utils/useControllableState';
 
 import { TimeInput, type TimeInputProps } from '../inputs/TimeInput';
 import { TimeMenu } from '../menus/TimeMenu';
@@ -53,16 +53,11 @@ export const TimePicker = (props: TimePickerProps) => {
     onOpenChange,
   } = props;
 
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const isOpenControlled = controlledOpen !== undefined;
-  const isOpen = isOpenControlled ? controlledOpen : uncontrolledOpen;
-
-  const setOpenState = (nextOpen: boolean) => {
-    if (!isOpenControlled) {
-      setUncontrolledOpen(nextOpen);
-    }
-    onOpenChange?.(nextOpen);
-  };
+  const [isOpen, setOpenState] = useControllableState({
+    value: controlledOpen,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const openMenu = () => {
     if (!isOpen) {
@@ -70,22 +65,11 @@ export const TimePicker = (props: TimePickerProps) => {
     }
   };
 
-  const [internalValue, setInternalValue] = useState<TimeValue | null>(
-    value !== undefined ? value : (defaultValue ?? null),
-  );
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setInternalValue(value);
-    }
-  }, [value]);
-
-  const currentValue = value !== undefined ? value : internalValue;
-
-  const emitChange = (next: TimeValue | null) => {
-    setInternalValue(next);
-    onChange?.(next);
-  };
+  const [currentValue, emitChange] = useControllableState<TimeValue | null>({
+    value,
+    defaultValue: defaultValue ?? null,
+    onChange,
+  });
 
   return (
     <TimeMenu

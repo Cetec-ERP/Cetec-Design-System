@@ -74,16 +74,16 @@ export const Date: Story = {
     return (
       <Grid columns={2} gap="56">
         <VStack gap="8" alignItems="flex-start">
-          <Text color="text">Format: MM/DD/YYYY</Text>
+          <Text color="text">Format: YYYY-MM-DD</Text>
           <DatePicker label="Date" value={value} onChange={setValue} />
           <Text textStyle="mono.xs" color="text.subtlest">
             Value: {formatDate(value)}
           </Text>
         </VStack>
         <VStack gap="8" alignItems="flex-start">
-          <Text color="text">Format: YYYY-MM-DD</Text>
+          <Text color="text">Format: MM/DD/YYYY</Text>
           <DatePicker
-            dateFormat="YYYY-MM-DD"
+            dateFormat="MM/DD/YYYY"
             label="Date"
             value={value2}
             onChange={setValue2}
@@ -110,7 +110,7 @@ export const DateRange: Story = {
     return (
       <Grid columns={2} gap="56">
         <VStack gap="8" alignItems="flex-start">
-          <Text color="text">Format: MM/DD/YYYY</Text>
+          <Text color="text">Format: YYYY-MM-DD</Text>
           <DateRangePicker
             startLabel="Start date"
             endLabel="End date"
@@ -122,9 +122,9 @@ export const DateRange: Story = {
           </Text>
         </VStack>
         <VStack gap="8" alignItems="flex-start">
-          <Text color="text">Format: YYYY-MM-DD</Text>
+          <Text color="text">Format: MM/DD/YYYY</Text>
           <DateRangePicker
-            dateFormat="YYYY-MM-DD"
+            dateFormat="MM/DD/YYYY"
             startLabel="Start date"
             endLabel="End date"
             value={value2}
@@ -236,7 +236,7 @@ export const DateTimePickers: Story = {
     return (
       <Grid columns={2} gap="56">
         <VStack gap="8" alignItems="flex-start">
-          <Text color="text">Format: MM/DD/YYYY, 12hr</Text>
+          <Text color="text">Format: YYYY-MM-DD, 12hr</Text>
           <DateTimePicker
             dateLabel="Date"
             timeLabel="Time"
@@ -249,13 +249,13 @@ export const DateTimePickers: Story = {
           </Text>
         </VStack>
         <VStack gap="8" alignItems="flex-start">
-          <Text color="text">Format: YYYY-MM-DD, 24hr</Text>
+          <Text color="text">Format: MM/DD/YYYY, 24hr</Text>
           <DateTimePicker
             dateLabel="Date"
             timeLabel="Time"
             value={value2}
             onChange={setValue2}
-            dateFormat="YYYY-MM-DD"
+            dateFormat="MM/DD/YYYY"
             timeFormat="24"
           />
           <Text textStyle="mono.xs" color="text.subtlest">
