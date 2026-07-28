@@ -30,11 +30,10 @@ import { splitProps } from '~/utils/splitProps';
 
 import { useAutocompleteState } from './useAutocompleteState';
 import {
-  getAutocompleteSearchText,
   getAutocompleteValueArray,
   getFirstEnabledOptionIndex,
   isAutocompleteExactMatch,
-  isAutocompleteFuzzyMatch,
+  isAutocompleteOptionMatch,
   mergeAutocompleteOptions,
   normalizeAutocompleteOptions,
 } from './utils';
@@ -226,9 +225,7 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
       return options;
     }
 
-    return options.filter((option) =>
-      isAutocompleteFuzzyMatch(getAutocompleteSearchText(option), query),
-    );
+    return options.filter((option) => isAutocompleteOptionMatch(option, query));
   }, [currentInputValue, options]);
   const createOption = useMemo<AutocompleteOptionData | null>(() => {
     const query = currentInputValue.trim();

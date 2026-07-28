@@ -105,7 +105,6 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
             iconBefore={option.iconLeft}
             iconAfter={option.iconRight}
             highlightMatches={!option.created}
-            highlightMatchMode="fuzzy"
             tabIndex={-1}
             bg={activeIndex === index ? 'bg.neutral.hovered' : undefined}
             data-active={activeIndex === index || undefined}

@@ -49,7 +49,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Use Autocomplete when people benefit from filtering a set of options as they type. Focusing the field opens its suggestions and activates the first available option. Use Select for a short fixed list and TextInput for unrestricted text.',
+          'Use Autocomplete when people benefit from filtering a set of options as they type. Matching uses case-insensitive substrings within each option label or description. Focusing the field opens its suggestions and activates the first available option. Use Select for a short fixed list and TextInput for unrestricted text.',
       },
     },
   },
@@ -88,6 +88,39 @@ export const Default: Story = {
       </Box>
     );
   },
+};
+
+export const Filtering: Story = {
+  render: () => (
+    <Box w="xs">
+      <Autocomplete name="technology-filter" aria-label="Filter technologies">
+        {renderOptions()}
+      </Autocomplete>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'typ');
+    await expect(
+      body.getByRole('option', { name: /typescript type safety/i }),
+    ).toBeInTheDocument();
+    await expect(
+      body.queryByRole('option', { name: /storybook/i }),
+    ).not.toBeInTheDocument();
+
+    await userEvent.clear(input);
+    await userEvent.type(input, 'workshop');
+    const descriptionMatch = body.getByRole('option', {
+      name: /storybook component workshop/i,
+    });
+    await expect(
+      within(descriptionMatch).getByText('workshop', { selector: 'mark' }),
+    ).toBeInTheDocument();
+  },
+  parameters: { controls: { disable: true } },
 };
 
 export const Selected: Story = {

@@ -291,7 +291,7 @@ export const Autocomplete = <Multiple extends boolean = boolean>(
               noOptionsText={noOptionsText}
               onScroll={handleListScroll}
               onSelect={handleOptionSelect}
-              query={currentInputValue}
+              query={currentInputValue.trim()}
               selectedValues={selectedValues}
               setItemRef={setItemRef}
               statusClassName={classes.status}

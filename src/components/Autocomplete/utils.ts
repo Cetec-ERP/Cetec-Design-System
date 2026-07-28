@@ -13,10 +13,6 @@ const optionComponentTypeKey = '__autocompleteComponentType' as const;
 export const normalizeAutocompleteText = (value: string) =>
   value.trim().toLowerCase();
 
-export const getAutocompleteSearchText = (option: AutocompleteOptionData) => {
-  return [option.label, option.description].filter(Boolean).join(' ').trim();
-};
-
 export const isAutocompleteExactMatch = (
   option: AutocompleteOptionData,
   query: string,
@@ -33,45 +29,21 @@ export const isAutocompleteExactMatch = (
   );
 };
 
-export const isAutocompleteFuzzyMatch = (text: string, query: string) => {
+export const isAutocompleteOptionMatch = (
+  option: AutocompleteOptionData,
+  query: string,
+) => {
   const normalizedQuery = normalizeAutocompleteText(query);
 
   if (!normalizedQuery) {
     return true;
   }
 
-  const normalizedText = normalizeAutocompleteText(text);
-
-  if (normalizedText.includes(normalizedQuery)) {
-    return true;
-  }
-
-  let textIndex = 0;
-
-  for (
-    let queryIndex = 0;
-    queryIndex < normalizedQuery.length;
-    queryIndex += 1
-  ) {
-    const queryCharacter = normalizedQuery[queryIndex];
-    let matched = false;
-
-    while (textIndex < normalizedText.length) {
-      if (normalizedText[textIndex] === queryCharacter) {
-        matched = true;
-        textIndex += 1;
-        break;
-      }
-
-      textIndex += 1;
-    }
-
-    if (!matched) {
-      return false;
-    }
-  }
-
-  return true;
+  return (
+    normalizeAutocompleteText(option.label).includes(normalizedQuery) ||
+    (option.description !== undefined &&
+      normalizeAutocompleteText(option.description).includes(normalizedQuery))
+  );
 };
 
 export const isAutocompleteOptionElement = (
