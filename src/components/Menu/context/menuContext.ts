@@ -20,7 +20,11 @@ import type { Placement } from '@floating-ui/react';
 export type MenuDensity = ListDensity;
 export type MenuFilterMode = 'none' | 'contains';
 export type SubMenuInteraction = 'hover' | 'digin';
-export type MenuTriggerInteraction = 'click' | 'hover' | 'click-and-hover';
+export type MenuTriggerInteraction =
+  | 'click'
+  | 'hover'
+  | 'focus'
+  | 'click-and-hover';
 
 export type MenuProps = {
   trigger?: ReactElement;
