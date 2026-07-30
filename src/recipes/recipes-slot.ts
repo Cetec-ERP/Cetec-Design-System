@@ -14,6 +14,7 @@ export { modalRecipe } from './modal';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { selectRecipe } from './select';
 export { kbdRecipe } from './kbd';
+export { autocompleteRecipe } from './autocomplete';
 export { segmentedInputsRecipe } from './segmentedInputs';
 export { segmentedFieldsRecipe } from './segmentedFields';
 export { calendarRecipe } from './calendar';

@@ -14,17 +14,14 @@ type HighlightPart = {
 };
 
 const getHighlightParts = (value: string, query: string): HighlightPart[] => {
-  if (!query.trim()) {
-    return [{ text: value, match: false }];
-  }
-
   const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regExp = new RegExp(`(${safeQuery})`, 'ig');
   const parts = value.split(regExp).filter((part) => part.length > 0);
+  const normalizedQuery = query.toLowerCase();
 
   return parts.map((part) => ({
     text: part,
-    match: part.toLowerCase() === query.toLowerCase(),
+    match: part.toLowerCase() === normalizedQuery,
   }));
 };
 

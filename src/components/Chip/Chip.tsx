@@ -1,8 +1,10 @@
 import {
   type ReactNode,
+  type Ref,
   useEffect,
   useRef,
   type KeyboardEvent,
+  type KeyboardEventHandler,
   type MouseEvent,
 } from 'react';
 
@@ -32,9 +34,12 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     deleted?: boolean;
     dismissable?: boolean;
     dismissLabel?: string;
+    dismissButtonRef?: Ref<HTMLButtonElement>;
+    dismissButtonTabIndex?: number;
     error?: boolean;
     invalid?: boolean;
     onDismiss?: () => void;
+    onDismissKeyDown?: KeyboardEventHandler<HTMLButtonElement>;
     type?: 'button' | 'submit' | 'reset';
     value?: string;
   };
@@ -53,7 +58,10 @@ export const Chip = (props: ChipProps) => {
     deleted,
     dismissable,
     dismissLabel,
+    dismissButtonRef,
+    dismissButtonTabIndex,
     onDismiss,
+    onDismissKeyDown,
     value,
     error: errorProp,
     invalid: invalidProp,
@@ -214,12 +222,15 @@ export const Chip = (props: ChipProps) => {
   const dismissButton = (
     <Box
       as="button"
+      ref={dismissButtonRef}
       type="button"
       className={classes.dismissButton}
       aria-label={resolvedDismissLabel}
       aria-hidden={dismissable ? undefined : true}
       disabled={isDisabled || !onDismiss}
+      tabIndex={dismissButtonTabIndex}
       onClick={handleDismissClick}
+      onKeyDown={onDismissKeyDown}
       opacity={loading ? 0 : 1}
       data-selected={isSelected ? true : undefined}
       data-deleted={deleted ? true : undefined}
