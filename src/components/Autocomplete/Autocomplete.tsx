@@ -25,7 +25,7 @@ import type {
   AutocompleteValue,
 } from './types';
 
-export type AutocompleteProps<Multiple extends boolean = boolean> = Omit<
+type AutocompleteBaseProps = Omit<
   BoxProps<'div'>,
   | keyof AutocompleteVariantProps
   | 'children'
@@ -34,17 +34,6 @@ export type AutocompleteProps<Multiple extends boolean = boolean> = Omit<
   | 'value'
 > &
   AutocompleteVariantProps & {
-    value?: AutocompleteValue<Multiple>;
-    defaultValue?: AutocompleteValue<Multiple>;
-    onValueChange?: (
-      value: AutocompleteValue<Multiple>,
-      reason: AutocompleteChangeReason,
-    ) => void;
-    /** @deprecated Use onValueChange. */
-    onChange?: (
-      value: AutocompleteValue<Multiple>,
-      reason: AutocompleteChangeReason,
-    ) => void;
     inputValue?: string;
     defaultInputValue?: string;
     onInputValueChange?: (
@@ -62,7 +51,6 @@ export type AutocompleteProps<Multiple extends boolean = boolean> = Omit<
       open: boolean,
       reason: AutocompleteOpenChangeReason,
     ) => void;
-    multiple?: Multiple;
     allowCustomValue?: boolean;
     getCreateOptionLabel?: (inputValue: string) => string;
     limitTags?: number;
@@ -86,9 +74,44 @@ export type AutocompleteProps<Multiple extends boolean = boolean> = Omit<
     noOptionsText?: ReactNode;
   };
 
-export const Autocomplete = <Multiple extends boolean = boolean>(
-  props: AutocompleteProps<Multiple>,
-) => {
+export type SingleAutocompleteProps = AutocompleteBaseProps & {
+  multiple?: false;
+  value?: AutocompleteValue<false>;
+  defaultValue?: AutocompleteValue<false>;
+  onValueChange?: (
+    value: AutocompleteValue<false>,
+    reason: AutocompleteChangeReason,
+  ) => void;
+  /** @deprecated Use onValueChange. */
+  onChange?: (
+    value: AutocompleteValue<false>,
+    reason: AutocompleteChangeReason,
+  ) => void;
+};
+
+export type MultipleAutocompleteProps = AutocompleteBaseProps & {
+  multiple: true;
+  value?: AutocompleteValue<true>;
+  defaultValue?: AutocompleteValue<true>;
+  onValueChange?: (
+    value: AutocompleteValue<true>,
+    reason: AutocompleteChangeReason,
+  ) => void;
+  /** @deprecated Use onValueChange. */
+  onChange?: (
+    value: AutocompleteValue<true>,
+    reason: AutocompleteChangeReason,
+  ) => void;
+};
+
+export type AutocompleteProps<Multiple extends boolean = boolean> =
+  Multiple extends true
+    ? MultipleAutocompleteProps
+    : Multiple extends false
+      ? SingleAutocompleteProps
+      : SingleAutocompleteProps | MultipleAutocompleteProps;
+
+export const Autocomplete = (props: AutocompleteProps) => {
   const controller = useAutocompleteController(props);
   const {
     activeIndex,
@@ -120,6 +143,7 @@ export const Autocomplete = <Multiple extends boolean = boolean>(
     handleInputMouseDown,
     handleListScroll,
     handleOptionSelect,
+    handleTokenDismiss,
     handleTokenKeyDown,
     hiddenTagCount,
     inputId,
@@ -137,7 +161,6 @@ export const Autocomplete = <Multiple extends boolean = boolean>(
     otherProps,
     placeholder,
     readOnly,
-    removeSelectedValue,
     rootRef,
     selectedLabels,
     selectedValues,
@@ -193,7 +216,7 @@ export const Autocomplete = <Multiple extends boolean = boolean>(
                   label={label}
                   disabled={disabled || readOnly}
                   dismissButtonRef={(node) => setTokenRef(index, node)}
-                  onDismiss={() => removeSelectedValue(selectedValue, label)}
+                  onDismiss={() => handleTokenDismiss(selectedValue, label)}
                   onKeyDown={(event) =>
                     handleTokenKeyDown(event, index, selectedValue, label)
                   }

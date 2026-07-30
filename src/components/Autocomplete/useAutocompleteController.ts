@@ -38,7 +38,11 @@ import {
   normalizeAutocompleteOptions,
 } from './utils';
 
-import type { AutocompleteProps } from './Autocomplete';
+import type {
+  AutocompleteProps,
+  MultipleAutocompleteProps,
+  SingleAutocompleteProps,
+} from './Autocomplete';
 import type {
   AnyAutocompleteValue,
   AutocompleteChangeReason,
@@ -82,9 +86,7 @@ const getDismissReason = (
   return reason === 'escape-key' ? 'escape' : 'outside-press';
 };
 
-export const useAutocompleteController = <Multiple extends boolean = boolean>(
-  props: AutocompleteProps<Multiple>,
-) => {
+export const useAutocompleteController = (props: AutocompleteProps) => {
   const fieldContext = useFieldContext();
   const {
     value: controlledValue,
@@ -98,7 +100,7 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
     open: controlledOpen,
     defaultOpen,
     onOpenChange,
-    multiple = false as Multiple,
+    multiple = false,
     allowCustomValue = false,
     getCreateOptionLabel = defaultGetCreateOptionLabel,
     limitTags,
@@ -168,13 +170,30 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
       : '';
   const handleValueChange = useCallback(
     (
-      nextValue: AutocompleteValue<Multiple>,
+      nextValue: AutocompleteValue<boolean>,
       reason: AutocompleteChangeReason,
     ) => {
-      onValueChange?.(nextValue, reason);
-      onChange?.(nextValue, reason);
+      if (multiple) {
+        const multipleValue = nextValue as AutocompleteValue<true>;
+        (onValueChange as MultipleAutocompleteProps['onValueChange'])?.(
+          multipleValue,
+          reason,
+        );
+        (onChange as MultipleAutocompleteProps['onChange'])?.(
+          multipleValue,
+          reason,
+        );
+        return;
+      }
+
+      const singleValue = nextValue as AutocompleteValue<false>;
+      (onValueChange as SingleAutocompleteProps['onValueChange'])?.(
+        singleValue,
+        reason,
+      );
+      (onChange as SingleAutocompleteProps['onChange'])?.(singleValue, reason);
     },
-    [onChange, onValueChange],
+    [multiple, onChange, onValueChange],
   );
   const handleInputValueChange = useCallback(
     (nextValue: string, reason: AutocompleteInputChangeReason) => {
@@ -184,7 +203,7 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
     [onInputChange, onInputValueChange],
   );
 
-  const state = useAutocompleteState<Multiple>({
+  const state = useAutocompleteState<boolean>({
     value: controlledValue,
     defaultValue,
     onValueChange: handleValueChange,
@@ -360,6 +379,13 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
     },
     [state],
   );
+  const handleTokenDismiss = useCallback(
+    (selectedValue: string, label: string) => {
+      removeSelectedValue(selectedValue, label);
+      requestAnimationFrame(focusInput);
+    },
+    [focusInput, removeSelectedValue],
+  );
 
   const handleTokenKeyDown = useCallback(
     (
@@ -463,13 +489,6 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
           event.preventDefault();
           handleOptionSelect(activeOption);
         }
-        return;
-      }
-
-      if (event.key === 'Escape' && isOpen) {
-        event.preventDefault();
-        setActiveIndex(null);
-        state.closePopup('escape');
         return;
       }
 
@@ -614,6 +633,7 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
     handleInputMouseDown,
     handleListScroll,
     handleOptionSelect,
+    handleTokenDismiss,
     handleTokenKeyDown,
     hiddenTagCount,
     inputId,
@@ -631,7 +651,6 @@ export const useAutocompleteController = <Multiple extends boolean = boolean>(
     otherProps,
     placeholder,
     readOnly,
-    removeSelectedValue,
     rootRef,
     selectedLabels,
     selectedValues,

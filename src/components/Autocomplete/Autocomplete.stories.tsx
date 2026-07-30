@@ -73,14 +73,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: function DefaultRender(args) {
-    const [value, setValue] = useState<string | string[] | null>(null);
+    const [value, setValue] = useState<string | null>(null);
 
     return (
       <Box w="xs">
         <Autocomplete
           {...args}
+          multiple={false}
           value={value}
+          defaultValue={undefined}
           onValueChange={setValue}
+          onChange={undefined}
           name="technology"
         >
           {renderOptions()}
@@ -126,7 +129,15 @@ export const Filtering: Story = {
 export const Selected: Story = {
   render: (args) => (
     <Box w="xs">
-      <Autocomplete {...args} defaultValue="react" name="technology">
+      <Autocomplete
+        {...args}
+        multiple={false}
+        value={undefined}
+        defaultValue="react"
+        onValueChange={undefined}
+        onChange={undefined}
+        name="technology"
+      >
         {renderOptions()}
       </Autocomplete>
     </Box>
@@ -164,6 +175,23 @@ export const Multiple: Story = {
       </Box>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(document.body);
+    const input = canvas.getByRole('combobox');
+    const removeReact = canvas.getByRole('button', {
+      name: 'Remove React',
+    });
+
+    await userEvent.click(input);
+    await expect(body.queryByRole('checkbox')).not.toBeInTheDocument();
+    await userEvent.click(removeReact);
+    await expect(
+      canvas.queryByRole('button', { name: 'Remove React' }),
+    ).not.toBeInTheDocument();
+    await expect(input).toHaveFocus();
+  },
+  parameters: { controls: { disable: true } },
 };
 
 export const MultipleLongValues: Story = {
@@ -414,6 +442,12 @@ export const ControlledInput: Story = {
 export const ControlledOpen: Story = {
   render: function ControlledOpenRender() {
     const [open, setOpen] = useState(false);
+    const [openChangeCount, setOpenChangeCount] = useState(0);
+
+    const handleOpenChange = (nextOpen: boolean) => {
+      setOpen(nextOpen);
+      setOpenChangeCount((currentCount) => currentCount + 1);
+    };
 
     return (
       <Box display="grid" gap="8" w="sm">
@@ -422,14 +456,25 @@ export const ControlledOpen: Story = {
         </Button>
         <Autocomplete
           open={open}
-          onOpenChange={setOpen}
+          onOpenChange={handleOpenChange}
           name="controlled-open"
           aria-label="Controlled suggestions"
         >
           {renderOptions()}
         </Autocomplete>
+        <Box color="text.subtle">{`Open changes: ${openChangeCount}`}</Box>
       </Box>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.click(input);
+    await expect(canvas.getByText('Open changes: 1')).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
+    await expect(canvas.getByText('Open changes: 2')).toBeInTheDocument();
+    await expect(input).toHaveAttribute('aria-expanded', 'false');
   },
   parameters: { controls: { disable: true } },
 };

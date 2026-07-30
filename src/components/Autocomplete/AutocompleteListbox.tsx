@@ -12,6 +12,7 @@ import { menu } from '@styled-system/recipes';
 import type { MenuDensity } from '~/components/Menu';
 
 import { Box } from '../Box';
+import { Icon } from '../Icon';
 import { List, ListItem } from '../List';
 
 import type { AnyAutocompleteValue, AutocompleteOptionData } from './types';
@@ -99,7 +100,15 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
             disabled={option.disabled}
             selected={selected}
             density={density}
-            variant={multiple ? 'checkbox' : 'default'}
+            before={
+              multiple ? (
+                <Icon
+                  name={selected ? 'checkbox-checked' : 'checkbox'}
+                  fill={selected ? 'icon' : 'icon.subtlest'}
+                  aria-hidden
+                />
+              ) : undefined
+            }
             label={option.label}
             description={option.description}
             iconBefore={option.iconLeft}

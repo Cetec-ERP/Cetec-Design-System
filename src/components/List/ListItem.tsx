@@ -1,4 +1,4 @@
-import type { ChangeEventHandler } from 'react';
+import type { ChangeEventHandler, ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { listItem, type ListItemVariantProps } from '@styled-system/recipes';
@@ -22,6 +22,7 @@ export type ListItemProps = Omit<
 > &
   Omit<ListItemVariantProps, 'selected' | 'iconBefore' | 'iconAfter'> & {
     href?: string;
+    before?: ReactNode;
     label?: string;
     description?: string;
     query?: string;
@@ -42,6 +43,7 @@ export const ListItem = (props: ListItemProps) => {
     selected = false,
     density,
     variant = 'default',
+    before,
     label,
     description,
     query,
@@ -106,6 +108,12 @@ export const ListItem = (props: ListItemProps) => {
         children
       ) : (
         <>
+          {before && (
+            <Box className={classes.beforeSlot} aria-hidden>
+              {before}
+            </Box>
+          )}
+
           {variant === 'checkbox' && (
             <Checkbox
               name={controlName}
