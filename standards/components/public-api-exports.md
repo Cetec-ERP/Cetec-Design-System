@@ -134,9 +134,12 @@ testing or composition, but they must not be re-exported from `src/index.ts`.
 ## Documentation and Validation
 
 Every symbol retained in `src/index.ts` must follow
-`jsdoc-documentation.md`. `npm run check:jsdoc` verifies that root exports
-resolve to documented declarations and that public component-owned props are
-documented.
+`jsdoc-documentation.md`. Local development runs `npm run check:jsdoc` as a
+non-blocking warning before starting the dev server. The audit verifies that
+root exports resolve to documented declarations and that public
+component-owned props are documented. Use `npm run check:jsdoc:strict` for an
+explicit blocking audit; CI validation and builds do not block on JSDoc
+coverage.
 
 The JSDoc check does not decide whether a symbol should be public. Reviewers
 must still evaluate the API boundary using this standard.
