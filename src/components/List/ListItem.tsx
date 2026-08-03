@@ -1,4 +1,4 @@
-import type { ChangeEventHandler } from 'react';
+import type { ChangeEventHandler, ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import { listItem, type ListItemVariantProps } from '@styled-system/recipes';
@@ -27,6 +27,8 @@ export type ListItemProps = Omit<
   Omit<ListItemVariantProps, 'selected' | 'iconBefore' | 'iconAfter'> & {
     /** When provided, renders an anchor instead of the default native button. */
     href?: string;
+    /** Content rendered before the default label and description. */
+    before?: ReactNode;
     /** Primary text rendered when custom `children` are not supplied. */
     label?: string;
     /** Secondary text rendered below `label` when custom `children` are not supplied. */
@@ -99,6 +101,7 @@ export const ListItem = (props: ListItemProps) => {
     selected = false,
     density,
     variant = 'default',
+    before,
     label,
     description,
     query,
@@ -163,6 +166,12 @@ export const ListItem = (props: ListItemProps) => {
         children
       ) : (
         <>
+          {before && (
+            <Box className={classes.beforeSlot} aria-hidden>
+              {before}
+            </Box>
+          )}
+
           {variant === 'checkbox' && (
             <Checkbox
               name={controlName}

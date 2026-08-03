@@ -19,7 +19,10 @@ import { splitProps } from '~/utils/splitProps';
  * Props for {@link Button}. Extends {@link BoxProps} for layout and native
  * element attributes while reserving the button recipe's visual variants.
  */
-export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
+export type ButtonProps = Omit<
+  BoxProps,
+  keyof ButtonVariantProps | 'fontSize' | 'fontVariant'
+> &
   Omit<ButtonVariantProps, 'before' | 'after' | 'iconBefore' | 'iconAfter'> & {
     /** Content rendered before the button label. Takes precedence over `iconBefore`. */
     before?: ReactNode;
@@ -67,6 +70,10 @@ export type ButtonProps = Omit<BoxProps, keyof ButtonVariantProps> &
      * @default 'button'
      */
     type?: 'submit' | 'reset' | 'button';
+    /** Font size forwarded to the button's text treatment. */
+    fontSize?: BoxProps['fontSize'];
+    /** Font variant forwarded to the button's text treatment. */
+    fontVariant?: BoxProps['fontVariant'];
   };
 
 /**
@@ -101,6 +108,8 @@ export const Button = (props: ButtonProps) => {
     invalid: invalidProp,
     disabled: disabledProp,
     type = 'button',
+    fontSize,
+    fontVariant,
     ...rest
   } = props;
   const size =
@@ -189,7 +198,13 @@ export const Button = (props: ButtonProps) => {
     >
       <HStack gap="0" opacity={loading ? 0 : 1}>
         {renderSlot(resolvedBefore, 'before')}
-        <Box className={classes.mainContent}>{children}</Box>
+        <Box
+          className={classes.mainContent}
+          fontSize={fontSize}
+          fontVariant={fontVariant}
+        >
+          {children}
+        </Box>
         {renderSlot(resolvedAfter, 'after')}
       </HStack>
       {loading && (

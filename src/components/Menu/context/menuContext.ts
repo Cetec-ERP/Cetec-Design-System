@@ -23,8 +23,12 @@ export type MenuDensity = ListDensity;
 export type MenuFilterMode = 'none' | 'contains';
 /** Opens a submenu as a positioned flyout or as an in-panel drill-in level. */
 export type SubMenuInteraction = 'hover' | 'digin';
-/** Pointer interactions that can open a menu trigger. */
-export type MenuTriggerInteraction = 'click' | 'hover' | 'click-and-hover';
+/** Pointer or focus interactions that can open a menu trigger. */
+export type MenuTriggerInteraction =
+  | 'click'
+  | 'hover'
+  | 'focus'
+  | 'click-and-hover';
 
 /** Props for {@link Menu}, including popup state, filtering, and nested-menu behavior. */
 export type MenuProps = {

@@ -1,8 +1,10 @@
 import {
   type ReactNode,
+  type Ref,
   useEffect,
   useRef,
   type KeyboardEvent,
+  type KeyboardEventHandler,
   type MouseEvent,
 } from 'react';
 
@@ -44,12 +46,18 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
      * @default `Remove ${children}`
      */
     dismissLabel?: string;
+    /** Ref forwarded to the dismiss button. */
+    dismissButtonRef?: Ref<HTMLButtonElement>;
+    /** Tab order override for the dismiss button. */
+    dismissButtonTabIndex?: number;
     /** Applies error styling. The local value takes precedence over slot and field context. */
     error?: boolean;
     /** Marks the chip invalid with `aria-invalid`. The local value takes precedence over slot and field context. */
     invalid?: boolean;
     /** Called when the dismiss button is activated. The button is disabled when this callback is absent. */
     onDismiss?: () => void;
+    /** Keyboard handler composed onto the dismiss button. */
+    onDismissKeyDown?: KeyboardEventHandler<HTMLButtonElement>;
     /**
      * Native type for the chip's primary button when it is selectable or has `onClick`.
      * @default 'button'
@@ -86,7 +94,10 @@ export const Chip = (props: ChipProps) => {
     deleted,
     dismissable,
     dismissLabel,
+    dismissButtonRef,
+    dismissButtonTabIndex,
     onDismiss,
+    onDismissKeyDown,
     value,
     error: errorProp,
     invalid: invalidProp,
@@ -247,12 +258,15 @@ export const Chip = (props: ChipProps) => {
   const dismissButton = (
     <Box
       as="button"
+      ref={dismissButtonRef}
       type="button"
       className={classes.dismissButton}
       aria-label={resolvedDismissLabel}
       aria-hidden={dismissable ? undefined : true}
       disabled={isDisabled || !onDismiss}
+      tabIndex={dismissButtonTabIndex}
       onClick={handleDismissClick}
+      onKeyDown={onDismissKeyDown}
       opacity={loading ? 0 : 1}
       data-selected={isSelected ? true : undefined}
       data-deleted={deleted ? true : undefined}
