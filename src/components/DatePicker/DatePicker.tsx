@@ -170,38 +170,72 @@ function clampDay(
 
 // ─── Props ─────────────────────────────────────────────────────────────────────
 
+/** Props for {@link DatePicker}, a segmented date input with a calendar popover. */
 export type DatePickerProps = Omit<
   BoxProps,
   keyof DatePickerVariantProps | 'children'
 > &
   DatePickerVariantProps & {
-    /** Controlled value */
+    /** Controlled date. Pair with `onChange`; use `null` to clear and do not combine with `defaultValue`. */
     value?: DateValue | null;
-    /** Initial uncontrolled value */
+    /** Initial uncontrolled date; later updates are ignored. */
+    /** @default null */
     defaultValue?: DateValue | null;
-    /** Called when the date changes */
+    /** Runs with a complete date after segment entry or calendar selection, or `null` after every segment is cleared. */
     onChange?: (value: DateValue | null) => void;
-    /** Earliest selectable date */
+    /** Earliest date selectable from the calendar. Segment editing is not constrained by this value. */
     minDate?: DateValue;
-    /** Latest selectable date */
+    /** Latest date selectable from the calendar. Segment editing is not constrained by this value. */
     maxDate?: DateValue;
-    /** Accessible label for the input group */
+    /** Accessible name for the segmented input group. */
+    /** @default 'Date' */
     label?: string;
+    /** Prevents focusing segments or opening the calendar; explicit values override field context. */
+    /** @default false */
     disabled?: boolean;
+    /** Applies error styling; explicit values override field context. */
+    /** @default false */
     error?: boolean;
+    /** Marks the segmented group invalid with `aria-invalid`; explicit values override field context. */
+    /** @default false */
     invalid?: boolean;
+    /** ID applied to the segmented input group. */
     id?: string;
+    /** Reserved for native form integration. This component does not currently render a named input. */
     name?: string;
-    /** Controlled popover open state */
+    /** Controlled calendar popover state. Pair with `onOpenChange`; do not combine with `defaultOpen`. */
     open?: boolean;
-    /** Initial uncontrolled popover state */
+    /** Initial uncontrolled calendar popover state; later updates are ignored. */
+    /** @default false */
     defaultOpen?: boolean;
+    /** Runs when segment focus, Escape, outside dismissal, or calendar selection requests a popover state change. */
     onOpenChange?: (open: boolean) => void;
+    /** Visual input size. An explicit prop overrides field context. */
     size?: DatePickerVariantProps['size'];
   };
 
 // ─── DatePicker ────────────────────────────────────────────────────────────────
 
+/**
+ * Collects a calendar date through keyboard-editable month, day, and year
+ * segments, with an optional calendar popover.
+ *
+ * Use `value` with `onChange` for controlled dates, or `defaultValue` for an
+ * uncontrolled initial date. A date is emitted only after all three segments
+ * are present; clearing all segments emits `null`. Segment focus opens the
+ * non-modal calendar, Escape and dismissal request closing, and arrow keys
+ * move between or adjust segments. Provide `label` because the rendered group,
+ * rather than a native input, owns the accessible name.
+ *
+ * @example
+ * ```tsx
+ * <DatePicker
+ *   label="Delivery date"
+ *   defaultValue={{ year: 2026, month: 8, day: 3 }}
+ *   minDate={{ year: 2026, month: 8, day: 1 }}
+ * />
+ * ```
+ */
 export const DatePicker = (props: DatePickerProps) => {
   const fieldContext = useFieldContext();
   const {

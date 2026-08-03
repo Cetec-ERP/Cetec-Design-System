@@ -8,9 +8,13 @@ import { Button } from '~/components/Button';
 import { IconButton } from '~/components/IconButton';
 import { Text } from '~/components/Text';
 
+/** A calendar date using a four-digit year and a one-indexed month (`1` is January). */
 export interface DateValue {
+  /** Four-digit calendar year. */
   year: number;
-  month: number; // 1-indexed (1 = January)
+  /** One-indexed calendar month, from `1` (January) through `12` (December). */
+  month: number;
+  /** Day of the month. Supply a day valid for the given year and month. */
   day: number;
 }
 

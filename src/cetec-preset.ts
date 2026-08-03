@@ -46,6 +46,21 @@ const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
+/**
+ * Panda CSS preset containing Cetec tokens, semantic tokens, recipes,
+ * utilities, patterns, global CSS, and conditions.
+ *
+ * Add this preset to a Panda configuration to generate styles that match the
+ * design system. It extends Panda's base preset while replacing its
+ * `dropShadow` utility and omitting the base `box` and `divider` patterns.
+ *
+ * @example
+ * ```ts
+ * import { cetecPreset } from 'cetec-design-system';
+ *
+ * export default defineConfig({ presets: [cetecPreset] });
+ * ```
+ */
 export const cetecPreset: Preset = definePreset({
   name: 'cetecPreset',
   theme: {

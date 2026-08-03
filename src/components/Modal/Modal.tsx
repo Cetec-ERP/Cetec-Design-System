@@ -21,19 +21,31 @@ import { Box, type BoxProps } from '../Box';
 
 import { ModalContext, type ModalContextValue } from './ModalContext';
 
+/** Props for {@link Modal}, a controlled, portalled dialog. */
 export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
   ModalVariantProps & {
-    /** Controlled open state (REQUIRED) */
+    /** Controlled dialog state. Render state changes by updating this value after `onOpenChange`. */
     open: boolean;
-    /** Callback when open state should change (REQUIRED) */
+    /** Called when Escape, overlay interaction, or a descendant close control requests closing. */
     onOpenChange: (open: boolean) => void;
-    /** Whether clicking the overlay should close the modal */
+    /**
+     * Prevents overlay clicks from requesting close. Escape still requests close.
+     * @default false
+     */
     preventOverlayClose?: boolean;
-    /** Children (ModalHeader, ModalBody, ModalFooter) */
+    /** Dialog content, typically composed from `ModalHeader`, `ModalBody`, and `ModalFooter`. */
     children: ReactNode;
-    /** Optional ID for ARIA attributes */
+    /** Identifier applied to the dialog element. Provide accessible naming with `aria-label` or `aria-labelledby`. */
     id?: string;
+    /**
+     * Recipe size for the dialog panel.
+     * @default 'md'
+     */
     size?: ModalVariantProps['size'];
+    /**
+     * Recipe position for the dialog panel.
+     * @default 'centered'
+     */
     position?: ModalVariantProps['position'];
   };
 
@@ -67,6 +79,24 @@ const modalStateReducer = (
   }
 };
 
+/**
+ * Renders a controlled modal dialog in a portal with focus management and a
+ * scroll-locking overlay.
+ *
+ * Escape always calls `onOpenChange(false)`. By default, pressing the overlay
+ * does too. The dialog remains mounted for a 150 ms closing animation. Supply
+ * an accessible name through `aria-label` or `aria-labelledby`; a visible
+ * `ModalHeader` title alone is not linked automatically.
+ *
+ * @example
+ * ```tsx
+ * <Modal open={open} onOpenChange={setOpen} aria-label="Delete project">
+ *   <ModalHeader title="Delete project" />
+ *   <ModalBody>This cannot be undone.</ModalBody>
+ *   <ModalFooter><Button onClick={remove}>Delete</Button></ModalFooter>
+ * </Modal>
+ * ```
+ */
 export const Modal = (props: ModalProps) => {
   const {
     open,

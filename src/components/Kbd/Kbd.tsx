@@ -8,7 +8,9 @@ import { Tooltip } from '../Tooltip';
 
 import { getKbdLabel, isSpecialSymbol, type KbdValue } from './kbdUtils';
 
+/** Props accepted by {@link Kbd}. */
 export type KbdProps = Omit<BoxProps, 'children'> & {
+  /** Ordered key labels that make up the shortcut. */
   keys: KbdValue[];
 };
 
@@ -16,10 +18,16 @@ const defaultClasses = kbd({});
 const symbolClasses = kbd({ variant: 'symbol' });
 
 /**
- * Used to display keyboard shortcuts.
- * Supported special symbols: ⌘ command, ⌥ option, ⌃ control, ⇪ shift,
- * ⎋ escape, ⌫ delete, ↩ return, ⇥ tab, ← left, → right, ↑ up, ↓ down.
- * Example: <Kbd keys={['⌘', 'K']} />
+ * Displays a keyboard shortcut as a group of native `kbd` elements.
+ *
+ * Known symbols receive readable tooltip labels: ⌘ command, ⌥ option,
+ * ⌃ control, ⇪ shift, ⎋ escape, ⌫ delete, ↩ return, ⇥ tab, and the four arrow
+ * symbols. `Kbd` describes a shortcut; it is not an interactive control.
+ *
+ * @example
+ * ```tsx
+ * <Kbd keys={['⌘', 'K']} />
+ * ```
  */
 export const Kbd = (props: KbdProps) => {
   const { keys, ...rest } = props;

@@ -20,6 +20,22 @@ function getInitialTheme(): Theme {
   return 'light';
 }
 
+/**
+ * Provides the active color mode and persists explicit user choices in browser
+ * storage.
+ *
+ * Without a saved preference, the initial mode follows
+ * `prefers-color-scheme`; subsequent system changes are followed only until a
+ * preference is saved through {@link useTheme}. This provider updates the
+ * document's `data-color-mode` attribute and requires a browser environment.
+ *
+ * @example
+ * ```tsx
+ * <ThemeProvider>
+ *   <App />
+ * </ThemeProvider>
+ * ```
+ */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => getInitialTheme());
 

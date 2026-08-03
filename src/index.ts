@@ -1,36 +1,64 @@
-export { Avatar } from './components/Avatar';
-export { Badge } from './components/Badge';
+export { Avatar, type AvatarProps } from './components/Avatar';
+export { Badge, type BadgeProps } from './components/Badge';
 export { Box, type BoxProps } from './components/Box';
-export { Breadcrumbs } from './components/Breadcrumbs';
-export { BreakpointIndicator } from './components/BreakpointIndicator';
-export { Button } from './components/Button';
-export { Card } from './components/Card';
-export { Checkbox } from './components/Checkbox';
-export { CheckboxInput } from './components/CheckboxInput';
-export { Chip, ChipGroup, type useChipGroup } from './components/Chip';
-export { Code, Pre } from './components/Code';
-export { DatePicker } from './components/DatePicker';
-export { DateRangePicker } from './components/DateRangePicker';
-export { Divider } from './components/Divider';
-export { FormField } from './components/FormField';
-export { Heading } from './components/Heading';
+export { Breadcrumbs, type BreadcrumbsProps } from './components/Breadcrumbs';
+export {
+  BreakpointIndicator,
+  type BreakpointIndicatorProps,
+} from './components/BreakpointIndicator';
+export { Button, type ButtonProps } from './components/Button';
+export { Card, type CardProps } from './components/Card';
+export {
+  Checkbox,
+  type CheckboxChangeEvent,
+  type CheckboxChangeHandler,
+  type CheckboxProps,
+} from './components/Checkbox';
+export {
+  CheckboxInput,
+  type CheckboxInputProps,
+} from './components/CheckboxInput';
+export {
+  Chip,
+  ChipGroup,
+  useChipGroup,
+  type ChipGroupProps,
+  type ChipProps,
+} from './components/Chip';
+export { Code, Pre, type CodeProps, type PreProps } from './components/Code';
+export {
+  DatePicker,
+  type DatePickerProps,
+  type DateValue,
+} from './components/DatePicker';
+export {
+  DateRangePicker,
+  type DateRangePickerProps,
+} from './components/DateRangePicker';
+export { Divider, type DividerProps } from './components/Divider';
+export { FormField, type FormFieldProps } from './components/FormField';
+export { Heading, type HeadingProps } from './components/Heading';
 export {
   Icon,
   IconNames,
   IconProvider,
+  type AllowedIconSizes,
+  type IconProps,
   type IconProviderProps,
-  type useIconConfig,
 } from './components/Icon';
-export { IconButton } from './components/IconButton';
+export { IconButton, type IconButtonProps } from './components/IconButton';
 export { Kbd, type KbdProps } from './components/Kbd';
-export { Label } from './components/Label';
-export { Link } from './components/Link';
+export { Label, type LabelProps } from './components/Label';
+export { Link, type LinkProps } from './components/Link';
 export {
   List,
   ListItemGroup,
   ListItem,
   HighlightText,
-  type useListContext,
+  type HighlightTextProps,
+  type ListItemGroupProps,
+  type ListItemProps,
+  type ListProps,
 } from './components/List';
 export {
   Menu,
@@ -45,42 +73,72 @@ export {
   type MenuProps,
   type MenuProviderProps,
   type SubMenuProps,
-  type useMenuFilterContext,
-  type useMenuRootContext,
-  type useMenuListContext,
-  type getHighlightedTextParts,
-  type hasMatchingItems,
-  type isItemMatch,
-  type deriveItemTextValue,
-  type getComponentType,
 } from './components/Menu';
 export {
   Modal,
   ModalHeader,
   ModalFooter,
   ModalBody,
-  type useModalContext,
+  type ModalBodyProps,
+  type ModalFooterProps,
+  type ModalHeaderProps,
+  type ModalProps,
 } from './components/Modal';
-export { Radio, RadioGroup } from './components/Radio';
-export { RadioInput } from './components/RadioInput';
-export { Spinner } from './components/Spinner';
-export { Tag } from './components/Tag';
+export {
+  Radio,
+  RadioGroup,
+  type RadioChangeEvent,
+  type RadioChangeHandler,
+  type RadioGroupProps,
+  type RadioProps,
+} from './components/Radio';
+export { RadioInput, type RadioInputProps } from './components/RadioInput';
+export { Spinner, type SpinnerProps } from './components/Spinner';
+export { Tag, type TagProps } from './components/Tag';
 export {
   Select,
   type SelectProps,
   SelectOption,
   type SelectOptionProps,
 } from './components/Select';
-export { Text } from './components/Text';
-export { TextInput } from './components/TextInput';
-export { Textarea } from './components/Textarea';
+export { Text, type TextProps } from './components/Text';
+export { TextInput, type TextInputProps } from './components/TextInput';
+export { Textarea, type TextareaProps } from './components/Textarea';
 export { ThemeSwitcher } from './components/ThemeSwitcher';
-export { TimePicker } from './components/TimePicker';
-export { TimeRangePicker } from './components/TimeRangePicker';
-export { Toggle } from './components/Toggle';
-export { ToggleInput } from './components/ToggleInput';
-export { Skeleton } from './components/Skeleton';
-export { Tooltip } from './components/Tooltip';
+export {
+  TimePicker,
+  type HourCycle,
+  type TimePickerProps,
+  type TimeValue,
+} from './components/TimePicker';
+export {
+  TimeRangePicker,
+  type TimeRangePickerProps,
+} from './components/TimeRangePicker';
+export {
+  Toggle,
+  type ToggleChangeEvent,
+  type ToggleChangeHandler,
+  type ToggleProps,
+} from './components/Toggle';
+export { ToggleInput, type ToggleInputProps } from './components/ToggleInput';
+export { Skeleton, type SkeletonProps } from './components/Skeleton';
+export { Tooltip, type TooltipProps } from './components/Tooltip';
+
+// Public component hooks and helpers
+export { useIconConfig } from './components/Icon/IconContext';
+export { useListContext } from './components/List/listContext';
+export {
+  deriveItemTextValue,
+  getComponentType,
+  getHighlightedTextParts,
+  hasMatchingItems,
+  isItemMatch,
+  useMenuFilterContext,
+  useMenuListContext,
+  useMenuRootContext,
+} from './components/Menu/context/menuContext';
+export { useModalContext } from './components/Modal/ModalContext';
 
 // Theme handling
 export { ThemeProvider, useTheme } from './system/context';

@@ -5,11 +5,15 @@ import type { timePicker } from '@styled-system/recipes';
 import { Box } from '~/components/Box';
 import { List, ListItem } from '~/components/List';
 
+/** A time value normalized to a 24-hour clock, independent of display cycle. */
 export interface TimeValue {
-  hour: number; // always 24h (0–23)
+  /** Hour from `0` through `23`, even when `hourCycle` displays a 12-hour clock. */
+  hour: number;
+  /** Minute from `0` through `59`. */
   minute: number;
 }
 
+/** Supported display cycles for {@link TimePicker}. Values remain 24-hour regardless of this choice. */
 export type HourCycle = '12' | '24';
 
 export interface TimeListProps {

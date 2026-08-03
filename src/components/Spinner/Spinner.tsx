@@ -7,13 +7,30 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../Box';
 import { Icon } from '../Icon';
 
+/** Props accepted by {@link Spinner}. */
 export type SpinnerProps = Omit<BoxProps, keyof SpinnerVariantProps> &
   SpinnerVariantProps & {
+    /** Uses the inverse-color treatment for dark or bold surfaces. */
+    /** @default false */
     inverse?: boolean;
+    /** Absolutely centers the spinner within its positioned container. */
+    /** @default false */
     centered?: boolean;
+    /** Visual size. An explicit value takes precedence over slot context. */
     size?: SpinnerVariantProps['size'];
   };
 
+/**
+ * Displays an indeterminate visual loading indicator.
+ *
+ * `Spinner` does not create a live region or loading label. Apply `aria-busy`
+ * and visible or screen-reader text to the region whose state is changing.
+ *
+ * @example
+ * ```tsx
+ * <Box aria-busy="true" aria-label="Loading orders"><Spinner /></Box>
+ * ```
+ */
 export const Spinner = (props: SpinnerProps) => {
   const slotContext = useSlotContext();
   const { size: sizeProp, inverse, centered, ...rest } = props;

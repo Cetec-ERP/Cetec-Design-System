@@ -9,45 +9,58 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../Box';
 import { Icon } from '../Icon';
 
+/** Props for {@link Checkbox}, the unlabelled native checkbox primitive. */
 export type CheckboxProps = Omit<
   BoxProps,
   'checked' | 'defaultChecked' | 'onChange' | keyof CheckboxVariantProps
 > &
   CheckboxVariantProps & {
-    name: string;
-    checked?: boolean;
+    /** Form field name submitted when the checkbox is checked. */ name: string;
+    /** Controlled checked state. Pair with `onChange`; do not combine with `defaultChecked`. */ checked?: boolean;
+    /** Initial uncontrolled checked state; later updates are ignored. */
+    /** @default false */
     defaultChecked?: boolean;
-    onChange?: CheckboxChangeHandler;
-    id?: string;
-    error?: boolean;
-    invalid?: boolean;
-    disabled?: boolean;
-    indeterminate?: boolean;
+    /** Runs for the native input change event; read the next state from `event.target.checked`. */ onChange?: CheckboxChangeHandler;
+    /** Native input ID. Use it to associate an external `<label>` with the checkbox. */ id?: string;
+    /** Applies error styling, taking precedence over field context. */ error?: boolean;
+    /** Marks the native input invalid with `aria-invalid` and takes precedence over field context. */ invalid?: boolean;
+    /** Disables interaction and takes precedence over field context. */ disabled?: boolean;
+    /** Displays the mixed state and sets the native `indeterminate` property. This does not change `checked`. */ indeterminate?: boolean;
   };
 
 /**
- * Helper type for checkbox change events
+ * Native change event emitted by {@link Checkbox}.
  * @example
  * const handleChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
  */
 export type CheckboxChangeEvent = ChangeEvent<HTMLInputElement>;
 
 /**
- * Helper type for checkbox change handler functions
+ * Handler for a {@link Checkbox} native change event.
  * @example
  * const handleChange: CheckboxChangeHandler = (e) => setChecked(e.target.checked);
  */
 export type CheckboxChangeHandler = (e: CheckboxChangeEvent) => void;
 
 /**
- * Checkbox supports both controlled and uncontrolled usage.
+ * A native checkbox control without a visible label.
+ *
+ * Use {@link CheckboxInput} when the checkbox needs a text label. Supply
+ * `checked` with `onChange` for controlled state, or `defaultChecked` for
+ * uncontrolled state. The primitive renders an `<input type="checkbox">`, so
+ * its `name` participates in native form submission. Associate it with a
+ * visible label using `id`; `indeterminate` is a visual mixed state only.
  *
  * @example
- * <Checkbox defaultChecked />
+ * ```tsx
+ * <Checkbox name="notifications" defaultChecked />
+ * ```
  *
  * @example
+ * ```tsx
  * const [checked, setChecked] = useState(false);
- * <Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} />
+ * <Checkbox name="notifications" checked={checked} onChange={(event) => setChecked(event.target.checked)} />
+ * ```
  */
 
 export const Checkbox = (props: CheckboxProps) => {

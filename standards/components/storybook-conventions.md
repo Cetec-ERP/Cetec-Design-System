@@ -2,6 +2,10 @@
 
 Storybook files are first-class documentation and implementation examples.
 
+Source JSDoc remains the point-of-implementation API reference. Follow
+`jsdoc-documentation.md` for component, prop, hook, helper, and public type
+documentation; use Storybook for extended examples and visual behavior.
+
 ## Hard Standards
 
 1. Use typed meta pattern:

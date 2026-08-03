@@ -249,38 +249,75 @@ function shouldAutoAdvance(
 
 // ─── Props ─────────────────────────────────────────────────────────────────────
 
+/** Props for {@link TimePicker}, a segmented time input with a selection popover. */
 export type TimePickerProps = Omit<
   BoxProps,
   keyof TimePickerVariantProps | 'children'
 > &
   TimePickerVariantProps & {
-    /** Controlled value — hour is always 24h (0–23) internally */
+    /** Controlled time normalized to a 24-hour `hour`. Pair with `onChange`; use `null` to clear and do not combine with `defaultValue`. */
     value?: TimeValue | null;
-    /** Initial uncontrolled value — hour is always 24h (0–23) internally */
+    /** Initial uncontrolled time, normalized to a 24-hour `hour`; later updates are ignored. */
+    /** @default null */
     defaultValue?: TimeValue | null;
-    /** Called when the time changes */
+    /** Runs with a complete normalized time after segment entry or popover selection. */
     onChange?: (value: TimeValue | null) => void;
-    /** 12-hour or 24-hour display */
+    /** Whether segments and the popover display 12-hour or 24-hour time. Emitted values always use a 24-hour `hour`. */
+    /** @default '12' */
     hourCycle?: HourCycle;
-    /** Minute snap interval (default 1 = any minute) */
+    /** Minute increment used by arrow keys and the selection list. Must be a positive number that produces valid minute options. */
+    /** @default 1 */
     minuteStep?: number;
-    /** Accessible label for the input group */
+    /** Accessible name for the segmented input group. */
+    /** @default 'Time' */
     label?: string;
+    /** Prevents focusing segments or opening the time list; explicit values override field context. */
+    /** @default false */
     disabled?: boolean;
+    /** Applies error styling; explicit values override field context. */
+    /** @default false */
     error?: boolean;
+    /** Marks the segmented group invalid with `aria-invalid`; explicit values override field context. */
+    /** @default false */
     invalid?: boolean;
+    /** Reserved for group identification. Unlike `DatePicker`, this is not currently attached to the rendered group. */
     id?: string;
+    /** Reserved for native form integration. This component does not currently render a named input. */
     name?: string;
-    /** Controlled popover open state */
+    /** Controlled time-list popover state. Pair with `onOpenChange`; do not combine with `defaultOpen`. */
     open?: boolean;
-    /** Initial uncontrolled popover state */
+    /** Initial uncontrolled time-list popover state; later updates are ignored. */
+    /** @default false */
     defaultOpen?: boolean;
+    /** Runs when segment focus, Escape, outside dismissal, or list selection requests a popover state change. */
     onOpenChange?: (open: boolean) => void;
+    /** Visual input size. An explicit prop overrides field context. */
     size?: TimePickerVariantProps['size'];
   };
 
 // ─── TimePicker ────────────────────────────────────────────────────────────────
 
+/**
+ * Collects a time through keyboard-editable hour and minute segments, with an
+ * optional AM/PM segment and time-list popover.
+ *
+ * Use `value` with `onChange` for controlled time, or `defaultValue` for an
+ * uncontrolled initial time. Hours in all values are normalized to `0`–`23`,
+ * including when `hourCycle="12"`. Segment focus opens the non-modal list;
+ * Escape and dismissal request closing. Arrow keys adjust a segment and the
+ * list uses `minuteStep` for its minute options. Supply `label` for the
+ * rendered group, which is not a native input.
+ *
+ * @example
+ * ```tsx
+ * <TimePicker
+ *   label="Start time"
+ *   defaultValue={{ hour: 13, minute: 30 }}
+ *   hourCycle="12"
+ *   minuteStep={15}
+ * />
+ * ```
+ */
 export const TimePicker = (props: TimePickerProps) => {
   const fieldContext = useFieldContext();
   const {

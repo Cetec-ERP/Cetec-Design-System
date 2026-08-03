@@ -5,27 +5,52 @@ import { Text } from '~/components/Text';
 
 import { DatePicker, type DateValue } from '../DatePicker/DatePicker';
 
+/** Props for {@link DateRangePicker}, a coordinated pair of {@link DatePicker} controls. */
 export type DateRangePickerProps = {
-  /** Start date value */
+  /** Controlled start date. Use `null` to clear it. */
   startValue?: DateValue | null;
-  /** End date value */
+  /** Controlled end date. Use `null` to clear it. */
   endValue?: DateValue | null;
-  /** Called when start date changes */
+  /** Runs when the start picker produces a complete date or clears all of its segments. */
   onStartChange?: (value: DateValue | null) => void;
-  /** Called when end date changes */
+  /** Runs when the end picker produces a complete date or clears all of its segments. */
   onEndChange?: (value: DateValue | null) => void;
-  /** Earliest selectable date (applies to both pickers) */
+  /** Earliest calendar-selectable date for both endpoints, unless the selected start date is later for the end picker. */
   minDate?: DateValue;
-  /** Latest selectable date (applies to both pickers) */
+  /** Latest calendar-selectable date for both endpoints, unless the selected end date is earlier for the start picker. */
   maxDate?: DateValue;
+  /** Prevents interaction with both pickers. */
+  /** @default false */
   disabled?: boolean;
+  /** Applies error styling to both pickers. */
+  /** @default false */
   error?: boolean;
-  /** Size passed to both DatePickers */
+  /** Visual size passed to both date pickers. */
   size?: DatePickerVariantProps['size'];
-  /** Accessible label prefix — used to build "Start date" and "End date" labels */
+  /** Prefix used to create the accessible names `Start ${label}` and `End ${label}`. */
+  /** @default 'Date' */
   label?: string;
 };
 
+/**
+ * Renders start and end date pickers with calendar constraints that prevent a
+ * selected start date from following the end date, and vice versa.
+ *
+ * This component is controlled by its endpoint values and callbacks; it does
+ * not expose uncontrolled defaults. Its labels are generated from `label`, so
+ * use a meaningful prefix for the range.
+ *
+ * @example
+ * ```tsx
+ * <DateRangePicker
+ *   label="Travel date"
+ *   startValue={startDate}
+ *   endValue={endDate}
+ *   onStartChange={setStartDate}
+ *   onEndChange={setEndDate}
+ * />
+ * ```
+ */
 export const DateRangePicker = (props: DateRangePickerProps) => {
   const {
     startValue,

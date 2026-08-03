@@ -9,33 +9,40 @@ import { Icon, type AllowedIconSizes, type IconProps } from '~/components/Icon';
 import { useSlotContext } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
+/** Supported visual sizes for {@link Avatar}. */
 export type AvatarSize = NonNullable<AvatarVariantProps['size']>;
 
+/** Supported outline shapes for {@link Avatar}. */
 export type AvatarShape = AvatarVariantProps['shape'];
 
+/** Presence states displayed at the bottom-right of an avatar. */
 export type AvatarPresence = 'online' | 'busy' | 'offline' | 'focus';
 
+/** Status states displayed at the top-right of an avatar. */
 export type AvatarStatus = 'approved' | 'declined' | 'locked';
 
+/** Props accepted by {@link Avatar}. */
 export type AvatarProps = Omit<BoxProps, keyof AvatarVariantProps> &
   Omit<AvatarVariantProps, 'size' | 'shape'> & {
-    /** Image source URL */
+    /** Image URL. A failed or missing image falls back to custom content, initials, or a user icon. */
     src?: string;
-    /** Alt text for image */
+    /** Alternative text for the image. Use an empty string when nearby text already identifies the entity. */
+    /** @default "" */
     alt?: string;
-    /** Name for generating initials fallback */
+    /** Name used to generate first-and-last initials when no image is available. */
     name?: string;
-    /** Size of the avatar */
+    /** Visual size. An explicit value takes precedence over slot context. */
     size?: AvatarSize;
-    /** Shape of the avatar */
+    /** Outline shape of the avatar. */
+    /** @default "circle" */
     shape?: AvatarShape;
-    /** Presence indicator (bottom-right) */
+    /** Decorative presence indicator shown at the bottom-right. Provide equivalent text elsewhere when the state matters. */
     presence?: AvatarPresence;
-    /** Status indicator (top-right) */
+    /** Decorative status indicator shown at the top-right. Provide equivalent text elsewhere when the state matters. */
     status?: AvatarStatus;
-    /** Custom fallback content (overrides initials) */
+    /** Fallback content that takes precedence over generated initials and the default user icon. */
     fallback?: ReactNode;
-    /** Border color for the avatar */
+    /** CSS border color applied to the avatar root. */
     borderColor?: string;
   };
 
@@ -110,8 +117,15 @@ function getInitials(name: string): string {
 }
 
 /**
- * Avatar component for displaying user or entity images with optional
- * presence and status indicators.
+ * Represents a person or entity with an image and deterministic fallback.
+ *
+ * Presence and status indicators are visual only. Supply equivalent text when
+ * either state is meaningful to assistive technology.
+ *
+ * @example
+ * ```tsx
+ * <Avatar src="/people/ada.jpg" alt="Ada Lovelace" name="Ada Lovelace" />
+ * ```
  */
 export const Avatar = (props: AvatarProps) => {
   const slotContext = useSlotContext();
