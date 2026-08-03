@@ -20,17 +20,24 @@ import type { DateRangeValue, DateValue } from '../helpers/types';
 
 type ViewDate = { year: number; month: number };
 
+/** Props for {@link DateRangeMenu}, including committed range and bounds. */
 export type DateRangeMenuProps = Omit<
   MenuProps,
   'children' | 'onChange' | 'value'
 > & {
+  /** Committed start and end dates used to initialize the menu draft. */
   value?: DateRangeValue | null;
-  /** Committed only when Apply is pressed — Cancel discards the pending selection */
+  /** Commits the complete draft when Apply is pressed; Cancel discards it. */
   onChange?: (value: DateRangeValue | null) => void;
+  /** Earliest selectable date for both calendars. */
   minDate?: DateValue;
+  /** Latest selectable date for both calendars. */
   maxDate?: DateValue;
+  /** Prevents opening or selection and returns only the trigger. */
   disabled?: boolean;
+  /** Accessible label for the first calendar. */
   startLabel?: string;
+  /** Accessible label for the second calendar. */
   endLabel?: string;
 };
 
@@ -39,6 +46,21 @@ const EMPTY_RANGE: DateRangeValue = { start: null, end: null };
 const sameMonth = (a: ViewDate, b: ViewDate) =>
   a.year === b.year && a.month === b.month;
 
+/**
+ * Selects a date range from two independently navigable calendars.
+ *
+ * Selection is held as a draft until Apply is pressed. Cancel restores the
+ * committed `value`. Apply is unavailable until both endpoints are selected.
+ *
+ * @example
+ * ```tsx
+ * <DateRangeMenu
+ *   trigger={<Button>Choose dates</Button>}
+ *   value={range}
+ *   onChange={setRange}
+ * />
+ * ```
+ */
 export const DateRangeMenu = (props: DateRangeMenuProps) => {
   const {
     trigger,

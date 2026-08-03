@@ -18,25 +18,41 @@ import { InputSlot } from './InputSlot';
 
 import type { TimeFormat, TimeRangeValue, TimeValue } from '../helpers/types';
 
+/** Props for {@link TimeRangeInput}, including range state and field slots. */
 export type TimeRangeInputProps = Omit<
   BoxProps,
   keyof SegmentedFieldsVariantProps | 'children'
 > &
   Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
+    /** Identifier applied to the range container. */
     id?: string;
+    /** Controlled start and end times. Pair with `onChange`. */
     value?: TimeRangeValue | null;
+    /** Initial time range when `value` is not provided. */
     defaultValue?: TimeRangeValue | null;
+    /** Runs whenever either endpoint becomes complete or is cleared. */
     onChange?: (value: TimeRangeValue | null) => void;
+    /** Display cycle shared by both endpoints. */
     timeFormat?: TimeFormat;
+    /** Minute increment used by keyboard stepping. */
     minuteStep?: number;
+    /** Accessible name for the start-time segments. */
     startLabel?: string;
+    /** Accessible name for the end-time segments. */
     endLabel?: string;
+    /** Content before the range. Takes precedence over `iconBefore`. */
     before?: ReactNode;
+    /** Content after the range. Takes precedence over `iconAfter`. */
     after?: ReactNode;
+    /** Legacy icon rendered before the range when `before` is absent. */
     iconBefore?: IconNamesList;
+    /** Legacy icon rendered after the range when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
+    /** Prevents editing both endpoints. Overrides field context when provided. */
     disabled?: boolean;
+    /** Applies invalid styling. Overrides field context when provided. */
     invalid?: boolean;
     /** Reflected through to the segmented fields — lets a wrapping Menu/Picker show "active anchor" styling */
     open?: boolean;
@@ -48,6 +64,17 @@ export type TimeRangeInputProps = Omit<
 
 const EMPTY_RANGE: TimeRangeValue = { start: null, end: null };
 
+/**
+ * Renders start and end times as two coordinated segmented fields.
+ *
+ * Values remain normalized to 24-hour time regardless of display cycle. Use
+ * `TimeRangePicker` when a menu and Apply/Cancel flow are also needed.
+ *
+ * @example
+ * ```tsx
+ * <TimeRangeInput startLabel="Opens" endLabel="Closes" />
+ * ```
+ */
 export const TimeRangeInput = (props: TimeRangeInputProps) => {
   const fieldContext = useFieldContext();
   const {

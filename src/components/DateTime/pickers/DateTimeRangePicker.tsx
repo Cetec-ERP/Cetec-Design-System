@@ -21,6 +21,7 @@ import type { Placement } from '@floating-ui/react';
 // segmentedFields.ts) is what makes the narrowest stacked state work.
 const WRAP_BREAKPOINT = 458;
 
+/** Props for {@link DateTimeRangePicker}, which coordinates two pickers. */
 export type DateTimeRangePickerProps = Pick<
   DateTimeInputProps,
   | 'before'
@@ -34,21 +35,48 @@ export type DateTimeRangePickerProps = Pick<
   | 'timeFormat'
   | 'size'
 > & {
+  /** Controlled start and end date-times. Pair with `onChange`. */
   value?: DateTimeRangeValue | null;
+  /** Initial range when `value` is not provided. */
   defaultValue?: DateTimeRangeValue | null;
+  /** Runs whenever either endpoint commits a new value. */
   onChange?: (value: DateTimeRangeValue | null) => void;
+  /** Minute interval shared by both endpoint pickers. */
   minuteStep?: number;
+  /** Earliest selectable date for both endpoints. */
   minDate?: DateValue;
+  /** Latest selectable date for both endpoints. */
   maxDate?: DateValue;
+  /** Accessible date label for the start picker. */
   startDateLabel?: string;
+  /** Accessible time label for the start picker. */
   startTimeLabel?: string;
+  /** Accessible date label for the end picker. */
   endDateLabel?: string;
+  /** Accessible time label for the end picker. */
   endTimeLabel?: string;
+  /** Floating UI placement shared by both endpoint menus. */
   placement?: Placement;
 };
 
 const EMPTY_RANGE: DateTimeRangeValue = { start: null, end: null };
 
+/**
+ * Coordinates independent start and end `DateTimePicker` controls.
+ *
+ * The controls render side by side when space allows and stack at narrow
+ * widths. Each endpoint has its own menu and commits independently.
+ *
+ * @example
+ * ```tsx
+ * <DateTimeRangePicker
+ *   startDateLabel="Starts on"
+ *   startTimeLabel="Starts at"
+ *   endDateLabel="Ends on"
+ *   endTimeLabel="Ends at"
+ * />
+ * ```
+ */
 export const DateTimeRangePicker = (props: DateTimeRangePickerProps) => {
   const {
     before,

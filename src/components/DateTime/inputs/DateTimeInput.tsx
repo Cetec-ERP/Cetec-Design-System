@@ -25,26 +25,43 @@ import type {
   TimeValue,
 } from '../helpers/types';
 
+/** Props for {@link DateTimeInput}, including combined state and field slots. */
 export type DateTimeInputProps = Omit<
   BoxProps,
   keyof SegmentedFieldsVariantProps | 'children'
 > &
   Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
+    /** Identifier applied to the combined field container. */
     id?: string;
+    /** Controlled date and time. Pair with `onChange`. */
     value?: DateTimeValue | null;
+    /** Initial date and time when `value` is not provided. */
     defaultValue?: DateTimeValue | null;
+    /** Runs whenever the date or time portion changes. */
     onChange?: (value: DateTimeValue | null) => void;
+    /** Segment order and separator convention for the date portion. */
     dateFormat?: DateFormat;
+    /** Display cycle for the time portion. */
     timeFormat?: TimeFormat;
+    /** Minute increment used by keyboard stepping. */
     minuteStep?: number;
+    /** Accessible name for the date segments. */
     dateLabel?: string;
+    /** Accessible name for the time segments. */
     timeLabel?: string;
+    /** Content before the combined field. Takes precedence over `iconBefore`. */
     before?: ReactNode;
+    /** Content after the combined field. Takes precedence over `iconAfter`. */
     after?: ReactNode;
+    /** Legacy icon rendered before the field when `before` is absent. */
     iconBefore?: IconNamesList;
+    /** Legacy icon rendered after the field when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
+    /** Prevents editing both portions. Overrides field context when provided. */
     disabled?: boolean;
+    /** Applies invalid styling. Overrides field context when provided. */
     invalid?: boolean;
     /** Reflected through to the segmented fields — lets a wrapping Menu/Picker show "active anchor" styling */
     open?: boolean;
@@ -54,6 +71,17 @@ export type DateTimeInputProps = Omit<
     onBlurWithin?: (relatedTarget: Node | null) => void;
   };
 
+/**
+ * Renders coordinated segmented date and time fields in one control.
+ *
+ * Each complete portion is preserved while the other changes. Use
+ * `DateTimePicker` when calendar and time-selection menus are also needed.
+ *
+ * @example
+ * ```tsx
+ * <DateTimeInput dateLabel="Due date" timeLabel="Due time" />
+ * ```
+ */
 export const DateTimeInput = (props: DateTimeInputProps) => {
   const fieldContext = useFieldContext();
   const {

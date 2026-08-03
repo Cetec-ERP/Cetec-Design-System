@@ -18,24 +18,39 @@ import { InputSlot } from './InputSlot';
 
 import type { DateFormat, DateRangeValue, DateValue } from '../helpers/types';
 
+/** Props for {@link DateRangeInput}, including range state and field slots. */
 export type DateRangeInputProps = Omit<
   BoxProps,
   keyof SegmentedFieldsVariantProps | 'children'
 > &
   Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
+    /** Identifier applied to the range container. */
     id?: string;
+    /** Controlled start and end dates. Pair with `onChange`. */
     value?: DateRangeValue | null;
+    /** Initial range when `value` is not provided. */
     defaultValue?: DateRangeValue | null;
+    /** Runs whenever either endpoint becomes complete or is cleared. */
     onChange?: (value: DateRangeValue | null) => void;
+    /** Segment order and separator convention shared by both endpoints. */
     dateFormat?: DateFormat;
+    /** Accessible name for the start-date segments. */
     startLabel?: string;
+    /** Accessible name for the end-date segments. */
     endLabel?: string;
+    /** Content before the range. Takes precedence over `iconBefore`. */
     before?: ReactNode;
+    /** Content after the range. Takes precedence over `iconAfter`. */
     after?: ReactNode;
+    /** Legacy icon rendered before the range when `before` is absent. */
     iconBefore?: IconNamesList;
+    /** Legacy icon rendered after the range when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
+    /** Prevents editing both endpoints. Overrides field context when provided. */
     disabled?: boolean;
+    /** Applies invalid styling. Overrides field context when provided. */
     invalid?: boolean;
     /** Reflected through to the segmented fields — lets a wrapping Menu/Picker show "active anchor" styling */
     open?: boolean;
@@ -47,6 +62,18 @@ export type DateRangeInputProps = Omit<
 
 const EMPTY_RANGE: DateRangeValue = { start: null, end: null };
 
+/**
+ * Renders start and end dates as two coordinated segmented fields.
+ *
+ * Each endpoint commits independently while the component preserves the other
+ * endpoint. Use `DateRangePicker` when a calendar menu and Apply/Cancel flow
+ * are also needed.
+ *
+ * @example
+ * ```tsx
+ * <DateRangeInput startLabel="Arrival" endLabel="Departure" />
+ * ```
+ */
 export const DateRangeInput = (props: DateRangeInputProps) => {
   const fieldContext = useFieldContext();
   const {

@@ -19,17 +19,24 @@ import type {
   TimeValue,
 } from '../helpers/types';
 
+/** Props for {@link TimeRangeMenu}, including committed range and display. */
 export type TimeRangeMenuProps = Omit<
   MenuProps,
   'children' | 'onChange' | 'value'
 > & {
+  /** Committed start and end times used to initialize the menu draft. */
   value?: TimeRangeValue | null;
-  /** Committed only when Apply is pressed — Cancel discards the pending selection */
+  /** Commits the complete draft when Apply is pressed; Cancel discards it. */
   onChange?: (value: TimeRangeValue | null) => void;
+  /** Display cycle shared by both endpoints. */
   timeFormat?: TimeFormat;
+  /** Interval used to generate minute choices. */
   minuteStep?: number;
+  /** Prevents opening or selection and returns only the trigger. */
   disabled?: boolean;
+  /** Accessible prefix for the start-time columns. */
   startLabel?: string;
+  /** Accessible prefix for the end-time columns. */
   endLabel?: string;
 };
 
@@ -201,6 +208,21 @@ const TimeColumns = ({
   );
 };
 
+/**
+ * Selects a start and end time from parallel selection columns.
+ *
+ * Changes remain a draft until Apply is pressed. Cancel restores the
+ * committed `value`; Apply is unavailable until both endpoints are complete.
+ *
+ * @example
+ * ```tsx
+ * <TimeRangeMenu
+ *   trigger={<Button>Choose hours</Button>}
+ *   value={range}
+ *   onChange={setRange}
+ * />
+ * ```
+ */
 export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
   const {
     trigger,

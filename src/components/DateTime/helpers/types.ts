@@ -39,6 +39,9 @@ export interface DateTimeRangeValue {
   end: DateTimeValue | null;
 }
 
+/** Display cycle used for time input while values remain normalized to 24-hour time. */
 export type TimeFormat = '12' | '24';
+/** Segment order and separator convention used to display a date. */
 export type DateFormat = 'MM/DD/YYYY' | 'YYYY-MM-DD';
+/** Meridiem choice used by 12-hour segmented time controls. */
 export type Meridiem = 'AM' | 'PM';

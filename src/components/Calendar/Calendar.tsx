@@ -315,14 +315,15 @@ const YearGridContent = ({
 
 // ─── Props ─────────────────────────────────────────────────────────────────────
 
+/** Props for {@link Calendar}, including selection, bounds, and visible-month state. */
 export type CalendarProps = Omit<
   BoxProps,
   keyof CalendarVariantProps | 'children'
 > &
   Omit<CalendarVariantProps, 'type'> & {
-    /** Controlled selected date */
+    /** Controlled selected date. */
     value?: DateValue | null;
-    /** Called when a day is chosen (Calendar never clears its own value) */
+    /** Runs when a selectable day is chosen. Calendar never clears its own value. */
     onChange?: (value: DateValue) => void;
     /**
      * Range-selection endpoints, for DateRangeMenu. Independent of `value` —
@@ -331,23 +332,38 @@ export type CalendarProps = Omit<
      * range's two endpoints may fall in months neither calendar is showing.
      */
     rangeStart?: DateValue | null;
+    /** End of the optional visual range highlight. */
     rangeEnd?: DateValue | null;
-    /** Earliest selectable date */
+    /** Earliest selectable date. */
     minDate?: DateValue;
-    /** Latest selectable date */
+    /** Latest selectable date. */
     maxDate?: DateValue;
-    /** Controlled visible month/year */
+    /** Controlled visible month and year. */
     viewDate?: ViewDate;
-    /** Initial uncontrolled visible month/year — defaults to `value`, or today */
+    /** Initial visible month and year when `viewDate` is not provided. Defaults to `value`, then today. */
     defaultViewDate?: ViewDate;
+    /** Runs when month or year navigation requests a new visible month. */
     onViewDateChange?: (viewDate: ViewDate) => void;
+    /** Prevents navigation and date selection. */
     disabled?: boolean;
-    /** Accessible label prefix, e.g. "Choose date" */
+    /** Accessible label prefix for the calendar grid. */
     label?: string;
   };
 
 // ─── Calendar ──────────────────────────────────────────────────────────────────
 
+/**
+ * Displays an accessible day, month, and year selection grid.
+ *
+ * Use `value` and `onChange` for date selection. `viewDate` separately controls
+ * the visible month; omit it to let Calendar manage navigation internally.
+ * Dates outside `minDate` and `maxDate` remain visible but unavailable.
+ *
+ * @example
+ * ```tsx
+ * <Calendar value={date} onChange={setDate} label="Choose invoice date" />
+ * ```
+ */
 export const Calendar = (props: CalendarProps) => {
   const {
     value = null,

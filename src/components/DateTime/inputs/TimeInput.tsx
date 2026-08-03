@@ -17,24 +17,39 @@ import { InputSlot } from './InputSlot';
 
 import type { TimeFormat, TimeValue } from '../helpers/types';
 
+/** Props for {@link TimeInput}, including segmented time state and field slots. */
 export type TimeInputProps = Omit<
   BoxProps,
   keyof SegmentedFieldsVariantProps | 'children'
 > &
   Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
+    /** Identifier forwarded to the segmented time group. */
     id?: string;
+    /** Controlled 24-hour time value. Pair with `onChange`. */
     value?: TimeValue | null;
+    /** Initial time when `value` is not provided. */
     defaultValue?: TimeValue | null;
+    /** Runs when the time segments form a complete value. */
     onChange?: (value: TimeValue | null) => void;
+    /** Display cycle; emitted values always use 24-hour hours. */
     timeFormat?: TimeFormat;
+    /** Minute increment used by keyboard stepping. */
     minuteStep?: number;
+    /** Accessible name for the segmented time group. */
     label?: string;
+    /** Content before the time field. Takes precedence over `iconBefore`. */
     before?: ReactNode;
+    /** Content after the time field. Takes precedence over `iconAfter`. */
     after?: ReactNode;
+    /** Legacy icon rendered before the field when `before` is absent. */
     iconBefore?: IconNamesList;
+    /** Legacy icon rendered after the field when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
+    /** Prevents editing. Overrides field context when provided. */
     disabled?: boolean;
+    /** Applies invalid styling. Overrides field context when provided. */
     invalid?: boolean;
     /** Reflected through to the segmented field — lets a wrapping Menu/Picker show "active anchor" styling */
     open?: boolean;
@@ -44,6 +59,17 @@ export type TimeInputProps = Omit<
     onBlurWithin?: (relatedTarget: Node | null) => void;
   };
 
+/**
+ * Renders a segmented time field with optional leading and trailing content.
+ *
+ * Display can use 12- or 24-hour time while values remain normalized to
+ * 24-hour hours. Use `TimePicker` when a time-selection menu is also needed.
+ *
+ * @example
+ * ```tsx
+ * <TimeInput label="Start time" defaultValue={{ hour: 9, minute: 30 }} />
+ * ```
+ */
 export const TimeInput = (props: TimeInputProps) => {
   const fieldContext = useFieldContext();
   const {

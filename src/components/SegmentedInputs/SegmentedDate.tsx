@@ -19,20 +19,39 @@ import type {
 export type SegmentedDateFormat = DateFormat;
 type SegmentedInputVariantProps = Omit<SegmentedInputsVariantProps, 'bare'>;
 
+/** Props for {@link SegmentedDate}, a keyboard-editable date field. */
 export type SegmentedDateProps = Omit<
   BoxProps,
   keyof SegmentedInputsVariantProps | 'children' | 'onChange' | 'value'
 > &
   SegmentedInputVariantProps & {
+    /** Ref attached to the segmented group container. */
     ref?: Ref<HTMLDivElement>;
+    /** Controlled date. Pair with `onChange`; `null` clears every segment. */
     value?: DateValue | null;
+    /** Initial date when `value` is not provided. */
     defaultValue?: DateValue | null;
+    /** Runs after all date segments form a date, or after every segment is cleared. */
     onChange?: (value: DateValue | null) => void;
+    /**
+     * Segment order and default separator.
+     *
+     * @default 'YYYY-MM-DD'
+     */
     format?: SegmentedDateFormat;
+    /** Overrides separator content or spacing between date segments. */
     separators?: SeparatorConfig;
+    /**
+     * Accessible name for the segmented group.
+     *
+     * @default 'Date'
+     */
     label?: string;
+    /** Prevents editing and keyboard interaction. */
     disabled?: boolean;
+    /** Runs when focus enters any date segment. */
     onFocusWithin?: () => void;
+    /** Runs when focus leaves a date segment and provides the next focused node. */
     onBlurWithin?: (relatedTarget: Node | null) => void;
   };
 
@@ -56,6 +75,18 @@ const getSeparatorContent = (
   return format === 'YYYY-MM-DD' ? '-' : '/';
 };
 
+/**
+ * Edits a date as separate year, month, and day spinbutton segments.
+ *
+ * The component clamps days to the selected month and emits only complete
+ * dates or a fully cleared `null` value. Use `DateInput` when leading or
+ * trailing slots and field validation styling are needed.
+ *
+ * @example
+ * ```tsx
+ * <SegmentedDate defaultValue={{ year: 2026, month: 8, day: 3 }} />
+ * ```
+ */
 export const SegmentedDate = (props: SegmentedDateProps) => {
   const {
     value,
