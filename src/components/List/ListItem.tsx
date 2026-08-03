@@ -3,15 +3,16 @@ import type { ChangeEventHandler, ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { listItem, type ListItemVariantProps } from '@styled-system/recipes';
 
-import { type IconNamesList, type IconProps } from '~/components/Icon';
+import type { IconProps } from '~/components/Icon/Icon';
+import type { IconNamesList } from '~/components/Icon/icons';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Checkbox } from '../Checkbox';
-import { Divider } from '../Divider';
-import { Icon } from '../Icon';
-import { Text } from '../Text';
-import { Toggle } from '../Toggle';
+import { Box, type BoxProps } from '../Box/Box';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Divider } from '../Divider/Divider';
+import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
+import { Toggle } from '../Toggle/Toggle';
 
 import { HighlightText } from './HighlightText';
 import { type ListDensity, useListContext } from './listContext';

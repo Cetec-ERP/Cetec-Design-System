@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useMemo } from 'react';
 
 import {
   defaultIconConfigContextValue,
@@ -33,12 +33,15 @@ export type IconProviderProps = {
  * ```
  */
 export const IconProvider = ({ children, spritePath }: IconProviderProps) => {
+  const contextValue = useMemo(
+    () => ({
+      spritePath: spritePath ?? defaultIconConfigContextValue.spritePath,
+    }),
+    [spritePath],
+  );
+
   return (
-    <IconConfigContext.Provider
-      value={{
-        spritePath: spritePath ?? defaultIconConfigContextValue.spritePath,
-      }}
-    >
+    <IconConfigContext.Provider value={contextValue}>
       {children}
     </IconConfigContext.Provider>
   );

@@ -46,9 +46,9 @@ import {
 } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
 
 import {
   hasMatchingItems,

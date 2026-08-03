@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactNode } from 'react';
+import { type MouseEvent, type ReactNode, useMemo } from 'react';
 
 import { cx } from '@styled-system/css';
 import { HStack } from '@styled-system/jsx';
@@ -149,22 +149,35 @@ export const Button = (props: ButtonProps) => {
   });
   const [className, otherProps] = splitProps(rest);
 
+  const slotContexts = useMemo(
+    () => ({
+      before: {
+        owner: 'Button' as const,
+        placement: 'before' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+      after: {
+        owner: 'Button' as const,
+        placement: 'after' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+    }),
+    [disabled, error, invalid, size],
+  );
+
   const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
     if (!slot) {
       return null;
     }
 
     return (
-      <SlotContext.Provider
-        value={{
-          owner: 'Button',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
+      <SlotContext.Provider value={slotContexts[placement]}>
         <Box className={classes.slot}>{slot}</Box>
       </SlotContext.Provider>
     );

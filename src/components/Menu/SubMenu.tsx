@@ -40,10 +40,10 @@ import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { HighlightText } from '../List';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
+import { HighlightText } from '../List/HighlightText';
+import { Text } from '../Text/Text';
 
 import {
   deriveItemTextValue,

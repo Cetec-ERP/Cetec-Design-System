@@ -1,4 +1,4 @@
-import { type ReactNode, isValidElement } from 'react';
+import type { ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
@@ -6,15 +6,14 @@ import {
   type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
-import { Button } from '~/components/Button';
 import { Icon, type IconNamesList } from '~/components/Icon';
-import { IconButton } from '~/components/IconButton';
 import { useFieldContext } from '~/system/context/FieldContext';
-import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../../Box';
-import { SegmentedTime } from '../../SegmentedInputs';
+import { SegmentedTime } from '../../SegmentedInputs/SegmentedTime';
+
+import { InputSlot } from './InputSlot';
 
 import type { TimeFormat, TimeValue } from '../helpers/types';
 
@@ -85,34 +84,6 @@ export const TimeInput = (props: TimeInputProps) => {
   });
   const [className, otherProps] = splitProps(rest);
 
-  const isButtonLikeSlot = (slot: ReactNode) =>
-    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
-
-  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
-    if (!slot) {
-      return null;
-    }
-
-    return (
-      <SlotContext.Provider
-        value={{
-          owner: 'TimeInput',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
-        <Box
-          className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
-        >
-          {slot}
-        </Box>
-      </SlotContext.Provider>
-    );
-  };
-
   return (
     <Box
       className={cx(classes.container, className)}
@@ -123,7 +94,17 @@ export const TimeInput = (props: TimeInputProps) => {
       data-open={open || undefined}
       {...otherProps}
     >
-      {renderSlot(resolvedBefore, 'before')}
+      <InputSlot
+        owner="TimeInput"
+        placement="before"
+        slot={resolvedBefore}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
       <SegmentedTime
         flex="1"
         minW="0"
@@ -139,7 +120,17 @@ export const TimeInput = (props: TimeInputProps) => {
         onFocusWithin={onFocusWithin}
         onBlurWithin={onBlurWithin}
       />
-      {renderSlot(resolvedAfter, 'after')}
+      <InputSlot
+        owner="TimeInput"
+        placement="after"
+        slot={resolvedAfter}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
     </Box>
   );
 };

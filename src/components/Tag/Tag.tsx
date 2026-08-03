@@ -3,8 +3,10 @@ import { tag, type TagVariantProps } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Icon, type IconNamesList } from '../Icon';
+import { Box, type BoxProps } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
+
+import type { IconNamesList } from '../Icon/icons';
 
 /** Props accepted by {@link Tag}. */
 export type TagProps = Omit<BoxProps, keyof TagVariantProps> &

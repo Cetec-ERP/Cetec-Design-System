@@ -33,21 +33,27 @@ export const Kbd = (props: KbdProps) => {
   const { keys, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
   const tooltipText = keys.map(getKbdLabel).join(' + ');
+  const keyOccurrences = new Map<KbdValue, number>();
+  const renderedKeys = keys.map((keyValue) => {
+    const occurrence = keyOccurrences.get(keyValue) ?? 0;
+    keyOccurrences.set(keyValue, occurrence + 1);
+    return { id: `${keyValue}-${occurrence}`, value: keyValue };
+  });
   const content = (
     <Box
       as="span"
       className={cx(defaultClasses.kbdGroup, className)}
       {...otherProps}
     >
-      {keys.map((keyValue, index) => (
+      {renderedKeys.map(({ id, value }) => (
         <Box
           as="kbd"
-          key={`${keyValue}-${index}`}
+          key={id}
           className={
-            isSpecialSymbol(keyValue) ? symbolClasses.key : defaultClasses.key
+            isSpecialSymbol(value) ? symbolClasses.key : defaultClasses.key
           }
         >
-          {keyValue}
+          {value}
         </Box>
       ))}
     </Box>

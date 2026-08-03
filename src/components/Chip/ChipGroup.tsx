@@ -89,9 +89,14 @@ export const ChipGroup = (props: ChipGroupProps) => {
   const [stylesClassName, otherProps] = splitProps(rest);
   const role = type === 'single' ? 'radiogroup' : 'group';
 
-  const chipRefs = useRef<Map<string, RefObject<HTMLButtonElement | null>>>(
-    new Map(),
-  );
+  const chipRefs = useRef<Map<
+    string,
+    RefObject<HTMLButtonElement | null>
+  > | null>(null);
+  if (chipRefs.current === null) {
+    chipRefs.current = new Map();
+  }
+  const currentChipRefs = chipRefs.current;
   const [selectedValue, setSelectedValue] = useControllableState({
     value,
     defaultValue: defaultValue ?? (type === 'single' ? '' : ([] as string[])),
@@ -101,22 +106,25 @@ export const ChipGroup = (props: ChipGroupProps) => {
 
   const registerChip = useCallback(
     (chipValue: string, ref: RefObject<HTMLButtonElement | null>) => {
-      chipRefs.current.set(chipValue, ref);
+      currentChipRefs.set(chipValue, ref);
       setChipValues((currentValues) =>
         currentValues.includes(chipValue)
           ? currentValues
           : [...currentValues, chipValue],
       );
     },
-    [],
+    [currentChipRefs],
   );
 
-  const unregisterChip = useCallback((chipValue: string) => {
-    chipRefs.current.delete(chipValue);
-    setChipValues((currentValues) =>
-      currentValues.filter((currentValue) => currentValue !== chipValue),
-    );
-  }, []);
+  const unregisterChip = useCallback(
+    (chipValue: string) => {
+      currentChipRefs.delete(chipValue);
+      setChipValues((currentValues) =>
+        currentValues.filter((currentValue) => currentValue !== chipValue),
+      );
+    },
+    [currentChipRefs],
+  );
 
   const focusChip = useCallback(
     (direction: 'next' | 'prev', currentValue: string) => {
@@ -134,7 +142,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
 
       const nextValue = chipValues[nextIndex];
       if (nextValue) {
-        const nextRef = chipRefs.current.get(nextValue);
+        const nextRef = currentChipRefs.get(nextValue);
         nextRef?.current?.focus();
 
         if (type === 'single') {
@@ -142,7 +150,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
         }
       }
     },
-    [chipValues, setSelectedValue, type],
+    [chipValues, currentChipRefs, setSelectedValue, type],
   );
 
   const contextValue = useMemo(

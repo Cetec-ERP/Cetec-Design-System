@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { Box, type BoxProps } from '../Box';
 
@@ -57,23 +57,28 @@ export const RadioGroup = (props: RadioGroupProps) => {
   const isControlled = value !== undefined;
   const selectedValue = isControlled ? value : uncontrolledValue;
 
-  const setSelectedValue = (nextValue: string) => {
-    if (!isControlled) {
-      setUncontrolledValue(nextValue);
-    }
+  const setSelectedValue = useCallback(
+    (nextValue: string) => {
+      if (!isControlled) {
+        setUncontrolledValue(nextValue);
+      }
 
-    onChange?.(nextValue);
-  };
+      onChange?.(nextValue);
+    },
+    [isControlled, onChange],
+  );
+  const contextValue = useMemo(
+    () => ({
+      name,
+      value: selectedValue,
+      setValue: setSelectedValue,
+      disabled,
+    }),
+    [disabled, name, selectedValue, setSelectedValue],
+  );
 
   return (
-    <RadioGroupContext.Provider
-      value={{
-        name,
-        value: selectedValue,
-        setValue: setSelectedValue,
-        disabled,
-      }}
-    >
+    <RadioGroupContext.Provider value={contextValue}>
       <Box
         role="radiogroup"
         aria-label={label}

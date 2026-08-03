@@ -1,4 +1,4 @@
-import { ListItemGroup } from '../List';
+import { ListItemGroup } from '../List/ListItemGroup';
 
 import {
   hasMatchingItems,

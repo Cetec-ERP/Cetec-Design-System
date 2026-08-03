@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useMemo } from 'react';
 
 import { cx } from '@styled-system/css';
 import { Flex } from '@styled-system/jsx';
@@ -8,11 +8,11 @@ import type { SpacingToken } from '@styled-system/tokens';
 import { FieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Icon } from '../Icon';
-import { Label } from '../Label';
-import { Text } from '../Text';
-import { Tooltip } from '../Tooltip';
+import { Box, type BoxProps } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
+import { Label } from '../Label/Label';
+import { Text } from '../Text/Text';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 /**
  * Props for {@link FormField}. It supplies field state to compatible
@@ -129,6 +129,10 @@ export const FormField = (props: FormFieldProps) => {
     layout: layout === 'inline' ? 'inline' : 'default',
     size,
   });
+  const fieldContextValue = useMemo(
+    () => ({ size, error, invalid, disabled }),
+    [disabled, error, invalid, size],
+  );
 
   return (
     <Box
@@ -162,7 +166,7 @@ export const FormField = (props: FormFieldProps) => {
         </Text>
       )}
 
-      <FieldContext.Provider value={{ size, error, invalid, disabled }}>
+      <FieldContext.Provider value={fieldContextValue}>
         <Box className={classes.inputs} gap={gap}>
           {children}
         </Box>

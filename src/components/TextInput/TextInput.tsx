@@ -1,4 +1,4 @@
-import { type ReactNode, isValidElement } from 'react';
+import { type ReactNode, isValidElement, useMemo } from 'react';
 
 import { cx } from '@styled-system/css';
 import { textInput, type TextInputVariantProps } from '@styled-system/recipes';
@@ -11,6 +11,9 @@ import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
+
+const isButtonLikeSlot = (slot: ReactNode) =>
+  isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
 
 /** Props for {@link TextInput}, a single-line native input with optional slots. */
 export type TextInputProps = Omit<BoxProps, keyof TextInputVariantProps> &
@@ -123,9 +126,27 @@ export const TextInput = (props: TextInputProps) => {
     autoSize,
   });
   const [className, otherProps] = splitProps(rest);
-
-  const isButtonLikeSlot = (slot: ReactNode) =>
-    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
+  const slotContexts = useMemo(
+    () => ({
+      before: {
+        owner: 'TextInput' as const,
+        placement: 'before' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+      after: {
+        owner: 'TextInput' as const,
+        placement: 'after' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+    }),
+    [disabled, error, invalid, size],
+  );
 
   const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
     if (!slot) {
@@ -133,16 +154,7 @@ export const TextInput = (props: TextInputProps) => {
     }
 
     return (
-      <SlotContext.Provider
-        value={{
-          owner: 'TextInput',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
+      <SlotContext.Provider value={slotContexts[placement]}>
         <Box
           className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
         >

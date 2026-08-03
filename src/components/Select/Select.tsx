@@ -7,7 +7,6 @@ import {
   type ReactElement,
   type ReactNode,
   useCallback,
-  useEffect,
   useId,
   useMemo,
   useRef,
@@ -30,17 +29,18 @@ import {
 import { cx } from '@styled-system/css';
 import { menu, select, type SelectVariantProps } from '@styled-system/recipes';
 
-import type { MenuDensity } from '~/components/Menu';
+import type { MenuDensity } from '~/components/Menu/context/menuContext';
 import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Chip } from '../Chip';
-import { Icon } from '../Icon';
-import { List, ListItem } from '../List';
+import { Box, type BoxProps } from '../Box/Box';
+import { Chip } from '../Chip/Chip';
+import { Icon } from '../Icon/Icon';
+import { List } from '../List/List';
+import { ListItem } from '../List/ListItem';
 
 import { SelectOption, type SelectOptionProps } from './SelectOption';
 
@@ -95,8 +95,9 @@ const getSelectedDisplay = (
     const selectedValues = Array.isArray(value)
       ? value
       : ([value].filter(Boolean) as string[]);
+    const selectedValueSet = new Set(selectedValues);
     const selectedOptions = options.filter((option) =>
-      selectedValues.includes(option.props.value),
+      selectedValueSet.has(option.props.value),
     );
 
     if (selectedOptions.length === 0) {
@@ -120,9 +121,8 @@ const getSelectedOptions = (
   }
 
   const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
-  return options.filter((option) =>
-    selectedValues.includes(option.props.value),
-  );
+  const selectedValueSet = new Set(selectedValues);
+  return options.filter((option) => selectedValueSet.has(option.props.value));
 };
 
 /** Props for {@link Select}, an ARIA listbox-based single or multiple select. */
@@ -253,15 +253,27 @@ export const Select = (props: SelectProps) => {
     return Children.toArray(children).filter(isSelectOptionElement);
   }, [children]);
 
+  const selectedValues = useMemo(() => {
+    if (multiple) {
+      return Array.isArray(value) ? value : value ? [value] : [];
+    }
+
+    return typeof value === 'string' ? [value] : [];
+  }, [multiple, value]);
+  const selectedValueSet = useMemo(
+    () => new Set(selectedValues),
+    [selectedValues],
+  );
+
   const selectedIndex = useMemo(() => {
     return options.findIndex((option) => {
       if (multiple) {
-        return Array.isArray(value) && value.includes(option.props.value);
+        return selectedValueSet.has(option.props.value);
       }
 
       return option.props.value === value;
     });
-  }, [multiple, options, value]);
+  }, [multiple, options, selectedValueSet, value]);
 
   const firstEnabledIndex = useMemo(() => {
     return options.findIndex((option) => !option.props.disabled);
@@ -273,32 +285,23 @@ export const Select = (props: SelectProps) => {
     );
   }, [options]);
 
-  const selectedValues = useMemo(() => {
-    if (multiple) {
-      return Array.isArray(value) ? value : value ? [value] : [];
-    }
-
-    return typeof value === 'string' ? [value] : [];
-  }, [multiple, value]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setActiveIndex(null);
-      return;
-    }
-
-    if (selectedIndex >= 0) {
-      setActiveIndex(selectedIndex);
-      return;
-    }
-
-    setActiveIndex(firstEnabledIndex >= 0 ? firstEnabledIndex : null);
-  }, [firstEnabledIndex, isOpen, selectedIndex]);
+  const initialActiveIndex =
+    selectedIndex >= 0
+      ? selectedIndex
+      : firstEnabledIndex >= 0
+        ? firstEnabledIndex
+        : null;
+  const resolvedActiveIndex = isOpen
+    ? (activeIndex ?? initialActiveIndex)
+    : null;
 
   const activeOptionId =
-    activeIndex !== null ? `${triggerId}-option-${activeIndex}` : undefined;
+    resolvedActiveIndex !== null
+      ? `${triggerId}-option-${resolvedActiveIndex}`
+      : undefined;
 
   const setOpenState = (nextOpen: boolean) => {
+    setActiveIndex(nextOpen ? initialActiveIndex : null);
     if (!isOpenControlled) {
       setInternalOpen(nextOpen);
     }
@@ -349,7 +352,7 @@ export const Select = (props: SelectProps) => {
   const role = useRole(floating.context, { role: 'listbox' });
   const listNavigation = useListNavigation(floating.context, {
     listRef: itemRefs,
-    activeIndex,
+    activeIndex: resolvedActiveIndex,
     selectedIndex,
     onNavigate: setActiveIndex,
     loop: true,
@@ -357,7 +360,7 @@ export const Select = (props: SelectProps) => {
   });
   const typeahead = useTypeahead(floating.context, {
     listRef: labelsRef,
-    activeIndex,
+    activeIndex: resolvedActiveIndex,
     onMatch: setActiveIndex,
   });
 
@@ -444,9 +447,9 @@ export const Select = (props: SelectProps) => {
   return (
     <Box className={classes.root}>
       {name &&
-        selectedValues.map((selectedValue, index) => (
+        selectedValues.map((selectedValue) => (
           <Box
-            key={`${selectedValue}-${index}`}
+            key={selectedValue}
             as="input"
             type="hidden"
             name={name}
@@ -543,7 +546,7 @@ export const Select = (props: SelectProps) => {
               {options.map((option, index) => {
                 const optionLabel = getOptionText(option);
                 const isSelected = multiple
-                  ? Array.isArray(value) && value.includes(option.props.value)
+                  ? selectedValueSet.has(option.props.value)
                   : value === option.props.value;
 
                 return (

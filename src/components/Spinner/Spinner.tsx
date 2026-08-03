@@ -4,8 +4,8 @@ import { spinner, type SpinnerVariantProps } from '@styled-system/recipes';
 import { useSlotContext } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Icon } from '../Icon';
+import { Box, type BoxProps } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
 
 /** Props accepted by {@link Spinner}. */
 export type SpinnerProps = Omit<BoxProps, keyof SpinnerVariantProps> &

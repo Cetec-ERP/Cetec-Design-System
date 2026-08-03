@@ -6,8 +6,8 @@ import { radio, type RadioVariantProps } from '@styled-system/recipes';
 import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Icon } from '../Icon';
+import { Box, type BoxProps } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
 
 /** Props for {@link Radio}, the unlabelled native radio primitive. */
 export type RadioProps = Omit<

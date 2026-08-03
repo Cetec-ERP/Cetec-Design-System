@@ -9,12 +9,12 @@ import {
 import { useFieldContext } from '~/system/context/FieldContext';
 import { splitProps } from '~/utils/splitProps';
 
-import { type BoxProps } from '../Box';
-import { Label } from '../Label';
-import { Radio } from '../Radio';
+import { Label } from '../Label/Label';
+import { Radio } from '../Radio/Radio';
 import { useRadioGroup } from '../Radio/RadioGroupContext';
 
-import type { RadioChangeHandler } from '../Radio';
+import type { BoxProps } from '../Box/Box';
+import type { RadioChangeHandler } from '../Radio/Radio';
 
 /** Props for {@link RadioInput}, a labelled radio that can join a {@link RadioGroup}. */
 export type RadioInputProps = Omit<BoxProps, keyof RadioInputVariantProps> &

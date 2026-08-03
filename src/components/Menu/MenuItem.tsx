@@ -7,13 +7,13 @@ import { listItem as listItemRecipe } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Checkbox } from '../Checkbox';
-import { Divider } from '../Divider';
-import { Icon } from '../Icon';
-import { HighlightText } from '../List';
-import { Text } from '../Text';
-import { Toggle } from '../Toggle';
+import { Box, type BoxProps } from '../Box/Box';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Divider } from '../Divider/Divider';
+import { Icon } from '../Icon/Icon';
+import { HighlightText } from '../List/HighlightText';
+import { Text } from '../Text/Text';
+import { Toggle } from '../Toggle/Toggle';
 
 import {
   deriveItemTextValue,

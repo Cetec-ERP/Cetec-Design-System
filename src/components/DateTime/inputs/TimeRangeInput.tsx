@@ -1,10 +1,4 @@
-import {
-  type ReactNode,
-  isValidElement,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
@@ -13,15 +7,14 @@ import {
   type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
-import { Button } from '~/components/Button';
 import { Icon, type IconNamesList } from '~/components/Icon';
-import { IconButton } from '~/components/IconButton';
 import { useFieldContext } from '~/system/context/FieldContext';
-import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../../Box';
-import { SegmentedTime } from '../../SegmentedInputs';
+import { SegmentedTime } from '../../SegmentedInputs/SegmentedTime';
+
+import { InputSlot } from './InputSlot';
 
 import type { TimeFormat, TimeRangeValue, TimeValue } from '../helpers/types';
 
@@ -98,34 +91,6 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
   const segmentClasses = segmentedInputs({ size });
   const [className, otherProps] = splitProps(rest);
 
-  const isButtonLikeSlot = (slot: ReactNode) =>
-    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
-
-  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
-    if (!slot) {
-      return null;
-    }
-
-    return (
-      <SlotContext.Provider
-        value={{
-          owner: 'TimeRangeInput',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
-        <Box
-          className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
-        >
-          {slot}
-        </Box>
-      </SlotContext.Provider>
-    );
-  };
-
   // Composed range is tracked internally so an uncontrolled TimeRangeInput
   // doesn't lose whichever endpoint was filled in first — each SegmentedTime
   // only reports its own endpoint back via onChange.
@@ -172,7 +137,17 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
       data-open={open || undefined}
       {...otherProps}
     >
-      {renderSlot(resolvedBefore, 'before')}
+      <InputSlot
+        owner="TimeRangeInput"
+        placement="before"
+        slot={resolvedBefore}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
       <SegmentedTime
         label={startLabel}
         value={range.start}
@@ -205,7 +180,17 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
         onFocusWithin={onFocusWithin}
         onBlurWithin={onBlurWithin}
       />
-      {renderSlot(resolvedAfter, 'after')}
+      <InputSlot
+        owner="TimeRangeInput"
+        placement="after"
+        slot={resolvedAfter}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
     </Box>
   );
 };

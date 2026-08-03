@@ -6,6 +6,7 @@ import {
   type KeyboardEvent,
   type KeyboardEventHandler,
   type MouseEvent,
+  useMemo,
 } from 'react';
 
 import { cx } from '@styled-system/css';
@@ -170,22 +171,35 @@ export const Chip = (props: ChipProps) => {
     dismissable,
   });
 
+  const slotContexts = useMemo(
+    () => ({
+      before: {
+        owner: 'Chip' as const,
+        placement: 'before' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+      after: {
+        owner: 'Chip' as const,
+        placement: 'after' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+    }),
+    [disabled, error, invalid, size],
+  );
+
   const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
     if (!slot) {
       return null;
     }
 
     return (
-      <SlotContext.Provider
-        value={{
-          owner: 'Chip',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
+      <SlotContext.Provider value={slotContexts[placement]}>
         <Box className={classes.slot}>{slot}</Box>
       </SlotContext.Provider>
     );

@@ -1,4 +1,11 @@
-import { useEffect, useReducer, useRef, type ReactNode } from 'react';
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react';
 
 import {
   FloatingPortal,
@@ -154,12 +161,15 @@ export const Modal = (props: ModalProps) => {
     };
   }, [open]);
 
-  // Context value
-  const contextValue: ModalContextValue = {
-    open: phase === 'open',
-    onClose: () => onOpenChange(false),
-    preventOverlayClose,
-  };
+  const onClose = useCallback(() => onOpenChange(false), [onOpenChange]);
+  const contextValue: ModalContextValue = useMemo(
+    () => ({
+      open: phase === 'open',
+      onClose,
+      preventOverlayClose,
+    }),
+    [onClose, phase, preventOverlayClose],
+  );
 
   if (phase === 'closed') {
     return null;
