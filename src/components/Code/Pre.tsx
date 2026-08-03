@@ -8,8 +8,7 @@ import { splitProps } from '~/utils/splitProps';
 
 import { Code } from './Code';
 
-/** Props accepted by {@link Pre}. */
-export type PreProps = BoxProps & {
+type PreOwnProps = {
   /** Preformatted code content. */
   children: string | ReactNode;
   /** Language metadata forwarded to the nested `Code` element. */
@@ -17,6 +16,9 @@ export type PreProps = BoxProps & {
   /** Element override forwarded through the rendered containers. */
   as?: string;
 };
+
+/** Props accepted by {@link Pre}. */
+export type PreProps = Omit<BoxProps, keyof PreOwnProps> & PreOwnProps;
 
 /**
  * Renders a preformatted code block using native `pre` and `code` semantics.

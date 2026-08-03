@@ -1,5 +1,3 @@
-import type { SVGAttributes } from 'react';
-
 import { cx } from '@styled-system/css';
 import { icon, type IconVariantProps } from '@styled-system/recipes';
 import type { ColorToken } from '@styled-system/tokens';
@@ -19,30 +17,35 @@ import type { IconNamesList } from './icons';
  */
 export type AllowedIconSizes = keyof typeof numericSizes;
 
+type IconOwnProps = {
+  /** Symbol identifier from the configured SVG sprite. */
+  name: IconNamesList;
+  /**
+   * Icon size recipe variant. Responsive/conditional recipe values are
+   * supported. An explicit value takes precedence over slot context.
+   *
+   * @default 24px when no size is supplied by the icon or its slot context
+   */
+  size?: IconVariantProps['size'];
+  /**
+   * Design-token fill color. An explicit value takes precedence over slot
+   * context; otherwise the recipe uses the decorative icon color.
+   *
+   * @default 'icon.decorative'
+   */
+  fill?: ColorToken;
+};
+
 /**
  * Props for {@link Icon}. Extends SVG and Box props for presentation and
  * accessibility attributes.
  */
-export type IconProps = Omit<BoxProps, IconNamesList | 'size'> &
-  SVGAttributes<SVGElement> &
-  IconVariantProps & {
-    /** Symbol identifier from the configured SVG sprite. */
-    name: IconNamesList;
-    /**
-     * Icon size recipe variant. Responsive/conditional recipe values are
-     * supported. An explicit value takes precedence over slot context.
-     *
-     * @default 24px when no size is supplied by the icon or its slot context
-     */
-    size?: IconVariantProps['size'];
-    /**
-     * Design-token fill color. An explicit value takes precedence over slot
-     * context; otherwise the recipe uses the decorative icon color.
-     *
-     * @default 'icon.decorative'
-     */
-    fill?: ColorToken;
-  };
+export type IconProps = Omit<
+  BoxProps,
+  keyof IconVariantProps | keyof IconOwnProps
+> &
+  Omit<IconVariantProps, keyof IconOwnProps> &
+  IconOwnProps;
 
 /**
  * Renders an SVG symbol from the configured icon sprite.

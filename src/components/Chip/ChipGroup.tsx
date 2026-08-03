@@ -21,31 +21,42 @@ import {
   type ChipGroupType,
 } from './ChipGroupContext';
 
+type ChipGroupWrapProps = Pick<
+  WrapProps,
+  'align' | 'columnGap' | 'gap' | 'justify' | 'rowGap'
+>;
+
+type ChipGroupOwnProps = {
+  /** Required selection model. `'single'` uses radio semantics; `'multi'` uses checkbox semantics. */
+  type: ChipGroupType;
+  /** Controlled selected value. Use a string for `'single'` or a string array for `'multi'`, with `onChange` to accept updates. */
+  value?: string | string[];
+  /**
+   * Initial selected value for an uncontrolled group. It is used only on first render.
+   * @default '' for `'single'`; [] for `'multi'`
+   */
+  defaultValue?: string | string[];
+  /** Called with the next selection when a child chip is activated. */
+  onChange?: (value: string | string[]) => void;
+  /** `Chip` children. Chips require a unique `value` to participate in selection. */
+  children: ReactNode;
+  /** Size inherited by child chips unless a child supplies its own size. */
+  size?: ChipGroupSize;
+  /** Accessible name applied to the group container. */
+  label?: string;
+  /** Container identifier. When supplied, the container references `${id}-label`, which consumers must render themselves. */
+  id?: string;
+  /** Shared form metadata exposed to child-chip context; it does not create native form inputs. */
+  name?: string;
+};
+
 /** Props for {@link ChipGroup}, which coordinates selectable child chips. */
-export type ChipGroupProps = Omit<WrapProps, 'role'> &
-  Omit<BoxProps, keyof WrapProps> & {
-    /** Required selection model. `'single'` uses radio semantics; `'multi'` uses checkbox semantics. */
-    type: ChipGroupType;
-    /** Controlled selected value. Use a string for `'single'` or a string array for `'multi'`, with `onChange` to accept updates. */
-    value?: string | string[];
-    /**
-     * Initial selected value for an uncontrolled group. It is used only on first render.
-     * @default '' for `'single'`; [] for `'multi'`
-     */
-    defaultValue?: string | string[];
-    /** Called with the next selection when a child chip is activated. */
-    onChange?: (value: string | string[]) => void;
-    /** `Chip` children. Chips require a unique `value` to participate in selection. */
-    children: ReactNode;
-    /** Size inherited by child chips unless a child supplies its own size. */
-    size?: ChipGroupSize;
-    /** Accessible name applied to the group container. */
-    label?: string;
-    /** Container identifier. When supplied, the container references `${id}-label`, which consumers must render themselves. */
-    id?: string;
-    /** Shared form metadata exposed to child-chip context; it does not create native form inputs. */
-    name?: string;
-  };
+export type ChipGroupProps = Omit<
+  BoxProps,
+  keyof ChipGroupWrapProps | keyof ChipGroupOwnProps | 'role'
+> &
+  ChipGroupWrapProps &
+  ChipGroupOwnProps;
 
 const isChipGroupSize = (
   size: unknown,

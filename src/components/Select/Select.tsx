@@ -127,7 +127,7 @@ const getSelectedOptions = (
 
 /** Props for {@link Select}, an ARIA listbox-based single or multiple select. */
 export type SelectProps = Omit<
-  BoxProps<'button'>,
+  BoxProps,
   keyof SelectVariantProps | 'children' | 'onChange' | 'type' | 'value'
 > &
   SelectVariantProps & {

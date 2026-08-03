@@ -30,8 +30,7 @@ export type MenuTriggerInteraction =
   | 'focus'
   | 'click-and-hover';
 
-/** Props for {@link Menu}, including popup state, filtering, and nested-menu behavior. */
-export type MenuProps = {
+type MenuOwnProps = {
   /** Trigger element cloned with the menu's event handlers and ARIA attributes. Omit it, or use `inline`, to render the menu in place. */
   trigger?: ReactElement;
   /** `MenuItem`, `MenuGroup`, and `SubMenu` children that make up the menu. */
@@ -130,16 +129,16 @@ export type MenuProps = {
    * row and horizontal menubar keys would not run on the trigger).
    */
   onMenubarEdgeNavigate?: (direction: 1 | -1) => void;
-} & BoxProps;
+};
+
+/** Props for {@link Menu}, including popup state, filtering, and nested-menu behavior. */
+export type MenuProps = Omit<BoxProps, keyof MenuOwnProps> & MenuOwnProps;
 
 /** Visual and ARIA role variants supported by {@link MenuItem}. */
 export type MenuItemVariant = 'default' | 'checkbox' | 'toggle' | 'divider';
 
 /** Props for {@link MenuItem}, a selectable row inside a {@link Menu}. */
-export type MenuItemProps = Omit<
-  BoxProps<'button'>,
-  'as' | 'ref' | 'onClick' | 'type'
-> &
+export type MenuItemProps = Omit<BoxProps, 'as' | 'ref' | 'onClick' | 'type'> &
   Omit<MenuVariantProps, 'iconBefore' | 'iconAfter'> & {
     /** Primary visible text, also used for typeahead and filtering unless `textValue` is supplied. */
     label?: string;
@@ -174,8 +173,7 @@ export type MenuItemProps = Omit<
     onClick?: (event: ReactMouseEvent<HTMLElement>) => void;
   };
 
-/** Props for {@link MenuGroup}, a labeled group of related menu children. */
-export type MenuGroupProps = BoxProps & {
+type MenuGroupOwnProps = {
   /** Optional group heading. */
   label?: string;
   /** Menu children shown only when at least one child matches the current filter. */
@@ -183,6 +181,10 @@ export type MenuGroupProps = BoxProps & {
   /** Adds a divider before the group. */
   divider?: boolean;
 };
+
+/** Props for {@link MenuGroup}, a labeled group of related menu children. */
+export type MenuGroupProps = Omit<BoxProps, keyof MenuGroupOwnProps> &
+  MenuGroupOwnProps;
 
 /** Props for {@link SubMenu}, a nested menu trigger and its child menu. */
 export type SubMenuProps = Omit<BoxProps, 'as'> &

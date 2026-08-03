@@ -22,7 +22,7 @@ import { type ListDensity, useListContext } from './listContext';
  * semantic element and button type are controlled by the component.
  */
 export type ListItemProps = Omit<
-  BoxProps<'button'>,
+  BoxProps,
   keyof ListItemVariantProps | 'as' | 'type' | 'href'
 > &
   Omit<ListItemVariantProps, 'selected' | 'iconBefore' | 'iconAfter'> & {
