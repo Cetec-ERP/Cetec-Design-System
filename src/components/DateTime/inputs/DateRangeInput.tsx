@@ -1,10 +1,4 @@
-import {
-  type ReactNode,
-  isValidElement,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
@@ -13,36 +7,50 @@ import {
   type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
-import { Button } from '~/components/Button';
 import { Icon, type IconNamesList } from '~/components/Icon';
-import { IconButton } from '~/components/IconButton';
 import { useFieldContext } from '~/system/context/FieldContext';
-import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../../Box';
-import { SegmentedDate } from '../../SegmentedInputs';
+import { SegmentedDate } from '../../SegmentedInputs/SegmentedDate';
+
+import { InputSlot } from './InputSlot';
 
 import type { DateFormat, DateRangeValue, DateValue } from '../helpers/types';
 
+/** Props for {@link DateRangeInput}, including range state and field slots. */
 export type DateRangeInputProps = Omit<
   BoxProps,
   keyof SegmentedFieldsVariantProps | 'children'
 > &
   Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
+    /** Identifier applied to the range container. */
     id?: string;
+    /** Controlled start and end dates. Pair with `onChange`. */
     value?: DateRangeValue | null;
+    /** Initial range when `value` is not provided. */
     defaultValue?: DateRangeValue | null;
+    /** Runs whenever either endpoint becomes complete or is cleared. */
     onChange?: (value: DateRangeValue | null) => void;
+    /** Segment order and separator convention shared by both endpoints. */
     dateFormat?: DateFormat;
+    /** Accessible name for the start-date segments. */
     startLabel?: string;
+    /** Accessible name for the end-date segments. */
     endLabel?: string;
+    /** Content before the range. Takes precedence over `iconBefore`. */
     before?: ReactNode;
+    /** Content after the range. Takes precedence over `iconAfter`. */
     after?: ReactNode;
+    /** Legacy icon rendered before the range when `before` is absent. */
     iconBefore?: IconNamesList;
+    /** Legacy icon rendered after the range when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
+    /** Prevents editing both endpoints. Overrides field context when provided. */
     disabled?: boolean;
+    /** Applies invalid styling. Overrides field context when provided. */
     invalid?: boolean;
     /** Reflected through to the segmented fields — lets a wrapping Menu/Picker show "active anchor" styling */
     open?: boolean;
@@ -54,6 +62,18 @@ export type DateRangeInputProps = Omit<
 
 const EMPTY_RANGE: DateRangeValue = { start: null, end: null };
 
+/**
+ * Renders start and end dates as two coordinated segmented fields.
+ *
+ * Each endpoint commits independently while the component preserves the other
+ * endpoint. Use `DateRangePicker` when a calendar menu and Apply/Cancel flow
+ * are also needed.
+ *
+ * @example
+ * ```tsx
+ * <DateRangeInput startLabel="Arrival" endLabel="Departure" />
+ * ```
+ */
 export const DateRangeInput = (props: DateRangeInputProps) => {
   const fieldContext = useFieldContext();
   const {
@@ -95,34 +115,6 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
   });
   const segmentClasses = segmentedInputs({ size });
   const [className, otherProps] = splitProps(rest);
-
-  const isButtonLikeSlot = (slot: ReactNode) =>
-    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
-
-  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
-    if (!slot) {
-      return null;
-    }
-
-    return (
-      <SlotContext.Provider
-        value={{
-          owner: 'DateRangeInput',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
-        <Box
-          className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
-        >
-          {slot}
-        </Box>
-      </SlotContext.Provider>
-    );
-  };
 
   // Composed range is tracked internally so an uncontrolled DateRangeInput
   // doesn't lose whichever endpoint was filled in first — each SegmentedDate
@@ -170,7 +162,17 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
       data-open={open || undefined}
       {...otherProps}
     >
-      {renderSlot(resolvedBefore, 'before')}
+      <InputSlot
+        owner="DateRangeInput"
+        placement="before"
+        slot={resolvedBefore}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
       <SegmentedDate
         label={startLabel}
         value={range.start}
@@ -201,7 +203,17 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
         onFocusWithin={onFocusWithin}
         onBlurWithin={onBlurWithin}
       />
-      {renderSlot(resolvedAfter, 'after')}
+      <InputSlot
+        owner="DateRangeInput"
+        placement="after"
+        slot={resolvedAfter}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
     </Box>
   );
 };

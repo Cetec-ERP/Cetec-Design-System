@@ -7,13 +7,13 @@ import { listItem as listItemRecipe } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Checkbox } from '../Checkbox';
-import { Divider } from '../Divider';
-import { Icon } from '../Icon';
-import { HighlightText } from '../List';
-import { Text } from '../Text';
-import { Toggle } from '../Toggle';
+import { Box, type BoxProps } from '../Box/Box';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Divider } from '../Divider/Divider';
+import { Icon } from '../Icon/Icon';
+import { HighlightText } from '../List/HighlightText';
+import { Text } from '../Text/Text';
+import { Toggle } from '../Toggle/Toggle';
 
 import {
   deriveItemTextValue,
@@ -26,6 +26,18 @@ import {
   useMenuRootContext,
 } from './context/menuContext';
 
+/**
+ * Renders an actionable row within a {@link Menu}.
+ *
+ * It renders a button by default, or an anchor when `href` is supplied. Arrow
+ * keys and typeahead participate in the parent menu's roving focus behavior.
+ * Use `variant="checkbox"` or `"toggle"` when `selected` is meaningful.
+ *
+ * @example
+ * ```tsx
+ * <MenuItem label="Duplicate" iconBefore="copy" onClick={duplicate} />
+ * ```
+ */
 export const MenuItem = (props: MenuItemProps) => {
   const {
     label,

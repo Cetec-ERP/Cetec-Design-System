@@ -1,4 +1,4 @@
-import { type ReactNode, isValidElement } from 'react';
+import type { ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
@@ -6,36 +6,50 @@ import {
   type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
-import { Button } from '~/components/Button';
 import { Icon, type IconNamesList } from '~/components/Icon';
-import { IconButton } from '~/components/IconButton';
 import { useFieldContext } from '~/system/context/FieldContext';
-import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../../Box';
-import { SegmentedTime } from '../../SegmentedInputs';
+import { SegmentedTime } from '../../SegmentedInputs/SegmentedTime';
+
+import { InputSlot } from './InputSlot';
 
 import type { TimeFormat, TimeValue } from '../helpers/types';
 
+/** Props for {@link TimeInput}, including segmented time state and field slots. */
 export type TimeInputProps = Omit<
   BoxProps,
   keyof SegmentedFieldsVariantProps | 'children'
 > &
   Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
+    /** Identifier forwarded to the segmented time group. */
     id?: string;
+    /** Controlled 24-hour time value. Pair with `onChange`. */
     value?: TimeValue | null;
+    /** Initial time when `value` is not provided. */
     defaultValue?: TimeValue | null;
+    /** Runs when the time segments form a complete value. */
     onChange?: (value: TimeValue | null) => void;
+    /** Display cycle; emitted values always use 24-hour hours. */
     timeFormat?: TimeFormat;
+    /** Minute increment used by keyboard stepping. */
     minuteStep?: number;
+    /** Accessible name for the segmented time group. */
     label?: string;
+    /** Content before the time field. Takes precedence over `iconBefore`. */
     before?: ReactNode;
+    /** Content after the time field. Takes precedence over `iconAfter`. */
     after?: ReactNode;
+    /** Legacy icon rendered before the field when `before` is absent. */
     iconBefore?: IconNamesList;
+    /** Legacy icon rendered after the field when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
+    /** Prevents editing. Overrides field context when provided. */
     disabled?: boolean;
+    /** Applies invalid styling. Overrides field context when provided. */
     invalid?: boolean;
     /** Reflected through to the segmented field — lets a wrapping Menu/Picker show "active anchor" styling */
     open?: boolean;
@@ -45,6 +59,17 @@ export type TimeInputProps = Omit<
     onBlurWithin?: (relatedTarget: Node | null) => void;
   };
 
+/**
+ * Renders a segmented time field with optional leading and trailing content.
+ *
+ * Display can use 12- or 24-hour time while values remain normalized to
+ * 24-hour hours. Use `TimePicker` when a time-selection menu is also needed.
+ *
+ * @example
+ * ```tsx
+ * <TimeInput label="Start time" defaultValue={{ hour: 9, minute: 30 }} />
+ * ```
+ */
 export const TimeInput = (props: TimeInputProps) => {
   const fieldContext = useFieldContext();
   const {
@@ -85,34 +110,6 @@ export const TimeInput = (props: TimeInputProps) => {
   });
   const [className, otherProps] = splitProps(rest);
 
-  const isButtonLikeSlot = (slot: ReactNode) =>
-    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
-
-  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
-    if (!slot) {
-      return null;
-    }
-
-    return (
-      <SlotContext.Provider
-        value={{
-          owner: 'TimeInput',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
-        <Box
-          className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
-        >
-          {slot}
-        </Box>
-      </SlotContext.Provider>
-    );
-  };
-
   return (
     <Box
       className={cx(classes.container, className)}
@@ -123,7 +120,17 @@ export const TimeInput = (props: TimeInputProps) => {
       data-open={open || undefined}
       {...otherProps}
     >
-      {renderSlot(resolvedBefore, 'before')}
+      <InputSlot
+        owner="TimeInput"
+        placement="before"
+        slot={resolvedBefore}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
       <SegmentedTime
         flex="1"
         minW="0"
@@ -139,7 +146,17 @@ export const TimeInput = (props: TimeInputProps) => {
         onFocusWithin={onFocusWithin}
         onBlurWithin={onBlurWithin}
       />
-      {renderSlot(resolvedAfter, 'after')}
+      <InputSlot
+        owner="TimeInput"
+        placement="after"
+        slot={resolvedAfter}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
     </Box>
   );
 };

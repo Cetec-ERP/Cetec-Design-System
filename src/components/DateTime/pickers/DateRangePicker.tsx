@@ -9,6 +9,7 @@ import { DateRangeMenu } from '../menus/DateRangeMenu';
 import type { DateRangeValue, DateValue } from '../helpers/types';
 import type { Placement } from '@floating-ui/react';
 
+/** Props for {@link DateRangePicker}, combining range input and calendar menu. */
 export type DateRangePickerProps = Pick<
   DateRangeInputProps,
   | 'id'
@@ -24,19 +25,43 @@ export type DateRangePickerProps = Pick<
   | 'dateFormat'
   | 'size'
 > & {
+  /** Controlled start and end dates. Pair with `onChange`. */
   value?: DateRangeValue | null;
+  /** Initial range when `value` is not provided. */
   defaultValue?: DateRangeValue | null;
+  /** Runs for typed endpoint changes and applied calendar drafts. */
   onChange?: (value: DateRangeValue | null) => void;
+  /** Earliest selectable date for both calendars. */
   minDate?: DateValue;
+  /** Latest selectable date for both calendars. */
   maxDate?: DateValue;
+  /** Floating UI placement of the calendar menu. */
   placement?: Placement;
+  /** Controlled menu visibility. Pair with `onOpenChange`. */
   open?: boolean;
+  /**
+   * Initial menu visibility when `open` is not provided.
+   *
+   * @default false
+   */
   defaultOpen?: boolean;
+  /** Runs when interaction requests that the menu open or close. */
   onOpenChange?: (open: boolean) => void;
 };
 
 const EMPTY_RANGE: DateRangeValue = { start: null, end: null };
 
+/**
+ * Combines segmented range entry with a two-calendar selection menu.
+ *
+ * Typed endpoints commit immediately. Calendar choices remain a draft until
+ * Apply is pressed; Cancel restores the currently committed range.
+ *
+ * @example
+ * ```tsx
+ * <DateRangePicker startLabel="Arrival" endLabel="Departure" />
+ * ```
+ */
 export const DateRangePicker = (props: DateRangePickerProps) => {
   const {
     id,

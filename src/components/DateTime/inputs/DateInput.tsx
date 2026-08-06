@@ -1,4 +1,4 @@
-import { type ReactNode, isValidElement } from 'react';
+import type { ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
@@ -6,35 +6,48 @@ import {
   type SegmentedFieldsVariantProps,
 } from '@styled-system/recipes';
 
-import { Button } from '~/components/Button';
 import { Icon, type IconNamesList } from '~/components/Icon';
-import { IconButton } from '~/components/IconButton';
 import { useFieldContext } from '~/system/context/FieldContext';
-import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../../Box';
-import { SegmentedDate } from '../../SegmentedInputs';
+import { SegmentedDate } from '../../SegmentedInputs/SegmentedDate';
+
+import { InputSlot } from './InputSlot';
 
 import type { DateFormat, DateValue } from '../helpers/types';
 
+/** Props for {@link DateInput}, including segmented date state and field slots. */
 export type DateInputProps = Omit<
   BoxProps,
   keyof SegmentedFieldsVariantProps | 'children'
 > &
   Omit<SegmentedFieldsVariantProps, 'field' | 'range' | 'before' | 'after'> & {
+    /** Identifier forwarded to the segmented date group. */
     id?: string;
+    /** Controlled date. Pair with `onChange`. */
     value?: DateValue | null;
+    /** Initial date when `value` is not provided. */
     defaultValue?: DateValue | null;
+    /** Runs when the segmented date becomes complete or is cleared. */
     onChange?: (value: DateValue | null) => void;
+    /** Segment order and separator convention. */
     dateFormat?: DateFormat;
+    /** Accessible name for the segmented date group. */
     label?: string;
+    /** Content before the date field. Takes precedence over `iconBefore`. */
     before?: ReactNode;
+    /** Content after the date field. Takes precedence over `iconAfter`. */
     after?: ReactNode;
+    /** Legacy icon rendered before the field when `before` is absent. */
     iconBefore?: IconNamesList;
+    /** Legacy icon rendered after the field when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
+    /** Prevents editing. Overrides field context when provided. */
     disabled?: boolean;
+    /** Applies invalid styling. Overrides field context when provided. */
     invalid?: boolean;
     /** Reflected through to the segmented field — lets a wrapping Menu/Picker show "active anchor" styling */
     open?: boolean;
@@ -44,6 +57,17 @@ export type DateInputProps = Omit<
     onBlurWithin?: (relatedTarget: Node | null) => void;
   };
 
+/**
+ * Renders a segmented date field with optional leading and trailing content.
+ *
+ * The field accepts keyboard entry and stepping through year, month, and day
+ * segments. Use `DatePicker` when a calendar menu is also needed.
+ *
+ * @example
+ * ```tsx
+ * <DateInput label="Invoice date" defaultValue={{ year: 2026, month: 8, day: 3 }} />
+ * ```
+ */
 export const DateInput = (props: DateInputProps) => {
   const fieldContext = useFieldContext();
   const {
@@ -83,34 +107,6 @@ export const DateInput = (props: DateInputProps) => {
   });
   const [className, otherProps] = splitProps(rest);
 
-  const isButtonLikeSlot = (slot: ReactNode) =>
-    isValidElement(slot) && (slot.type === Button || slot.type === IconButton);
-
-  const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
-    if (!slot) {
-      return null;
-    }
-
-    return (
-      <SlotContext.Provider
-        value={{
-          owner: 'DateInput',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
-        <Box
-          className={isButtonLikeSlot(slot) ? classes.buttonSlot : classes.slot}
-        >
-          {slot}
-        </Box>
-      </SlotContext.Provider>
-    );
-  };
-
   return (
     <Box
       className={cx(classes.container, className)}
@@ -121,7 +117,17 @@ export const DateInput = (props: DateInputProps) => {
       data-open={open || undefined}
       {...otherProps}
     >
-      {renderSlot(resolvedBefore, 'before')}
+      <InputSlot
+        owner="DateInput"
+        placement="before"
+        slot={resolvedBefore}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
       <SegmentedDate
         id={id}
         label={label}
@@ -134,7 +140,17 @@ export const DateInput = (props: DateInputProps) => {
         onFocusWithin={onFocusWithin}
         onBlurWithin={onBlurWithin}
       />
-      {renderSlot(resolvedAfter, 'after')}
+      <InputSlot
+        owner="DateInput"
+        placement="after"
+        slot={resolvedAfter}
+        size={size}
+        disabled={disabled}
+        error={error}
+        invalid={invalid}
+        buttonSlotClassName={classes.buttonSlot}
+        slotClassName={classes.slot}
+      />
     </Box>
   );
 };

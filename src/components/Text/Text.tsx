@@ -7,14 +7,32 @@ import { text, type TextVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '~/components/Box';
 import { splitProps } from '~/utils/splitProps';
 
+/** Props accepted by {@link Text}. */
 export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
   TextVariantProps & {
+    /** Text or inline content to render. */
     children: string | ReactNode;
+    /** Semantic element or component used for the text. */
+    /** @default "span" */
     as?: ElementType;
+    /** Explicit ARIA role when the rendered element does not provide it. */
     role?: string;
+    /** Adds the text to sequential keyboard focus when a composite widget requires it. */
     tabIndex?: number;
   };
 
+/**
+ * Renders design-system typography without imposing document semantics.
+ *
+ * The component renders a `span` by default. Choose `as` based on the content's
+ * semantic role; use `Heading` for document headings and `Label` for form
+ * labels.
+ *
+ * @example
+ * ```tsx
+ * <Text as="p" size="md">Account details</Text>
+ * ```
+ */
 export const Text = (props: TextProps) => {
   const {
     as = 'span',

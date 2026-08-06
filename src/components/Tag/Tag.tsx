@@ -3,18 +3,39 @@ import { tag, type TagVariantProps } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Icon, type IconNamesList } from '../Icon';
+import { Box, type BoxProps } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
 
+import type { IconNamesList } from '../Icon/icons';
+
+/** Props accepted by {@link Tag}. */
 export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
   Omit<TagVariantProps, 'iconBefore' | 'iconAfter'> & {
+    /** Visible tag label. */
     children: string;
+    /** Decorative icon shown before the label. */
     iconBefore?: IconNamesList;
+    /** Decorative icon shown after the label. */
     iconAfter?: IconNamesList;
+    /** Visual emphasis treatment. */
+    /** @default "default" */
     variant?: TagVariantProps['variant'];
+    /** Color family used by the tag treatment. */
+    /** @default "slate" */
     hue?: TagVariantProps['hue'];
   };
 
+/**
+ * Displays a compact, non-interactive category or status label.
+ *
+ * Use `Chip` when the item can be selected or dismissed. Icons are decorative,
+ * so the text must communicate the tag's meaning.
+ *
+ * @example
+ * ```tsx
+ * <Tag hue="green">Approved</Tag>
+ * ```
+ */
 export const Tag = (props: TagProps) => {
   const { variant, hue, iconBefore, iconAfter, children, ...rest } = props;
   const [className, otherProps] = splitProps(rest);

@@ -1,3 +1,4 @@
+/** Runtime catalog of icon names accepted by `Icon`. */
 export const IconNames = {
   'aa-placeholder': 'aa-placeholder',
   alarm: 'alarm',

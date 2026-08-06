@@ -20,24 +20,48 @@ import type {
 
 type SegmentedInputVariantProps = Omit<SegmentedInputsVariantProps, 'bare'>;
 
+/** Props for {@link SegmentedTime}, a keyboard-editable time field. */
 export type SegmentedTimeProps = Omit<
   BoxProps,
   keyof SegmentedInputsVariantProps | 'children' | 'onChange' | 'value'
 > &
   SegmentedInputVariantProps & {
+    /** Ref attached to the segmented group container. */
     ref?: Ref<HTMLDivElement>;
+    /** Controlled 24-hour time value. Pair with `onChange`. */
     value?: TimeValue | null;
+    /** Initial time when `value` is not provided. */
     defaultValue?: TimeValue | null;
+    /** Runs when the hour and minute segments form a complete time. */
     onChange?: (value: TimeValue | null) => void;
+    /**
+     * Display cycle; emitted values always use 24-hour hours.
+     *
+     * @default '12'
+     */
     timeFormat?: TimeFormat;
+    /**
+     * Minute increment used by keyboard stepping. Unsupported values are normalized.
+     *
+     * @default 1
+     */
     minuteStep?: number;
+    /** Overrides content or spacing around time and meridiem separators. */
     separators?: {
       time?: SeparatorConfig;
       meridiem?: SeparatorConfig;
     };
+    /**
+     * Accessible name for the segmented group.
+     *
+     * @default 'Time'
+     */
     label?: string;
+    /** Prevents editing and keyboard interaction. */
     disabled?: boolean;
+    /** Runs when focus enters any time segment. */
     onFocusWithin?: () => void;
+    /** Runs when focus leaves a time segment and provides the next focused node. */
     onBlurWithin?: (relatedTarget: Node | null) => void;
   };
 
@@ -53,6 +77,18 @@ const to24Hour = (hour12: number, meridiem: string) => {
   return hour12 === 12 ? 12 : hour12 + 12;
 };
 
+/**
+ * Edits a time as separate hour, minute, and optional meridiem segments.
+ *
+ * Display may use 12- or 24-hour time, but values always store hours from 0
+ * through 23. Use `TimeInput` when leading or trailing slots and field
+ * validation styling are needed.
+ *
+ * @example
+ * ```tsx
+ * <SegmentedTime defaultValue={{ hour: 13, minute: 30 }} timeFormat="12" />
+ * ```
+ */
 export const SegmentedTime = (props: SegmentedTimeProps) => {
   const {
     value,

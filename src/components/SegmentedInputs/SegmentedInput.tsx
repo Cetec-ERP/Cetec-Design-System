@@ -37,21 +37,50 @@ import type {
 
 type SegmentedInputVariantProps = Omit<SegmentedInputsVariantProps, 'bare'>;
 
+/** Props for the low-level {@link SegmentedInput} composition primitive. */
 export type SegmentedInputProps = Omit<
   BoxProps,
   keyof SegmentedInputsVariantProps | 'children' | 'onChange' | 'value'
 > &
   SegmentedInputVariantProps & {
+    /** Ref attached to the segment group container. */
     ref?: Ref<HTMLDivElement>;
+    /** Ordered editable segments and visual separators. */
     items: readonly SegmentedInputItem[];
+    /** Accessible name announced for the complete group. */
     label: string;
+    /** Prevents editing and keyboard interaction. Overrides field context. */
     disabled?: boolean;
+    /** Controlled values keyed by segment identifier. */
     value?: SegmentedInputValueMap;
+    /** Runs after a segment changes with the complete next value map. */
     onChange?: (change: SegmentedInputChange) => void;
+    /** Runs when focus enters any editable segment. */
     onFocusWithin?: () => void;
+    /** Runs when focus leaves a segment and provides the next focused node. */
     onBlurWithin?: (relatedTarget: Node | null) => void;
   };
 
+/**
+ * Renders a keyboard-editable group of numeric and choice segments.
+ *
+ * This is the low-level primitive used by `SegmentedDate` and
+ * `SegmentedTime`. Each segment uses spinbutton semantics; arrow keys step
+ * values, number or choice keys enter values, and focus advances between
+ * completed numeric segments.
+ *
+ * @example
+ * ```tsx
+ * <SegmentedInput
+ *   label="Quantity"
+ *   items={[{
+ *     type: 'segment', kind: 'numeric', id: 'quantity',
+ *     label: 'Quantity', placeholder: '0', value: null,
+ *     min: 0, max: 99, digits: 2,
+ *   }]}
+ * />
+ * ```
+ */
 export const SegmentedInput = (props: SegmentedInputProps) => {
   const fieldContext = useFieldContext();
   const {

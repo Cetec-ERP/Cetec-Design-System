@@ -12,14 +12,28 @@ import { getMinuteValues, to12Hour, to24Hour } from '../helpers/dateTimeUtils';
 
 import type { Meridiem, TimeFormat, TimeValue } from '../helpers/types';
 
+/** Props for {@link TimeMenu}, including selected time and display cycle. */
 export type TimeMenuProps = Omit<
   MenuProps,
   'children' | 'onChange' | 'value'
 > & {
+  /** Selected 24-hour time reflected in the menu columns. */
   value?: TimeValue | null;
+  /** Runs immediately when an hour, minute, or meridiem choice is selected. */
   onChange?: (value: TimeValue | null) => void;
+  /**
+   * Display cycle; emitted values always use 24-hour hours.
+   *
+   * @default '12'
+   */
   timeFormat?: TimeFormat;
+  /**
+   * Interval used to generate minute choices.
+   *
+   * @default 1
+   */
   minuteStep?: number;
+  /** Prevents opening or selection and returns only the trigger. */
   disabled?: boolean;
 };
 
@@ -50,6 +64,17 @@ const scrollSelectedIntoView = (colRef: RefObject<HTMLDivElement | null>) => {
   col.scrollTop = Math.min(Math.max(targetScrollTop, 0), maxScrollTop);
 };
 
+/**
+ * Presents hour, minute, and optional meridiem selection columns in a Menu.
+ *
+ * Each selection commits immediately while the menu remains open. Supply a
+ * `trigger`, or set inherited `inline` to render the columns in normal flow.
+ *
+ * @example
+ * ```tsx
+ * <TimeMenu trigger={<Button>Choose time</Button>} onChange={setTime} />
+ * ```
+ */
 export const TimeMenu = (props: TimeMenuProps) => {
   const {
     trigger,

@@ -9,11 +9,12 @@ import type {
 import { cx } from '@styled-system/css';
 import { menu } from '@styled-system/recipes';
 
-import type { MenuDensity } from '~/components/Menu';
+import type { MenuDensity } from '~/components/Menu/context/menuContext';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { List, ListItem } from '../List';
+import { Box } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
+import { List } from '../List/List';
+import { ListItem } from '../List/ListItem';
 
 import type { AnyAutocompleteValue, AutocompleteOptionData } from './types';
 
@@ -70,6 +71,7 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
   const menuClasses = menu({ density });
   const showInitialLoading = loading && items.length === 0;
   const showNoOptions = !loading && items.length === 0;
+  const selectedValueSet = new Set(selectedValues);
 
   return (
     <List
@@ -89,7 +91,7 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
     >
       {items.map((option, index) => {
         const selected = multiple
-          ? selectedValues.includes(option.value)
+          ? selectedValueSet.has(option.value)
           : value === option.value;
 
         return (

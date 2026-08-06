@@ -8,6 +8,7 @@ import type { Placement } from '@floating-ui/react';
 
 type ViewDate = { year: number; month: number };
 
+/** Props for {@link DatePicker}, combining a segmented input and calendar menu. */
 export type DatePickerProps = Pick<
   DateInputProps,
   | 'id'
@@ -22,20 +23,47 @@ export type DatePickerProps = Pick<
   | 'dateFormat'
   | 'size'
 > & {
+  /** Controlled selected date. Pair with `onChange`. */
   value?: DateValue | null;
+  /** Initial selected date when `value` is not provided. */
   defaultValue?: DateValue | null;
+  /** Runs when typing or calendar selection commits a date. */
   onChange?: (value: DateValue | null) => void;
+  /** Earliest selectable calendar date. */
   minDate?: DateValue;
+  /** Latest selectable calendar date. */
   maxDate?: DateValue;
+  /** Controlled visible calendar month. */
   viewDate?: ViewDate;
+  /** Initial visible month when `viewDate` is not provided. */
   defaultViewDate?: ViewDate;
+  /** Runs when calendar navigation requests a new visible month. */
   onViewDateChange?: (viewDate: ViewDate) => void;
+  /** Floating UI placement of the calendar menu. */
   placement?: Placement;
+  /** Controlled menu visibility. Pair with `onOpenChange`. */
   open?: boolean;
+  /**
+   * Initial menu visibility when `open` is not provided.
+   *
+   * @default false
+   */
   defaultOpen?: boolean;
+  /** Runs when interaction requests that the menu open or close. */
   onOpenChange?: (open: boolean) => void;
 };
 
+/**
+ * Combines keyboard date entry with a calendar selection menu.
+ *
+ * Focusing the segmented input opens the menu. Typed dates and calendar
+ * selections update the same controlled or uncontrolled value.
+ *
+ * @example
+ * ```tsx
+ * <DatePicker label="Due date" value={date} onChange={setDate} />
+ * ```
+ */
 export const DatePicker = (props: DatePickerProps) => {
   const {
     id,

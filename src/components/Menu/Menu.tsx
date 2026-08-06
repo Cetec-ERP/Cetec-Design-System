@@ -46,9 +46,9 @@ import {
 } from '~/system/floating-ui/floating';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
 
 import {
   hasMatchingItems,
@@ -135,6 +135,21 @@ const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
   });
 };
 
+/**
+ * Displays a keyboard-navigable action list from a trigger or inline in a layout.
+ *
+ * Use `MenuItem`, `MenuGroup`, and `SubMenu` as children. A triggered menu
+ * restores the trigger relationship through Floating UI and dismisses on Escape
+ * or outside press. Use an inline menu when the list should always be visible.
+ *
+ * @example
+ * ```tsx
+ * <Menu trigger={<Button>Actions</Button>}>
+ *   <MenuItem label="Edit" onClick={edit} />
+ *   <MenuItem label="Archive" onClick={archive} />
+ * </Menu>
+ * ```
+ */
 export const Menu = (props: MenuProps) => {
   const nodeId = useFloatingNodeId();
   const {

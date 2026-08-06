@@ -1,5 +1,6 @@
 import type { IconNamesList } from '../Icon';
 
+/** Selected value shape for single- or multiple-selection `Autocomplete`. */
 export type AutocompleteValue<Multiple extends boolean = false> =
   Multiple extends true
     ? string[]
@@ -9,14 +10,17 @@ export type AutocompleteValue<Multiple extends boolean = false> =
 
 export type AnyAutocompleteValue = string | string[] | null;
 
+/** User actions that can change the selected Autocomplete value. */
 export type AutocompleteChangeReason =
   | 'select-option'
   | 'remove-option'
   | 'clear'
   | 'create-option';
 
+/** Actions that can change the text displayed in the Autocomplete input. */
 export type AutocompleteInputChangeReason = 'input' | 'selection' | 'clear';
 
+/** Interactions that can request an Autocomplete listbox visibility change. */
 export type AutocompleteOpenChangeReason =
   | 'input'
   | 'focus'

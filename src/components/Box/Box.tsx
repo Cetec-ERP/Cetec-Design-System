@@ -11,7 +11,8 @@ import type { SystemStyleObject } from '@styled-system/types';
 import { splitProps } from '~/utils/splitProps';
 
 type AsProp<T extends ElementType> = {
-  // Chooses which element/component Box renders as.
+  /** Element or component rendered by the polymorphic component. */
+  /** @default "div" */
   as?: T;
 };
 
@@ -19,6 +20,10 @@ type AsProp<T extends ElementType> = {
 type PropsToOmit<T extends ElementType, P extends object> = keyof (AsProp<T> &
   P);
 
+/**
+ * Combines custom props with the compatible native props and ref for the
+ * element selected by `as`.
+ */
 export type PolymorphicComponentProps<
   T extends ElementType,
   Props extends object = object,
@@ -27,17 +32,25 @@ export type PolymorphicComponentProps<
 // Box's design-system styling surface (tokens, recipe variants, etc.).
 type BoxOwnProps = SystemStyleObject & BoxVariantProps;
 
-// Final polymorphic Box props:
-// - `as` decides which element props are legal
-// - BoxOwnProps adds Panda system props on top
+/** Props accepted by {@link Box}, including Panda style and native element props. */
 export type BoxProps<T extends ElementType = ElementType> =
   PolymorphicComponentProps<T, BoxOwnProps>;
 
 /**
- * Our base polymorphic component, which provides the correct default props based on the rendered element type.
- * Note: in React 19+, ref is passed through as a prop, and onClick is inherited based on the element type.
+ * Renders a token-aware polymorphic foundation for design-system components.
+ *
+ * `Box` renders a `div` by default. Set `as` to use another semantic element or
+ * component; compatible native props and the React 19 `ref` prop follow that
+ * selection. Prefer a semantic component when one already expresses the
+ * intended behavior.
+ *
+ * @example
+ * ```tsx
+ * <Box as="section" p="16" aria-labelledby="summary-heading">
+ *   Summary content
+ * </Box>
+ * ```
  */
-
 export const Box = <T extends ElementType = 'div'>(props: BoxProps<T>) => {
   const { as, ...rest } = props;
   // Default to a semantic neutral container when `as` is not provided.

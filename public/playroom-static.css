@@ -19320,8 +19320,8 @@
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
-  .cetec-c_icon\.info {
-    color: var(--cetec-colors-icon-info);
+  .cetec-fill_icon\.info {
+    fill: var(--cetec-colors-icon-info);
   }
 
   .cetec-c_border\.disabled {
@@ -24946,6 +24946,10 @@
     color: var(--cetec-colors-icon-danger-inverse);
   }
 
+  .cetec-c_icon\.info {
+    color: var(--cetec-colors-icon-info);
+  }
+
   .cetec-c_icon\.cta {
     color: var(--cetec-colors-icon-cta);
   }
@@ -28388,10 +28392,6 @@
 
   .cetec-fill_icon\.danger\.inverse {
     fill: var(--cetec-colors-icon-danger-inverse);
-  }
-
-  .cetec-fill_icon\.info {
-    fill: var(--cetec-colors-icon-info);
   }
 
   .cetec-fill_icon\.cta {

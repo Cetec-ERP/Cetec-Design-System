@@ -8,6 +8,7 @@ import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
 
+/** A contiguous segment of text and whether it matches the search query. */
 type HighlightPart = {
   text: string;
   match: boolean;
@@ -25,16 +26,38 @@ const getHighlightParts = (value: string, query: string): HighlightPart[] => {
   }));
 };
 
+/** Props for {@link HighlightText}. */
 export type HighlightTextProps = Omit<
   BoxProps,
   keyof HighlightTextVariantProps
 > &
   HighlightTextVariantProps & {
+    /** Text to render and search within. */
     value: string;
+    /** Case-insensitive literal text to mark within `value`. */
     query: string;
+    /**
+     * When false, returns `value` without creating highlight markup or applying
+     * styling props.
+     *
+     * @default true
+     */
     enabled?: boolean;
   };
 
+/**
+ * Renders case-insensitive literal matches in text using semantic `mark`
+ * elements.
+ *
+ * Empty or whitespace-only queries, and `enabled={false}`, render the original
+ * string without wrapper markup. Use it directly for custom content; default
+ * {@link ListItem} content uses it automatically when highlighting is enabled.
+ *
+ * @example
+ * ```tsx
+ * <HighlightText value="Account settings" query="account" />
+ * ```
+ */
 export const HighlightText = (props: HighlightTextProps) => {
   const { value, query, enabled = true, ...rest } = props;
 

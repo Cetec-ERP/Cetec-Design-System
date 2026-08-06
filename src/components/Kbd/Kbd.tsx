@@ -8,7 +8,9 @@ import { Tooltip } from '../Tooltip';
 
 import { getKbdLabel, isSpecialSymbol, type KbdValue } from './kbdUtils';
 
+/** Props accepted by {@link Kbd}. */
 export type KbdProps = Omit<BoxProps, 'children'> & {
+  /** Ordered key labels that make up the shortcut. */
   keys: KbdValue[];
 };
 
@@ -16,30 +18,42 @@ const defaultClasses = kbd({});
 const symbolClasses = kbd({ variant: 'symbol' });
 
 /**
- * Used to display keyboard shortcuts.
- * Supported special symbols: ⌘ command, ⌥ option, ⌃ control, ⇪ shift,
- * ⎋ escape, ⌫ delete, ↩ return, ⇥ tab, ← left, → right, ↑ up, ↓ down.
- * Example: <Kbd keys={['⌘', 'K']} />
+ * Displays a keyboard shortcut as a group of native `kbd` elements.
+ *
+ * Known symbols receive readable tooltip labels: ⌘ command, ⌥ option,
+ * ⌃ control, ⇪ shift, ⎋ escape, ⌫ delete, ↩ return, ⇥ tab, and the four arrow
+ * symbols. `Kbd` describes a shortcut; it is not an interactive control.
+ *
+ * @example
+ * ```tsx
+ * <Kbd keys={['⌘', 'K']} />
+ * ```
  */
 export const Kbd = (props: KbdProps) => {
   const { keys, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
   const tooltipText = keys.map(getKbdLabel).join(' + ');
+  const keyOccurrences = new Map<KbdValue, number>();
+  const renderedKeys = keys.map((keyValue) => {
+    const occurrence = keyOccurrences.get(keyValue) ?? 0;
+    keyOccurrences.set(keyValue, occurrence + 1);
+    return { id: `${keyValue}-${occurrence}`, value: keyValue };
+  });
   const content = (
     <Box
       as="span"
       className={cx(defaultClasses.kbdGroup, className)}
       {...otherProps}
     >
-      {keys.map((keyValue, index) => (
+      {renderedKeys.map(({ id, value }) => (
         <Box
           as="kbd"
-          key={`${keyValue}-${index}`}
+          key={id}
           className={
-            isSpecialSymbol(keyValue) ? symbolClasses.key : defaultClasses.key
+            isSpecialSymbol(value) ? symbolClasses.key : defaultClasses.key
           }
         >
-          {keyValue}
+          {value}
         </Box>
       ))}
     </Box>

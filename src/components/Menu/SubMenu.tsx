@@ -40,10 +40,10 @@ import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { HighlightText } from '../List';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
+import { HighlightText } from '../List/HighlightText';
+import { Text } from '../Text/Text';
 
 import {
   deriveItemTextValue,
@@ -63,6 +63,20 @@ import {
   navigateListMainAxisLoop,
 } from './utils/navigateListMainAxis';
 
+/**
+ * Opens nested menu content from a row in a parent {@link Menu}.
+ *
+ * Hover submenus open as positioned flyouts; `interaction="digin"` replaces
+ * the parent level in the same panel. Arrow Right opens a flyout and Arrow Left
+ * returns focus to its trigger. Filtering also searches nested children.
+ *
+ * @example
+ * ```tsx
+ * <SubMenu label="More actions">
+ *   <MenuItem label="Duplicate" />
+ * </SubMenu>
+ * ```
+ */
 export const SubMenu = (props: SubMenuProps) => {
   const nodeId = useFloatingNodeId();
   const parentId = useFloatingParentNodeId();

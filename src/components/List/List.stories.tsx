@@ -21,6 +21,9 @@ const items = [
   },
   { id: 'integrations', label: 'Integrations', desc: 'Connect external tools' },
 ];
+const repeatedItems = ['first', 'second'].flatMap((copy) =>
+  items.map((item) => ({ ...item, instanceId: `${copy}-${item.id}` })),
+);
 
 const meta = {
   title: 'Components/List',
@@ -148,9 +151,9 @@ const FloatingSearchBarExample = () => {
         query={query}
         highlightMatches
       >
-        {items.concat(items).map((item, index) => (
+        {repeatedItems.map((item, index) => (
           <ListItem
-            key={`${item.id}-${index}`}
+            key={item.instanceId}
             selected={index === 0}
             iconAfter="arrow-right"
             label={item.label}

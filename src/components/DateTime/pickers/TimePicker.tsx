@@ -6,6 +6,7 @@ import { TimeMenu } from '../menus/TimeMenu';
 import type { TimeValue } from '../helpers/types';
 import type { Placement } from '@floating-ui/react';
 
+/** Props for {@link TimePicker}, combining segmented entry and a time menu. */
 export type TimePickerProps = Pick<
   TimeInputProps,
   | 'id'
@@ -20,16 +21,39 @@ export type TimePickerProps = Pick<
   | 'timeFormat'
   | 'size'
 > & {
+  /** Controlled 24-hour time value. Pair with `onChange`. */
   value?: TimeValue | null;
+  /** Initial time when `value` is not provided. */
   defaultValue?: TimeValue | null;
+  /** Runs when typing or menu selection commits a time. */
   onChange?: (value: TimeValue | null) => void;
+  /** Minute interval used by segmented stepping and menu choices. */
   minuteStep?: number;
+  /** Floating UI placement of the time menu. */
   placement?: Placement;
+  /** Controlled menu visibility. Pair with `onOpenChange`. */
   open?: boolean;
+  /**
+   * Initial menu visibility when `open` is not provided.
+   *
+   * @default false
+   */
   defaultOpen?: boolean;
+  /** Runs when interaction requests that the menu open or close. */
   onOpenChange?: (open: boolean) => void;
 };
 
+/**
+ * Combines keyboard time entry with hour and minute selection columns.
+ *
+ * Focusing the segmented input opens the menu. Input and menu interactions
+ * update the same value, normalized to 24-hour hours.
+ *
+ * @example
+ * ```tsx
+ * <TimePicker label="Start time" value={time} onChange={setTime} />
+ * ```
+ */
 export const TimePicker = (props: TimePickerProps) => {
   const {
     id,

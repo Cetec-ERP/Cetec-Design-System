@@ -11,6 +11,7 @@ import type { Placement } from '@floating-ui/react';
 
 type ViewDate = { year: number; month: number };
 
+/** Props for {@link DateTimePicker}, combining segmented entry and menu. */
 export type DateTimePickerProps = Pick<
   DateTimeInputProps,
   | 'id'
@@ -27,23 +28,51 @@ export type DateTimePickerProps = Pick<
   | 'timeFormat'
   | 'size'
 > & {
+  /** Controlled combined date and time. Pair with `onChange`. */
   value?: DateTimeValue | null;
+  /** Initial combined value when `value` is not provided. */
   defaultValue?: DateTimeValue | null;
+  /** Runs for typed changes and applied menu drafts. */
   onChange?: (value: DateTimeValue | null) => void;
+  /** Minute interval used by segmented stepping and menu choices. */
   minuteStep?: number;
+  /** Earliest selectable calendar date. */
   minDate?: DateValue;
+  /** Latest selectable calendar date. */
   maxDate?: DateValue;
+  /** Controlled visible calendar month. */
   viewDate?: ViewDate;
+  /** Initial visible month when `viewDate` is not provided. */
   defaultViewDate?: ViewDate;
+  /** Runs when calendar navigation requests a new visible month. */
   onViewDateChange?: (viewDate: ViewDate) => void;
+  /** Floating UI placement of the date-time menu. */
   placement?: Placement;
+  /** Controlled menu visibility. Pair with `onOpenChange`. */
   open?: boolean;
+  /**
+   * Initial menu visibility when `open` is not provided.
+   *
+   * @default false
+   */
   defaultOpen?: boolean;
+  /** Runs when interaction requests that the menu open or close. */
   onOpenChange?: (open: boolean) => void;
 };
 
 const EMPTY_VALUE: DateTimeValue = { date: null, time: null };
 
+/**
+ * Combines segmented date-time entry with a calendar and time menu.
+ *
+ * Typed portions commit immediately. Menu choices remain a draft until Apply
+ * is pressed; Cancel restores the currently committed value.
+ *
+ * @example
+ * ```tsx
+ * <DateTimePicker dateLabel="Due date" timeLabel="Due time" />
+ * ```
+ */
 export const DateTimePicker = (props: DateTimePickerProps) => {
   const {
     id,

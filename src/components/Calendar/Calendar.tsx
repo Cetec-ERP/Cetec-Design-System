@@ -128,16 +128,202 @@ function getDayAriaLabel(
   return labels.join(', ');
 }
 
+type CalendarClasses = ReturnType<typeof calendar>;
+
+type CalendarCellProps = {
+  ariaLabel: string;
+  classes: CalendarClasses;
+  disabled: boolean;
+  label: string | number;
+  onClick: () => void;
+  onKeyDown?: (event: KeyboardEvent) => void;
+  state: CellState;
+};
+
+const CalendarCell = ({
+  ariaLabel,
+  classes,
+  disabled,
+  label,
+  onClick,
+  onKeyDown,
+  state,
+}: CalendarCellProps) => (
+  <Button
+    role="gridcell"
+    variant={getCellVariant(state)}
+    className={classes.day}
+    fontSize="14"
+    fontVariant="mono"
+    data-today={state.isToday || undefined}
+    data-range-start={state.isRangeStart || undefined}
+    data-range-end={state.isRangeEnd || undefined}
+    data-in-range={state.isInRange || undefined}
+    disabled={disabled || state.isUnavailable}
+    data-unavailable={state.isUnavailable || undefined}
+    aria-selected={state.isSelected || state.isRangeStart || state.isRangeEnd}
+    aria-label={ariaLabel}
+    tabIndex={state.isUnavailable ? -1 : 0}
+    onClick={onClick}
+    onKeyDown={onKeyDown}
+  >
+    {label}
+  </Button>
+);
+
+type DayGridContentProps = {
+  classes: CalendarClasses;
+  dayCells: Array<number | null>;
+  disabled: boolean;
+  getDayState: (date: DateValue) => CellState;
+  handleDaySelect: (date: DateValue) => void;
+  monthName: string;
+  viewDate: ViewDate;
+};
+
+const DayGridContent = ({
+  classes,
+  dayCells,
+  disabled,
+  getDayState,
+  handleDaySelect,
+  monthName,
+  viewDate,
+}: DayGridContentProps) => (
+  <>
+    {WEEKDAY_LABELS.map((weekday, index) => (
+      <Text
+        key={weekday}
+        textStyle="mono.xs"
+        allCaps
+        className={classes.weekdayLabel}
+        role="columnheader"
+        aria-label={WEEKDAY_FULL[index] ?? weekday}
+      >
+        {weekday}
+      </Text>
+    ))}
+
+    {Array.from({ length: dayCells.length / 7 }, (_, rowIndex) => (
+      <Box key={rowIndex} role="row" display="contents">
+        {dayCells
+          .slice(rowIndex * 7, rowIndex * 7 + 7)
+          .map((day, columnIndex) => {
+            if (day === null) {
+              return (
+                <Box
+                  key={`empty-${rowIndex}-${columnIndex}`}
+                  role="gridcell"
+                  aria-hidden="true"
+                />
+              );
+            }
+
+            const date = {
+              year: viewDate.year,
+              month: viewDate.month,
+              day,
+            };
+            const state = getDayState(date);
+
+            return (
+              <CalendarCell
+                key={day}
+                classes={classes}
+                disabled={disabled}
+                label={day}
+                ariaLabel={getDayAriaLabel(date, monthName, state)}
+                state={state}
+                onClick={() => handleDaySelect(date)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    handleDaySelect(date);
+                  }
+                }}
+              />
+            );
+          })}
+      </Box>
+    ))}
+  </>
+);
+
+type MonthGridContentProps = {
+  classes: CalendarClasses;
+  disabled: boolean;
+  getMonthState: (month: number) => CellState;
+  handleMonthSelect: (month: number) => void;
+  year: number;
+};
+
+const MonthGridContent = ({
+  classes,
+  disabled,
+  getMonthState,
+  handleMonthSelect,
+  year,
+}: MonthGridContentProps) => (
+  <>
+    {MONTH_ABBR.map((label, index) => {
+      const month = index + 1;
+      const fullMonthName = MONTH_NAMES[index] ?? label;
+      return (
+        <CalendarCell
+          key={label}
+          classes={classes}
+          disabled={disabled}
+          label={label}
+          ariaLabel={`${fullMonthName} ${year}`}
+          state={getMonthState(month)}
+          onClick={() => handleMonthSelect(month)}
+        />
+      );
+    })}
+  </>
+);
+
+type YearGridContentProps = {
+  classes: CalendarClasses;
+  disabled: boolean;
+  getYearState: (year: number) => CellState;
+  handleYearSelect: (year: number) => void;
+  years: number[];
+};
+
+const YearGridContent = ({
+  classes,
+  disabled,
+  getYearState,
+  handleYearSelect,
+  years,
+}: YearGridContentProps) => (
+  <>
+    {years.map((year) => (
+      <CalendarCell
+        key={year}
+        classes={classes}
+        disabled={disabled}
+        label={year}
+        ariaLabel={String(year)}
+        state={getYearState(year)}
+        onClick={() => handleYearSelect(year)}
+      />
+    ))}
+  </>
+);
+
 // ─── Props ─────────────────────────────────────────────────────────────────────
 
+/** Props for {@link Calendar}, including selection, bounds, and visible-month state. */
 export type CalendarProps = Omit<
   BoxProps,
   keyof CalendarVariantProps | 'children'
 > &
   Omit<CalendarVariantProps, 'type'> & {
-    /** Controlled selected date */
+    /** Controlled selected date. */
     value?: DateValue | null;
-    /** Called when a day is chosen (Calendar never clears its own value) */
+    /** Runs when a selectable day is chosen. Calendar never clears its own value. */
     onChange?: (value: DateValue) => void;
     /**
      * Range-selection endpoints, for DateRangeMenu. Independent of `value` —
@@ -146,23 +332,38 @@ export type CalendarProps = Omit<
      * range's two endpoints may fall in months neither calendar is showing.
      */
     rangeStart?: DateValue | null;
+    /** End of the optional visual range highlight. */
     rangeEnd?: DateValue | null;
-    /** Earliest selectable date */
+    /** Earliest selectable date. */
     minDate?: DateValue;
-    /** Latest selectable date */
+    /** Latest selectable date. */
     maxDate?: DateValue;
-    /** Controlled visible month/year */
+    /** Controlled visible month and year. */
     viewDate?: ViewDate;
-    /** Initial uncontrolled visible month/year — defaults to `value`, or today */
+    /** Initial visible month and year when `viewDate` is not provided. Defaults to `value`, then today. */
     defaultViewDate?: ViewDate;
+    /** Runs when month or year navigation requests a new visible month. */
     onViewDateChange?: (viewDate: ViewDate) => void;
+    /** Prevents navigation and date selection. */
     disabled?: boolean;
-    /** Accessible label prefix, e.g. "Choose date" */
+    /** Accessible label prefix for the calendar grid. */
     label?: string;
   };
 
 // ─── Calendar ──────────────────────────────────────────────────────────────────
 
+/**
+ * Displays an accessible day, month, and year selection grid.
+ *
+ * Use `value` and `onChange` for date selection. `viewDate` separately controls
+ * the visible month; omit it to let Calendar manage navigation internally.
+ * Dates outside `minDate` and `maxDate` remain visible but unavailable.
+ *
+ * @example
+ * ```tsx
+ * <Calendar value={date} onChange={setDate} label="Choose invoice date" />
+ * ```
+ */
 export const Calendar = (props: CalendarProps) => {
   const {
     value = null,
@@ -280,44 +481,6 @@ export const Calendar = (props: CalendarProps) => {
     isToday: year === today.year,
   });
 
-  const renderCell = ({
-    key,
-    label,
-    ariaLabel,
-    state,
-    onClick,
-    onKeyDown,
-  }: {
-    key: string | number;
-    label: string | number;
-    ariaLabel: string;
-    state: CellState;
-    onClick: () => void;
-    onKeyDown?: (e: KeyboardEvent) => void;
-  }) => (
-    <Button
-      key={key}
-      role="gridcell"
-      variant={getCellVariant(state)}
-      className={classes.day}
-      fontSize="14"
-      fontVariant="mono"
-      data-today={state.isToday || undefined}
-      data-range-start={state.isRangeStart || undefined}
-      data-range-end={state.isRangeEnd || undefined}
-      data-in-range={state.isInRange || undefined}
-      disabled={disabled || state.isUnavailable}
-      data-unavailable={state.isUnavailable || undefined}
-      aria-selected={state.isSelected || state.isRangeStart || state.isRangeEnd}
-      aria-label={ariaLabel}
-      tabIndex={state.isUnavailable ? -1 : 0}
-      onClick={onClick}
-      onKeyDown={onKeyDown}
-    >
-      {label}
-    </Button>
-  );
-
   const previousMonth = shiftMonth(viewDate.year, viewDate.month, -1);
   const nextMonth = shiftMonth(viewDate.year, viewDate.month, 1);
 
@@ -387,88 +550,6 @@ export const Calendar = (props: CalendarProps) => {
         ? `Choose a month in ${viewDate.year}`
         : 'Choose a year';
 
-  const renderGridContent = () => {
-    if (viewLevel === 'days') {
-      return (
-        <>
-          {WEEKDAY_LABELS.map((weekday, i) => (
-            <Text
-              key={weekday}
-              textStyle="mono.xs"
-              allCaps
-              className={classes.weekdayLabel}
-              role="columnheader"
-              aria-label={WEEKDAY_FULL[i] ?? weekday}
-            >
-              {weekday}
-            </Text>
-          ))}
-
-          {Array.from({ length: dayCells.length / 7 }, (_, rowIdx) => (
-            <Box key={rowIdx} role="row" display="contents">
-              {dayCells.slice(rowIdx * 7, rowIdx * 7 + 7).map((day, colIdx) => {
-                if (day === null) {
-                  return (
-                    <Box
-                      key={`empty-${rowIdx}-${colIdx}`}
-                      role="gridcell"
-                      aria-hidden="true"
-                    />
-                  );
-                }
-
-                const date = {
-                  year: viewDate.year,
-                  month: viewDate.month,
-                  day,
-                };
-                const state = getDayState(date);
-
-                return renderCell({
-                  key: day,
-                  label: day,
-                  ariaLabel: getDayAriaLabel(date, monthName, state),
-                  state,
-                  onClick: () => handleDaySelect(date),
-                  onKeyDown: (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleDaySelect(date);
-                    }
-                  },
-                });
-              })}
-            </Box>
-          ))}
-        </>
-      );
-    }
-
-    if (viewLevel === 'months') {
-      return MONTH_ABBR.map((label, idx) => {
-        const month = idx + 1;
-        const fullMonthName = MONTH_NAMES[idx] ?? label;
-        return renderCell({
-          key: label,
-          label,
-          ariaLabel: `${fullMonthName} ${viewDate.year}`,
-          state: getMonthState(month),
-          onClick: () => handleMonthSelect(month),
-        });
-      });
-    }
-
-    return windowYears.map((year) =>
-      renderCell({
-        key: year,
-        label: year,
-        ariaLabel: String(year),
-        state: getYearState(year),
-        onClick: () => handleYearSelect(year),
-      }),
-    );
-  };
-
   return (
     <Box
       className={cx(classes.root, className)}
@@ -506,7 +587,33 @@ export const Calendar = (props: CalendarProps) => {
         role="grid"
         aria-label={gridAriaLabel}
       >
-        {renderGridContent()}
+        {viewLevel === 'days' ? (
+          <DayGridContent
+            classes={classes}
+            dayCells={dayCells}
+            disabled={disabled}
+            getDayState={getDayState}
+            handleDaySelect={handleDaySelect}
+            monthName={monthName}
+            viewDate={viewDate}
+          />
+        ) : viewLevel === 'months' ? (
+          <MonthGridContent
+            classes={classes}
+            disabled={disabled}
+            getMonthState={getMonthState}
+            handleMonthSelect={handleMonthSelect}
+            year={viewDate.year}
+          />
+        ) : (
+          <YearGridContent
+            classes={classes}
+            disabled={disabled}
+            getYearState={getYearState}
+            handleYearSelect={handleYearSelect}
+            years={windowYears}
+          />
+        )}
       </Box>
     </Box>
   );

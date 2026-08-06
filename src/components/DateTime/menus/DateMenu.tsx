@@ -8,22 +8,43 @@ import type { DateValue } from '../helpers/types';
 
 type ViewDate = { year: number; month: number };
 
+/** Props for {@link DateMenu}, a Calendar presented through Menu behavior. */
 export type DateMenuProps = Omit<
   MenuProps,
   'children' | 'onChange' | 'value'
 > & {
+  /** Selected date shown by the calendar. */
   value?: DateValue | null;
-  /** Commits immediately on day selection, then closes the menu */
+  /** Commits immediately on day selection, then closes the menu. */
   onChange?: (value: DateValue | null) => void;
+  /** Earliest selectable date. */
   minDate?: DateValue;
+  /** Latest selectable date. */
   maxDate?: DateValue;
+  /** Controlled visible calendar month. */
   viewDate?: ViewDate;
+  /** Initial visible month when `viewDate` is not provided. */
   defaultViewDate?: ViewDate;
+  /** Runs when calendar navigation requests a new visible month. */
   onViewDateChange?: (viewDate: ViewDate) => void;
+  /** Prevents opening or selection and returns only the trigger. */
   disabled?: boolean;
+  /** Accessible label passed to the calendar grid. */
   label?: string;
 };
 
+/**
+ * Presents a calendar in a Menu and commits a selected day immediately.
+ *
+ * Supply a `trigger`, or set inherited `inline` to render the calendar in
+ * normal flow. Selecting an enabled date calls `onChange` and closes a
+ * triggered menu.
+ *
+ * @example
+ * ```tsx
+ * <DateMenu trigger={<Button>Choose date</Button>} onChange={setDate} />
+ * ```
+ */
 export const DateMenu = (props: DateMenuProps) => {
   const {
     trigger,

@@ -15,22 +15,42 @@ import { Label } from '../Label';
 
 import type { CheckboxChangeHandler } from '../Checkbox';
 
+/** Props for {@link CheckboxInput}, a labelled {@link Checkbox}. */
 export type CheckboxInputProps = Omit<
   BoxProps,
   keyof CheckboxInputVariantProps
 > &
   CheckboxInputVariantProps & {
-    name: string;
-    checked?: boolean;
+    /** Form field name submitted when checked. */ name: string;
+    /** Controlled checked state. Pair with `onChange`; do not combine with `defaultChecked`. */ checked?: boolean;
+    /** Initial uncontrolled checked state; updates after mount are ignored. */
+    /** @default false */
     defaultChecked?: boolean;
-    onChange?: CheckboxChangeHandler;
-    id?: string;
-    error?: boolean;
-    invalid?: boolean;
-    children?: string | ReactNode;
-    disabled?: boolean;
+    /** Runs when the contained native checkbox changes. */ onChange?: CheckboxChangeHandler;
+    /** Input ID. When omitted, a stable React ID is generated for the label association. */ id?: string;
+    /** Applies error styling to the checkbox and overrides field context. */ error?: boolean;
+    /** Marks the checkbox invalid and overrides field context. */ invalid?: boolean;
+    /** Visible label content. Provide text or an accessible label element; this wrapper supplies `htmlFor`. */ children?:
+      | string
+      | ReactNode;
+    /** Disables the label and checkbox, overriding field context. */ disabled?: boolean;
   };
 
+/**
+ * A checkbox paired with a clickable label.
+ *
+ * Use this instead of {@link Checkbox} for ordinary labelled form controls.
+ * It generates an input ID when needed and connects it to the rendered label.
+ * Its checked-state and field-context behavior match `Checkbox`; explicit
+ * `disabled`, `error`, and `invalid` props override field context.
+ *
+ * @example
+ * ```tsx
+ * <CheckboxInput name="terms" defaultChecked>
+ *   I agree to the terms
+ * </CheckboxInput>
+ * ```
+ */
 export const CheckboxInput = (props: CheckboxInputProps) => {
   const fieldContext = useFieldContext();
   const {

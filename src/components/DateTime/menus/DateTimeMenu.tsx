@@ -30,21 +30,32 @@ import type {
 
 type ViewDate = { year: number; month: number };
 
+/** Props for {@link DateTimeMenu}, including committed value and constraints. */
 export type DateTimeMenuProps = Omit<
   MenuProps,
   'children' | 'onChange' | 'value'
 > & {
+  /** Committed date and time used to initialize the menu draft. */
   value?: DateTimeValue | null;
-  /** Committed only when Apply is pressed — Cancel discards the pending selection */
+  /** Commits the complete draft when Apply is pressed; Cancel discards it. */
   onChange?: (value: DateTimeValue | null) => void;
+  /** Earliest selectable calendar date. */
   minDate?: DateValue;
+  /** Latest selectable calendar date. */
   maxDate?: DateValue;
+  /** Controlled visible calendar month. */
   viewDate?: ViewDate;
+  /** Initial visible calendar month when `viewDate` is not provided. */
   defaultViewDate?: ViewDate;
+  /** Runs when calendar navigation requests a new visible month. */
   onViewDateChange?: (viewDate: ViewDate) => void;
+  /** Display cycle for the time columns. */
   timeFormat?: TimeFormat;
+  /** Interval used to generate minute choices. */
   minuteStep?: number;
+  /** Prevents opening or selection and returns only the trigger. */
   disabled?: boolean;
+  /** Accessible label passed to the calendar grid. */
   dateLabel?: string;
 };
 
@@ -74,6 +85,21 @@ const scrollSelectedIntoView = (colRef: RefObject<HTMLDivElement | null>) => {
   col.scrollTop = Math.min(Math.max(targetScrollTop, 0), maxScrollTop);
 };
 
+/**
+ * Selects a date and time from a calendar and aligned time columns.
+ *
+ * Changes remain a draft until Apply is pressed. Cancel restores `value`, and
+ * Apply is unavailable until both the date and time portions are complete.
+ *
+ * @example
+ * ```tsx
+ * <DateTimeMenu
+ *   trigger={<Button>Schedule</Button>}
+ *   value={scheduledAt}
+ *   onChange={setScheduledAt}
+ * />
+ * ```
+ */
 export const DateTimeMenu = (props: DateTimeMenuProps) => {
   const {
     trigger,

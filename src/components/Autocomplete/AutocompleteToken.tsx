@@ -1,6 +1,6 @@
 import type { KeyboardEventHandler, Ref } from 'react';
 
-import { Chip } from '../Chip';
+import { Chip } from '../Chip/Chip';
 
 type AutocompleteTokenProps = {
   className?: string;
