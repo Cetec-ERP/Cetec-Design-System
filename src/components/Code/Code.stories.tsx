@@ -1,3 +1,5 @@
+import { expect, within } from '@storybook/test';
+
 import { Box } from '../Box';
 import { Text } from '../Text';
 
@@ -43,6 +45,43 @@ export function SaveAction() {
 }`}</Pre>
     </Box>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const PreRootProps: Story = {
+  name: 'Test: Pre root props',
+  render: () => (
+    <Box maxW="2xl">
+      <Pre
+        lang="tsx"
+        id="pre-root"
+        data-testid="pre-root"
+        data-ds-component="CodeBlock"
+      >
+        {'const ready = true;'}
+      </Pre>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const pre = canvas.getByTestId('pre-root');
+    const code = pre.querySelector('code');
+
+    if (!(code instanceof HTMLElement)) {
+      throw new Error('Pre should render a nested code element.');
+    }
+
+    // Consumer props land on the root `pre` only.
+    expect(pre).toHaveAttribute('id', 'pre-root');
+    expect(pre).toHaveAttribute('data-ds-component', 'CodeBlock');
+
+    // The nested `code` keeps its own identity and does not receive the
+    // consumer props spread onto the root.
+    expect(code).not.toHaveAttribute('id');
+    expect(code).not.toHaveAttribute('data-testid');
+    expect(code).toHaveAttribute('data-ds-component', 'Code');
+    expect(code).toHaveAttribute('lang', 'tsx');
+  },
   parameters: { controls: { disable: true } },
 };
 

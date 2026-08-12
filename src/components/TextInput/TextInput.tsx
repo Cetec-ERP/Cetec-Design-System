@@ -188,7 +188,10 @@ export const TextInput = (props: TextInputProps) => {
         data-valid={valid || undefined}
         data-invalid={invalid || undefined}
         aria-invalid={invalid || undefined}
-        className={cx(classes.input, className)}
+        // The consumer className and Panda style props are applied to the
+        // container root above; applying them here too would style two
+        // elements from a single prop.
+        className={classes.input}
         autoComplete={autoComplete}
         {...otherProps}
       />
