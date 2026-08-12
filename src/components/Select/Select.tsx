@@ -34,6 +34,7 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsPart } from '~/utils/dsPart';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -466,8 +467,15 @@ export const Select = (props: SelectProps) => {
           />
         ))}
 
+      {/*
+        `data-ds-part` gives the trigger a stable query handle now that
+        `data-testid` is written on the root. It is internal instrumentation,
+        not a supported prop, and the chain reads `data-testid` only, so it adds
+        no chain node.
+      */}
       <Box
         as="div"
+        {...dsPart('trigger')}
         id={triggerId}
         ref={floating.refs.setReference}
         className={`${cx(classes.trigger, className)} peer`}

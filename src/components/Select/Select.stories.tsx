@@ -441,6 +441,11 @@ export const TestIdReachesPortaledListbox: Story = {
     expect(root).toContainElement(trigger);
     expect(trigger).not.toHaveAttribute('data-testid');
 
+    // The trigger keeps a stable query handle through `data-ds-part`, which the
+    // component emits on its own. It marks the trigger only, never the root.
+    expect(trigger).toHaveAttribute('data-ds-part', 'trigger');
+    expect(root).not.toHaveAttribute('data-ds-part');
+
     trigger.focus();
     await userEvent.keyboard('{ArrowDown}');
 
@@ -448,10 +453,13 @@ export const TestIdReachesPortaledListbox: Story = {
 
     // The listbox is portaled out of the root, so only the chain connects them.
     expect(root.contains(listbox)).toBe(false);
-    expect(listbox.closest('[data-ds-chain]')).toHaveAttribute(
-      'data-ds-chain',
-      'filters>status',
-    );
+
+    const chainRoot = listbox.closest('[data-ds-chain]');
+
+    // The chain is built from `data-testid` alone, so the trigger's
+    // `data-ds-part` contributes no node to it.
+    expect(chainRoot).toHaveAttribute('data-ds-chain', 'filters>status');
+    expect(chainRoot?.getAttribute('data-ds-chain')).not.toContain('trigger');
   },
   parameters: { controls: { disable: true } },
 };

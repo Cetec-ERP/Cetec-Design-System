@@ -10,6 +10,7 @@ import { cx } from '@styled-system/css';
 import type { AutocompleteVariantProps } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu';
+import { dsPart } from '~/utils/dsPart';
 
 import { Box, type BoxProps } from '../Box/Box';
 import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
@@ -341,8 +342,16 @@ export const Autocomplete = (props: AutocompleteProps) => {
             </Box>
           )}
 
+          {/*
+            `data-ds-part` gives the combobox input a stable query handle;
+            `data-testid` stays on the root so the chain scope it opens encloses
+            the portaled listbox. It is internal instrumentation, not a
+            supported prop, and the chain reads `data-testid` only, so it adds
+            no chain node.
+          */}
           <Box
             as="input"
+            {...dsPart('trigger')}
             id={inputId}
             ref={inputRef}
             type="text"
