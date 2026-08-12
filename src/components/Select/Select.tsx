@@ -236,6 +236,13 @@ export const Select = (props: SelectProps) => {
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
+  // `data-testid` is pulled out and written on the root instead of the trigger.
+  // `Box` opens a chain scope wherever the test id lands, and the trigger is a
+  // sibling of the portal that renders the listbox, so a scope opened there
+  // could never enclose it. The root does enclose the portal's React-tree
+  // position, so the listbox inherits the id. Only the test id moves; every
+  // other rest prop still lands on the trigger, where consumers expect it.
+  const { 'data-testid': testId, ...triggerProps } = otherProps;
 
   const generatedId = useId();
   const triggerId = id ?? `select-${generatedId}`;
@@ -446,7 +453,7 @@ export const Select = (props: SelectProps) => {
   };
 
   return (
-    <Box className={classes.root}>
+    <Box className={classes.root} data-testid={testId}>
       {name &&
         selectedValues.map((selectedValue) => (
           <Box
@@ -480,7 +487,7 @@ export const Select = (props: SelectProps) => {
         {...(getReferenceProps({
           onKeyDown: handleTriggerKeyDown,
         }) as Record<string, unknown>)}
-        {...otherProps}
+        {...triggerProps}
       >
         {multiple && selectedOptions.length > 0 ? (
           <Box className={cx(classes.content, classes.chips)}>

@@ -574,3 +574,39 @@ export const KeyboardTokenEditing: Story = {
   },
   parameters: { controls: { disable: true } },
 };
+
+export const TestIdReachesPortaledListbox: Story = {
+  name: 'Ex: Test Id Reaches The Listbox',
+  render: () => (
+    <Box w="sm" data-testid="filters">
+      <Autocomplete data-testid="technology" aria-label="Technology">
+        {renderOptions()}
+      </Autocomplete>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // The test id is written on the root, not on the combobox input, so the
+    // chain scope it opens encloses the portal the input only sits beside.
+    const root = canvas.getByTestId('technology');
+    const input = canvas.getByRole('combobox');
+
+    await expect(root).not.toBe(input);
+    await expect(root).toContainElement(input);
+    await expect(input).not.toHaveAttribute('data-testid');
+
+    await userEvent.click(input);
+
+    const listbox = await screen.findByRole('listbox');
+
+    // The listbox is portaled out of the root, so only the chain connects them.
+    await expect(root.contains(listbox)).toBe(false);
+    await expect(listbox.closest('[data-ds-chain]')).toHaveAttribute(
+      'data-ds-chain',
+      'filters>technology',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};

@@ -416,3 +416,42 @@ export const A11yKeyboardInteraction: Story = {
   },
   parameters: { controls: { disable: true } },
 };
+
+export const TestIdReachesPortaledListbox: Story = {
+  name: 'Ex: Test Id Reaches The Listbox',
+  render: () => (
+    <Box w="xs" data-testid="filters">
+      <Select data-testid="status" placeholder="Choose an option...">
+        <SelectOption value="starter" label="Starter" />
+        <SelectOption value="growth" label="Growth" />
+        <SelectOption value="enterprise" label="Enterprise" />
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // The test id is written on the root, not on the combobox trigger, so the
+    // chain scope it opens encloses the portal the trigger only sits beside.
+    const root = canvas.getByTestId('status');
+    const trigger = canvas.getByRole('combobox');
+
+    expect(root).not.toBe(trigger);
+    expect(root).toContainElement(trigger);
+    expect(trigger).not.toHaveAttribute('data-testid');
+
+    trigger.focus();
+    await userEvent.keyboard('{ArrowDown}');
+
+    const listbox = await screen.findByRole('listbox');
+
+    // The listbox is portaled out of the root, so only the chain connects them.
+    expect(root.contains(listbox)).toBe(false);
+    expect(listbox.closest('[data-ds-chain]')).toHaveAttribute(
+      'data-ds-chain',
+      'filters>status',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
