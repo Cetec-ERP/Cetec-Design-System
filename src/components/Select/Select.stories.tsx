@@ -463,3 +463,54 @@ export const TestIdReachesPortaledListbox: Story = {
   },
   parameters: { controls: { disable: true } },
 };
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <Box display="flex" flexDirection="column" gap="8" w="xs">
+      <Select data-testid="ds-default" placeholder="Choose an option...">
+        <SelectOption value="starter" label="Starter" />
+        <SelectOption value="growth" label="Growth" />
+      </Select>
+      <Select
+        data-testid="ds-override"
+        data-ds-component="StatusSelect"
+        placeholder="Choose an option..."
+      >
+        <SelectOption value="starter" label="Starter" />
+        <SelectOption value="growth" label="Growth" />
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // Emitted automatically on the root, without an author opting in.
+    const root = canvas.getByTestId('ds-default');
+    expect(root).toHaveAttribute('data-ds-component', 'Select');
+
+    // Select forwards its rest props to the combobox trigger, so the attribute
+    // is pulled out of them and must not leak onto the trigger.
+    const trigger = within(root).getByRole('combobox');
+    expect(trigger).toHaveAttribute('data-ds-part', 'trigger');
+    expect(trigger).not.toHaveAttribute('data-ds-component');
+
+    // An explicitly passed value wins, still on the root and not the trigger.
+    const overriddenRoot = canvas.getByTestId('ds-override');
+    expect(overriddenRoot).toHaveAttribute('data-ds-component', 'StatusSelect');
+    expect(within(overriddenRoot).getByRole('combobox')).not.toHaveAttribute(
+      'data-ds-component',
+    );
+
+    // The portaled listbox is `List`, so it never reports as the Select.
+    trigger.focus();
+    await userEvent.keyboard('{ArrowDown}');
+
+    const listbox = await screen.findByRole('listbox');
+
+    expect(listbox).not.toHaveAttribute('data-ds-component', 'Select');
+    expect(listbox).not.toHaveAttribute('data-ds-component', 'StatusSelect');
+  },
+  parameters: { controls: { disable: true } },
+};

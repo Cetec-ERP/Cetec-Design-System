@@ -5,6 +5,7 @@ import { timeMenus } from '@styled-system/recipes';
 import { Box } from '~/components/Box';
 import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
 
@@ -168,6 +169,7 @@ export const TimeMenu = (props: TimeMenuProps) => {
 
   return (
     <Menu
+      {...dsComponent('TimeMenu')}
       className={className}
       {...otherProps}
       trigger={trigger}

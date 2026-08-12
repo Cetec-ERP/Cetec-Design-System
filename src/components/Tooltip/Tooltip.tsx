@@ -22,6 +22,7 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -136,6 +137,7 @@ export const Tooltip = (props: TooltipProps) => {
         <FloatingPortal>
           <DsChainPortalRoot>
             <Box
+              {...dsComponent('Tooltip')}
               ref={refs.setFloating}
               style={floatingStyles}
               className={cx(classes.tooltipContent, className)}

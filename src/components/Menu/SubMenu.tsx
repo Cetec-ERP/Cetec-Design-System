@@ -38,6 +38,7 @@ import {
 import { cx } from '@styled-system/css';
 import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box/Box';
@@ -457,6 +458,7 @@ export const SubMenu = (props: SubMenuProps) => {
 
     return (
       <button
+        {...dsComponent('SubMenu')}
         {...menuItemHtmlProps}
         role="menuitem"
         aria-disabled={disabled}
@@ -522,6 +524,7 @@ export const SubMenu = (props: SubMenuProps) => {
   return (
     <FloatingNode id={nodeId}>
       <button
+        {...dsComponent('SubMenu')}
         {...menuItemHtmlProps}
         role="menuitem"
         aria-haspopup="menu"

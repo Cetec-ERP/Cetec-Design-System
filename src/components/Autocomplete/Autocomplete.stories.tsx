@@ -623,3 +623,59 @@ export const TestIdReachesPortaledListbox: Story = {
   },
   parameters: { controls: { disable: true } },
 };
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <Box display="flex" flexDirection="column" gap="8" w="sm">
+      <Autocomplete data-testid="ds-default" aria-label="Default technology">
+        {renderOptions()}
+      </Autocomplete>
+      <Autocomplete
+        data-testid="ds-override"
+        data-ds-component="TechnologyPicker"
+        aria-label="Overridden technology"
+      >
+        {renderOptions()}
+      </Autocomplete>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // Emitted automatically on the root, without an author opting in.
+    const root = canvas.getByTestId('ds-default');
+    await expect(root).toHaveAttribute('data-ds-component', 'Autocomplete');
+
+    // The combobox input is an inner part of the root, so it stays unmarked.
+    const input = canvas.getByRole('combobox', { name: 'Default technology' });
+    await expect(input).toHaveAttribute('data-ds-part', 'trigger');
+    await expect(input).not.toHaveAttribute('data-ds-component');
+
+    // An explicitly passed value wins, still on the root and not the input.
+    const overriddenRoot = canvas.getByTestId('ds-override');
+    await expect(overriddenRoot).toHaveAttribute(
+      'data-ds-component',
+      'TechnologyPicker',
+    );
+    await expect(
+      canvas.getByRole('combobox', { name: 'Overridden technology' }),
+    ).not.toHaveAttribute('data-ds-component');
+
+    // The portaled listbox is not the Autocomplete root either.
+    await userEvent.click(input);
+
+    const listbox = await screen.findByRole('listbox');
+
+    await expect(listbox).not.toHaveAttribute(
+      'data-ds-component',
+      'Autocomplete',
+    );
+    await expect(listbox).not.toHaveAttribute(
+      'data-ds-component',
+      'TechnologyPicker',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};

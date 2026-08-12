@@ -10,6 +10,7 @@ import { cx } from '@styled-system/css';
 import type { AutocompleteVariantProps } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu';
+import { dsComponent } from '~/utils/dsComponent';
 import { dsPart } from '~/utils/dsPart';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -281,6 +282,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
   return (
     <Box
+      {...dsComponent('Autocomplete')}
       ref={rootRef}
       className={cx(classes.root, className)}
       data-disabled={disabled || undefined}

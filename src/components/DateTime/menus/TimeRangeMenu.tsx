@@ -7,6 +7,7 @@ import { Button } from '~/components/Button';
 import { Divider } from '~/components/Divider';
 import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
 
@@ -280,6 +281,7 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
 
   return (
     <Menu
+      {...dsComponent('TimeRangeMenu')}
       className={className}
       {...otherProps}
       trigger={trigger}

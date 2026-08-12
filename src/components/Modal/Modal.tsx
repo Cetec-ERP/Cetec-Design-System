@@ -22,6 +22,7 @@ import {
 } from '@styled-system/recipes';
 
 import { useOverlayFloating } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -194,6 +195,7 @@ export const Modal = (props: ModalProps) => {
             />
             <FloatingFocusManager context={context} modal={true}>
               <Box
+                {...dsComponent('Modal')}
                 ref={refs.setFloating}
                 className={cx(classes.container, className)}
                 data-state={dataState}

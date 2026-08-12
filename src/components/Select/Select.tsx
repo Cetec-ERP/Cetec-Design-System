@@ -34,6 +34,7 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { dsPart } from '~/utils/dsPart';
 import { splitProps } from '~/utils/splitProps';
 
@@ -234,6 +235,7 @@ export const Select = (props: SelectProps) => {
     size = 'md',
     density = defaultDensity,
     autoSize = false,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -454,7 +456,11 @@ export const Select = (props: SelectProps) => {
   };
 
   return (
-    <Box className={classes.root} data-testid={testId}>
+    <Box
+      {...dsComponent('Select', dsComponentName)}
+      className={classes.root}
+      data-testid={testId}
+    >
       {name &&
         selectedValues.map((selectedValue) => (
           <Box

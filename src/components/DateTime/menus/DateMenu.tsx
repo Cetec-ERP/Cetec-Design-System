@@ -1,6 +1,7 @@
 import { Box } from '~/components/Box';
 import { Calendar } from '~/components/Calendar';
 import { Menu, type MenuProps } from '~/components/Menu';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
 
@@ -79,6 +80,7 @@ export const DateMenu = (props: DateMenuProps) => {
 
   return (
     <Menu
+      {...dsComponent('DateMenu')}
       className={className}
       {...otherProps}
       trigger={trigger}
