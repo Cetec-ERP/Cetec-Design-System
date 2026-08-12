@@ -8,6 +8,7 @@ import { cx } from '@styled-system/css';
 import { box, type BoxVariantProps } from '@styled-system/recipes';
 import type { SystemStyleObject } from '@styled-system/types';
 
+import { DsChainScope } from '~/components/DsChainScope';
 import { splitProps } from '~/utils/splitProps';
 
 type AsProp<T extends ElementType> = {
@@ -61,10 +62,23 @@ export const Box = <T extends ElementType = 'div'>(props: BoxProps<T>) => {
   const comboClassName = cx(box({}), className);
 
   // Runtime render happens via React.createElement so `as` can be dynamic.
-  return createElement(Component, {
+  const element = createElement(Component, {
     className: comboClassName,
     ...otherProps,
   });
+
+  // Instrumentation is opt-in by `data-testid` presence, not by component
+  // identity. Box sits on every render path in the system, so the untagged case
+  // must cost nothing: one property read and an early return. No hook call, no
+  // context subscription, no array, no object literal, no extra element.
+  // Box itself calls no hooks, so branching on a prop here cannot desynchronize
+  // hook order; the scope is a separate component that owns its own hooks.
+  const testId = otherProps['data-testid'];
+  if (typeof testId !== 'string' || testId.length === 0) {
+    return element;
+  }
+
+  return <DsChainScope testId={testId}>{element}</DsChainScope>;
 };
 
 // React 19+: ComponentPropsWithRef<ElementType> is recommended as refs are now passed as props in function components.

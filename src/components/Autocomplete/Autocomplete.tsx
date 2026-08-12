@@ -12,6 +12,7 @@ import type { AutocompleteVariantProps } from '@styled-system/recipes';
 import type { MenuDensity } from '~/components/Menu';
 
 import { Box, type BoxProps } from '../Box/Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
 import { Spinner } from '../Spinner/Spinner';
 
 import { AutocompleteListbox } from './AutocompleteListbox';
@@ -395,38 +396,40 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
       {isOpen && !disabled && !readOnly && (
         <FloatingPortal>
-          <FloatingFocusManager
-            context={floating.context}
-            modal={false}
-            initialFocus={-1}
-          >
-            <AutocompleteListbox
-              activeIndex={activeIndex}
-              baseId={baseId}
-              density={density}
-              floatingProps={getFloatingProps() as Record<string, unknown>}
-              floatingRef={setFloatingRef}
-              floatingStyles={floating.floatingStyles}
-              getItemProps={(itemProps: HTMLProps<HTMLElement>) =>
-                getItemProps(itemProps) as Record<string, unknown>
-              }
-              items={navigationItems}
-              listboxClassName={classes.listbox}
-              listboxId={listboxId}
-              loading={loading}
-              loadingMore={loadingMore}
-              loadingText={loadingText}
-              multiple={Boolean(multiple)}
-              noOptionsText={noOptionsText}
-              onScroll={handleListScroll}
-              onSelect={handleOptionSelect}
-              query={currentInputValue.trim()}
-              selectedValues={selectedValues}
-              setItemRef={setItemRef}
-              statusClassName={classes.status}
-              value={currentValue}
-            />
-          </FloatingFocusManager>
+          <DsChainPortalRoot>
+            <FloatingFocusManager
+              context={floating.context}
+              modal={false}
+              initialFocus={-1}
+            >
+              <AutocompleteListbox
+                activeIndex={activeIndex}
+                baseId={baseId}
+                density={density}
+                floatingProps={getFloatingProps() as Record<string, unknown>}
+                floatingRef={setFloatingRef}
+                floatingStyles={floating.floatingStyles}
+                getItemProps={(itemProps: HTMLProps<HTMLElement>) =>
+                  getItemProps(itemProps) as Record<string, unknown>
+                }
+                items={navigationItems}
+                listboxClassName={classes.listbox}
+                listboxId={listboxId}
+                loading={loading}
+                loadingMore={loadingMore}
+                loadingText={loadingText}
+                multiple={Boolean(multiple)}
+                noOptionsText={noOptionsText}
+                onScroll={handleListScroll}
+                onSelect={handleOptionSelect}
+                query={currentInputValue.trim()}
+                selectedValues={selectedValues}
+                setItemRef={setItemRef}
+                statusClassName={classes.status}
+                value={currentValue}
+              />
+            </FloatingFocusManager>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </Box>
