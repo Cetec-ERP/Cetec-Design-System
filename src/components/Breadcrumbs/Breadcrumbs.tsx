@@ -2,6 +2,7 @@ import { cx } from '@styled-system/css';
 import type { BreadcrumbsVariantProps } from '@styled-system/recipes';
 import { breadcrumbs } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { type BoxProps } from '../Box';
@@ -42,7 +43,12 @@ export const Breadcrumbs = (props: BreadcrumbsProps) => {
   const classes = breadcrumbs();
 
   return (
-    <Text as="ul" className={cx(classes.wrapper, className)} {...otherProps}>
+    <Text
+      {...dsComponent('Breadcrumbs')}
+      as="ul"
+      className={cx(classes.wrapper, className)}
+      {...otherProps}
+    >
       {items?.map((item, index) => (
         <Text as="li" key={item.id}>
           {item.href ? (

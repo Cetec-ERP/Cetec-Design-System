@@ -3,6 +3,7 @@ import { useMemo, type ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { list, type ListVariantProps } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -78,7 +79,11 @@ export const List = (props: ListProps) => {
 
   return (
     <ListProvider value={value}>
-      <Box {...otherProps} className={cx(list({ density }), className)}>
+      <Box
+        {...dsComponent('List')}
+        {...otherProps}
+        className={cx(list({ density }), className)}
+      >
         {children}
       </Box>
     </ListProvider>

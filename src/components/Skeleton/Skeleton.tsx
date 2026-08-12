@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { skeleton } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /** Supported placeholder shapes for {@link Skeleton}. */
@@ -70,6 +71,7 @@ export const Skeleton = (props: SkeletonProps) => {
 
   return (
     <Box
+      {...dsComponent('Skeleton')}
       as={component}
       width={width as BoxProps['width']}
       height={height as BoxProps['height']}

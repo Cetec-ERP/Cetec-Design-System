@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { link, type LinkVariantProps } from '@styled-system/recipes';
 import { type FontToken, type FontWeightToken } from '@styled-system/tokens';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -74,6 +75,7 @@ export const Link = (props: LinkProps) => {
 
   return (
     <Box
+      {...dsComponent('Link')}
       as="a"
       href={href}
       target={external ? '_blank' : undefined}

@@ -12,6 +12,7 @@ import { Wrap, type WrapProps } from '@styled-system/jsx';
 
 import { type BoxProps } from '~/components/Box';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
 
@@ -192,6 +193,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
   return (
     <ChipGroupContext.Provider value={contextValue}>
       <Wrap
+        {...dsComponent('ChipGroup')}
         className={cx(stylesClassName, className)}
         role={role}
         aria-label={label}

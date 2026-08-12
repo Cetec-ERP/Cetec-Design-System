@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { checkbox, type CheckboxVariantProps } from '@styled-system/recipes';
 
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -80,6 +81,7 @@ export const Checkbox = (props: CheckboxProps) => {
     input,
     indicator,
     checkBg,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const disabled = disabledProp ?? fieldContext?.disabled;
@@ -103,6 +105,7 @@ export const Checkbox = (props: CheckboxProps) => {
 
   return (
     <Box
+      {...dsComponent('Checkbox', dsComponentName)}
       className={cx(classes.container, className)}
       {...(error && { 'data-error': true })}
       {...(invalid && { 'data-invalid': true })}

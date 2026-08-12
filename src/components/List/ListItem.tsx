@@ -5,6 +5,7 @@ import { listItem, type ListItemVariantProps } from '@styled-system/recipes';
 
 import type { IconProps } from '~/components/Icon/Icon';
 import type { IconNamesList } from '~/components/Icon/icons';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -148,6 +149,7 @@ export const ListItem = (props: ListItemProps) => {
 
   return (
     <Box
+      {...dsComponent('ListItem')}
       {...(href
         ? ({
             as: 'a',

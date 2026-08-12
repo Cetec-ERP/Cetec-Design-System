@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { heading, type HeadingVariantProps } from '@styled-system/recipes';
 
 import { Text, type TextProps } from '~/components/Text';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /** Props accepted by {@link Heading}. */
@@ -31,6 +32,7 @@ export const Heading = (props: HeadingProps) => {
   const [className, otherProps] = splitProps(rest);
   return (
     <Text
+      {...dsComponent('Heading')}
       as={level}
       className={cx(heading({ level, allCaps }), className)}
       {...otherProps}

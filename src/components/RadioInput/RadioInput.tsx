@@ -7,6 +7,7 @@ import {
 } from '@styled-system/recipes';
 
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Label } from '../Label/Label';
@@ -86,6 +87,7 @@ export const RadioInput = (props: RadioInputProps) => {
 
   return (
     <Label
+      {...dsComponent('RadioInput')}
       className={cx(radioInput(), className)}
       htmlFor={resolvedId}
       disabled={disabled}

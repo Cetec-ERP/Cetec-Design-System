@@ -18,6 +18,7 @@ import {
 
 import { Box, type BoxProps } from '~/components/Box';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import {
@@ -266,6 +267,7 @@ export const SegmentedInput = (props: SegmentedInputProps) => {
 
   return (
     <Box
+      {...dsComponent('SegmentedInput')}
       ref={ref}
       className={cx(classes.root, className)}
       role="group"

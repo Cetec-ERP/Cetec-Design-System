@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { radio, type RadioVariantProps } from '@styled-system/recipes';
 
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -75,6 +76,7 @@ export const Radio = (props: RadioProps) => {
     input,
     indicator,
     radioBg,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const disabled = disabledProp ?? fieldContext?.disabled;
@@ -91,6 +93,7 @@ export const Radio = (props: RadioProps) => {
 
   return (
     <Box
+      {...dsComponent('Radio', dsComponentName)}
       className={cx(classes.container, className)}
       {...(error && { 'data-error': true })}
       {...(invalid && { 'data-invalid': true })}

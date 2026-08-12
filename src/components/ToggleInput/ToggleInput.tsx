@@ -7,6 +7,7 @@ import {
 } from '@styled-system/recipes';
 
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { type BoxProps } from '../Box';
@@ -67,6 +68,7 @@ export const ToggleInput = (props: ToggleInputProps) => {
   const resolvedId = id ?? generatedId;
   return (
     <Label
+      {...dsComponent('ToggleInput')}
       className={cx(toggleInput({}), className)}
       htmlFor={resolvedId}
       error={error}

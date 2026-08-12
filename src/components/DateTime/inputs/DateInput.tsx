@@ -8,6 +8,7 @@ import {
 
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../../Box';
@@ -109,6 +110,7 @@ export const DateInput = (props: DateInputProps) => {
 
   return (
     <Box
+      {...dsComponent('DateInput')}
       className={cx(classes.container, className)}
       aria-disabled={disabled}
       data-disabled={disabled || undefined}
