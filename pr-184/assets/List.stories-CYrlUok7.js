@@ -1,0 +1,166 @@
+import{j as e}from"./jsx-runtime-D_zvdyIk.js";import{r as L}from"./index-BKyFwriW.js";import{H as O,V as j}from"./dsComponent-C9MKQHyf.js";import{B as R}from"./BreakpointIndicator-BmLxsAAd.js";import{C as n}from"./Card-B-aVAGnZ.js";import{T as J}from"./Text-D8Iybk0G.js";import{L as o,a as r}from"./ListItem-D0FKyYIB.js";import{L as c}from"./ListItemGroup-DIOjeX3_.js";import"./HighlightText-D8H0OTpl.js";import"./_commonjsHelpers-CqkleIqs.js";import"./mq.hook-xG5a6_yz.js";import"./breakpoints-DU_5_Zhy.js";import"./index-DQmpdOPX.js";import"./Tag-BXSSSwuw.js";import"./Icon-DRevkkti.js";import"./Checkbox-7JccJzRS.js";import"./FieldContext-D6URyQos.js";import"./Divider-D10oyTgB.js";import"./Toggle-0AJPoSF3.js";const i=[{id:"acct",label:"Account settings",desc:"Manage profile and access"},{id:"notify",label:"Notifications",desc:"Email, SMS, and push alerts"},{id:"audit",label:"Audit history",desc:"Track critical account events"},{id:"integrations",label:"Integrations",desc:"Connect external tools"}],K=["first","second"].flatMap(t=>i.map(a=>({...a,instanceId:`${t}-${a.id}`}))),je={title:"Components/List",component:o,args:{children:null},parameters:{layout:"centered"},tags:["autodocs"]},Q=()=>{var l;const[t,a]=L.useState(((l=i[1])==null?void 0:l.id)??"");return e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsx(o,{role:"listbox","aria-label":"Settings list",children:i.map(s=>e.jsx(r,{selected:t===s.id,onClick:()=>a(s.id),label:s.label,description:s.desc},s.id))})})},X=()=>{const[t,a]=L.useState(["notify","audit"]),l=s=>{a(d=>d.includes(s)?d.filter(S=>S!==s):[...d,s])};return e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsx(o,{role:"listbox","aria-label":"Notification filters",children:i.map(s=>e.jsx(r,{variant:"checkbox",selected:t.includes(s.id),onClick:()=>l(s.id),label:s.label,description:s.desc},s.id))})})},Y=()=>{const[t,a]=L.useState(["notify","audit"]),l=s=>{a(d=>d.includes(s)?d.filter(S=>S!==s):[...d,s])};return e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsx(o,{role:"listbox","aria-label":"Toggle list",children:i.map(s=>e.jsx(r,{variant:"toggle",selected:t.includes(s.id),onClick:()=>l(s.id),label:s.label,description:s.desc},s.id))})})},Z=()=>e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsx(o,{role:"listbox","aria-label":"Search results",query:"acc",highlightMatches:!0,children:i.map((a,l)=>e.jsx(r,{selected:l===0,iconAfter:"arrow-right",label:a.label,description:a.desc},a.id))})}),ee=()=>e.jsx(n,{variant:"flat",minW:"lg",maxW:"2xl",children:e.jsx(o,{role:"listbox","aria-label":"Floating search results",density:"comfortable",query:"acc",highlightMatches:!0,children:K.map((a,l)=>e.jsx(r,{selected:l===0,iconAfter:"arrow-right",label:a.label,description:a.desc},a.instanceId))})}),m={args:{},render:()=>e.jsx(Q,{}),parameters:{controls:{disable:!0}}},p={args:{},render:()=>e.jsxs(O,{gap:"12",alignItems:"start",children:[e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsxs(o,{density:"compact",children:[e.jsx(c,{label:"Account Settings",divider:!0,children:i.slice(0,3).map(t=>e.jsx(r,{label:t.label,description:t.desc},`compact-${t.id}`))}),e.jsxs(c,{label:"User Settings",children:[e.jsx(r,{iconAfter:"user",label:"Profile"}),e.jsx(r,{iconAfter:"arrow-square-out",label:"Logout"})]})]})}),e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsxs(o,{density:"comfortable",children:[e.jsx(c,{label:"Account Settings",divider:!0,children:i.slice(0,3).map(t=>e.jsx(r,{label:t.label,description:t.desc},`compact-${t.id}`))}),e.jsxs(c,{label:"User Settings",children:[e.jsx(r,{iconAfter:"user",label:"Profile"}),e.jsx(r,{iconAfter:"arrow-square-out",label:"Logout"})]})]})}),e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsxs(o,{density:"spacious",children:[e.jsx(c,{label:"Account Settings",divider:!0,children:i.slice(0,3).map(t=>e.jsx(r,{label:t.label,description:t.desc},`compact-${t.id}`))}),e.jsxs(c,{label:"User Settings",children:[e.jsx(r,{iconAfter:"user",label:"Profile"}),e.jsx(r,{iconAfter:"arrow-square-out",label:"Logout"})]})]})})]}),parameters:{controls:{disable:!0}}},u={args:{},render:()=>e.jsxs(O,{alignItems:"start",gap:"16",children:[e.jsx(X,{}),e.jsx(Y,{})]}),parameters:{controls:{disable:!0}}},b={args:{},render:()=>e.jsx(Z,{}),parameters:{controls:{disable:!0}}},x={args:{},render:()=>e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsx(o,{role:"listbox","aria-label":"Navigation links",children:i.map(t=>e.jsx(r,{href:`#${t.id}`,iconAfter:"arrow-square-out",label:t.label,description:t.desc},`link-${t.id}`))})}),parameters:{controls:{disable:!0}}},g={args:{},render:()=>e.jsxs(j,{children:[e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsxs(o,{density:{base:"spacious",xs:"comfortable",sm:"compact"},children:[e.jsx(c,{label:"Account Settings",divider:!0,children:i.slice(0,3).map(t=>e.jsx(r,{label:t.label,description:t.desc},`item-${t.id}`))}),e.jsxs(c,{label:"User Settings",children:[e.jsx(r,{iconAfter:"user",label:"Profile"}),e.jsx(r,{iconAfter:"arrow-square-out",label:"Logout"})]})]})}),e.jsxs(J,{textAlign:"center",textStyle:"mono.sm",_after:{display:"inline",content:{base:'"spacious"',xs:'"comfortable"',sm:'"compact"'},color:"text.bold",fontWeight:"bold"},children:["Size:"," "]}),e.jsx(R,{})]}),parameters:{controls:{disable:!0}}},f={args:{},render:()=>e.jsxs(j,{children:[e.jsx(n,{variant:"flat",minW:"2xs",children:e.jsxs(j,{alignItems:"stretch",gap:"0",children:[e.jsx(c,{label:"Account Settings",divider:!0,density:{base:"spacious",xs:"comfortable",sm:"compact"},children:i.slice(0,2).map(t=>e.jsx(r,{label:t.label,description:t.desc},`standalone-group-${t.id}`))}),e.jsx(r,{density:{base:"spacious",xs:"comfortable",sm:"compact"},iconAfter:"arrow-square-out",label:"Logout",description:"Close the current session"})]})}),e.jsxs(J,{textAlign:"center",textStyle:"mono.sm",_after:{display:"inline",content:{base:'"spacious"',xs:'"comfortable"',sm:'"compact"'},color:"text.bold",fontWeight:"bold"},children:["Size:"," "]}),e.jsx(R,{})]}),parameters:{controls:{disable:!0}}},h={name:"Ex: Floating search bar",args:{},render:()=>e.jsx(ee,{}),parameters:{controls:{disable:!0}}};var I,y,A;m.parameters={...m.parameters,docs:{...(I=m.parameters)==null?void 0:I.docs,source:{originalSource:`{
+  args: {},
+  render: () => <SingleSelectExample />,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(A=(y=m.parameters)==null?void 0:y.docs)==null?void 0:A.source}}};var k,C,v;p.parameters={...p.parameters,docs:{...(k=p.parameters)==null?void 0:k.docs,source:{originalSource:`{
+  args: {},
+  render: () => <HStack gap="12" alignItems="start">
+      <Card variant="flat" minW="2xs">
+        <List density="compact">
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map(item => <ListItem key={\`compact-\${item.id}\`} label={item.label} description={item.desc} />)}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
+        </List>
+      </Card>
+      <Card variant="flat" minW="2xs">
+        <List density="comfortable">
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map(item => <ListItem key={\`compact-\${item.id}\`} label={item.label} description={item.desc} />)}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
+        </List>
+      </Card>
+      <Card variant="flat" minW="2xs">
+        <List density="spacious">
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map(item => <ListItem key={\`compact-\${item.id}\`} label={item.label} description={item.desc} />)}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
+        </List>
+      </Card>
+    </HStack>,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(v=(C=p.parameters)==null?void 0:C.docs)==null?void 0:v.source}}};var W,G,E;u.parameters={...u.parameters,docs:{...(W=u.parameters)==null?void 0:W.docs,source:{originalSource:`{
+  args: {},
+  render: () => <HStack alignItems="start" gap="16">
+      <MultiSelectCheckboxExample />
+      <ToggleSelectionExample />
+    </HStack>,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(E=(G=u.parameters)==null?void 0:G.docs)==null?void 0:E.source}}};var q,$,w;b.parameters={...b.parameters,docs:{...(q=b.parameters)==null?void 0:q.docs,source:{originalSource:`{
+  args: {},
+  render: () => <HighlightingExample />,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(w=($=b.parameters)==null?void 0:$.docs)==null?void 0:w.source}}};var B,H,T;x.parameters={...x.parameters,docs:{...(B=x.parameters)==null?void 0:B.docs,source:{originalSource:`{
+  args: {},
+  render: () => <Card variant="flat" minW="2xs">
+      <List role="listbox" aria-label="Navigation links">
+        {items.map(item => <ListItem key={\`link-\${item.id}\`} href={\`#\${item.id}\`} iconAfter="arrow-square-out" label={item.label} description={item.desc} />)}
+      </List>
+    </Card>,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(T=(H=x.parameters)==null?void 0:H.docs)==null?void 0:T.source}}};var P,U,V;g.parameters={...g.parameters,docs:{...(P=g.parameters)==null?void 0:P.docs,source:{originalSource:`{
+  args: {},
+  render: () => <VStack>
+      <Card variant="flat" minW="2xs">
+        <List density={{
+        base: 'spacious',
+        xs: 'comfortable',
+        sm: 'compact'
+      }}>
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map(item => <ListItem key={\`item-\${item.id}\`} label={item.label} description={item.desc} />)}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
+        </List>
+      </Card>
+      <Text textAlign="center" textStyle="mono.sm" _after={{
+      display: 'inline',
+      content: {
+        base: '"spacious"',
+        xs: '"comfortable"',
+        sm: '"compact"'
+      },
+      color: 'text.bold',
+      fontWeight: 'bold'
+    }}>
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </VStack>,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(V=(U=g.parameters)==null?void 0:U.docs)==null?void 0:V.source}}};var F,M,_;f.parameters={...f.parameters,docs:{...(F=f.parameters)==null?void 0:F.docs,source:{originalSource:`{
+  args: {},
+  render: () => <VStack>
+      <Card variant="flat" minW="2xs">
+        <VStack alignItems="stretch" gap="0">
+          <ListItemGroup label="Account Settings" divider density={{
+          base: 'spacious',
+          xs: 'comfortable',
+          sm: 'compact'
+        }}>
+            {items.slice(0, 2).map(item => <ListItem key={\`standalone-group-\${item.id}\`} label={item.label} description={item.desc} />)}
+          </ListItemGroup>
+          <ListItem density={{
+          base: 'spacious',
+          xs: 'comfortable',
+          sm: 'compact'
+        }} iconAfter="arrow-square-out" label="Logout" description="Close the current session" />
+        </VStack>
+      </Card>
+      <Text textAlign="center" textStyle="mono.sm" _after={{
+      display: 'inline',
+      content: {
+        base: '"spacious"',
+        xs: '"comfortable"',
+        sm: '"compact"'
+      },
+      color: 'text.bold',
+      fontWeight: 'bold'
+    }}>
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </VStack>,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(_=(M=f.parameters)==null?void 0:M.docs)==null?void 0:_.source}}};var z,D,N;h.parameters={...h.parameters,docs:{...(z=h.parameters)==null?void 0:z.docs,source:{originalSource:`{
+  name: 'Ex: Floating search bar',
+  args: {},
+  render: () => <FloatingSearchBarExample />,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(N=(D=h.parameters)==null?void 0:D.docs)==null?void 0:N.source}}};const Le=["Default","Density","SelectionControls","Highlighting","WithHrefs","ConditionalBreakpoints","ConditionalBreakpointsStandalone","ExFloatingSearchBar"];export{g as ConditionalBreakpoints,f as ConditionalBreakpointsStandalone,m as Default,p as Density,h as ExFloatingSearchBar,b as Highlighting,u as SelectionControls,x as WithHrefs,Le as __namedExportsOrder,je as default};
