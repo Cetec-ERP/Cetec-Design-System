@@ -432,19 +432,20 @@ export const TestIdReachesPortaledListbox: Story = {
     const canvas = within(canvasElement);
     const screen = within(canvasElement.ownerDocument.body);
 
-    // The test id is written on the root, not on the combobox trigger, so the
-    // chain scope it opens encloses the portal the trigger only sits beside.
-    const root = canvas.getByTestId('status');
-    const trigger = canvas.getByRole('combobox');
+    // The test id stays on the combobox trigger — the element a test drives,
+    // and the element an existing selector already points at.
+    const trigger = canvas.getByTestId('status');
+    expect(trigger).toBe(canvas.getByRole('combobox'));
 
-    expect(root).not.toBe(trigger);
-    expect(root).toContainElement(trigger);
-    expect(trigger).not.toHaveAttribute('data-testid');
-
-    // The trigger keeps a stable query handle through `data-ds-part`, which the
-    // component emits on its own. It marks the trigger only, never the root.
+    // `data-ds-part` names the trigger for the collector. It is not a test
+    // handle and it never contributes a chain node.
     expect(trigger).toHaveAttribute('data-ds-part', 'trigger');
-    expect(root).not.toHaveAttribute('data-ds-part');
+
+    // The scope is opened above the root instead, because only the root
+    // encloses the portal's position in the React tree.
+    const root = trigger.closest('[data-ds-component="Select"]');
+    expect(root).not.toBe(trigger);
+    expect(root).not.toHaveAttribute('data-testid');
 
     trigger.focus();
     await userEvent.keyboard('{ArrowDown}');
@@ -452,14 +453,19 @@ export const TestIdReachesPortaledListbox: Story = {
     const listbox = await screen.findByRole('listbox');
 
     // The listbox is portaled out of the root, so only the chain connects them.
-    expect(root.contains(listbox)).toBe(false);
+    expect(root?.contains(listbox)).toBe(false);
 
-    const chainRoot = listbox.closest('[data-ds-chain]');
+    // Found by the unconditional marker, not by the chain value — the chain is
+    // absent whenever nothing upstream is tagged, and the boundary still needs
+    // to be findable then.
+    const portalRoot = listbox.closest('[data-ds-portal-root]');
+    expect(portalRoot).not.toBeNull();
 
-    // The chain is built from `data-testid` alone, so the trigger's
-    // `data-ds-part` contributes no node to it.
-    expect(chainRoot).toHaveAttribute('data-ds-chain', 'filters>status');
-    expect(chainRoot?.getAttribute('data-ds-chain')).not.toContain('trigger');
+    // The trigger's own `Box` opens a second scope with the same id; the
+    // repeat is collapsed, so the chain reads `filters>status`, not
+    // `filters>status>status`.
+    expect(portalRoot).toHaveAttribute('data-ds-chain', 'filters>status');
+    expect(portalRoot?.getAttribute('data-ds-chain')).not.toContain('trigger');
   },
   parameters: { controls: { disable: true } },
 };
@@ -486,22 +492,24 @@ export const DsComponentAttribute: Story = {
     const canvas = within(canvasElement);
     const screen = within(canvasElement.ownerDocument.body);
 
-    // Emitted automatically on the root, without an author opting in.
-    const root = canvas.getByTestId('ds-default');
-    expect(root).toHaveAttribute('data-ds-component', 'Select');
-
-    // Select forwards its rest props to the combobox trigger, so the attribute
-    // is pulled out of them and must not leak onto the trigger.
-    const trigger = within(root).getByRole('combobox');
+    // Select forwards its rest props to the combobox trigger, so the test id
+    // lands there and the root is reached from it.
+    const trigger = canvas.getByTestId('ds-default');
     expect(trigger).toHaveAttribute('data-ds-part', 'trigger');
+
+    // Emitted automatically on the root, without an author opting in, and it
+    // must not leak onto the trigger along with the rest props.
+    const root = trigger.closest('[data-ds-component]');
+    expect(root).toHaveAttribute('data-ds-component', 'Select');
     expect(trigger).not.toHaveAttribute('data-ds-component');
 
     // An explicitly passed value wins, still on the root and not the trigger.
-    const overriddenRoot = canvas.getByTestId('ds-override');
-    expect(overriddenRoot).toHaveAttribute('data-ds-component', 'StatusSelect');
-    expect(within(overriddenRoot).getByRole('combobox')).not.toHaveAttribute(
+    const overriddenTrigger = canvas.getByTestId('ds-override');
+    expect(overriddenTrigger.closest('[data-ds-component]')).toHaveAttribute(
       'data-ds-component',
+      'StatusSelect',
     );
+    expect(overriddenTrigger).not.toHaveAttribute('data-ds-component');
 
     // The portaled listbox is `List`, so it never reports as the Select.
     trigger.focus();

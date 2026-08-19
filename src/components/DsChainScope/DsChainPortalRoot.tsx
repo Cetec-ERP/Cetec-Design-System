@@ -27,5 +27,15 @@ type DsChainPortalRootProps = {
 export const DsChainPortalRoot = ({ children }: DsChainPortalRootProps) => {
   const chain = useDsChain();
 
-  return <div data-ds-chain={dsChainValue(chain)}>{children}</div>;
+  return (
+    // The marker is unconditional; the chain value is not. An empty chain emits
+    // no `data-ds-chain`, so without the marker an untagged portal is
+    // indistinguishable from an ordinary element and a consumer walking up the
+    // DOM continues past it into `document.body` — producing a chain from
+    // whatever it finds there, with no error. The marker makes "portal
+    // boundary, chain resolved to nothing" a state a reader can detect.
+    <div data-ds-portal-root="" data-ds-chain={dsChainValue(chain)}>
+      {children}
+    </div>
+  );
 };

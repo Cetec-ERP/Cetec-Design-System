@@ -41,6 +41,7 @@ import { splitProps } from '~/utils/splitProps';
 import { Box, type BoxProps } from '../Box/Box';
 import { Chip } from '../Chip/Chip';
 import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { DsChainScope } from '../DsChainScope/DsChainScope';
 import { Icon } from '../Icon/Icon';
 import { List } from '../List/List';
 import { ListItem } from '../List/ListItem';
@@ -239,13 +240,13 @@ export const Select = (props: SelectProps) => {
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
-  // `data-testid` is pulled out and written on the root instead of the trigger.
-  // `Box` opens a chain scope wherever the test id lands, and the trigger is a
-  // sibling of the portal that renders the listbox, so a scope opened there
-  // could never enclose it. The root does enclose the portal's React-tree
-  // position, so the listbox inherits the id. Only the test id moves; every
-  // other rest prop still lands on the trigger, where consumers expect it.
-  const { 'data-testid': testId, ...triggerProps } = otherProps;
+  // Read, do not remove. `data-testid` stays on the combobox trigger, which is
+  // the element a test drives and the element existing selectors already
+  // target. The chain scope it needs to open is a separate concern, handled
+  // below the return: the trigger is a sibling of the portal that renders the
+  // listbox, so a scope opened by the trigger's own `Box` could never enclose
+  // it, but a scope opened above the root does.
+  const testId = otherProps['data-testid'];
 
   const generatedId = useId();
   const triggerId = id ?? `select-${generatedId}`;
@@ -455,12 +456,8 @@ export const Select = (props: SelectProps) => {
     handleValueChange(nextValues.length > 0 ? nextValues : null);
   };
 
-  return (
-    <Box
-      {...dsComponent('Select', dsComponentName)}
-      className={classes.root}
-      data-testid={testId}
-    >
+  const root = (
+    <Box {...dsComponent('Select', dsComponentName)} className={classes.root}>
       {name &&
         selectedValues.map((selectedValue) => (
           <Box
@@ -501,7 +498,7 @@ export const Select = (props: SelectProps) => {
         {...(getReferenceProps({
           onKeyDown: handleTriggerKeyDown,
         }) as Record<string, unknown>)}
-        {...triggerProps}
+        {...otherProps}
       >
         {multiple && selectedOptions.length > 0 ? (
           <Box className={cx(classes.content, classes.chips)}>
@@ -616,5 +613,16 @@ export const Select = (props: SelectProps) => {
         </FloatingPortal>
       )}
     </Box>
+  );
+
+  // The scope is opened above the root rather than by the element carrying the
+  // id, because only the root encloses the portal's position in the React tree.
+  // The trigger's own `Box` opens a second scope with the same id; the repeat
+  // is collapsed in `extendDsChain`, so content inside the trigger resolves the
+  // same chain as content outside it.
+  return typeof testId === 'string' && testId.length > 0 ? (
+    <DsChainScope testId={testId}>{root}</DsChainScope>
+  ) : (
+    root
   );
 };

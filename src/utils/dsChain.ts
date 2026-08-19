@@ -11,6 +11,14 @@ export const DS_CHAIN_ATTRIBUTE = 'data-ds-chain';
 export const DS_CHAIN_SEPARATOR = '>';
 
 /**
+ * Attribute marking the wrapper a portal's contents render into. Written
+ * unconditionally, including when the resolved chain is empty, so a consumer
+ * walking up the DOM can tell a portal boundary from an ordinary element and
+ * stop there instead of continuing into `document.body`.
+ */
+export const DS_PORTAL_ROOT_ATTRIBUTE = 'data-ds-portal-root';
+
+/**
  * Maximum number of chain nodes retained. The nearest nodes are kept because
  * the leaf end of the chain is what identifies an interaction; page-level
  * object identity is carried separately rather than through this chain.
@@ -40,11 +48,24 @@ export const useDsChain = (): readonly string[] => useContext(DsChainContext);
 /**
  * Appends a `data-testid` value to a chain, keeping the nearest
  * `DS_CHAIN_MAX_DEPTH` nodes.
+ *
+ * A value equal to the innermost node is dropped rather than repeated. Two
+ * supported arrangements produce that case: a component that opens a scope
+ * above its root and also writes the same id on an inner element, and a
+ * consumer that wraps a design-system component in `DsChainScope` using the
+ * `data-testid` that component already emits. Neither is an error, and a
+ * repeated node carries no information while it consumes one of five slots.
+ *
+ * Only the innermost node is compared. A legitimately recurring id further out
+ * — a nested grid inside a grid — still contributes, because the repeat there
+ * describes real structure.
  */
 export const extendDsChain = (
   chain: readonly string[],
   testId: string,
 ): readonly string[] => {
+  if (chain[chain.length - 1] === testId) return chain;
+
   const next = [...chain, testId];
 
   return next.length > DS_CHAIN_MAX_DEPTH

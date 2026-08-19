@@ -15,12 +15,15 @@ export type DsPartAttribute = {
  *
  * Internal instrumentation with the same status as `data-ds-component`: emitted
  * automatically, not a supported public API, and not part of any prop type.
- * It exists because some components move `data-testid` off the element a test
- * actually drives. `Box` opens an interaction-chain scope wherever a
- * `data-testid` lands, so a component whose popup is portaled must write the id
- * on a root that encloses the portal's React-tree position. That leaves the
- * trigger with no stable query handle, and a second `data-testid` there would
- * push the same id into the chain twice.
+ * **It is not a test handle** — tests query by role, or by the `data-testid` a
+ * consumer supplied. Do not document it, type it, or reference it from a test
+ * outside this repository.
+ *
+ * It exists for the collector, which needs to tell apart the interactive parts
+ * of one component: a click on a `Select`'s trigger is a different event from a
+ * click on a chip's remove control inside it, and both report the same
+ * `data-ds-component` and the same chain. The part name is what separates them,
+ * and it is the DS's to assign because only the DS knows its own anatomy.
  *
  * Spread the result before the component's rest props so a consumer-supplied
  * value in rest props still wins, matching `dsComponent`.

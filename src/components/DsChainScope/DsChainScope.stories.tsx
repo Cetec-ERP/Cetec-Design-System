@@ -133,6 +133,42 @@ export const ChainKeepsTheNearestFive: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const RepeatedNodeIsCollapsed: Story = {
+  name: 'Chain: A Repeated Node Is Collapsed',
+  render: () => (
+    <Box data-testid="page">
+      {/*
+        The scope and the element carry the same id. A component that opens a
+        scope above its root and also writes the id on an inner element
+        produces this, and so does a consumer wrapping a tagged component.
+      */}
+      <DsChainScope testId="status">
+        <Box data-testid="status">
+          <ChainProbe name="collapsed" />
+        </Box>
+      </DsChainScope>
+
+      {/* Only the innermost node is compared, so real nesting still counts. */}
+      <Box data-testid="grid">
+        <Box data-testid="row">
+          <Box data-testid="grid">
+            <ChainProbe name="nested" />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    // Not `page>status>status` — the repeat carries nothing and would spend
+    // one of five slots.
+    expect(readProbe(canvasElement, 'collapsed')).toBe('page>status');
+
+    // A grid inside a grid is real structure, so the repeat is kept.
+    expect(readProbe(canvasElement, 'nested')).toBe('page>grid>row>grid');
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const ScopeCoversRawDom: Story = {
   name: 'Ex: Scope Around Raw DOM',
   render: () => (
@@ -180,6 +216,41 @@ export const PortalStampsResolvedChain: Story = {
     const portalRoot = listbox.closest('[data-ds-chain]');
     expect(portalRoot).not.toBeNull();
     expect(portalRoot).toHaveAttribute('data-ds-chain', 'page>filters');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const PortalRootIsMarkedWithoutAChain: Story = {
+  name: 'Ex: Portal Boundary Is Findable With No Chain',
+  render: () => (
+    // Deliberately untagged: no ancestor carries a `data-testid`, which is the
+    // state of almost every screen before anyone tags it.
+    <Box>
+      <Select aria-label="Status" placeholder="Choose a status...">
+        <SelectOption value="draft" label="Draft" />
+        <SelectOption value="published" label="Published" />
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('combobox', { name: /status/i });
+
+    trigger.focus();
+    await userEvent.keyboard('{ArrowDown}');
+
+    const listbox = await screen.findByRole('listbox');
+    const portalRoot = listbox.closest('[data-ds-portal-root]');
+
+    // The marker is unconditional, so the boundary is findable.
+    expect(portalRoot).not.toBeNull();
+
+    // The chain is not: an empty chain emits no attribute, so a reader can
+    // tell "resolved to nothing" from "never resolved". Without the marker
+    // this element would be an ordinary div and a walk-up would pass straight
+    // through it into `document.body`.
+    expect(portalRoot).not.toHaveAttribute('data-ds-chain');
   },
   parameters: { controls: { disable: true } },
 };
