@@ -56,7 +56,6 @@ export type AutocompleteStateProps<Multiple extends boolean = false> = {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean, reason: AutocompleteOpenChangeReason) => void;
   multiple?: Multiple;
-  selectedOptionLabel?: string;
   disabled?: boolean;
   readOnly?: boolean;
 };

@@ -55,7 +55,7 @@ import type {
 const LOAD_MORE_THRESHOLD_PX = 32;
 
 const defaultGetCreateOptionLabel = (inputValue: string) =>
-  `Create “${inputValue}”`;
+  `Add “${inputValue}”`;
 
 const chipSizeByAutocompleteSize = {
   sm: 'sm',
@@ -163,11 +163,6 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     () => new Map(options.map((option) => [option.value, option])),
     [options],
   );
-  const initialValue = controlledValue ?? defaultValue;
-  const initialSelectedLabel =
-    typeof initialValue === 'string'
-      ? (optionByValue.get(initialValue)?.label ?? initialValue)
-      : '';
   const handleValueChange = useCallback(
     (
       nextValue: AutocompleteValue<boolean>,
@@ -208,16 +203,12 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     defaultValue,
     onValueChange: handleValueChange,
     inputValue: controlledInputValue,
-    defaultInputValue: defaultInputValue ?? initialSelectedLabel,
+    defaultInputValue,
     onInputValueChange: handleInputValueChange,
     open: controlledOpen,
     defaultOpen,
     onOpenChange,
     multiple,
-    selectedOptionLabel:
-      typeof controlledValue === 'string'
-        ? (optionByValue.get(controlledValue)?.label ?? controlledValue)
-        : undefined,
     disabled,
     readOnly,
   });
@@ -228,13 +219,18 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     () => getAutocompleteValueArray(currentValue, Boolean(multiple)),
     [currentValue, multiple],
   );
+  const selectedOptions = useMemo(
+    () =>
+      selectedValues.map((selectedValue) => optionByValue.get(selectedValue)),
+    [optionByValue, selectedValues],
+  );
   const selectedLabels = useMemo(
     () =>
       selectedValues.map(
-        (selectedValue) =>
-          optionByValue.get(selectedValue)?.label ?? selectedValue,
+        (selectedValue, index) =>
+          selectedOptions[index]?.label ?? selectedValue,
       ),
-    [optionByValue, selectedValues],
+    [selectedOptions, selectedValues],
   );
 
   const visibleOptions = useMemo(() => {
@@ -263,7 +259,7 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     };
   }, [allowCustomValue, currentInputValue, getCreateOptionLabel, options]);
   const navigationItems = useMemo(
-    () => (createOption ? [...visibleOptions, createOption] : visibleOptions),
+    () => (createOption ? [createOption, ...visibleOptions] : visibleOptions),
     [createOption, visibleOptions],
   );
   const disabledIndices = useMemo(
@@ -332,15 +328,6 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
   const visibleTagCount = shouldLimitTags ? limitTags : selectedValues.length;
   const visibleSelectedValues = selectedValues.slice(0, visibleTagCount);
   const hiddenTagCount = selectedValues.length - visibleSelectedValues.length;
-  const selectedSingleLabel =
-    typeof currentValue === 'string'
-      ? (optionByValue.get(currentValue)?.label ?? currentValue)
-      : '';
-  const displayedInputValue =
-    !multiple && typeof currentValue === 'string' && !currentInputValue
-      ? selectedSingleLabel
-      : currentInputValue;
-
   const focusInput = useCallback(() => {
     inputRef.current?.focus();
   }, []);
@@ -438,31 +425,10 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     },
     [state],
   );
-  const handleInputFocus = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      setFocusedWithin(true);
-      state.openPopup('focus');
-
-      if (!multiple && typeof currentValue === 'string') {
-        event.currentTarget.select();
-      }
-    },
-    [currentValue, multiple, state],
-  );
-  const handleInputMouseDown = useCallback(
-    (event: MouseEvent<HTMLInputElement>) => {
-      if (
-        !multiple &&
-        typeof currentValue === 'string' &&
-        document.activeElement !== event.currentTarget
-      ) {
-        event.preventDefault();
-        event.currentTarget.focus();
-        event.currentTarget.select();
-      }
-    },
-    [currentValue, multiple],
-  );
+  const handleInputFocus = useCallback(() => {
+    setFocusedWithin(true);
+    state.openPopup('focus');
+  }, [state]);
   const handleInputKeyDown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
       if (disabled || readOnly) {
@@ -495,7 +461,6 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
       if (
         (event.key === 'Backspace' || event.key === 'Delete') &&
         currentInputValue.length === 0 &&
-        multiple &&
         visibleSelectedValues.length > 0
       ) {
         event.preventDefault();
@@ -506,7 +471,6 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
       if (
         event.key === 'ArrowLeft' &&
         currentInputValue.length === 0 &&
-        multiple &&
         visibleSelectedValues.length > 0
       ) {
         event.preventDefault();
@@ -519,7 +483,6 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
       focusToken,
       handleOptionSelect,
       isOpen,
-      multiple,
       navigationItems,
       readOnly,
       resolvedActiveIndex,
@@ -618,7 +581,6 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     currentValue,
     density,
     disabled,
-    displayedInputValue,
     error,
     floating,
     getFloatingProps,
@@ -630,7 +592,6 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     handleInputChange,
     handleInputFocus,
     handleInputKeyDown,
-    handleInputMouseDown,
     handleListScroll,
     handleOptionSelect,
     handleTokenDismiss,
@@ -653,6 +614,7 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     readOnly,
     rootRef,
     selectedLabels,
+    selectedOptions,
     selectedValues,
     setFloatingRef,
     setItemRef,

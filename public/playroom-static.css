@@ -3250,6 +3250,13 @@
       max-width: var(--cetec-sizes-full);
     }
 
+    .cetec-autocomplete__token[data-new='true'] {
+      background: var(--cetec-colors-transparent);
+      outline-width: var(--cetec-border-widths-1);
+      outline-style: dashed;
+      outline-color: var(--cetec-colors-border-warning);
+    }
+
     .cetec-autocomplete__overflowIndicator {
       background: var(--cetec-colors-bg-neutral);
       padding-inline: var(--cetec-spacing-6);
@@ -3793,6 +3800,7 @@
       position: relative;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       flex-shrink: 0;
       outline-width: var(--cetec-border-widths-2);
       outline-style: solid;

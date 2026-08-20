@@ -134,6 +134,7 @@ export const chipRecipe = defineSlotRecipe({
       position: 'relative',
       display: 'inline-flex',
       alignItems: 'center',
+      justifyContent: 'center',
       minW: '0',
       flexShrink: '0',
       bg: 'transparent',
