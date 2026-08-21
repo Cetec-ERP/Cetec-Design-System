@@ -94,7 +94,7 @@ export const Tooltip = (props: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef<SVGSVGElement>(null);
 
-  const { refs, floatingStyles, context } = useOverlayFloating({
+  const { refs, elements, floatingStyles, context } = useOverlayFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
     placement,
@@ -135,7 +135,7 @@ export const Tooltip = (props: TooltipProps) => {
 
       {isOpen && (
         <FloatingPortal>
-          <DsChainPortalRoot>
+          <DsChainPortalRoot reference={elements.domReference}>
             <Box
               {...dsComponent('Tooltip')}
               ref={refs.setFloating}

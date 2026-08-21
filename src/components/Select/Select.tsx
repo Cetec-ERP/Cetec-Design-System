@@ -545,7 +545,7 @@ export const Select = (props: SelectProps) => {
 
       {isOpen && !disabled && (
         <FloatingPortal>
-          <DsChainPortalRoot>
+          <DsChainPortalRoot reference={floating.elements.domReference}>
             <FloatingFocusManager
               context={floating.context}
               modal={false}

@@ -308,3 +308,132 @@ export const NestedPortalsCompose: Story = {
   },
   parameters: { controls: { disable: true } },
 };
+
+const openStatusListbox = async (canvasElement: HTMLElement) => {
+  const trigger = within(canvasElement).getByRole('combobox', {
+    name: /status/i,
+  });
+
+  trigger.focus();
+  await userEvent.keyboard('{ArrowDown}');
+
+  const listbox = await within(canvasElement.ownerDocument.body).findByRole(
+    'listbox',
+  );
+
+  return listbox.closest('[data-ds-portal-root]');
+};
+
+export const PortalCarriesTheObject: Story = {
+  name: 'Ex: Portaled Listbox Carries The Object',
+  render: () => (
+    // The shape of a legacy Perl screen: one layout wrapper carries the object
+    // for the whole page, and every interaction on it resolves to that object.
+    <Box data-track-object="orderline">
+      <Box data-testid="page">
+        <Select aria-label="Status" placeholder="Choose a status...">
+          <SelectOption value="draft" label="Draft" />
+          <SelectOption value="published" label="Published" />
+        </Select>
+      </Box>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const portalRoot = await openStatusListbox(canvasElement);
+
+    // The wrapper that carries the object is not an ancestor of the portal —
+    // that is the whole bug. Walking up from inside the listbox reaches
+    // `document.body` and stops.
+    expect(portalRoot?.closest('[data-track-object]')).toBe(portalRoot);
+
+    // The value is copied from the opening element's nearest tagged ancestor.
+    expect(portalRoot).toHaveAttribute('data-track-object', 'orderline');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const NearestObjectWins: Story = {
+  name: 'Ex: Nearest Object Wins',
+  render: () => (
+    // The shape of a React screen: several tagged regions on one page, so an
+    // interaction has to resolve to the region it started in, not to the page.
+    <Box data-track-object="order">
+      <Box data-track-object="orderline">
+        <Select aria-label="Status" placeholder="Choose a status...">
+          <SelectOption value="draft" label="Draft" />
+          <SelectOption value="published" label="Published" />
+        </Select>
+      </Box>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const portalRoot = await openStatusListbox(canvasElement);
+
+    expect(portalRoot).toHaveAttribute('data-track-object', 'orderline');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const UntaggedPageYieldsNoObject: Story = {
+  name: 'Ex: Untagged Page Yields No Object',
+  render: () => (
+    // No ancestor carries an object, which is the state of every screen the
+    // application has not tagged yet.
+    <Box>
+      <Select aria-label="Status" placeholder="Choose a status...">
+        <SelectOption value="draft" label="Draft" />
+        <SelectOption value="published" label="Published" />
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const portalRoot = await openStatusListbox(canvasElement);
+
+    // The boundary is still findable, so a reader stops here and records the
+    // object as unknown rather than walking on and borrowing one.
+    expect(portalRoot).not.toBeNull();
+    expect(portalRoot).not.toHaveAttribute('data-track-object');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+const ModalWithoutAnOpenerExample = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Box data-track-object="orderline">
+      <Button onClick={() => setOpen(true)}>Open modal</Button>
+      <Modal open={open} onOpenChange={setOpen}>
+        <ModalHeader>Assign owner</ModalHeader>
+        <ModalBody>
+          <Text>Nothing here resolves to an object.</Text>
+        </ModalBody>
+      </Modal>
+    </Box>
+  );
+};
+
+export const ModalHasNoOpeningElement: Story = {
+  name: 'Ex: Modal Resolves No Object',
+  render: () => <ModalWithoutAnOpenerExample />,
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByRole('button', { name: /open modal/i }));
+
+    const portalRoot = (await screen.findByText('Assign owner')).closest(
+      '[data-ds-portal-root]',
+    );
+
+    // A Modal is driven by the `open` prop and never sets a reference, so
+    // there is no opening element to resolve from. The chain still arrives
+    // through React context; the object does not, and no object is emitted.
+    // This is the known gap, recorded here rather than papered over: a guessed
+    // page-level object would be right on a legacy screen and wrong on a React
+    // screen that tags individual elements.
+    expect(portalRoot).not.toBeNull();
+    expect(portalRoot).not.toHaveAttribute('data-track-object');
+  },
+  parameters: { controls: { disable: true } },
+};

@@ -25,6 +25,14 @@ export const DS_PORTAL_ROOT_ATTRIBUTE = 'data-ds-portal-root';
  */
 export const DS_CHAIN_MAX_DEPTH = 5;
 
+/**
+ * Attribute carrying business-object identity. The application authors it — on
+ * a layout wrapper for legacy Perl screens, on individual elements on React
+ * screens. The design system never invents a value; it only copies one onto a
+ * portal root, which is the single place DOM ancestry cannot supply it.
+ */
+export const DS_OBJECT_ATTRIBUTE = 'data-track-object';
+
 // Module-level constant so every reader outside a scope shares one identity.
 // A fresh `[]` default would hand consumers a new value on each render and
 // defeat the memoization in the provider.
@@ -81,3 +89,25 @@ export const extendDsChain = (
  */
 export const dsChainValue = (chain: readonly string[]): string | undefined =>
   chain.length > 0 ? chain.join(DS_CHAIN_SEPARATOR) : undefined;
+
+/**
+ * Resolves the business object governing `element` by walking up the DOM to the
+ * nearest ancestor carrying `DS_OBJECT_ATTRIBUTE`, `element` itself included.
+ *
+ * Nearest wins. A legacy Perl screen tags one layout wrapper, so every element
+ * on it resolves to the same object; a React screen tags individual elements,
+ * so an interaction resolves to the region it started in rather than to the
+ * page. Both fall out of the same walk.
+ *
+ * Returns `undefined` when no ancestor is tagged — including for an element
+ * that is not in the document, and for an empty attribute value — so React
+ * omits the attribute instead of emitting an empty string that a consumer would
+ * have to special-case. An untagged screen must produce no answer, never a
+ * borrowed one.
+ */
+export const dsObjectValue = (
+  element: Element | null | undefined,
+): string | undefined =>
+  element
+    ?.closest(`[${DS_OBJECT_ATTRIBUTE}]`)
+    ?.getAttribute(DS_OBJECT_ATTRIBUTE) || undefined;
