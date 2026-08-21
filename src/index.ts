@@ -80,6 +80,10 @@ export {
   type TimeFormat,
 } from './components/DateTime';
 export { Divider, type DividerProps } from './components/Divider';
+export {
+  DsChainScope,
+  type DsChainScopeProps,
+} from './components/DsChainScope';
 export { FormField, type FormFieldProps } from './components/FormField';
 export { Heading, type HeadingProps } from './components/Heading';
 export {

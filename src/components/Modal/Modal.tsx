@@ -22,9 +22,11 @@ import {
 } from '@styled-system/recipes';
 
 import { useOverlayFloating } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
 
 import { ModalContext, type ModalContextValue } from './ModalContext';
 
@@ -180,31 +182,34 @@ export const Modal = (props: ModalProps) => {
   return (
     <ModalContext.Provider value={contextValue}>
       <FloatingPortal>
-        <Box className={classes.positionWrapper}>
-          <FloatingOverlay
-            lockScroll
-            className={classes.overlay}
-            data-state={dataState}
-            onClick={
-              preventOverlayClose ? undefined : () => onOpenChange(false)
-            }
-            aria-hidden="true"
-          />
-          <FloatingFocusManager context={context} modal={true}>
-            <Box
-              ref={refs.setFloating}
-              className={cx(classes.container, className)}
+        <DsChainPortalRoot>
+          <Box className={classes.positionWrapper}>
+            <FloatingOverlay
+              lockScroll
+              className={classes.overlay}
               data-state={dataState}
-              id={id}
-              role="dialog"
-              aria-modal="true"
-              {...(getFloatingProps() as Record<string, unknown>)}
-              {...otherProps}
-            >
-              {children}
-            </Box>
-          </FloatingFocusManager>
-        </Box>
+              onClick={
+                preventOverlayClose ? undefined : () => onOpenChange(false)
+              }
+              aria-hidden="true"
+            />
+            <FloatingFocusManager context={context} modal={true}>
+              <Box
+                {...dsComponent('Modal')}
+                ref={refs.setFloating}
+                className={cx(classes.container, className)}
+                data-state={dataState}
+                id={id}
+                role="dialog"
+                aria-modal="true"
+                {...(getFloatingProps() as Record<string, unknown>)}
+                {...otherProps}
+              >
+                {children}
+              </Box>
+            </FloatingFocusManager>
+          </Box>
+        </DsChainPortalRoot>
       </FloatingPortal>
     </ModalContext.Provider>
   );

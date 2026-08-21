@@ -594,3 +594,108 @@ export const KeyboardTokenEditing: Story = {
   },
   parameters: { controls: { disable: true } },
 };
+
+export const TestIdReachesPortaledListbox: Story = {
+  name: 'Ex: Test Id Reaches The Listbox',
+  render: () => (
+    <Box w="sm" data-testid="filters">
+      <Autocomplete data-testid="technology" aria-label="Technology">
+        {renderOptions()}
+      </Autocomplete>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // The test id is written on the root, not on the combobox input, so the
+    // chain scope it opens encloses the portal the input only sits beside.
+    const root = canvas.getByTestId('technology');
+    const input = canvas.getByRole('combobox');
+
+    await expect(root).not.toBe(input);
+    await expect(root).toContainElement(input);
+    await expect(input).not.toHaveAttribute('data-testid');
+
+    // The input keeps a stable query handle through `data-ds-part`, which the
+    // component emits on its own. It marks the trigger only, never the root.
+    await expect(input).toHaveAttribute('data-ds-part', 'trigger');
+    await expect(root).not.toHaveAttribute('data-ds-part');
+
+    await userEvent.click(input);
+
+    const listbox = await screen.findByRole('listbox');
+
+    // The listbox is portaled out of the root, so only the chain connects them.
+    await expect(root.contains(listbox)).toBe(false);
+
+    const chainRoot = listbox.closest('[data-ds-chain]');
+
+    // The chain is built from `data-testid` alone, so the trigger's
+    // `data-ds-part` contributes no node to it.
+    await expect(chainRoot).toHaveAttribute(
+      'data-ds-chain',
+      'filters>technology',
+    );
+    await expect(chainRoot?.getAttribute('data-ds-chain')).not.toContain(
+      'trigger',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <Box display="flex" flexDirection="column" gap="8" w="sm">
+      <Autocomplete data-testid="ds-default" aria-label="Default technology">
+        {renderOptions()}
+      </Autocomplete>
+      <Autocomplete
+        data-testid="ds-override"
+        data-ds-component="TechnologyPicker"
+        aria-label="Overridden technology"
+      >
+        {renderOptions()}
+      </Autocomplete>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // Emitted automatically on the root, without an author opting in.
+    const root = canvas.getByTestId('ds-default');
+    await expect(root).toHaveAttribute('data-ds-component', 'Autocomplete');
+
+    // The combobox input is an inner part of the root, so it stays unmarked.
+    const input = canvas.getByRole('combobox', { name: 'Default technology' });
+    await expect(input).toHaveAttribute('data-ds-part', 'trigger');
+    await expect(input).not.toHaveAttribute('data-ds-component');
+
+    // An explicitly passed value wins, still on the root and not the input.
+    const overriddenRoot = canvas.getByTestId('ds-override');
+    await expect(overriddenRoot).toHaveAttribute(
+      'data-ds-component',
+      'TechnologyPicker',
+    );
+    await expect(
+      canvas.getByRole('combobox', { name: 'Overridden technology' }),
+    ).not.toHaveAttribute('data-ds-component');
+
+    // The portaled listbox is not the Autocomplete root either.
+    await userEvent.click(input);
+
+    const listbox = await screen.findByRole('listbox');
+
+    await expect(listbox).not.toHaveAttribute(
+      'data-ds-component',
+      'Autocomplete',
+    );
+    await expect(listbox).not.toHaveAttribute(
+      'data-ds-component',
+      'TechnologyPicker',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};

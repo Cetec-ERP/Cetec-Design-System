@@ -583,6 +583,37 @@ export const DsComponentAttribute: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ConsumerClassName: Story = {
+  name: 'Test: consumer className',
+  render: () => (
+    <VStack alignItems="start" gap="8">
+      <TextInput
+        name="class-name"
+        aria-label="Class name input"
+        className="consumer-class"
+        iconBefore="search"
+      />
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText('Class name input');
+    const container = input.parentElement;
+
+    if (!(container instanceof HTMLElement)) {
+      throw new Error('TextInput should render a container around the input.');
+    }
+
+    // A consumer className styles the component root once.
+    expect(container).toHaveClass('consumer-class');
+
+    // The native input keeps only its recipe class, so a single className
+    // prop cannot style two elements at once.
+    expect(input).not.toHaveClass('consumer-class');
+  },
+  parameters: { controls: { disable: true } },
+};
+
 // ============================================================================
 // Interactive Playground
 // ============================================================================

@@ -10,8 +10,11 @@ import { cx } from '@styled-system/css';
 import type { AutocompleteVariantProps } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu';
+import { dsComponent } from '~/utils/dsComponent';
+import { dsPart } from '~/utils/dsPart';
 
 import { Box, type BoxProps } from '../Box/Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
 import { Spinner } from '../Spinner/Spinner';
 
 import { AutocompleteListbox } from './AutocompleteListbox';
@@ -280,6 +283,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
   return (
     <Box
+      {...dsComponent('Autocomplete')}
       ref={rootRef}
       className={cx(classes.root, className)}
       data-disabled={disabled || undefined}
@@ -341,8 +345,16 @@ export const Autocomplete = (props: AutocompleteProps) => {
             </Box>
           )}
 
+          {/*
+            `data-ds-part` gives the combobox input a stable query handle;
+            `data-testid` stays on the root so the chain scope it opens encloses
+            the portaled listbox. It is internal instrumentation, not a
+            supported prop, and the chain reads `data-testid` only, so it adds
+            no chain node.
+          */}
           <Box
             as="input"
+            {...dsPart('trigger')}
             id={inputId}
             ref={inputRef}
             type="text"
@@ -395,38 +407,40 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
       {isOpen && !disabled && !readOnly && (
         <FloatingPortal>
-          <FloatingFocusManager
-            context={floating.context}
-            modal={false}
-            initialFocus={-1}
-          >
-            <AutocompleteListbox
-              activeIndex={activeIndex}
-              baseId={baseId}
-              density={density}
-              floatingProps={getFloatingProps() as Record<string, unknown>}
-              floatingRef={setFloatingRef}
-              floatingStyles={floating.floatingStyles}
-              getItemProps={(itemProps: HTMLProps<HTMLElement>) =>
-                getItemProps(itemProps) as Record<string, unknown>
-              }
-              items={navigationItems}
-              listboxClassName={classes.listbox}
-              listboxId={listboxId}
-              loading={loading}
-              loadingMore={loadingMore}
-              loadingText={loadingText}
-              multiple={Boolean(multiple)}
-              noOptionsText={noOptionsText}
-              onScroll={handleListScroll}
-              onSelect={handleOptionSelect}
-              query={currentInputValue.trim()}
-              selectedValues={selectedValues}
-              setItemRef={setItemRef}
-              statusClassName={classes.status}
-              value={currentValue}
-            />
-          </FloatingFocusManager>
+          <DsChainPortalRoot>
+            <FloatingFocusManager
+              context={floating.context}
+              modal={false}
+              initialFocus={-1}
+            >
+              <AutocompleteListbox
+                activeIndex={activeIndex}
+                baseId={baseId}
+                density={density}
+                floatingProps={getFloatingProps() as Record<string, unknown>}
+                floatingRef={setFloatingRef}
+                floatingStyles={floating.floatingStyles}
+                getItemProps={(itemProps: HTMLProps<HTMLElement>) =>
+                  getItemProps(itemProps) as Record<string, unknown>
+                }
+                items={navigationItems}
+                listboxClassName={classes.listbox}
+                listboxId={listboxId}
+                loading={loading}
+                loadingMore={loadingMore}
+                loadingText={loadingText}
+                multiple={Boolean(multiple)}
+                noOptionsText={noOptionsText}
+                onScroll={handleListScroll}
+                onSelect={handleOptionSelect}
+                query={currentInputValue.trim()}
+                selectedValues={selectedValues}
+                setItemRef={setItemRef}
+                statusClassName={classes.status}
+                value={currentValue}
+              />
+            </FloatingFocusManager>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </Box>

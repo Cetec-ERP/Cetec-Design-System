@@ -15,6 +15,7 @@ import { Calendar } from '~/components/Calendar';
 import { Divider } from '~/components/Divider';
 import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
 
@@ -263,6 +264,7 @@ export const DateTimeMenu = (props: DateTimeMenuProps) => {
 
   return (
     <Menu
+      {...dsComponent('DateTimeMenu')}
       className={className}
       {...otherProps}
       trigger={trigger}

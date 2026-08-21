@@ -14,7 +14,7 @@ type PreOwnProps = {
   children: string | ReactNode;
   /** Language metadata forwarded to the nested `Code` element. */
   lang?: string;
-  /** Element override forwarded through the rendered containers. */
+  /** Element override for the rendered `pre` container. */
   as?: string;
 };
 
@@ -47,7 +47,10 @@ export const Pre = (props: PreProps) => {
       className={cx(pre({}), className)}
       {...otherProps}
     >
-      <Code lang={lang} slot="react" bg="transparent" {...otherProps}>
+      {/* Consumer props stay on the root `pre`; the nested `Code` owns its own
+          attributes so values like `id` and `data-ds-component` are not
+          duplicated onto two elements. */}
+      <Code lang={lang} slot="react" bg="transparent">
         {children}
       </Code>
     </Box>

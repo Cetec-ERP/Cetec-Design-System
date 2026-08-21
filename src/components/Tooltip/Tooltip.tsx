@@ -22,9 +22,11 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
 import { Text } from '../Text';
 
 /** Props for {@link Tooltip}, nonessential contextual text shown on hover or focus. */
@@ -133,23 +135,26 @@ export const Tooltip = (props: TooltipProps) => {
 
       {isOpen && (
         <FloatingPortal>
-          <Box
-            ref={refs.setFloating}
-            style={floatingStyles}
-            className={cx(classes.tooltipContent, className)}
-            {...(getFloatingProps() as Record<string, unknown>)}
-            {...otherProps}
-          >
-            {title && <Text className={classes.title}>{title}</Text>}
-            {text && <Text className={classes.text}>{text}</Text>}
-            {caret && (
-              <FloatingArrow
-                ref={arrowRef}
-                context={context}
-                fill={token.var('colors.bg.neutral.inverse')}
-              />
-            )}
-          </Box>
+          <DsChainPortalRoot>
+            <Box
+              {...dsComponent('Tooltip')}
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className={cx(classes.tooltipContent, className)}
+              {...(getFloatingProps() as Record<string, unknown>)}
+              {...otherProps}
+            >
+              {title && <Text className={classes.title}>{title}</Text>}
+              {text && <Text className={classes.text}>{text}</Text>}
+              {caret && (
+                <FloatingArrow
+                  ref={arrowRef}
+                  context={context}
+                  fill={token.var('colors.bg.neutral.inverse')}
+                />
+              )}
+            </Box>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </>

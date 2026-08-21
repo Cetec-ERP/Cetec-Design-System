@@ -44,9 +44,11 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box/Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
 import { Icon } from '../Icon/Icon';
 import { Text } from '../Text/Text';
 
@@ -434,6 +436,7 @@ export const Menu = (props: MenuProps) => {
     <MenuRootProvider value={rootContextValue}>
       <MenuFilterProvider value={filterContextValue}>
         <Box
+          {...dsComponent('Menu')}
           ref={floating.refs.setFloating}
           className={cx(classes.wrapper, className)}
           {...getFloatingProps()}
@@ -667,22 +670,24 @@ export const Menu = (props: MenuProps) => {
         )}
         {isOpen && (
           <FloatingPortal>
-            <FloatingFocusManager
-              context={floating.context}
-              modal={false}
-              // Menubar composition: keep focus on the section trigger until the
-              // user arrows into the panel, so Left/Right can move between
-              // top-level menubar items while the dropdown is open (APG pattern).
-              // Default initialFocus=0 would move focus to the first menu row and
-              // swallow menubar navigation until a child is focused.
-              order={
-                onMenubarEdgeNavigate ? ['reference', 'content'] : undefined
-              }
-              initialFocus={triggerInteraction === 'focus' ? -1 : undefined}
-              returnFocus={triggerInteraction === 'focus' ? false : undefined}
-            >
-              {content}
-            </FloatingFocusManager>
+            <DsChainPortalRoot>
+              <FloatingFocusManager
+                context={floating.context}
+                modal={false}
+                // Menubar composition: keep focus on the section trigger until the
+                // user arrows into the panel, so Left/Right can move between
+                // top-level menubar items while the dropdown is open (APG pattern).
+                // Default initialFocus=0 would move focus to the first menu row and
+                // swallow menubar navigation until a child is focused.
+                order={
+                  onMenubarEdgeNavigate ? ['reference', 'content'] : undefined
+                }
+                initialFocus={triggerInteraction === 'focus' ? -1 : undefined}
+                returnFocus={triggerInteraction === 'focus' ? false : undefined}
+              >
+                {content}
+              </FloatingFocusManager>
+            </DsChainPortalRoot>
           </FloatingPortal>
         )}
       </FloatingNode>

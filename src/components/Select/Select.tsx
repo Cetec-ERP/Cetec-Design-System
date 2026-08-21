@@ -34,10 +34,14 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
+import { dsPart } from '~/utils/dsPart';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
 import { Chip } from '../Chip/Chip';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { DsChainScope } from '../DsChainScope/DsChainScope';
 import { Icon } from '../Icon/Icon';
 import { List } from '../List/List';
 import { ListItem } from '../List/ListItem';
@@ -232,9 +236,17 @@ export const Select = (props: SelectProps) => {
     size = 'md',
     density = defaultDensity,
     autoSize = false,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
+  // Read, do not remove. `data-testid` stays on the combobox trigger, which is
+  // the element a test drives and the element existing selectors already
+  // target. The chain scope it needs to open is a separate concern, handled
+  // below the return: the trigger is a sibling of the portal that renders the
+  // listbox, so a scope opened by the trigger's own `Box` could never enclose
+  // it, but a scope opened above the root does.
+  const testId = otherProps['data-testid'];
 
   const generatedId = useId();
   const triggerId = id ?? `select-${generatedId}`;
@@ -444,8 +456,8 @@ export const Select = (props: SelectProps) => {
     handleValueChange(nextValues.length > 0 ? nextValues : null);
   };
 
-  return (
-    <Box className={classes.root}>
+  const root = (
+    <Box {...dsComponent('Select', dsComponentName)} className={classes.root}>
       {name &&
         selectedValues.map((selectedValue) => (
           <Box
@@ -458,8 +470,15 @@ export const Select = (props: SelectProps) => {
           />
         ))}
 
+      {/*
+        `data-ds-part` gives the trigger a stable query handle now that
+        `data-testid` is written on the root. It is internal instrumentation,
+        not a supported prop, and the chain reads `data-testid` only, so it adds
+        no chain node.
+      */}
       <Box
         as="div"
+        {...dsPart('trigger')}
         id={triggerId}
         ref={floating.refs.setReference}
         className={`${cx(classes.trigger, className)} peer`}
@@ -526,71 +545,84 @@ export const Select = (props: SelectProps) => {
 
       {isOpen && !disabled && (
         <FloatingPortal>
-          <FloatingFocusManager
-            context={floating.context}
-            modal={false}
-            initialFocus={-1}
-          >
-            {/* validate-ignore: useSemanticElements — custom select popup uses ARIA listbox semantics on a non-native container */}
-            <List
-              ref={floating.refs.setFloating}
-              id={listboxId}
-              role="listbox"
-              aria-labelledby={triggerId}
-              aria-multiselectable={multiple || undefined}
-              density={density}
-              className={menuClasses.wrapper}
-              style={floating.floatingStyles}
-              {...(getFloatingProps() as Record<string, unknown>)}
+          <DsChainPortalRoot>
+            <FloatingFocusManager
+              context={floating.context}
+              modal={false}
+              initialFocus={-1}
             >
-              {options.map((option, index) => {
-                const optionLabel = getOptionText(option);
-                const isSelected = multiple
-                  ? selectedValueSet.has(option.props.value)
-                  : value === option.props.value;
+              {/* validate-ignore: useSemanticElements — custom select popup uses ARIA listbox semantics on a non-native container */}
+              <List
+                ref={floating.refs.setFloating}
+                id={listboxId}
+                role="listbox"
+                aria-labelledby={triggerId}
+                aria-multiselectable={multiple || undefined}
+                density={density}
+                className={menuClasses.wrapper}
+                style={floating.floatingStyles}
+                {...(getFloatingProps() as Record<string, unknown>)}
+              >
+                {options.map((option, index) => {
+                  const optionLabel = getOptionText(option);
+                  const isSelected = multiple
+                    ? selectedValueSet.has(option.props.value)
+                    : value === option.props.value;
 
-                return (
-                  <ListItem
-                    key={option.props.value}
-                    id={`${triggerId}-option-${index}`}
-                    ref={(node: HTMLElement | null) => {
-                      itemRefs.current[index] = node;
-                      labelsRef.current[index] = optionLabel;
-                    }}
-                    disabled={option.props.disabled}
-                    selected={isSelected}
-                    variant={multiple ? 'checkbox' : 'default'}
-                    label={optionLabel}
-                    description={option.props.description}
-                    iconBefore={
-                      !multiple
-                        ? (option.props.iconLeft ?? 'check')
-                        : option.props.iconLeft
-                    }
-                    iconBeforeFill={
-                      !multiple
-                        ? isSelected
-                          ? 'icon'
+                  return (
+                    <ListItem
+                      key={option.props.value}
+                      id={`${triggerId}-option-${index}`}
+                      ref={(node: HTMLElement | null) => {
+                        itemRefs.current[index] = node;
+                        labelsRef.current[index] = optionLabel;
+                      }}
+                      disabled={option.props.disabled}
+                      selected={isSelected}
+                      variant={multiple ? 'checkbox' : 'default'}
+                      label={optionLabel}
+                      description={option.props.description}
+                      iconBefore={
+                        !multiple
+                          ? (option.props.iconLeft ?? 'check')
                           : option.props.iconLeft
-                            ? undefined
-                            : 'transparent'
-                        : undefined
-                    }
-                    iconAfter={option.props.iconRight}
-                    {...(getItemProps({
-                      onClick: () => {
-                        if (!option.props.disabled) {
-                          handleOptionSelect(option.props.value);
-                        }
-                      },
-                    } as HTMLProps<HTMLElement>) as Record<string, unknown>)}
-                  />
-                );
-              })}
-            </List>
-          </FloatingFocusManager>
+                      }
+                      iconBeforeFill={
+                        !multiple
+                          ? isSelected
+                            ? 'icon'
+                            : option.props.iconLeft
+                              ? undefined
+                              : 'transparent'
+                          : undefined
+                      }
+                      iconAfter={option.props.iconRight}
+                      {...(getItemProps({
+                        onClick: () => {
+                          if (!option.props.disabled) {
+                            handleOptionSelect(option.props.value);
+                          }
+                        },
+                      } as HTMLProps<HTMLElement>) as Record<string, unknown>)}
+                    />
+                  );
+                })}
+              </List>
+            </FloatingFocusManager>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </Box>
+  );
+
+  // The scope is opened above the root rather than by the element carrying the
+  // id, because only the root encloses the portal's position in the React tree.
+  // The trigger's own `Box` opens a second scope with the same id; the repeat
+  // is collapsed in `extendDsChain`, so content inside the trigger resolves the
+  // same chain as content outside it.
+  return typeof testId === 'string' && testId.length > 0 ? (
+    <DsChainScope testId={testId}>{root}</DsChainScope>
+  ) : (
+    root
   );
 };
