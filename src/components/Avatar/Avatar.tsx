@@ -7,6 +7,7 @@ import { avatar, type AvatarVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type AllowedIconSizes, type IconProps } from '~/components/Icon';
 import { useSlotContext } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /** Supported visual sizes for {@link Avatar}. */
@@ -162,6 +163,7 @@ export const Avatar = (props: AvatarProps) => {
 
   return (
     <Box
+      {...dsComponent('Avatar')}
       as="span"
       ref={ref}
       className={cx(classes.root, className)}

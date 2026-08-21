@@ -5,6 +5,7 @@ import { listItem, type ListItemVariantProps } from '@styled-system/recipes';
 
 import type { IconProps } from '~/components/Icon/Icon';
 import type { IconNamesList } from '~/components/Icon/icons';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -115,6 +116,7 @@ export const ListItem = (props: ListItemProps) => {
     iconBeforeFill,
     iconAfterFill,
     href,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -140,7 +142,10 @@ export const ListItem = (props: ListItemProps) => {
 
   if (variant === 'divider') {
     return (
-      <Box className={classes.divider}>
+      <Box
+        {...dsComponent('ListItem', dsComponentName)}
+        className={classes.divider}
+      >
         <Divider role="separator" />
       </Box>
     );
@@ -148,6 +153,7 @@ export const ListItem = (props: ListItemProps) => {
 
   return (
     <Box
+      {...dsComponent('ListItem', dsComponentName)}
       {...(href
         ? ({
             as: 'a',

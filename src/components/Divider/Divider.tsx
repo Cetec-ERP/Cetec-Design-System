@@ -1,6 +1,7 @@
 import { cx } from '@styled-system/css';
 import { divider, type DividerVariantProps } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -32,6 +33,7 @@ export const Divider = (props: DividerProps) => {
   const [className, otherProps] = splitProps(rest);
   return (
     <Box
+      {...dsComponent('Divider')}
       as="div"
       className={cx(divider({ direction, weight }), className)}
       {...otherProps}

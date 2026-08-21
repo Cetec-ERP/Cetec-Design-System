@@ -2,6 +2,7 @@ import { cx } from '@styled-system/css';
 import { spinner, type SpinnerVariantProps } from '@styled-system/recipes';
 
 import { useSlotContext } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -44,7 +45,11 @@ export const Spinner = (props: SpinnerProps) => {
   });
 
   return (
-    <Box className={cx(classes.container, className)} {...otherProps}>
+    <Box
+      {...dsComponent('Spinner')}
+      className={cx(classes.container, className)}
+      {...otherProps}
+    >
       <Icon
         name="spinner"
         className={classes.spinnerSvg}

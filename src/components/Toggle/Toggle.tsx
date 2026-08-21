@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { toggle, type ToggleVariantProps } from '@styled-system/recipes';
 
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -75,6 +76,7 @@ export const Toggle = (props: ToggleProps) => {
     container,
     input,
     indicator,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const disabled = disabledProp ?? fieldContext?.disabled;
@@ -90,6 +92,7 @@ export const Toggle = (props: ToggleProps) => {
 
   return (
     <Box
+      {...dsComponent('Toggle', dsComponentName)}
       className={cx(classes.container, className)}
       {...(error && { 'data-error': true })}
       {...(invalid && { 'data-invalid': true })}

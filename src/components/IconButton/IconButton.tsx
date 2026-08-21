@@ -12,6 +12,7 @@ import { Spinner } from '~/components/Spinner';
 import { Tooltip } from '~/components/Tooltip';
 import { useFieldContext } from '~/system/context/FieldContext';
 import { useSlotContext } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /**
@@ -97,6 +98,7 @@ export const IconButton = (props: IconButtonProps) => {
   return (
     <Tooltip text={altText}>
       <Box
+        {...dsComponent('IconButton')}
         {...(href
           ? ({
               as: 'a',

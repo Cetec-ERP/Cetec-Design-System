@@ -1,4 +1,4 @@
-import { fn } from '@storybook/test';
+import { expect, fn, within } from '@storybook/test';
 
 import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
@@ -542,6 +542,32 @@ export const FormSubmitting: Story = {
       </Button>
     </HStack>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <HStack gap="8">
+      <Button>Default</Button>
+      <Button data-ds-component="CustomButton">Overridden</Button>
+    </HStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Emitted automatically on the root element, without an author opting in.
+    expect(canvas.getByRole('button', { name: 'Default' })).toHaveAttribute(
+      'data-ds-component',
+      'Button',
+    );
+
+    // An explicitly passed value arrives through rest props and wins.
+    expect(canvas.getByRole('button', { name: 'Overridden' })).toHaveAttribute(
+      'data-ds-component',
+      'CustomButton',
+    );
+  },
   parameters: { controls: { disable: true } },
 };
 

@@ -1,6 +1,7 @@
 import { cx } from '@styled-system/css';
 import { tag, type TagVariantProps } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -42,6 +43,7 @@ export const Tag = (props: TagProps) => {
 
   return (
     <Box
+      {...dsComponent('Tag')}
       className={cx(
         tag({
           variant,

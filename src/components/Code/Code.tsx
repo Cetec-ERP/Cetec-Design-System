@@ -5,6 +5,7 @@ import { code, type CodeVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
 import { Text, type TextProps } from '~/components/Text';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /** Props accepted by {@link Code}. */
@@ -36,6 +37,7 @@ export const Code = (props: CodeProps) => {
   const [className, otherProps] = splitProps(rest);
   return (
     <Box
+      {...dsComponent('Code')}
       as="code"
       className={cx(code({}), className)}
       lang={lang}

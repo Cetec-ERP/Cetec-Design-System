@@ -9,6 +9,7 @@ import type {
   TimeFormat,
   TimeValue,
 } from '~/components/DateTime/helpers/types';
+import { dsComponent } from '~/utils/dsComponent';
 
 import { SegmentedInput } from './SegmentedInput';
 
@@ -194,6 +195,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
 
   return (
     <SegmentedInput
+      {...dsComponent('SegmentedTime')}
       {...rest}
       items={items}
       label={label}

@@ -7,6 +7,7 @@ import {
 } from '@styled-system/recipes';
 
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { type BoxProps } from '../Box';
@@ -74,6 +75,7 @@ export const CheckboxInput = (props: CheckboxInputProps) => {
   const resolvedId = id ?? generatedId;
   return (
     <Label
+      {...dsComponent('CheckboxInput')}
       className={cx(checkboxInput(), className)}
       htmlFor={resolvedId}
       disabled={disabled}

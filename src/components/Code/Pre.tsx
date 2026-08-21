@@ -4,6 +4,7 @@ import { cx } from '@styled-system/css';
 import { pre } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Code } from './Code';
@@ -32,10 +33,20 @@ export type PreProps = Omit<BoxProps, keyof PreOwnProps> & PreOwnProps;
  * ```
  */
 export const Pre = (props: PreProps) => {
-  const { children, lang, ...rest } = props;
+  const {
+    children,
+    lang,
+    'data-ds-component': dsComponentName,
+    ...rest
+  } = props;
   const [className, otherProps] = splitProps(rest);
   return (
-    <Box as="pre" className={cx(pre({}), className)} {...otherProps}>
+    <Box
+      {...dsComponent('Pre', dsComponentName)}
+      as="pre"
+      className={cx(pre({}), className)}
+      {...otherProps}
+    >
       <Code lang={lang} slot="react" bg="transparent" {...otherProps}>
         {children}
       </Code>

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { label, type LabelVariantProps } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -32,6 +33,7 @@ export const Label = (props: LabelProps) => {
   const [className, otherProps] = splitProps(rest);
   return (
     <Box
+      {...dsComponent('Label')}
       as="label"
       htmlFor={htmlFor}
       className={cx(label({}), className)}

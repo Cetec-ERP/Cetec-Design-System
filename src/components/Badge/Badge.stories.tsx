@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { expect, within } from '@storybook/test';
+
 import { Grid, VStack, Flex } from '@styled-system/jsx';
 
 import { Box } from '../Box';
@@ -73,6 +75,33 @@ export const DotStandalone: Story = {
       <Badge size="xl" />
     </Box>
   ),
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <VStack alignItems="start" gap="8">
+      <Badge aria-label="Default badge" count={5} />
+      <Badge
+        aria-label="Overridden badge"
+        count={5}
+        data-ds-component="NotificationCount"
+      />
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByLabelText('Default badge')).toHaveAttribute(
+      'data-ds-component',
+      'Badge',
+    );
+    expect(canvas.getByLabelText('Overridden badge')).toHaveAttribute(
+      'data-ds-component',
+      'NotificationCount',
+    );
+  },
+  parameters: { controls: { disable: true } },
 };
 
 export const DotWithChildren: Story = {

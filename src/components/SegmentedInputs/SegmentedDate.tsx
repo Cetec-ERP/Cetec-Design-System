@@ -7,6 +7,7 @@ import type {
   DateFormat,
   DateValue,
 } from '~/components/DateTime/helpers/types';
+import { dsComponent } from '~/utils/dsComponent';
 
 import { SegmentedInput } from './SegmentedInput';
 
@@ -187,6 +188,7 @@ export const SegmentedDate = (props: SegmentedDateProps) => {
 
   return (
     <SegmentedInput
+      {...dsComponent('SegmentedDate')}
       {...rest}
       items={items}
       label={label}

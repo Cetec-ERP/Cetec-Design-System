@@ -5,6 +5,7 @@ import {
 } from '@styled-system/recipes';
 
 import { useMediaQuery } from '~/system/hooks';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Tag } from '../Tag';
@@ -45,10 +46,12 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
 
   const { variant, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
+  const dsAttributes = dsComponent('BreakpointIndicator');
 
   // Find the largest matching breakpoint
   let breakpoint = (
     <Tag
+      {...dsAttributes}
       className={cx(breakpointIndicator({ variant }), className)}
       hue="red"
       variant="bold"
@@ -60,6 +63,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   if (is2Xl) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="blue"
         variant="bold"
@@ -71,6 +75,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isXl) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="magenta"
         variant="bold"
@@ -82,6 +87,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isLg) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="green"
         variant="bold"
@@ -93,6 +99,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isMd) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="indigo"
         variant="bold"
@@ -104,6 +111,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isSm) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="yellow"
         variant="bold"
@@ -115,6 +123,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isXs) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="orange"
         variant="bold"

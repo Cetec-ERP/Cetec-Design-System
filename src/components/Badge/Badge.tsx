@@ -5,6 +5,7 @@ import { badge, type BadgeVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
 import { useSlotContext } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /** Supported visual color treatments for {@link Badge}. */
@@ -132,6 +133,7 @@ export const Badge = (props: BadgeProps) => {
   if (isStandalone) {
     return (
       <Box
+        {...dsComponent('Badge')}
         as="span"
         ref={ref}
         className={cx(classes.root, className)}
@@ -145,6 +147,7 @@ export const Badge = (props: BadgeProps) => {
   // Wrapper mode: wrap children with positioned indicator
   return (
     <Box
+      {...dsComponent('Badge')}
       as="span"
       ref={ref}
       className={cx(classes.root, className)}

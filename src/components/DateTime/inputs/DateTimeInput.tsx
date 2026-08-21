@@ -9,6 +9,7 @@ import {
 
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../../Box';
@@ -170,6 +171,7 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
 
   return (
     <Box
+      {...dsComponent('DateTimeInput')}
       id={id}
       className={cx(classes.container, className)}
       aria-disabled={disabled}

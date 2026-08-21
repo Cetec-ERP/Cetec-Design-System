@@ -1,3 +1,5 @@
+import { expect, within } from '@storybook/test';
+
 import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
 
 import { Badge } from '../Badge';
@@ -543,6 +545,41 @@ export const SearchInput: Story = {
       />
     </Wrap>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <VStack alignItems="start" gap="8">
+      <TextInput name="ds-default" aria-label="Default input" />
+      <TextInput
+        name="ds-override"
+        aria-label="Overridden input"
+        data-ds-component="SearchField"
+      />
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // TextInput forwards rest props to the native input, so the attribute is
+    // applied to the container root and must not leak onto the input.
+    const defaultInput = canvas.getByLabelText('Default input');
+    expect(defaultInput).not.toHaveAttribute('data-ds-component');
+    expect(defaultInput.parentElement).toHaveAttribute(
+      'data-ds-component',
+      'TextInput',
+    );
+
+    // An explicit value lands on the root, not on the native input.
+    const overriddenInput = canvas.getByLabelText('Overridden input');
+    expect(overriddenInput).not.toHaveAttribute('data-ds-component');
+    expect(overriddenInput.parentElement).toHaveAttribute(
+      'data-ds-component',
+      'SearchField',
+    );
+  },
   parameters: { controls: { disable: true } },
 };
 
