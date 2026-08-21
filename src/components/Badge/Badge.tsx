@@ -133,6 +133,7 @@ export const Badge = (props: BadgeProps) => {
   if (isStandalone) {
     return (
       <Box
+        {...dsComponent('Badge')}
         as="span"
         ref={ref}
         className={cx(classes.root, className)}
