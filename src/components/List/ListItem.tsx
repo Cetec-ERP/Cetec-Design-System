@@ -81,6 +81,16 @@ export type ListItemProps = Omit<
     iconBeforeFill?: IconProps['fill'];
     /** Fill token for `iconAfter`. */
     iconAfterFill?: IconProps['fill'];
+    /**
+     * Internal record primary key rendered as `data-row-id` on the item root.
+     * It targets one row in a test and identifies which record an interaction
+     * applied to.
+     *
+     * It must never be a row index, a composite value, or a customer-facing
+     * identifier such as an order number or part number. It is unrelated to
+     * React's `key`.
+     */
+    rowId?: string;
   };
 
 /**
@@ -116,6 +126,7 @@ export const ListItem = (props: ListItemProps) => {
     iconBeforeFill,
     iconAfterFill,
     href,
+    rowId,
     'data-ds-component': dsComponentName,
     ...rest
   } = props;
@@ -167,6 +178,7 @@ export const ListItem = (props: ListItemProps) => {
       role="option"
       aria-selected={isSelected}
       data-selected={isSelected || undefined}
+      data-row-id={rowId}
       {...otherProps}
     >
       {hasCustomChildren ? (

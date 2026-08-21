@@ -22,6 +22,11 @@ const items = [
   },
   { id: 'integrations', label: 'Integrations', desc: 'Connect external tools' },
 ];
+const records = [
+  { id: '10482', orderNumber: 'WO-2201', customer: 'Northwind Traders' },
+  { id: '10517', orderNumber: 'WO-2202', customer: 'Contoso Manufacturing' },
+  { id: '10688', orderNumber: 'WO-2203', customer: 'Fabrikam Industrial' },
+];
 const repeatedItems = ['first', 'second'].flatMap((copy) =>
   items.map((item) => ({ ...item, instanceId: `${copy}-${item.id}` })),
 );
@@ -371,5 +376,25 @@ export const ExFloatingSearchBar: Story = {
   name: 'Ex: Floating search bar',
   args: {},
   render: () => <FloatingSearchBarExample />,
+  parameters: { controls: { disable: true } },
+};
+
+export const RowIdentity: Story = {
+  name: 'Row identity',
+  args: {},
+  render: () => (
+    <Card variant="flat" minW="2xs">
+      <List role="listbox" aria-label="Work orders">
+        {records.map((record) => (
+          <ListItem
+            key={record.id}
+            rowId={record.id}
+            label={record.orderNumber}
+            description={record.customer}
+          />
+        ))}
+      </List>
+    </Card>
+  ),
   parameters: { controls: { disable: true } },
 };
