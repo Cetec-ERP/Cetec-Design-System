@@ -17,6 +17,7 @@ import {
 } from '~/components/DateTime/helpers';
 import { IconButton } from '~/components/IconButton';
 import { Text } from '~/components/Text';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 // ─── Static data ────────────────────────────────────────────────────────────────
@@ -552,6 +553,7 @@ export const Calendar = (props: CalendarProps) => {
 
   return (
     <Box
+      {...dsComponent('Calendar')}
       className={cx(classes.root, className)}
       role="group"
       aria-label={label}

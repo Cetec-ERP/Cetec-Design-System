@@ -3,6 +3,7 @@ import type { MouseEvent, ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { card, type CardVariantProps } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -56,6 +57,7 @@ export const Card = (props: CardProps) => {
 
   return (
     <Box
+      {...dsComponent('Card')}
       {...(href
         ? ({
             as: 'a',

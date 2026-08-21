@@ -3,6 +3,7 @@ import { textarea, type TextareaVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /** Props for {@link Textarea}, a multi-line native text input. */
@@ -55,6 +56,7 @@ export const Textarea = (props: TextareaProps) => {
   const [className, otherProps] = splitProps(rest);
   return (
     <Box
+      {...dsComponent('Textarea')}
       as="textarea"
       id={id}
       name={name}

@@ -21,6 +21,7 @@ import {
   type SlotPlacement,
   useSlotContext,
 } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
@@ -345,6 +346,7 @@ export const Chip = (props: ChipProps) => {
 
   return (
     <Box
+      {...dsComponent('Chip')}
       className={`${cx(classes.container, className)} group`}
       data-loading={loading ? true : undefined}
       data-deleted={deleted ? true : undefined}

@@ -1,3 +1,5 @@
+import { expect, within } from '@storybook/test';
+
 import { Flex, VStack, Grid } from '@styled-system/jsx';
 
 import { BreakpointIndicator } from '../BreakpointIndicator';
@@ -114,6 +116,35 @@ export const ExContentHierarchy: Story = {
       </Flex>
     </VStack>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <VStack alignItems="start" gap="8">
+      <Heading level="h3">Composed heading</Heading>
+      <Text>Plain text</Text>
+      <Heading level="h3" data-ds-component="PageTitle">
+        Overridden heading
+      </Heading>
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Heading renders through Text; the outermost component name wins.
+    expect(
+      canvas.getByRole('heading', { name: 'Composed heading' }),
+    ).toHaveAttribute('data-ds-component', 'Heading');
+    expect(canvas.getByText('Plain text')).toHaveAttribute(
+      'data-ds-component',
+      'Text',
+    );
+    expect(
+      canvas.getByRole('heading', { name: 'Overridden heading' }),
+    ).toHaveAttribute('data-ds-component', 'PageTitle');
+  },
   parameters: { controls: { disable: true } },
 };
 

@@ -1,6 +1,7 @@
 import { cx } from '@styled-system/css';
 import { kbd } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
@@ -41,6 +42,7 @@ export const Kbd = (props: KbdProps) => {
   });
   const content = (
     <Box
+      {...dsComponent('Kbd')}
       as="span"
       className={cx(defaultClasses.kbdGroup, className)}
       {...otherProps}

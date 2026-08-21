@@ -6,6 +6,7 @@ import { formField, type FormFieldVariantProps } from '@styled-system/recipes';
 import type { SpacingToken } from '@styled-system/tokens';
 
 import { FieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -136,6 +137,7 @@ export const FormField = (props: FormFieldProps) => {
 
   return (
     <Box
+      {...dsComponent('FormField')}
       className={`${cx(classes.container, className)} group`}
       aria-disabled={disabled}
       data-disabled={disabled || undefined}

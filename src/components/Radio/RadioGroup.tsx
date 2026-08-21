@@ -1,5 +1,7 @@
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
+import { dsComponent } from '~/utils/dsComponent';
+
 import { Box, type BoxProps } from '../Box';
 
 import { RadioGroupContext } from './RadioGroupContext';
@@ -80,6 +82,7 @@ export const RadioGroup = (props: RadioGroupProps) => {
   return (
     <RadioGroupContext.Provider value={contextValue}>
       <Box
+        {...dsComponent('RadioGroup')}
         role="radiogroup"
         aria-label={label}
         aria-labelledby={id ? `${id}-label` : undefined}

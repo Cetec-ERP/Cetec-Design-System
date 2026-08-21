@@ -5,6 +5,7 @@ import { cx } from '@styled-system/css';
 import { text, type TextVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 /** Props accepted by {@link Text}. */
@@ -54,6 +55,7 @@ export const Text = (props: TextProps) => {
 
   return (
     <Box
+      {...dsComponent('Text')}
       as={as}
       textStyle={textStyle}
       role={role}

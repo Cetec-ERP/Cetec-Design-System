@@ -8,6 +8,7 @@ import { Icon, type IconNamesList } from '~/components/Icon';
 import { IconButton } from '~/components/IconButton';
 import { useFieldContext } from '~/system/context/FieldContext';
 import { SlotContext, type SlotPlacement } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -94,6 +95,7 @@ export const TextInput = (props: TextInputProps) => {
     size: sizeProp,
     autoSize = false,
     autoComplete = 'off',
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const size = sizeProp ?? fieldContext?.size;
@@ -166,6 +168,7 @@ export const TextInput = (props: TextInputProps) => {
 
   return (
     <Box
+      {...dsComponent('TextInput', dsComponentName)}
       className={cx(classes.container, className)}
       aria-disabled={disabled}
       data-disabled={disabled || undefined}
