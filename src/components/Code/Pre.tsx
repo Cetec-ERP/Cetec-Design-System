@@ -33,11 +33,16 @@ export type PreProps = Omit<BoxProps, keyof PreOwnProps> & PreOwnProps;
  * ```
  */
 export const Pre = (props: PreProps) => {
-  const { children, lang, ...rest } = props;
+  const {
+    children,
+    lang,
+    'data-ds-component': dsComponentName,
+    ...rest
+  } = props;
   const [className, otherProps] = splitProps(rest);
   return (
     <Box
-      {...dsComponent('Pre')}
+      {...dsComponent('Pre', dsComponentName)}
       as="pre"
       className={cx(pre({}), className)}
       {...otherProps}

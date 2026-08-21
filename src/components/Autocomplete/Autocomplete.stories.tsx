@@ -143,12 +143,20 @@ export const Selected: Story = {
     </Box>
   ),
   play: async ({ canvasElement }) => {
-    const input = within(canvasElement).getByRole('combobox', {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox', {
       name: 'Technology',
     });
+    await expect(input).toHaveValue('');
+    await expect(
+      canvas.getByRole('button', { name: 'Remove React' }),
+    ).toBeInTheDocument();
     await userEvent.click(input);
     await userEvent.keyboard('P');
     await expect(input).toHaveValue('P');
+    await expect(
+      canvas.queryByRole('button', { name: 'Remove React' }),
+    ).not.toBeInTheDocument();
   },
 };
 
@@ -337,15 +345,24 @@ export const AllowCustomValue: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByRole('combobox');
-    await userEvent.type(input, 'Svelte');
+    await userEvent.type(input, 'Script');
     const body = within(document.body);
+    const options = body.getAllByRole('option');
+    await expect(options[0]).toHaveAccessibleName(/add “script”/i);
+    await expect(options[1]).toHaveAccessibleName(/typescript type safety/i);
+    await userEvent.keyboard('{Enter}');
+    const removeScript = canvas.getByRole('button', {
+      name: 'Remove Script',
+    });
+    await expect(removeScript).toBeInTheDocument();
+    await expect(removeScript.parentElement).toHaveAttribute(
+      'data-new',
+      'true',
+    );
+    await userEvent.type(input, 'React');
     await expect(
-      body.getByRole('option', { name: /create “svelte”/i }),
-    ).toBeInTheDocument();
-    await userEvent.keyboard('{ArrowDown}{Enter}');
-    await expect(
-      canvas.getByRole('button', { name: 'Remove Svelte' }),
-    ).toBeInTheDocument();
+      body.queryByRole('option', { name: /add “react”/i }),
+    ).not.toBeInTheDocument();
   },
   parameters: { controls: { disable: true } },
 };
@@ -538,7 +555,10 @@ export const KeyboardSelection: Story = {
     await expect(input).toHaveAttribute('aria-expanded', 'true');
     await expect(input).toHaveAttribute('aria-activedescendant');
     await userEvent.keyboard('{Enter}');
-    await expect(input).toHaveValue('React');
+    await expect(input).toHaveValue('');
+    await expect(
+      canvas.getByRole('button', { name: 'Remove React' }),
+    ).toBeInTheDocument();
   },
   parameters: { controls: { disable: true } },
 };

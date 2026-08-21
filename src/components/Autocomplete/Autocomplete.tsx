@@ -78,8 +78,8 @@ type AutocompleteBaseProps = Omit<
     /** Creates the visible label for a custom-value option. */
     getCreateOptionLabel?: (inputValue: string) => string;
     /**
-     * Maximum selected tokens shown while an unfocused multiple Autocomplete
-     * is collapsed. Negative values and `undefined` show every token.
+     * Maximum selected chips shown while an unfocused multiple Autocomplete
+     * is collapsed. Negative values and `undefined` show every chip.
      */
     limitTags?: number;
     /**
@@ -174,7 +174,7 @@ export type SingleAutocompleteProps = AutocompleteBaseProps & {
 
 /** Props for a multiple-selection {@link Autocomplete}. */
 export type MultipleAutocompleteProps = AutocompleteBaseProps & {
-  /** Enables multiple selection and renders selected values as tokens. */
+  /** Enables multiple selection. Selected values render as chips. */
   multiple: true;
   /** Controlled selected values. Pair with `onValueChange`. */
   value?: AutocompleteValue<true>;
@@ -211,6 +211,8 @@ export type AutocompleteProps<Multiple extends boolean = boolean> =
  * with `defaultValue`. The input uses combobox semantics; arrow keys navigate,
  * Enter selects, and Escape closes the listbox. Supply `aria-label` or
  * `aria-labelledby` when no external label is associated with the input.
+ * Selected values render as dismissible chips in both single- and
+ * multiple-selection modes.
  *
  * @example
  * ```tsx
@@ -237,7 +239,6 @@ export const Autocomplete = (props: AutocompleteProps) => {
     currentValue,
     density,
     disabled,
-    displayedInputValue,
     error,
     floating,
     getFloatingProps,
@@ -249,7 +250,6 @@ export const Autocomplete = (props: AutocompleteProps) => {
     handleInputChange,
     handleInputFocus,
     handleInputKeyDown,
-    handleInputMouseDown,
     handleListScroll,
     handleOptionSelect,
     handleTokenDismiss,
@@ -272,6 +272,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
     readOnly,
     rootRef,
     selectedLabels,
+    selectedOptions,
     selectedValues,
     setFloatingRef,
     setItemRef,
@@ -314,25 +315,25 @@ export const Autocomplete = (props: AutocompleteProps) => {
         onMouseDown={handleControlMouseDown}
       >
         <Box className={classes.valueContainer}>
-          {multiple &&
-            visibleSelectedValues.map((selectedValue, index) => {
-              const label = selectedLabels[index] ?? selectedValue;
+          {visibleSelectedValues.map((selectedValue, index) => {
+            const label = selectedLabels[index] ?? selectedValue;
 
-              return (
-                <AutocompleteToken
-                  key={selectedValue}
-                  className={classes.token}
-                  size={chipSize}
-                  label={label}
-                  disabled={disabled || readOnly}
-                  dismissButtonRef={(node) => setTokenRef(index, node)}
-                  onDismiss={() => handleTokenDismiss(selectedValue, label)}
-                  onKeyDown={(event) =>
-                    handleTokenKeyDown(event, index, selectedValue, label)
-                  }
-                />
-              );
-            })}
+            return (
+              <AutocompleteToken
+                key={selectedValue}
+                className={classes.token}
+                size={chipSize}
+                label={label}
+                isNew={selectedOptions[index]?.created}
+                disabled={disabled || readOnly}
+                dismissButtonRef={(node) => setTokenRef(index, node)}
+                onDismiss={() => handleTokenDismiss(selectedValue, label)}
+                onKeyDown={(event) =>
+                  handleTokenKeyDown(event, index, selectedValue, label)
+                }
+              />
+            );
+          })}
 
           {hiddenTagCount > 0 && (
             <Box
@@ -376,13 +377,12 @@ export const Autocomplete = (props: AutocompleteProps) => {
             disabled={disabled}
             readOnly={readOnly}
             placeholder={selectedValues.length === 0 ? placeholder : undefined}
-            value={displayedInputValue}
+            value={currentInputValue}
             className={classes.input}
             onChange={handleInputChange}
             {...(getReferenceProps({
               onFocus: handleInputFocus,
               onKeyDown: handleInputKeyDown,
-              onMouseDown: handleInputMouseDown,
             }) as Record<string, unknown>)}
             autoComplete="off"
           />

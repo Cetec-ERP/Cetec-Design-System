@@ -85,6 +85,37 @@ export const PreRootProps: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <>
+      <Pre>{'const defaultPre = true;'}</Pre>
+      <Pre data-ds-component="ExamplePre">{'const customPre = true;'}</Pre>
+    </>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const defaultPre = canvas
+      .getByText('const defaultPre = true;')
+      .closest('pre');
+    const customPre = canvas
+      .getByText('const customPre = true;')
+      .closest('pre');
+
+    expect(defaultPre).toHaveAttribute('data-ds-component', 'Pre');
+    expect(defaultPre?.querySelector('code')).toHaveAttribute(
+      'data-ds-component',
+      'Code',
+    );
+    expect(customPre).toHaveAttribute('data-ds-component', 'ExamplePre');
+    expect(customPre?.querySelector('code')).toHaveAttribute(
+      'data-ds-component',
+      'Code',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const ExCommandSnippet: Story = {
   name: 'Ex: Command Snippet',
   render: () => (

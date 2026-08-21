@@ -107,6 +107,7 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
                 <Icon
                   name={selected ? 'checkbox-checked' : 'checkbox'}
                   fill={selected ? 'icon' : 'icon.subtlest'}
+                  display="block"
                   aria-hidden
                 />
               ) : undefined

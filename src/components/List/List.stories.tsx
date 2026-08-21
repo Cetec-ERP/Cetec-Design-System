@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
+
+import { expect, within } from '@storybook/test';
 
 import { HStack, VStack } from '@styled-system/jsx';
 
@@ -39,6 +40,20 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => <ListItem variant="divider" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByRole('separator').parentElement).toHaveAttribute(
+      'data-ds-component',
+      'ListItem',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
 
 const SingleSelectExample = () => {
   const [selected, setSelected] = useState(items[1]?.id ?? '');

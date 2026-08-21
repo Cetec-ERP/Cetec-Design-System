@@ -102,21 +102,18 @@ implementation should be recorded in the component documentation and PR.
 
 - `value` represents the selected option; `inputValue` represents editable
   text.
-- Selecting an option commits its display label to the input.
-- Refocusing a selected value selects its text so typing replaces it rather
-  than appending to it.
+- Selecting an option renders its display label in a dismissible chip and
+  clears the query.
+- Typing while a value is selected clears the existing selection and starts a
+  new query.
 - Selecting the currently selected option is a no-op.
-- The control has no clear trigger. Consumers clear controlled state directly,
-  while multiple values can also be removed through their token controls.
-- Editing the displayed text does not silently mutate the selected option. The
-  selected option is cleared when the query diverges according to the final
-  state rules implemented by the hook.
+- The chip dismissal control clears the selected value.
 
 ### Multiple selection
 
-- Selected values render as tokens followed by the native input within the
+- Selected values render as chips followed by the native input within the
   same wrapping value container.
-- Tokens keep their intrinsic width and wrap as needed.
+- Chips keep their intrinsic width and wrap as needed.
 - The input consumes remaining space while retaining a useful minimum editable
   width.
 - Selecting an option clears the query and keeps focus in the input.
@@ -159,7 +156,7 @@ implementation should be recorded in the component documentation and PR.
 
 - Custom values are opt-in through `allowCustomValue`.
 - A non-empty query that does not exactly match an existing selectable option
-  produces a visible `Create “query”` option.
+  produces a visible `Add “query”` option at the top of the listbox.
 - The create option participates in the same keyboard and pointer navigation
   as ordinary options.
 - Enter never creates a value merely because no ordinary option is active.
@@ -697,7 +694,7 @@ the consumer.
   option.
 - Pressing Enter immediately selects the active first option.
 - The control renders no dropdown caret or clear trigger.
-- Custom values appear as an explicit `Create` option.
+- Custom values appear as an explicit `Add` option at the top of the listbox.
 - `limitTags` is numeric and collapses values only while unfocused.
 - Disabled state blocks every mutating interaction.
 - Empty, loading, and loading-more states are visible and accessible.

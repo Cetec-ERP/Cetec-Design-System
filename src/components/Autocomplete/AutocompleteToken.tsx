@@ -6,6 +6,7 @@ type AutocompleteTokenProps = {
   className?: string;
   disabled?: boolean;
   dismissButtonRef?: Ref<HTMLButtonElement>;
+  isNew?: boolean;
   label: string;
   onDismiss: () => void;
   onKeyDown: KeyboardEventHandler<HTMLButtonElement>;
@@ -17,6 +18,7 @@ export const AutocompleteToken = (props: AutocompleteTokenProps) => {
     className,
     disabled,
     dismissButtonRef,
+    isNew,
     label,
     onDismiss,
     onKeyDown,
@@ -26,6 +28,7 @@ export const AutocompleteToken = (props: AutocompleteTokenProps) => {
   return (
     <Chip
       className={className}
+      data-new={isNew || undefined}
       size={size}
       dismissable
       disabled={disabled}

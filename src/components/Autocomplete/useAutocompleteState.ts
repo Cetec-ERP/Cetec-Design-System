@@ -26,7 +26,6 @@ export const useAutocompleteState = <Multiple extends boolean = false>({
   defaultOpen = false,
   onOpenChange,
   multiple = false as Multiple,
-  selectedOptionLabel,
   disabled = false,
   readOnly = false,
 }: AutocompleteStateProps<Multiple>) => {
@@ -92,11 +91,7 @@ export const useAutocompleteState = <Multiple extends boolean = false>({
 
       commitInputValue(nextValue, 'input');
 
-      if (
-        !multiple &&
-        typeof value === 'string' &&
-        nextValue !== selectedOptionLabel
-      ) {
+      if (!multiple && typeof value === 'string') {
         commitValue(null as AutocompleteValue<Multiple>, 'clear');
       }
 
@@ -108,7 +103,6 @@ export const useAutocompleteState = <Multiple extends boolean = false>({
       commitValue,
       isInteractionBlocked,
       multiple,
-      selectedOptionLabel,
       value,
     ],
   );
@@ -146,7 +140,7 @@ export const useAutocompleteState = <Multiple extends boolean = false>({
       }
 
       commitValue(option.value as AutocompleteValue<Multiple>, reason);
-      commitInputValue(option.label, 'selection');
+      commitInputValue('', 'selection');
       commitOpen(false, 'selection');
     },
     [

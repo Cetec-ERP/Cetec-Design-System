@@ -121,6 +121,12 @@ const autocompleteBase = {
     minWidth: '0',
     maxWidth: 'full',
     flex: '0 1 auto',
+    _new: {
+      bg: 'transparent',
+      outlineWidth: '1',
+      outlineStyle: 'dashed',
+      outlineColor: 'border.warning',
+    },
   },
   overflowIndicator: {
     display: 'inline-flex',
