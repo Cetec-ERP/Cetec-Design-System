@@ -164,7 +164,6 @@ const autocompleteBase = {
     borderRadius: '4',
     boxShadow: 'overlay',
     outline: 'none',
-    zIndex: 'elevated',
   },
   status: {
     display: 'flex',
@@ -183,6 +182,18 @@ const autocompleteBase = {
 };
 
 const autocompleteVariants = {
+  layer: {
+    elevated: {
+      listbox: {
+        zIndex: 'elevated',
+      },
+    },
+    modalFloating: {
+      listbox: {
+        zIndex: 'modalFloating',
+      },
+    },
+  },
   size: {
     sm: {
       root: {
@@ -250,5 +261,6 @@ export const autocompleteRecipe = defineSlotRecipe({
   variants: autocompleteVariants,
   defaultVariants: {
     size: 'md',
+    layer: 'elevated',
   },
 });

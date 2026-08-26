@@ -1,11 +1,16 @@
 import { useState } from 'react';
 
+import { expect, userEvent, within } from '@storybook/test';
+
 import { Flex, Grid, VStack } from '@styled-system/jsx';
 
+import { Autocomplete, Option } from '../Autocomplete';
 import { Button } from '../Button';
+import { DatePicker } from '../DateTime';
 import { Divider } from '../Divider';
 import { FormField } from '../FormField';
 import { Icon } from '../Icon';
+import { Select, SelectOption } from '../Select';
 import { Text } from '../Text';
 import { Textarea } from '../Textarea';
 import { TextInput } from '../TextInput';
@@ -666,5 +671,78 @@ export const TopPosition: Story = {
       );
     };
     return <Component />;
+  },
+};
+
+// ============================================================================
+// FLOATING CONTENT
+// ============================================================================
+
+export const FloatingContent: Story = {
+  render: function FloatingContentRender() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>
+          Open Floating Content Modal
+        </Button>
+        <Modal
+          open={isOpen}
+          onOpenChange={setIsOpen}
+          size="md"
+          aria-label="Floating content example"
+        >
+          <ModalHeader title="Floating content" showCloseButton />
+          <ModalBody>
+            <Text>
+              These controls render their popup content through portals. Their
+              popup layer remains above the modal panel and backdrop.
+            </Text>
+            <DatePicker label="Due date" />
+            <Select placeholder="Choose a status">
+              <SelectOption value="draft" label="Draft" />
+              <SelectOption value="approved" label="Approved" />
+            </Select>
+            <Autocomplete
+              name="modal-assignee"
+              aria-label="Assignee"
+              placeholder="Choose an assignee"
+            >
+              <Option value="alex" label="Alex" />
+              <Option value="sam" label="Sam" />
+            </Autocomplete>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" onClick={() => setIsOpen(false)}>
+              Close
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Open Floating Content Modal' }),
+    );
+    await userEvent.click(
+      await body.findByRole('spinbutton', { name: 'Year' }),
+    );
+
+    const floatingElement = await body.findByRole('menu');
+    const calendar = within(floatingElement).getByRole('grid');
+    const dialog = body.getByRole('dialog', {
+      name: 'Floating content example',
+    });
+
+    expect(calendar).toBeVisible();
+    const floatingZIndex = Number(getComputedStyle(floatingElement).zIndex);
+    const dialogZIndex = Number(getComputedStyle(dialog).zIndex);
+
+    expect(floatingZIndex).toBeGreaterThan(dialogZIndex);
   },
 };

@@ -22,6 +22,7 @@ import {
 } from '@styled-system/recipes';
 
 import { useOverlayFloating } from '~/system/floating-ui/floating';
+import { FloatingLayerContext } from '~/system/floating-ui/FloatingLayerContext';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -180,37 +181,39 @@ export const Modal = (props: ModalProps) => {
   const dataState = phase === 'closing' ? 'closing' : 'open';
 
   return (
-    <ModalContext.Provider value={contextValue}>
-      <FloatingPortal>
-        <DsChainPortalRoot>
-          <Box className={classes.positionWrapper}>
-            <FloatingOverlay
-              lockScroll
-              className={classes.overlay}
-              data-state={dataState}
-              onClick={
-                preventOverlayClose ? undefined : () => onOpenChange(false)
-              }
-              aria-hidden="true"
-            />
-            <FloatingFocusManager context={context} modal={true}>
-              <Box
-                {...dsComponent('Modal')}
-                ref={refs.setFloating}
-                className={cx(classes.container, className)}
+    <FloatingLayerContext.Provider value="modalFloating">
+      <ModalContext.Provider value={contextValue}>
+        <FloatingPortal>
+          <DsChainPortalRoot>
+            <Box className={classes.positionWrapper}>
+              <FloatingOverlay
+                lockScroll
+                className={classes.overlay}
                 data-state={dataState}
-                id={id}
-                role="dialog"
-                aria-modal="true"
-                {...(getFloatingProps() as Record<string, unknown>)}
-                {...otherProps}
-              >
-                {children}
-              </Box>
-            </FloatingFocusManager>
-          </Box>
-        </DsChainPortalRoot>
-      </FloatingPortal>
-    </ModalContext.Provider>
+                onClick={
+                  preventOverlayClose ? undefined : () => onOpenChange(false)
+                }
+                aria-hidden="true"
+              />
+              <FloatingFocusManager context={context} modal={true}>
+                <Box
+                  {...dsComponent('Modal')}
+                  ref={refs.setFloating}
+                  className={cx(classes.container, className)}
+                  data-state={dataState}
+                  id={id}
+                  role="dialog"
+                  aria-modal="true"
+                  {...(getFloatingProps() as Record<string, unknown>)}
+                  {...otherProps}
+                >
+                  {children}
+                </Box>
+              </FloatingFocusManager>
+            </Box>
+          </DsChainPortalRoot>
+        </FloatingPortal>
+      </ModalContext.Provider>
+    </FloatingLayerContext.Provider>
   );
 };

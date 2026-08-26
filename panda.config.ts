@@ -49,7 +49,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   list: [{ density: ['*'], responsive: true }],
   listItem: [{ density: ['*'], responsive: true }, { selected: ['*'] }],
   listItemGroup: [{ density: ['*'], responsive: true }],
-  menu: [{ density: ['*'], responsive: true }],
+  menu: [{ density: ['*'], responsive: true }, { layer: ['*'] }],
   segmentedFields: [
     {
       size: ['*'],
@@ -71,7 +71,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
       heightAuto: ['*'],
     },
   ],
-  autocomplete: [{ size: ['*'], responsive: true }],
+  autocomplete: [{ size: ['*'], responsive: true }, { layer: ['*'] }],
   tag: [{ variant: ['*'], hue: ['*'] }],
   textarea: [{ size: ['*'], responsive: true }],
   textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],

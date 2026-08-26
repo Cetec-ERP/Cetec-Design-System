@@ -10,6 +10,7 @@ import { cx } from '@styled-system/css';
 import { menu } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu/context/menuContext';
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
 
 import { Box } from '../Box/Box';
 import { Icon } from '../Icon/Icon';
@@ -44,6 +45,7 @@ type AutocompleteListboxProps = {
 };
 
 export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
+  const floatingLayer = useFloatingLayer();
   const {
     activeIndex,
     baseId,
@@ -68,7 +70,7 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
     statusClassName,
     value,
   } = props;
-  const menuClasses = menu({ density });
+  const menuClasses = menu({ density, layer: floatingLayer });
   const showInitialLoading = loading && items.length === 0;
   const showNoOptions = !loading && items.length === 0;
   const selectedValueSet = new Set(selectedValues);
