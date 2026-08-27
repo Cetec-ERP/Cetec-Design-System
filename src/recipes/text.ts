@@ -65,6 +65,18 @@ const textVariants = {
   underline: {
     true: {
       textDecoration: 'underline',
+      textDecorationThickness: '[0.0625em]',
+      textUnderlineOffset: '[0.15625em]',
+      textDecorationSkipInk: 'all',
+    },
+  },
+  dashedUnderline: {
+    true: {
+      textDecoration: 'underline',
+      textDecorationStyle: 'dashed',
+      textDecorationThickness: '[0.0625em]',
+      textUnderlineOffset: '[0.15625em]',
+      textDecorationSkipInk: 'all',
     },
   },
   truncate: {
@@ -119,8 +131,8 @@ const linkBase = {
   textDecoration: 'underline',
   textDecorationThickness: '[0.0625em]',
   textUnderlineOffset: '[0.15625em]',
-  textDecorationColor: '[color-mix(in srgb, currentColor 30%, transparent)]',
   textDecorationSkipInk: 'all',
+  textDecorationColor: '[color-mix(in srgb, currentColor 30%, transparent)]',
   transition: 'all',
   transitionDuration: 'fast',
   bg: 'none',
@@ -133,18 +145,14 @@ const linkBase = {
     borderRadius: '4',
     outlineColor: 'border.focused',
   },
-};
-
-const linkVariants = {
-  ...textVariants,
   _disabled: {
-    true: {
-      cursor: 'not-allowed',
-      opacity: 0.4,
-      pointerEvents: 'none',
-    },
+    cursor: 'not-allowed',
+    opacity: 0.4,
+    pointerEvents: 'none',
   },
 };
+
+const linkVariants = { ...textVariants };
 
 const labelBase = {
   fontSize: '16',
