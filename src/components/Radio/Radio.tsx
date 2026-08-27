@@ -4,49 +4,62 @@ import { cx } from '@styled-system/css';
 import { radio, type RadioVariantProps } from '@styled-system/recipes';
 
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Icon } from '../Icon';
+import { Box, type BoxProps } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
 
+/** Props for {@link Radio}, the unlabelled native radio primitive. */
 export type RadioProps = Omit<
   BoxProps,
   'checked' | 'defaultChecked' | 'onChange' | keyof RadioVariantProps
 > &
   RadioVariantProps & {
-    name?: string;
-    checked?: boolean;
+    /** Native radio group name. Radios with the same name are mutually exclusive. */ name?: string;
+    /** Controlled selected state. Pair with `onChange`; do not combine with `defaultChecked`. */ checked?: boolean;
+    /** Initial selected state for uncontrolled use; later updates are ignored. */
+    /** @default false */
     defaultChecked?: boolean;
-    onChange?: RadioChangeHandler;
-    id?: string;
-    error?: boolean;
-    invalid?: boolean;
-    disabled?: boolean;
+    /** Runs for the native input change event when this radio becomes selected. */ onChange?: RadioChangeHandler;
+    /** Native input ID used by an external label. */ id?: string;
+    /** Applies error styling, overriding field context. */ error?: boolean;
+    /** Marks the native input invalid with `aria-invalid`, overriding field context. */ invalid?: boolean;
+    /** Disables interaction, overriding field context. */ disabled?: boolean;
   };
 
 /**
- * Helper type for radio change events
+ * Native change event emitted by {@link Radio}.
  * @example
  * const handleChange: RadioChangeHandler = (e) => setChecked(e.target.checked);
  */
 export type RadioChangeEvent = ChangeEvent<HTMLInputElement>;
 
 /**
- * Helper type for radio change handler functions
+ * Handler for a {@link Radio} native change event.
  * @example
  * const handleChange: RadioChangeHandler = (e) => setChecked(e.target.checked);
  */
 export type RadioChangeHandler = (e: RadioChangeEvent) => void;
 
 /**
- * Radio supports both controlled and uncontrolled usage.
+ * A native radio control without a visible label.
+ *
+ * Prefer {@link RadioInput} inside {@link RadioGroup} for a labelled,
+ * keyboard-navigable choice group. For standalone use, group radios by `name`
+ * and associate each with a label using `id`. Use `checked` with `onChange` for
+ * controlled state, or `defaultChecked` only for uncontrolled state.
  *
  * @example
- * <Radio defaultChecked />
+ * ```tsx
+ * <Radio name="shipping" defaultChecked />
+ * ```
  *
  * @example
+ * ```tsx
  * const [checked, setChecked] = useState(false);
- * <Radio checked={checked} onChange={(e) => setChecked(e.target.checked)} />
+ * <Radio name="shipping" checked={checked} onChange={(event) => setChecked(event.target.checked)} />
+ * ```
  */
 export const Radio = (props: RadioProps) => {
   const fieldContext = useFieldContext();
@@ -63,6 +76,7 @@ export const Radio = (props: RadioProps) => {
     input,
     indicator,
     radioBg,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const disabled = disabledProp ?? fieldContext?.disabled;
@@ -79,6 +93,7 @@ export const Radio = (props: RadioProps) => {
 
   return (
     <Box
+      {...dsComponent('Radio', dsComponentName)}
       className={cx(classes.container, className)}
       {...(error && { 'data-error': true })}
       {...(invalid && { 'data-invalid': true })}

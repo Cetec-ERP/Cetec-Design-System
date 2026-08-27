@@ -5,19 +5,17 @@ import * as regularRecipes from './recipes/recipes-regular';
 import * as slotRecipes from './recipes/recipes-slot';
 import * as tokens from './styles/primitives';
 import * as semanticTokens from './styles/semantics';
-import {
-  breakpoints,
-  conditions,
-  containerSizes,
-  dropShadowProperty,
-  filtersProperty,
-  fontVariantsProperty,
-  globalCss,
-  keyframes,
-  layerStyles,
-  textStyles,
-  transitionProperty,
-} from './styles/utilities';
+import { breakpoints } from './styles/utilities/breakpoints';
+import { conditions } from './styles/utilities/conditions';
+import { containerSizes } from './styles/utilities/containerSizes';
+import { dropShadowProperty } from './styles/utilities/dropShadows';
+import { filtersProperty } from './styles/utilities/filters';
+import { fontVariantsProperty } from './styles/utilities/fontVariants';
+import { globalCss } from './styles/utilities/globalStyle';
+import { keyframes } from './styles/utilities/keyframes';
+import { layerStyles } from './styles/utilities/layerStyles';
+import { textStyles } from './styles/utilities/textStyles';
+import { transitionProperty } from './styles/utilities/transitions';
 
 import type { RecipeConfig, SlotRecipeConfig } from '@pandacss/types';
 
@@ -46,6 +44,21 @@ const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
+/**
+ * Panda CSS preset containing Cetec tokens, semantic tokens, recipes,
+ * utilities, patterns, global CSS, and conditions.
+ *
+ * Add this preset to a Panda configuration to generate styles that match the
+ * design system. It extends Panda's base preset while replacing its
+ * `dropShadow` utility and omitting the base `box` and `divider` patterns.
+ *
+ * @example
+ * ```ts
+ * import { cetecPreset } from 'cetec-design-system';
+ *
+ * export default defineConfig({ presets: [cetecPreset] });
+ * ```
+ */
 export const cetecPreset: Preset = definePreset({
   name: 'cetecPreset',
   theme: {

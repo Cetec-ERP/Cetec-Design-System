@@ -38,12 +38,14 @@ import {
 import { cx } from '@styled-system/css';
 import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { HighlightText } from '../List';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { Icon } from '../Icon/Icon';
+import { HighlightText } from '../List/HighlightText';
+import { Text } from '../Text/Text';
 
 import {
   deriveItemTextValue,
@@ -63,6 +65,20 @@ import {
   navigateListMainAxisLoop,
 } from './utils/navigateListMainAxis';
 
+/**
+ * Opens nested menu content from a row in a parent {@link Menu}.
+ *
+ * Hover submenus open as positioned flyouts; `interaction="digin"` replaces
+ * the parent level in the same panel. Arrow Right opens a flyout and Arrow Left
+ * returns focus to its trigger. Filtering also searches nested children.
+ *
+ * @example
+ * ```tsx
+ * <SubMenu label="More actions">
+ *   <MenuItem label="Duplicate" />
+ * </SubMenu>
+ * ```
+ */
 export const SubMenu = (props: SubMenuProps) => {
   const nodeId = useFloatingNodeId();
   const parentId = useFloatingParentNodeId();
@@ -442,6 +458,7 @@ export const SubMenu = (props: SubMenuProps) => {
 
     return (
       <button
+        {...dsComponent('SubMenu')}
         {...menuItemHtmlProps}
         role="menuitem"
         aria-disabled={disabled}
@@ -507,6 +524,7 @@ export const SubMenu = (props: SubMenuProps) => {
   return (
     <FloatingNode id={nodeId}>
       <button
+        {...dsComponent('SubMenu')}
         {...menuItemHtmlProps}
         role="menuitem"
         aria-haspopup="menu"
@@ -572,40 +590,42 @@ export const SubMenu = (props: SubMenuProps) => {
 
       {open && (
         <FloatingPortal>
-          <FloatingFocusManager
-            context={floating.context}
-            modal={false}
-            initialFocus={-1}
-            returnFocus={false}
-          >
-            <MenuFilterProvider value={nestedFilterContext}>
-              <MenuListProvider value={nestedListContext}>
-                <Box
-                  ref={floating.refs.setFloating}
-                  className={cx(classes.wrapper, contentClassName)}
-                  {...getFloatingProps({
-                    onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
-                      if (event.key === 'ArrowLeft') {
-                        event.preventDefault();
-                        setOpen(false);
-                        queueMicrotask(() =>
-                          subMenuTriggerRef.current?.focus(),
-                        );
-                      }
-                    },
-                  })}
-                  style={floatingStyle}
-                >
-                  <FloatingList
-                    elementsRef={floatingListRef}
-                    labelsRef={labelsRef}
+          <DsChainPortalRoot>
+            <FloatingFocusManager
+              context={floating.context}
+              modal={false}
+              initialFocus={-1}
+              returnFocus={false}
+            >
+              <MenuFilterProvider value={nestedFilterContext}>
+                <MenuListProvider value={nestedListContext}>
+                  <Box
+                    ref={floating.refs.setFloating}
+                    className={cx(classes.wrapper, contentClassName)}
+                    {...getFloatingProps({
+                      onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+                        if (event.key === 'ArrowLeft') {
+                          event.preventDefault();
+                          setOpen(false);
+                          queueMicrotask(() =>
+                            subMenuTriggerRef.current?.focus(),
+                          );
+                        }
+                      },
+                    })}
+                    style={floatingStyle}
                   >
-                    <Box className={listClassName}>{children}</Box>
-                  </FloatingList>
-                </Box>
-              </MenuListProvider>
-            </MenuFilterProvider>
-          </FloatingFocusManager>
+                    <FloatingList
+                      elementsRef={floatingListRef}
+                      labelsRef={labelsRef}
+                    >
+                      <Box className={listClassName}>{children}</Box>
+                    </FloatingList>
+                  </Box>
+                </MenuListProvider>
+              </MenuFilterProvider>
+            </FloatingFocusManager>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </FloatingNode>

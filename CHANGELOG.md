@@ -1,3 +1,70 @@
+# 2.0.0 (Fri Aug 21 2026)
+
+#### ⚠️ Pushed to `main`
+
+- fix: release ([@Etwigg](https://github.com/Etwigg))
+
+#### 📦 Misc Changes
+
+- refactor(major): rebuild date and time picker APIs [#174](https://github.com/Cetec-ERP/Cetec-Design-System/pull/174) ([@shaunrfox](https://github.com/shaunrfox))
+- refactor: pass href prop to render listitem as anchor [#165](https://github.com/Cetec-ERP/Cetec-Design-System/pull/165) ([@atkinsdavid](https://github.com/atkinsdavid))
+- refactor(minor): remove compound variants and support responsive sizing [#154](https://github.com/Cetec-ERP/Cetec-Design-System/pull/154) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🚀 Features
+
+- feat(minor): release add rowId prop to ListItem [#188](https://github.com/Cetec-ERP/Cetec-Design-System/pull/188) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- feat(minor): emit data-ds-part and resolve interaction chains across portals [#184](https://github.com/Cetec-ERP/Cetec-Design-System/pull/184) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): emit data-ds-component on component roots [#183](https://github.com/Cetec-ERP/Cetec-Design-System/pull/183) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- feat(minor): add autocomplete component [#175](https://github.com/Cetec-ERP/Cetec-Design-System/pull/175) ([@shaunrfox](https://github.com/shaunrfox))
+- feat: shadow refactor to add dropShadow property and tokens [#170](https://github.com/Cetec-ERP/Cetec-Design-System/pull/170) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): add uncontrolled support and static-safe visuals for form components [#169](https://github.com/Cetec-ERP/Cetec-Design-System/pull/169) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): select-component [#158](https://github.com/Cetec-ERP/Cetec-Design-System/pull/158) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- feat: added skeleton component and stories [#166](https://github.com/Cetec-ERP/Cetec-Design-System/pull/166) ([@shaunrfox](https://github.com/shaunrfox))
+- feat: keyboard-component [#159](https://github.com/Cetec-ERP/Cetec-Design-System/pull/159) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): add keyboard UI for Menu components [#153](https://github.com/Cetec-ERP/Cetec-Design-System/pull/153) ([@atkinsdavid](https://github.com/atkinsdavid))
+
+#### 🐛 Bug Fixes
+
+- fix(patch): improve autocomplete selection chips [#187](https://github.com/Cetec-ERP/Cetec-Design-System/pull/187) ([@shaunrfox](https://github.com/shaunrfox))
+- fix: ai review fixes [#177](https://github.com/Cetec-ERP/Cetec-Design-System/pull/177) ([@Etwigg](https://github.com/Etwigg))
+- fix(patch): issue with state for MenuItem toggles [#173](https://github.com/Cetec-ERP/Cetec-Design-System/pull/173) ([@atkinsdavid](https://github.com/atkinsdavid))
+- fix: shared field and slot context layers + arbitrary slot handling [#160](https://github.com/Cetec-ERP/Cetec-Design-System/pull/160) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- fix: try to fix versioning again [#164](https://github.com/Cetec-ERP/Cetec-Design-System/pull/164) ([@Etwigg](https://github.com/Etwigg))
+- fix(patch): block !important in validation checks [#149](https://github.com/Cetec-ERP/Cetec-Design-System/pull/149) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+
+#### 📝 Documentation
+
+- docs(minor): standardize public API documentation [#180](https://github.com/Cetec-ERP/Cetec-Design-System/pull/180) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🎨 Styles
+
+- style: fixed conditional styling scope to prevent affects from ancestor data attributes [#172](https://github.com/Cetec-ERP/Cetec-Design-System/pull/172) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🏎 Performance
+
+- perf(config): optimize Playroom CSS generation [#182](https://github.com/Cetec-ERP/Cetec-Design-System/pull/182) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🤖 CI
+
+- ci: fix CI release version resolution [#176](https://github.com/Cetec-ERP/Cetec-Design-System/pull/176) ([@Etwigg](https://github.com/Etwigg))
+- ci: added manual release workflow [#171](https://github.com/Cetec-ERP/Cetec-Design-System/pull/171) ([@shaunrfox](https://github.com/shaunrfox))
+- ci: fix prerelease in ci [#168](https://github.com/Cetec-ERP/Cetec-Design-System/pull/168) ([@Etwigg](https://github.com/Etwigg))
+- ci: better version resolution [#161](https://github.com/Cetec-ERP/Cetec-Design-System/pull/161) ([@Etwigg](https://github.com/Etwigg))
+
+#### 🏠 Chores
+
+- chore(patch): added semantic fontSizes [#167](https://github.com/Cetec-ERP/Cetec-Design-System/pull/167) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- chore(major): trigger prerelease for #154 [#157](https://github.com/Cetec-ERP/Cetec-Design-System/pull/157) ([@shaunrfox](https://github.com/shaunrfox) [@Etwigg](https://github.com/Etwigg))
+- chore(minor): trigger prerelease for #154 [#156](https://github.com/Cetec-ERP/Cetec-Design-System/pull/156) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### Authors: 3
+
+- David ([@atkinsdavid](https://github.com/atkinsdavid))
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
 # 2.0.0 (Thu May 14 2026)
 
 #### 📦 Misc Changes

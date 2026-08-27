@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
+
+import { expect, within } from '@storybook/test';
 
 import { HStack, VStack } from '@styled-system/jsx';
 
@@ -21,6 +22,14 @@ const items = [
   },
   { id: 'integrations', label: 'Integrations', desc: 'Connect external tools' },
 ];
+const records = [
+  { id: '10482', orderNumber: 'WO-2201', customer: 'Northwind Traders' },
+  { id: '10517', orderNumber: 'WO-2202', customer: 'Contoso Manufacturing' },
+  { id: '10688', orderNumber: 'WO-2203', customer: 'Fabrikam Industrial' },
+];
+const repeatedItems = ['first', 'second'].flatMap((copy) =>
+  items.map((item) => ({ ...item, instanceId: `${copy}-${item.id}` })),
+);
 
 const meta = {
   title: 'Components/List',
@@ -36,6 +45,20 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => <ListItem variant="divider" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByRole('separator').parentElement).toHaveAttribute(
+      'data-ds-component',
+      'ListItem',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
 
 const SingleSelectExample = () => {
   const [selected, setSelected] = useState(items[1]?.id ?? '');
@@ -148,9 +171,9 @@ const FloatingSearchBarExample = () => {
         query={query}
         highlightMatches
       >
-        {items.concat(items).map((item, index) => (
+        {repeatedItems.map((item, index) => (
           <ListItem
-            key={`${item.id}-${index}`}
+            key={item.instanceId}
             selected={index === 0}
             iconAfter="arrow-right"
             label={item.label}
@@ -353,5 +376,25 @@ export const ExFloatingSearchBar: Story = {
   name: 'Ex: Floating search bar',
   args: {},
   render: () => <FloatingSearchBarExample />,
+  parameters: { controls: { disable: true } },
+};
+
+export const RowIdentity: Story = {
+  name: 'Row identity',
+  args: {},
+  render: () => (
+    <Card variant="flat" minW="2xs">
+      <List role="listbox" aria-label="Work orders">
+        {records.map((record) => (
+          <ListItem
+            key={record.id}
+            rowId={record.id}
+            label={record.orderNumber}
+            description={record.customer}
+          />
+        ))}
+      </List>
+    </Card>
+  ),
   parameters: { controls: { disable: true } },
 };

@@ -134,6 +134,7 @@ export const chipRecipe = defineSlotRecipe({
       position: 'relative',
       display: 'inline-flex',
       alignItems: 'center',
+      justifyContent: 'center',
       minW: '0',
       flexShrink: '0',
       bg: 'transparent',
@@ -147,6 +148,11 @@ export const chipRecipe = defineSlotRecipe({
       ...buttonStyles,
       w: 'calc(var(--slot-size) + (var(--slot-px) * 2))',
       h: 'calc(var(--slot-size) + (var(--slot-px) * 2))',
+      _icon: {
+        fill: 'icon.decorative',
+        width: 'var(--slot-size)',
+        height: 'var(--slot-size)',
+      },
     },
     slot: {
       display: 'inline-flex',

@@ -7,11 +7,20 @@ import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
 
+/** Props for {@link ModalBody}, the main content region of a modal. */
 export type ModalBodyProps = Omit<BoxProps, 'children'> & {
-  /** Body content */
+  /** Content displayed in the modal's body region. */
   children: ReactNode;
 };
 
+/**
+ * Renders the main content region of a {@link Modal}.
+ *
+ * @example
+ * ```tsx
+ * <ModalBody>Changes are saved automatically.</ModalBody>
+ * ```
+ */
 export const ModalBody = (props: ModalBodyProps) => {
   const { children, ...rest } = props;
   const [className, otherProps] = splitProps(rest);

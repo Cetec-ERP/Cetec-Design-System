@@ -6,35 +6,40 @@ import { text, type TextVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
 import { Tooltip } from '~/components/Tooltip';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
+/** Props accepted by {@link Text}. */
 export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
   TextVariantProps & {
-    /** Content rendered by the text element. */
+    /** Text or inline content to render. */
     children: string | ReactNode;
-    /** Semantic element rendered by Text. Default: 'span'. */
+    /** Semantic element or component used for the text. */
+    /** @default "span" */
     as?: ElementType;
     /**
-     * Explanation shown in a tooltip. Also applies a dashed underline and
-     * makes the text keyboard-focusable.
+     * Short, nonessential explanation shown in a tooltip. Applies a dashed
+     * underline and adds the text to sequential keyboard focus.
      */
     definition?: string;
-    /** Semantic role applied to the rendered element. */
+    /** Explicit ARIA role when the rendered element does not provide it. */
     role?: string;
-    /** Keyboard tab order applied to the rendered element. */
+    /** Adds the text to sequential keyboard focus when a composite widget requires it. */
     tabIndex?: number;
   };
 
 /**
- * Renders text using the design system typography recipe.
- * Use `as` to select a semantic element and `definition` for terms that need
- * a short explanation on hover or keyboard focus.
+ * Renders design-system typography without imposing document semantics.
+ *
+ * The component renders a `span` by default. Choose `as` based on the content's
+ * semantic role; use `Heading` for document headings and `Label` for form
+ * labels. Provide `definition` for a short explanation that appears on hover
+ * and keyboard focus.
  *
  * @example
- * <Text as="p">Your changes have been saved.</Text>
- *
- * @example
+ * ```tsx
  * <Text definition="Application programming interface">API</Text>
+ * ```
  */
 export const Text = (props: TextProps) => {
   const {
@@ -59,6 +64,7 @@ export const Text = (props: TextProps) => {
 
   const content = (
     <Box
+      {...dsComponent('Text')}
       as={as}
       textStyle={textStyle}
       role={role}

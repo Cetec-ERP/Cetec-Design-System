@@ -12,6 +12,7 @@ import { Wrap, type WrapProps } from '@styled-system/jsx';
 
 import { type BoxProps } from '~/components/Box';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
 
@@ -21,24 +22,64 @@ import {
   type ChipGroupType,
 } from './ChipGroupContext';
 
-export type ChipGroupProps = Omit<WrapProps, 'role'> &
-  Omit<BoxProps, keyof WrapProps> & {
-    type: ChipGroupType;
-    value?: string | string[];
-    defaultValue?: string | string[];
-    onChange?: (value: string | string[]) => void;
-    children: ReactNode;
-    size?: ChipGroupSize;
-    label?: string;
-    id?: string;
-    name?: string;
-  };
+type ChipGroupWrapProps = Pick<
+  WrapProps,
+  'align' | 'columnGap' | 'gap' | 'justify' | 'rowGap'
+>;
+
+type ChipGroupOwnProps = {
+  /** Required selection model. `'single'` uses radio semantics; `'multi'` uses checkbox semantics. */
+  type: ChipGroupType;
+  /** Controlled selected value. Use a string for `'single'` or a string array for `'multi'`, with `onChange` to accept updates. */
+  value?: string | string[];
+  /**
+   * Initial selected value for an uncontrolled group. It is used only on first render.
+   * @default '' for `'single'`; [] for `'multi'`
+   */
+  defaultValue?: string | string[];
+  /** Called with the next selection when a child chip is activated. */
+  onChange?: (value: string | string[]) => void;
+  /** `Chip` children. Chips require a unique `value` to participate in selection. */
+  children: ReactNode;
+  /** Size inherited by child chips unless a child supplies its own size. */
+  size?: ChipGroupSize;
+  /** Accessible name applied to the group container. */
+  label?: string;
+  /** Container identifier. When supplied, the container references `${id}-label`, which consumers must render themselves. */
+  id?: string;
+  /** Shared form metadata exposed to child-chip context; it does not create native form inputs. */
+  name?: string;
+};
+
+/** Props for {@link ChipGroup}, which coordinates selectable child chips. */
+export type ChipGroupProps = Omit<
+  BoxProps,
+  keyof ChipGroupWrapProps | keyof ChipGroupOwnProps | 'role'
+> &
+  ChipGroupWrapProps &
+  ChipGroupOwnProps;
 
 const isChipGroupSize = (
   size: unknown,
 ): size is Extract<ChipGroupSize, string> =>
   size === 'sm' || size === 'md' || size === 'lg';
 
+/**
+ * Coordinates the selection and keyboard behavior of child {@link Chip} values.
+ *
+ * Use `value` with `onChange` for controlled selection, or `defaultValue` for
+ * initialization only. In a single-select group, arrow keys move focus and
+ * select the newly focused chip. Label the group with `label` when it needs an
+ * accessible name.
+ *
+ * @example
+ * ```tsx
+ * <ChipGroup type="single" defaultValue="all" label="Status">
+ *   <Chip value="all">All</Chip>
+ *   <Chip value="open">Open</Chip>
+ * </ChipGroup>
+ * ```
+ */
 export const ChipGroup = (props: ChipGroupProps) => {
   const fieldContext = useFieldContext();
   const {
@@ -60,9 +101,14 @@ export const ChipGroup = (props: ChipGroupProps) => {
   const [stylesClassName, otherProps] = splitProps(rest);
   const role = type === 'single' ? 'radiogroup' : 'group';
 
-  const chipRefs = useRef<Map<string, RefObject<HTMLButtonElement | null>>>(
-    new Map(),
-  );
+  const chipRefs = useRef<Map<
+    string,
+    RefObject<HTMLButtonElement | null>
+  > | null>(null);
+  if (chipRefs.current === null) {
+    chipRefs.current = new Map();
+  }
+  const currentChipRefs = chipRefs.current;
   const [selectedValue, setSelectedValue] = useControllableState({
     value,
     defaultValue: defaultValue ?? (type === 'single' ? '' : ([] as string[])),
@@ -72,22 +118,25 @@ export const ChipGroup = (props: ChipGroupProps) => {
 
   const registerChip = useCallback(
     (chipValue: string, ref: RefObject<HTMLButtonElement | null>) => {
-      chipRefs.current.set(chipValue, ref);
+      currentChipRefs.set(chipValue, ref);
       setChipValues((currentValues) =>
         currentValues.includes(chipValue)
           ? currentValues
           : [...currentValues, chipValue],
       );
     },
-    [],
+    [currentChipRefs],
   );
 
-  const unregisterChip = useCallback((chipValue: string) => {
-    chipRefs.current.delete(chipValue);
-    setChipValues((currentValues) =>
-      currentValues.filter((currentValue) => currentValue !== chipValue),
-    );
-  }, []);
+  const unregisterChip = useCallback(
+    (chipValue: string) => {
+      currentChipRefs.delete(chipValue);
+      setChipValues((currentValues) =>
+        currentValues.filter((currentValue) => currentValue !== chipValue),
+      );
+    },
+    [currentChipRefs],
+  );
 
   const focusChip = useCallback(
     (direction: 'next' | 'prev', currentValue: string) => {
@@ -105,7 +154,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
 
       const nextValue = chipValues[nextIndex];
       if (nextValue) {
-        const nextRef = chipRefs.current.get(nextValue);
+        const nextRef = currentChipRefs.get(nextValue);
         nextRef?.current?.focus();
 
         if (type === 'single') {
@@ -113,7 +162,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
         }
       }
     },
-    [chipValues, setSelectedValue, type],
+    [chipValues, currentChipRefs, setSelectedValue, type],
   );
 
   const contextValue = useMemo(
@@ -144,6 +193,7 @@ export const ChipGroup = (props: ChipGroupProps) => {
   return (
     <ChipGroupContext.Provider value={contextValue}>
       <Wrap
+        {...dsComponent('ChipGroup')}
         className={cx(stylesClassName, className)}
         role={role}
         aria-label={label}

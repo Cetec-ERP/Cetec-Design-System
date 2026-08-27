@@ -22,32 +22,60 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
 
+/** Props for {@link Tooltip}, nonessential contextual text shown on hover or focus. */
 export type TooltipProps = Omit<
   BoxProps,
   keyof TooltipVariantProps | 'children'
 > &
   TooltipVariantProps & {
-    /** Tooltip body text (required) */
+    /** Text displayed in the tooltip body. Use an accessible label instead when this is essential control information. */
     text: string;
-    /** Optional bold title rendered above the text */
+    /** Optional title displayed above the tooltip body. */
     title?: string;
-    /** Show/hide the arrow caret. Default: true */
+    /**
+     * Shows the arrow pointing at the trigger.
+     * @default true
+     */
     caret?: boolean;
-    /** Floating UI placement. Automatically flips if it doesn't fit. Default: 'bottom' */
+    /**
+     * Preferred placement relative to the trigger. The overlay can flip when it does not fit.
+     * @default 'bottom'
+     */
     placement?: Placement;
-    /** Distance in px between trigger and tooltip. Default: 8 */
+    /**
+     * Gap between trigger and tooltip, in pixels.
+     * @default 8
+     */
     offset?: number;
-    /** Hover open/close delay in ms, or { open, close } for separate delays */
+    /** Hover open/close delay in milliseconds, or separate `open` and `close` delays. */
     delay?: number | { open: number; close: number };
-    /** Trigger element. Wrapped in a <span> to attach the floating ref. */
+    /** Trigger content, wrapped in an inline-flex span to receive floating interaction props. */
     children?: ReactNode;
+    /**
+     * Tooltip recipe size.
+     * @default 'md'
+     */
     size?: TooltipVariantProps['size'];
   };
 
+/**
+ * Shows nonessential contextual text for a trigger on hover and keyboard focus.
+ *
+ * The trigger is wrapped in a span and linked with `aria-describedby`; Escape
+ * dismisses the portalled tooltip. Do not use a tooltip as the only accessible
+ * name or instruction for an interactive control.
+ *
+ * @example
+ * ```tsx
+ * <Tooltip text="Copies the link"><IconButton iconName="copy" altText="Copy link" /></Tooltip>
+ * ```
+ */
 export const Tooltip = (props: TooltipProps) => {
   const {
     caret = true,
@@ -107,23 +135,26 @@ export const Tooltip = (props: TooltipProps) => {
 
       {isOpen && (
         <FloatingPortal>
-          <Box
-            ref={refs.setFloating}
-            style={floatingStyles}
-            className={cx(classes.tooltipContent, className)}
-            {...(getFloatingProps() as Record<string, unknown>)}
-            {...otherProps}
-          >
-            {title && <Box className={classes.title}>{title}</Box>}
-            {text && <Box className={classes.text}>{text}</Box>}
-            {caret && (
-              <FloatingArrow
-                ref={arrowRef}
-                context={context}
-                fill={token.var('colors.bg.neutral.inverse')}
-              />
-            )}
-          </Box>
+          <DsChainPortalRoot>
+            <Box
+              {...dsComponent('Tooltip')}
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className={cx(classes.tooltipContent, className)}
+              {...(getFloatingProps() as Record<string, unknown>)}
+              {...otherProps}
+            >
+              {title && <Box className={classes.title}>{title}</Box>}
+              {text && <Box className={classes.text}>{text}</Box>}
+              {caret && (
+                <FloatingArrow
+                  ref={arrowRef}
+                  context={context}
+                  fill={token.var('colors.bg.neutral.inverse')}
+                />
+              )}
+            </Box>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </>

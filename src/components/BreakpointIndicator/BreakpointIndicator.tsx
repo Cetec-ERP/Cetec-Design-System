@@ -5,20 +5,35 @@ import {
 } from '@styled-system/recipes';
 
 import { useMediaQuery } from '~/system/hooks';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Tag } from '../Tag';
 
 import type { BoxProps } from '../Box';
 
+/** Props for {@link BreakpointIndicator}, a development breakpoint readout. */
 export type BreakpointIndicatorProps = Omit<
   BoxProps,
   keyof BreakpointIndicatorVariantProps
 > &
   BreakpointIndicatorVariantProps & {
+    /** Recipe variant for the indicator's visual treatment. */
     variant?: BreakpointIndicatorVariantProps['variant'];
   };
 
+/**
+ * Displays the largest currently matching design-system breakpoint.
+ *
+ * This is a development aid, not user-facing application content. It renders a
+ * colored `Tag` from `@media/base` through `@media/2xl` based on media-query
+ * hooks.
+ *
+ * @example
+ * ```tsx
+ * <BreakpointIndicator />
+ * ```
+ */
 export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   // breakpoint labels: [base, xs, sm, md, lg, xl, 2xl]
   // Call all hooks at the top level (React rules)
@@ -31,10 +46,12 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
 
   const { variant, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
+  const dsAttributes = dsComponent('BreakpointIndicator');
 
   // Find the largest matching breakpoint
   let breakpoint = (
     <Tag
+      {...dsAttributes}
       className={cx(breakpointIndicator({ variant }), className)}
       hue="red"
       variant="bold"
@@ -46,6 +63,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   if (is2Xl) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="blue"
         variant="bold"
@@ -57,6 +75,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isXl) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="magenta"
         variant="bold"
@@ -68,6 +87,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isLg) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="green"
         variant="bold"
@@ -79,6 +99,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isMd) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="indigo"
         variant="bold"
@@ -90,6 +111,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isSm) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="yellow"
         variant="bold"
@@ -101,6 +123,7 @@ export const BreakpointIndicator = (props: BreakpointIndicatorProps) => {
   } else if (isXs) {
     breakpoint = (
       <Tag
+        {...dsAttributes}
         className={cx(breakpointIndicator({ variant }), className)}
         hue="orange"
         variant="bold"

@@ -13,6 +13,10 @@ components:
     description: Parent-owned state/context patterns for compound components
   storybook-conventions:
     description: Story typing, layout, and documentation standards
+  jsdoc-documentation:
+    description: Public API JSDoc requirements for components, props, hooks, helpers, and types
+  public-api-exports:
+    description: Package entrypoint, component barrel, runtime value, and type export policy
 
 recipes:
   naming-registration:

@@ -2,7 +2,15 @@ import { createContext, useContext } from 'react';
 
 import type { ConditionalValue } from '@styled-system/types';
 
-export type SlotOwner = 'Button' | 'Chip' | 'TextInput';
+export type SlotOwner =
+  | 'Button'
+  | 'Chip'
+  | 'TextInput'
+  | 'DateInput'
+  | 'DateRangeInput'
+  | 'TimeInput'
+  | 'TimeRangeInput'
+  | 'DateTimeInput';
 
 export type SlotPlacement = 'before' | 'after';
 

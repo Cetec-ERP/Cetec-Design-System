@@ -1,9 +1,12 @@
 import {
   type ReactNode,
+  type Ref,
   useEffect,
   useRef,
   type KeyboardEvent,
+  type KeyboardEventHandler,
   type MouseEvent,
+  useMemo,
 } from 'react';
 
 import { cx } from '@styled-system/css';
@@ -18,27 +21,67 @@ import {
   type SlotPlacement,
   useSlotContext,
 } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
 
+/** Props for {@link Chip}, a compact label that can be static, actionable, selectable, or dismissible. */
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   Omit<ChipVariantProps, 'before' | 'after' | 'dismissable'> & {
+    /** Visible chip label, also used in the default dismissal label. */
     children: string;
+    /** Content displayed before the chip label. */
     before?: ReactNode;
+    /** Content displayed after the chip label and before the dismiss control. */
     after?: ReactNode;
+    /** Disables the primary action and dismiss button. The local value takes precedence over slot and field context. */
     disabled?: boolean;
+    /** Shows a spinner and disables chip interaction. */
     loading?: boolean;
+    /** Applies deleted styling without removing the chip from the DOM. */
     deleted?: boolean;
+    /** Adds a dismiss button after the chip content. */
     dismissable?: boolean;
+    /**
+     * Accessible name for the dismiss button.
+     * @default `Remove ${children}`
+     */
     dismissLabel?: string;
+    /** Ref forwarded to the dismiss button. */
+    dismissButtonRef?: Ref<HTMLButtonElement>;
+    /** Tab order override for the dismiss button. */
+    dismissButtonTabIndex?: number;
+    /** Applies error styling. The local value takes precedence over slot and field context. */
     error?: boolean;
+    /** Marks the chip invalid with `aria-invalid`. The local value takes precedence over slot and field context. */
     invalid?: boolean;
+    /** Called when the dismiss button is activated. The button is disabled when this callback is absent. */
     onDismiss?: () => void;
+    /** Keyboard handler composed onto the dismiss button. */
+    onDismissKeyDown?: KeyboardEventHandler<HTMLButtonElement>;
+    /**
+     * Native type for the chip's primary button when it is selectable or has `onClick`.
+     * @default 'button'
+     */
     type?: 'button' | 'submit' | 'reset';
+    /** Value used by a parent `ChipGroup` to identify and select this chip. */
     value?: string;
   };
 
+/**
+ * Renders a compact label, optionally with an action or dismissal control.
+ *
+ * A chip is static unless it has `onClick` or both a `value` and a parent
+ * `ChipGroup`. Grouped single-select chips use radio behavior and arrow-key
+ * roving focus; grouped multi-select chips use checkbox behavior. `before` and
+ * `after` slots inherit state through slot context.
+ *
+ * @example
+ * ```tsx
+ * <Chip dismissable onDismiss={() => remove('design')}>Design</Chip>
+ * ```
+ */
 export const Chip = (props: ChipProps) => {
   const groupContext = useChipGroup();
   const fieldContext = useFieldContext();
@@ -53,7 +96,10 @@ export const Chip = (props: ChipProps) => {
     deleted,
     dismissable,
     dismissLabel,
+    dismissButtonRef,
+    dismissButtonTabIndex,
     onDismiss,
+    onDismissKeyDown,
     value,
     error: errorProp,
     invalid: invalidProp,
@@ -126,22 +172,35 @@ export const Chip = (props: ChipProps) => {
     dismissable,
   });
 
+  const slotContexts = useMemo(
+    () => ({
+      before: {
+        owner: 'Chip' as const,
+        placement: 'before' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+      after: {
+        owner: 'Chip' as const,
+        placement: 'after' as const,
+        size,
+        disabled,
+        error,
+        invalid,
+      },
+    }),
+    [disabled, error, invalid, size],
+  );
+
   const renderSlot = (slot: ReactNode, placement: SlotPlacement) => {
     if (!slot) {
       return null;
     }
 
     return (
-      <SlotContext.Provider
-        value={{
-          owner: 'Chip',
-          placement,
-          size,
-          disabled,
-          error,
-          invalid,
-        }}
-      >
+      <SlotContext.Provider value={slotContexts[placement]}>
         <Box className={classes.slot}>{slot}</Box>
       </SlotContext.Provider>
     );
@@ -214,12 +273,15 @@ export const Chip = (props: ChipProps) => {
   const dismissButton = (
     <Box
       as="button"
+      ref={dismissButtonRef}
       type="button"
       className={classes.dismissButton}
       aria-label={resolvedDismissLabel}
       aria-hidden={dismissable ? undefined : true}
       disabled={isDisabled || !onDismiss}
+      tabIndex={dismissButtonTabIndex}
       onClick={handleDismissClick}
+      onKeyDown={onDismissKeyDown}
       opacity={loading ? 0 : 1}
       data-selected={isSelected ? true : undefined}
       data-deleted={deleted ? true : undefined}
@@ -284,6 +346,7 @@ export const Chip = (props: ChipProps) => {
 
   return (
     <Box
+      {...dsComponent('Chip')}
       className={`${cx(classes.container, className)} group`}
       data-loading={loading ? true : undefined}
       data-deleted={deleted ? true : undefined}

@@ -26,6 +26,7 @@ import {
   size,
   useClick,
   useDismiss,
+  useFocus,
   useInteractions,
   useHover,
   useListNavigation,
@@ -43,11 +44,13 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
 
 import {
   hasMatchingItems,
@@ -76,6 +79,51 @@ const defaultGetItemText = ({
   return [label, description].filter(Boolean).join(' ').trim();
 };
 
+const tabbableSelector = [
+  'a[href]',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  '[tabindex]',
+  '[contenteditable="true"]',
+].join(',');
+
+const isTabbable = (element: HTMLElement) => {
+  if (element.hasAttribute('disabled')) return false;
+  if (element.getAttribute('aria-hidden') === 'true') return false;
+  if (element.getAttribute('tabindex') === '-1') return false;
+  if (element.hasAttribute('data-floating-ui-focus-guard')) return false;
+
+  const style = element.ownerDocument.defaultView?.getComputedStyle(element);
+  if (style?.display === 'none' || style?.visibility === 'hidden') {
+    return false;
+  }
+
+  return element.getClientRects().length > 0;
+};
+
+const getNextTabbableOutsideFloating = ({
+  target,
+  floatingElement,
+  direction,
+}: {
+  target: HTMLElement;
+  floatingElement: HTMLElement | null;
+  direction: 1 | -1;
+}) => {
+  const candidates = Array.from(
+    target.ownerDocument.querySelectorAll<HTMLElement>(tabbableSelector),
+  ).filter((element) => {
+    return isTabbable(element) && !floatingElement?.contains(element);
+  });
+
+  const currentIndex = candidates.indexOf(target);
+  if (currentIndex === -1) return null;
+
+  return candidates[currentIndex + direction] ?? null;
+};
+
 const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
   return Children.map(nodes, (childNode, index) => {
     if (!isValidElement(childNode)) {
@@ -89,6 +137,21 @@ const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
   });
 };
 
+/**
+ * Displays a keyboard-navigable action list from a trigger or inline in a layout.
+ *
+ * Use `MenuItem`, `MenuGroup`, and `SubMenu` as children. A triggered menu
+ * restores the trigger relationship through Floating UI and dismisses on Escape
+ * or outside press. Use an inline menu when the list should always be visible.
+ *
+ * @example
+ * ```tsx
+ * <Menu trigger={<Button>Actions</Button>}>
+ *   <MenuItem label="Edit" onClick={edit} />
+ *   <MenuItem label="Archive" onClick={archive} />
+ * </Menu>
+ * ```
+ */
 export const Menu = (props: MenuProps) => {
   const nodeId = useFloatingNodeId();
   const {
@@ -196,7 +259,12 @@ export const Menu = (props: MenuProps) => {
     enabled:
       hasReference &&
       (triggerInteraction === 'click' ||
+        triggerInteraction === 'focus' ||
         triggerInteraction === 'click-and-hover'),
+    toggle: triggerInteraction !== 'focus',
+  });
+  const focus = useFocus(floating.context, {
+    enabled: hasReference && triggerInteraction === 'focus',
   });
   const dismiss = useDismiss(floating.context, { enabled: hasReference });
   const role = useRole(floating.context, { role: 'menu' });
@@ -214,7 +282,7 @@ export const Menu = (props: MenuProps) => {
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
-    [hover, click, dismiss, role, listNavigation, typeahead],
+    [hover, click, focus, dismiss, role, listNavigation, typeahead],
   );
 
   const filterContextValue = useMemo(
@@ -368,6 +436,7 @@ export const Menu = (props: MenuProps) => {
     <MenuRootProvider value={rootContextValue}>
       <MenuFilterProvider value={filterContextValue}>
         <Box
+          {...dsComponent('Menu')}
           ref={floating.refs.setFloating}
           className={cx(classes.wrapper, className)}
           {...getFloatingProps()}
@@ -542,6 +611,33 @@ export const Menu = (props: MenuProps) => {
   });
 
   const composedTriggerOnKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (isOpen && triggerInteraction === 'focus' && event.key === 'Tab') {
+      const target = event.target;
+      const referenceElement = floating.elements.domReference;
+
+      if (target instanceof HTMLElement && referenceElement) {
+        const nextElement = getNextTabbableOutsideFloating({
+          target,
+          floatingElement: floating.elements.floating,
+          direction: event.shiftKey ? -1 : 1,
+        });
+
+        if (nextElement && !referenceElement.contains(nextElement)) {
+          event.preventDefault();
+          setOpenState(false);
+          nextElement.focus();
+          return;
+        }
+
+        if (!nextElement) {
+          event.preventDefault();
+          setOpenState(false);
+          target.blur();
+          return;
+        }
+      }
+    }
+
     // When the menu is open, Floating UI's reference key handler often runs
     // before the consumer's onKeyDown, so menubar Left/Right (on the trigger)
     // never fires. Run the trigger handler first for horizontal navigation.
@@ -574,20 +670,24 @@ export const Menu = (props: MenuProps) => {
         )}
         {isOpen && (
           <FloatingPortal>
-            <FloatingFocusManager
-              context={floating.context}
-              modal={false}
-              // Menubar composition: keep focus on the section trigger until the
-              // user arrows into the panel, so Left/Right can move between
-              // top-level menubar items while the dropdown is open (APG pattern).
-              // Default initialFocus=0 would move focus to the first menu row and
-              // swallow menubar navigation until a child is focused.
-              order={
-                onMenubarEdgeNavigate ? ['reference', 'content'] : undefined
-              }
-            >
-              {content}
-            </FloatingFocusManager>
+            <DsChainPortalRoot>
+              <FloatingFocusManager
+                context={floating.context}
+                modal={false}
+                // Menubar composition: keep focus on the section trigger until the
+                // user arrows into the panel, so Left/Right can move between
+                // top-level menubar items while the dropdown is open (APG pattern).
+                // Default initialFocus=0 would move focus to the first menu row and
+                // swallow menubar navigation until a child is focused.
+                order={
+                  onMenubarEdgeNavigate ? ['reference', 'content'] : undefined
+                }
+                initialFocus={triggerInteraction === 'focus' ? -1 : undefined}
+                returnFocus={triggerInteraction === 'focus' ? false : undefined}
+              >
+                {content}
+              </FloatingFocusManager>
+            </DsChainPortalRoot>
           </FloatingPortal>
         )}
       </FloatingNode>

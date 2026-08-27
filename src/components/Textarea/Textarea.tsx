@@ -3,18 +3,40 @@ import { textarea, type TextareaVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
+/** Props for {@link Textarea}, a multi-line native text input. */
 export type TextareaProps = Omit<BoxProps, keyof TextareaVariantProps> &
   TextareaVariantProps & {
+    /** Form field name submitted with the textarea value. */
     name: string;
+    /**
+     * Applies the recipe's content-sized visual treatment; it does not measure or resize the native element.
+     * @default false
+     */
     autoSize?: boolean;
+    /** Applies error styling. The local value takes precedence over field context. */
     error?: boolean;
+    /** Marks the native textarea invalid with `aria-invalid` and applies invalid styling. */
     invalid?: boolean;
+    /** Disables the native textarea. The local value takes precedence over field context. */
     disabled?: boolean;
+    /** Identifier used to associate a visible `Label` with this textarea. */
     id?: string;
   };
 
+/**
+ * Renders a multi-line native textarea.
+ *
+ * Use a `Label` or `FormField` to provide its accessible name. Local `size`,
+ * error, invalid, and disabled values override matching field-context values.
+ *
+ * @example
+ * ```tsx
+ * <Textarea id="notes" name="notes" rows={4} />
+ * ```
+ */
 export const Textarea = (props: TextareaProps) => {
   const fieldContext = useFieldContext();
   const {
@@ -34,6 +56,7 @@ export const Textarea = (props: TextareaProps) => {
   const [className, otherProps] = splitProps(rest);
   return (
     <Box
+      {...dsComponent('Textarea')}
       as="textarea"
       id={id}
       name={name}

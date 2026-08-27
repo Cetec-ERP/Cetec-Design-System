@@ -5,8 +5,10 @@ import { badge, type BadgeVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
 import { useSlotContext } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
+/** Supported visual color treatments for {@link Badge}. */
 export type BadgeVariant =
   | 'neutral'
   | 'subtle'
@@ -17,18 +19,23 @@ export type BadgeVariant =
   | 'warning'
   | 'info';
 
+/** Props accepted by {@link Badge}. */
 export type BadgeProps = Omit<BoxProps, keyof BadgeVariantProps> &
   Omit<BadgeVariantProps, 'standalone' | 'dot'> & {
-    /** Number to show in badge. If provided, switches to count mode. */
+    /** Numeric content. Providing a value switches the badge from dot mode to count mode. */
     count?: number;
-    /** Show badge when count is zero. Default: false */
+    /** Keeps the indicator visible when `count` is zero. */
+    /** @default false */
     showZero?: boolean;
-    /** Max count to show. Displays "99+" when exceeded. Default: 99 */
+    /** Largest count shown directly; larger values render as `{overflowCount}+`. */
+    /** @default 99 */
     overflowCount?: number;
-    /** Color scheme of the badge. Default: 'danger' */
+    /** Semantic color treatment of the indicator. */
+    /** @default "danger" */
     variant?: BadgeVariantProps['variant'];
-    /** Content to wrap with the badge */
+    /** Content used as the positioning anchor. Without children, the badge is standalone. */
     children?: ReactNode;
+    /** Visual indicator size. An explicit value takes precedence over slot context. */
     size?: BadgeVariantProps['size'];
   };
 
@@ -47,12 +54,17 @@ const animationStyles = {
 };
 
 /**
- * Badge component for displaying notification counts or status indicators.
+ * Displays a notification count or compact status indicator.
  *
- * - Without children: renders as standalone badge
- * - With children: wraps content and positions badge at top-right
- * - Without count prop: shows as dot
- * - With count prop: shows the number (or "99+" if exceeds overflowCount)
+ * Without `children`, the badge is standalone. With children, it positions the
+ * indicator at the anchor's top-right. Omitting `count` renders a dot. The
+ * badge does not announce updates by itself; add an accessible label or live
+ * region when the value conveys essential information.
+ *
+ * @example
+ * ```tsx
+ * <Badge count={3}><Icon name="bell" aria-label="Notifications" /></Badge>
+ * ```
  */
 export const Badge = (props: BadgeProps) => {
   const slotContext = useSlotContext();
@@ -121,6 +133,7 @@ export const Badge = (props: BadgeProps) => {
   if (isStandalone) {
     return (
       <Box
+        {...dsComponent('Badge')}
         as="span"
         ref={ref}
         className={cx(classes.root, className)}
@@ -134,6 +147,7 @@ export const Badge = (props: BadgeProps) => {
   // Wrapper mode: wrap children with positioned indicator
   return (
     <Box
+      {...dsComponent('Badge')}
       as="span"
       ref={ref}
       className={cx(classes.root, className)}

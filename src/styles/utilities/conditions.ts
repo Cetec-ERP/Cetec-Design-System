@@ -21,6 +21,7 @@ export const conditions = {
   collapsed:
     '&:is([aria-collapsed=true], [data-collapsed=true], [data-state="collapsed"])',
   highlighted: '&[data-highlighted=true]',
+  new: '&[data-new=true]',
   complete: '&[data-complete=true]',
   incomplete: '&[data-incomplete=true]',
   dragging: '&[data-dragging=true]',

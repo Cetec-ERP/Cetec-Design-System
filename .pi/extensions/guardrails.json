@@ -1,0 +1,10 @@
+{
+  "pathAccess": {
+    "allowedPaths": [
+      "~/.pi/agent/skills/panda-css/shared/",
+      "~/.pi/agent/skills/panda-css/panda-component-impl/",
+      "~/.pi/agent/skills/panda-css/panda-recipe-patterns/",
+      "~/.pi/agent/skills/react-doctor/"
+    ]
+  }
+}

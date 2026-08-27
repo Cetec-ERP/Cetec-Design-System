@@ -7,7 +7,6 @@ import {
   type ReactElement,
   type ReactNode,
   useCallback,
-  useEffect,
   useId,
   useMemo,
   useRef,
@@ -30,17 +29,22 @@ import {
 import { cx } from '@styled-system/css';
 import { menu, select, type SelectVariantProps } from '@styled-system/recipes';
 
-import type { MenuDensity } from '~/components/Menu';
+import type { MenuDensity } from '~/components/Menu/context/menuContext';
 import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { dsComponent } from '~/utils/dsComponent';
+import { dsPart } from '~/utils/dsPart';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Chip } from '../Chip';
-import { Icon } from '../Icon';
-import { List, ListItem } from '../List';
+import { Box, type BoxProps } from '../Box/Box';
+import { Chip } from '../Chip/Chip';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { DsChainScope } from '../DsChainScope/DsChainScope';
+import { Icon } from '../Icon/Icon';
+import { List } from '../List/List';
+import { ListItem } from '../List/ListItem';
 
 import { SelectOption, type SelectOptionProps } from './SelectOption';
 
@@ -95,8 +99,9 @@ const getSelectedDisplay = (
     const selectedValues = Array.isArray(value)
       ? value
       : ([value].filter(Boolean) as string[]);
+    const selectedValueSet = new Set(selectedValues);
     const selectedOptions = options.filter((option) =>
-      selectedValues.includes(option.props.value),
+      selectedValueSet.has(option.props.value),
     );
 
     if (selectedOptions.length === 0) {
@@ -120,35 +125,97 @@ const getSelectedOptions = (
   }
 
   const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
-  return options.filter((option) =>
-    selectedValues.includes(option.props.value),
-  );
+  const selectedValueSet = new Set(selectedValues);
+  return options.filter((option) => selectedValueSet.has(option.props.value));
 };
 
+/** Props for {@link Select}, an ARIA listbox-based single or multiple select. */
 export type SelectProps = Omit<
-  BoxProps<'button'>,
+  BoxProps,
   keyof SelectVariantProps | 'children' | 'onChange' | 'type' | 'value'
 > &
   SelectVariantProps & {
+    /** Controlled selected value. Use a string for single selection or a string array for multiple selection, with `onChange` to accept changes. */
     value?: SelectValue;
+    /**
+     * Initial selected value for an uncontrolled select. It is used only on first render.
+     * @default null
+     */
     defaultValue?: SelectValue;
+    /** Called when the user selects, deselects, or clears an option. In controlled mode, update `value` with the supplied value. */
     onChange?: (value: SelectValue) => void;
+    /**
+     * Allows several options to be selected and renders selected options as removable chips.
+     * @default false
+     */
     multiple?: boolean;
+    /**
+     * Text shown while no option is selected.
+     * @default 'Select...'
+     */
     placeholder?: string;
+    /** Controlled popup state. Pair with `onOpenChange`; omit it to use `defaultOpen`. */
     open?: boolean;
+    /**
+     * Initial popup state for an uncontrolled select. It is used only on first render.
+     * @default false
+     */
     defaultOpen?: boolean;
+    /** Called when user interaction requests that the popup open or close. */
     onOpenChange?: (open: boolean) => void;
+    /**
+     * Floating UI placement for the listbox relative to the trigger.
+     * @default 'bottom-start'
+     */
     placement?: Placement;
+    /**
+     * Gap between the trigger and listbox, in pixels.
+     * @default 4
+     */
     offset?: number;
+    /** Metadata-only `SelectOption` children used to build the listbox. Other children are ignored. */
     children?: ReactNode;
+    /** Identifier for the combobox trigger. A generated identifier is used when omitted. */
     id?: string;
+    /** Form field name. Each selected value is submitted through a hidden input. */
     name?: string;
+    /**
+     * Prevents opening, selection, and hidden-input submission.
+     * @default false
+     */
     disabled?: boolean;
+    /**
+     * Marks the combobox as invalid with `aria-invalid` and error styling.
+     * @default false
+     */
     error?: boolean;
+    /**
+     * Density applied to the popup options.
+     * @default 'compact'
+     */
     density?: MenuDensity;
+    /**
+     * Shrinks the trigger to its content instead of using the standard select width.
+     * @default false
+     */
     autoSize?: boolean;
   };
 
+/**
+ * Chooses one or more values from metadata-only {@link SelectOption} children.
+ *
+ * The trigger uses combobox/listbox semantics. Arrow keys, Enter, and Space open
+ * it; typeahead and arrow keys navigate options; Escape or outside press closes
+ * it. Focus stays on the trigger when the non-modal popup opens.
+ *
+ * @example
+ * ```tsx
+ * <Select defaultValue="draft" name="status">
+ *   <SelectOption value="draft" label="Draft" />
+ *   <SelectOption value="published" label="Published" />
+ * </Select>
+ * ```
+ */
 export const Select = (props: SelectProps) => {
   const {
     value: controlledValue,
@@ -169,9 +236,17 @@ export const Select = (props: SelectProps) => {
     size = 'md',
     density = defaultDensity,
     autoSize = false,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
+  // Read, do not remove. `data-testid` stays on the combobox trigger, which is
+  // the element a test drives and the element existing selectors already
+  // target. The chain scope it needs to open is a separate concern, handled
+  // below the return: the trigger is a sibling of the portal that renders the
+  // listbox, so a scope opened by the trigger's own `Box` could never enclose
+  // it, but a scope opened above the root does.
+  const testId = otherProps['data-testid'];
 
   const generatedId = useId();
   const triggerId = id ?? `select-${generatedId}`;
@@ -190,15 +265,27 @@ export const Select = (props: SelectProps) => {
     return Children.toArray(children).filter(isSelectOptionElement);
   }, [children]);
 
+  const selectedValues = useMemo(() => {
+    if (multiple) {
+      return Array.isArray(value) ? value : value ? [value] : [];
+    }
+
+    return typeof value === 'string' ? [value] : [];
+  }, [multiple, value]);
+  const selectedValueSet = useMemo(
+    () => new Set(selectedValues),
+    [selectedValues],
+  );
+
   const selectedIndex = useMemo(() => {
     return options.findIndex((option) => {
       if (multiple) {
-        return Array.isArray(value) && value.includes(option.props.value);
+        return selectedValueSet.has(option.props.value);
       }
 
       return option.props.value === value;
     });
-  }, [multiple, options, value]);
+  }, [multiple, options, selectedValueSet, value]);
 
   const firstEnabledIndex = useMemo(() => {
     return options.findIndex((option) => !option.props.disabled);
@@ -210,32 +297,23 @@ export const Select = (props: SelectProps) => {
     );
   }, [options]);
 
-  const selectedValues = useMemo(() => {
-    if (multiple) {
-      return Array.isArray(value) ? value : value ? [value] : [];
-    }
-
-    return typeof value === 'string' ? [value] : [];
-  }, [multiple, value]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setActiveIndex(null);
-      return;
-    }
-
-    if (selectedIndex >= 0) {
-      setActiveIndex(selectedIndex);
-      return;
-    }
-
-    setActiveIndex(firstEnabledIndex >= 0 ? firstEnabledIndex : null);
-  }, [firstEnabledIndex, isOpen, selectedIndex]);
+  const initialActiveIndex =
+    selectedIndex >= 0
+      ? selectedIndex
+      : firstEnabledIndex >= 0
+        ? firstEnabledIndex
+        : null;
+  const resolvedActiveIndex = isOpen
+    ? (activeIndex ?? initialActiveIndex)
+    : null;
 
   const activeOptionId =
-    activeIndex !== null ? `${triggerId}-option-${activeIndex}` : undefined;
+    resolvedActiveIndex !== null
+      ? `${triggerId}-option-${resolvedActiveIndex}`
+      : undefined;
 
   const setOpenState = (nextOpen: boolean) => {
+    setActiveIndex(nextOpen ? initialActiveIndex : null);
     if (!isOpenControlled) {
       setInternalOpen(nextOpen);
     }
@@ -286,7 +364,7 @@ export const Select = (props: SelectProps) => {
   const role = useRole(floating.context, { role: 'listbox' });
   const listNavigation = useListNavigation(floating.context, {
     listRef: itemRefs,
-    activeIndex,
+    activeIndex: resolvedActiveIndex,
     selectedIndex,
     onNavigate: setActiveIndex,
     loop: true,
@@ -294,7 +372,7 @@ export const Select = (props: SelectProps) => {
   });
   const typeahead = useTypeahead(floating.context, {
     listRef: labelsRef,
-    activeIndex,
+    activeIndex: resolvedActiveIndex,
     onMatch: setActiveIndex,
   });
 
@@ -378,12 +456,12 @@ export const Select = (props: SelectProps) => {
     handleValueChange(nextValues.length > 0 ? nextValues : null);
   };
 
-  return (
-    <Box className={classes.root}>
+  const root = (
+    <Box {...dsComponent('Select', dsComponentName)} className={classes.root}>
       {name &&
-        selectedValues.map((selectedValue, index) => (
+        selectedValues.map((selectedValue) => (
           <Box
-            key={`${selectedValue}-${index}`}
+            key={selectedValue}
             as="input"
             type="hidden"
             name={name}
@@ -392,8 +470,15 @@ export const Select = (props: SelectProps) => {
           />
         ))}
 
+      {/*
+        `data-ds-part` gives the trigger a stable query handle now that
+        `data-testid` is written on the root. It is internal instrumentation,
+        not a supported prop, and the chain reads `data-testid` only, so it adds
+        no chain node.
+      */}
       <Box
         as="div"
+        {...dsPart('trigger')}
         id={triggerId}
         ref={floating.refs.setReference}
         className={`${cx(classes.trigger, className)} peer`}
@@ -460,71 +545,84 @@ export const Select = (props: SelectProps) => {
 
       {isOpen && !disabled && (
         <FloatingPortal>
-          <FloatingFocusManager
-            context={floating.context}
-            modal={false}
-            initialFocus={-1}
-          >
-            {/* validate-ignore: useSemanticElements — custom select popup uses ARIA listbox semantics on a non-native container */}
-            <List
-              ref={floating.refs.setFloating}
-              id={listboxId}
-              role="listbox"
-              aria-labelledby={triggerId}
-              aria-multiselectable={multiple || undefined}
-              density={density}
-              className={menuClasses.wrapper}
-              style={floating.floatingStyles}
-              {...(getFloatingProps() as Record<string, unknown>)}
+          <DsChainPortalRoot>
+            <FloatingFocusManager
+              context={floating.context}
+              modal={false}
+              initialFocus={-1}
             >
-              {options.map((option, index) => {
-                const optionLabel = getOptionText(option);
-                const isSelected = multiple
-                  ? Array.isArray(value) && value.includes(option.props.value)
-                  : value === option.props.value;
+              {/* validate-ignore: useSemanticElements — custom select popup uses ARIA listbox semantics on a non-native container */}
+              <List
+                ref={floating.refs.setFloating}
+                id={listboxId}
+                role="listbox"
+                aria-labelledby={triggerId}
+                aria-multiselectable={multiple || undefined}
+                density={density}
+                className={menuClasses.wrapper}
+                style={floating.floatingStyles}
+                {...(getFloatingProps() as Record<string, unknown>)}
+              >
+                {options.map((option, index) => {
+                  const optionLabel = getOptionText(option);
+                  const isSelected = multiple
+                    ? selectedValueSet.has(option.props.value)
+                    : value === option.props.value;
 
-                return (
-                  <ListItem
-                    key={option.props.value}
-                    id={`${triggerId}-option-${index}`}
-                    ref={(node: HTMLElement | null) => {
-                      itemRefs.current[index] = node;
-                      labelsRef.current[index] = optionLabel;
-                    }}
-                    disabled={option.props.disabled}
-                    selected={isSelected}
-                    variant={multiple ? 'checkbox' : 'default'}
-                    label={optionLabel}
-                    description={option.props.description}
-                    iconBefore={
-                      !multiple
-                        ? (option.props.iconLeft ?? 'check')
-                        : option.props.iconLeft
-                    }
-                    iconBeforeFill={
-                      !multiple
-                        ? isSelected
-                          ? 'icon'
+                  return (
+                    <ListItem
+                      key={option.props.value}
+                      id={`${triggerId}-option-${index}`}
+                      ref={(node: HTMLElement | null) => {
+                        itemRefs.current[index] = node;
+                        labelsRef.current[index] = optionLabel;
+                      }}
+                      disabled={option.props.disabled}
+                      selected={isSelected}
+                      variant={multiple ? 'checkbox' : 'default'}
+                      label={optionLabel}
+                      description={option.props.description}
+                      iconBefore={
+                        !multiple
+                          ? (option.props.iconLeft ?? 'check')
                           : option.props.iconLeft
-                            ? undefined
-                            : 'transparent'
-                        : undefined
-                    }
-                    iconAfter={option.props.iconRight}
-                    {...(getItemProps({
-                      onClick: () => {
-                        if (!option.props.disabled) {
-                          handleOptionSelect(option.props.value);
-                        }
-                      },
-                    } as HTMLProps<HTMLElement>) as Record<string, unknown>)}
-                  />
-                );
-              })}
-            </List>
-          </FloatingFocusManager>
+                      }
+                      iconBeforeFill={
+                        !multiple
+                          ? isSelected
+                            ? 'icon'
+                            : option.props.iconLeft
+                              ? undefined
+                              : 'transparent'
+                          : undefined
+                      }
+                      iconAfter={option.props.iconRight}
+                      {...(getItemProps({
+                        onClick: () => {
+                          if (!option.props.disabled) {
+                            handleOptionSelect(option.props.value);
+                          }
+                        },
+                      } as HTMLProps<HTMLElement>) as Record<string, unknown>)}
+                    />
+                  );
+                })}
+              </List>
+            </FloatingFocusManager>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </Box>
+  );
+
+  // The scope is opened above the root rather than by the element carrying the
+  // id, because only the root encloses the portal's position in the React tree.
+  // The trigger's own `Box` opens a second scope with the same id; the repeat
+  // is collapsed in `extendDsChain`, so content inside the trigger resolves the
+  // same chain as content outside it.
+  return typeof testId === 'string' && testId.length > 0 ? (
+    <DsChainScope testId={testId}>{root}</DsChainScope>
+  ) : (
+    root
   );
 };

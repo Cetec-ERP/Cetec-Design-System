@@ -5,6 +5,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const baseUrl = process.env.PLAYROOM_BASE_PATH ?? '/playroom/';
+const reactDocgenTypescriptConfig = {
+  propFilter: {
+    skipPropsWithName: ['children'],
+  },
+  shouldExtractValuesFromUnion: true,
+  shouldExtractLiteralValuesFromEnum: true,
+  shouldRemoveUndefinedFromOptional: true,
+};
 
 export default {
   title: 'Cetec Design System Playroom',
@@ -55,6 +63,6 @@ export default {
       ],
     },
   }),
-  typeScriptFiles: [],
-  propsParser: () => [],
+  typeScriptFiles: ['src/index.ts'],
+  reactDocgenTypescriptConfig,
 };

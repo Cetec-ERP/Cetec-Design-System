@@ -4,6 +4,14 @@ The `tools/eslint-plugin-cetec/` directory contains a local ESLint plugin with
 rules specific to the Cetec design system. All rules are exposed under the
 `cetec/` prefix and are configured in `eslint.config.js`.
 
+Public API JSDoc coverage is checked separately because the audit resolves
+package exports across component barrel files. `npm run dev` runs
+`npm run check:jsdoc` first and reports missing documentation as a non-blocking
+local warning. Use `npm run check:jsdoc:strict` when intentionally closing the
+documentation backlog. JSDoc coverage does not block CI validation or builds.
+See `standards/components/jsdoc-documentation.md` for the documentation
+contract.
+
 ## Rules
 
 | Rule                                          | Type  | Description                                                                           |
