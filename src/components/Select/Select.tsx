@@ -34,6 +34,7 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
 import { dsComponent } from '~/utils/dsComponent';
 import { dsPart } from '~/utils/dsPart';
 import { splitProps } from '~/utils/splitProps';
@@ -217,6 +218,7 @@ export type SelectProps = Omit<
  * ```
  */
 export const Select = (props: SelectProps) => {
+  const floatingLayer = useFloatingLayer();
   const {
     value: controlledValue,
     defaultValue = null,
@@ -388,7 +390,7 @@ export const Select = (props: SelectProps) => {
   );
   const selectedOptions = getSelectedOptions(options, value, multiple);
   const classes = select({ size, multiple, autoSize });
-  const menuClasses = menu({ density });
+  const menuClasses = menu({ density, layer: floatingLayer });
   const hasValue = value !== null && value !== undefined && value !== '';
   const chipSize = resolveChipSize(size);
   const accessibleName =

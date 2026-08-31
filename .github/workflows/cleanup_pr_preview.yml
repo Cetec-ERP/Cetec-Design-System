@@ -10,6 +10,13 @@ permissions:
 jobs:
   cleanup-pr-preview:
     runs-on: ubuntu-latest
+    # Shares the global gh-pages lock with deploy_gh_pages.yml. Closing a PR
+    # while another PR's preview is deploying pushes to the same branch, so
+    # this job has to queue behind it like any other writer.
+    concurrency:
+      group: gh-pages-push
+      cancel-in-progress: false
+      queue: max
 
     steps:
       - uses: actions/checkout@v4
