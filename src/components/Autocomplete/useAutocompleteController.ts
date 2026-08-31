@@ -26,6 +26,7 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
 import { splitProps } from '~/utils/splitProps';
 
 import { useAutocompleteState } from './useAutocompleteState';
@@ -87,6 +88,7 @@ const getDismissReason = (
 };
 
 export const useAutocompleteController = (props: AutocompleteProps) => {
+  const floatingLayer = useFloatingLayer();
   const fieldContext = useFieldContext();
   const {
     value: controlledValue,
@@ -318,7 +320,7 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     [dismiss, role, listNavigation],
   );
 
-  const classes = autocomplete({ size });
+  const classes = autocomplete({ size, layer: floatingLayer });
   const chipSize = resolveChipSize(size);
   const shouldLimitTags =
     Boolean(multiple) &&

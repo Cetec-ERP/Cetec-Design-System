@@ -44,6 +44,7 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -154,6 +155,7 @@ const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
  */
 export const Menu = (props: MenuProps) => {
   const nodeId = useFloatingNodeId();
+  const floatingLayer = useFloatingLayer();
   const {
     trigger,
     children,
@@ -181,7 +183,7 @@ export const Menu = (props: MenuProps) => {
 
   const [className, otherProps] = splitProps(rest);
   const userStyle = otherProps.style as CSSProperties | undefined;
-  const classes = menu({ density, panel });
+  const classes = menu({ density, panel, layer: floatingLayer });
   const listClassName = list({ density });
 
   const hasReference = Boolean(trigger) && !inline;

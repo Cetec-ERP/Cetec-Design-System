@@ -38,6 +38,7 @@ import {
 import { cx } from '@styled-system/css';
 import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -83,6 +84,7 @@ export const SubMenu = (props: SubMenuProps) => {
   const nodeId = useFloatingNodeId();
   const parentId = useFloatingParentNodeId();
   const tree = useFloatingTree();
+  const floatingLayer = useFloatingLayer();
   const {
     label,
     description,
@@ -108,7 +110,10 @@ export const SubMenu = (props: SubMenuProps) => {
   const resolvedInteraction = interaction ?? rootContext.subMenuInteraction;
   const resolvedDensity =
     typeof density === 'string' ? density : rootContext.density;
-  const classes = menu({ density: resolvedDensity });
+  const classes = menu({
+    density: resolvedDensity,
+    layer: floatingLayer,
+  });
   const listClassName = list({ density: resolvedDensity });
   const itemClassName = listItemRecipe({
     density: resolvedDensity,
