@@ -3,7 +3,6 @@
     baseBranch: 'main',
     noVersionPrefix: true,
     shipit: {
-      prerelease: true,
       onlyGraduateWithReleaseLabel: true,
     },
     noDefaultLabels: true,
