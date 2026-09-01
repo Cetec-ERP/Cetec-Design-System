@@ -39,6 +39,18 @@ export const Variants: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const UnderlineInteraction: Story = {
+  render: () => (
+    <Box display="grid" gap="12" maxW="prose">
+      <Link href="#">Hover to see the underline strengthen</Link>
+      <Link href="#" family="mono" size="14">
+        Focus with the keyboard to see the focus treatment
+      </Link>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 export const ExInParagraph: Story = {
   name: 'Ex: In Paragraph Copy',
   render: () => (

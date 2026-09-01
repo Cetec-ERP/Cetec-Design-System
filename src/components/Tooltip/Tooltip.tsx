@@ -27,7 +27,6 @@ import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box';
 import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
-import { Text } from '../Text';
 
 /** Props for {@link Tooltip}, nonessential contextual text shown on hover or focus. */
 export type TooltipProps = Omit<
@@ -128,6 +127,7 @@ export const Tooltip = (props: TooltipProps) => {
         display="inline-flex"
         alignItems="center"
         lineHeight="none"
+        width="fit"
         {...getReferenceProps()}
       >
         {children}
@@ -144,8 +144,8 @@ export const Tooltip = (props: TooltipProps) => {
               {...(getFloatingProps() as Record<string, unknown>)}
               {...otherProps}
             >
-              {title && <Text className={classes.title}>{title}</Text>}
-              {text && <Text className={classes.text}>{text}</Text>}
+              {title && <Box className={classes.title}>{title}</Box>}
+              {text && <Box className={classes.text}>{text}</Box>}
               {caret && (
                 <FloatingArrow
                   ref={arrowRef}
