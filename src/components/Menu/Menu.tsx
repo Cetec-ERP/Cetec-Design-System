@@ -672,7 +672,7 @@ export const Menu = (props: MenuProps) => {
         )}
         {isOpen && (
           <FloatingPortal>
-            <DsChainPortalRoot>
+            <DsChainPortalRoot reference={floating.elements.domReference}>
               <FloatingFocusManager
                 context={floating.context}
                 modal={false}

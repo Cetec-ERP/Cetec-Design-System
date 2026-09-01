@@ -184,6 +184,14 @@ export const Modal = (props: ModalProps) => {
     <FloatingLayerContext.Provider value="modalFloating">
       <ModalContext.Provider value={contextValue}>
         <FloatingPortal>
+          {/*
+           * No `reference`: a Modal is driven by the `open` prop and never calls
+           * `refs.setReference`, so there is no opening element to resolve a
+           * business object from. Clicks inside resolve their chain but no
+           * object, which is the correct answer here — inventing one from the
+           * page would be right on a legacy screen and wrong on a React screen
+           * that tags individual elements.
+           */}
           <DsChainPortalRoot>
             <Box className={classes.positionWrapper}>
               <FloatingOverlay

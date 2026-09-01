@@ -407,7 +407,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
 
       {isOpen && !disabled && !readOnly && (
         <FloatingPortal>
-          <DsChainPortalRoot>
+          <DsChainPortalRoot reference={floating.elements.domReference}>
             <FloatingFocusManager
               context={floating.context}
               modal={false}
