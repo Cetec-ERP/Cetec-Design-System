@@ -87,7 +87,7 @@ const typeDefaults: Record<
  *   title="Delete item"
  *   description="This action cannot be undone."
  *   confirmLabel="Delete"
- *   variant="delete"
+ *   type="delete"
  *   onConfirm={async () => {
  *     await deleteItem();
  *     setOpen(false);

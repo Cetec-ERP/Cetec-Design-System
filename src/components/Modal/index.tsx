@@ -8,7 +8,7 @@ export {
 export {
   ConfirmationModal,
   type ConfirmationModalProps,
-  type ConfirmationModalVariant,
+  type ConfirmationModalType,
 } from './ConfirmationModal';
 export { ModalHeader, type ModalHeaderProps } from './ModalHeader';
 export { ModalBody, type ModalBodyProps } from './ModalBody';

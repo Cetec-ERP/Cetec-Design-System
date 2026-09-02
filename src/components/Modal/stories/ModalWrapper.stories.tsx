@@ -4,26 +4,25 @@ import { expect, userEvent, within } from '@storybook/test';
 
 import { Flex, Grid, VStack } from '@styled-system/jsx';
 
-import { Autocomplete, Option } from '../Autocomplete';
-import { Button } from '../Button';
-import { DatePicker } from '../DateTime';
-import { Divider } from '../Divider';
-import { FormField } from '../FormField';
-import { Icon } from '../Icon';
-import { Select, SelectOption } from '../Select';
-import { Text } from '../Text';
-import { Textarea } from '../Textarea';
-import { TextInput } from '../TextInput';
-
-import { ModalBody } from './ModalBody';
-import { ModalFooter } from './ModalFooter';
-import { ModalHeader } from './ModalHeader';
-import { ModalWrapper } from './ModalWrapper';
+import { Autocomplete, Option } from '../../Autocomplete';
+import { Button } from '../../Button';
+import { DatePicker } from '../../DateTime';
+import { Divider } from '../../Divider';
+import { FormField } from '../../FormField';
+import { Icon } from '../../Icon';
+import { Select, SelectOption } from '../../Select';
+import { Text } from '../../Text';
+import { Textarea } from '../../Textarea';
+import { TextInput } from '../../TextInput';
+import { ModalBody } from '../ModalBody';
+import { ModalFooter } from '../ModalFooter';
+import { ModalHeader } from '../ModalHeader';
+import { ModalWrapper } from '../ModalWrapper';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ModalWrapper> = {
-  title: 'Components/ModalWrapper',
+  title: 'Components/Modals/ModalWrapper',
   component: ModalWrapper,
   parameters: {
     layout: 'centered',

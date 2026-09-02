@@ -130,7 +130,7 @@ export {
   ModalFooter,
   ModalBody,
   type ConfirmationModalProps,
-  type ConfirmationModalVariant,
+  type ConfirmationModalType,
   type ModalBodyProps,
   type ModalFooterProps,
   type ModalFormApi,

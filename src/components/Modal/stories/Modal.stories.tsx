@@ -2,16 +2,15 @@ import { useState, type ChangeEvent } from 'react';
 
 import { VStack } from '@styled-system/jsx';
 
-import { Button } from '../Button';
-import { FormField } from '../FormField';
-import { TextInput } from '../TextInput';
-
-import { Modal } from './Modal';
+import { Button } from '../../Button';
+import { FormField } from '../../FormField';
+import { TextInput } from '../../TextInput';
+import { Modal } from '../Modal';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Modal> = {
-  title: 'Components/Modal',
+  title: 'Components/Modals/Modal',
   component: Modal,
   tags: ['autodocs'],
   parameters: {

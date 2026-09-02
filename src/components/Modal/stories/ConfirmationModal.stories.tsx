@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
-import { Button } from '../Button';
-
-import { ConfirmationModal } from './ConfirmationModal';
+import { Button } from '../../Button';
+import { ConfirmationModal } from '../ConfirmationModal';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ConfirmationModal> = {
-  title: 'Components/ConfirmationModal',
+  title: 'Components/Modals/ConfirmationModal',
   component: ConfirmationModal,
   tags: ['autodocs'],
   parameters: {
@@ -15,7 +14,7 @@ const meta: Meta<typeof ConfirmationModal> = {
     docs: {
       description: {
         component:
-          'Non-form confirmation dialog with cancel and confirm actions. Use the `delete` variant for destructive confirmations.',
+          'Non-form confirmation dialog with cancel and confirm actions. Use `type="delete"` for destructive confirmations.',
       },
     },
   },
@@ -59,7 +58,7 @@ export const Delete: Story = {
           title="Delete Item"
           description="Are you sure you want to delete this item? This action cannot be undone."
           confirmLabel="Delete"
-          variant="delete"
+          type="delete"
           onConfirm={() => setOpen(false)}
         />
       </>
@@ -82,7 +81,7 @@ export const AsyncConfirm: Story = {
           title="Delete Account"
           description="Your account and all associated data will be permanently removed."
           confirmLabel="Delete account"
-          variant="delete"
+          type="delete"
           confirmLoading={confirmLoading}
           onConfirm={async () => {
             setConfirmLoading(true);
@@ -110,7 +109,7 @@ export const ExDeleteItem: Story = {
           title="Delete Item"
           description="Are you sure you want to delete this item? This action cannot be undone."
           confirmLabel="Delete"
-          variant="delete"
+          type="delete"
           onConfirm={() => setOpen(false)}
         />
       </>
