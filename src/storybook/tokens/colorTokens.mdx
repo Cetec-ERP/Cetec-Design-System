@@ -3,14 +3,11 @@ import { Icon } from '~/components/Icon';
 import { Meta, Unstyled } from '@storybook/blocks';
 import { ColorToken } from './components/ColorToken';
 import { colors } from '~/styles/primitives/colors';
-import { colors as semanticColors } from '~/styles/semantics/colors';
 import { Box } from '~/components/Box';
 import { Card } from '~/components/Card';
 import { Text } from '~/components/Text';
-import { Heading } from '~/components/Heading';
-import { Flex, Grid, VStack, Wrap } from '@styled-system/jsx';
+import { Flex, Grid } from '@styled-system/jsx';
 import { Divider } from '~/components/Divider';
-import { css } from '@styled-system/css';
 import { SemanticColorToken } from './components/SemanticColorToken';
 
 <Meta title="Tokens/Colors" />
@@ -30,6 +27,17 @@ import { SemanticColorToken } from './components/SemanticColorToken';
   <Divider color="border.disabled" mb="48"/>
 
   <Grid gridTemplateColumns="auto auto 1fr" columnGap="16" rowGap="16">
+
+    #### Global
+
+    <Text textStyle="mono.sm" fontWeight="bold" gridColumnStart="2" mt="4" textAlign="right">global</Text>
+    <Flex gap="8">
+      <ColorToken tokenKey="transparent" />
+      <ColorToken tokenKey="current" />
+      <ColorToken tokenKey="inherit" />
+    </Flex>
+
+    <Divider gridColumn="span 3" color="border.disabled" my="48"/>
 
     #### Neutrals
 
@@ -261,6 +269,19 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       ))}
     </Flex>
 
+    <Divider gridColumn="span 3" color="border.disabled" my="48"/>
+
+    #### Shadows
+
+    <Text textStyle="mono.sm" fontWeight="bold" gridColumnStart="2" mt="4" textAlign="right">shadow</Text>
+    <Flex gap="8">
+      {Object.entries(colors.shadow).map(([key]) => (
+        <Flex key={key} direction="column" align="center" gap="2">
+          <ColorToken tokenKey={`shadow.${key}`} />
+        </Flex>
+      ))}
+    </Flex>
+
   </Grid>
 
   <Divider weight="thick" color="border.disabled" my="48"/>
@@ -304,10 +325,15 @@ import { SemanticColorToken } from './components/SemanticColorToken';
         bg.neutral.inverse
         <SemanticColorToken token="bg.neutral.inverse" />
         <SemanticColorToken token="bg.neutral.inverse.subtle" />
+        <SemanticColorToken token="bg.neutral.inverse.subtle.hovered" />
       </Flex>
       <Flex direction="column" gap="8" w="fit">
         bg.neutral.boldest
         <SemanticColorToken token="bg.neutral.boldest" />
+      </Flex>
+      <Flex direction="column" gap="8" w="fit">
+        bg.neutral.solid
+        <SemanticColorToken token="bg.neutral.solid" />
       </Flex>
     </Grid>
     <Grid gridTemplateColumns="subgrid" gap="40" gridColumn="2 / -1">
@@ -336,6 +362,25 @@ import { SemanticColorToken } from './components/SemanticColorToken';
 
     <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
 
+    <Text textStyle="body.xs" allCaps>Selected</Text>
+
+    <Grid gridTemplateColumns="subgrid" gap="40" gridColumn="2 / -1">
+      <Flex direction="column" gap="8">
+        bg.selected
+        <SemanticColorToken token="bg.selected" />
+        <SemanticColorToken token="bg.selected.hovered" />
+        <SemanticColorToken token="bg.selected.pressed" />
+      </Flex>
+      <Flex direction="column" gap="8">
+        bg.selected.bold
+        <SemanticColorToken token="bg.selected.bold" />
+        <SemanticColorToken token="bg.selected.bold.hovered" />
+        <SemanticColorToken token="bg.selected.bold.pressed" />
+      </Flex>
+    </Grid>
+
+    <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
+
     <Text textStyle="body.xs" allCaps>Status</Text>
 
     <Grid gridTemplateColumns="subgrid" gap="40" gridColumn="2 / -1">
@@ -352,6 +397,12 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="bg.success.bold.hovered" />
           <SemanticColorToken token="bg.success.bold.pressed" />
         </Flex>
+        <Flex direction="column" gap="8">
+          bg.success.subtle
+          <SemanticColorToken token="bg.success.subtle" />
+          <SemanticColorToken token="bg.success.subtle.hovered" />
+          <SemanticColorToken token="bg.success.subtle.pressed" />
+        </Flex>
       </Grid>
 
       <Grid gridTemplateColumns="subgrid" gridColumn="1 / -1">
@@ -366,6 +417,12 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="bg.warning.bold" />
           <SemanticColorToken token="bg.warning.bold.hovered" />
           <SemanticColorToken token="bg.warning.bold.pressed" />
+        </Flex>
+        <Flex direction="column" gap="8">
+          bg.warning.subtle
+          <SemanticColorToken token="bg.warning.subtle" />
+          <SemanticColorToken token="bg.warning.subtle.hovered" />
+          <SemanticColorToken token="bg.warning.subtle.pressed" />
         </Flex>
       </Grid>
 
@@ -382,6 +439,12 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="bg.danger.bold.hovered" />
           <SemanticColorToken token="bg.danger.bold.pressed" />
         </Flex>
+        <Flex direction="column" gap="8">
+          bg.danger.subtle
+          <SemanticColorToken token="bg.danger.subtle" />
+          <SemanticColorToken token="bg.danger.subtle.hovered" />
+          <SemanticColorToken token="bg.danger.subtle.pressed" />
+        </Flex>
       </Grid>
 
       <Grid gridTemplateColumns="subgrid" gridColumn="1 / -1">
@@ -396,6 +459,12 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="bg.info.bold" />
           <SemanticColorToken token="bg.info.bold.hovered" />
           <SemanticColorToken token="bg.info.bold.pressed" />
+        </Flex>
+        <Flex direction="column" gap="8">
+          bg.info.subtle
+          <SemanticColorToken token="bg.info.subtle" />
+          <SemanticColorToken token="bg.info.subtle.hovered" />
+          <SemanticColorToken token="bg.info.subtle.pressed" />
         </Flex>
       </Grid>
 
@@ -577,6 +646,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       #### Blanket
       <SemanticColorToken token="blanket" />
       <SemanticColorToken token="blanket.danger" />
+      <SemanticColorToken token="blanket.selected" />
     </Grid>
 
     <Divider my="48" />
@@ -602,7 +672,9 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
         <SemanticColorToken token="border.disabled" />
         <SemanticColorToken token="border.focused" />
+        <SemanticColorToken token="border.focused.inverse" />
         <SemanticColorToken token="border.inverse.focused" />
+        <SemanticColorToken token="border.selected" />
       </Grid>
 
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
@@ -641,10 +713,12 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="icon.subtle" />
           <SemanticColorToken token="icon.subtlest" />
           <SemanticColorToken token="icon.inverse" />
+          <SemanticColorToken token="icon.selected" />
         </Flex>
         <Flex direction="column" gap="8">
           <SemanticColorToken token="icon.decorative" />
           <SemanticColorToken token="icon.decorative.hovered" />
+          <SemanticColorToken token="icon.decorative.subtle" />
           <SemanticColorToken token="icon.decorative.inverse" />
           <SemanticColorToken token="icon.decorative.inverse.hovered" />
         </Flex>
@@ -660,6 +734,7 @@ import { SemanticColorToken } from './components/SemanticColorToken';
         <SemanticColorToken token="icon.warning" />
         <SemanticColorToken token="icon.warning.inverse" />
         <SemanticColorToken token="icon.danger" />
+        <SemanticColorToken token="icon.danger.inverse" />
         <SemanticColorToken token="icon.info" />
       </Grid>
 
@@ -723,6 +798,16 @@ import { SemanticColorToken } from './components/SemanticColorToken';
       <Text textStyle="body.xs" allCaps>Sunken</Text>
 
       <SemanticColorToken token="surface.sunken" />
+
+      <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
+
+      <Text textStyle="body.xs" allCaps>Selected</Text>
+
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="surface.selected" />
+        <SemanticColorToken token="surface.selected.hovered" />
+        <SemanticColorToken token="surface.selected.pressed" />
+      </Grid>
     </Grid>
 
     <Divider weight="thick" color="border.disabled" my="48" />
@@ -741,6 +826,8 @@ import { SemanticColorToken } from './components/SemanticColorToken';
         <SemanticColorToken token="text.subtlest" />
         <SemanticColorToken token="text.bold" />
         <SemanticColorToken token="text.inverse" />
+        <SemanticColorToken token="text.inverse.subtlest" />
+        <SemanticColorToken token="text.selected" />
         <SemanticColorToken token="text.disabled" />
         <SemanticColorToken token="text.placeholder" />
       </Grid>
@@ -751,10 +838,22 @@ import { SemanticColorToken } from './components/SemanticColorToken';
 
       <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
         <SemanticColorToken token="text.success" />
+        <SemanticColorToken token="text.success.inverse" />
         <SemanticColorToken token="text.warning" />
         <SemanticColorToken token="text.warning.inverse" />
         <SemanticColorToken token="text.danger" />
+        <SemanticColorToken token="text.danger.inverse" />
         <SemanticColorToken token="text.info" />
+        <SemanticColorToken token="text.info.inverse" />
+      </Grid>
+
+      <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
+
+      <Text textStyle="body.xs" allCaps>CTA</Text>
+
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="text.cta" />
+        <SemanticColorToken token="text.cta.inverse" />
       </Grid>
 
       <Divider color="border.disabled" gridColumn="1 / -1" my="12" />
@@ -838,6 +937,41 @@ import { SemanticColorToken } from './components/SemanticColorToken';
           <SemanticColorToken token="text.accent.pink" />
           <SemanticColorToken token="text.accent.pink.bold" />
         </Flex>
+      </Grid>
+    </Grid>
+
+    <Divider weight="thick" color="border.disabled" my="48" />
+
+    #### Shadow Colors
+
+    <Grid gridTemplateColumns="minmax(auto, 120px) repeat(auto-fill, minmax(min(220px, 100%), 1fr))" gridAutoRows="auto" rowGap="16" columnGap="40">
+      <Text textStyle="body.xs" allCaps>Raised</Text>
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="shadow.raised.1" />
+        <SemanticColorToken token="shadow.raised.2" />
+      </Grid>
+
+      <Text textStyle="body.xs" allCaps>Elevated</Text>
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="shadow.elevated.1" />
+        <SemanticColorToken token="shadow.elevated.2" />
+        <SemanticColorToken token="shadow.elevated.3" />
+      </Grid>
+
+      <Text textStyle="body.xs" allCaps>Overlay</Text>
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="shadow.overlay.1" />
+        <SemanticColorToken token="shadow.overlay.2" />
+        <SemanticColorToken token="shadow.overlay.3" />
+        <SemanticColorToken token="shadow.overlay.4" />
+        <SemanticColorToken token="shadow.overlay.5" />
+      </Grid>
+
+      <Text textStyle="body.xs" allCaps>Overflow</Text>
+      <Grid gridTemplateColumns="subgrid" gridColumn="2 / -1">
+        <SemanticColorToken token="shadow.overflow.1" />
+        <SemanticColorToken token="shadow.overflow.2" />
+        <SemanticColorToken token="shadow.overflow.3" />
       </Grid>
     </Grid>
 

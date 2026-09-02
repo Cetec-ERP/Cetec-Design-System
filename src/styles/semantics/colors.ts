@@ -129,6 +129,17 @@ export const colors = defineSemanticTokens.colors({
           value: { base: '{colors.green.70}', _dark: '{colors.green.20}' },
         },
       },
+      subtle: {
+        DEFAULT: {
+          value: { base: '{colors.green.5}', _dark: '{colors.green.80}' },
+        },
+        hovered: {
+          value: { base: '{colors.green.10}', _dark: '{colors.green.70}' },
+        },
+        pressed: {
+          value: { base: '{colors.green.20}', _dark: '{colors.green.90}' },
+        },
+      },
     },
     warning: {
       DEFAULT: {
@@ -151,6 +162,17 @@ export const colors = defineSemanticTokens.colors({
           value: { base: '{colors.orange.70}', _dark: '{colors.orange.50}' },
         },
       },
+      subtle: {
+        DEFAULT: {
+          value: { base: '{colors.orange.5}', _dark: '{colors.orange.80}' },
+        },
+        hovered: {
+          value: { base: '{colors.orange.10}', _dark: '{colors.orange.70}' },
+        },
+        pressed: {
+          value: { base: '{colors.orange.20}', _dark: '{colors.orange.90}' },
+        },
+      },
     },
     danger: {
       DEFAULT: {
@@ -167,6 +189,17 @@ export const colors = defineSemanticTokens.colors({
         },
         pressed: {
           value: { base: '{colors.red.60}', _dark: '{colors.red.50}' },
+        },
+      },
+      subtle: {
+        DEFAULT: {
+          value: { base: '{colors.red.5}', _dark: '{colors.red.80}' },
+        },
+        hovered: {
+          value: { base: '{colors.red.10}', _dark: '{colors.red.70}' },
+        },
+        pressed: {
+          value: { base: '{colors.red.20}', _dark: '{colors.red.90}' },
         },
       },
     },
@@ -189,6 +222,17 @@ export const colors = defineSemanticTokens.colors({
         },
         pressed: {
           value: { base: '{colors.blue.70}', _dark: '{colors.blue.20}' },
+        },
+      },
+      subtle: {
+        DEFAULT: {
+          value: { base: '{colors.blue.5}', _dark: '{colors.blue.80}' },
+        },
+        hovered: {
+          value: { base: '{colors.blue.10}', _dark: '{colors.blue.70}' },
+        },
+        pressed: {
+          value: { base: '{colors.blue.20}', _dark: '{colors.blue.90}' },
         },
       },
     },
