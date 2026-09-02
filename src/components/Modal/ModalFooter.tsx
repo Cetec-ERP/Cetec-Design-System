@@ -14,7 +14,7 @@ export type ModalFooterProps = Omit<BoxProps, 'children'> & {
 };
 
 /**
- * Renders the action region of a {@link Modal}.
+ * Renders the action region of a {@link ModalWrapper}.
  *
  * @example
  * ```tsx

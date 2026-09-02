@@ -1,227 +1,221 @@
 import {
+  type FormEvent,
   type ReactNode,
   useCallback,
   useEffect,
-  useMemo,
-  useReducer,
-  useRef,
+  useId,
 } from 'react';
 
 import {
-  FloatingPortal,
-  FloatingFocusManager,
-  useDismiss,
-  useInteractions,
-  FloatingOverlay,
-} from '@floating-ui/react';
+  useForm,
+  type FormAsyncValidateOrFn,
+  type FormValidateOrFn,
+  type ReactFormExtendedApi,
+} from '@tanstack/react-form';
 
-import { cx } from '@styled-system/css';
-import {
-  modal as modalRecipe,
-  type ModalVariantProps,
-} from '@styled-system/recipes';
+import { type ModalVariantProps } from '@styled-system/recipes';
 
-import { useOverlayFloating } from '~/system/floating-ui/floating';
-import { FloatingLayerContext } from '~/system/floating-ui/FloatingLayerContext';
 import { dsComponent } from '~/utils/dsComponent';
-import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { Button } from '../Button';
 
-import { ModalContext, type ModalContextValue } from './ModalContext';
+import { ModalBody } from './ModalBody';
+import { ModalFooter } from './ModalFooter';
+import { ModalHeader } from './ModalHeader';
+import { ModalWrapper } from './ModalWrapper';
 
-/** Props for {@link Modal}, a controlled, portalled dialog. */
-export type ModalProps = Omit<BoxProps, keyof ModalVariantProps> &
-  ModalVariantProps & {
-    /** Controlled dialog state. Render state changes by updating this value after `onOpenChange`. */
-    open: boolean;
-    /** Called when Escape, overlay interaction, or a descendant close control requests closing. */
-    onOpenChange: (open: boolean) => void;
-    /**
-     * Prevents overlay clicks from requesting close. Escape still requests close.
-     * @default false
-     */
-    preventOverlayClose?: boolean;
-    /** Dialog content, typically composed from `ModalHeader`, `ModalBody`, and `ModalFooter`. */
-    children: ReactNode;
-    /** Identifier applied to the dialog element. Provide accessible naming with `aria-label` or `aria-labelledby`. */
-    id?: string;
-    /**
-     * Recipe size for the dialog panel.
-     * @default 'md'
-     */
-    size?: ModalVariantProps['size'];
-    /**
-     * Recipe position for the dialog panel.
-     * @default 'centered'
-     */
-    position?: ModalVariantProps['position'];
-  };
+/** TanStack Form instance passed to {@link Modal} children. */
+export type ModalFormApi<TFormData extends Record<string, unknown>> =
+  ReactFormExtendedApi<
+    TFormData,
+    FormValidateOrFn<TFormData> | undefined,
+    FormValidateOrFn<TFormData> | undefined,
+    FormAsyncValidateOrFn<TFormData> | undefined,
+    FormValidateOrFn<TFormData> | undefined,
+    FormAsyncValidateOrFn<TFormData> | undefined,
+    FormValidateOrFn<TFormData> | undefined,
+    FormAsyncValidateOrFn<TFormData> | undefined,
+    FormValidateOrFn<TFormData> | undefined,
+    FormAsyncValidateOrFn<TFormData> | undefined,
+    FormAsyncValidateOrFn<TFormData> | undefined,
+    unknown
+  >;
 
-type ModalPhase = 'open' | 'closing' | 'closed';
-
-type ModalState = {
-  phase: ModalPhase;
+/** Context passed to {@link ModalProps.onSubmit}. */
+export type ModalSubmitContext<TFormData extends Record<string, unknown>> = {
+  /** Validated form values from TanStack Form. */
+  value: TFormData;
+  /** Requests closing through the modal's `onOpenChange(false)`. */
+  close: () => void;
 };
 
-type ModalAction =
-  | { type: 'open' }
-  | { type: 'startClosing' }
-  | { type: 'finishClosing' };
+/** Props for {@link Modal}, a pre-built form dialog. */
+export type ModalProps<TFormData extends Record<string, unknown>> = {
+  /** Controlled dialog state. */
+  open: boolean;
+  /** Called when the dialog requests an open-state change. */
+  onOpenChange: (open: boolean) => void;
 
-const modalStateReducer = (
-  state: ModalState,
-  action: ModalAction,
-): ModalState => {
-  switch (action.type) {
-    case 'open':
-      return { phase: 'open' };
-    case 'startClosing':
-      if (state.phase === 'closed') {
-        return state;
-      }
-      return { phase: 'closing' };
-    case 'finishClosing':
-      return { phase: 'closed' };
-    default:
-      return state;
-  }
+  /** Visible dialog title rendered in {@link ModalHeader}. */
+  title: string;
+  /** Default field values passed to TanStack Form. */
+  defaultValues: TFormData;
+  /**
+   * Called after TanStack Form validation succeeds. Call `close()` when the
+   * action completes and the dialog should dismiss.
+   */
+  onSubmit: (context: ModalSubmitContext<TFormData>) => void | Promise<void>;
+  /** Render prop receiving the modal's TanStack Form instance for field wiring. */
+  children: (form: ModalFormApi<TFormData>) => ReactNode;
+
+  /** Label for the default primary submit button. @default 'Save' */
+  submitLabel?: string;
+  /** Label for the default cancel button. @default 'Cancel' */
+  cancelLabel?: string;
+  /** Additional disable flag applied to the default submit button. */
+  submitDisabled?: boolean;
+  /** Replaces the default cancel/submit footer. Submit wiring is consumer-owned. */
+  footer?: ReactNode;
+
+  /** Recipe size forwarded to {@link ModalWrapper}. @default 'md' */
+  size?: ModalVariantProps['size'];
+  /** Prevents overlay clicks from closing the dialog. @default false */
+  preventOverlayClose?: boolean;
+  /** Shows the header close button. @default true */
+  showCloseButton?: boolean;
 };
 
 /**
- * Renders a controlled modal dialog in a portal with focus management and a
- * scroll-locking overlay.
+ * Renders a form modal with a title, TanStack Form wiring, and default footer
+ * actions.
  *
- * Escape always calls `onOpenChange(false)`. By default, pressing the overlay
- * does too. The dialog remains mounted for a 150 ms closing animation. Supply
- * an accessible name through `aria-label` or `aria-labelledby`; a visible
- * `ModalHeader` title alone is not linked automatically.
+ * Validation and error display are consumer-owned: define validators on
+ * `form.Field` and map field meta to {@link FormField}. Call `close()` from
+ * `onSubmit` when the dialog should dismiss after a successful action.
  *
  * @example
  * ```tsx
- * <Modal open={open} onOpenChange={setOpen} aria-label="Delete project">
- *   <ModalHeader title="Delete project" />
- *   <ModalBody>This cannot be undone.</ModalBody>
- *   <ModalFooter><Button onClick={remove}>Delete</Button></ModalFooter>
+ * <Modal
+ *   open={open}
+ *   onOpenChange={setOpen}
+ *   title="Create process"
+ *   submitLabel="Create"
+ *   defaultValues={{ name: '' }}
+ *   onSubmit={async ({ value, close }) => {
+ *     await createProcess(value.name);
+ *     close();
+ *   }}
+ * >
+ *   {(form) => (
+ *     <form.Field name="name">
+ *       {(field) => (
+ *         <FormField label="Name" labelFor="name">
+ *           <TextInput
+ *             id="name"
+ *             value={field.state.value}
+ *             onChange={(e) => field.handleChange(e.target.value)}
+ *           />
+ *         </FormField>
+ *       )}
+ *     </form.Field>
+ *   )}
  * </Modal>
  * ```
  */
-export const Modal = (props: ModalProps) => {
+export const Modal = <TFormData extends Record<string, unknown>>(
+  props: ModalProps<TFormData>,
+) => {
   const {
     open,
     onOpenChange,
-    size = 'md',
-    preventOverlayClose = false,
+    title,
+    defaultValues,
+    onSubmit,
     children,
-    id,
-    position = 'centered',
-    ...rest
+    submitLabel = 'Save',
+    cancelLabel = 'Cancel',
+    submitDisabled = false,
+    footer,
+    size,
+    preventOverlayClose,
+    showCloseButton = true,
   } = props;
-  const [className, otherProps] = splitProps(rest);
-  const classes = modalRecipe({ size, position });
-  const [{ phase }, dispatch] = useReducer(modalStateReducer, {
-    phase: open ? 'open' : 'closed',
-  });
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Floating UI setup
-  const { refs, context } = useOverlayFloating({
-    open,
-    onOpenChange,
-    strategy: 'fixed',
-    middleware: [],
+  const titleId = useId();
+  const close = useCallback(() => onOpenChange(false), [onOpenChange]);
+
+  const form = useForm({
+    defaultValues,
+    onSubmit: async ({ value }) => {
+      await onSubmit({ value, close });
+    },
   });
 
-  // Dismiss on Escape key
-  const dismiss = useDismiss(context, {
-    outsidePress: !preventOverlayClose,
-  });
-
-  const { getFloatingProps } = useInteractions([dismiss]);
-
-  // Handle open/close state with animation
   useEffect(() => {
-    if (open) {
-      dispatch({ type: 'open' });
-      // Clear any pending timeout
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-      return;
+    if (!open) {
+      form.reset();
     }
+  }, [form, open]);
 
-    dispatch({ type: 'startClosing' });
-    timeoutRef.current = setTimeout(() => {
-      dispatch({ type: 'finishClosing' });
-    }, 150);
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    void form.handleSubmit();
+  };
 
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [open]);
-
-  const onClose = useCallback(() => onOpenChange(false), [onOpenChange]);
-  const contextValue: ModalContextValue = useMemo(
-    () => ({
-      open: phase === 'open',
-      onClose,
-      preventOverlayClose,
-    }),
-    [onClose, phase, preventOverlayClose],
+  const formBody = (
+    <ModalBody {...dsComponent('ModalBody')}>{children(form)}</ModalBody>
   );
 
-  if (phase === 'closed') {
-    return null;
-  }
-
-  const dataState = phase === 'closing' ? 'closing' : 'open';
+  const defaultFooter = (
+    <ModalFooter {...dsComponent('ModalFooter')}>
+      <form.Subscribe
+        selector={(state) => [state.canSubmit, state.isSubmitting] as const}
+      >
+        {([canSubmit, isSubmitting]) => (
+          <>
+            <Button type="button" variant="ghost" onClick={close}>
+              {cancelLabel}
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={!canSubmit || submitDisabled}
+              loading={isSubmitting}
+            >
+              {submitLabel}
+            </Button>
+          </>
+        )}
+      </form.Subscribe>
+    </ModalFooter>
+  );
 
   return (
-    <FloatingLayerContext.Provider value="modalFloating">
-      <ModalContext.Provider value={contextValue}>
-        <FloatingPortal>
-          {/*
-           * No `reference`: a Modal is driven by the `open` prop and never calls
-           * `refs.setReference`, so there is no opening element to resolve a
-           * business object from. Clicks inside resolve their chain but no
-           * object, which is the correct answer here — inventing one from the
-           * page would be right on a legacy screen and wrong on a React screen
-           * that tags individual elements.
-           */}
-          <DsChainPortalRoot>
-            <Box className={classes.positionWrapper}>
-              <FloatingOverlay
-                lockScroll
-                className={classes.overlay}
-                data-state={dataState}
-                onClick={
-                  preventOverlayClose ? undefined : () => onOpenChange(false)
-                }
-                aria-hidden="true"
-              />
-              <FloatingFocusManager context={context} modal={true}>
-                <Box
-                  {...dsComponent('Modal')}
-                  ref={refs.setFloating}
-                  className={cx(classes.container, className)}
-                  data-state={dataState}
-                  id={id}
-                  role="dialog"
-                  aria-modal="true"
-                  {...(getFloatingProps() as Record<string, unknown>)}
-                  {...otherProps}
-                >
-                  {children}
-                </Box>
-              </FloatingFocusManager>
-            </Box>
-          </DsChainPortalRoot>
-        </FloatingPortal>
-      </ModalContext.Provider>
-    </FloatingLayerContext.Provider>
+    <ModalWrapper
+      {...dsComponent('Modal')}
+      open={open}
+      onOpenChange={onOpenChange}
+      size={size}
+      preventOverlayClose={preventOverlayClose}
+      aria-labelledby={titleId}
+    >
+      <ModalHeader
+        title={title}
+        titleId={titleId}
+        showCloseButton={showCloseButton}
+      />
+      {footer ? (
+        <>
+          <form onSubmit={handleFormSubmit}>{formBody}</form>
+          <ModalFooter {...dsComponent('ModalFooter')}>{footer}</ModalFooter>
+        </>
+      ) : (
+        <form onSubmit={handleFormSubmit}>
+          {formBody}
+          {defaultFooter}
+        </form>
+      )}
+    </ModalWrapper>
   );
 };

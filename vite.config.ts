@@ -89,7 +89,13 @@ export default defineConfig(({ mode: _mode, command }) => {
         formats: ['es'],
       },
       rollupOptions: {
-        external: ['react', 'react-dom', 'react/jsx-runtime', '@pandacss/dev'],
+        external: [
+          'react',
+          'react-dom',
+          'react/jsx-runtime',
+          '@pandacss/dev',
+          '@tanstack/react-form',
+        ],
         output: {
           preserveModules: false,
           assetFileNames: 'assets/[name][extname]',

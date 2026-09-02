@@ -1,0 +1,177 @@
+import { useCallback, useEffect, useId, useRef } from 'react';
+
+import { type ModalVariantProps } from '@styled-system/recipes';
+
+import { dsComponent } from '~/utils/dsComponent';
+
+import { Button } from '../Button';
+import { Text } from '../Text';
+
+import { ModalBody } from './ModalBody';
+import { ModalFooter } from './ModalFooter';
+import { ModalHeader } from './ModalHeader';
+import { ModalWrapper } from './ModalWrapper';
+
+/** Visual intent for {@link ConfirmationModal} footer actions. */
+export type ConfirmationModalVariant = 'default' | 'delete';
+
+/** Props for {@link ConfirmationModal}, a non-form confirm/cancel dialog. */
+export type ConfirmationModalProps = {
+  /** Controlled dialog state. */
+  open: boolean;
+  /** Called when the dialog requests an open-state change. */
+  onOpenChange: (open: boolean) => void;
+
+  /** Alert dialog title rendered in {@link ModalHeader}. */
+  title: string;
+  /** Supporting message describing the action or consequence. */
+  description: string;
+
+  /** Label for the confirm action button. */
+  confirmLabel: string;
+  /** Label for the cancel button. @default 'Cancel' */
+  cancelLabel?: string;
+  /**
+   * Visual treatment for the confirm action.
+   * @default 'default'
+   */
+  variant?: ConfirmationModalVariant;
+
+  /** Called when the user activates the confirm button. */
+  onConfirm: () => void | Promise<void>;
+  /** Shows a loading state on the confirm button. */
+  confirmLoading?: boolean;
+  /** Disables the confirm button. */
+  confirmDisabled?: boolean;
+
+  /**
+   * Prevents overlay clicks from closing the dialog.
+   * Defaults to `false` for `default` and `true` for `delete`.
+   */
+  preventOverlayClose?: boolean;
+  /**
+   * Shows the header close button.
+   * Defaults to `true` for `default` and `false` for `delete`.
+   */
+  showCloseButton?: boolean;
+  /** Recipe size forwarded to {@link ModalWrapper}. @default 'sm' */
+  size?: ModalVariantProps['size'];
+};
+
+const variantDefaults: Record<
+  ConfirmationModalVariant,
+  { preventOverlayClose: boolean; showCloseButton: boolean }
+> = {
+  default: {
+    preventOverlayClose: false,
+    showCloseButton: true,
+  },
+  delete: {
+    preventOverlayClose: true,
+    showCloseButton: false,
+  },
+};
+
+/**
+ * Renders a confirmation alert dialog with cancel and confirm actions.
+ *
+ * Dismiss paths (Cancel, Escape, overlay, close button) call
+ * `onOpenChange(false)` only. They do not invoke `onConfirm`. Call
+ * `onOpenChange(false)` from `onConfirm` when the action completes.
+ *
+ * @example
+ * ```tsx
+ * <ConfirmationModal
+ *   open={open}
+ *   onOpenChange={setOpen}
+ *   title="Delete item"
+ *   description="This action cannot be undone."
+ *   confirmLabel="Delete"
+ *   variant="delete"
+ *   onConfirm={async () => {
+ *     await deleteItem();
+ *     setOpen(false);
+ *   }}
+ * />
+ * ```
+ */
+export const ConfirmationModal = (props: ConfirmationModalProps) => {
+  const {
+    open,
+    onOpenChange,
+    title,
+    description,
+    confirmLabel,
+    cancelLabel = 'Cancel',
+    variant = 'default',
+    onConfirm,
+    confirmLoading = false,
+    confirmDisabled = false,
+    preventOverlayClose,
+    showCloseButton,
+    size = 'sm',
+  } = props;
+
+  const titleId = useId();
+  const descriptionId = useId();
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const defaults = variantDefaults[variant];
+  const resolvedPreventOverlayClose =
+    preventOverlayClose ?? defaults.preventOverlayClose;
+  const resolvedShowCloseButton = showCloseButton ?? defaults.showCloseButton;
+  const confirmButtonVariant = variant === 'delete' ? 'danger' : 'primary';
+
+  const dismiss = useCallback(() => onOpenChange(false), [onOpenChange]);
+
+  useEffect(() => {
+    if (open && variant === 'delete') {
+      cancelRef.current?.focus();
+    }
+  }, [open, variant]);
+
+  const handleConfirm = () => {
+    void onConfirm();
+  };
+
+  return (
+    <ModalWrapper
+      {...dsComponent('ConfirmationModal')}
+      open={open}
+      onOpenChange={onOpenChange}
+      size={size}
+      preventOverlayClose={resolvedPreventOverlayClose}
+      role="alertdialog"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+    >
+      <ModalHeader
+        title={title}
+        titleId={titleId}
+        showCloseButton={resolvedShowCloseButton}
+      />
+      <ModalBody {...dsComponent('ModalBody')}>
+        <Text id={descriptionId}>{description}</Text>
+      </ModalBody>
+      <ModalFooter {...dsComponent('ModalFooter')}>
+        <Button
+          ref={cancelRef}
+          type="button"
+          variant="ghost"
+          onClick={dismiss}
+          disabled={confirmLoading}
+        >
+          {cancelLabel}
+        </Button>
+        <Button
+          type="button"
+          variant={confirmButtonVariant}
+          onClick={handleConfirm}
+          disabled={confirmDisabled}
+          loading={confirmLoading}
+        >
+          {confirmLabel}
+        </Button>
+      </ModalFooter>
+    </ModalWrapper>
+  );
+};
