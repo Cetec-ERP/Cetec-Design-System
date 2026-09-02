@@ -13,7 +13,7 @@ import { ModalHeader } from './ModalHeader';
 import { ModalWrapper } from './ModalWrapper';
 
 /** Visual intent for {@link ConfirmationModal} footer actions. */
-export type ConfirmationModalVariant = 'default' | 'delete';
+export type ConfirmationModalType = 'default' | 'delete';
 
 /** Props for {@link ConfirmationModal}, a non-form confirm/cancel dialog. */
 export type ConfirmationModalProps = {
@@ -35,7 +35,7 @@ export type ConfirmationModalProps = {
    * Visual treatment for the confirm action.
    * @default 'default'
    */
-  variant?: ConfirmationModalVariant;
+  type?: ConfirmationModalType;
 
   /** Called when the user activates the confirm button. */
   onConfirm: () => void | Promise<void>;
@@ -58,8 +58,8 @@ export type ConfirmationModalProps = {
   size?: ModalVariantProps['size'];
 };
 
-const variantDefaults: Record<
-  ConfirmationModalVariant,
+const typeDefaults: Record<
+  ConfirmationModalType,
   { preventOverlayClose: boolean; showCloseButton: boolean }
 > = {
   default: {
@@ -103,7 +103,7 @@ export const ConfirmationModal = (props: ConfirmationModalProps) => {
     description,
     confirmLabel,
     cancelLabel = 'Cancel',
-    variant = 'default',
+    type = 'default',
     onConfirm,
     confirmLoading = false,
     confirmDisabled = false,
@@ -115,19 +115,19 @@ export const ConfirmationModal = (props: ConfirmationModalProps) => {
   const titleId = useId();
   const descriptionId = useId();
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const defaults = variantDefaults[variant];
+  const defaults = typeDefaults[type];
   const resolvedPreventOverlayClose =
     preventOverlayClose ?? defaults.preventOverlayClose;
   const resolvedShowCloseButton = showCloseButton ?? defaults.showCloseButton;
-  const confirmButtonVariant = variant === 'delete' ? 'danger' : 'primary';
+  const confirmButtonVariant = type === 'delete' ? 'danger' : 'primary';
 
   const dismiss = useCallback(() => onOpenChange(false), [onOpenChange]);
 
   useEffect(() => {
-    if (open && variant === 'delete') {
+    if (open && type === 'delete') {
       cancelRef.current?.focus();
     }
-  }, [open, variant]);
+  }, [open, type]);
 
   const handleConfirm = () => {
     void onConfirm();
