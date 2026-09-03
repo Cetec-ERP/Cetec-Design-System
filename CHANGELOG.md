@@ -1,3 +1,16 @@
+# 1.5.0 (Wed Sep 02 2026)
+
+#### 🚀 Features
+
+- feat(minor): add subtle semantic background colors [#194](https://github.com/Cetec-ERP/Cetec-Design-System/pull/194) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): add definition tooltips and underline styles [#192](https://github.com/Cetec-ERP/Cetec-Design-System/pull/192) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### Authors: 1
+
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
 # 2.0.0 (Tue Sep 01 2026)
 
 #### ⚠️ Pushed to `main`
