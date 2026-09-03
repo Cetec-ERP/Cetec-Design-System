@@ -58,7 +58,11 @@ export type ModalProps<TFormData extends Record<string, unknown>> = {
 
   /** Visible dialog title rendered in {@link ModalHeader}. */
   title: string;
-  /** Default field values passed to TanStack Form. */
+  /**
+   * Default field values passed to TanStack Form. Reseeded via `form.reset`
+   * whenever `open` changes. To edit a different record while the dialog stays
+   * open, remount with `key={recordId}`.
+   */
   defaultValues: TFormData;
   /**
    * Called after TanStack Form validation succeeds. Call `close()` when the
@@ -91,7 +95,8 @@ export type ModalProps<TFormData extends Record<string, unknown>> = {
  *
  * Validation and error display are consumer-owned: define validators on
  * `form.Field` and map field meta to {@link FormField}. Call `close()` from
- * `onSubmit` when the dialog should dismiss after a successful action.
+ * `onSubmit` when the dialog should dismiss after a successful action. Form
+ * values reset to the current `defaultValues` when `open` changes.
  *
  * @example
  * ```tsx
@@ -152,9 +157,11 @@ export const Modal = <TFormData extends Record<string, unknown>>(
   });
 
   useEffect(() => {
-    if (!open) {
-      form.reset();
-    }
+    // Keyed on `open` so opening seeds the latest defaults and closing clears
+    // dirty state, without resetting mid-edit when parents pass a new object
+    // reference each render.
+    form.reset(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- see above
   }, [form, open]);
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {

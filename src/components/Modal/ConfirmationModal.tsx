@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef } from 'react';
+import { useCallback, useId, useRef } from 'react';
 
 import { type ModalVariantProps } from '@styled-system/recipes';
 
@@ -37,7 +37,11 @@ export type ConfirmationModalProps = {
    */
   type?: ConfirmationModalType;
 
-  /** Called when the user activates the confirm button. */
+  /**
+   * Called when the user activates the confirm button. Async work, error
+   * handling, and `confirmLoading` are consumer-owned — catch rejections and
+   * clear loading in `finally` so the button does not stay stuck.
+   */
   onConfirm: () => void | Promise<void>;
   /** Shows a loading state on the confirm button. */
   confirmLoading?: boolean;
@@ -79,6 +83,9 @@ const typeDefaults: Record<
  * `onOpenChange(false)` only. They do not invoke `onConfirm`. Call
  * `onOpenChange(false)` from `onConfirm` when the action completes.
  *
+ * For async confirms, catch errors and clear `confirmLoading` in `finally`.
+ * This component does not swallow rejections from `onConfirm`.
+ *
  * @example
  * ```tsx
  * <ConfirmationModal
@@ -88,9 +95,15 @@ const typeDefaults: Record<
  *   description="This action cannot be undone."
  *   confirmLabel="Delete"
  *   type="delete"
+ *   confirmLoading={confirmLoading}
  *   onConfirm={async () => {
- *     await deleteItem();
- *     setOpen(false);
+ *     setConfirmLoading(true);
+ *     try {
+ *       await deleteItem();
+ *       setOpen(false);
+ *     } finally {
+ *       setConfirmLoading(false);
+ *     }
  *   }}
  * />
  * ```
@@ -123,12 +136,6 @@ export const ConfirmationModal = (props: ConfirmationModalProps) => {
 
   const dismiss = useCallback(() => onOpenChange(false), [onOpenChange]);
 
-  useEffect(() => {
-    if (open && type === 'delete') {
-      cancelRef.current?.focus();
-    }
-  }, [open, type]);
-
   const handleConfirm = () => {
     void onConfirm();
   };
@@ -140,6 +147,7 @@ export const ConfirmationModal = (props: ConfirmationModalProps) => {
       onOpenChange={onOpenChange}
       size={size}
       preventOverlayClose={resolvedPreventOverlayClose}
+      initialFocus={type === 'delete' ? cancelRef : undefined}
       role="alertdialog"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
@@ -166,7 +174,7 @@ export const ConfirmationModal = (props: ConfirmationModalProps) => {
           type="button"
           variant={confirmButtonVariant}
           onClick={handleConfirm}
-          disabled={confirmDisabled}
+          disabled={confirmDisabled || confirmLoading}
           loading={confirmLoading}
         >
           {confirmLabel}

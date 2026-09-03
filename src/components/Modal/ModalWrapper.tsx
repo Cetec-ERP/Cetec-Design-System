@@ -1,5 +1,6 @@
 import {
   type ReactNode,
+  type RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -46,6 +47,12 @@ export type ModalWrapperProps = Omit<BoxProps, keyof ModalVariantProps> &
      * @default false
      */
     preventOverlayClose?: boolean;
+    /**
+     * Element to focus when the dialog opens. Forwarded to Floating UI's
+     * `FloatingFocusManager`. A number selects by tabbable index; a ref targets
+     * a specific element (for example Cancel on a delete confirmation).
+     */
+    initialFocus?: number | RefObject<HTMLElement | null>;
     /** Dialog content, typically composed from `ModalHeader`, `ModalBody`, and `ModalFooter`. */
     children: ReactNode;
     /** Identifier applied to the dialog element. Provide accessible naming with `aria-label` or `aria-labelledby`. */
@@ -119,6 +126,7 @@ export const ModalWrapper = (props: ModalWrapperProps) => {
     onOpenChange,
     size = 'md',
     preventOverlayClose = false,
+    initialFocus,
     children,
     id,
     position = 'centered',
@@ -209,7 +217,11 @@ export const ModalWrapper = (props: ModalWrapperProps) => {
                 }
                 aria-hidden="true"
               />
-              <FloatingFocusManager context={context} modal={true}>
+              <FloatingFocusManager
+                context={context}
+                modal={true}
+                initialFocus={initialFocus}
+              >
                 <Box
                   {...dsComponent('ModalWrapper')}
                   ref={refs.setFloating}

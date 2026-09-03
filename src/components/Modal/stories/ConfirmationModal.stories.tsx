@@ -85,9 +85,12 @@ export const AsyncConfirm: Story = {
           confirmLoading={confirmLoading}
           onConfirm={async () => {
             setConfirmLoading(true);
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-            setConfirmLoading(false);
-            setOpen(false);
+            try {
+              await new Promise((resolve) => setTimeout(resolve, 1500));
+              setOpen(false);
+            } finally {
+              setConfirmLoading(false);
+            }
           }}
         />
       </>
