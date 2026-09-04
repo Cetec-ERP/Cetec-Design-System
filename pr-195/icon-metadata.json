@@ -2,14 +2,14 @@
   "aa-placeholder": {
     "aliases": [
       "placeholder",
-      "todo",
-      "unknown",
       "aa placeholder",
       "aa",
-      "symbol",
-      "helper",
-      "aa icon",
-      "placeholder icon"
+      "template",
+      "stand in",
+      "example",
+      "default",
+      "scaffold",
+      "dev"
     ],
     "tags": [
       "dev"
@@ -25,7 +25,12 @@
       "clock",
       "schedule",
       "events",
-      "watch"
+      "watch",
+      "alarm clock",
+      "bells",
+      "wake",
+      "ring",
+      "snooze"
     ],
     "tags": [
       "time",
@@ -46,9 +51,7 @@
       "navigation",
       "move",
       "pointer",
-      "arrow",
-      "alt icon",
-      "route icon"
+      "arrow"
     ],
     "tags": [],
     "category": "Arrows",
@@ -79,9 +82,7 @@
       "direction",
       "navigation",
       "move",
-      "pointer",
-      "arrow icon",
-      "bubble icon"
+      "pointer"
     ],
     "tags": [],
     "category": "Arrows",
@@ -111,7 +112,11 @@
       "triangle",
       "arrows",
       "caret",
-      "down"
+      "down",
+      "dropdown",
+      "select",
+      "filled",
+      "solid"
     ],
     "tags": [],
     "category": "Arrows",
@@ -127,7 +132,11 @@
       "triangle",
       "arrows",
       "caret",
-      "up"
+      "up",
+      "dropdown",
+      "select",
+      "filled",
+      "solid"
     ],
     "tags": [],
     "category": "Arrows",
@@ -366,9 +375,11 @@
       "asterisk",
       "wildcard",
       "star",
-      "tool",
-      "symbol",
-      "helper"
+      "footnote",
+      "required",
+      "splat",
+      "glob",
+      "note"
     ],
     "tags": [],
     "category": "Other",
@@ -394,9 +405,7 @@
       "mail",
       "email",
       "paperclip",
-      "attachment",
-      "symbol",
-      "helper"
+      "attachment"
     ],
     "tags": [],
     "category": "Other",
@@ -435,7 +444,11 @@
       "products",
       "shopping",
       "scanner",
-      "barcode"
+      "barcode",
+      "label",
+      "sku",
+      "stripes",
+      "lines"
     ],
     "tags": [],
     "category": "System objects",
@@ -464,7 +477,12 @@
       "products",
       "shopping",
       "scanner",
-      "barcode"
+      "barcode",
+      "gun",
+      "handheld",
+      "device",
+      "scanning",
+      "point of sale"
     ],
     "tags": [],
     "category": "System objects",
@@ -694,9 +712,12 @@
       "broadcast",
       "announce",
       "stream",
-      "tool",
-      "symbol",
-      "helper"
+      "signal",
+      "transmit",
+      "live",
+      "antenna",
+      "publish",
+      "waves"
     ],
     "tags": [],
     "category": "Other",
@@ -756,9 +777,7 @@
       "restricted",
       "events",
       "planning",
-      "schedule",
-      "calendar icon",
-      "lock icon"
+      "schedule"
     ],
     "tags": [],
     "category": "Calendar",
@@ -819,7 +838,10 @@
       "triangle",
       "arrows",
       "caret",
-      "down"
+      "down",
+      "expand",
+      "open",
+      "stroke"
     ],
     "tags": [],
     "category": "Arrows",
@@ -867,7 +889,10 @@
       "triangle",
       "arrows",
       "caret",
-      "up"
+      "up",
+      "collapse",
+      "close",
+      "stroke"
     ],
     "tags": [],
     "category": "Arrows",
@@ -1028,6 +1053,20 @@
     "category": "Checks / Todos",
     "deprecated": false
   },
+  "cheese": {
+    "aliases": [
+      "cheese",
+      "wedge",
+      "swiss",
+      "dairy",
+      "food",
+      "snack",
+      "cheese wedge"
+    ],
+    "tags": [],
+    "category": "Other",
+    "deprecated": false
+  },
   "circle": {
     "aliases": [
       "round",
@@ -1108,9 +1147,12 @@
       "circuit",
       "electrical",
       "schematic",
-      "tool",
-      "symbol",
-      "helper"
+      "board",
+      "pcb",
+      "electronics",
+      "wiring",
+      "node",
+      "trace"
     ],
     "tags": [],
     "category": "Other",
@@ -1125,8 +1167,7 @@
       "action",
       "operation",
       "command",
-      "interaction",
-      "tool"
+      "interaction"
     ],
     "tags": [],
     "category": "Actions",
@@ -1140,7 +1181,12 @@
       "schedule",
       "events",
       "watch",
-      "clock"
+      "clock",
+      "time",
+      "hour",
+      "minute",
+      "oclock",
+      "wall clock"
     ],
     "tags": [],
     "category": "Time",
@@ -1185,12 +1231,29 @@
       "angle brackets",
       "angle braces",
       "snippets",
-      "code",
-      "symbol",
-      "helper"
+      "code"
     ],
     "tags": [],
     "category": "Other",
+    "deprecated": false
+  },
+  "collapse-vertical": {
+    "aliases": [
+      "directional",
+      "pointer",
+      "pointing",
+      "arrowhead",
+      "arrows",
+      "collapse",
+      "collapse vertical",
+      "fold",
+      "close",
+      "shrink",
+      "up",
+      "down"
+    ],
+    "tags": [],
+    "category": "Arrows",
     "deprecated": false
   },
   "color": {
@@ -1338,9 +1401,11 @@
       "cursor",
       "pointer",
       "mouse",
-      "tool",
-      "symbol",
-      "helper"
+      "arrow",
+      "select",
+      "click",
+      "pointing",
+      "navigate"
     ],
     "tags": [],
     "category": "Other",
@@ -1354,10 +1419,7 @@
       "mouse",
       "click",
       "tap",
-      "select",
-      "tool",
-      "cursor icon",
-      "click icon"
+      "select"
     ],
     "tags": [],
     "category": "Other",
@@ -1372,8 +1434,7 @@
       "action",
       "operation",
       "command",
-      "interaction",
-      "tool"
+      "interaction"
     ],
     "tags": [],
     "category": "Actions",
@@ -1388,14 +1449,15 @@
       "coding",
       "executable",
       "binary",
-      "data structures",
-      "family tree",
-      "genealogy",
-      "hierarchy",
-      "taxonomy",
       "data",
-      "db",
-      "database"
+      "data object",
+      "json",
+      "braces",
+      "curly braces",
+      "object",
+      "schema",
+      "payload",
+      "key value"
     ],
     "tags": [],
     "category": "Other",
@@ -1417,7 +1479,13 @@
       "taxonomy",
       "data",
       "db",
-      "database"
+      "database",
+      "storage",
+      "records",
+      "disks",
+      "stack",
+      "server",
+      "table"
     ],
     "tags": [],
     "category": "Other",
@@ -1455,9 +1523,12 @@
       "dna",
       "genetics",
       "helix",
-      "tool",
-      "symbol",
-      "helper"
+      "biology",
+      "gene",
+      "science",
+      "molecule",
+      "double helix",
+      "strand"
     ],
     "tags": [],
     "category": "Other",
@@ -1670,6 +1741,25 @@
     "category": "Calendar",
     "deprecated": false
   },
+  "expand-vertical": {
+    "aliases": [
+      "directional",
+      "pointer",
+      "pointing",
+      "arrowhead",
+      "arrows",
+      "expand",
+      "expand vertical",
+      "unfold",
+      "open",
+      "grow",
+      "up",
+      "down"
+    ],
+    "tags": [],
+    "category": "Arrows",
+    "deprecated": false
+  },
   "export": {
     "aliases": [
       "share-out",
@@ -1750,7 +1840,6 @@
       "support",
       "questions",
       "punctuation",
-      "symbol",
       "question",
       "mark",
       "faq",
@@ -1842,13 +1931,13 @@
   },
   "finish": {
     "aliases": [
-      "flags",
-      "race",
-      "racing",
-      "finish line",
-      "games",
-      "flag",
-      "checkered"
+      "finish",
+      "end",
+      "complete",
+      "done",
+      "exit",
+      "last",
+      "arrow"
     ],
     "tags": [],
     "category": "Navigation",
@@ -1896,7 +1985,11 @@
       "finish line",
       "games",
       "flag",
-      "checkered"
+      "checkered",
+      "finish",
+      "complete",
+      "goal",
+      "milestone"
     ],
     "tags": [],
     "category": "Status",
@@ -1926,9 +2019,7 @@
       "complete",
       "document",
       "notes",
-      "file",
-      "folder icon",
-      "check icon"
+      "file"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -1945,9 +2036,7 @@
       "clone",
       "document",
       "notes",
-      "file",
-      "folder icon",
-      "copy icon"
+      "file"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -1964,9 +2053,7 @@
       "dotted",
       "document",
       "notes",
-      "file",
-      "folder icon",
-      "dashed icon"
+      "file"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -1983,9 +2070,7 @@
       "visible",
       "document",
       "notes",
-      "file",
-      "folder icon",
-      "open icon"
+      "file"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -2002,9 +2087,7 @@
       "category",
       "document",
       "notes",
-      "file",
-      "folder icon",
-      "topic icon"
+      "file"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -2126,9 +2209,7 @@
       "map",
       "geography",
       "place",
-      "navigation",
-      "globe icon",
-      "grid icon"
+      "navigation"
     ],
     "tags": [],
     "category": "Location",
@@ -2157,8 +2238,7 @@
       "action",
       "operation",
       "command",
-      "interaction",
-      "tool"
+      "interaction"
     ],
     "tags": [],
     "category": "Actions",
@@ -2176,10 +2256,7 @@
       "action",
       "operation",
       "command",
-      "interaction",
-      "tool",
-      "handle icon",
-      "vertical icon"
+      "interaction"
     ],
     "tags": [],
     "category": "Actions",
@@ -2192,9 +2269,7 @@
       "pound sign",
       "number sign",
       "tic-tac-toe",
-      "symbol",
       "hash",
-      "item",
       "number"
     ],
     "tags": [],
@@ -2637,9 +2712,12 @@
       "lightning",
       "bolt",
       "flash",
-      "tool",
-      "symbol",
-      "helper"
+      "electricity",
+      "power",
+      "energy",
+      "fast",
+      "zap",
+      "instant"
     ],
     "tags": [],
     "category": "Other",
@@ -2657,9 +2735,7 @@
       "shape",
       "geometry",
       "diagram",
-      "vector",
-      "line icon",
-      "segment icon"
+      "vector"
     ],
     "tags": [],
     "category": "Shapes",
@@ -2675,9 +2751,7 @@
       "shape",
       "geometry",
       "diagram",
-      "vector",
-      "line icon",
-      "segments icon"
+      "vector"
     ],
     "tags": [],
     "category": "Shapes",
@@ -2729,9 +2803,7 @@
       "shape",
       "geometry",
       "diagram",
-      "vector",
-      "linked icon",
-      "services icon"
+      "vector"
     ],
     "tags": [],
     "category": "Shapes",
@@ -2760,9 +2832,7 @@
       "filter",
       "sort",
       "organize",
-      "query",
-      "list icon",
-      "checks icon"
+      "query"
     ],
     "tags": [],
     "category": "Filter / Sort / List",
@@ -2827,6 +2897,20 @@
       "security"
     ],
     "category": "Toggles / Triggers",
+    "deprecated": false
+  },
+  "magnet": {
+    "aliases": [
+      "magnet",
+      "magnetic",
+      "attract",
+      "snap",
+      "pull",
+      "horseshoe",
+      "magnetism"
+    ],
+    "tags": [],
+    "category": "Other",
     "deprecated": false
   },
   "map": {
@@ -3113,9 +3197,7 @@
       "shape",
       "geometry",
       "diagram",
-      "vector",
-      "network icon",
-      "x icon"
+      "vector"
     ],
     "tags": [],
     "category": "Shapes",
@@ -3145,9 +3227,7 @@
       "article",
       "document",
       "notes",
-      "file",
-      "newspaper icon",
-      "clipping icon"
+      "file"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -3162,7 +3242,10 @@
       "reminders",
       "note",
       "document",
-      "message"
+      "message",
+      "single",
+      "memo",
+      "sticky"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -3177,7 +3260,12 @@
       "reminders",
       "note",
       "document",
-      "message"
+      "message",
+      "stack",
+      "stacked",
+      "multiple",
+      "layers",
+      "collection"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -3239,7 +3327,11 @@
       "part",
       "bom",
       "item",
-      "line"
+      "line",
+      "hex nut",
+      "fastener",
+      "hardware",
+      "thread"
     ],
     "tags": [],
     "category": "System objects",
@@ -3335,7 +3427,12 @@
       "part",
       "bom",
       "item",
-      "line"
+      "line",
+      "components",
+      "assembly",
+      "inventory",
+      "spare parts",
+      "materials"
     ],
     "tags": [],
     "category": "System objects",
@@ -3446,7 +3543,10 @@
       "audio",
       "stop",
       "play",
-      "pause"
+      "pause",
+      "triangle",
+      "begin",
+      "playback"
     ],
     "tags": [
       "media"
@@ -3462,7 +3562,11 @@
       "start",
       "stop",
       "play",
-      "pause"
+      "pause",
+      "play pause",
+      "toggle",
+      "playback",
+      "suspend"
     ],
     "tags": [],
     "category": "Player",
@@ -3526,9 +3630,7 @@
       "scanner",
       "resource",
       "asset",
-      "infrastructure",
-      "qr icon",
-      "code icon"
+      "infrastructure"
     ],
     "tags": [],
     "category": "System objects",
@@ -3542,7 +3644,6 @@
       "support",
       "questions",
       "punctuation",
-      "symbol",
       "question",
       "mark"
     ],
@@ -3572,7 +3673,12 @@
       "checkbox",
       "checked",
       "radio",
-      "button"
+      "button",
+      "unchecked",
+      "unselected",
+      "empty",
+      "off",
+      "ring"
     ],
     "tags": [],
     "category": "Checks / Todos",
@@ -3584,7 +3690,12 @@
       "checkbox",
       "checked",
       "radio",
-      "button"
+      "button",
+      "selected",
+      "on",
+      "filled",
+      "active",
+      "chosen"
     ],
     "tags": [],
     "category": "Checks / Todos",
@@ -3612,9 +3723,7 @@
       "doc",
       "document",
       "file",
-      "notes",
-      "read icon",
-      "doc icon"
+      "notes"
     ],
     "tags": [],
     "category": "Doc / note",
@@ -3820,9 +3929,7 @@
       "rewind",
       "date",
       "events",
-      "planning",
-      "schedule icon",
-      "backward icon"
+      "planning"
     ],
     "tags": [],
     "category": "Calendar",
@@ -3839,9 +3946,7 @@
       "ahead",
       "date",
       "events",
-      "planning",
-      "schedule icon",
-      "forward icon"
+      "planning"
     ],
     "tags": [],
     "category": "Calendar",
@@ -3930,10 +4035,7 @@
       "action",
       "operation",
       "command",
-      "interaction",
-      "tool",
-      "search icon",
-      "objects icon"
+      "interaction"
     ],
     "tags": [],
     "category": "Actions",
@@ -4035,7 +4137,11 @@
       "signpost",
       "guide",
       "path",
-      "strategy"
+      "strategy",
+      "sign",
+      "post",
+      "wayfinding",
+      "directions"
     ],
     "tags": [],
     "category": "Location",
@@ -4117,7 +4223,11 @@
       "arrows",
       "list",
       "sort",
-      "ascending"
+      "ascending",
+      "alphabetical",
+      "letters",
+      "name",
+      "alpha"
     ],
     "tags": [],
     "category": "Filter / Sort / List",
@@ -4132,7 +4242,11 @@
       "arrows",
       "list",
       "sort",
-      "descending"
+      "descending",
+      "alphabetical",
+      "letters",
+      "name",
+      "alpha"
     ],
     "tags": [],
     "category": "Filter / Sort / List",
@@ -4147,7 +4261,12 @@
       "arrows",
       "list",
       "sort",
-      "ascending"
+      "ascending",
+      "size",
+      "amount",
+      "magnitude",
+      "smallest first",
+      "low to high"
     ],
     "tags": [],
     "category": "Filter / Sort / List",
@@ -4162,7 +4281,12 @@
       "arrows",
       "list",
       "sort",
-      "descending"
+      "descending",
+      "size",
+      "amount",
+      "magnitude",
+      "largest first",
+      "high to low"
     ],
     "tags": [],
     "category": "Filter / Sort / List",
@@ -4208,9 +4332,12 @@
       "sparkle",
       "shine",
       "glint",
-      "tool",
-      "symbol",
-      "helper"
+      "ai",
+      "magic",
+      "new",
+      "enhance",
+      "star",
+      "effects"
     ],
     "tags": [],
     "category": "Other",
@@ -4221,7 +4348,15 @@
       "spinner",
       "loading",
       "progress",
-      "circle"
+      "circle",
+      "loader",
+      "busy",
+      "wait",
+      "pending",
+      "activity",
+      "arc",
+      "throbber",
+      "processing"
     ],
     "tags": [],
     "category": "Status",
@@ -4266,9 +4401,7 @@
       "shape",
       "geometry",
       "diagram",
-      "vector",
-      "square icon",
-      "inside icon"
+      "vector"
     ],
     "tags": [],
     "category": "Shapes",
@@ -4340,7 +4473,12 @@
       "arrows",
       "arrow",
       "line",
-      "right"
+      "right",
+      "start",
+      "begin",
+      "enter",
+      "launch",
+      "first"
     ],
     "tags": [],
     "category": "Navigation",
@@ -4363,14 +4501,14 @@
   },
   "stop": {
     "aliases": [
-      "directional",
-      "pointer",
-      "pointing",
-      "arrowhead",
-      "arrows",
-      "arrow",
-      "line",
-      "right"
+      "stop",
+      "square",
+      "halt",
+      "end",
+      "filled",
+      "block",
+      "player",
+      "cease"
     ],
     "tags": [],
     "category": "Player",
@@ -4405,15 +4543,15 @@
   },
   "strategy": {
     "aliases": [
-      "direction",
-      "traffic",
-      "road sign",
-      "transit",
-      "transportation",
-      "signpost",
-      "guide",
       "path",
-      "strategy"
+      "strategy",
+      "tactics",
+      "plan",
+      "planning",
+      "playbook",
+      "play",
+      "approach",
+      "diagram"
     ],
     "tags": [],
     "category": "System objects",
@@ -4519,7 +4657,11 @@
       "archery",
       "accuracy",
       "precision",
-      "target"
+      "target",
+      "rings",
+      "concentric",
+      "aim",
+      "goal"
     ],
     "tags": [],
     "category": "System objects",
@@ -4532,7 +4674,13 @@
       "archery",
       "accuracy",
       "precision",
-      "target"
+      "target",
+      "dart",
+      "arrow",
+      "hit",
+      "goal",
+      "achieved",
+      "on target"
     ],
     "tags": [],
     "category": "System objects",
@@ -4548,9 +4696,7 @@
       "alternate",
       "complete",
       "checklist",
-      "status",
-      "task icon",
-      "alt icon"
+      "status"
     ],
     "tags": [],
     "category": "Checks / Todos",
@@ -4616,22 +4762,55 @@
       "schedule",
       "events",
       "watch",
-      "clock"
+      "clock",
+      "stopwatch",
+      "countdown",
+      "elapsed",
+      "lap",
+      "duration"
     ],
     "tags": [],
     "category": "Time",
     "deprecated": false
   },
   "to-date-backward": {
-    "aliases": [],
+    "aliases": [
+      "to date backward",
+      "to date",
+      "calendar",
+      "date",
+      "schedule",
+      "backward",
+      "back",
+      "previous",
+      "shift",
+      "move",
+      "reschedule",
+      "events",
+      "planning"
+    ],
     "tags": [],
-    "category": null,
+    "category": "Calendar",
     "deprecated": false
   },
   "to-date-forward": {
-    "aliases": [],
+    "aliases": [
+      "to date forward",
+      "to date",
+      "calendar",
+      "date",
+      "schedule",
+      "forward",
+      "next",
+      "ahead",
+      "shift",
+      "move",
+      "reschedule",
+      "events",
+      "planning"
+    ],
     "tags": [],
-    "category": null,
+    "category": "Calendar",
     "deprecated": false
   },
   "toolbox": {
@@ -5085,7 +5264,10 @@
       "machinery",
       "mechanical",
       "repairs",
-      "wrench"
+      "wrench",
+      "spanner",
+      "open end",
+      "fix"
     ],
     "tags": [],
     "category": "System objects",
@@ -5100,7 +5282,12 @@
       "machinery",
       "mechanical",
       "repairs",
-      "wrench"
+      "wrench",
+      "pipe wrench",
+      "monkey wrench",
+      "adjustable",
+      "plumbing",
+      "fix"
     ],
     "tags": [],
     "category": "System objects",
