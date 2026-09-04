@@ -7,7 +7,7 @@ import { useDsChain } from '~/utils/dsChain';
 import { Box } from '../Box';
 import { Button } from '../Button';
 import { Menu, MenuItem } from '../Menu';
-import { Modal, ModalBody, ModalHeader } from '../Modal';
+import { ModalWrapper, ModalBody, ModalHeader } from '../Modal';
 import { Select, SelectOption } from '../Select';
 import { Text } from '../Text';
 
@@ -261,7 +261,7 @@ const NestedPortalsExample = () => {
   return (
     <Box data-testid="page">
       <Button onClick={() => setOpen(true)}>Open modal</Button>
-      <Modal open={open} onOpenChange={setOpen}>
+      <ModalWrapper open={open} onOpenChange={setOpen}>
         <ModalHeader>Assign owner</ModalHeader>
         <ModalBody>
           <Box data-testid="owner-field">
@@ -273,7 +273,7 @@ const NestedPortalsExample = () => {
             </Menu>
           </Box>
         </ModalBody>
-      </Modal>
+      </ModalWrapper>
     </Box>
   );
 };
@@ -403,12 +403,12 @@ const ModalWithoutAnOpenerExample = () => {
   return (
     <Box data-track-object="orderline">
       <Button onClick={() => setOpen(true)}>Open modal</Button>
-      <Modal open={open} onOpenChange={setOpen}>
+      <ModalWrapper open={open} onOpenChange={setOpen}>
         <ModalHeader>Assign owner</ModalHeader>
         <ModalBody>
           <Text>Nothing here resolves to an object.</Text>
         </ModalBody>
-      </Modal>
+      </ModalWrapper>
     </Box>
   );
 };
@@ -426,7 +426,7 @@ export const ModalHasNoOpeningElement: Story = {
       '[data-ds-portal-root]',
     );
 
-    // A Modal is driven by the `open` prop and never sets a reference, so
+    // A ModalWrapper is driven by the `open` prop and never sets a reference, so
     // there is no opening element to resolve from. The chain still arrives
     // through React context; the object does not, and no object is emitted.
     // This is the known gap, recorded here rather than papered over: a guessed

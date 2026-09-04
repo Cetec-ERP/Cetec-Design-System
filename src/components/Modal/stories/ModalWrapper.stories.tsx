@@ -4,27 +4,26 @@ import { expect, userEvent, within } from '@storybook/test';
 
 import { Flex, Grid, VStack } from '@styled-system/jsx';
 
-import { Autocomplete, Option } from '../Autocomplete';
-import { Button } from '../Button';
-import { DatePicker } from '../DateTime';
-import { Divider } from '../Divider';
-import { FormField } from '../FormField';
-import { Icon } from '../Icon';
-import { Select, SelectOption } from '../Select';
-import { Text } from '../Text';
-import { Textarea } from '../Textarea';
-import { TextInput } from '../TextInput';
-
-import { Modal } from './Modal';
-import { ModalBody } from './ModalBody';
-import { ModalFooter } from './ModalFooter';
-import { ModalHeader } from './ModalHeader';
+import { Autocomplete, Option } from '../../Autocomplete';
+import { Button } from '../../Button';
+import { DatePicker } from '../../DateTime';
+import { Divider } from '../../Divider';
+import { FormField } from '../../FormField';
+import { Icon } from '../../Icon';
+import { Select, SelectOption } from '../../Select';
+import { Text } from '../../Text';
+import { Textarea } from '../../Textarea';
+import { TextInput } from '../../TextInput';
+import { ModalBody } from '../ModalBody';
+import { ModalFooter } from '../ModalFooter';
+import { ModalHeader } from '../ModalHeader';
+import { ModalWrapper } from '../ModalWrapper';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof Modal> = {
-  title: 'Components/Modal',
-  component: Modal,
+const meta: Meta<typeof ModalWrapper> = {
+  title: 'Components/Modals/ModalWrapper',
+  component: ModalWrapper,
   parameters: {
     layout: 'centered',
   },
@@ -55,7 +54,7 @@ const meta: Meta<typeof Modal> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Modal>;
+type Story = StoryObj<typeof ModalWrapper>;
 
 // ============================================================================
 // DEFAULT STORY
@@ -69,7 +68,7 @@ export const Default: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="md">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="md">
             <ModalHeader title="Dialog Title" showCloseButton />
             <ModalBody>
               <Text>
@@ -89,7 +88,7 @@ export const Default: Story = {
                 Save
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -109,7 +108,7 @@ export const Small: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open Small Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="sm">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="sm">
             <ModalHeader title="Small Dialog" showCloseButton />
             <ModalBody>
               <Text>This is a small modal (448px max width).</Text>
@@ -122,7 +121,7 @@ export const Small: Story = {
                 Confirm
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -142,7 +141,7 @@ export const Large: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open Large Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="lg">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="lg">
             <ModalHeader title="Large Dialog" showCloseButton />
             <ModalBody>
               <Text>This is a large modal (768px max width).</Text>
@@ -159,7 +158,7 @@ export const Large: Story = {
                 Save Changes
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -179,7 +178,7 @@ export const XLarge: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open XLarge Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="xl">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="xl">
             <ModalHeader title="XLarge Dialog" showCloseButton />
             <ModalBody display="flex" flexDirection="column" gap="12">
               <Text>This is a x-large modal (1024px max width).</Text>
@@ -253,7 +252,7 @@ export const XLarge: Story = {
                 Save Changes
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -273,7 +272,7 @@ export const FullWidth: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open Full Width Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="full">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="full">
             <ModalHeader title="Full Width Dialog" showCloseButton />
             <ModalBody>
               <Grid gridTemplateColumns="1fr auto 1fr" alignItems="start">
@@ -302,7 +301,7 @@ export const FullWidth: Story = {
                 Close
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -322,7 +321,7 @@ export const FullPage: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open Full Page Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="fullPage">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="fullPage">
             <ModalHeader title="Full Page Dialog" showCloseButton />
             <ModalBody>
               <Grid gridTemplateColumns="1fr auto 1fr" alignItems="start">
@@ -351,7 +350,7 @@ export const FullPage: Story = {
                 Close
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -373,7 +372,7 @@ export const NoCloseButton: Story = {
           <Button onClick={() => setIsOpen(true)}>
             Open Modal (No Close Button)
           </Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="md">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="md">
             <ModalHeader
               title="Dialog Without Close Button"
               showCloseButton={false}
@@ -392,7 +391,7 @@ export const NoCloseButton: Story = {
                 Continue
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -414,7 +413,7 @@ export const PreventOverlayClose: Story = {
           <Button onClick={() => setIsOpen(true)}>
             Open Modal (No Overlay Close)
           </Button>
-          <Modal
+          <ModalWrapper
             open={isOpen}
             onOpenChange={setIsOpen}
             size="md"
@@ -433,7 +432,7 @@ export const PreventOverlayClose: Story = {
                 I Understand
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -453,7 +452,7 @@ export const FormDialog: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Edit Profile</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="sm">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="sm">
             <ModalHeader title="Edit Profile" showCloseButton />
             <ModalBody>
               <VStack gap="12" alignItems="stretch">
@@ -489,49 +488,7 @@ export const FormDialog: Story = {
                 Save
               </Button>
             </ModalFooter>
-          </Modal>
-        </>
-      );
-    };
-    return <Component />;
-  },
-};
-
-// ============================================================================
-// CONFIRMATION DIALOG
-// ============================================================================
-
-export const ConfirmationDialog: Story = {
-  render: () => {
-    const Component = () => {
-      const [isOpen, setIsOpen] = useState(false);
-
-      return (
-        <>
-          <Button onClick={() => setIsOpen(true)}>Delete Item</Button>
-          <Modal
-            open={isOpen}
-            onOpenChange={setIsOpen}
-            size="sm"
-            variant="confirmation"
-            preventOverlayClose
-          >
-            <ModalHeader title="Delete Item" showCloseButton={false} />
-            <ModalBody>
-              <Text>
-                Are you sure you want to delete this item? This action cannot be
-                undone.
-              </Text>
-            </ModalBody>
-            <ModalFooter>
-              <Button variant="ghost" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button variant="danger" onClick={() => setIsOpen(false)}>
-                Delete
-              </Button>
-            </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -551,7 +508,7 @@ export const BodyOnly: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open Minimal Modal</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="sm">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="sm">
             <ModalBody
               display="flex"
               flexDirection="column"
@@ -568,7 +525,7 @@ export const BodyOnly: Story = {
                 Dismiss
               </Button>
             </ModalBody>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -588,7 +545,7 @@ export const CustomHeader: Story = {
       return (
         <>
           <Button onClick={() => setIsOpen(true)}>Open Custom Header</Button>
-          <Modal open={isOpen} onOpenChange={setIsOpen} size="md">
+          <ModalWrapper open={isOpen} onOpenChange={setIsOpen} size="md">
             <ModalHeader>
               <Flex alignItems="start" gap="3" flex="1">
                 <Icon name="info" size="24" fill="icon.decorative" />
@@ -618,7 +575,7 @@ export const CustomHeader: Story = {
                 Close
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -640,7 +597,7 @@ export const TopPosition: Story = {
           <Flex p="8" justify="center">
             <Button onClick={() => setIsOpen(true)}>Open Top-Positioned</Button>
           </Flex>
-          <Modal
+          <ModalWrapper
             open={isOpen}
             onOpenChange={setIsOpen}
             position="top"
@@ -666,7 +623,7 @@ export const TopPosition: Story = {
                 OK
               </Button>
             </ModalFooter>
-          </Modal>
+          </ModalWrapper>
         </>
       );
     };
@@ -687,7 +644,7 @@ export const FloatingContent: Story = {
         <Button onClick={() => setIsOpen(true)}>
           Open Floating Content Modal
         </Button>
-        <Modal
+        <ModalWrapper
           open={isOpen}
           onOpenChange={setIsOpen}
           size="md"
@@ -718,7 +675,7 @@ export const FloatingContent: Story = {
               Close
             </Button>
           </ModalFooter>
-        </Modal>
+        </ModalWrapper>
       </>
     );
   },

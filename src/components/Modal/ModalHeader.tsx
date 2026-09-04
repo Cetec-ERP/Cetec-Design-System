@@ -10,12 +10,17 @@ import { Box, type BoxProps } from '../Box';
 import { Heading } from '../Heading';
 import { IconButton } from '../IconButton';
 
-import { useModalContext } from './ModalContext';
+import { useModalWrapperContext } from './ModalWrapperContext';
 
 /** Props for {@link ModalHeader}, the optional heading and close-control region. */
 export type ModalHeaderProps = Omit<BoxProps, 'children'> & {
   /** Text rendered as the default level-three heading when `children` is omitted. */
   title?: string;
+  /**
+   * Identifier applied to the title heading for `aria-labelledby` on the dialog.
+   * Pass the same value to the parent shell's `aria-labelledby`.
+   */
+  titleId?: string;
   /**
    * Shows the built-in button that calls the parent modal's `onOpenChange(false)`.
    * @default true
@@ -26,11 +31,11 @@ export type ModalHeaderProps = Omit<BoxProps, 'children'> & {
 };
 
 /**
- * Renders the optional header region of a parent {@link Modal}.
+ * Renders the optional header region of a parent {@link ModalWrapper}.
  *
  * Use `title` for the standard heading or provide `children` for custom header
- * content. It must be rendered inside `Modal` because it uses modal context to
- * close the dialog.
+ * content. It must be rendered inside `ModalWrapper` because it uses modal
+ * context to close the dialog.
  *
  * @example
  * ```tsx
@@ -38,10 +43,10 @@ export type ModalHeaderProps = Omit<BoxProps, 'children'> & {
  * ```
  */
 export const ModalHeader = (props: ModalHeaderProps) => {
-  const { title, showCloseButton = true, children, ...rest } = props;
+  const { title, titleId, showCloseButton = true, children, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
   const classes = modalRecipe();
-  const { onClose } = useModalContext();
+  const { onClose } = useModalWrapperContext();
 
   const isSm = useMediaQuery('sm');
 
@@ -53,6 +58,7 @@ export const ModalHeader = (props: ModalHeaderProps) => {
         <>
           {title && (
             <Heading
+              id={titleId}
               level="h3"
               textStyle={{ base: 'heading.sm', sm: 'heading.xs' }}
               className={classes.title}

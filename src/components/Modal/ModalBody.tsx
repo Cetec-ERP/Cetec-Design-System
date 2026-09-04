@@ -14,7 +14,7 @@ export type ModalBodyProps = Omit<BoxProps, 'children'> & {
 };
 
 /**
- * Renders the main content region of a {@link Modal}.
+ * Renders the main content region of a {@link ModalWrapper}.
  *
  * @example
  * ```tsx

@@ -123,14 +123,21 @@ export {
   type SubMenuProps,
 } from './components/Menu';
 export {
+  ModalWrapper,
   Modal,
+  ConfirmationModal,
   ModalHeader,
   ModalFooter,
   ModalBody,
+  type ConfirmationModalProps,
+  type ConfirmationModalType,
   type ModalBodyProps,
   type ModalFooterProps,
+  type ModalFormApi,
   type ModalHeaderProps,
   type ModalProps,
+  type ModalSubmitContext,
+  type ModalWrapperProps,
 } from './components/Modal';
 export {
   Radio,
@@ -186,7 +193,11 @@ export {
   useMenuListContext,
   useMenuRootContext,
 } from './components/Menu/context/menuContext';
-export { useModalContext } from './components/Modal/ModalContext';
+export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
+
+// TanStack Form — peer dependency re-exported for a single library instance
+export { useForm } from '@tanstack/react-form';
+export type { FormApi } from '@tanstack/react-form';
 
 // Theme handling
 export { ThemeProvider, useTheme } from './system/context';

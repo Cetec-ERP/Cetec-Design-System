@@ -164,7 +164,7 @@ const modalVariants = {
 
 export const modalRecipe = defineSlotRecipe({
   className: 'modal',
-  jsx: ['Modal', 'ModalHeader', 'ModalBody', 'ModalFooter'],
+  jsx: ['ModalWrapper', 'ModalHeader', 'ModalBody', 'ModalFooter', 'Modal'],
   slots: [
     'positionWrapper',
     'overlay',
