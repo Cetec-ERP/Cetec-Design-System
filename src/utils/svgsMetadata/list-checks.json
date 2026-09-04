@@ -8,9 +8,7 @@
     "filter",
     "sort",
     "organize",
-    "query",
-    "list icon",
-    "checks icon"
+    "query"
   ],
   "tags": [],
   "category": "Filter / Sort / List",

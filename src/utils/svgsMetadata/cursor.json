@@ -1,5 +1,14 @@
 {
-  "aliases": ["cursor", "pointer", "mouse", "tool", "symbol", "helper"],
+  "aliases": [
+    "cursor",
+    "pointer",
+    "mouse",
+    "arrow",
+    "select",
+    "click",
+    "pointing",
+    "navigate"
+  ],
   "tags": [],
   "category": "Other",
   "deprecated": false
