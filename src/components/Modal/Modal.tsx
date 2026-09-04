@@ -72,7 +72,7 @@ export type ModalProps<TFormData extends Record<string, unknown>> = {
   /** Render prop receiving the modal's TanStack Form instance for field wiring. */
   children: (form: ModalFormApi<TFormData>) => ReactNode;
 
-  /** Label for the default primary submit button. @default 'Save' */
+  /** Label for the default primary submit button. @default 'Submit' */
   submitLabel?: string;
   /** Label for the default cancel button. @default 'Cancel' */
   cancelLabel?: string;
@@ -137,7 +137,7 @@ export const Modal = <TFormData extends Record<string, unknown>>(
     defaultValues,
     onSubmit,
     children,
-    submitLabel = 'Save',
+    submitLabel = 'Submit',
     cancelLabel = 'Cancel',
     submitDisabled = false,
     footer,
