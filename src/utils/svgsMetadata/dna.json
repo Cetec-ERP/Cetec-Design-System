@@ -1,5 +1,15 @@
 {
-  "aliases": ["dna", "genetics", "helix", "tool", "symbol", "helper"],
+  "aliases": [
+    "dna",
+    "genetics",
+    "helix",
+    "biology",
+    "gene",
+    "science",
+    "molecule",
+    "double helix",
+    "strand"
+  ],
   "tags": [],
   "category": "Other",
   "deprecated": false

@@ -9,10 +9,7 @@
     "action",
     "operation",
     "command",
-    "interaction",
-    "tool",
-    "search icon",
-    "objects icon"
+    "interaction"
   ],
   "tags": [],
   "category": "Actions",

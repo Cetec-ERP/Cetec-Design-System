@@ -6,7 +6,12 @@
     "clock",
     "schedule",
     "events",
-    "watch"
+    "watch",
+    "alarm clock",
+    "bells",
+    "wake",
+    "ring",
+    "snooze"
   ],
   "tags": ["time", "status"],
   "category": "Time",
