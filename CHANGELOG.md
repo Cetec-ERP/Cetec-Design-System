@@ -1,3 +1,22 @@
+# 2.0.0 (Tue Sep 08 2026)
+
+#### ⚠️ Pushed to `main`
+
+- chore: fix versions (ethan@tech-x.com)
+
+#### 🚀 Features
+
+- feat(major): add form Modal and ConfirmationModal, rename shell to ModalWrapper [#195](https://github.com/Cetec-ERP/Cetec-Design-System/pull/195) ([@atkinsdavid](https://github.com/atkinsdavid))
+- feat(minor): add metadata for six icons and strengthen icon aliases [#197](https://github.com/Cetec-ERP/Cetec-Design-System/pull/197) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### Authors: 3
+
+- David ([@atkinsdavid](https://github.com/atkinsdavid))
+- Ethan Wiggins (ethan@tech-x.com)
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
 # 1.5.0 (Wed Sep 02 2026)
 
 #### 🚀 Features
