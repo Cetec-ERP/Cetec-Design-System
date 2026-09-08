@@ -18,7 +18,7 @@ import { Text } from '../../components/Text';
 ### Decisions
 
 1. Keep the public export surface minimal to avoid confusion for consumers
-2. Ensure `dist` bundles include the preset and the index entry points at the root.
+2. Keep the Panda preset in its own `./preset` entrypoint so the component runtime does not depend on Panda build tooling.
 3. Separate the `staticCss` output from the component build so consumers can import only what they need. These declarations are currently only used for Storybook, are not needed for production, and were adding ~2.4mb of weight to our generated styles when built as a single CSS file.
 4. Generate consumable CSS files that can be used for non-React environments, and generate helpers that can be used by consuming apps as needed.
 
@@ -27,16 +27,16 @@ import { Text } from '../../components/Text';
 - Added `PANDA_STATIC` flag to control static CSS generation.
 - Updated scripts in package.json
 - Moved `cetec-preset.ts` --> `src/cetec-preset.ts` to keep the preset alongside other source exports and align Vite entry resolution.
-- `src/index.ts` updated to re-export the relocated preset and keep the public export surface stable for consumers.
+- The preset is available from `cetec-design-system/preset` rather than the component runtime entrypoint.
 - `src/types/panda-augment.ts` added to extend Panda type generation without leaking `@pandacss/types` into consumer projects.
 - `src/types/panda-shim.ts` added as a minimal shim to stabilize type identity across build and consumer environments.
 - `src/types/index.d.ts` template file is copied to `dist/index.d.ts` to provide type declarations entry point for consumers.
-- We export `cetecPreset` as `any` to avoid Panda type identity conflicts in Astro
+- The preset entrypoint keeps its Panda types isolated from component-only consumers.
 
 
 ### Distribution Output
 
-The expected `dist` shape includes the compiled bundle, generated type declarations, and a packaged preset entry so consumers can import from a single surface.
+The expected `dist` shape includes separate component and preset bundles. Component consumers use the root entrypoint, while Panda configuration imports the build-time preset from `cetec-design-system/preset`.
 
 ```jsx
 dist/
