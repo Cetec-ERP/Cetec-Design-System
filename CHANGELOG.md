@@ -2,6 +2,30 @@
 
 #### ⚠️ Pushed to `main`
 
+- chore: replace auto config ([@Etwigg](https://github.com/Etwigg))
+- chore: fix versions ([@Etwigg](https://github.com/Etwigg))
+
+#### 🚀 Features
+
+- feat(major): add form Modal and ConfirmationModal, rename shell to ModalWrapper [#195](https://github.com/Cetec-ERP/Cetec-Design-System/pull/195) ([@atkinsdavid](https://github.com/atkinsdavid))
+- feat(minor): add metadata for six icons and strengthen icon aliases [#197](https://github.com/Cetec-ERP/Cetec-Design-System/pull/197) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🏠 Chores
+
+- chore(major): republish Modal API after bad 2.3.7 dist [#199](https://github.com/Cetec-ERP/Cetec-Design-System/pull/199) ([@atkinsdavid](https://github.com/atkinsdavid))
+
+#### Authors: 3
+
+- David ([@atkinsdavid](https://github.com/atkinsdavid))
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
+# 2.0.0 (Tue Sep 08 2026)
+
+#### ⚠️ Pushed to `main`
+
 - chore: fix versions (ethan@tech-x.com)
 
 #### 🚀 Features
