@@ -428,6 +428,14 @@ jobs:
         if: steps.release_mode.outputs.mode != 'skip' && steps.publish_version.outputs.skip_reason == ''
         run: npm run build
 
+      # Guard against publishing a stale dist/ (npm 2.3.7 shipped post-#195
+      # source recipes with a pre-#195 bundle). Always build in this job first.
+      - name: Verify Release Artifact
+        if: steps.release_mode.outputs.mode != 'skip' && steps.publish_version.outputs.skip_reason == ''
+        run: |
+          test -f dist/index.js
+          test -f dist/types/index.d.ts
+
       - name: Create Release
         if: steps.release_mode.outputs.mode != 'skip' && steps.publish_version.outputs.skip_reason == ''
         env:
