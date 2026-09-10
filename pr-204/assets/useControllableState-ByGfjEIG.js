@@ -1,0 +1,1 @@
+import{r as c}from"./index-BKyFwriW.js";const n=({value:l,defaultValue:u,onChange:t})=>{const[a,d]=c.useState(u),o=l!==void 0,s=o?l:a,i=c.useCallback(r=>{const e=typeof r=="function"?r(s):r;o||d(e),t==null||t(e)},[s,o,t]);return[s,i,o]};export{n as u};
