@@ -25,7 +25,8 @@ const overflowedTabClass = tabsRecipe({ overflowed: true }).tab;
  * Renders a `button` with `role="tab"`. Only the selected tab is in the tab
  * order; Arrow, Home, and End move between the others. A tab that does not fit
  * the strip stays mounted but hidden so it can still be measured, and it is
- * offered in the overflow menu instead.
+ * offered in the overflow menu instead. The menu row is plain text, so give
+ * `label` when `children` are not plain text.
  *
  * @example
  * ```tsx
@@ -38,6 +39,9 @@ export const Tab = (props: TabProps) => {
   const {
     value,
     children,
+    // Read by `Tabs` off this element's props for the overflow menu. It is
+    // pulled out here so it never reaches the DOM as a stray attribute.
+    label: _label,
     badge,
     badgeTooltip,
     disabled = false,

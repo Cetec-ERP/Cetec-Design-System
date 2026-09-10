@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 
 import { Tab } from './Tab';
@@ -139,6 +140,43 @@ export const Overflow: Story = {
         {overflowTabs.map((label) => (
           <TabPanel key={label} value={label.toLowerCase()}>
             <Text py="16">{label} content.</Text>
+          </TabPanel>
+        ))}
+      </Tabs>
+    </Box>
+  ),
+};
+
+const iconTabs = [
+  { value: 'work', label: 'Work', icon: 'wrench-2' },
+  { value: 'materials', label: 'Materials', icon: 'cube-focus' },
+  { value: 'schedule', label: 'Schedule', icon: 'calendar-view-week' },
+  { value: 'shipping', label: 'Shipping', icon: 'truck-trailer' },
+  { value: 'quality', label: 'Quality', icon: 'list-checks' },
+  { value: 'history', label: 'History', icon: 'clock-countdown' },
+  { value: 'notes', label: 'Notes', icon: 'note-stack' },
+] as const;
+
+export const LabelOverride: Story = {
+  name: 'Label Override for Overflow',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Box width="md" maxWidth="full">
+      <Text pb="12" color="text.subtlest">
+        These tabs render an icon beside their text, so flattening `children`
+        would produce a poor menu row. Each one passes `label`, and the overflow
+        menu uses that text. The strip still renders `children` as-is.
+      </Text>
+      <Tabs {...args} defaultValue="work">
+        {iconTabs.map((tab) => (
+          <Tab key={tab.value} value={tab.value} label={tab.label}>
+            <Icon name={tab.icon} aria-hidden />
+            {tab.label}
+          </Tab>
+        ))}
+        {iconTabs.map((tab) => (
+          <TabPanel key={tab.value} value={tab.value}>
+            <Text py="16">{tab.label} content.</Text>
           </TabPanel>
         ))}
       </Tabs>

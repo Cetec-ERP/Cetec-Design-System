@@ -87,6 +87,7 @@ export const useTabs = ({
       const props = child.props as {
         value?: string;
         children?: ReactNode;
+        label?: string;
         disabled?: boolean;
       };
 
@@ -94,7 +95,9 @@ export const useTabs = ({
 
       descriptors.push({
         value: props.value,
-        label: getNodeText(props.children) || props.value,
+        // An explicit `label` overrides the flattened children, which in turn
+        // fall back to `value` when the children carry no text at all.
+        label: props.label || getNodeText(props.children) || props.value,
         disabled: Boolean(props.disabled),
       });
     });

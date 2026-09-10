@@ -81,8 +81,17 @@ export type TabsProps = Omit<
 type TabOwnProps = {
   /** Identifies the tab and the `TabPanel` it controls. Must be unique within a `Tabs`. */
   value: string;
-  /** Visible label. Plain text is reused as the overflow-menu label. */
+  /** Visible label rendered in the strip. Plain text is also reused as the overflow-menu row's text unless `label` overrides it. */
   children?: ReactNode;
+  /**
+   * Plain-text name for this tab's overflow-menu row, which cannot render
+   * markup. Set it when `children` contain more than text — an icon, a nested
+   * element — because flattening those to a string reads badly. It never
+   * changes what the strip renders: `children` still render there as-is.
+   * Without it the menu row falls back to the flattened `children`, then to
+   * `value`.
+   */
+  label?: string;
   /** Count shown in a trailing {@link Badge}. A zero or omitted count renders no badge. */
   badge?: number;
   /** Tooltip text describing what the badge counts. Requires `badge`. */
