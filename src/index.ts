@@ -208,9 +208,6 @@ export { splitProps } from './utils/splitProps';
 // Export hooks
 export { useMediaQuery, useContainerQuery } from './system/hooks';
 
-// Export the Panda CSS preset
-export { cetecPreset } from './cetec-preset';
-
 // Load minimal Panda helper type shims for declaration output (used during build)
 import './types/panda-augment';
 export type {

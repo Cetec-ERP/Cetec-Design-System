@@ -129,8 +129,19 @@ npm install cetec-design-system
 
 ### Panda CSS Configuration
 
-Copy `/panda.config.ts` and adjust the import paths to point to the package in `node_modules`.
-Set up the `include` option to contain the paths where Panda should look when building `styled-system` and `styles.css`.
+Import the Panda preset from its build-time-only entrypoint:
+
+```typescript
+import { defineConfig } from '@pandacss/dev';
+import { cetecPreset } from 'cetec-design-system/preset';
+
+export default defineConfig({
+  presets: [cetecPreset],
+});
+```
+
+Set up the `include` option to contain the paths where Panda should look when
+building `styled-system` and `styles.css`.
 
 ### Using in Your Project
 
