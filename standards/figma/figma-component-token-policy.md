@@ -346,3 +346,127 @@ to use without creating a second theme system?"
 If yes, it probably belongs.
 
 If not, bind directly to the global semantic layer and move on.
+
+---
+
+# Part 2 — Rules proven by the vNext build (2026-09-09)
+
+Part 1 above was written before the library existed. Everything below is
+recorded after building all of it, and supersedes Part 1 wherever they differ.
+
+## The pattern, stated as a rule
+
+**Size, interaction state, theme and density are variable MODES. They are never
+Figma variants.** A property becomes a variant only when it is real public API
+surface that a designer chooses deliberately.
+
+Worked example, and the reason this rule exists:
+
+|                     | Old `_Z-DEPRECATED-Button` | vNext `Button`                 |
+| ------------------- | -------------------------- | ------------------------------ |
+| Variants in the set | **816**                    | **96**                         |
+| Sizes               | separate variants          | 4 modes (`Component / Layout`) |
+| Hover / pressed     | separate variants          | 3 modes (`Component / State`)  |
+| Light / dark        | separate variants          | 2 modes (`Component / Colors`) |
+
+96 variants × 4 sizes × 3 states × 2 themes = 2,304 rendered permutations from
+96 maintained objects. An 8.5× reduction in objects while covering more cases.
+
+The same consolidation repeats: `MenuItem` went from a 48-variant set to being
+folded into `Menu/List`; `Spinner` went 8 → 2.
+
+## The four collections
+
+| Collection           | Modes                          | Covers                                                                            |
+| -------------------- | ------------------------------ | --------------------------------------------------------------------------------- |
+| `Component / Colors` | Light, Dark                    | per-component colour that must differ by theme beyond what a semantic token gives |
+| `Component / Layout` | sm, md, lg, xl                 | per-component size: padding, gap, font size, icon size, min height                |
+| `Component / State`  | Default, Hovered, Pressed      | per-component interaction colour                                                  |
+| `List / Density`     | Compact, Comfortable, Spacious | list-specific spacing                                                             |
+
+Naming:
+
+- **State** — `<Component>/<variant>/<bg\|border\|color\|icon>`, e.g.
+  `Button/primary/bg`, `Chip/default/icon`, `Tabs/tab/underline`.
+- **Layout** — `<Component>/<Property>` in sentence case, e.g.
+  `Button/Main PX`, `Avatar/Fallback font size`, `Tooltip/Line height`.
+- **Shared** — cross-component values live under their own key
+  (`Slots/Slot size`, `List/slot-wrapper-size`) and are never duplicated
+  per component.
+
+Layout variables **alias primitives per mode**. They do not hold raw numbers
+unless no primitive exists — and when that happens, say so in the variable's
+own description.
+
+## Rules for every new component
+
+1. Decide what is genuinely public API. That becomes a Figma variant.
+2. Size, state, theme and density become modes.
+3. Add the component's entries to the matching collection using the naming
+   above. Reuse a shared key rather than inventing a per-component twin.
+4. Component-level variables alias **semantic** tokens. Never raw values,
+   never primitives directly, for anything colour-bearing.
+5. **A component is not finished until its variables exist.** One shipped with
+   size or state as Figma variants is a regression to the 816-variant model.
+
+## Decisions — do not re-litigate
+
+- **`IconButton` is part of `Button`.** It is not a separate component in
+  Figma.
+- **`Text` and `Heading` are text styles, not components.** `Cetec Tokens
+vNext` carries 16 text styles — `Body/`, `Heading/`, `Display/`, `Mono/` ×
+  `xs sm md lg` — which fully cover the code's semantic `fontSizes`.
+- **`Box` and `Code` are out of the Figma library.**
+- **`BreakpointIndicator`, `DsChainScope` and `ThemeSwitcher` are out.**
+  They are developer tooling, not design surface.
+- **The legacy `colors.{error,info,success,warning}.{default,light,lighter,dark,darker}`
+  ramps are retiring in code. Do NOT backfill them into Figma.** vNext already
+  says this as `bg-danger` / `bg-success` / `bg-warning` / `bg-info` with
+  `-subtle` / `-bold` / `-hovered` / `-pressed`.
+- **Free-form typography props are not variants.** `Link`'s `size`, `family`,
+  `bold`, `italic` and `weight` accept any token, not a fixed scale. They
+  belong to the text node or a swapped text style.
+- **`Tone=neutral` carries no icon** across the whole alert family. A neutral
+  state icon signals nothing.
+
+## What Figma cannot express
+
+Record these so they are not raised again as gaps.
+
+| Class                                            | Why                                                                                                                                                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `borders.*` composite shorthands                 | no Figma variable type                                                                                                                                                                 |
+| `blurs`, `aspectRatios`, `animations`, `easings` | no Figma variable type                                                                                                                                                                 |
+| `shadows.*` composites                           | already covered as effect styles (`Shadow/Elevated`, `Overflow`, `Overlay`, `Raised`, `Zero`)                                                                                          |
+| `radii.100`                                      | it is `100%`, not a pixel value. Figma has no percentage corner radius. Bind `radii/999` instead — identical on a square element.                                                      |
+| em-based sizing                                  | `SegmentedInputs`' separator gaps are `0 / 0.5em / 0.75em / 1.25em`. Figma has no em, so they are pixel equivalents at the md size of 16. **Re-check them if the type scale changes.** |
+| `zIndex`                                         | stacking is not a Figma concept                                                                                                                                                        |
+| fractional text decoration                       | `Link`'s `0.0625em` underline thickness and `0.15625em` offset are not settable                                                                                                        |
+
+## Plugin API traps found while building
+
+Each of these cost a failed script. They are not obvious from the docs.
+
+- **Constraints resolve BEFORE a variable-bound size applies.** An indicator
+  pinned with `constraints: MAX` overhung its parent by 2px at `xl`.
+  **Wrap any variable-sized child that must stay flush to an edge in a
+  full-bleed auto-layout anchor frame and use alignment, not constraints.**
+- **`addComponentProperty(name, 'INSTANCE_SWAP', value)` takes the default
+  component's NODE ID, not its published key.**
+- **A focus ring is an EFFECT, not just a stroke.** Copy the whole effects
+  array from a donor node — it carries per-effect variable bindings.
+  `setBoundVariable('effects', …)` throws _Unknown field_.
+- **Figma renames a TEXT layer to its own characters.** Set `node.name` AFTER
+  writing `characters`, or later lookups by name return null.
+- **`minWidth` cannot be set to `0`** — use `null` to unset it. It is also not
+  bindable on a TEXT node; wrap the text in a frame.
+- **A Figma slot must be a direct child of its own component.** This is why
+  `Select`'s multi-value trigger is built natively rather than nesting a
+  `ChipGroup` inside a `TextInput` instance.
+- **A set-level TEXT property forces one default across every variant.** A
+  Placeholder-versus-Value axis can then only differ by colour, not wording.
+- **Shared components ship demo slot content.** `ChipGroup` carries four demo
+  chips and `Menu` carries a group label plus five list items. Instances
+  inherit them and they can only be hidden, never removed.
+- **Figma nodes reject arbitrary JavaScript properties.** Bind at creation
+  instead of stashing state on the node.
