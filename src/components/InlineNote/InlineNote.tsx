@@ -14,12 +14,12 @@ import { Text } from '~/components/Text';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-const toneIconNames: Record<AlertTone, IconNamesList | null> = {
+const toneIconNames: Record<AlertTone, IconNamesList> = {
   info: 'info',
   success: 'success',
   warning: 'warning',
   danger: 'error',
-  neutral: null,
+  neutral: 'info',
 };
 
 const toneIconColors: Record<AlertTone, ColorToken> = {
@@ -64,7 +64,7 @@ export type InlineNoteProps = Omit<
  * Renders a `div` with `role="alert"` when `tone` is `danger` and
  * `role="status"` otherwise. Reference it from the field with
  * `aria-describedby` so the message reaches screen readers on focus.
- * `tone="neutral"` renders no icon.
+ * `tone="neutral"` uses the info icon.
  *
  * @example
  * ```tsx
@@ -85,18 +85,17 @@ export const InlineNote = (props: InlineNoteProps) => {
       className={cx(classes.root, className)}
       {...otherProps}
     >
-      {iconName && (
-        <Box className={classes.icon}>
-          <Icon
-            name={iconName}
-            size="16"
-            fill={toneIconColors[tone]}
-            aria-hidden="true"
-          />
-        </Box>
-      )}
+      <Box className={classes.icon}>
+        <Icon
+          name={iconName}
+          size="16"
+          fill={toneIconColors[tone]}
+          aria-hidden="true"
+        />
+      </Box>
       <Text
         textStyle="body.xs"
+        lineHeight="tight"
         color={toneTextColors[tone]}
         className={classes.message}
       >

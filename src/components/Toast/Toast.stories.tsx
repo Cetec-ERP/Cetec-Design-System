@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { expect, userEvent, within } from '@storybook/test';
 
 import { HStack, VStack } from '@styled-system/jsx';
@@ -48,7 +50,7 @@ auto-dismisses — the provider pins it open, so no call site has to remember.
 \`secondaryAction\`, each a \`Button\`, both optional.
 
 **Accessibility.** \`role="alert"\` when \`tone\` is \`danger\`,
-\`role="status"\` otherwise. \`tone="neutral"\` renders no icon. The slide-in
+\`role="status"\` otherwise. \`tone="neutral"\` uses the info icon. The slide-in
 animation is suppressed under \`prefers-reduced-motion\`.
 `;
 
@@ -91,7 +93,9 @@ export const Tones: Story = {
       <Toast tone="success">Work order 10482 was saved.</Toast>
       <Toast tone="warning">Two line items are missing a unit cost.</Toast>
       <Toast tone="danger">Could not save work order 10482.</Toast>
-      <Toast tone="neutral">Neutral renders no icon, by design.</Toast>
+      <Toast tone="neutral">
+        Neutral uses the info icon on a neutral surface.
+      </Toast>
     </VStack>
   ),
 };
@@ -285,5 +289,88 @@ export const DangerNeverAutoDismisses: Story = {
     await new Promise((resolve) => setTimeout(resolve, 600));
 
     await expect(body.getByRole('alert')).toBeInTheDocument();
+  },
+};
+
+const HoverCounter = () => {
+  const [entered, setEntered] = useState(0);
+
+  return (
+    <VStack alignItems="start" gap="12">
+      <Text textStyle="body.sm">
+        A consumer `onMouseEnter` runs alongside the pause logic, not instead of
+        it. Hover the toast: the count rises and `data-paused` is set.
+      </Text>
+      <Toast
+        tone="info"
+        duration={60000}
+        onMouseEnter={() => setEntered((current) => current + 1)}
+      >
+        Hover me.
+      </Toast>
+      <Text textStyle="body.sm" data-testid="enter-count">
+        {entered}
+      </Text>
+    </VStack>
+  );
+};
+
+export const ConsumerHandlersKeepPause: Story = {
+  name: 'Test: consumer hover handler keeps the pause',
+  render: () => <HoverCounter />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const toast = canvas.getByRole('status');
+
+    await userEvent.hover(toast);
+    await expect(toast).toHaveAttribute('data-paused', 'true');
+    await expect(canvas.getByTestId('enter-count')).toHaveTextContent('1');
+
+    await userEvent.unhover(toast);
+    await expect(toast).not.toHaveAttribute('data-paused');
+  },
+};
+
+const LocalizedControls = () => {
+  const toast = useToast();
+
+  return (
+    <VStack alignItems="start" gap="12">
+      <Text textStyle="body.sm">
+        `dismissLabel` given to `useToast` reaches the close control.
+      </Text>
+      <Button
+        size="sm"
+        onClick={() =>
+          toast.success('Guardado.', {
+            dismissLabel: 'Cerrar',
+            duration: 60000,
+          })
+        }
+      >
+        Queue a Spanish toast
+      </Button>
+    </VStack>
+  );
+};
+
+export const LocalizedDismissLabel: Story = {
+  name: 'Test: provider forwards dismissLabel',
+  render: () => (
+    <ToastProvider>
+      <LocalizedControls />
+    </ToastProvider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Queue a Spanish toast' }),
+    );
+
+    await expect(
+      await body.findByRole('button', { name: 'Cerrar' }),
+    ).toBeInTheDocument();
   },
 };

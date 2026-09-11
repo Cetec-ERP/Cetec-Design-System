@@ -31,9 +31,8 @@ explicit \`primaryAction\` and \`secondaryAction\` props, each taking a
 \`Button\`. Zero, one, or two actions are supported; there is no third slot.
 \`InlineNote\` takes no actions.
 
-**Tone icons.** Every tone but \`neutral\` renders its tone icon.
-\`tone="neutral"\` renders none, deliberately: an icon on a stateless message
-signals nothing.
+**Tone icons.** Every tone renders its tone icon. \`tone="neutral"\` borrows
+the info icon: it marks the message as informational without claiming a state.
 
 **Accessibility.** All four components use \`role="alert"\` (assertive) when
 \`tone\` is \`danger\` and \`role="status"\` (polite) otherwise.
@@ -86,7 +85,7 @@ export const Tones: Story = {
         The purchase order could not be submitted.
       </Alert>
       <Alert tone="neutral" title="Neutral">
-        Neutral renders no icon, by design.
+        Neutral uses the info icon on a neutral surface.
       </Alert>
     </VStack>
   ),

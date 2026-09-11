@@ -32,7 +32,7 @@ condition that must not be scrolled past.
 \`secondaryAction\`, each a \`Button\`, both optional.
 
 **Accessibility.** \`role="alert"\` when \`tone\` is \`danger\`,
-\`role="status"\` otherwise. \`tone="neutral"\` renders no icon.
+\`role="status"\` otherwise. \`tone="neutral"\` uses the info icon.
 `;
 
 const meta = {
@@ -77,7 +77,7 @@ export const SubtleTones: Story = {
         Order sync is failing. New orders are not reaching the warehouse.
       </PageBanner>
       <PageBanner tone="neutral">
-        This environment is a sandbox. Neutral renders no icon.
+        This environment is a sandbox. Neutral uses the info icon.
       </PageBanner>
     </VStack>
   ),
@@ -100,7 +100,7 @@ export const BoldTones: Story = {
         Order sync is failing. New orders are not reaching the warehouse.
       </PageBanner>
       <PageBanner tone="neutral" emphasis="bold">
-        This environment is a sandbox. Neutral renders no icon.
+        This environment is a sandbox. Neutral uses the info icon.
       </PageBanner>
     </VStack>
   ),

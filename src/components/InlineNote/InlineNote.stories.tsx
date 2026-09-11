@@ -25,7 +25,7 @@ actions, and no dismiss control, and it uses the smallest type size.
 **Accessibility.** \`role="alert"\` when \`tone\` is \`danger\`,
 \`role="status"\` otherwise. Give the note an \`id\` and point the field's
 \`aria-describedby\` at it so the message reaches screen readers on focus.
-\`tone="neutral"\` renders no icon.
+\`tone="neutral"\` uses the info icon.
 `;
 
 const meta = {
@@ -61,7 +61,7 @@ export const Tones: Story = {
       </InlineNote>
       <InlineNote tone="danger">Enter an order number.</InlineNote>
       <InlineNote tone="neutral">
-        Neutral renders no icon, by design.
+        Neutral uses the info icon on a neutral surface.
       </InlineNote>
     </VStack>
   ),

@@ -7,7 +7,7 @@ const alertBase = {
     ...globalBaseStyles,
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '12',
+    gap: '8',
     w: 'full',
     p: '12',
     borderRadius: '4',

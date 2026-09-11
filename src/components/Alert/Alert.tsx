@@ -15,17 +15,17 @@ import { splitProps } from '~/utils/splitProps';
 /**
  * Semantic tone shared by every notification component.
  *
- * `neutral` intentionally renders no icon: a state icon on a stateless message
- * signals nothing.
+ * `neutral` renders the info icon: it marks the message as informational
+ * without claiming a state.
  */
 export type AlertTone = 'info' | 'success' | 'warning' | 'danger' | 'neutral';
 
-const toneIconNames: Record<AlertTone, IconNamesList | null> = {
+const toneIconNames: Record<AlertTone, IconNamesList> = {
   info: 'info',
   success: 'success',
   warning: 'warning',
   danger: 'error',
-  neutral: null,
+  neutral: 'info',
 };
 
 const toneIconColors: Record<AlertTone, ColorToken> = {
@@ -79,7 +79,7 @@ export type AlertProps = Omit<
  *
  * Renders a `div` with `role="alert"` when `tone` is `danger` so assistive
  * technology interrupts, and `role="status"` otherwise so it announces
- * politely. `tone="neutral"` renders no icon.
+ * politely. `tone="neutral"` uses the info icon.
  *
  * @example
  * ```tsx
@@ -113,29 +113,33 @@ export const Alert = (props: AlertProps) => {
       className={cx(classes.root, className)}
       {...otherProps}
     >
-      {iconName && (
-        <Box className={classes.icon}>
-          <Icon
-            name={iconName}
-            size="20"
-            fill={toneIconColors[tone]}
-            aria-hidden="true"
-          />
-        </Box>
-      )}
+      <Box className={classes.icon}>
+        <Icon
+          name={iconName}
+          size="20"
+          fill={toneIconColors[tone]}
+          aria-hidden="true"
+        />
+      </Box>
       <Box className={classes.content}>
         {title && (
           <Heading
             level="h3"
             textStyle="body.md"
-            weight="bold"
+            fontWeight="bold"
+            lineHeight="tight"
             color="text.bold"
             className={classes.title}
           >
             {title}
           </Heading>
         )}
-        <Text textStyle="body.sm" color="text" className={classes.message}>
+        <Text
+          textStyle="body.sm"
+          lineHeight="tight"
+          color="text"
+          className={classes.message}
+        >
           {children}
         </Text>
         {hasActions && (

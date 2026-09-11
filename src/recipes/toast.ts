@@ -24,7 +24,7 @@ const toastBase = {
     ...globalBaseStyles,
     display: 'flex',
     alignItems: 'flex-start',
-    gap: '12',
+    gap: '8',
     w: 'full',
     minW: 'xs',
     maxW: 'sm',
@@ -50,7 +50,7 @@ const toastBase = {
     display: 'flex',
     alignItems: 'center',
     flex: 'none',
-    minH: '20',
+    minH: '18',
   },
   content: {
     display: 'flex',

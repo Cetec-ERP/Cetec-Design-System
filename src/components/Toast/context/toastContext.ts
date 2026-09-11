@@ -29,6 +29,8 @@ export type ToastOptions = {
    * @default true
    */
   dismissible?: boolean;
+  /** Accessible label for the close control. @default "Dismiss" */
+  dismissLabel?: string;
   /** Runs once the toast leaves the stack, whether it timed out or was closed. */
   onDismiss?: () => void;
 };
@@ -69,7 +71,7 @@ export type ToastApi = {
   warning: ToastTrigger;
   /** Queues a `danger` toast. Danger toasts never auto-dismiss. */
   danger: ToastTrigger;
-  /** Queues a `neutral` toast, which renders without a tone icon. */
+  /** Queues a `neutral` toast, which uses the info icon and a neutral surface. */
   neutral: ToastTrigger;
   /** Starts the exit animation for one toast. Unknown ids are ignored. */
   dismiss: (id: string) => void;

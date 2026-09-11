@@ -15,12 +15,12 @@ import { Text } from '~/components/Text';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-const toneIconNames: Record<AlertTone, IconNamesList | null> = {
+const toneIconNames: Record<AlertTone, IconNamesList> = {
   info: 'info',
   success: 'success',
   warning: 'warning',
   danger: 'error',
-  neutral: null,
+  neutral: 'info',
 };
 
 const toneIconColors: Record<AlertTone, ColorToken> = {
@@ -85,7 +85,7 @@ export type ToastProps = Omit<
  * stack. Use `Alert` when the message must stay until it is read.
  *
  * Renders a `div` with `role="alert"` when `tone` is `danger` and
- * `role="status"` otherwise. `tone="neutral"` renders no icon.
+ * `role="status"` otherwise. `tone="neutral"` uses the info icon.
  *
  * @example
  * ```tsx
@@ -103,6 +103,10 @@ export const Toast = (props: ToastProps) => {
     duration = null,
     dismissLabel = 'Dismiss',
     state = 'open',
+    onMouseEnter,
+    onMouseLeave,
+    onFocus,
+    onBlur,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -152,24 +156,41 @@ export const Toast = (props: ToastProps) => {
       data-state={state}
       data-paused={paused ? 'true' : undefined}
       className={cx(classes.root, className)}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
       {...otherProps}
+      // Consumer handlers run alongside the pause logic, never instead of it,
+      // so an analytics listener cannot let the toast time out while hovered.
+      onMouseEnter={(event) => {
+        setPaused(true);
+        onMouseEnter?.(event);
+      }}
+      onMouseLeave={(event) => {
+        setPaused(false);
+        onMouseLeave?.(event);
+      }}
+      onFocus={(event) => {
+        setPaused(true);
+        onFocus?.(event);
+      }}
+      onBlur={(event) => {
+        setPaused(false);
+        onBlur?.(event);
+      }}
     >
-      {iconName && (
-        <Box className={classes.icon}>
-          <Icon
-            name={iconName}
-            size="20"
-            fill={toneIconColors[tone]}
-            aria-hidden="true"
-          />
-        </Box>
-      )}
+      <Box className={classes.icon}>
+        <Icon
+          name={iconName}
+          size="20"
+          fill={toneIconColors[tone]}
+          aria-hidden="true"
+        />
+      </Box>
       <Box className={classes.content}>
-        <Text textStyle="body.sm" color="text" className={classes.message}>
+        <Text
+          textStyle="body.sm"
+          lineHeight="tight"
+          color="text"
+          className={classes.message}
+        >
           {children}
         </Text>
         {hasActions && (

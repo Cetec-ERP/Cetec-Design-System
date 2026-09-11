@@ -17,12 +17,12 @@ import { splitProps } from '~/utils/splitProps';
 /** Visual weight of a {@link PageBanner}. */
 export type PageBannerEmphasis = 'subtle' | 'bold';
 
-const toneIconNames: Record<AlertTone, IconNamesList | null> = {
+const toneIconNames: Record<AlertTone, IconNamesList> = {
   info: 'info',
   success: 'success',
   warning: 'warning',
   danger: 'error',
-  neutral: null,
+  neutral: 'info',
 };
 
 const subtleIconColors: Record<AlertTone, ColorToken> = {
@@ -69,7 +69,7 @@ export type PageBannerProps = Omit<
  * decision, not the reader's. Use `Alert` for a message scoped to one section.
  *
  * Renders a `div` with `role="alert"` when `tone` is `danger` and
- * `role="status"` otherwise. `tone="neutral"` renders no icon.
+ * `role="status"` otherwise. `tone="neutral"` uses the info icon.
  *
  * @example
  * ```tsx
@@ -106,11 +106,9 @@ export const PageBanner = (props: PageBannerProps) => {
       className={cx(classes.root, className)}
       {...otherProps}
     >
-      {iconName && (
-        <Box className={classes.icon}>
-          <Icon name={iconName} size="20" fill={iconColor} aria-hidden="true" />
-        </Box>
-      )}
+      <Box className={classes.icon}>
+        <Icon name={iconName} size="20" fill={iconColor} aria-hidden="true" />
+      </Box>
       <Box className={classes.content}>
         <Text textStyle="body.sm" color={textColor} className={classes.message}>
           {children}

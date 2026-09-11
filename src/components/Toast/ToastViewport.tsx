@@ -61,6 +61,7 @@ export const ToastViewport = (props: ToastViewportProps) => {
               tone={entry.tone}
               duration={entry.duration}
               dismissible={entry.dismissible ?? true}
+              dismissLabel={entry.dismissLabel}
               primaryAction={entry.primaryAction}
               secondaryAction={entry.secondaryAction}
               state={entry.closing ? 'closing' : 'open'}

@@ -7,7 +7,7 @@ const pageBannerBase = {
     ...globalBaseStyles,
     display: 'flex',
     alignItems: 'center',
-    gap: '12',
+    gap: '8',
     w: 'full',
     px: '24',
     py: '12',
