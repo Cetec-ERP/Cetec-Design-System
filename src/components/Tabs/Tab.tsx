@@ -77,10 +77,10 @@ export const Tab = (props: TabProps) => {
     <Box className={classes.badge}>
       {badgeTooltip ? (
         <Tooltip text={badgeTooltip}>
-          <Badge count={badge} />
+          <Badge count={badge} variant="subtle" />
         </Tooltip>
       ) : (
-        <Badge count={badge} />
+        <Badge count={badge} variant="subtle" />
       )}
     </Box>
   ) : null;

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { expect, userEvent, waitFor, within } from '@storybook/test';
+
 import { Box } from '../Box';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
@@ -282,4 +284,154 @@ export const ExWorkView: Story = {
   name: 'Ex: Work View',
   parameters: { controls: { disable: true } },
   render: () => <WorkView />,
+};
+
+export const DisabledFirstTab: Story = {
+  name: 'Test: disabled first tab is not the default',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Box>
+      <Text pb="12" color="text.subtlest">
+        No `defaultValue` is given and the first tab is disabled. The strip
+        selects the first enabled tab so the keyboard can still enter it.
+      </Text>
+      <Tabs {...args}>
+        <Tab value="archived" disabled>
+          Archived
+        </Tab>
+        <Tab value="open">Open</Tab>
+        <Tab value="closed">Closed</Tab>
+        <TabPanel value="archived">
+          <Text py="16">Archived content.</Text>
+        </TabPanel>
+        <TabPanel value="open">
+          <Text py="16">Open content.</Text>
+        </TabPanel>
+        <TabPanel value="closed">
+          <Text py="16">Closed content.</Text>
+        </TabPanel>
+      </Tabs>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const open = canvas.getByRole('tab', { name: 'Open' });
+
+    await expect(open).toHaveAttribute('aria-selected', 'true');
+    await expect(open).toHaveAttribute('tabindex', '0');
+    await expect(canvas.getByRole('tab', { name: 'Archived' })).toHaveAttribute(
+      'aria-selected',
+      'false',
+    );
+
+    // Tab from the page body lands on the strip's only focusable tab.
+    await userEvent.tab();
+    await expect(open).toHaveFocus();
+  },
+};
+
+export const BadgeKeepsHeight: Story = {
+  name: 'Test: badge does not change tab height',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Box display="flex" flexDirection="column" gap="16">
+      <Text color="text.subtlest">
+        Both strips are 40px tall. The 20px badge sits inside the 22px line box
+        and never grows the tab. Matches Figma `_TabsTab`.
+      </Text>
+      <Tabs {...args} aria-label="Without badges" defaultValue="work">
+        <Tab value="work">Work</Tab>
+        <Tab value="materials">Materials</Tab>
+      </Tabs>
+      <Tabs {...args} aria-label="With badges" defaultValue="work">
+        <Tab value="work" badge={3}>
+          Work
+        </Tab>
+        <Tab value="materials" badge={12} badgeTooltip="12 Short Part(s)">
+          Materials
+        </Tab>
+      </Tabs>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [plain, badged] = canvas.getAllByRole('tablist');
+
+    await expect(badged?.offsetHeight).toBe(plain?.offsetHeight);
+
+    for (const tab of canvas.getAllByRole('tab')) {
+      await expect(tab.offsetHeight).toBe(40);
+    }
+  },
+};
+
+const fitTabs = ['Work', 'Info', 'Materials', 'Status'];
+
+export const ToggleReserveOnlyOnOverflow: Story = {
+  name: 'Test: toggle space is reserved only once tabs overflow',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Box>
+      <Text pb="12" color="text.subtlest">
+        The wrapper is sized to the strip plus 16px, which is less than the 32px
+        toggle reserve. Every tab fits, so no toggle renders. Shrinking it below
+        the strip makes the toggle appear.
+      </Text>
+      <Box
+        data-fit-wrapper
+        borderWidth="1"
+        borderStyle="dashed"
+        borderColor="border"
+      >
+        <Tabs {...args} defaultValue="work">
+          {fitTabs.map((label) => (
+            <Tab key={label} value={label.toLowerCase()}>
+              {label}
+            </Tab>
+          ))}
+          {fitTabs.map((label) => (
+            <TabPanel key={label} value={label.toLowerCase()}>
+              <Text py="16">{label} content.</Text>
+            </TabPanel>
+          ))}
+        </Tabs>
+      </Box>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const wrapper =
+      canvasElement.querySelector<HTMLElement>('[data-fit-wrapper]');
+    const list = canvas.getByRole('tablist');
+    const tabs = canvas.getAllByRole('tab');
+
+    if (!wrapper) throw new Error('wrapper not found');
+
+    const gap = Number.parseFloat(getComputedStyle(list).columnGap) || 0;
+    const needed =
+      tabs.reduce((sum, tab) => sum + tab.getBoundingClientRect().width, 0) +
+      gap * (tabs.length - 1);
+
+    // Room for every tab, but not for the 32px toggle on top of them.
+    wrapper.style.width = `${String(Math.ceil(needed) + 16)}px`;
+
+    await waitFor(async () => {
+      await expect(canvas.getAllByRole('tab')).toHaveLength(fitTabs.length);
+      await expect(
+        canvas.queryByRole('button', { name: 'More tabs' }),
+      ).not.toBeInTheDocument();
+    });
+
+    // Now genuinely too narrow: the toggle renders and at least one tab hides.
+    wrapper.style.width = `${String(Math.floor(needed) - 8)}px`;
+
+    await waitFor(async () => {
+      await expect(
+        canvas.getByRole('button', { name: 'More tabs' }),
+      ).toBeInTheDocument();
+      await expect(canvas.getAllByRole('tab').length).toBeLessThan(
+        fitTabs.length,
+      );
+    });
+  },
 };

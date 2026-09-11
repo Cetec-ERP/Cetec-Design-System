@@ -8,8 +8,7 @@ import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box';
-import { Button } from '../Button';
-import { Icon } from '../Icon';
+import { IconButton } from '../IconButton';
 import { Menu, MenuItem } from '../Menu';
 
 import {
@@ -25,9 +24,9 @@ import { useTabs } from './useTabs';
 /**
  * Groups related content into a single view with one panel visible at a time.
  *
- * Compose it from `Tab` and `TabPanel` children; the first `Tab` is selected by
- * default. Selection is uncontrolled with `defaultValue` or controlled with
- * `value` plus `onChange`. Tabs that do not fit the available width move into
+ * Compose it from `Tab` and `TabPanel` children; the first enabled `Tab` is
+ * selected by default. Selection is uncontrolled with `defaultValue` or
+ * controlled with `value` plus `onChange`. Tabs that do not fit the available width move into
  * an overflow menu at the end of the strip, and the selected tab always stays
  * visible. Every panel stays mounted and hidden unless `unmountInactive` is
  * set, so read `useTabPanelActive()` to pause work in a hidden panel.
@@ -139,17 +138,13 @@ export const Tabs = (props: TabsProps) => {
                 placement="bottom-end"
                 className={classes.menu}
                 trigger={
-                  <Button
+                  <IconButton
                     variant="ghost"
-                    size="sm"
-                    aria-label="More tabs"
+                    size="md"
+                    iconName={isOverflowOpen ? 'caret-up' : 'caret-down'}
+                    altText="More tabs"
                     aria-haspopup="menu"
-                  >
-                    <Icon
-                      name={isOverflowOpen ? 'caret-up' : 'caret-down'}
-                      aria-hidden
-                    />
-                  </Button>
+                  />
                 }
               >
                 {overflowTabs.map((tab) => (

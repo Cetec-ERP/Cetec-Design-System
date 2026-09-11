@@ -123,7 +123,11 @@ export const useTabs = ({
     return next;
   }, [tabs]);
 
-  const firstValue = tabValues[0] ?? '';
+  // The default selection must be reachable: a disabled tab has no focusable
+  // button, and every other tab sits at tabIndex -1, so selecting a disabled
+  // first tab would leave keyboard users with no way into the tablist.
+  const firstValue =
+    tabs.find((tab) => !tab.disabled)?.value ?? tabValues[0] ?? '';
 
   const [storedValue, setStoredValue] = useControllableState<string>({
     value,
@@ -131,7 +135,7 @@ export const useTabs = ({
   });
 
   // A conditionally rendered tab can disappear while selected. Fall back to the
-  // first remaining tab instead of leaving the selection dangling.
+  // first remaining enabled tab instead of leaving the selection dangling.
   const selectedValue = tabValues.includes(storedValue)
     ? storedValue
     : firstValue;

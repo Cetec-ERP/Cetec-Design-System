@@ -56,10 +56,13 @@ const areKeysEqual = <TKey extends OverflowItemKey>(
  * Splits a row of items into the ones that fit and the ones that overflow.
  *
  * Implements the "priority plus" pattern: usable width is the container's
- * client width minus its horizontal padding and a reserve for the overflow
- * toggle, and candidates compete for that width ordered by distance from
- * `activeItem`, so the items nearest the active one win. The first candidate
- * that does not fit ends the walk, and everything after it overflows too;
+ * client width minus its horizontal padding, with the container's column gap
+ * charged between items. A reserve for the overflow toggle is subtracted only
+ * once the row is known to overflow, so a row that fits never loses an item to
+ * a toggle that is not rendered. Candidates compete for that width ordered by
+ * distance from `activeItem`, so the items nearest the active one win. The
+ * first candidate that does not fit ends the walk, and everything after it
+ * overflows too;
  * later, narrower items are not squeezed in because that reorders the row
  * unpredictably. `activeItem` is always forced back into `visible`.
  *
@@ -105,7 +108,8 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
     const paddingInline =
       Number.parseFloat(styles.paddingLeft || '0') +
       Number.parseFloat(styles.paddingRight || '0');
-    const usable = container.clientWidth - paddingInline - reserve;
+    const gap = Number.parseFloat(styles.columnGap || '0') || 0;
+    const fullWidth = container.clientWidth - paddingInline;
 
     const widths = items.map(
       (key) => getItemElement(key)?.offsetWidth ?? Number.POSITIVE_INFINITY,
@@ -122,7 +126,8 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
         return distance === 0 ? a - b : distance;
       });
 
-    const fit = (forcedIndex: number | null) => {
+    // Each kept item after the first also costs one column gap.
+    const fit = (forcedIndex: number | null, usable: number) => {
       const kept = new Set<number>();
       let used = 0;
 
@@ -134,7 +139,7 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
       for (const index of byDistanceFromActive) {
         if (kept.has(index)) continue;
 
-        const width = widths[index] ?? 0;
+        const width = (widths[index] ?? 0) + (kept.size > 0 ? gap : 0);
         // Once one candidate does not fit, everything after it overflows too.
         if (used + width > usable) break;
 
@@ -145,11 +150,20 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
       return kept;
     };
 
-    let kept = fit(null);
+    // Try the full width first: the toggle only exists once something
+    // overflows, so reserving its space up front would hide an item that fits.
+    let kept = fit(null, fullWidth);
 
-    // The active item must always end up visible.
-    if (activeIndex !== -1 && !kept.has(activeIndex)) {
-      kept = fit(activeIndex);
+    if (kept.size < items.length) {
+      // Something overflows, so the toggle renders: hold back its width plus
+      // the gap that separates it from the last visible item.
+      const usable = fullWidth - reserve - gap;
+      kept = fit(null, usable);
+
+      // The active item must always end up visible.
+      if (activeIndex !== -1 && !kept.has(activeIndex)) {
+        kept = fit(activeIndex, usable);
+      }
     }
 
     const nextVisible: TKey[] = [];

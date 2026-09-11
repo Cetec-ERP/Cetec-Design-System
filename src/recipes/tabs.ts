@@ -20,6 +20,9 @@ export const tabsRecipe = defineSlotRecipe({
       display: 'flex',
       alignItems: 'stretch',
       flexWrap: 'nowrap',
+      // Figma `Tabs` tablist: 8px between tabs, with each tab carrying 6px of
+      // its own inline padding so the underline hugs the label.
+      gap: '8',
       minWidth: '0',
       width: 'full',
       // The 1px rule the strip sits on. Each tab's 2px underline overlaps it.
@@ -39,7 +42,10 @@ export const tabsRecipe = defineSlotRecipe({
       appearance: 'none',
       bg: 'transparent',
       cursor: 'pointer',
-      px: '12',
+      px: '6',
+      // 8px above and below the 22px line box, plus the 2px underline, makes
+      // the 40px tab in Figma `_TabsTab`. The 20px badge sits inside the line
+      // box, so showing it never changes the tab's height.
       py: '8',
       fontSize: '14',
       lineHeight: 'default',
@@ -60,6 +66,10 @@ export const tabsRecipe = defineSlotRecipe({
       _selected: {
         color: 'text',
         borderBottomColor: 'border.bold',
+        // The selected underline does not react to hover.
+        _hover: {
+          borderBottomColor: 'border.bold',
+        },
       },
       _focusVisible: {
         outlineWidth: '2',
@@ -83,6 +93,8 @@ export const tabsRecipe = defineSlotRecipe({
       display: 'inline-flex',
       alignItems: 'center',
       flexShrink: '0',
+      // Keep the badge from adding a line box of its own to the tab.
+      lineHeight: 'none',
     },
     overflow: {
       display: 'inline-flex',
