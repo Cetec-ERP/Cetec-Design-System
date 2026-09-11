@@ -367,6 +367,91 @@ export const AllowCustomValue: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ControlledCustomValueChip: Story = {
+  render: function ControlledCustomValueChipRender() {
+    const [value, setValue] = useState<string | null>('ABC');
+
+    return (
+      <Box w="sm">
+        <Autocomplete
+          allowCustomValue
+          value={value}
+          onValueChange={setValue}
+          getCreateOptionLabel={(query) => `Search for “${query}”`}
+          name="controlled-custom"
+          aria-label="Part search"
+        >
+          {renderOptions()}
+        </Autocomplete>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const removeChip = canvas.getByRole('button', { name: 'Remove ABC' });
+    await expect(removeChip.parentElement).toHaveAttribute('data-new', 'true');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const CommitCustomValueOnBlur: Story = {
+  render: function CommitCustomValueOnBlurRender() {
+    const [value, setValue] = useState<string | null>(null);
+
+    return (
+      <Box w="sm" display="flex" flexDirection="column" gap="12">
+        <Autocomplete
+          allowCustomValue
+          value={value}
+          onValueChange={setValue}
+          getCreateOptionLabel={(query) => `Search for “${query}”`}
+          name="blur-commit"
+          aria-label="Vendor search"
+        >
+          {renderOptions()}
+        </Autocomplete>
+        <Button type="button">Next field</Button>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'Acme');
+    await userEvent.tab();
+    const removeChip = canvas.getByRole('button', { name: 'Remove Acme' });
+    await expect(removeChip).toBeInTheDocument();
+    await expect(removeChip.parentElement).toHaveAttribute('data-new', 'true');
+
+    await userEvent.click(removeChip);
+    await userEvent.click(input);
+    await userEvent.type(input, 'abc');
+    await userEvent.keyboard('{Escape}');
+    await expect(input).toHaveValue('');
+    await userEvent.tab();
+    await expect(
+      canvas.queryByRole('button', { name: 'Remove abc' }),
+    ).not.toBeInTheDocument();
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ScrollableListbox: Story = {
+  render: () => (
+    <Box w="sm">
+      <Autocomplete
+        defaultOpen
+        name="scrollable"
+        aria-label="Scrollable technologies"
+      >
+        {renderOptions(extendedOptions)}
+      </Autocomplete>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 export const Loading: Story = {
   render: () => (
     <Box w="sm">

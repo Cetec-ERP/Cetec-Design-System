@@ -37,6 +37,7 @@ import {
   isAutocompleteOptionMatch,
   mergeAutocompleteOptions,
   normalizeAutocompleteOptions,
+  resolveSelectedAutocompleteOption,
 } from './utils';
 
 import type {
@@ -146,6 +147,9 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itemRefs = useRef<Array<HTMLElement | null>>([]);
   const tokenRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  // Escape cancels a pending custom value; blur/outside-press must not commit
+  // until the user types again.
+  const suppressCreateCommitRef = useRef(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [focusedWithin, setFocusedWithin] = useState(false);
   const [createdOptions, setCreatedOptions] = useState<
@@ -160,6 +164,10 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
   const options = useMemo(
     () => mergeAutocompleteOptions(baseOptions, createdOptions),
     [baseOptions, createdOptions],
+  );
+  const childOptionByValue = useMemo(
+    () => new Map(baseOptions.map((option) => [option.value, option])),
+    [baseOptions],
   );
   const optionByValue = useMemo(
     () => new Map(options.map((option) => [option.value, option])),
@@ -223,8 +231,15 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
   );
   const selectedOptions = useMemo(
     () =>
-      selectedValues.map((selectedValue) => optionByValue.get(selectedValue)),
-    [optionByValue, selectedValues],
+      selectedValues.map((selectedValue) =>
+        resolveSelectedAutocompleteOption(
+          selectedValue,
+          childOptionByValue,
+          optionByValue,
+          allowCustomValue,
+        ),
+      ),
+    [allowCustomValue, childOptionByValue, optionByValue, selectedValues],
   );
   const selectedLabels = useMemo(
     () =>
@@ -276,6 +291,52 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     ? (activeIndex ?? (firstEnabledIndex >= 0 ? firstEnabledIndex : null))
     : null;
 
+  const focusInput = useCallback(() => {
+    inputRef.current?.focus();
+  }, []);
+  const handleOptionSelect = useCallback(
+    (
+      option: AutocompleteOptionData,
+      { restoreFocus = true }: { restoreFocus?: boolean } = {},
+    ) => {
+      if (option.disabled) {
+        return;
+      }
+
+      if (option.created) {
+        const createdOption = { ...option, label: option.value };
+        setCreatedOptions((currentOptions) =>
+          mergeAutocompleteOptions(currentOptions, [createdOption]),
+        );
+        state.selectOption(createdOption, 'create-option');
+        setAnnouncement(`${option.value} created and selected.`);
+      } else {
+        state.selectOption(option);
+        setAnnouncement(`${option.label} selected.`);
+      }
+
+      setActiveIndex(null);
+      if (restoreFocus) {
+        requestAnimationFrame(focusInput);
+      }
+    },
+    [focusInput, state],
+  );
+  const tryCommitCreateOption = useCallback(() => {
+    if (
+      !createOption ||
+      disabled ||
+      readOnly ||
+      suppressCreateCommitRef.current
+    ) {
+      return false;
+    }
+
+    // Blur / outside-press must not steal focus back to the input.
+    handleOptionSelect(createOption, { restoreFocus: false });
+    return true;
+  }, [createOption, disabled, handleOptionSelect, readOnly]);
+
   const handleFloatingOpenChange = useCallback(
     (nextOpen: boolean, _event?: Event, reason?: string) => {
       if (nextOpen) {
@@ -284,9 +345,35 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
       }
 
       setActiveIndex(null);
-      state.closePopup(getDismissReason(reason));
+      const dismissReason = getDismissReason(reason);
+
+      if (dismissReason === 'escape') {
+        // Cancel the draft: do not commit, and clear typed text so blur cannot
+        // leave a ghost query in the field.
+        suppressCreateCommitRef.current = true;
+        if (allowCustomValue) {
+          state.clearInputValue();
+        }
+        state.closePopup(dismissReason);
+        return;
+      }
+
+      // Outside dismiss (click away) commits a pending custom value; Escape does not.
+      if (dismissReason === 'outside-press') {
+        const committed = tryCommitCreateOption();
+        if (committed) {
+          // Single-select create already closed via `selection`; multiple stays
+          // open after create, so force-close on outside dismiss.
+          if (multiple) {
+            state.closePopup('outside-press');
+          }
+          return;
+        }
+      }
+
+      state.closePopup(dismissReason);
     },
-    [state],
+    [allowCustomValue, multiple, state, tryCommitCreateOption],
   );
   const floating = useOverlayFloating({
     open: isOpen,
@@ -330,36 +417,9 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
   const visibleTagCount = shouldLimitTags ? limitTags : selectedValues.length;
   const visibleSelectedValues = selectedValues.slice(0, visibleTagCount);
   const hiddenTagCount = selectedValues.length - visibleSelectedValues.length;
-  const focusInput = useCallback(() => {
-    inputRef.current?.focus();
-  }, []);
   const focusToken = useCallback((index: number) => {
     tokenRefs.current[index]?.focus();
   }, []);
-
-  const handleOptionSelect = useCallback(
-    (option: AutocompleteOptionData) => {
-      if (option.disabled) {
-        return;
-      }
-
-      if (option.created) {
-        const createdOption = { ...option, label: option.value };
-        setCreatedOptions((currentOptions) =>
-          mergeAutocompleteOptions(currentOptions, [createdOption]),
-        );
-        state.selectOption(createdOption, 'create-option');
-        setAnnouncement(`${option.value} created and selected.`);
-      } else {
-        state.selectOption(option);
-        setAnnouncement(`${option.label} selected.`);
-      }
-
-      setActiveIndex(null);
-      requestAnimationFrame(focusInput);
-    },
-    [focusInput, state],
-  );
 
   const removeSelectedValue = useCallback(
     (selectedValue: string, label: string) => {
@@ -422,6 +482,7 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
 
   const handleInputChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
+      suppressCreateCommitRef.current = false;
       setActiveIndex(null);
       state.setInputValue(event.target.value);
     },
@@ -510,11 +571,15 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
         if (!isInsideRoot && !isInsideFloating) {
           setFocusedWithin(false);
           setActiveIndex(null);
+          const committed = tryCommitCreateOption();
+          if (committed && !multiple) {
+            return;
+          }
           state.closePopup('outside-press');
         }
       });
     },
-    [state],
+    [multiple, state, tryCommitCreateOption],
   );
   const handleFocusCapture = useCallback(() => {
     setFocusedWithin(true);

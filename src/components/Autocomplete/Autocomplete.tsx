@@ -70,7 +70,12 @@ type AutocompleteBaseProps = Omit<
     ) => void;
     /**
      * Offers the current input as a selectable option when it has no exact
-     * match.
+     * match. Commits that custom value on blur or outside dismiss when the
+     * input still has typed content and no option was selected. Escape
+     * cancels the pending create, clears the typed draft, and a later blur
+     * does not commit until the user types again. Selected values that are
+     * not child `Option`s render as search chips (`data-new`), including
+     * controlled/hydrated values.
      *
      * @default false
      */
