@@ -106,6 +106,42 @@ export const getAutocompleteValueArray = (
   return typeof value === 'string' ? [value] : [];
 };
 
+/**
+ * Resolves chip metadata for a selected value.
+ *
+ * Child `Option`s win (exact pick). When `allowCustomValue` is on and the
+ * value is not a child option, treat it as created so controlled/hydrated
+ * custom values keep search-chip (`data-new`) styling.
+ */
+export const resolveSelectedAutocompleteOption = (
+  selectedValue: string,
+  childOptionByValue: ReadonlyMap<string, AutocompleteOptionData>,
+  optionByValue: ReadonlyMap<string, AutocompleteOptionData>,
+  allowCustomValue: boolean,
+): AutocompleteOptionData | undefined => {
+  const childOption = childOptionByValue.get(selectedValue);
+
+  if (childOption) {
+    return childOption;
+  }
+
+  const mergedOption = optionByValue.get(selectedValue);
+
+  if (mergedOption?.created) {
+    return mergedOption;
+  }
+
+  if (allowCustomValue) {
+    return {
+      value: selectedValue,
+      label: selectedValue,
+      created: true,
+    };
+  }
+
+  return mergedOption;
+};
+
 export const getFirstEnabledOptionIndex = (
   options: readonly AutocompleteOptionData[],
 ) => options.findIndex((option) => !option.disabled);
