@@ -775,7 +775,9 @@ export const colors = defineSemanticTokens.colors({
       },
     },
     success: {
-      value: { base: '{colors.green.60}', _dark: '{colors.green.50}' },
+      DEFAULT: {
+        value: { base: '{colors.green.60}', _dark: '{colors.green.50}' },
+      },
     },
     warning: {
       DEFAULT: {
@@ -792,7 +794,11 @@ export const colors = defineSemanticTokens.colors({
       DEFAULT: { value: { base: '{colors.red.70}', _dark: '{colors.red.50}' } },
       inverse: { value: { base: '{colors.red.10}', _dark: '{colors.red.70}' } },
     },
-    info: { value: { base: '{colors.blue.60}', _dark: '{colors.blue.50}' } },
+    info: {
+      DEFAULT: {
+        value: { base: '{colors.blue.60}', _dark: '{colors.blue.50}' },
+      },
+    },
     cta: {
       DEFAULT: {
         value: { base: '{colors.gold.50}', _dark: '{colors.gold.60}' },
