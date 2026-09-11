@@ -149,6 +149,18 @@ export {
 } from './components/Radio';
 export { RadioInput, type RadioInputProps } from './components/RadioInput';
 export { Spinner, type SpinnerProps } from './components/Spinner';
+export {
+  Tab,
+  TabPanel,
+  Tabs,
+  type TabPanelProps,
+  type TabPanelRenderProps,
+  type TabProps,
+  type TabsChangeEvent,
+  type TabsChangeHandler,
+  type TabsChangeReason,
+  type TabsProps,
+} from './components/Tabs';
 export { Tag, type TagProps } from './components/Tag';
 export {
   Autocomplete,
@@ -194,6 +206,10 @@ export {
   useMenuRootContext,
 } from './components/Menu/context/menuContext';
 export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
+export {
+  useTabPanelActive,
+  useTabsContext,
+} from './components/Tabs/context/tabsContext';
 
 // TanStack Form — peer dependency re-exported for a single library instance
 export { useForm } from '@tanstack/react-form';
@@ -206,7 +222,14 @@ export { ThemeProvider, useTheme } from './system/context';
 export { splitProps } from './utils/splitProps';
 
 // Export hooks
-export { useMediaQuery, useContainerQuery } from './system/hooks';
+export {
+  useMediaQuery,
+  useContainerQuery,
+  useOverflowItems,
+  type OverflowItemKey,
+  type UseOverflowItemsOptions,
+  type UseOverflowItemsResult,
+} from './system/hooks';
 
 // Export the Panda CSS preset
 export { cetecPreset } from './cetec-preset';
