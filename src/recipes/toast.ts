@@ -10,6 +10,7 @@ const toastBase = {
    */
   viewport: {
     position: 'fixed',
+    left: { base: '24', xs: 'auto' },
     right: '24',
     bottom: '24',
     display: 'flex',
@@ -26,7 +27,7 @@ const toastBase = {
     alignItems: 'flex-start',
     gap: '8',
     w: 'full',
-    minW: 'xs',
+    minW: { base: '0', xs: 'xs' },
     maxW: 'sm',
     p: '12',
     borderRadius: '8',
