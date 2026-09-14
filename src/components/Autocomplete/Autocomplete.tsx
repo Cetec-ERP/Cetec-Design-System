@@ -69,17 +69,31 @@ type AutocompleteBaseProps = Omit<
       reason: AutocompleteOpenChangeReason,
     ) => void;
     /**
-     * Offers the current input as a selectable option when it has no exact
-     * match. Commits that custom value on blur or outside dismiss when the
-     * input still has typed content and no option was selected. Escape
-     * cancels the pending create, clears the typed draft, and a later blur
-     * does not commit until the user types again. Selected values that are
-     * not child `Option`s render as search chips (`data-new`), including
-     * controlled/hydrated values.
+     * Offers the current input as a selectable create option whenever there is
+     * typed text. The create option stays first and is the default action;
+     * choosing a catalog option requires an explicit click or Enter on that
+     * row. Blur and outside dismiss commit create; Escape cancels and clears
+     * the draft.
+     *
+     * Intended for single-select. Consumers should use `multiple={false}` when
+     * enabling custom values (switch modes in the app if needed).
      *
      * @default false
      */
     allowCustomValue?: boolean;
+    /**
+     * Forces search-chip (`data-new`) styling for the controlled single value,
+     * even when a child `Option` shares that value. Consumers should set this
+     * on hydrate (for example when a URL exact flag is absent) and on every
+     * change from `onValueChange`: `'create-option'` → true,
+     * `'select-option'` → false.
+     *
+     * Single-select only; ignored when `multiple` is true.
+     *
+     * @default undefined (infer: unmatched values are custom when
+     * `allowCustomValue` is on; matching `Option`s are exact)
+     */
+    isCustomValue?: boolean;
     /** Creates the visible label for a custom-value option. */
     getCreateOptionLabel?: (inputValue: string) => string;
     /**
@@ -279,6 +293,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
     selectedLabels,
     selectedOptions,
     selectedValues,
+    selectionIsCreated,
     setFloatingRef,
     setItemRef,
     setTokenRef,
@@ -440,6 +455,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
                 onSelect={handleOptionSelect}
                 query={currentInputValue.trim()}
                 selectedValues={selectedValues}
+                selectionIsCreated={selectionIsCreated}
                 setItemRef={setItemRef}
                 statusClassName={classes.status}
                 value={currentValue}

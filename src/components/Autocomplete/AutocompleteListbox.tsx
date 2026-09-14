@@ -35,6 +35,8 @@ type AutocompleteListboxProps = {
   onSelect: (option: AutocompleteOptionData) => void;
   query: string;
   selectedValues: readonly string[];
+  /** When true, the current single selection is a custom/create value. */
+  selectionIsCreated?: boolean;
   setItemRef: (index: number, node: HTMLElement | null) => void;
   statusClassName: string;
   value: AnyAutocompleteValue;
@@ -61,6 +63,7 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
     onSelect,
     query,
     selectedValues,
+    selectionIsCreated = false,
     setItemRef,
     statusClassName,
     value,
@@ -86,9 +89,14 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
       {...floatingProps}
     >
       {items.map((option, index) => {
-        const selected = multiple
+        const valueSelected = multiple
           ? selectedValueSet.has(option.value)
           : value === option.value;
+        // Same string can appear as both create and catalog rows; only one
+        // intent should look selected.
+        const selected = option.created
+          ? valueSelected && selectionIsCreated
+          : valueSelected && (multiple || !selectionIsCreated);
 
         return (
           <ListItem

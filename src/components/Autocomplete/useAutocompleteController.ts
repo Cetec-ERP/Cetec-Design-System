@@ -33,7 +33,6 @@ import { useAutocompleteState } from './useAutocompleteState';
 import {
   getAutocompleteValueArray,
   getFirstEnabledOptionIndex,
-  isAutocompleteExactMatch,
   isAutocompleteOptionMatch,
   mergeAutocompleteOptions,
   normalizeAutocompleteOptions,
@@ -105,6 +104,7 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     onOpenChange,
     multiple = false,
     allowCustomValue = false,
+    isCustomValue,
     getCreateOptionLabel = defaultGetCreateOptionLabel,
     limitTags,
     placeholder = 'Select...',
@@ -237,10 +237,19 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
           childOptionByValue,
           optionByValue,
           allowCustomValue,
+          multiple ? undefined : isCustomValue,
         ),
       ),
-    [allowCustomValue, childOptionByValue, optionByValue, selectedValues],
+    [
+      allowCustomValue,
+      childOptionByValue,
+      isCustomValue,
+      multiple,
+      optionByValue,
+      selectedValues,
+    ],
   );
+  const selectionIsCreated = Boolean(!multiple && selectedOptions[0]?.created);
   const selectedLabels = useMemo(
     () =>
       selectedValues.map(
@@ -261,11 +270,10 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
   }, [currentInputValue, options]);
   const createOption = useMemo<AutocompleteOptionData | null>(() => {
     const query = currentInputValue.trim();
-    const hasExactMatch = options.some((option) =>
-      isAutocompleteExactMatch(option, query),
-    );
 
-    if (!allowCustomValue || !query || hasExactMatch) {
+    // Create stays available even when an exact catalog match exists so users
+    // can opt into contains/search behavior; exact pick requires click/Enter.
+    if (!allowCustomValue || !query) {
       return null;
     }
 
@@ -274,7 +282,7 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
       label: getCreateOptionLabel(query),
       created: true,
     };
-  }, [allowCustomValue, currentInputValue, getCreateOptionLabel, options]);
+  }, [allowCustomValue, currentInputValue, getCreateOptionLabel]);
   const navigationItems = useMemo(
     () => (createOption ? [createOption, ...visibleOptions] : visibleOptions),
     [createOption, visibleOptions],
@@ -311,6 +319,11 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
         state.selectOption(createdOption, 'create-option');
         setAnnouncement(`${option.value} created and selected.`);
       } else {
+        setCreatedOptions((currentOptions) =>
+          currentOptions.filter(
+            (createdOption) => createdOption.value !== option.value,
+          ),
+        );
         state.selectOption(option);
         setAnnouncement(`${option.label} selected.`);
       }
@@ -683,6 +696,7 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
     selectedLabels,
     selectedOptions,
     selectedValues,
+    selectionIsCreated,
     setFloatingRef,
     setItemRef,
     setTokenRef,
