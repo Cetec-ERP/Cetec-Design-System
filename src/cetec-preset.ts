@@ -54,7 +54,7 @@ const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
  *
  * @example
  * ```ts
- * import { cetecPreset } from 'cetec-design-system';
+ * import { cetecPreset } from 'cetec-design-system/preset';
  *
  * export default defineConfig({ presets: [cetecPreset] });
  * ```
