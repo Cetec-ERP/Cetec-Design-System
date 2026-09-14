@@ -1,6 +1,6 @@
 import { type RefObject, useMemo, useSyncExternalStore } from 'react';
 
-import { containerSizes } from '~/styles/utilities';
+import { containerSizes } from '~/styles/utilities/containerSizes';
 
 /** Key of a Cetec container-size token. */
 type ContainerSizeKey = keyof typeof containerSizes;
