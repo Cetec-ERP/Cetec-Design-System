@@ -21,3 +21,4 @@ export { calendarRecipe } from './calendar';
 export { dateMenusRecipe } from './dateMenus';
 export { timeMenusRecipe } from './timeMenus';
 export { dateTimeMenusRecipe } from './dateTimeMenus';
+export { tabsRecipe } from './tabs';
