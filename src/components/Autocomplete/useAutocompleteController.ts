@@ -34,7 +34,6 @@ import {
   getAutocompleteValueArray,
   getFirstEnabledOptionIndex,
   isAutocompleteOptionMatch,
-  mergeAutocompleteOptions,
   normalizeAutocompleteOptions,
   resolveSelectedAutocompleteOption,
 } from './utils';
@@ -152,27 +151,20 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
   const suppressCreateCommitRef = useRef(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [focusedWithin, setFocusedWithin] = useState(false);
-  const [createdOptions, setCreatedOptions] = useState<
-    AutocompleteOptionData[]
-  >([]);
   const [announcement, setAnnouncement] = useState('');
 
   const baseOptions = useMemo(
     () => normalizeAutocompleteOptions(children),
     [children],
   );
-  const options = useMemo(
-    () => mergeAutocompleteOptions(baseOptions, createdOptions),
-    [baseOptions, createdOptions],
-  );
+  // Catalog only — session creates must not reappear as list rows (the live
+  // create option is prepended separately). Chip styling uses `isCustomValue`.
+  const options = baseOptions;
   const childOptionByValue = useMemo(
     () => new Map(baseOptions.map((option) => [option.value, option])),
     [baseOptions],
   );
-  const optionByValue = useMemo(
-    () => new Map(options.map((option) => [option.value, option])),
-    [options],
-  );
+  const optionByValue = childOptionByValue;
   const handleValueChange = useCallback(
     (
       nextValue: AutocompleteValue<boolean>,
@@ -313,17 +305,9 @@ export const useAutocompleteController = (props: AutocompleteProps) => {
 
       if (option.created) {
         const createdOption = { ...option, label: option.value };
-        setCreatedOptions((currentOptions) =>
-          mergeAutocompleteOptions(currentOptions, [createdOption]),
-        );
         state.selectOption(createdOption, 'create-option');
         setAnnouncement(`${option.value} created and selected.`);
       } else {
-        setCreatedOptions((currentOptions) =>
-          currentOptions.filter(
-            (createdOption) => createdOption.value !== option.value,
-          ),
-        );
         state.selectOption(option);
         setAnnouncement(`${option.label} selected.`);
       }
