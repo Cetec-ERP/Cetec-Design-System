@@ -105,40 +105,49 @@ export const useTabs = ({
     return descriptors;
   }, [children]);
 
-  // Keep the key array referentially stable while its contents are unchanged,
-  // so overflow measurement does not re-subscribe on every parent render.
-  const tabValuesRef = useRef<string[]>([]);
-  const tabValues = useMemo(() => {
-    const next = tabs.map((tab) => tab.value);
-    const previous = tabValuesRef.current;
-
-    if (
-      previous.length === next.length &&
-      previous.every((item, index) => item === next[index])
-    ) {
-      return previous;
-    }
-
-    tabValuesRef.current = next;
-    return next;
-  }, [tabs]);
+  const tabValues = useMemo(() => tabs.map((tab) => tab.value), [tabs]);
 
   // The default selection must be reachable: a disabled tab has no focusable
   // button, and every other tab sits at tabIndex -1, so selecting a disabled
   // first tab would leave keyboard users with no way into the tablist.
-  const firstValue =
-    tabs.find((tab) => !tab.disabled)?.value ?? tabValues[0] ?? '';
+  const firstValue = tabs.find((tab) => !tab.disabled)?.value ?? '';
 
-  const [storedValue, setStoredValue] = useControllableState<string>({
-    value,
-    defaultValue: defaultValue ?? firstValue,
-  });
+  const [storedValue, setStoredValue, isControlled] =
+    useControllableState<string>({
+      value,
+      defaultValue: defaultValue ?? firstValue,
+    });
 
-  // A conditionally rendered tab can disappear while selected. Fall back to the
-  // first remaining enabled tab instead of leaving the selection dangling.
-  const selectedValue = tabValues.includes(storedValue)
-    ? storedValue
-    : firstValue;
+  // A conditionally rendered or newly disabled tab cannot remain selected:
+  // its button is absent from the tab order and would make the strip
+  // unreachable by keyboard.
+  const storedTab = tabs.find((tab) => tab.value === storedValue);
+  const isStoredValueSelectable = Boolean(storedTab && !storedTab.disabled);
+  const selectedValue = isStoredValueSelectable ? storedValue : firstValue;
+
+  // Controlled parents need to learn about an automatic fallback. Otherwise
+  // the strip can display one selection while the parent's value remains on a
+  // removed tab indefinitely. A ref prevents repeated notifications when a
+  // parent intentionally leaves the invalid value unchanged.
+  const fallbackNotificationRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!isControlled || isStoredValueSelectable || firstValue === '') {
+      fallbackNotificationRef.current = null;
+      return;
+    }
+
+    const notificationKey = `${storedValue}\u0000${firstValue}`;
+    if (fallbackNotificationRef.current === notificationKey) return;
+
+    fallbackNotificationRef.current = notificationKey;
+    onChange?.(null, firstValue, 'fallback-after-removal');
+  }, [
+    firstValue,
+    isControlled,
+    isStoredValueSelectable,
+    onChange,
+    storedValue,
+  ]);
 
   const elementsRef = useRef(new Map<string, HTMLElement>());
 
@@ -168,18 +177,22 @@ export const useTabs = ({
 
   const selectTab = useCallback(
     (event: TabsChangeEvent, nextValue: string, reason: TabsChangeReason) => {
-      if (nextValue === selectedValue) return;
+      if (nextValue === storedValue) return;
 
       setStoredValue(nextValue);
       onChange?.(event, nextValue, reason);
     },
-    [onChange, selectedValue, setStoredValue],
+    [onChange, setStoredValue, storedValue],
   );
 
   // A tab reached by the keyboard can still be in overflow at that moment, and
   // a hidden element cannot take focus. Record the intent and focus it once the
   // next measurement has put it back in the strip.
   const pendingFocusRef = useRef<string | null>(null);
+
+  const focusTab = useCallback((tabValue: string) => {
+    pendingFocusRef.current = tabValue;
+  }, []);
 
   useEffect(() => {
     const pending = pendingFocusRef.current;
@@ -249,6 +262,7 @@ export const useTabs = ({
 
   return {
     hasOverflow,
+    focusTab,
     onTabKeyDown,
     overflowTabs,
     overflowValues: overflow,

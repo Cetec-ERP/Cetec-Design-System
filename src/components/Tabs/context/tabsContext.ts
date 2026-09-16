@@ -11,27 +11,35 @@ import type { BoxProps } from '~/components/Box';
 
 /** Slot class names produced by the `tabs` recipe and shared with tab parts. */
 export type TabsClasses = Record<
-  'root' | 'list' | 'tab' | 'badge' | 'overflow' | 'menu' | 'panel',
+  'root' | 'strip' | 'list' | 'tab' | 'badge' | 'overflow' | 'menu' | 'panel',
   string
 >;
 
-/** React event that produced a tab selection. */
+/** React event that produced a tab selection, or `null` for an automatic fallback. */
 export type TabsChangeEvent =
   | ReactMouseEvent<HTMLElement>
-  | ReactKeyboardEvent<HTMLElement>;
+  | ReactKeyboardEvent<HTMLElement>
+  | null;
 
 /**
  * Why the selected tab changed.
  *
  * `clicked-on-tab` covers direct activation in the tab strip, by pointer or by
  * keyboard. `selected-from-overflow` covers a pick from the overflow menu.
+ * `fallback-after-removal` keeps controlled state aligned when the selected
+ * tab is removed or disabled.
  */
-export type TabsChangeReason = 'clicked-on-tab' | 'selected-from-overflow';
+export type TabsChangeReason =
+  | 'clicked-on-tab'
+  | 'selected-from-overflow'
+  | 'fallback-after-removal';
 
 /**
- * Runs after user interaction selects a different tab.
+ * Runs when user interaction changes the tab or an unavailable controlled
+ * value falls back to the first enabled tab.
  *
- * @param event - The React event that caused the change.
+ * @param event - The React event that caused the change, or `null` when the
+ * selected tab became unavailable.
  * @param value - The `value` of the newly selected tab.
  * @param reason - Which interaction produced the change.
  */

@@ -286,6 +286,65 @@ export const ExWorkView: Story = {
   render: () => <WorkView />,
 };
 
+const ControlledConditionalTabs = () => {
+  const [hasSchedule, setHasSchedule] = useState(true);
+  const [value, setValue] = useState('schedule');
+
+  return (
+    <Box>
+      <Button
+        variant="hollow"
+        size="sm"
+        onClick={() => setHasSchedule((current) => !current)}
+      >
+        {hasSchedule ? 'Remove Schedule tab' : 'Add Schedule tab'}
+      </Button>
+      <Text py="8" data-testid="controlled-value">
+        Parent value: {value}
+      </Text>
+      <Tabs
+        aria-label="Controlled sections"
+        value={value}
+        onChange={(_event, nextValue) => setValue(nextValue)}
+      >
+        <Tab value="work">Work</Tab>
+        {hasSchedule ? <Tab value="schedule">Schedule</Tab> : null}
+        <Tab value="history">History</Tab>
+        <TabPanel value="work">Work content.</TabPanel>
+        <TabPanel value="schedule">Schedule content.</TabPanel>
+        <TabPanel value="history">History content.</TabPanel>
+      </Tabs>
+    </Box>
+  );
+};
+
+export const ControlledFallback: Story = {
+  name: 'Test: controlled value follows a removed tab',
+  parameters: { controls: { disable: true } },
+  render: () => <ControlledConditionalTabs />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.getByRole('tab', { name: 'Schedule' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Remove Schedule tab' }),
+    );
+
+    await waitFor(async () => {
+      await expect(canvas.getByTestId('controlled-value')).toHaveTextContent(
+        'Parent value: work',
+      );
+      await expect(canvas.getByRole('tab', { name: 'Work' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      );
+    });
+  },
+};
+
 export const DisabledFirstTab: Story = {
   name: 'Test: disabled first tab is not the default',
   parameters: { controls: { disable: true } },

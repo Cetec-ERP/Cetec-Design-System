@@ -5,12 +5,18 @@ import { globalBaseStyles } from '~/styles/utilities';
 export const tabsRecipe = defineSlotRecipe({
   className: 'tabs',
   jsx: ['Tabs'],
-  slots: ['root', 'list', 'tab', 'badge', 'overflow', 'menu', 'panel'],
+  slots: ['root', 'strip', 'list', 'tab', 'badge', 'overflow', 'menu', 'panel'],
   base: {
     root: {
       ...globalBaseStyles,
       display: 'flex',
       flexDirection: 'column',
+      minWidth: '0',
+      width: 'full',
+    },
+    strip: {
+      ...globalBaseStyles,
+      position: 'relative',
       minWidth: '0',
       width: 'full',
     },
@@ -97,11 +103,13 @@ export const tabsRecipe = defineSlotRecipe({
       lineHeight: 'none',
     },
     overflow: {
+      position: 'absolute',
+      insetInlineEnd: '0',
+      top: '0',
+      bottom: '0',
       display: 'inline-flex',
       alignItems: 'center',
       flexShrink: '0',
-      marginInlineStart: 'auto',
-      alignSelf: 'center',
     },
     menu: {
       minWidth: '160',

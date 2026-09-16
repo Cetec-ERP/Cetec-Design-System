@@ -62,6 +62,7 @@ export const Tabs = (props: TabsProps) => {
   const [isOverflowOpen, setIsOverflowOpen] = useState(false);
 
   const {
+    focusTab,
     hasOverflow,
     onTabKeyDown,
     overflowTabs,
@@ -121,15 +122,17 @@ export const Tabs = (props: TabsProps) => {
         className={cx(classes.root, className)}
         {...otherProps}
       >
-        <Box
-          ref={listRef}
-          role="tablist"
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledBy}
-          aria-orientation="horizontal"
-          className={classes.list}
-        >
-          {tabChildren}
+        <Box className={classes.strip}>
+          <Box
+            ref={listRef}
+            role="tablist"
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledBy}
+            aria-orientation="horizontal"
+            className={classes.list}
+          >
+            {tabChildren}
+          </Box>
           {hasOverflow && (
             <Box className={classes.overflow}>
               <Menu
@@ -154,6 +157,7 @@ export const Tabs = (props: TabsProps) => {
                     disabled={tab.disabled}
                     selected={tab.value === selectedValue}
                     onClick={(event) => {
+                      focusTab(tab.value);
                       selectTab(event, tab.value, 'selected-from-overflow');
                       setIsOverflowOpen(false);
                     }}
