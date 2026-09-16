@@ -19,7 +19,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Use `RadioInput` for product forms so each option includes a label and reliable hit area. Use `Radio` only for custom composition patterns.',
+          'Use `RadioInput` for product forms so each option includes a label and reliable hit area. Use `Radio` only for custom composition patterns. Both standalone and grouped usage are supported.',
       },
     },
   },
@@ -73,6 +73,31 @@ export const Default: Story = {
           'Recommended usage: `RadioInput` options in a controlled group with user-facing labels.',
       },
     },
+  },
+};
+
+export const Uncontrolled: Story = {
+  name: 'Uncontrolled',
+  render: function UncontrolledRender() {
+    const groupId = useId();
+
+    return (
+      <Box display="grid" gap="10">
+        <RadioInput
+          name={`${groupId}-shipping`}
+          id={`${groupId}-standard`}
+          defaultChecked
+        >
+          Standard shipping
+        </RadioInput>
+        <RadioInput name={`${groupId}-shipping`} id={`${groupId}-express`}>
+          Express shipping
+        </RadioInput>
+      </Box>
+    );
+  },
+  parameters: {
+    controls: { disable: true },
   },
 };
 

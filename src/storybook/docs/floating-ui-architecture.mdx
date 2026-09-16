@@ -128,6 +128,38 @@ import { Text } from '~/components/Text';
 
     <Divider weight="thick" color="border.disabled" my="24" />
 
+    <Heading level="h3">Menu hover, safe polygon, and touch</Heading>
+
+    <Text maxW="prose">
+      Floating UI’s <code>useHover</code> can use <code>safePolygon</code>
+      as <code>handleClose</code> so the pointer can move from the anchor to the
+      floating menu along a “safe” corridor without the menu dismissing.
+      With <code>blockPointerEvents: true</code>, the library may set
+      <code>document.body</code> to <code>pointer-events: none</code> and
+      restore hits only on the active reference and floating nodes
+      (see <Link href="https://github.com/floating-ui/floating-ui/issues/1722" target="_blank" rel="noreferrer noopener" >
+        floating-ui#1722
+      </Link>). That path is aimed at mouse travel; on touch and nested SubMenu
+      flyouts it can prevent taps from reaching deep menu rows or links.
+    </Text>
+
+    <Text maxW="prose">
+      This design system passes <code>blockPointerEvents</code> only when the viewport
+      has no coarse pointer (<code>any-pointer: coarse</code> is false), via the
+      <code>useBlockPointerEventsForHoverPolygon</code> hook.
+      Menu and SubMenu both use it for <code>safePolygon(&#123; blockPointerEvents &#125;)</code>.
+      Hybrid devices (touch + mouse) often report a coarse pointer; in those cases
+      the global body block stays off, and users rely on the polygon logic without that
+      extra layer.
+    </Text>
+
+    <Text maxW="prose">
+      Keyboard navigation (including nested menubar patterns) does not depend on
+      this pointer-events behavior; it is unchanged by this policy.
+    </Text>
+
+    <Divider weight="thick" color="border.disabled" my="24" />
+
     <Heading level="h3">Semantics boundaries</Heading>
 
     <Text maxW="prose">Share mechanics, not semantics:</Text>
@@ -176,7 +208,9 @@ import { Text } from '~/components/Text';
         <Text weight="bold">Nested actions</Text>
         <Text size="14">
           Use <code>Menu</code> + <code>SubMenu</code> with hover or dig-in
-          interaction.
+          interaction. For touch-heavy UIs, <code>subMenuInteraction="digin"</code>{' '}
+          remains a supported pattern; hover flyouts use the safe-polygon policy
+          above on coarse pointers.
         </Text>
       </Card>
 
@@ -249,6 +283,9 @@ import { Text } from '~/components/Text';
         <Text>Menu context layer: <code>src/components/Menu/context/menuContext.ts</code></Text>
       </Box>
       <Box as="li" listStyleType="disc">
+        <Text>Menu hover / safe polygon (touch vs mouse): <code>src/components/Menu/hooks/useBlockPointerEventsForHoverPolygon.ts</code></Text>
+      </Box>
+      <Box as="li" listStyleType="disc">
         <Text>List primitives: <code>src/components/List/</code></Text>
       </Box>
     </Box>
@@ -268,17 +305,16 @@ import { Text } from '~/components/Text';
         <Text>Keep semantics separate even when visuals are shared.</Text>
       </Box>
       <Box as="li" listStyleType="disc">
-        <Text>
-          If behavior is shared across multiple families, place it in
-          <code>src/system/</code>.
-        </Text>
+        <Text> If behavior is shared across multiple families, place it in
+        <code>src/system/</code>.  </Text>
       </Box>
     </Box>
 
     <Box display="grid" gap="4">
-      <Link href="/?path=/docs/docs-panda-patterns--docs">Panda Patterns</Link>
-      <Link href="/?path=/docs/docs-component-standards--docs">Component Standards</Link>
-      <Link href="/?path=/docs/docs-build-reasoning--docs">Build Reasoning</Link>
+      <Link href="/?path=/docs/docs-top-nav-keyboard-ui--documentation">Top Nav Keyboard UI</Link>
+      <Link href="/?path=/docs/docs-panda-patterns--documentation">Panda Patterns</Link>
+      <Link href="/?path=/docs/docs-component-standards--documentation">Component Standards</Link>
+      <Link href="/?path=/docs/docs-build-reasoning--documentation">Build Reasoning</Link>
     </Box>
 
   </VStack>

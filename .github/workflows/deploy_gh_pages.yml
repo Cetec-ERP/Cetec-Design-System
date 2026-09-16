@@ -22,7 +22,9 @@ permissions:
   contents: write
   pull-requests: write
 
-# Prevent concurrent deployments to avoid git conflicts
+# Supersede an in-flight run when the same PR (or main) gets another push.
+# Keyed per-PR on purpose: this is about not wasting runners on stale commits.
+# It does NOT protect the gh-pages branch — see the job-level guard below.
 concurrency:
   group: pages-deploy-${{ github.event.pull_request.number || 'main' }}
   cancel-in-progress: true
@@ -51,6 +53,14 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: validate
     runs-on: ubuntu-latest
+    # Every job that pushes to gh-pages shares ONE global lock. The branch is a
+    # single mutable resource, so two jobs pushing at once produce a
+    # non-fast-forward rejection. Never cancel-in-progress here: a cancelled
+    # deploy leaves the preview unpublished with a green-looking run.
+    concurrency:
+      group: gh-pages-push
+      cancel-in-progress: false
+      queue: max
 
     steps:
       - uses: actions/checkout@v4
@@ -101,6 +111,11 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: validate
     runs-on: ubuntu-latest
+    # Shares the global gh-pages lock — see deploy-main above.
+    concurrency:
+      group: gh-pages-push
+      cancel-in-progress: false
+      queue: max
 
     steps:
       - uses: actions/checkout@v4

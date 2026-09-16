@@ -1,13 +1,5 @@
 {
-  "aliases": [
-    "attachments",
-    "mail",
-    "email",
-    "paperclip",
-    "attachment",
-    "symbol",
-    "helper"
-  ],
+  "aliases": ["attachments", "mail", "email", "paperclip", "attachment"],
   "tags": [],
   "category": "Other",
   "deprecated": false

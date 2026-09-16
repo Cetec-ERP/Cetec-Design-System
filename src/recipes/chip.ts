@@ -2,89 +2,55 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
-const chipBase = {
-  container: {
-    ...globalBaseStyles,
-    position: 'relative',
-    display: 'inline-flex',
-    alignItems: 'center',
-    appearance: 'none',
-    width: 'fit',
-    borderRadius: '999',
-    fontFamily: 'body',
-    lineHeight: 'default',
-    fontWeight: 'medium',
-    whiteSpace: 'nowrap',
-    verticalAlign: 'middle',
-    cursor: 'pointer',
-    transitionDuration: 'fast',
-    transitionProperty: 'background, color',
-    transitionTimingFunction: 'default',
-    userSelect: 'none',
-    border: 'none',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-    outlineColor: 'transparent',
-    bg: 'bg.neutral',
-    color: 'text',
-    _hover: {
-      bg: 'bg.neutral.hovered',
-    },
-    _active: {
-      bg: 'bg.neutral.pressed',
-    },
-    _focusVisible: {
-      outlineColor: 'border.focused',
-    },
-    _loading: {
-      cursor: 'wait',
-      animation: 'pulse',
-    },
-    _deleted: {
-      textDecoration: 'line-through',
-      cursor: 'not-allowed',
-      opacity: 0.6,
-    },
-    _disabled: {
-      cursor: 'not-allowed',
-      bg: 'bg.disabled',
-      color: 'text.disabled',
-      borderColor: 'border.disabled',
-      _hover: {
-        bg: 'bg.disabled',
-        color: 'text.disabled',
-        borderColor: 'border.disabled',
-        chipIcon: { fill: 'icon.disabled' },
-      },
-    },
-    _selected: {
-      bg: 'bg.neutral.boldest',
-      color: 'text.inverse',
-      // chipIcon: { fill: 'icon.decorative.inverse' },
-      _hover: {
-        bg: 'bg.neutral.bold.hovered',
-        // chipIcon: { fill: 'icon.inverse' },
-      },
-      _active: {
-        bg: 'bg.neutral.bold.pressed',
-        // chipIcon: { fill: 'icon.inverse' },
-      },
+const buttonStyles = {
+  appearance: 'none',
+  cursor: 'pointer',
+  transitionDuration: 'fast',
+  transitionProperty: 'background, color',
+  transitionTimingFunction: 'default',
+  _icon: {
+    fill: 'icon.decorative',
+  },
+  _hover: {
+    bg: 'bg.neutral.hovered',
+    _icon: {
+      fill: 'icon',
     },
   },
-  chipIcon: {
-    fill: 'icon.decorative',
-    aspectRatio: 'square',
-    transitionDuration: 'fast',
-    transitionProperty: 'fill',
-    transitionTimingFunction: 'default',
-    _groupHover: { fill: 'icon.decorative.hovered' },
-    _groupActive: { fill: 'icon.decorative.hovered' },
-    _groupDisabled: { fill: 'icon.decorative' },
-
-    '[data-selected=true] &': {
+  _active: {
+    bg: 'bg.neutral.pressed',
+    _icon: {
+      fill: 'icon',
+    },
+  },
+  _focusVisible: {
+    outlineColor: 'border.focused',
+  },
+  _disabled: {
+    cursor: 'not-allowed',
+  },
+  '&:has([data-disabled=true])': {
+    cursor: 'not-allowed',
+  },
+  '&:has([data-deleted=true])': {
+    textDecoration: 'line-through',
+    opacity: '[0.6]',
+  },
+  '&:has([data-selected=true])': {
+    bg: 'bg.neutral.boldest',
+    _icon: {
       fill: 'icon.decorative.inverse',
     },
-    '.group:is(:hover, [data-hover])[data-selected=true] &': {
+  },
+  '&:has([data-selected=true]):is(:hover, [data-hover])': {
+    bg: 'bg.neutral.bold.hovered',
+    _icon: {
+      fill: 'icon.decorative.inverse.hovered',
+    },
+  },
+  '&:has([data-selected=true]):is(:active, [data-active])': {
+    bg: 'bg.neutral.bold.pressed',
+    _icon: {
       fill: 'icon.decorative.inverse.hovered',
     },
   },
@@ -93,101 +59,168 @@ const chipBase = {
 export const chipRecipe = defineSlotRecipe({
   className: 'chip',
   jsx: ['Chip'],
-  slots: ['container', 'chipIcon'],
-  base: chipBase,
+  slots: ['container', 'body', 'mainContent', 'dismissButton', 'slot'],
+  base: {
+    container: {
+      ...globalBaseStyles,
+      '--chip-h': 'token(sizes.24)',
+      '--main-px': 'token(sizes.8)',
+      '--main-fs': 'token(sizes.14)',
+      '--main-slot-side-padding': 'token(sizes.4)',
+      '--slot-size': 'token(sizes.20)',
+      '--slot-px': 'token(sizes.2)',
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'center',
+      width: 'fit',
+      height: 'var(--chip-h)',
+      borderRadius: '999',
+      fontFamily: 'body',
+      lineHeight: 'default',
+      fontWeight: 'medium',
+      whiteSpace: 'nowrap',
+      verticalAlign: 'middle',
+      transitionDuration: 'fast',
+      transitionProperty: 'all',
+      transitionTimingFunction: 'default',
+      userSelect: 'none',
+      bg: 'bg.neutral',
+      _loading: {
+        animation: 'pulse',
+      },
+      '&:has([data-selected=true])': {
+        bg: 'bg.neutral.boldest',
+        color: 'text.inverse',
+      },
+      '&:has([data-disabled=true])': {
+        cursor: 'not-allowed',
+        bg: 'bg.disabled',
+        color: 'text.disabled',
+        opacity: '[0.3]',
+      },
+    },
+    body: {
+      ...globalBaseStyles,
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'center',
+      minW: '0',
+      height: 'var(--chip-h)',
+      flexShrink: '0',
+      bg: 'transparent',
+      border: 'none',
+      borderRadius: '999',
+      outlineWidth: '2',
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 'calc(token(sizes.2) * -1)',
+      'button&': {
+        ...buttonStyles,
+      },
+    },
+    mainContent: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      minW: '0',
+      px: 'var(--main-px)',
+      fontSize: 'var(--main-fs)',
+      color: 'text',
+      '[data-selected=true] > &': {
+        color: 'text.inverse',
+      },
+    },
+    dismissButton: {
+      ...globalBaseStyles,
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minW: '0',
+      flexShrink: '0',
+      bg: 'transparent',
+      border: 'none',
+      borderRadius: '999',
+      outlineWidth: '2',
+      outlineStyle: 'solid',
+      outlineColor: 'transparent',
+      outlineOffset: 'calc(token(sizes.2) * -1)',
+      aspectRatio: 'square',
+      ...buttonStyles,
+      w: 'calc(var(--slot-size) + (var(--slot-px) * 2))',
+      h: 'calc(var(--slot-size) + (var(--slot-px) * 2))',
+      _icon: {
+        fill: 'icon.decorative',
+        width: 'var(--slot-size)',
+        height: 'var(--slot-size)',
+      },
+    },
+    slot: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      px: 'var(--slot-px)',
+    },
+  },
   variants: {
     size: {
-      md: {
-        container: {
-          gap: '4',
-          h: '24',
-          px: '8',
-          py: '1',
-          fontSize: '14',
-        },
-        chipIcon: {
-          w: '20',
-          h: '20',
-        },
-      },
       sm: {
         container: {
-          gap: '2',
-          h: '20',
-          px: '6',
-          py: '0',
-          fontSize: '14',
+          '--chip-h': 'token(sizes.18)',
+          '--main-px': 'token(sizes.6)',
+          '--main-fs': 'token(sizes.12)',
+          '--main-slot-side-padding': 'token(sizes.4)',
+          '--slot-size': 'token(sizes.16)',
+          '--slot-px': 'token(sizes.1)',
         },
-        chipIcon: {
-          w: '20',
-          h: '20',
+      },
+      md: {
+        container: {
+          '--chip-h': 'token(sizes.24)',
+          '--main-px': 'token(sizes.8)',
+          '--main-fs': 'token(sizes.14)',
+          '--main-slot-side-padding': 'token(sizes.4)',
+          '--slot-size': 'token(sizes.20)',
+          '--slot-px': 'token(sizes.2)',
         },
       },
       lg: {
         container: {
-          gap: '4',
-          h: '32',
-          px: '10',
-          py: '4',
-          fontSize: '16',
+          '--chip-h': 'token(sizes.28)',
+          '--main-px': 'token(sizes.10)',
+          '--main-fs': 'token(sizes.16)',
+          '--main-slot-side-padding': 'token(sizes.4)',
+          '--slot-size': 'token(sizes.24)',
+          '--slot-px': 'token(sizes.2)',
         },
-        chipIcon: {
-          w: '24',
-          h: '24',
+      },
+      xl: {
+        container: {
+          '--chip-h': 'token(sizes.32)',
+          '--main-px': 'token(sizes.12)',
+          '--main-fs': 'token(sizes.20)',
+          '--main-slot-side-padding': 'token(sizes.4)',
+          '--slot-size': 'token(sizes.28)',
+          '--slot-px': 'token(sizes.2)',
         },
       },
     },
     before: {
-      true: { container: {} },
+      true: {
+        mainContent: {
+          ps: 'var(--main-slot-side-padding)',
+        },
+      },
     },
     after: {
-      true: { container: {} },
+      true: {
+        mainContent: {
+          pe: 'var(--main-slot-side-padding)',
+        },
+      },
+    },
+    dismissable: {
+      true: {},
     },
   },
-  compoundVariants: [
-    {
-      size: 'md',
-      before: true,
-      css: {
-        container: { ps: '2' },
-      },
-    },
-    {
-      size: 'md',
-      after: true,
-      css: {
-        container: { pe: '2' },
-      },
-    },
-    {
-      size: 'sm',
-      before: true,
-      css: {
-        container: { ps: '2' },
-      },
-    },
-    {
-      size: 'sm',
-      after: true,
-      css: {
-        container: { pe: '2' },
-      },
-    },
-    {
-      size: 'lg',
-      before: true,
-      css: {
-        container: { ps: '4' },
-      },
-    },
-    {
-      size: 'lg',
-      after: true,
-      css: {
-        container: { pe: '4' },
-      },
-    },
-  ],
   defaultVariants: {
     size: 'md',
   },

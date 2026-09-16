@@ -10,36 +10,95 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
 import { Tooltip } from '~/components/Tooltip';
+import { useFieldContext } from '~/system/context/FieldContext';
+import { useSlotContext } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
+/**
+ * Props for {@link IconButton}. Extends {@link BoxProps} for layout and native
+ * element attributes while reserving its visual recipe variants.
+ */
 export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
   IconButtonVariantProps & {
+    /** Icon symbol rendered for the action. */
     iconName: IconNamesList;
+    /**
+     * Required accessible label for the button and text used by its tooltip.
+     * Describe the action, not the icon's shape.
+     */
     altText: string;
+    /** When provided, renders an anchor instead of a native button. */
     href?: string;
+    /**
+     * Shows a centered spinner, hides the icon, and sets `aria-busy`. Loading
+     * does not disable the control; set `disabled` when the action is unavailable.
+     *
+     * @default false
+     */
     loading?: boolean;
+    /** Marks the control as having an error for styling. */
+    error?: boolean;
+    /** Sets `aria-invalid` and marks the control invalid for styling. */
+    invalid?: boolean;
+    /**
+     * Disables a native button. For links, marks the anchor `aria-disabled` and
+     * prevents its default click navigation.
+     */
     disabled?: boolean;
+    /**
+     * Native button type; ignored when `href` causes the component to render an
+     * anchor.
+     *
+     * @default 'button'
+     */
     type?: 'submit' | 'reset' | 'button';
   };
 
+/**
+ * Performs an icon-only action or navigation with a required accessible label.
+ *
+ * Renders a native `button` by default, or an anchor when `href` is supplied.
+ * Its explicit `size`, `error`, `invalid`, and `disabled` values take
+ * precedence over slot context, which takes precedence over field context.
+ * Its recipe defaults to the `standard` variant and `md` size.
+ *
+ * @example
+ * ```tsx
+ * <IconButton iconName="edit" altText="Edit invoice" onClick={editInvoice} />
+ * ```
+ */
 export const IconButton = (props: IconButtonProps) => {
+  const fieldContext = useFieldContext();
+  const slotContext = useSlotContext();
   const {
     iconName,
     altText,
     variant,
-    size,
+    size: sizeProp,
     href,
     loading,
-    disabled,
+    error: errorProp,
+    invalid: invalidProp,
+    disabled: disabledProp,
     type = 'button',
     ...rest
   } = props;
+  const size =
+    sizeProp ??
+    (slotContext?.size as IconButtonVariantProps['size'] | undefined) ??
+    fieldContext?.size;
+  const error = errorProp ?? slotContext?.error ?? fieldContext?.error;
+  const invalid = invalidProp ?? slotContext?.invalid ?? fieldContext?.invalid;
+  const disabled =
+    disabledProp ?? slotContext?.disabled ?? fieldContext?.disabled;
   const classes = iconButton({ variant, size });
   const [className, otherProps] = splitProps(rest);
 
   return (
     <Tooltip text={altText}>
       <Box
+        {...dsComponent('IconButton')}
         {...(href
           ? ({
               as: 'a',
@@ -60,14 +119,19 @@ export const IconButton = (props: IconButtonProps) => {
           'aria-live': 'polite',
         })}
         aria-disabled={disabled}
+        aria-invalid={invalid || undefined}
         aria-label={altText}
+        data-error={error || undefined}
+        data-invalid={invalid || undefined}
         {...otherProps}
       >
-        <Icon
-          name={iconName}
-          className={classes.icon}
-          opacity={loading ? 0 : 1}
-        />
+        <Box className={classes.mainContent}>
+          <Icon
+            name={iconName}
+            className={classes.slot}
+            opacity={loading ? 0 : 1}
+          />
+        </Box>
         {loading && (
           <Spinner
             size="sm"

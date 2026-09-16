@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-raw-font-weight-values';
 
 const NUMERIC_STRING_PATTERN = /^\d+$/;
@@ -56,6 +58,10 @@ const noRawFontWeightValuesRule = {
             return;
           }
 
+          if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
+            return;
+          }
+
           context.report({
             node,
             messageId: 'avoidRawFontWeight',
@@ -68,6 +74,10 @@ const noRawFontWeightValuesRule = {
         }
 
         if (!isRawFontWeightValue(node.value.expression)) {
+          return;
+        }
+
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
           return;
         }
 

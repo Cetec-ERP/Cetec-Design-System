@@ -10,10 +10,7 @@
     "action",
     "operation",
     "command",
-    "interaction",
-    "tool",
-    "handle icon",
-    "vertical icon"
+    "interaction"
   ],
   "tags": [],
   "category": "Actions",

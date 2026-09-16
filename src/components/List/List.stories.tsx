@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
-import { HStack } from '@styled-system/jsx';
+import { expect, within } from '@storybook/test';
 
+import { HStack, VStack } from '@styled-system/jsx';
+
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Card } from '../Card';
+import { Text } from '../Text';
 
 import { List, ListItem, ListItemGroup } from './index';
 
@@ -19,6 +22,14 @@ const items = [
   },
   { id: 'integrations', label: 'Integrations', desc: 'Connect external tools' },
 ];
+const records = [
+  { id: '10482', orderNumber: 'WO-2201', customer: 'Northwind Traders' },
+  { id: '10517', orderNumber: 'WO-2202', customer: 'Contoso Manufacturing' },
+  { id: '10688', orderNumber: 'WO-2203', customer: 'Fabrikam Industrial' },
+];
+const repeatedItems = ['first', 'second'].flatMap((copy) =>
+  items.map((item) => ({ ...item, instanceId: `${copy}-${item.id}` })),
+);
 
 const meta = {
   title: 'Components/List',
@@ -34,6 +45,20 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => <ListItem variant="divider" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByRole('separator').parentElement).toHaveAttribute(
+      'data-ds-component',
+      'ListItem',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
 
 const SingleSelectExample = () => {
   const [selected, setSelected] = useState(items[1]?.id ?? '');
@@ -146,9 +171,9 @@ const FloatingSearchBarExample = () => {
         query={query}
         highlightMatches
       >
-        {items.concat(items).map((item, index) => (
+        {repeatedItems.map((item, index) => (
           <ListItem
-            key={`${item.id}-${index}`}
+            key={item.instanceId}
             selected={index === 0}
             iconAfter="arrow-right"
             label={item.label}
@@ -243,9 +268,133 @@ export const Highlighting: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const WithHrefs: Story = {
+  args: {},
+  render: () => (
+    <Card variant="flat" minW="2xs">
+      <List role="listbox" aria-label="Navigation links">
+        {items.map((item) => (
+          <ListItem
+            key={`link-${item.id}`}
+            href={`#${item.id}`}
+            iconAfter="arrow-square-out"
+            label={item.label}
+            description={item.desc}
+          />
+        ))}
+      </List>
+    </Card>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpoints: Story = {
+  args: {},
+  render: () => (
+    <VStack>
+      <Card variant="flat" minW="2xs">
+        <List density={{ base: 'spacious', xs: 'comfortable', sm: 'compact' }}>
+          <ListItemGroup label="Account Settings" divider>
+            {items.slice(0, 3).map((item) => (
+              <ListItem
+                key={`item-${item.id}`}
+                label={item.label}
+                description={item.desc}
+              />
+            ))}
+          </ListItemGroup>
+          <ListItemGroup label="User Settings">
+            <ListItem iconAfter="user" label="Profile" />
+            <ListItem iconAfter="arrow-square-out" label="Logout" />
+          </ListItemGroup>
+        </List>
+      </Card>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"spacious"', xs: '"comfortable"', sm: '"compact"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const ConditionalBreakpointsStandalone: Story = {
+  args: {},
+  render: () => (
+    <VStack>
+      <Card variant="flat" minW="2xs">
+        <VStack alignItems="stretch" gap="0">
+          <ListItemGroup
+            label="Account Settings"
+            divider
+            density={{ base: 'spacious', xs: 'comfortable', sm: 'compact' }}
+          >
+            {items.slice(0, 2).map((item) => (
+              <ListItem
+                key={`standalone-group-${item.id}`}
+                label={item.label}
+                description={item.desc}
+              />
+            ))}
+          </ListItemGroup>
+          <ListItem
+            density={{ base: 'spacious', xs: 'comfortable', sm: 'compact' }}
+            iconAfter="arrow-square-out"
+            label="Logout"
+            description="Close the current session"
+          />
+        </VStack>
+      </Card>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"spacious"', xs: '"comfortable"', sm: '"compact"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 export const ExFloatingSearchBar: Story = {
   name: 'Ex: Floating search bar',
   args: {},
   render: () => <FloatingSearchBarExample />,
+  parameters: { controls: { disable: true } },
+};
+
+export const RowIdentity: Story = {
+  name: 'Row identity',
+  args: {},
+  render: () => (
+    <Card variant="flat" minW="2xs">
+      <List role="listbox" aria-label="Work orders">
+        {records.map((record) => (
+          <ListItem
+            key={record.id}
+            rowId={record.id}
+            label={record.orderNumber}
+            description={record.customer}
+          />
+        ))}
+      </List>
+    </Card>
+  ),
   parameters: { controls: { disable: true } },
 };

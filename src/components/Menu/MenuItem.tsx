@@ -1,19 +1,19 @@
-import type { ChangeEventHandler, HTMLProps, MouseEvent } from 'react';
+import type { HTMLProps, KeyboardEvent, MouseEvent } from 'react';
 
 import { useFloatingTree, useListItem } from '@floating-ui/react';
 
-import { cx } from '@styled-system/css';
+import { css, cx } from '@styled-system/css';
 import { listItem as listItemRecipe } from '@styled-system/recipes';
 
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Checkbox } from '../Checkbox';
-import { Divider } from '../Divider';
-import { Icon } from '../Icon';
-import { HighlightText } from '../List';
-import { Text } from '../Text';
-import { Toggle } from '../Toggle';
+import { Box, type BoxProps } from '../Box/Box';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Divider } from '../Divider/Divider';
+import { Icon } from '../Icon/Icon';
+import { HighlightText } from '../List/HighlightText';
+import { Text } from '../Text/Text';
+import { Toggle } from '../Toggle/Toggle';
 
 import {
   deriveItemTextValue,
@@ -26,6 +26,18 @@ import {
   useMenuRootContext,
 } from './context/menuContext';
 
+/**
+ * Renders an actionable row within a {@link Menu}.
+ *
+ * It renders a button by default, or an anchor when `href` is supplied. Arrow
+ * keys and typeahead participate in the parent menu's roving focus behavior.
+ * Use `variant="checkbox"` or `"toggle"` when `selected` is meaningful.
+ *
+ * @example
+ * ```tsx
+ * <MenuItem label="Duplicate" iconBefore="copy" onClick={duplicate} />
+ * ```
+ */
 export const MenuItem = (props: MenuItemProps) => {
   const {
     label,
@@ -46,6 +58,12 @@ export const MenuItem = (props: MenuItemProps) => {
   } = props;
 
   const [className, otherProps] = splitProps(rest);
+  const restProps = { ...otherProps };
+  const userOnKeyDown =
+    'onKeyDown' in restProps && typeof restProps.onKeyDown === 'function'
+      ? restProps.onKeyDown
+      : undefined;
+  delete (restProps as { onKeyDown?: unknown }).onKeyDown;
 
   const rootContext = useMenuRootContext();
   const tree = useFloatingTree();
@@ -102,11 +120,6 @@ export const MenuItem = (props: MenuItemProps) => {
     }
   };
 
-  const handleControlChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
   type MenuInteractionProps = Pick<
     HTMLProps<HTMLElement>,
     'onClick' | 'onKeyDown' | 'onPointerMove' | 'onMouseMove' | 'onFocus'
@@ -122,13 +135,52 @@ export const MenuItem = (props: MenuItemProps) => {
         }
   ) as MenuInteractionProps;
 
+  const { onKeyDown: itemOnKeyDown, ...itemPropsRest } = itemProps;
+
+  const handleItemKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      if (href) {
+        itemOnKeyDown?.(event);
+        return;
+      }
+      const depth = listContext?.nestedMenuDepth ?? 0;
+      if (
+        event.key === 'ArrowLeft' &&
+        depth > 0 &&
+        listContext?.closeParentSubMenuFlyout
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+        listContext.closeParentSubMenuFlyout();
+        return;
+      }
+      if (
+        event.key === 'ArrowLeft' &&
+        depth === 0 &&
+        rootContext.onMenubarEdgeNavigate
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+        rootContext.onCloseMenu();
+        rootContext.onMenubarEdgeNavigate(-1);
+        return;
+      }
+      if (event.key === 'ArrowRight' && rootContext.onMenubarEdgeNavigate) {
+        event.preventDefault();
+        event.stopPropagation();
+        rootContext.onCloseMenu();
+        rootContext.onMenubarEdgeNavigate(1);
+        return;
+      }
+    }
+    itemOnKeyDown?.(event);
+    userOnKeyDown?.(event);
+  };
+
   const role =
     variant === 'checkbox' || variant === 'toggle'
       ? 'menuitemcheckbox'
       : 'menuitem';
-
-  // const selectionControl =
-  //   variant === 'checkbox' || variant === 'toggle' ? variant : 'none';
 
   const elementProps: BoxProps<'a'> | BoxProps<'button'> = href
     ? ({
@@ -176,29 +228,39 @@ export const MenuItem = (props: MenuItemProps) => {
             : -1
           : 0
       }
-      {...itemProps}
-      {...otherProps}
+      {...itemPropsRest}
+      onKeyDown={handleItemKeyDown}
+      {...restProps}
     >
       {variant === 'checkbox' && (
         <Checkbox
           name={controlName}
+          className={cx(classes.beforeSlot, css({ pointerEvents: 'none' }))}
           checked={Boolean(selected)}
-          onChange={handleControlChange}
+          readOnly
           tabIndex={-1}
+          aria-hidden
         />
       )}
 
       {variant === 'toggle' && (
         <Toggle
           name={controlName}
+          className={cx(classes.beforeSlot, css({ pointerEvents: 'none' }))}
           checked={Boolean(selected)}
-          onChange={handleControlChange}
+          readOnly
           mr="4"
           tabIndex={-1}
+          aria-hidden
         />
       )}
 
-      {iconBefore && <Icon className={classes.icon} name={iconBefore} />}
+      {iconBefore && (
+        <Icon
+          className={cx(classes.icon, classes.beforeSlot)}
+          name={iconBefore}
+        />
+      )}
 
       <Box className={classes.itemMain}>
         {label && (
@@ -223,7 +285,11 @@ export const MenuItem = (props: MenuItemProps) => {
       </Box>
 
       {iconAfter && (
-        <Icon className={classes.icon} name={iconAfter} ml="auto" />
+        <Icon
+          className={cx(classes.icon, classes.afterSlot)}
+          name={iconAfter}
+          ml="auto"
+        />
       )}
     </Box>
   );

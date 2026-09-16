@@ -1,6 +1,15 @@
+import { expect, within } from '@storybook/test';
+
 import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
 
+import { Badge } from '../Badge';
+import { BreakpointIndicator } from '../BreakpointIndicator';
+import { Button } from '../Button';
 import { FormField } from '../FormField';
+import { Icon } from '../Icon';
+import { IconButton } from '../IconButton';
+import { Kbd } from '../Kbd';
+import { Spinner } from '../Spinner';
 import { Text } from '../Text';
 
 import { TextInput } from './TextInput';
@@ -12,7 +21,7 @@ import type { Meta, StoryObj } from '@storybook/react';
  *
  * Features:
  * - Four sizes (sm, md, lg, xl)
- * - Optional leading/trailing icons
+ * - Optional `before` / `after` slots, with icon aliases for shorthand
  * - Error and disabled states
  * - Auto-sizing via `fieldSizing: content`
  * - Explicit input type support (text, email, password, search, etc.)
@@ -55,12 +64,20 @@ const meta = {
     iconBefore: {
       control: 'select',
       options: [undefined, 'search', 'user', 'mail', 'lock'],
-      description: 'Icon name to display before input',
+      description: 'Legacy shorthand icon name for before slot',
     },
     iconAfter: {
       control: 'select',
       options: [undefined, 'check', 'x', 'eye', 'chevron-down'],
-      description: 'Icon name to display after input',
+      description: 'Legacy shorthand icon name for after slot',
+    },
+    before: {
+      control: false,
+      description: 'Preferred slot for content before the input',
+    },
+    after: {
+      control: false,
+      description: 'Preferred slot for content after the input',
     },
     type: {
       control: 'select',
@@ -103,16 +120,135 @@ type Story = StoryObj<typeof meta>;
 
 export const Sizes: Story = {
   render: () => (
-    <VStack gap="12" alignItems="flex-start">
-      {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
-        <TextInput
-          key={size}
-          size={size}
-          name={size}
-          placeholder={`Size: ${size}`}
-        />
-      ))}
-    </VStack>
+    <Grid columns={3} justifyItems="center" gap="20" maxW="3xl">
+      <TextInput name="sm" placeholder="sm no icon" size="sm" />
+      <TextInput
+        name="sm"
+        placeholder="sm iconBefore"
+        size="sm"
+        iconBefore="at"
+      />
+      <TextInput
+        name="sm"
+        placeholder="sm iconAfter"
+        size="sm"
+        iconAfter="check"
+      />
+
+      <TextInput name="md" placeholder="md no icon" size="md" />
+      <TextInput
+        name="md"
+        placeholder="md iconBefore"
+        size="md"
+        iconBefore="at"
+      />
+      <TextInput
+        name="md"
+        placeholder="md iconAfter"
+        size="md"
+        iconAfter="check"
+      />
+
+      <TextInput name="lg" placeholder="lg no icon" size="lg" />
+      <TextInput
+        name="lg"
+        placeholder="lg iconBefore"
+        size="lg"
+        iconBefore="at"
+      />
+      <TextInput
+        name="lg"
+        placeholder="lg iconAfter"
+        size="lg"
+        iconAfter="check"
+      />
+
+      <TextInput name="xl" placeholder="xl no icon" size="xl" />
+      <TextInput
+        name="xl"
+        placeholder="xl iconBefore"
+        size="xl"
+        iconBefore="at"
+      />
+      <TextInput
+        name="xl"
+        placeholder="xl iconAfter"
+        size="xl"
+        iconAfter="check"
+      />
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <TextInput
+        name="Conditional Sizes"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        placeholder="Conditional Sizes"
+        iconBefore="arrows-left-right"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton variant="ghost" iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton variant="hollow" iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        after={<IconButton variant="primary" iconName="eye" altText="eye" />}
+        placeholder="Enter password"
+      />
+      <TextInput
+        name="slot-button"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Spinner />}
+        after={<Button>Submit</Button>}
+        placeholder="Enter username"
+        defaultValue="tom"
+        disabled
+      />
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
   ),
   parameters: { controls: { disable: true } },
 };
@@ -192,6 +328,61 @@ export const WithIcons: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const WithSlots: Story = {
+  render: () => (
+    <Grid
+      gridTemplateColumns="auto 1fr"
+      columnGap="12"
+      rowGap="32"
+      alignItems="center"
+    >
+      <Text textStyle="mono.md" mr="16">
+        before / after
+      </Text>
+      <VStack gap="8" alignItems="flex-start">
+        <TextInput
+          name="slot-search"
+          before={<Icon name="search" />}
+          after={<Kbd keys={['⌘', 'K']} />}
+          placeholder="Search"
+        />
+        <TextInput
+          name="slot-email"
+          before={<Icon name="at" />}
+          placeholder="Email"
+        />
+        <TextInput
+          name="slot-check"
+          after={<Icon name="check" />}
+          placeholder="Validated"
+        />
+        <TextInput
+          name="slot-badge"
+          after={<Badge count={2} variant="warning" />}
+          placeholder="Needs review"
+        />
+        <TextInput
+          name="slot-button"
+          after={<IconButton variant="ghost" iconName="eye" altText="eye" />}
+          placeholder="Enter password"
+        />
+      </VStack>
+      <Text textStyle="mono.md" mr="16">
+        aliases
+      </Text>
+      <VStack gap="8" alignItems="flex-start">
+        <TextInput
+          name="alias-before"
+          iconBefore="search"
+          placeholder="Search"
+        />
+        <TextInput name="alias-after" iconAfter="check" placeholder="Done" />
+      </VStack>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 export const IconSizes: Story = {
   render: () => (
     <VStack gap="12" alignItems="flex-start">
@@ -236,7 +427,7 @@ export const WithFormField: Story = {
         <TextInput
           name="fullName"
           id="fullName"
-          iconBefore="user"
+          before={<Icon name="user" />}
           placeholder="John Doe"
         />
       </FormField>
@@ -249,7 +440,7 @@ export const WithFormField: Story = {
         <TextInput
           name="email"
           id="email"
-          iconBefore="envelope"
+          before={<Icon name="envelope" />}
           placeholder="john@example.com"
           type="email"
         />
@@ -283,7 +474,7 @@ export const InlineFormField: Story = {
         <TextInput
           name="fullName"
           id="fullName"
-          iconBefore="user"
+          before={<Icon name="user" />}
           placeholder="John Doe"
         />
       </FormField>
@@ -297,7 +488,7 @@ export const InlineFormField: Story = {
         <TextInput
           name="email2"
           id="email2"
-          iconBefore="envelope"
+          before={<Icon name="envelope" />}
           placeholder="john@example.com"
           type="email"
         />
@@ -354,6 +545,72 @@ export const SearchInput: Story = {
       />
     </Wrap>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <VStack alignItems="start" gap="8">
+      <TextInput name="ds-default" aria-label="Default input" />
+      <TextInput
+        name="ds-override"
+        aria-label="Overridden input"
+        data-ds-component="SearchField"
+      />
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // TextInput forwards rest props to the native input, so the attribute is
+    // applied to the container root and must not leak onto the input.
+    const defaultInput = canvas.getByLabelText('Default input');
+    expect(defaultInput).not.toHaveAttribute('data-ds-component');
+    expect(defaultInput.parentElement).toHaveAttribute(
+      'data-ds-component',
+      'TextInput',
+    );
+
+    // An explicit value lands on the root, not on the native input.
+    const overriddenInput = canvas.getByLabelText('Overridden input');
+    expect(overriddenInput).not.toHaveAttribute('data-ds-component');
+    expect(overriddenInput.parentElement).toHaveAttribute(
+      'data-ds-component',
+      'SearchField',
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ConsumerClassName: Story = {
+  name: 'Test: consumer className',
+  render: () => (
+    <VStack alignItems="start" gap="8">
+      <TextInput
+        name="class-name"
+        aria-label="Class name input"
+        className="consumer-class"
+        iconBefore="search"
+      />
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText('Class name input');
+    const container = input.parentElement;
+
+    if (!(container instanceof HTMLElement)) {
+      throw new Error('TextInput should render a container around the input.');
+    }
+
+    // A consumer className styles the component root once.
+    expect(container).toHaveClass('consumer-class');
+
+    // The native input keeps only its recipe class, so a single className
+    // prop cannot style two elements at once.
+    expect(input).not.toHaveClass('consumer-class');
+  },
   parameters: { controls: { disable: true } },
 };
 

@@ -2,31 +2,18 @@ import { defineSemanticTokens } from '@pandacss/dev';
 
 export const shadows = defineSemanticTokens.shadows({
   zero: {
-    value: { base: '{shadows.zeroShadow}', _dark: '{shadows.zeroShadow}' },
+    value: '{shadows.zeroBase}',
   },
   raised: {
-    value: { base: '{shadows.raisedLight}', _dark: '{shadows.raisedDark}' },
+    value: '{shadows.raisedBase}',
   },
   elevated: {
-    value: { base: '{shadows.elevatedLight}', _dark: '{shadows.elevatedDark}' },
+    value: '{shadows.elevatedBase}',
   },
   overlay: {
-    value: { base: '{shadows.overlayLight}', _dark: '{shadows.overlayDark}' },
+    value: '{shadows.overlayBase}',
   },
   overflow: {
-    value: { base: '{shadows.overflowLight}', _dark: '{shadows.overflowDark}' },
-  },
-  // TODO: delete below once migration is complete
-  low: {
-    value: { base: '{shadows.lowLight}', _dark: '{shadows.lowDark}' },
-  },
-  medium: {
-    value: { base: '{shadows.mediumLight}', _dark: '{shadows.mediumDark}' },
-  },
-  high: {
-    value: { base: '{shadows.highLight}', _dark: '{shadows.highDark}' },
-  },
-  inset: {
-    value: { base: '{shadows.insetLight}', _dark: '{shadows.insetDark}' },
+    value: '{shadows.overflowBase}',
   },
 });

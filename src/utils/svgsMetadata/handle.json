@@ -6,8 +6,7 @@
     "action",
     "operation",
     "command",
-    "interaction",
-    "tool"
+    "interaction"
   ],
   "tags": [],
   "category": "Actions",

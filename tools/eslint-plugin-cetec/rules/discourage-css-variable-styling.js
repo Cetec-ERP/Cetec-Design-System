@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'discourage-css-variable-styling';
 
 const CSS_VAR_PATTERN = /var\(--[a-zA-Z0-9-_]+\)/;
@@ -51,6 +53,10 @@ const discourageCssVariableStylingRule = {
         const value = getAttributeValueString(node.value);
 
         if (!value || !CSS_VAR_PATTERN.test(value)) {
+          return;
+        }
+
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
           return;
         }
 

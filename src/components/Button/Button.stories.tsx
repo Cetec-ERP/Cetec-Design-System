@@ -1,9 +1,15 @@
-import { fn } from '@storybook/test';
+import { expect, fn, within } from '@storybook/test';
 
-import { HStack, Wrap, Grid } from '@styled-system/jsx';
+import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
+import { Avatar } from '../Avatar';
+import { Badge } from '../Badge';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Divider } from '../Divider';
+import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
+import { Kbd } from '../Kbd';
+import { Spinner } from '../Spinner';
 import { Text } from '../Text';
 
 import { Button } from './Button';
@@ -16,7 +22,7 @@ import type { Meta, StoryObj } from '@storybook/react';
  * Features:
  * - Multiple visual variants (standard, primary, hollow, ghost, cta, danger)
  * - Four sizes (sm, md, lg, xl)
- * - Icon support via string names (iconBefore, iconAfter, iconName)
+ * - Slot support via `before` and `after`, with icon aliases for shorthand
  * - Loading and disabled states
  * - Auto-renders as anchor when href is provided
  */
@@ -64,12 +70,20 @@ const meta = {
     iconBefore: {
       control: 'select',
       options: [undefined, 'plus', 'check', 'arrow-left', 'edit', 'search'],
-      description: 'Icon name to display before text',
+      description: 'Legacy shorthand icon name for before slot',
     },
     iconAfter: {
       control: 'select',
       options: [undefined, 'arrow-right', 'chevron-down', 'arrow-square-out'],
-      description: 'Icon name to display after text',
+      description: 'Legacy shorthand icon name for after slot',
+    },
+    before: {
+      control: false,
+      description: 'Preferred slot for content before button text',
+    },
+    after: {
+      control: false,
+      description: 'Preferred slot for content after button text',
     },
     href: {
       control: 'text',
@@ -119,12 +133,127 @@ export const Variants: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <Wrap gap="12" alignItems="center">
+    <Grid columns={3} justifyItems="center" gap="20">
       <Button size="sm">Small</Button>
+      <Button size="sm" iconBefore="arrow-left">
+        Small
+      </Button>
+      <Button size="sm" iconAfter="arrow-square-out">
+        Small
+      </Button>
       <Button size="md">Medium</Button>
+      <Button size="md" iconBefore="arrow-left">
+        Medium
+      </Button>
+      <Button size="md" iconAfter="arrow-square-out">
+        Medium
+      </Button>
       <Button size="lg">Large</Button>
+      <Button size="lg" iconBefore="arrow-left">
+        Large
+      </Button>
+      <Button size="lg" iconAfter="arrow-square-out">
+        Large
+      </Button>
       <Button size="xl">Extra Large</Button>
-    </Wrap>
+      <Button size="xl" iconBefore="arrow-left">
+        Extra Large
+      </Button>
+      <Button size="xl" iconAfter="arrow-square-out">
+        Extra Large
+      </Button>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        variant={{
+          base: 'primary',
+          xs: 'standard',
+          sm: 'hollow',
+          md: 'danger',
+        }}
+        iconBefore="arrows-left-right"
+      >
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Badge count={5} />}
+      >
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={
+          <Avatar name="John Doe" src="https://i.pravatar.cc/150?img=1" />
+        }
+      >
+        Button
+      </Button>
+      <Button
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Spinner />}
+      >
+        Button
+      </Button>
+      <Button
+        variant="ghost"
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        before={<Icon name="circle-check" fill="icon.success" />}
+      >
+        Button
+      </Button>
+      <VStack gap="4">
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Size:{' '}
+        </Text>
+        <Text
+          textAlign="center"
+          textStyle="mono.sm"
+          _after={{
+            display: 'inline',
+            content: {
+              base: '"primary"',
+              xs: '"standard"',
+              sm: '"hollow"',
+              md: '"danger"',
+            },
+            color: 'text.bold',
+            fontWeight: 'bold',
+          }}
+        >
+          Variant:{' '}
+        </Text>
+      </VStack>
+      <BreakpointIndicator />
+    </Grid>
   ),
   parameters: { controls: { disable: true } },
 };
@@ -266,6 +395,49 @@ export const WithIcon: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const WithSlots: Story = {
+  render: () => (
+    <Grid
+      gridTemplateColumns="auto 1fr"
+      columnGap="12"
+      rowGap="32"
+      alignItems="center"
+    >
+      <Text textStyle="mono.md" mr="16">
+        before / after
+      </Text>
+      <Wrap gap="12">
+        <Button before={<Icon name="plus" />} variant="primary">
+          New Record
+        </Button>
+        <Button after={<Badge count={3} variant="success" />} variant="hollow">
+          Pending
+        </Button>
+        <Button
+          before={<Badge count={12} variant="warning" />}
+          after={<Icon name="arrow-right" />}
+        >
+          Review
+        </Button>
+        <Button
+          before={<Icon name="search" />}
+          after={<Kbd keys={['⌘', 'K']} />}
+        >
+          Search
+        </Button>
+      </Wrap>
+      <Text textStyle="mono.md" mr="16">
+        aliases
+      </Text>
+      <Wrap gap="12">
+        <Button iconBefore="plus">Alias Before</Button>
+        <Button iconAfter="arrow-right">Alias After</Button>
+      </Wrap>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 // ============================================================================
 // Link Buttons (href)
 // ============================================================================
@@ -370,6 +542,32 @@ export const FormSubmitting: Story = {
       </Button>
     </HStack>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <HStack gap="8">
+      <Button>Default</Button>
+      <Button data-ds-component="CustomButton">Overridden</Button>
+    </HStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Emitted automatically on the root element, without an author opting in.
+    expect(canvas.getByRole('button', { name: 'Default' })).toHaveAttribute(
+      'data-ds-component',
+      'Button',
+    );
+
+    // An explicitly passed value arrives through rest props and wins.
+    expect(canvas.getByRole('button', { name: 'Overridden' })).toHaveAttribute(
+      'data-ds-component',
+      'CustomButton',
+    );
+  },
   parameters: { controls: { disable: true } },
 };
 

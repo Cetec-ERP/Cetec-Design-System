@@ -1,11 +1,9 @@
 import { defineRecipe } from '@pandacss/dev';
 
-import {
-  fontSizes as fontSizeTokens,
-  fontWeights as fontWeightTokens,
-} from '../styles/primitives';
-import { globalBaseStyles } from '../styles/utilities';
-import { fontVariants } from '../styles/utilities';
+import { fontSizes as fontSizeTokens } from '../styles/primitives/fontSizes';
+import { fontWeights as fontWeightTokens } from '../styles/primitives/fontWeights';
+import { fontVariants } from '../styles/utilities/fontVariants';
+import { globalBaseStyles } from '../styles/utilities/recipeGlobalStyles';
 
 const textBase = {
   ...globalBaseStyles,
@@ -65,6 +63,18 @@ const textVariants = {
   underline: {
     true: {
       textDecoration: 'underline',
+      textDecorationThickness: '[0.0625em]',
+      textUnderlineOffset: '[0.15625em]',
+      textDecorationSkipInk: 'all',
+    },
+  },
+  dashedUnderline: {
+    true: {
+      textDecoration: 'underline',
+      textDecorationStyle: 'dashed',
+      textDecorationThickness: '[0.0625em]',
+      textUnderlineOffset: '[0.15625em]',
+      textDecorationSkipInk: 'all',
     },
   },
   truncate: {
@@ -116,37 +126,31 @@ const linkBase = {
   fontWeight: 'medium',
   gap: '1',
   color: 'link',
-  textDecoration: 'none',
-  backgroundImage: 'linear-gradient(90deg, transparent 0% 100%)',
-  backgroundSize: '100% 1px',
-  backgroundRepeat: 'no-repeat',
-  backgroundPositionY: '100%',
-  outlineWidth: '2',
-  outlineStyle: 'solid',
-  outlineColor: 'transparent',
-  outlineOffset: '1',
-  width: 'fit-content',
-  cursor: 'pointer',
+  textDecoration: 'underline',
+  textDecorationThickness: '[0.0625em]',
+  textUnderlineOffset: '[0.15625em]',
+  textDecorationSkipInk: 'all',
+  textDecorationColor: '[color-mix(in srgb, currentColor 30%, transparent)]',
+  transition: 'all',
+  transitionDuration: 'fast',
+  bg: 'none',
   _hover: {
-    color: 'link',
-    backgroundImage: 'linear-gradient(90deg, currentColor 0% 100%)',
+    color: 'link.pressed',
+    textDecorationColor: 'current',
+    textDecorationThickness: '[0.125em]',
   },
   _focusVisible: {
     borderRadius: '4',
     outlineColor: 'border.focused',
   },
-};
-
-const linkVariants = {
-  ...textVariants,
   _disabled: {
-    true: {
-      cursor: 'not-allowed',
-      opacity: 0.4,
-      pointerEvents: 'none',
-    },
+    cursor: 'not-allowed',
+    opacity: 0.4,
+    pointerEvents: 'none',
   },
 };
+
+const linkVariants = { ...textVariants };
 
 const labelBase = {
   fontSize: '16',

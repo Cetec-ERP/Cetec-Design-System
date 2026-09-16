@@ -62,6 +62,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': 'warn',
       'cetec/discourage-css-variable-styling': 'warn',
       'cetec/no-classname-css-call': 'error',
+      'cetec/no-important': 'error',
       'cetec/no-inline-style-prop': 'error',
       'cetec/no-pixel-units': 'error',
       'cetec/no-raw-font-weight-values': 'error',
@@ -134,6 +135,7 @@ export default tseslint.config(
         },
       ],
       'cetec/no-react-fc-components': 'warn',
+      'cetec/use-correct-conditional-variant-type': 'warn',
     },
     plugins: {
       cetec: cetecPlugin,
@@ -141,7 +143,7 @@ export default tseslint.config(
   },
   {
     files: ['src/recipes/*.ts'],
-    ignores: ['src/recipes/index.ts'],
+    ignores: ['src/recipes/recipes-regular.ts', 'src/recipes/recipes-slot.ts'],
     rules: {
       'unicorn/filename-case': [
         'warn',
@@ -154,7 +156,9 @@ export default tseslint.config(
       ],
       'cetec/recipe-export-name-matches-file': 'warn',
       'cetec/recipe-jsx-name-matches-component': 'warn',
+      'cetec/avoid-compound-variants-in-recipes': 'warn',
       'cetec/no-hardcoded-design-values-in-recipes': 'warn',
+      'cetec/no-static-css-in-recipe-files': 'warn',
     },
     plugins: {
       cetec: cetecPlugin,

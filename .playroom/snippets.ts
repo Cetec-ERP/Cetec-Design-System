@@ -51,6 +51,64 @@ const snippets = [
 </VStack>`,
   },
   {
+    group: 'Forms',
+    name: 'Autocomplete (Single Select)',
+    code: `<Box maxWidth="sm">
+  <FormField label="Primary technology" labelFor="primary-technology">
+    <Autocomplete
+      id="primary-technology"
+      name="primaryTechnology"
+      defaultValue="react"
+      placeholder="Choose a technology…"
+    >
+      <Option value="react" label="React" description="UI library" />
+      <Option
+        value="typescript"
+        label="TypeScript"
+        description="Type safety"
+      />
+      <Option
+        value="storybook"
+        label="Storybook"
+        description="Component workshop"
+      />
+    </Autocomplete>
+  </FormField>
+</Box>`,
+  },
+  {
+    group: 'Forms',
+    name: 'Autocomplete (Multi Select)',
+    code: `<Box maxWidth="sm">
+  <FormField label="Project stack" labelFor="project-stack">
+    <Autocomplete
+      id="project-stack"
+      name="projectStack"
+      multiple
+      defaultValue={['react', 'typescript']}
+      placeholder="Add technology…"
+    >
+      <Option value="react" label="React" description="UI library" />
+      <Option
+        value="typescript"
+        label="TypeScript"
+        description="Type safety"
+      />
+      <Option
+        value="storybook"
+        label="Storybook"
+        description="Component workshop"
+      />
+      <Option
+        value="panda"
+        label="Panda CSS"
+        description="Build-time styling"
+      />
+    </Autocomplete>
+  </FormField>
+</Box>`,
+  },
+  {
     group: 'Navigation',
     name: 'Breadcrumbs',
     code: `<VStack gap="8" alignItems="flex-start" maxWidth="lg">

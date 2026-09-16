@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-classname-css-call';
 
 const noClassnameCssCallRule = {
@@ -37,6 +39,10 @@ const noClassnameCssCallRule = {
           expression.callee.type === 'Identifier' &&
           expression.callee.name === 'css'
         ) {
+          if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
+            return;
+          }
+
           context.report({
             node,
             messageId: 'avoidClassNameCssCall',

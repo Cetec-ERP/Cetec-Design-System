@@ -3,77 +3,99 @@ import { type ChangeEvent } from 'react';
 import { cx } from '@styled-system/css';
 import { toggle, type ToggleVariantProps } from '@styled-system/recipes';
 
+import { useFieldContext } from '~/system/context/FieldContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box, type BoxProps } from '../Box';
-import { Icon } from '../Icon';
+import { Box, type BoxProps } from '../Box/Box';
+import { Icon } from '../Icon/Icon';
 
+/** Props for {@link Toggle}, the unlabelled native checkbox styled as a switch. */
 export type ToggleProps = Omit<
   BoxProps,
-  'checked' | 'onChange' | keyof ToggleVariantProps
+  'checked' | 'defaultChecked' | 'onChange' | keyof ToggleVariantProps
 > &
   ToggleVariantProps & {
-    name: string;
-    checked: boolean;
-    onChange: ToggleChangeHandler;
-    id?: string;
-    error?: boolean;
-    disabled?: boolean;
+    /** Form field name submitted when the toggle is on. */ name: string;
+    /** Controlled on/off state. Pair with `onChange`; do not combine with `defaultChecked`. */ checked?: boolean;
+    /** Initial uncontrolled on/off state; later updates are ignored. */
+    /** @default false */
+    defaultChecked?: boolean;
+    /** Runs for the native checkbox change event; read the next state from `event.target.checked`. */ onChange?: ToggleChangeHandler;
+    /** Native input ID used by an external label. */ id?: string;
+    /** Applies error styling, overriding field context. */ error?: boolean;
+    /** Marks the native checkbox invalid with `aria-invalid`, overriding field context. */ invalid?: boolean;
+    /** Disables interaction, overriding field context. */ disabled?: boolean;
   };
 
 /**
- * Helper type for toggle change events
+ * Native change event emitted by {@link Toggle}.
  * @example
  * const handleChange: ToggleChangeHandler = (e) => setChecked(e.target.checked);
  */
 export type ToggleChangeEvent = ChangeEvent<HTMLInputElement>;
 
 /**
- * Helper type for toggle change handler functions
+ * Handler for a {@link Toggle} native change event.
  * @example
  * const handleChange: ToggleChangeHandler = (e) => setChecked(e.target.checked);
  */
 export type ToggleChangeHandler = (e: ToggleChangeEvent) => void;
 
 /**
- * Toggle is a controlled component.
- * You must pass `checked` and `onChange` props.
+ * A native checkbox styled as an on/off toggle, without a visible label.
+ *
+ * Use {@link ToggleInput} when a visible label is needed. `Toggle` renders an
+ * `<input type="checkbox">`, not an ARIA `switch`; use `checked` with
+ * `onChange` for controlled state or `defaultChecked` for uncontrolled state.
+ * Provide `id` and an associated label so the control has an accessible name.
  *
  * @example
+ * ```tsx
+ * <Toggle name="marketing" defaultChecked />
+ * ```
+ *
+ * @example
+ * ```tsx
  * const [checked, setChecked] = useState(false);
- * <Toggle
- *   checked={checked}
- *   onChange={(e) => setChecked(e.target.checked)}
- * />
+ * <Toggle name="marketing" checked={checked} onChange={(event) => setChecked(event.target.checked)} />
+ * ```
  */
 
 export const Toggle = (props: ToggleProps) => {
+  const fieldContext = useFieldContext();
   const {
     name,
     checked,
+    defaultChecked,
     onChange,
     id,
-    error,
-    disabled,
+    error: errorProp,
+    invalid: invalidProp,
+    disabled: disabledProp,
     container,
     input,
     indicator,
+    'data-ds-component': dsComponentName,
     ...rest
   } = props;
+  const disabled = disabledProp ?? fieldContext?.disabled;
+  const error = errorProp ?? fieldContext?.error;
+  const invalid = invalidProp ?? fieldContext?.invalid;
   const [className, otherProps] = splitProps(rest);
   const classes = toggle({
     container,
     input,
     indicator,
   });
-
-  // Determine which icon to render based on state
-  const iconName = checked ? 'circle-check' : 'circle';
+  const isControlled = checked !== undefined;
 
   return (
     <Box
+      {...dsComponent('Toggle', dsComponentName)}
       className={cx(classes.container, className)}
       {...(error && { 'data-error': true })}
+      {...(invalid && { 'data-invalid': true })}
     >
       <Box
         as="input"
@@ -81,13 +103,17 @@ export const Toggle = (props: ToggleProps) => {
         className={classes.input}
         name={name}
         id={id}
-        checked={checked}
+        {...(isControlled
+          ? { checked }
+          : { defaultChecked: defaultChecked ?? false })}
         onChange={onChange}
         disabled={disabled}
         {...(error && { 'data-error': true })}
+        {...(invalid && { 'data-invalid': true, 'aria-invalid': true })}
         {...otherProps}
       />
-      <Icon className={classes.indicator} name={iconName} />
+      <Icon className={classes.indicator} name="circle" aria-hidden />
+      <Icon className={classes.indicator} name="circle-check" aria-hidden />
     </Box>
   );
 };

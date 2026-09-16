@@ -9,9 +9,7 @@
     "scanner",
     "resource",
     "asset",
-    "infrastructure",
-    "qr icon",
-    "code icon"
+    "infrastructure"
   ],
   "tags": [],
   "category": "System objects",

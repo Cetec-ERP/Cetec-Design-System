@@ -1,6 +1,7 @@
 import { defineUtility } from '@pandacss/dev';
 
-import { durations, easings } from '../primitives';
+import { durations } from '../primitives/durations';
+import { easings } from '../primitives/easings';
 
 /**
  * Transition property tokens for use with strictTokens.

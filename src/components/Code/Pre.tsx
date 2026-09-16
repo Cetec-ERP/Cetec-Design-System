@@ -4,22 +4,53 @@ import { cx } from '@styled-system/css';
 import { pre } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Code } from './Code';
 
-export type PreProps = BoxProps & {
+type PreOwnProps = {
+  /** Preformatted code content. */
   children: string | ReactNode;
+  /** Language metadata forwarded to the nested `Code` element. */
   lang?: string;
+  /** Element override for the rendered `pre` container. */
   as?: string;
 };
 
+/** Props accepted by {@link Pre}. */
+export type PreProps = Omit<BoxProps, keyof PreOwnProps> & PreOwnProps;
+
+/**
+ * Renders a preformatted code block using native `pre` and `code` semantics.
+ *
+ * Whitespace in string content is preserved. The component does not perform
+ * syntax highlighting.
+ *
+ * @example
+ * ```tsx
+ * <Pre lang="typescript">{'const ready = true;'}</Pre>
+ * ```
+ */
 export const Pre = (props: PreProps) => {
-  const { children, lang, ...rest } = props;
+  const {
+    children,
+    lang,
+    'data-ds-component': dsComponentName,
+    ...rest
+  } = props;
   const [className, otherProps] = splitProps(rest);
   return (
-    <Box as="pre" className={cx(pre({}), className)} {...otherProps}>
-      <Code lang={lang} slot="react" bg="transparent" {...otherProps}>
+    <Box
+      {...dsComponent('Pre', dsComponentName)}
+      as="pre"
+      className={cx(pre({}), className)}
+      {...otherProps}
+    >
+      {/* Consumer props stay on the root `pre`; the nested `Code` owns its own
+          attributes so values like `id` and `data-ds-component` are not
+          duplicated onto two elements. */}
+      <Code lang={lang} slot="react" bg="transparent">
         {children}
       </Code>
     </Box>

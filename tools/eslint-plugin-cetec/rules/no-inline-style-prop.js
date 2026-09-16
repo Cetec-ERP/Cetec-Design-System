@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-inline-style-prop';
 
 const noInlineStylePropRule = {
@@ -29,6 +31,10 @@ const noInlineStylePropRule = {
           node.value.type !== 'JSXExpressionContainer' ||
           node.value.expression.type !== 'ObjectExpression'
         ) {
+          return;
+        }
+
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
           return;
         }
 

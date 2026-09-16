@@ -1,5 +1,8 @@
-import { Flex, VStack } from '@styled-system/jsx';
+import { expect, within } from '@storybook/test';
 
+import { Flex, VStack, Grid } from '@styled-system/jsx';
+
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Text } from '../Text';
 
 import { Heading } from './Heading';
@@ -36,6 +39,63 @@ export const Levels: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      justifyItems="center"
+      gap="12"
+    >
+      <Heading
+        level="h1"
+        fontSize={{ base: '64', xs: '40', sm: '20', md: '12' }}
+        color={{
+          base: 'text.accent.cyan',
+          xs: 'text.accent.indigo',
+          sm: 'text.accent.purple',
+          md: 'text.accent.violet',
+        }}
+      >
+        Heading 1
+      </Heading>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"64"', xs: '"40"', sm: '"20"', md: '"12"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: {
+            base: '"text.accent.cyan"',
+            xs: '"text.accent.indigo"',
+            sm: '"text.accent.purple"',
+            md: '"text.accent.violet"',
+          },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Color:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
 export const ExContentHierarchy: Story = {
   name: 'Ex: Content Hierarchy',
   render: () => (
@@ -56,6 +116,35 @@ export const ExContentHierarchy: Story = {
       </Flex>
     </VStack>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DsComponentAttribute: Story = {
+  name: 'Test: data-ds-component',
+  render: () => (
+    <VStack alignItems="start" gap="8">
+      <Heading level="h3">Composed heading</Heading>
+      <Text>Plain text</Text>
+      <Heading level="h3" data-ds-component="PageTitle">
+        Overridden heading
+      </Heading>
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Heading renders through Text; the outermost component name wins.
+    expect(
+      canvas.getByRole('heading', { name: 'Composed heading' }),
+    ).toHaveAttribute('data-ds-component', 'Heading');
+    expect(canvas.getByText('Plain text')).toHaveAttribute(
+      'data-ds-component',
+      'Text',
+    );
+    expect(
+      canvas.getByRole('heading', { name: 'Overridden heading' }),
+    ).toHaveAttribute('data-ds-component', 'PageTitle');
+  },
   parameters: { controls: { disable: true } },
 };
 

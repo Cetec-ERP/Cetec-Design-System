@@ -1,56 +1,37 @@
 import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
 
-import * as componentRecipes from './recipes/index';
+import * as regularRecipes from './recipes/recipes-regular';
+import * as slotRecipes from './recipes/recipes-slot';
 import * as tokens from './styles/primitives';
 import * as semanticTokens from './styles/semantics';
-import {
-  breakpoints,
-  conditions,
-  containerSizes,
-  filtersProperty,
-  fontVariantsProperty,
-  globalCss,
-  keyframes,
-  layerStyles,
-  textStyles,
-  transitionProperty,
-} from './styles/utilities';
+import { breakpoints } from './styles/utilities/breakpoints';
+import { conditions } from './styles/utilities/conditions';
+import { containerSizes } from './styles/utilities/containerSizes';
+import { dropShadowProperty } from './styles/utilities/dropShadows';
+import { filtersProperty } from './styles/utilities/filters';
+import { fontVariantsProperty } from './styles/utilities/fontVariants';
+import { globalCss } from './styles/utilities/globalStyle';
+import { keyframes } from './styles/utilities/keyframes';
+import { layerStyles } from './styles/utilities/layerStyles';
+import { textStyles } from './styles/utilities/textStyles';
+import { transitionProperty } from './styles/utilities/transitions';
 
-// Separate slotRecipes from regular recipes
-const {
-  badgeRecipe,
-  buttonRecipe,
-  iconButtonRecipe,
-  checkboxRecipe,
-  radioRecipe,
-  tooltipRecipe,
-  menuRecipe,
-  toggleRecipe,
-  chipRecipe,
-  avatarRecipe,
-  modalRecipe,
-  formFieldRecipe,
-  spinnerRecipe,
-  textInputRecipe,
-  datePickerRecipe,
-  timePickerRecipe,
-  breadcrumbsRecipe,
-  listRecipe,
-  listItemRecipe,
-  highlightTextRecipe,
-  listItemGroupRecipe,
-  ...regularRecipes
-} = componentRecipes;
+import type { RecipeConfig, SlotRecipeConfig } from '@pandacss/types';
 
-// Transform recipe keys: remove 'Recipe' suffix to match component imports
-// e.g., { boxRecipe: {...} } becomes { box: {...} }
-const transformedRecipes = Object.fromEntries(
+const presetRecipes = Object.fromEntries(
   Object.entries(regularRecipes).map(([key, value]) => [
     key.replace(/Recipe$/, ''),
     value,
   ]),
-);
+) as unknown as Record<string, Partial<RecipeConfig>>;
+
+const presetSlotRecipes = Object.fromEntries(
+  Object.entries(slotRecipes).map(([key, value]) => [
+    key.replace(/Recipe$/, ''),
+    value,
+  ]),
+) as unknown as Record<string, Partial<SlotRecipeConfig>>;
 
 // https://panda-css.com/docs/concepts/extend#removing-something-from-the-base-presets
 // Omit default patterns here
@@ -63,64 +44,47 @@ const pandaBasePresetConditions = pandaBasePreset.conditions;
 const pandaBasePresetUtilities = pandaBasePreset.utilities;
 const pandaBasePresetGlobalCss = pandaBasePreset.globalCss;
 
-const theme = {
-  tokens: {
-    ...tokens,
-  },
-  semanticTokens: {
-    colors: semanticTokens.colors,
-    shadows: semanticTokens.shadows,
-    zIndex: semanticTokens.zIndex,
-  },
-};
-
+/**
+ * Panda CSS preset containing Cetec tokens, semantic tokens, recipes,
+ * utilities, patterns, global CSS, and conditions.
+ *
+ * Add this preset to a Panda configuration to generate styles that match the
+ * design system. It extends Panda's base preset while replacing its
+ * `dropShadow` utility and omitting the base `box` and `divider` patterns.
+ *
+ * @example
+ * ```ts
+ * import { cetecPreset } from 'cetec-design-system/preset';
+ *
+ * export default defineConfig({ presets: [cetecPreset] });
+ * ```
+ */
 export const cetecPreset: Preset = definePreset({
   name: 'cetecPreset',
   theme: {
     extend: {
       tokens: {
-        ...theme.tokens,
+        ...tokens,
       },
       semanticTokens: {
-        colors: theme.semanticTokens.colors,
-        shadows: theme.semanticTokens.shadows,
-        zIndex: theme.semanticTokens.zIndex,
+        colors: semanticTokens.colors,
+        fontSizes: semanticTokens.fontSizes,
+        shadows: semanticTokens.shadows,
+        zIndex: semanticTokens.zIndex,
       },
       breakpoints: breakpoints,
       containerSizes: containerSizes,
       keyframes: keyframes,
       layerStyles: layerStyles,
       textStyles: textStyles,
-      recipes: {
-        ...transformedRecipes,
-        list: listRecipe,
-        listItem: listItemRecipe,
-        highlightText: highlightTextRecipe,
-      },
-      slotRecipes: {
-        badge: badgeRecipe,
-        button: buttonRecipe,
-        iconButton: iconButtonRecipe,
-        checkbox: checkboxRecipe,
-        radio: radioRecipe,
-        tooltip: tooltipRecipe,
-        menu: menuRecipe,
-        toggle: toggleRecipe,
-        chip: chipRecipe,
-        avatar: avatarRecipe,
-        modal: modalRecipe,
-        formField: formFieldRecipe,
-        spinner: spinnerRecipe,
-        textInput: textInputRecipe,
-        datePicker: datePickerRecipe,
-        timePicker: timePickerRecipe,
-        breadcrumbs: breadcrumbsRecipe,
-        listItemGroup: listItemGroupRecipe,
-      },
+      recipes: presetRecipes,
+      slotRecipes: presetSlotRecipes,
     },
   },
   utilities: {
     ...pandaBasePresetUtilities,
+    // replaces (not extends) Panda's half-baked dropShadow utility
+    dropShadow: dropShadowProperty,
     // Custom utilities
     // https://panda-css.com/docs/references/config#utilities
     extend: {

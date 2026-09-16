@@ -5,36 +5,45 @@ import { cx, css } from '@styled-system/css';
 import { avatar, type AvatarVariantProps } from '@styled-system/recipes';
 
 import { Box, type BoxProps } from '~/components/Box';
-import { Icon, type AllowedIconSizes } from '~/components/Icon';
+import { Icon, type AllowedIconSizes, type IconProps } from '~/components/Icon';
+import { useSlotContext } from '~/system/context/SlotContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+/** Supported visual sizes for {@link Avatar}. */
+export type AvatarSize = NonNullable<AvatarVariantProps['size']>;
 
-export type AvatarShape = 'circle' | 'square' | 'hexagon';
+/** Supported outline shapes for {@link Avatar}. */
+export type AvatarShape = AvatarVariantProps['shape'];
 
+/** Presence states displayed at the bottom-right of an avatar. */
 export type AvatarPresence = 'online' | 'busy' | 'offline' | 'focus';
 
+/** Status states displayed at the top-right of an avatar. */
 export type AvatarStatus = 'approved' | 'declined' | 'locked';
 
+/** Props accepted by {@link Avatar}. */
 export type AvatarProps = Omit<BoxProps, keyof AvatarVariantProps> &
   Omit<AvatarVariantProps, 'size' | 'shape'> & {
-    /** Image source URL */
+    /** Image URL. A failed or missing image falls back to custom content, initials, or a user icon. */
     src?: string;
-    /** Alt text for image */
+    /** Alternative text for the image. Use an empty string when nearby text already identifies the entity. */
+    /** @default "" */
     alt?: string;
-    /** Name for generating initials fallback */
+    /** Name used to generate first-and-last initials when no image is available. */
     name?: string;
-    /** Size of the avatar */
+    /** Visual size. An explicit value takes precedence over slot context. */
     size?: AvatarSize;
-    /** Shape of the avatar */
+    /** Outline shape of the avatar. */
+    /** @default "circle" */
     shape?: AvatarShape;
-    /** Presence indicator (bottom-right) */
+    /** Decorative presence indicator shown at the bottom-right. Provide equivalent text elsewhere when the state matters. */
     presence?: AvatarPresence;
-    /** Status indicator (top-right) */
+    /** Decorative status indicator shown at the top-right. Provide equivalent text elsewhere when the state matters. */
     status?: AvatarStatus;
-    /** Custom fallback content (overrides initials) */
+    /** Fallback content that takes precedence over generated initials and the default user icon. */
     fallback?: ReactNode;
-    /** Border color for the avatar */
+    /** CSS border color applied to the avatar root. */
     borderColor?: string;
   };
 
@@ -53,14 +62,42 @@ const statusStyles: Record<AvatarStatus, string> = {
   locked: css({ bg: 'bg.neutral.bold', fill: 'icon.inverse' }),
 };
 
+type AvatarSizeKey = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+
 // Map size to status icon size
-const sizeToStatusIconSize: Record<AvatarSize, AllowedIconSizes> = {
-  xs: '8',
-  sm: '10',
-  md: '12',
-  lg: '14',
-  xl: '16',
-  '2xl': '20',
+const sizeToStatusIconSize: Record<AvatarSizeKey, AllowedIconSizes> = {
+  sm: '8',
+  md: '10',
+  lg: '12',
+  xl: '14',
+  '2xl': '16',
+  '3xl': '20',
+};
+
+const isAvatarStatusIconSizeKey = (size: unknown): size is AvatarSizeKey =>
+  typeof size === 'string' &&
+  Object.prototype.hasOwnProperty.call(sizeToStatusIconSize, size);
+
+const mapAvatarSizeToStatusIconSize = (
+  size: AvatarProps['size'],
+): AllowedIconSizes | IconProps['size'] => {
+  if (isAvatarStatusIconSizeKey(size)) {
+    return sizeToStatusIconSize[size];
+  }
+
+  if (size && typeof size === 'object' && !Array.isArray(size)) {
+    const mapped: Record<string, AllowedIconSizes> = {};
+
+    Object.entries(size as Record<string, unknown>).forEach(([key, value]) => {
+      if (isAvatarStatusIconSizeKey(value)) {
+        mapped[key] = sizeToStatusIconSize[value];
+      }
+    });
+
+    return Object.keys(mapped).length > 0 ? mapped : sizeToStatusIconSize.md;
+  }
+
+  return sizeToStatusIconSize.md;
 };
 
 /**
@@ -81,15 +118,23 @@ function getInitials(name: string): string {
 }
 
 /**
- * Avatar component for displaying user or entity images with optional
- * presence and status indicators.
+ * Represents a person or entity with an image and deterministic fallback.
+ *
+ * Presence and status indicators are visual only. Supply equivalent text when
+ * either state is meaningful to assistive technology.
+ *
+ * @example
+ * ```tsx
+ * <Avatar src="/people/ada.jpg" alt="Ada Lovelace" name="Ada Lovelace" />
+ * ```
  */
 export const Avatar = (props: AvatarProps) => {
+  const slotContext = useSlotContext();
   const {
     src,
     alt = '',
     name,
-    size = 'md' as AvatarSize,
+    size: sizeProp,
     shape = 'circle' as AvatarShape,
     presence,
     status,
@@ -98,14 +143,15 @@ export const Avatar = (props: AvatarProps) => {
     ref,
     ...rest
   } = props;
+  const size =
+    sizeProp ?? (slotContext?.size as AvatarProps['size'] | undefined);
 
   const [className, otherProps] = splitProps(rest);
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
 
   // Type-safe size for indexing
-  const safeSize = size as AvatarSize;
-  const classes = avatar({ size: safeSize, shape });
+  const classes = avatar({ size, shape });
 
   // Determine what to show: image, fallback, or initials
   const showImage = Boolean(src) && failedSrc !== src;
@@ -113,10 +159,11 @@ export const Avatar = (props: AvatarProps) => {
   const initials = name ? getInitials(name) : null;
 
   // Get icon size based on avatar size
-  const iconSize = sizeToStatusIconSize[safeSize];
+  const iconSize = mapAvatarSizeToStatusIconSize(size);
 
   return (
     <Box
+      {...dsComponent('Avatar')}
       as="span"
       ref={ref}
       className={cx(classes.root, className)}

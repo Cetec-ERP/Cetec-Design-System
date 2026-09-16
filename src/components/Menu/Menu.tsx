@@ -1,10 +1,15 @@
 import {
   Children,
   cloneElement,
+  type HTMLAttributes,
   type HTMLProps,
   type CSSProperties,
+  type KeyboardEvent,
+  type ReactElement,
   type ReactNode,
+  type Ref,
   isValidElement,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -21,10 +26,12 @@ import {
   size,
   useClick,
   useDismiss,
+  useFocus,
   useInteractions,
   useHover,
   useListNavigation,
   useFloatingNodeId,
+  useMergeRefs,
   useRole,
   safePolygon,
   useTypeahead,
@@ -37,11 +44,14 @@ import {
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
 
 import {
   hasMatchingItems,
@@ -51,6 +61,8 @@ import {
   type MenuProps,
   type MenuRootContextValue,
 } from './context/menuContext';
+import { useBlockPointerEventsForHoverPolygon } from './hooks/useBlockPointerEventsForHoverPolygon';
+import { navigateListMainAxisLoop } from './utils/navigateListMainAxis';
 
 type DiginLevel = {
   key: string;
@@ -68,6 +80,51 @@ const defaultGetItemText = ({
   return [label, description].filter(Boolean).join(' ').trim();
 };
 
+const tabbableSelector = [
+  'a[href]',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  '[tabindex]',
+  '[contenteditable="true"]',
+].join(',');
+
+const isTabbable = (element: HTMLElement) => {
+  if (element.hasAttribute('disabled')) return false;
+  if (element.getAttribute('aria-hidden') === 'true') return false;
+  if (element.getAttribute('tabindex') === '-1') return false;
+  if (element.hasAttribute('data-floating-ui-focus-guard')) return false;
+
+  const style = element.ownerDocument.defaultView?.getComputedStyle(element);
+  if (style?.display === 'none' || style?.visibility === 'hidden') {
+    return false;
+  }
+
+  return element.getClientRects().length > 0;
+};
+
+const getNextTabbableOutsideFloating = ({
+  target,
+  floatingElement,
+  direction,
+}: {
+  target: HTMLElement;
+  floatingElement: HTMLElement | null;
+  direction: 1 | -1;
+}) => {
+  const candidates = Array.from(
+    target.ownerDocument.querySelectorAll<HTMLElement>(tabbableSelector),
+  ).filter((element) => {
+    return isTabbable(element) && !floatingElement?.contains(element);
+  });
+
+  const currentIndex = candidates.indexOf(target);
+  if (currentIndex === -1) return null;
+
+  return candidates[currentIndex + direction] ?? null;
+};
+
 const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
   return Children.map(nodes, (childNode, index) => {
     if (!isValidElement(childNode)) {
@@ -81,8 +138,24 @@ const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
   });
 };
 
+/**
+ * Displays a keyboard-navigable action list from a trigger or inline in a layout.
+ *
+ * Use `MenuItem`, `MenuGroup`, and `SubMenu` as children. A triggered menu
+ * restores the trigger relationship through Floating UI and dismisses on Escape
+ * or outside press. Use an inline menu when the list should always be visible.
+ *
+ * @example
+ * ```tsx
+ * <Menu trigger={<Button>Actions</Button>}>
+ *   <MenuItem label="Edit" onClick={edit} />
+ *   <MenuItem label="Archive" onClick={archive} />
+ * </Menu>
+ * ```
+ */
 export const Menu = (props: MenuProps) => {
   const nodeId = useFloatingNodeId();
+  const floatingLayer = useFloatingLayer();
   const {
     trigger,
     children,
@@ -104,13 +177,14 @@ export const Menu = (props: MenuProps) => {
     renderNoResults,
     highlightMatches = Boolean(query),
     getItemText = defaultGetItemText,
+    onMenubarEdgeNavigate,
     ...rest
   } = props;
 
   const [className, otherProps] = splitProps(rest);
   const userStyle = otherProps.style as CSSProperties | undefined;
-  const classes = menu({ density, panel });
-  const listClassName = list({});
+  const classes = menu({ density, panel, layer: floatingLayer });
+  const listClassName = list({ density });
 
   const hasReference = Boolean(trigger) && !inline;
 
@@ -167,6 +241,8 @@ export const Menu = (props: MenuProps) => {
   const listRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const blockPointerEventsForHoverPolygon =
+    useBlockPointerEventsForHoverPolygon();
 
   const hover = useHover(floating.context, {
     enabled:
@@ -178,14 +254,19 @@ export const Menu = (props: MenuProps) => {
       close: triggerCloseDelay,
     },
     handleClose: safePolygon({
-      blockPointerEvents: true,
+      blockPointerEvents: blockPointerEventsForHoverPolygon,
     }),
   });
   const click = useClick(floating.context, {
     enabled:
       hasReference &&
       (triggerInteraction === 'click' ||
+        triggerInteraction === 'focus' ||
         triggerInteraction === 'click-and-hover'),
+    toggle: triggerInteraction !== 'focus',
+  });
+  const focus = useFocus(floating.context, {
+    enabled: hasReference && triggerInteraction === 'focus',
   });
   const dismiss = useDismiss(floating.context, { enabled: hasReference });
   const role = useRole(floating.context, { role: 'menu' });
@@ -203,7 +284,7 @@ export const Menu = (props: MenuProps) => {
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
-    [hover, click, dismiss, role, listNavigation, typeahead],
+    [hover, click, focus, dismiss, role, listNavigation, typeahead],
   );
 
   const filterContextValue = useMemo(
@@ -260,12 +341,21 @@ export const Menu = (props: MenuProps) => {
       setDiginLevels((prev) => prev.slice(0, -1));
     },
     diginDepth,
+    onMenubarEdgeNavigate,
   };
+
+  const navigateMainAxis = useCallback((direction: 1 | -1) => {
+    setActiveIndex((prev) =>
+      navigateListMainAxisLoop(listRef, direction, prev),
+    );
+  }, []);
 
   const menuListContextValue = {
     activeIndex,
     getItemProps: (userProps?: HTMLProps<HTMLElement>) =>
       getItemProps(userProps) as HTMLProps<HTMLElement>,
+    navigateMainAxis,
+    nestedMenuDepth: 0,
   };
 
   const levels = [{ key: 'root', title: 'Menu', children }, ...diginLevels];
@@ -348,6 +438,7 @@ export const Menu = (props: MenuProps) => {
     <MenuRootProvider value={rootContextValue}>
       <MenuFilterProvider value={filterContextValue}>
         <Box
+          {...dsComponent('Menu')}
           ref={floating.refs.setFloating}
           className={cx(classes.wrapper, className)}
           {...getFloatingProps()}
@@ -471,6 +562,15 @@ export const Menu = (props: MenuProps) => {
 
   const shouldRenderInline = inline || !trigger;
 
+  const triggerRefProp = isValidElement(trigger)
+    ? (trigger.props as { ref?: Ref<Element | null> }).ref
+    : undefined;
+
+  const mergedTriggerRef = useMergeRefs([
+    triggerRefProp,
+    floating.refs.setReference,
+  ]);
+
   if (shouldRenderInline) {
     return (
       <FloatingTree>
@@ -479,20 +579,117 @@ export const Menu = (props: MenuProps) => {
     );
   }
 
+  const triggerExtract =
+    isValidElement(trigger) && trigger.props
+      ? (() => {
+          const {
+            ref: _r,
+            children: _ch,
+            onKeyDown: triggerOnKeyDownProp,
+            ...rest
+          } = trigger.props as Record<string, unknown> & {
+            ref?: unknown;
+            children?: unknown;
+            onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
+          };
+          return {
+            rest,
+            onKeyDown: triggerOnKeyDownProp,
+          };
+        })()
+      : {
+          rest: {} as Record<string, unknown>,
+          onKeyDown: undefined as
+            | ((event: KeyboardEvent<HTMLElement>) => void)
+            | undefined,
+        };
+
+  const triggerPropsForReference = triggerExtract.rest;
+  const triggerOnKeyDown = triggerExtract.onKeyDown;
+
+  const referencePropsFromFloating = getReferenceProps({
+    ...triggerPropsForReference,
+    ref: mergedTriggerRef,
+  });
+
+  const composedTriggerOnKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (isOpen && triggerInteraction === 'focus' && event.key === 'Tab') {
+      const target = event.target;
+      const referenceElement = floating.elements.domReference;
+
+      if (target instanceof HTMLElement && referenceElement) {
+        const nextElement = getNextTabbableOutsideFloating({
+          target,
+          floatingElement: floating.elements.floating,
+          direction: event.shiftKey ? -1 : 1,
+        });
+
+        if (nextElement && !referenceElement.contains(nextElement)) {
+          event.preventDefault();
+          setOpenState(false);
+          nextElement.focus();
+          return;
+        }
+
+        if (!nextElement) {
+          event.preventDefault();
+          setOpenState(false);
+          target.blur();
+          return;
+        }
+      }
+    }
+
+    // When the menu is open, Floating UI's reference key handler often runs
+    // before the consumer's onKeyDown, so menubar Left/Right (on the trigger)
+    // never fires. Run the trigger handler first for horizontal navigation.
+    if (
+      isOpen &&
+      (event.key === 'ArrowLeft' || event.key === 'ArrowRight') &&
+      typeof triggerOnKeyDown === 'function'
+    ) {
+      triggerOnKeyDown(event);
+      return;
+    }
+    const refOnKeyDown = referencePropsFromFloating.onKeyDown;
+    if (typeof refOnKeyDown === 'function') {
+      refOnKeyDown(event);
+    }
+    if (typeof triggerOnKeyDown === 'function') {
+      triggerOnKeyDown(event);
+    }
+  };
+
   return (
     <FloatingTree>
       <FloatingNode id={nodeId}>
         {cloneElement(
-          trigger,
-          getReferenceProps({
-            ref: floating.refs.setReference,
-          }),
+          trigger as ReactElement<HTMLAttributes<HTMLElement>>,
+          {
+            ...referencePropsFromFloating,
+            onKeyDown: composedTriggerOnKeyDown,
+          } as HTMLAttributes<HTMLElement>,
         )}
         {isOpen && (
           <FloatingPortal>
-            <FloatingFocusManager context={floating.context} modal={false}>
-              {content}
-            </FloatingFocusManager>
+            <DsChainPortalRoot reference={floating.elements.domReference}>
+              <FloatingFocusManager
+                context={floating.context}
+                modal={false}
+                // Menubar composition: keep focus on the section trigger until the
+                // user arrows into the panel, so Left/Right can move between
+                // top-level menubar items while the dropdown is open (APG pattern).
+                // Default initialFocus=0 would move focus to the first menu row and
+                // swallow menubar navigation until a child is focused.
+                order={
+                  onMenubarEdgeNavigate ? ['reference', 'content'] : undefined
+                }
+                initialFocus={triggerInteraction === 'focus' ? -1 : undefined}
+                returnFocus={triggerInteraction === 'focus' ? false : undefined}
+              >
+                {content}
+              </FloatingFocusManager>
+            </DsChainPortalRoot>
           </FloatingPortal>
         )}
       </FloatingNode>

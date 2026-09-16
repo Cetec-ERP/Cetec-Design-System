@@ -1,6 +1,7 @@
-import { Flex } from '@styled-system/jsx';
+import { Flex, Grid, HStack } from '@styled-system/jsx';
 
 import { Box } from '../Box';
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 
@@ -12,10 +13,13 @@ const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
   component: Avatar,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+  },
   argTypes: {
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl'],
       description: 'Size of the avatar',
     },
     shape: {
@@ -80,12 +84,12 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="xs" src={sampleImages.user1} name="John Doe" />
       <Avatar size="sm" src={sampleImages.user1} name="John Doe" />
       <Avatar size="md" src={sampleImages.user1} name="John Doe" />
       <Avatar size="lg" src={sampleImages.user1} name="John Doe" />
       <Avatar size="xl" src={sampleImages.user1} name="John Doe" />
       <Avatar size="2xl" src={sampleImages.user1} name="John Doe" />
+      <Avatar size="3xl" src={sampleImages.user1} name="John Doe" />
     </Box>
   ),
 };
@@ -93,7 +97,7 @@ export const Sizes: Story = {
 export const SizesWithLabels: Story = {
   render: () => (
     <Box display="flex" flexDir="column" gap="4">
-      {(['xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
+      {(['sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const).map((size) => (
         <Box key={size} display="flex" gap="4" alignItems="center">
           <Text w="80" fontWeight="medium">
             {size}:
@@ -218,12 +222,12 @@ export const Presence: Story = {
 export const PresenceAllSizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="xs" src={sampleImages.user1} presence="online" />
       <Avatar size="sm" src={sampleImages.user1} presence="online" />
       <Avatar size="md" src={sampleImages.user1} presence="online" />
       <Avatar size="lg" src={sampleImages.user1} presence="online" />
       <Avatar size="xl" src={sampleImages.user1} presence="online" />
       <Avatar size="2xl" src={sampleImages.user1} presence="online" />
+      <Avatar size="3xl" src={sampleImages.user1} presence="online" />
     </Box>
   ),
 };
@@ -259,12 +263,12 @@ export const Status: Story = {
 export const StatusAllSizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="xs" src={sampleImages.user1} status="approved" />
       <Avatar size="sm" src={sampleImages.user1} status="approved" />
       <Avatar size="md" src={sampleImages.user1} status="approved" />
       <Avatar size="lg" src={sampleImages.user1} status="approved" />
       <Avatar size="xl" src={sampleImages.user1} status="approved" />
       <Avatar size="2xl" src={sampleImages.user1} status="approved" />
+      <Avatar size="3xl" src={sampleImages.user1} status="approved" />
     </Box>
   ),
 };
@@ -299,6 +303,90 @@ export const PresenceAndStatus: Story = {
       </Box>
     </Box>
   ),
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <HStack gap="20">
+        <Avatar
+          src={sampleImages.user1}
+          presence="online"
+          status="approved"
+          size={{
+            base: '3xl',
+            xs: '2xl',
+            sm: 'xl',
+            md: 'lg',
+            lg: 'md',
+            xl: 'sm',
+          }}
+          shape="circle"
+        />
+        <Avatar
+          src={sampleImages.user2}
+          presence="online"
+          status="approved"
+          size={{
+            base: '3xl',
+            xs: '2xl',
+            sm: 'xl',
+            md: 'lg',
+            lg: 'md',
+            xl: 'sm',
+          }}
+          shape="square"
+        />
+        <Avatar
+          src={sampleImages.user3}
+          presence="online"
+          status="approved"
+          size={{
+            base: '3xl',
+            xs: '2xl',
+            sm: 'xl',
+            md: 'lg',
+            lg: 'md',
+            xl: 'sm',
+          }}
+          shape="hexagon"
+        />
+      </HStack>
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: {
+            base: '"2xl"',
+            xs: '"xl"',
+            sm: '"lg"',
+            md: '"md"',
+            lg: '"sm"',
+            xl: '"xs"',
+          },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
 };
 
 // =============================================================================

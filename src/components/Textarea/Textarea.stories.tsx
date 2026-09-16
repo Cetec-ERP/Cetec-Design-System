@@ -1,5 +1,6 @@
 import { Grid, VStack } from '@styled-system/jsx';
 
+import { BreakpointIndicator } from '../BreakpointIndicator';
 import { FormField } from '../FormField';
 import { Text } from '../Text';
 
@@ -81,6 +82,44 @@ export const Sizes: Story = {
         />
       ))}
     </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+// ============================================================================
+// Conditional Breakpoints
+// ============================================================================
+
+export const ConditionalBreakpoints: Story = {
+  render: () => (
+    <Grid
+      w="full"
+      h="full"
+      position="relative"
+      placeContent="center"
+      alignItems="center"
+      justifyItems="center"
+      gap="16"
+    >
+      <Textarea
+        size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
+        name="pizza"
+        placeholder="pizza"
+      />
+      <Text
+        textAlign="center"
+        textStyle="mono.sm"
+        _after={{
+          display: 'inline',
+          content: { base: '"xl"', xs: '"lg"', sm: '"md"', md: '"sm"' },
+          color: 'text.bold',
+          fontWeight: 'bold',
+        }}
+      >
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>
   ),
   parameters: { controls: { disable: true } },
 };

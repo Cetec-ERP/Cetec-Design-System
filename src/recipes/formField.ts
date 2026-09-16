@@ -10,7 +10,8 @@ const formFieldBase = {
   inputs: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '2',
+    gap: '8',
+    mt: '4',
   },
   labelWrapper: {
     alignItems: 'center',

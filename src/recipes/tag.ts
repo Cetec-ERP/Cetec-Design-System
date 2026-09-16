@@ -70,6 +70,7 @@ export const tagRecipe = defineRecipe({
     variant: 'default',
     hue: 'slate',
   },
+  // validate-ignore: avoid-compound-variants-in-recipes — tag color pairing is a fixed token matrix and clearer as declarative compound variants
   compoundVariants: [
     {
       hue: 'slate',

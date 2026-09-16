@@ -139,7 +139,7 @@ Icons are managed as an SVG sprite system:
 - **Strict TypeScript**: No ambient `any`; isolate escapes with TODO comments
 - **Composition > prop soup**: Small components that compose; avoid mega-props
 - **Function components only**: Hooks for state/effects; no legacy lifecycles
-- **Controlled components**: Use controlled components as the standard pattern for form inputs, including checkboxes, radios, text inputs, and other interactive elements.
+- **Controlled vs uncontrolled**: Prefer controlled state when the UI needs React to own the current value. Use uncontrolled entrypoints when the browser can own the value safely, especially for native inputs and binary controls (`Checkbox`, `Radio`, `Toggle`) and for group/value components that expose `defaultChecked`, `defaultValue`, or `defaultOpen`.
 - **Props typing**: Use `React.ComponentProps<"element">` for intrinsic elements
 
 ### Git Conventions (from `.cursor/rules/git.mdc`)
@@ -188,10 +188,14 @@ Icons are managed as an SVG sprite system:
 
 This project uses **Auto** for automated releases:
 
-- **Trigger**: PRs must have a release label (major, minor, patch, release) from `.autorc`
+- **Trigger**: Every push to `main` runs the release workflow
 - **Main branch**: `main` is the release branch
-- **Prerelease mode**: All releases are prereleases
+- **Merge strategy**: Release resolution assumes squash merges and reads the PR number from the squash commit title when possible
+- **Publishing behavior**: A merged PR with a manual `major`, `minor`, or `patch` label publishes a prerelease by default
+- **Stable releases**: Add the manual `release` label to promote that PR to a stable `latest` release
+- **Version source of truth**: Published npm versions are used to choose the next version; `package.json` is only a fallback when there is no published history yet
 - **Version format**: No `v` prefix (e.g., `0.0.38-0`)
+- **Automatic labels**: Conventional Commit title types sync PR-type labels automatically, but `major`, `minor`, `patch`, `release`, and `skip-release` remain manual labels
 - **Labels**: Defined in `.autorc` for changelog generation (💥 Breaking Change, 🚀 Enhancement, 🐛 Bug Fix, etc.)
 - **CHANGELOG**: Auto-generated in `CHANGELOG.md`
 
@@ -216,7 +220,7 @@ Projects consuming this design system must:
 4. Standard `recipes` are registered automatically, but new `slotRecipes` need to be manually registered in `panda.config.ts` under `theme.extend.recipes`
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
-7. Create Storybook stories
+7. Create Storybook stories, including uncontrolled examples when the API supports them
 8. Export from `src/index.ts`
 
 ### Modifying Design Tokens

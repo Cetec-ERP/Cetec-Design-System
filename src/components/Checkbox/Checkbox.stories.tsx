@@ -20,7 +20,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Use `CheckboxInput` for app forms so labels, spacing, and click targets are wired by default. Use `Checkbox` only when building a custom composed wrapper.',
+          'Use `CheckboxInput` for app forms so labels, spacing, and click targets are wired by default. Use `Checkbox` only when building a custom composed wrapper. Both controlled and uncontrolled usage are supported.',
       },
     },
   },
@@ -64,6 +64,18 @@ export const Default: Story = {
           'Recommended default for product UI: `CheckboxInput` with visible label copy.',
       },
     },
+  },
+};
+
+export const Uncontrolled: Story = {
+  name: 'Uncontrolled',
+  render: () => (
+    <CheckboxInput name="uncontrolled" id="uncontrolled" defaultChecked>
+      Remember this choice
+    </CheckboxInput>
+  ),
+  parameters: {
+    controls: { disable: true },
   },
 };
 

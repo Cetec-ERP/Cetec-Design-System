@@ -1,8 +1,19 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
+import { globalBaseStyles } from '~/styles/utilities';
+
 const textInputBase = {
   container: {
+    ...globalBaseStyles,
+    '--input-py': 'token(sizes.3)',
+    '--input-px': 'token(sizes.10)',
+    '--input-slot-side-padding': 'token(sizes.0)',
+    '--input-fs': 'token(sizes.16)',
+    '--slot-size': 'token(sizes.20)',
+    '--slot-px': 'token(sizes.6)',
     position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
     width: 'full',
     bg: 'surface',
     borderWidth: '1',
@@ -12,23 +23,35 @@ const textInputBase = {
     outlineWidth: '1',
     outlineStyle: 'solid',
     outlineColor: 'transparent',
-    overflow: 'hidden',
-    lineHeight: 'none',
-    _focusWithin: {
+    '&:focus-within:not(:has(button:focus))': {
       outlineColor: 'border.focused',
       borderColor: 'border.focused',
     },
     _error: {
       borderColor: 'border.danger',
-      _focusWithin: {
+      '&:focus-within:not(:has(button:focus))': {
         borderColor: 'border.danger',
         outlineColor: 'border.danger',
+      },
+    },
+    _invalid: {
+      borderColor: 'border.danger',
+      '&:focus-within:not(:has(button:focus))': {
+        borderColor: 'border.danger',
+        outlineColor: 'border.danger',
+      },
+    },
+    _valid: {
+      borderColor: 'border.success',
+      '&:focus-within:not(:has(button:focus))': {
+        borderColor: 'border.success',
+        outlineColor: 'border.success',
       },
     },
     _disabled: {
       opacity: 0.4,
       cursor: 'not-allowed',
-      _focusWithin: {
+      '&:focus-within:not(:has(button:focus))': {
         outlineColor: 'transparent',
         borderColor: 'border.input',
       },
@@ -40,6 +63,10 @@ const textInputBase = {
   input: {
     width: 'full',
     bg: 'surface',
+    py: 'var(--input-py)',
+    px: 'var(--input-px)',
+    fontSize: 'var(--input-fs)',
+    borderRadius: '3',
     color: 'text',
     lineHeight: 'default',
     fontFamily: 'body',
@@ -49,75 +76,94 @@ const textInputBase = {
       color: 'text.placeholder',
     },
   },
-  icon: {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    fill: 'icon.decorative.subtle',
-    mixBlendMode: { base: 'multiply', _dark: 'screen' },
+  slot: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    transitionDuration: 'fast',
+    transitionProperty: 'all',
+    transitionTimingFunction: 'default',
+    flex: '0 0 var(--slot-size)',
+    px: 'var(--slot-px)',
+    fill: 'icon.decorative',
     pointerEvents: 'none',
     zIndex: 1,
+  },
+  buttonSlot: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    flex: '0 0 var(--slot-size)',
+    px: '0',
+    zIndex: 1,
+    m: '-1',
   },
 };
 
 const textInputVariants = {
   size: {
-    md: {
-      input: {
-        py: 3,
-        px: 10,
-        fontSize: '16',
-      },
-      icon: {
-        mx: '3',
-        w: '24',
+    sm: {
+      container: {
+        '--input-py': 'token(sizes.0)',
+        '--input-px': 'token(sizes.8)',
+        '--input-slot-side-padding': 'token(sizes.0)',
+        '--input-fs': 'token(sizes.14)',
+        '--slot-size': 'token(sizes.16)',
+        '--slot-px': 'token(sizes.4)',
       },
     },
-    sm: {
-      input: {
-        py: 0,
-        px: 8,
-        fontSize: '14',
-      },
-      icon: {
-        mx: '2',
-        w: '22',
+    md: {
+      container: {
+        '--input-py': 'token(sizes.3)',
+        '--input-px': 'token(sizes.10)',
+        '--input-slot-side-padding': 'token(sizes.0)',
+        '--input-fs': 'token(sizes.16)',
+        '--slot-size': 'token(sizes.20)',
+        '--slot-px': 'token(sizes.6)',
       },
     },
     lg: {
-      input: {
-        py: 7,
-        px: 12,
-        fontSize: '16',
-      },
-      icon: {
-        mx: '5',
-        w: '24',
+      container: {
+        '--input-py': 'token(sizes.7)',
+        '--input-px': 'token(sizes.12)',
+        '--input-slot-side-padding': 'token(sizes.0)',
+        '--input-fs': 'token(sizes.16)',
+        '--slot-size': 'token(sizes.24)',
+        '--slot-px': 'token(sizes.8)',
       },
     },
     xl: {
+      container: {
+        '--input-py': 'token(sizes.9)',
+        '--input-px': 'token(sizes.16)',
+        '--input-slot-side-padding': 'token(sizes.0)',
+        '--input-fs': 'token(sizes.20)',
+        '--slot-size': 'token(sizes.28)',
+        '--slot-px': 'token(sizes.10)',
+      },
+    },
+  },
+  before: {
+    true: {
       input: {
-        py: 9,
-        px: 16,
-        fontSize: '20',
+        ps: '0',
       },
-      icon: {
-        mx: '7',
-        w: '28',
-      },
-    },
-  },
-  iconBefore: {
-    true: {
-      icon: {
-        left: '0',
+      buttonSlot: {
+        '& button': {
+          borderTopRightRadius: '0',
+          borderBottomRightRadius: '0',
+        },
       },
     },
   },
-  iconAfter: {
+  after: {
     true: {
-      icon: {
-        right: '0',
+      input: {
+        pe: '0',
+      },
+      buttonSlot: {
+        '& button': {
+          borderTopLeftRadius: '0',
+          borderBottomLeftRadius: '0',
+        },
       },
     },
   },
@@ -131,74 +177,12 @@ const textInputVariants = {
   },
 };
 
-const textInputCompoundVariants: NonNullable<
-  Parameters<typeof defineSlotRecipe>[0]['compoundVariants']
-> = [
-  {
-    size: 'md',
-    iconBefore: true,
-    css: {
-      input: { ps: '[31px]' },
-    },
-  },
-  {
-    size: 'md',
-    iconAfter: true,
-    css: {
-      input: { pe: '[31px]' },
-    },
-  },
-  {
-    size: 'sm',
-    iconBefore: true,
-    css: {
-      input: { ps: '[26px]' },
-    },
-  },
-  {
-    size: 'sm',
-    iconAfter: true,
-    css: {
-      input: { pe: '[26px]' },
-    },
-  },
-  {
-    size: 'lg',
-    iconBefore: true,
-    css: {
-      input: { ps: '[34px]' },
-    },
-  },
-  {
-    size: 'lg',
-    iconAfter: true,
-    css: {
-      input: { pe: '[34px]' },
-    },
-  },
-  {
-    size: 'xl',
-    iconBefore: true,
-    css: {
-      input: { ps: '[42px]' },
-    },
-  },
-  {
-    size: 'xl',
-    iconAfter: true,
-    css: {
-      input: { pe: '[42px]' },
-    },
-  },
-];
-
 export const textInputRecipe = defineSlotRecipe({
   className: 'textInput',
   jsx: ['TextInput'],
-  slots: ['container', 'input', 'icon'],
+  slots: ['container', 'input', 'slot', 'buttonSlot', 'before', 'after'],
   base: textInputBase,
   variants: textInputVariants,
-  compoundVariants: textInputCompoundVariants,
   defaultVariants: {
     size: 'md',
   },

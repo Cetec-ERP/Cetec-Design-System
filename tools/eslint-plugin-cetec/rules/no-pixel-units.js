@@ -1,3 +1,5 @@
+import { hasValidateIgnoreComment } from '../utils.js';
+
 const RULE_NAME = 'no-pixel-units';
 
 const PIXEL_UNIT_PATTERN = /-?(?:\d+(?:\.\d+)?|\.\d+)px\b/;
@@ -50,6 +52,10 @@ const noPixelUnitsRule = {
         const value = getAttributeValueString(node.value);
 
         if (!value || !PIXEL_UNIT_PATTERN.test(value)) {
+          return;
+        }
+
+        if (hasValidateIgnoreComment(context, node, RULE_NAME)) {
           return;
         }
 

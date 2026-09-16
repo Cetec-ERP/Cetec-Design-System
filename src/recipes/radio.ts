@@ -32,6 +32,9 @@ export const radioRecipe = defineSlotRecipe({
         display: 'inline-grid',
         zIndex: 'zIndex.3',
       },
+      "& ~ [name='radio-checked']": {
+        display: 'none',
+      },
       _checked: {
         "& ~ [name='radio-checked']": {
           display: 'inline-grid',

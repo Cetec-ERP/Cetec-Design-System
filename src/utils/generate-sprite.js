@@ -65,32 +65,30 @@ function getSVGs() {
 }
 
 function optimizeSVGs(sourceFiles) {
-  const optimizedFiles = sourceFiles
-    .map((file) => {
-      const fileName = path.basename(file);
-      const outputPath = path.join(dirs.svgsOptimized, fileName);
-      const contents = fs.readFileSync(file, 'utf8');
+  const optimizedFiles = sourceFiles.flatMap((file) => {
+    const fileName = path.basename(file);
+    const outputPath = path.join(dirs.svgsOptimized, fileName);
+    const contents = fs.readFileSync(file, 'utf8');
 
-      try {
-        // Optimize SVG with SVGO
-        const optimizedSvg = optimize(contents, {
-          path: file,
-          ...svgoConfig,
-        });
+    try {
+      // Optimize SVG with SVGO
+      const optimizedSvg = optimize(contents, {
+        path: file,
+        ...svgoConfig,
+      });
 
-        if (optimizedSvg.error) {
-          console.error(`Error optimizing ${fileName}:`, optimizedSvg.error);
-          return null;
-        }
-
-        fs.writeFileSync(outputPath, optimizedSvg.data);
-        return outputPath;
-      } catch (error) {
-        console.error(`Error processing ${fileName}:`, error);
-        return null;
+      if (optimizedSvg.error) {
+        console.error(`Error optimizing ${fileName}:`, optimizedSvg.error);
+        return [];
       }
-    })
-    .filter(Boolean); // Remove any null entries from failed optimizations
+
+      fs.writeFileSync(outputPath, optimizedSvg.data);
+      return [outputPath];
+    } catch (error) {
+      console.error(`Error processing ${fileName}:`, error);
+      return [];
+    }
+  });
 
   console.log(`Optimized ${optimizedFiles.length} SVG files`);
   return optimizedFiles;
@@ -212,14 +210,23 @@ function validateIconMetadata(iconNames, iconMetadata) {
   );
   if (missingMetadataIcons.length > 0) {
     console.warn(
-      `Icons without metadata: ${missingMetadataIcons.length}. ` +
-        `Add aliases/tags over time for better search quality.`,
+      `\n---------------------------\n`,
+      `\nIcons without metadata: ${missingMetadataIcons.length}`,
+      `\n> ${missingMetadataIcons.join(', ')}\n`,
+      `\nAdd aliases/tags over time for better search quality.\n`,
+      `\n---------------------------\n`,
+    );
+  } else {
+    console.log(
+      `\n---------------------------\n`,
+      `\n✅ All icons have metadata.\n`,
+      `\n---------------------------\n`,
     );
   }
 }
 
 function buildMergedIconMetadata(iconNames, iconMetadata) {
-  const sortedIconNames = [...iconNames].sort((a, b) => a.localeCompare(b));
+  const sortedIconNames = iconNames.toSorted((a, b) => a.localeCompare(b));
 
   return Object.fromEntries(
     sortedIconNames.map((iconName) => [

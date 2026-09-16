@@ -5,6 +5,45 @@
 
 .sbdocs-content {
   padding: var(--cetec-sizes-48);
+
+  ul,
+  ol {
+    &:not([class*='cetec-']) {
+      margin: 0 0 1rem 1.5rem;
+      padding-inline-start: 1rem;
+    }
+  }
+
+  ul:not([class*='cetec-']) {
+    list-style-type: disc;
+  }
+
+  ol:not([class*='cetec-']) {
+    list-style-type: decimal;
+  }
+}
+
+.sbdocs-content + [class*='css-'],
+.sbdocs-content + [class*='css-'] > [class*='css-'] {
+  width: min(220px, 100%);
+
+  .toc-list-item {
+    width: 100%;
+    margin: 0;
+    padding-left: 8px;
+  }
+
+  .toc-list-item::before {
+    transform: translateX(calc(-2px));
+  }
+
+  .toc-link {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
 .sbdocs {
@@ -45,7 +84,7 @@
     }
   }
 
-  h1 {
+  h1:not([class*='cetec-']) {
     font-size: var(--cetec-font-sizes-40);
 
     &.sbdocs-title {
@@ -53,15 +92,15 @@
     }
   }
 
-  h2:not(#stories) {
+  h2:not([class*='cetec-'], #stories) {
     font-size: var(--cetec-font-sizes-32);
   }
 
-  h3 {
+  h3:not([class*='cetec-']) {
     font-size: var(--cetec-font-sizes-24);
   }
 
-  h4 {
+  h4:not([class*='cetec-']) {
     font-size: var(--cetec-font-sizes-20);
   }
 
@@ -69,7 +108,7 @@
     margin-bottom: 0.5rem;
   }
 
-  mark {
+  mark:not([class*='cetec-']) {
     background-color: var(--cetec-colors-bg-accent-gold-subtlest);
     color: var(--cetec-colors-text);
     padding: 0.125rem 0.25rem;
@@ -88,22 +127,6 @@ p + h4 {
   }
 }
 
-h1 {
-  font-size: var(--cetec-font-sizes-40);
-}
-
-h2 {
-  font-size: var(--cetec-font-sizes-32);
-}
-
-h3 {
-  font-size: var(--cetec-font-sizes-24);
-}
-
-h4 {
-  font-size: var(--cetec-font-sizes-20);
-}
-
 p:not([class*='cetec-']) {
   margin-bottom: 0.5rem;
   max-width: var(--cetec-sizes-prose);
@@ -113,62 +136,50 @@ code,
 kbd,
 samp,
 pre {
-  font-family: var(--cetec-fonts-mono);
-  font-variation-settings:
-    'MONO' 1,
-    'CRSV' 0,
-    'CASL' 0,
-    'slnt' 0;
-  font-size: 0.9em;
-  margin: 0;
-
-  .docblock-source {
+  &:not([class*='cetec-']) {
+    font-family: var(--cetec-fonts-mono);
+    font-variation-settings:
+      'MONO' 1,
+      'CRSV' 0,
+      'CASL' 0,
+      'slnt' 0;
+    font-size: 0.9em;
     margin: 0;
+
+    .docblock-source {
+      margin: 0;
+    }
   }
 }
 
-code {
+code:not([class*='cetec-']) {
   background: var(--cetec-colors-bg-accent-blue-subtlest);
   color: var(--cetec-colors-text);
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
   margin-block: -0.25rem;
   mix-blend-mode: multiply;
-}
-
-pre > div {
-  margin-top: 0 !important;
+  white-space: wrap;
+  max-width: 100%;
 }
 
 b,
 strong {
-  font-weight: bold;
+  &:not([class*='cetec-']) {
+    font-weight: bold;
+  }
 }
 
 i,
 em {
-  font-style: italic;
-  font-variation-settings:
-    'MONO' 0,
-    'CRSV' 1,
-    'CASL' 0,
-    'slnt' -15;
-}
-
-ul,
-ol {
   &:not([class*='cetec-']) {
-    margin: 0 0 1rem 1.5rem;
-    padding-inline-start: 1rem;
+    font-style: italic;
+    font-variation-settings:
+      'MONO' 0,
+      'CRSV' 1,
+      'CASL' 0,
+      'slnt' -15;
   }
-}
-
-ul:not([class*='cetec-']) {
-  list-style-type: disc;
-}
-
-ol:not([class*='cetec-']) {
-  list-style-type: decimal;
 }
 
 .cetec-d_grid.definitions-grid {

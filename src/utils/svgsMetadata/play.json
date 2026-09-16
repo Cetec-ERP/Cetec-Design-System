@@ -1,5 +1,16 @@
 {
-  "aliases": ["start", "resume", "music", "audio", "stop", "play", "pause"],
+  "aliases": [
+    "start",
+    "resume",
+    "music",
+    "audio",
+    "stop",
+    "play",
+    "pause",
+    "triangle",
+    "begin",
+    "playback"
+  ],
   "tags": ["media"],
   "category": "Player",
   "deprecated": false

@@ -3,7 +3,9 @@ import {
   type HTMLProps,
   type KeyboardEvent,
   type MouseEvent,
+  useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -36,12 +38,15 @@ import {
 import { cx } from '@styled-system/css';
 import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
-import { Box } from '../Box';
-import { Icon } from '../Icon';
-import { HighlightText } from '../List';
-import { Text } from '../Text';
+import { Box } from '../Box/Box';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
+import { Icon } from '../Icon/Icon';
+import { HighlightText } from '../List/HighlightText';
+import { Text } from '../Text/Text';
 
 import {
   deriveItemTextValue,
@@ -55,11 +60,31 @@ import {
   useMenuListContext,
   useMenuRootContext,
 } from './context/menuContext';
+import { useBlockPointerEventsForHoverPolygon } from './hooks/useBlockPointerEventsForHoverPolygon';
+import {
+  findFirstEnabledListIndex,
+  navigateListMainAxisLoop,
+} from './utils/navigateListMainAxis';
 
+/**
+ * Opens nested menu content from a row in a parent {@link Menu}.
+ *
+ * Hover submenus open as positioned flyouts; `interaction="digin"` replaces
+ * the parent level in the same panel. Arrow Right opens a flyout and Arrow Left
+ * returns focus to its trigger. Filtering also searches nested children.
+ *
+ * @example
+ * ```tsx
+ * <SubMenu label="More actions">
+ *   <MenuItem label="Duplicate" />
+ * </SubMenu>
+ * ```
+ */
 export const SubMenu = (props: SubMenuProps) => {
   const nodeId = useFloatingNodeId();
   const parentId = useFloatingParentNodeId();
   const tree = useFloatingTree();
+  const floatingLayer = useFloatingLayer();
   const {
     label,
     description,
@@ -85,8 +110,11 @@ export const SubMenu = (props: SubMenuProps) => {
   const resolvedInteraction = interaction ?? rootContext.subMenuInteraction;
   const resolvedDensity =
     typeof density === 'string' ? density : rootContext.density;
-  const classes = menu({ density: resolvedDensity });
-  const listClassName = list({});
+  const classes = menu({
+    density: resolvedDensity,
+    layer: floatingLayer,
+  });
+  const listClassName = list({ density: resolvedDensity });
   const itemClassName = listItemRecipe({
     density: resolvedDensity,
     iconBefore: Boolean(iconBefore),
@@ -112,6 +140,18 @@ export const SubMenu = (props: SubMenuProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const floatingListRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
+  const subMenuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const blockPointerEventsForHoverPolygon =
+    useBlockPointerEventsForHoverPolygon();
+  /** True until we apply first-item selection after ArrowRight opens the flyout. */
+  const openedFromParentArrowRightRef = useRef(false);
+  /** After keyboard open, focus the nested item matching `activeIndex` once. */
+  const keyboardFocusFirstNestedItemRef = useRef(false);
+
+  const openNestedFromParentKeyboard = useCallback(() => {
+    openedFromParentArrowRightRef.current = true;
+    setOpen(true);
+  }, []);
 
   const handleOpenChange = (
     nextOpen: boolean,
@@ -146,7 +186,7 @@ export const SubMenu = (props: SubMenuProps) => {
     enabled: !disabled && parentId != null,
     delay: { open: 75 },
     handleClose: safePolygon({
-      blockPointerEvents: true,
+      blockPointerEvents: blockPointerEventsForHoverPolygon,
     }),
   });
   const click = useClick(floating.context, {
@@ -161,6 +201,14 @@ export const SubMenu = (props: SubMenuProps) => {
     activeIndex,
     onNavigate: setActiveIndex,
     nested: true,
+    // Default nested behavior focuses the first child when the flyout opens
+    // (see Floating UI useListNavigation sync when nested is true). That
+    // steals focus from the submenu trigger so ArrowDown navigates inside the
+    // flyout instead of among sibling rows (Quotes → Orders) in the parent
+    // menu. Keep focus on the trigger until the user opens into the panel with
+    // ArrowRight (handled below and by the nested reference path). After
+    // ArrowRight we set `activeIndex` and focus the first item in a layout effect.
+    focusItemOnOpen: false,
   });
   const typeahead = useTypeahead(floating.context, {
     listRef: labelsRef,
@@ -206,6 +254,50 @@ export const SubMenu = (props: SubMenuProps) => {
     }
   }, [tree, open, nodeId, parentId]);
 
+  useEffect(() => {
+    if (!open) {
+      setActiveIndex(null);
+    }
+  }, [open]);
+
+  useLayoutEffect(() => {
+    if (!open || !openedFromParentArrowRightRef.current) {
+      return;
+    }
+    const applyFirst = () => {
+      const idx = findFirstEnabledListIndex(floatingListRef);
+      if (idx === null) {
+        return false;
+      }
+      openedFromParentArrowRightRef.current = false;
+      keyboardFocusFirstNestedItemRef.current = true;
+      setActiveIndex(idx);
+      return true;
+    };
+    if (!applyFirst()) {
+      requestAnimationFrame(() => {
+        if (!applyFirst()) {
+          openedFromParentArrowRightRef.current = false;
+        }
+      });
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      keyboardFocusFirstNestedItemRef.current = false;
+      return;
+    }
+    if (!keyboardFocusFirstNestedItemRef.current || activeIndex === null) {
+      return;
+    }
+    const el = floatingListRef.current[activeIndex];
+    if (el) {
+      el.focus({ preventScroll: true });
+    }
+    keyboardFocusFirstNestedItemRef.current = false;
+  }, [open, activeIndex]);
+
   const nestedFilterContext = useMemo(
     () => ({
       query: filterContext.query,
@@ -216,10 +308,29 @@ export const SubMenu = (props: SubMenuProps) => {
     [filterContext],
   );
 
+  const navigateNestedMainAxis = useCallback((direction: 1 | -1) => {
+    setActiveIndex((prev) =>
+      navigateListMainAxisLoop(floatingListRef, direction, prev),
+    );
+  }, []);
+
+  const closeNestedFlyout = useCallback(() => {
+    setOpen(false);
+    queueMicrotask(() => {
+      subMenuTriggerRef.current?.focus();
+    });
+  }, []);
+
+  const parentNestedDepth = parentListContext?.nestedMenuDepth ?? 0;
+  const nestedMenuDepth = parentNestedDepth + 1;
+
   const nestedListContext = {
     activeIndex,
     getItemProps: (userProps?: HTMLProps<HTMLElement>) =>
       getItemProps(userProps) as HTMLProps<HTMLElement>,
+    navigateMainAxis: navigateNestedMainAxis,
+    nestedMenuDepth,
+    closeParentSubMenuFlyout: closeNestedFlyout,
   };
 
   const floatingStyle = {
@@ -232,7 +343,7 @@ export const SubMenu = (props: SubMenuProps) => {
         onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
           if (event.key === 'ArrowRight' && !disabled) {
             event.preventDefault();
-            setOpen(true);
+            openNestedFromParentKeyboard();
           }
         },
       })
@@ -240,14 +351,59 @@ export const SubMenu = (props: SubMenuProps) => {
         onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
           if (event.key === 'ArrowRight' && !disabled) {
             event.preventDefault();
-            setOpen(true);
+            openNestedFromParentKeyboard();
           }
         },
       };
 
   const referenceProps = getReferenceProps(parentItemProps);
+  const referenceOnKeyDown = referenceProps.onKeyDown;
   const referencePropsWithoutRef: Omit<HTMLProps<HTMLElement>, 'ref'> = {
     ...referenceProps,
+    onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+      // APG Navigation Menubar: Left from a nested submenu trigger closes the flyout
+      // and keeps focus on that trigger; at the root menu panel, Left moves to the
+      // previous menubar section when onMenubarEdgeNavigate is provided.
+      if (resolvedInteraction !== 'digin' && parentListContext) {
+        const depth = parentListContext.nestedMenuDepth ?? 0;
+        if (event.key === 'ArrowLeft') {
+          if (open) {
+            event.preventDefault();
+            event.stopPropagation();
+            setOpen(false);
+            queueMicrotask(() => subMenuTriggerRef.current?.focus());
+            return;
+          }
+          if (depth === 0 && rootContext.onMenubarEdgeNavigate) {
+            event.preventDefault();
+            event.stopPropagation();
+            rootContext.onCloseMenu();
+            rootContext.onMenubarEdgeNavigate(-1);
+            return;
+          }
+        }
+      }
+      // APG: Arrow Down/Up move among siblings in the parent menu (Quotes → Orders).
+      // Delegate to the parent list always from the submenu trigger — not only when
+      // the nested flyout is open — so Down never descends into nested items before
+      // Arrow Right / Enter (Floating UI bubble alone is unreliable here).
+      if (
+        resolvedInteraction !== 'digin' &&
+        parentListContext?.navigateMainAxis &&
+        (event.key === 'ArrowDown' || event.key === 'ArrowUp')
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (open) {
+          setOpen(false);
+        }
+        parentListContext.navigateMainAxis(event.key === 'ArrowDown' ? 1 : -1);
+        return;
+      }
+      if (typeof referenceOnKeyDown === 'function') {
+        referenceOnKeyDown(event);
+      }
+    },
   };
 
   if (!isVisible) {
@@ -307,6 +463,7 @@ export const SubMenu = (props: SubMenuProps) => {
 
     return (
       <button
+        {...dsComponent('SubMenu')}
         {...menuItemHtmlProps}
         role="menuitem"
         aria-disabled={disabled}
@@ -334,7 +491,10 @@ export const SubMenu = (props: SubMenuProps) => {
         type="button"
       >
         {iconBefore && (
-          <Icon className={itemClassName.icon} name={iconBefore} />
+          <Icon
+            className={cx(itemClassName.icon, itemClassName.beforeSlot)}
+            name={iconBefore}
+          />
         )}
 
         <Box className={itemClassName.itemMain}>
@@ -357,7 +517,11 @@ export const SubMenu = (props: SubMenuProps) => {
           )}
         </Box>
 
-        <Icon className={itemClassName.icon} name="caret-right" ml="auto" />
+        <Icon
+          className={cx(itemClassName.icon, itemClassName.afterSlot)}
+          name="caret-right"
+          ml="auto"
+        />
       </button>
     );
   }
@@ -365,6 +529,7 @@ export const SubMenu = (props: SubMenuProps) => {
   return (
     <FloatingNode id={nodeId}>
       <button
+        {...dsComponent('SubMenu')}
         {...menuItemHtmlProps}
         role="menuitem"
         aria-haspopup="menu"
@@ -373,6 +538,7 @@ export const SubMenu = (props: SubMenuProps) => {
         disabled={disabled}
         className={itemClassName.wrapper}
         ref={(node: HTMLButtonElement | null) => {
+          subMenuTriggerRef.current = node;
           listItemData.ref(node as HTMLElement | null);
           floating.refs.setReference(node);
         }}
@@ -394,7 +560,10 @@ export const SubMenu = (props: SubMenuProps) => {
         type="button"
       >
         {iconBefore && (
-          <Icon className={itemClassName.icon} name={iconBefore} />
+          <Icon
+            className={cx(itemClassName.icon, itemClassName.beforeSlot)}
+            name={iconBefore}
+          />
         )}
 
         <Box className={itemClassName.itemMain}>
@@ -417,42 +586,51 @@ export const SubMenu = (props: SubMenuProps) => {
           )}
         </Box>
 
-        <Icon className={itemClassName.icon} name="caret-right" ml="auto" />
+        <Icon
+          className={cx(itemClassName.icon, itemClassName.afterSlot)}
+          name="caret-right"
+          ml="auto"
+        />
       </button>
 
       {open && (
         <FloatingPortal>
-          <FloatingFocusManager
-            context={floating.context}
-            modal={false}
-            initialFocus={-1}
-            returnFocus={false}
-          >
-            <MenuFilterProvider value={nestedFilterContext}>
-              <MenuListProvider value={nestedListContext}>
-                <Box
-                  ref={floating.refs.setFloating}
-                  className={cx(classes.wrapper, contentClassName)}
-                  {...getFloatingProps({
-                    onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
-                      if (event.key === 'ArrowLeft') {
-                        event.preventDefault();
-                        setOpen(false);
-                      }
-                    },
-                  })}
-                  style={floatingStyle}
-                >
-                  <FloatingList
-                    elementsRef={floatingListRef}
-                    labelsRef={labelsRef}
+          <DsChainPortalRoot reference={floating.elements.domReference}>
+            <FloatingFocusManager
+              context={floating.context}
+              modal={false}
+              initialFocus={-1}
+              returnFocus={false}
+            >
+              <MenuFilterProvider value={nestedFilterContext}>
+                <MenuListProvider value={nestedListContext}>
+                  <Box
+                    ref={floating.refs.setFloating}
+                    className={cx(classes.wrapper, contentClassName)}
+                    {...getFloatingProps({
+                      onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+                        if (event.key === 'ArrowLeft') {
+                          event.preventDefault();
+                          setOpen(false);
+                          queueMicrotask(() =>
+                            subMenuTriggerRef.current?.focus(),
+                          );
+                        }
+                      },
+                    })}
+                    style={floatingStyle}
                   >
-                    <Box className={listClassName}>{children}</Box>
-                  </FloatingList>
-                </Box>
-              </MenuListProvider>
-            </MenuFilterProvider>
-          </FloatingFocusManager>
+                    <FloatingList
+                      elementsRef={floatingListRef}
+                      labelsRef={labelsRef}
+                    >
+                      <Box className={listClassName}>{children}</Box>
+                    </FloatingList>
+                  </Box>
+                </MenuListProvider>
+              </MenuFilterProvider>
+            </FloatingFocusManager>
+          </DsChainPortalRoot>
         </FloatingPortal>
       )}
     </FloatingNode>

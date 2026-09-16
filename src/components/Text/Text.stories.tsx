@@ -33,6 +33,12 @@ const meta = {
     allCaps: { control: 'boolean' },
     italic: { control: 'boolean' },
     underline: { control: 'boolean' },
+    dashedUnderline: { control: 'boolean' },
+    definition: {
+      control: 'text',
+      description:
+        'Explains the text in a tooltip and applies a dashed underline.',
+    },
     bold: { control: 'boolean' },
     as: { control: 'text' },
   },
@@ -72,6 +78,22 @@ export const Hierarchy: Story = {
       </Text>
       <Text size="12" family="mono" color="text.subtlest">
         Metadata: Updated 2026-02-27
+      </Text>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const UnderlinesAndDefinitions: Story = {
+  render: () => (
+    <Box display="grid" gap="12" maxW="prose">
+      <Text underline>Standard underline</Text>
+      <Text dashedUnderline>Dashed underline</Text>
+      <Text definition="Application programming interface" width="fit-content">
+        API
+      </Text>
+      <Text size="14" color="text.subtle">
+        Hover or focus the defined term to read its explanation.
       </Text>
     </Box>
   ),

@@ -70,76 +70,16 @@ export const cardRecipe = defineRecipe({
     },
     interactive: {
       true: {
+        ...interactiveHoverStyles,
         cursor: 'pointer',
+        _disabled: {
+          _hover: {
+            boxShadow: 'initial',
+          },
+        },
       },
     },
   },
-  compoundVariants: [
-    // Default + interactive
-    {
-      variant: 'default',
-      interactive: true,
-      css: {
-        ...interactiveHoverStyles,
-        _disabled: {
-          _hover: {
-            boxShadow: 'raised',
-          },
-        },
-      },
-    },
-    // Flat + interactive
-    {
-      variant: 'flat',
-      interactive: true,
-      css: {
-        ...interactiveHoverStyles,
-        _disabled: {
-          _hover: {
-            boxShadow: 'none',
-          },
-        },
-      },
-    },
-    // Sunken + interactive
-    {
-      variant: 'sunken',
-      interactive: true,
-      css: {
-        ...interactiveHoverStyles,
-        _disabled: {
-          _hover: {
-            boxShadow: 'none',
-          },
-        },
-      },
-    },
-    // Ghost + interactive
-    {
-      variant: 'ghost',
-      interactive: true,
-      css: {
-        ...interactiveHoverStyles,
-        _disabled: {
-          _hover: {
-            boxShadow: 'none',
-          },
-        },
-      },
-    },
-    // Overlay + interactive
-    {
-      variant: 'overlay',
-      interactive: true,
-      css: {
-        _disabled: {
-          _hover: {
-            boxShadow: 'raised',
-          },
-        },
-      },
-    },
-  ],
   defaultVariants: {
     variant: 'default',
   },
