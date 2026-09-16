@@ -5,7 +5,6 @@ import { alert, type AlertVariantProps } from '@styled-system/recipes';
 import type { ColorToken } from '@styled-system/tokens';
 
 import { Box, type BoxProps } from '~/components/Box';
-import { Heading } from '~/components/Heading';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { IconButton } from '~/components/IconButton';
 import { Text } from '~/components/Text';
@@ -36,11 +35,24 @@ const toneIconColors: Record<AlertTone, ColorToken> = {
   neutral: 'icon.subtle',
 };
 
+type AlertDismissProps =
+  | {
+      /** Adds a close control. The alert does not remove itself. */
+      dismissible: true;
+      /** Runs when the close control is activated. */
+      onDismiss: () => void;
+    }
+  | {
+      /** @default false */
+      dismissible?: false;
+      onDismiss?: never;
+    };
+
 type AlertOwnProps = {
   /** Semantic tone. Selects the surface, border, and tone icon. */
   /** @default "info" */
   tone?: AlertTone;
-  /** Optional short heading rendered above the message. The heading is omitted entirely when absent. */
+  /** Optional bold title rendered above the message. It does not create a document heading. */
   title?: string;
   /** The alert message. */
   children: ReactNode;
@@ -48,18 +60,9 @@ type AlertOwnProps = {
   primaryAction?: ReactNode;
   /** Trailing action, normally a lower-emphasis `Button`. Render only alongside `primaryAction`. */
   secondaryAction?: ReactNode;
-  /**
-   * Adds a close control. The alert does not remove itself; apply the removal
-   * in `onDismiss`.
-   *
-   * @default false
-   */
-  dismissible?: boolean;
-  /** Runs when the close control is activated. */
-  onDismiss?: () => void;
   /** Accessible label for the close control. @default "Dismiss" */
   dismissLabel?: string;
-};
+} & AlertDismissProps;
 
 /** Props accepted by {@link Alert}. Includes compatible native element props. */
 export type AlertProps = Omit<
@@ -123,8 +126,8 @@ export const Alert = (props: AlertProps) => {
       </Box>
       <Box className={classes.content}>
         {title && (
-          <Heading
-            level="h3"
+          <Text
+            as="div"
             textStyle="body.md"
             fontWeight="bold"
             lineHeight="tight"
@@ -132,7 +135,7 @@ export const Alert = (props: AlertProps) => {
             className={classes.title}
           >
             {title}
-          </Heading>
+          </Text>
         )}
         <Text
           textStyle="body.sm"

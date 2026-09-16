@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from '@storybook/test';
 
 import { HStack, VStack } from '@styled-system/jsx';
 
@@ -69,6 +69,7 @@ const meta = {
   args: {
     tone: 'success',
     dismissible: true,
+    onDismiss: fn(),
     children: 'Work order 10482 was saved.',
   },
 } satisfies Meta<typeof Toast>;
@@ -89,11 +90,19 @@ export const Tones: Story = {
   name: 'Every tone',
   render: () => (
     <VStack alignItems="start" gap="12">
-      <Toast tone="info">A scheduled export is ready to download.</Toast>
-      <Toast tone="success">Work order 10482 was saved.</Toast>
-      <Toast tone="warning">Two line items are missing a unit cost.</Toast>
-      <Toast tone="danger">Could not save work order 10482.</Toast>
-      <Toast tone="neutral">
+      <Toast tone="info" dismissible={false}>
+        A scheduled export is ready to download.
+      </Toast>
+      <Toast tone="success" dismissible={false}>
+        Work order 10482 was saved.
+      </Toast>
+      <Toast tone="warning" dismissible={false}>
+        Two line items are missing a unit cost.
+      </Toast>
+      <Toast tone="danger" dismissible={false}>
+        Could not save work order 10482.
+      </Toast>
+      <Toast tone="neutral" dismissible={false}>
         Neutral uses the info icon on a neutral surface.
       </Toast>
     </VStack>
@@ -104,12 +113,19 @@ export const Actions: Story = {
   name: 'Zero, one, and two actions',
   render: () => (
     <VStack alignItems="start" gap="12">
-      <Toast tone="success">No actions.</Toast>
-      <Toast tone="success" primaryAction={<Button size="sm">Undo</Button>}>
+      <Toast tone="success" dismissible={false}>
+        No actions.
+      </Toast>
+      <Toast
+        tone="success"
+        dismissible={false}
+        primaryAction={<Button size="sm">Undo</Button>}
+      >
         One action.
       </Toast>
       <Toast
         tone="danger"
+        dismissible={false}
         primaryAction={
           <Button size="sm" variant="danger">
             Retry
@@ -131,7 +147,7 @@ export const Dismissible: Story = {
   name: 'Dismissible and non-dismissible',
   render: () => (
     <VStack alignItems="start" gap="12">
-      <Toast tone="info" dismissible>
+      <Toast tone="info" dismissible onDismiss={() => undefined}>
         Dismissible: the close control calls `onDismiss`.
       </Toast>
       <Toast tone="info" dismissible={false}>
@@ -303,6 +319,7 @@ const HoverCounter = () => {
       </Text>
       <Toast
         tone="info"
+        dismissible={false}
         duration={60000}
         onMouseEnter={() => setEntered((current) => current + 1)}
       >
@@ -328,6 +345,38 @@ export const ConsumerHandlersKeepPause: Story = {
 
     await userEvent.unhover(toast);
     await expect(toast).not.toHaveAttribute('data-paused');
+  },
+};
+
+export const FocusWithinKeepsPause: Story = {
+  name: 'Test: focus and hover within keep the timer paused',
+  render: () => (
+    <Toast
+      tone="info"
+      dismissible={false}
+      duration={60000}
+      primaryAction={<Button size="sm">First action</Button>}
+      secondaryAction={<Button size="sm">Second action</Button>}
+    >
+      Move focus between both actions.
+    </Toast>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const toast = canvas.getByRole('status');
+    const first = canvas.getByRole('button', { name: 'First action' });
+    const second = canvas.getByRole('button', { name: 'Second action' });
+
+    first.focus();
+    await expect(toast).toHaveAttribute('data-paused', 'true');
+
+    await userEvent.hover(toast);
+    await userEvent.unhover(toast);
+    await expect(toast).toHaveAttribute('data-paused', 'true');
+
+    await userEvent.tab();
+    await expect(second).toHaveFocus();
+    await expect(toast).toHaveAttribute('data-paused', 'true');
   },
 };
 

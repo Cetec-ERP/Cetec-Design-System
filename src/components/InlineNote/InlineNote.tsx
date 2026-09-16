@@ -61,9 +61,10 @@ export type InlineNoteProps = Omit<
  * smallest notification in the set and belongs directly beneath the control it
  * describes. Use `Alert` when the message concerns a whole section.
  *
- * Renders a `div` with `role="alert"` when `tone` is `danger` and
- * `role="status"` otherwise. Reference it from the field with
- * `aria-describedby` so the message reaches screen readers on focus.
+ * Reference it from the field with `aria-describedby` so the message reaches
+ * screen readers on focus. It has no live-region role by default because
+ * static field guidance would otherwise be announced both on mount and again
+ * on field focus. Add an appropriate role when inserting a note dynamically.
  * `tone="neutral"` uses the info icon.
  *
  * @example
@@ -81,7 +82,6 @@ export const InlineNote = (props: InlineNoteProps) => {
   return (
     <Box
       {...dsComponent('InlineNote')}
-      role={tone === 'danger' ? 'alert' : 'status'}
       className={cx(classes.root, className)}
       {...otherProps}
     >

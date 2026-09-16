@@ -175,7 +175,6 @@ export const ExFormSubmissionFailed: Story = {
       <Alert
         tone="danger"
         title="Could not save this work order"
-        dismissible
         primaryAction={
           <Button size="sm" variant="danger">
             Try again

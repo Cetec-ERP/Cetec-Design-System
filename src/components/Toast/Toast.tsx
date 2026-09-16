@@ -31,6 +31,20 @@ const toneIconColors: Record<AlertTone, ColorToken> = {
   neutral: 'icon.subtle',
 };
 
+type ToastDismissProps =
+  | {
+      /** Shows the close control. */
+      /** @default true */
+      dismissible?: true;
+      /** Runs when the close control is activated or `duration` elapses. */
+      onDismiss: () => void;
+    }
+  | {
+      dismissible: false;
+      /** Optional callback used by `duration` when no close control is shown. */
+      onDismiss?: () => void;
+    };
+
 type ToastOwnProps = {
   /** Semantic tone. Selects the leading accent and the tone icon. */
   /** @default "neutral" */
@@ -41,14 +55,6 @@ type ToastOwnProps = {
   primaryAction?: ReactNode;
   /** Trailing action, normally a lower-emphasis `Button`. Render only alongside `primaryAction`. */
   secondaryAction?: ReactNode;
-  /**
-   * Shows the close control, which calls `onDismiss`.
-   *
-   * @default true
-   */
-  dismissible?: boolean;
-  /** Runs when the close control is activated or `duration` elapses. */
-  onDismiss?: () => void;
   /**
    * Milliseconds before the toast calls `onDismiss` by itself. The countdown
    * pauses while the toast is hovered or contains focus and resumes from the
@@ -66,7 +72,7 @@ type ToastOwnProps = {
    * @default "open"
    */
   state?: 'open' | 'closing';
-};
+} & ToastDismissProps;
 
 /** Props accepted by {@link Toast}. Includes compatible native element props. */
 export type ToastProps = Omit<
@@ -112,11 +118,15 @@ export const Toast = (props: ToastProps) => {
   const [className, otherProps] = splitProps(rest);
   const classes = toastRecipe({ tone });
 
-  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focusWithin, setFocusWithin] = useState(false);
+  const paused = hovered || focusWithin;
   const remainingRef = useRef<number>(duration ?? 0);
   const onDismissRef = useRef(onDismiss);
 
-  onDismissRef.current = onDismiss;
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
 
   // Reseed the budget whenever the caller changes the lifetime. Declared before
   // the timer effect so a new `duration` is in place before the timer restarts.
@@ -160,19 +170,22 @@ export const Toast = (props: ToastProps) => {
       // Consumer handlers run alongside the pause logic, never instead of it,
       // so an analytics listener cannot let the toast time out while hovered.
       onMouseEnter={(event) => {
-        setPaused(true);
+        setHovered(true);
         onMouseEnter?.(event);
       }}
       onMouseLeave={(event) => {
-        setPaused(false);
+        setHovered(false);
         onMouseLeave?.(event);
       }}
       onFocus={(event) => {
-        setPaused(true);
+        setFocusWithin(true);
         onFocus?.(event);
       }}
       onBlur={(event) => {
-        setPaused(false);
+        const nextTarget = event.relatedTarget as Node | null;
+        if (!event.currentTarget.contains(nextTarget)) {
+          setFocusWithin(false);
+        }
         onBlur?.(event);
       }}
     >

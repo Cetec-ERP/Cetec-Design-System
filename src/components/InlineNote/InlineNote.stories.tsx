@@ -22,10 +22,11 @@ actions, and no dismiss control, and it uses the smallest type size.
 | Awareness, section | \`Alert\` | info / warning / neutral | Optional |
 | Awareness, field | \`InlineNote\` | info / warning / danger | No |
 
-**Accessibility.** \`role="alert"\` when \`tone\` is \`danger\`,
-\`role="status"\` otherwise. Give the note an \`id\` and point the field's
+**Accessibility.** Give the note an \`id\` and point the field's
 \`aria-describedby\` at it so the message reaches screen readers on focus.
-\`tone="neutral"\` uses the info icon.
+Static notes do not use a live-region role because that can announce the same
+message on mount and again on focus. Add \`role="alert"\` only when inserting a
+validation message dynamically. \`tone="neutral"\` uses the info icon.
 `;
 
 const meta = {
@@ -95,18 +96,20 @@ export const ExFieldValidation: Story = {
   ),
 };
 
-export const RoleByTone: Story = {
-  name: 'Test: role by tone',
+export const FieldAssociation: Story = {
+  name: 'Test: static notes are descriptions, not live regions',
   render: () => (
-    <VStack alignItems="start" gap="8">
-      <InlineNote tone="danger">Danger notes interrupt.</InlineNote>
-      <InlineNote tone="info">Every other tone announces politely.</InlineNote>
-    </VStack>
+    <InlineNote id="static-note" tone="danger">
+      Enter a quantity of at least one.
+    </InlineNote>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await expect(canvas.getByRole('alert')).toBeInTheDocument();
-    await expect(canvas.getByRole('status')).toBeInTheDocument();
+    await expect(canvas.getByText(/Enter a quantity/)).not.toHaveAttribute(
+      'role',
+    );
+    await expect(canvas.queryByRole('alert')).not.toBeInTheDocument();
+    await expect(canvas.queryByRole('status')).not.toBeInTheDocument();
   },
 };
