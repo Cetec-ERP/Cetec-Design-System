@@ -1,3 +1,4 @@
+export { Alert, type AlertProps, type AlertTone } from './components/Alert';
 export { Avatar, type AvatarProps } from './components/Avatar';
 export { Badge, type BadgeProps } from './components/Badge';
 export { Box, type BoxProps } from './components/Box';
@@ -95,6 +96,7 @@ export {
   type IconProviderProps,
 } from './components/Icon';
 export { IconButton, type IconButtonProps } from './components/IconButton';
+export { InlineNote, type InlineNoteProps } from './components/InlineNote';
 export { Kbd, type KbdProps } from './components/Kbd';
 export { Label, type LabelProps } from './components/Label';
 export { Link, type LinkProps } from './components/Link';
@@ -140,6 +142,11 @@ export {
   type ModalWrapperProps,
 } from './components/Modal';
 export {
+  PageBanner,
+  type PageBannerEmphasis,
+  type PageBannerProps,
+} from './components/PageBanner';
+export {
   Radio,
   RadioGroup,
   type RadioChangeEvent,
@@ -176,6 +183,15 @@ export {
   type ToggleChangeHandler,
   type ToggleProps,
 } from './components/Toggle';
+export {
+  Toast,
+  ToastProvider,
+  type ToastApi,
+  type ToastOptions,
+  type ToastProps,
+  type ToastProviderProps,
+  type ToastTrigger,
+} from './components/Toast';
 export { ToggleInput, type ToggleInputProps } from './components/ToggleInput';
 export { Skeleton, type SkeletonProps } from './components/Skeleton';
 export { Tooltip, type TooltipProps } from './components/Tooltip';
@@ -194,6 +210,7 @@ export {
   useMenuRootContext,
 } from './components/Menu/context/menuContext';
 export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
+export { useToast } from './components/Toast/useToast';
 
 // TanStack Form — peer dependency re-exported for a single library instance
 export { useForm } from '@tanstack/react-form';
