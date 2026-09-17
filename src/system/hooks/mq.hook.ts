@@ -1,6 +1,6 @@
 import { useMemo, useSyncExternalStore } from 'react';
 
-import { breakpoints } from '~/styles/utilities';
+import { breakpoints } from '~/styles/utilities/breakpoints';
 
 /** Key of a Cetec viewport breakpoint token. */
 type BreakpointKey = keyof typeof breakpoints;

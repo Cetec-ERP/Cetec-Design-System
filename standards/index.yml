@@ -26,6 +26,12 @@ recipes:
   conditional-variants:
     description: Conditional variant constraints for recipes and component prop typing
 
+figma:
+  figma-component-token-policy:
+    description: Component-token architecture, layering, and placement rules
+  figma-layout-standards:
+    description: Auto-layout sizing and frame-structure rules for Figma docs
+
 lint:
   baseline-rules:
     description: TypeScript + ESLint baseline enforcement and filename policy

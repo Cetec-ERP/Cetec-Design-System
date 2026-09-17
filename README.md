@@ -61,11 +61,19 @@ npm run generate-sprite     # Generate SVG sprite from icon source files
 Canonical standards now live in `standards/`:
 
 - `standards/components/` - component API, composition, Floating UI, Storybook conventions
+- `standards/figma/` - Figma-specific policies and design-system guidance
 - `standards/recipes/` - recipe naming/registration and token-only styling
 - `standards/lint/` - baseline lint rules, custom design-system lint rules, rollout workflow
 - `standards/index.yml` - index of all standards documents
 
 If this README and `standards/` ever conflict, treat `standards/` as the source of truth.
+
+## Plans
+
+Repository plan documents now live in `plans/`.
+
+- Active plans belong in `plans/`
+- Completed plans belong in `plans/complete/`
 
 ## Architecture
 
@@ -129,8 +137,19 @@ npm install cetec-design-system
 
 ### Panda CSS Configuration
 
-Copy `/panda.config.ts` and adjust the import paths to point to the package in `node_modules`.
-Set up the `include` option to contain the paths where Panda should look when building `styled-system` and `styles.css`.
+Import the Panda preset from its build-time-only entrypoint:
+
+```typescript
+import { defineConfig } from '@pandacss/dev';
+import { cetecPreset } from 'cetec-design-system/preset';
+
+export default defineConfig({
+  presets: [cetecPreset],
+});
+```
+
+Set up the `include` option to contain the paths where Panda should look when
+building `styled-system` and `styles.css`.
 
 ### Using in Your Project
 
