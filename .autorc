@@ -2,9 +2,6 @@
     plugins: ['released', ['npm', { exact: true } ]],
     baseBranch: 'main',
     noVersionPrefix: true,
-    shipit: {
-      onlyGraduateWithReleaseLabel: true,
-    },
     noDefaultLabels: true,
     versionBranches: false,
     labels: [

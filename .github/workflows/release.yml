@@ -414,11 +414,14 @@ jobs:
               );
             }
 
-            const prereleaseFlag = releaseMode === 'next' ? '--prerelease' : '';
+            const npmTag = releaseMode === 'next' ? 'next' : 'latest';
+            const githubPrereleaseArg =
+              releaseMode === 'next' ? '--prerelease' : '';
 
             core.info(`Resolved publish version ${candidateVersion} for ${releaseMode} release mode.`);
             core.setOutput('version', candidateVersion);
-            core.setOutput('shipit_args', prereleaseFlag);
+            core.setOutput('npm_tag', npmTag);
+            core.setOutput('github_prerelease_arg', githubPrereleaseArg);
 
       - name: Install Release Dependencies
         if: steps.release_mode.outputs.mode != 'skip' && steps.publish_version.outputs.skip_reason == ''
@@ -441,8 +444,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_TAG: ${{ steps.publish_version.outputs.npm_tag }}
         run: |
-          npx --no-install auto shipit --use-version "${{ steps.publish_version.outputs.version }}" --only-graduate-with-release-label ${{ steps.publish_version.outputs.shipit_args }}
+          # Do not enable Auto's only-graduate mode: it routes through `next`,
+          # which recalculates the version and ignores --use-version.
+          npx --no-install auto shipit --use-version "${{ steps.publish_version.outputs.version }}" ${{ steps.publish_version.outputs.github_prerelease_arg }}
 
       - name: Skip Existing Stable Release
         if: steps.publish_version.outputs.skip_reason == 'stable-version-exists'
