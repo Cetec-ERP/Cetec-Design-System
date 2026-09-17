@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type KeyboardEvent } from 'react';
 
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
@@ -342,6 +342,59 @@ export const ControlledFallback: Story = {
         'true',
       );
     });
+  },
+};
+
+const ComposedTabHandlersExample = () => {
+  const [clickCount, setClickCount] = useState(0);
+  const [lastKey, setLastKey] = useState('none');
+
+  return (
+    <Box>
+      <Text pb="8" data-testid="consumer-events">
+        Clicks: {clickCount}; last key: {lastKey}
+      </Text>
+      <Tabs aria-label="Handler composition" defaultValue="first">
+        <Tab
+          value="first"
+          onClick={() => setClickCount((current) => current + 1)}
+        >
+          First
+        </Tab>
+        <Tab
+          value="second"
+          onKeyDown={(event: KeyboardEvent<HTMLElement>) =>
+            setLastKey(event.key)
+          }
+        >
+          Second
+        </Tab>
+        <TabPanel value="first">First content.</TabPanel>
+        <TabPanel value="second">Second content.</TabPanel>
+      </Tabs>
+    </Box>
+  );
+};
+
+export const ComposedTabHandlers: Story = {
+  name: 'Test: consumer handlers preserve tab interactions',
+  parameters: { controls: { disable: true } },
+  render: () => <ComposedTabHandlersExample />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const first = canvas.getByRole('tab', { name: 'First' });
+    const second = canvas.getByRole('tab', { name: 'Second' });
+    const consumerEvents = canvas.getByTestId('consumer-events');
+
+    await userEvent.click(second);
+    await expect(second).toHaveAttribute('aria-selected', 'true');
+
+    await userEvent.keyboard('{ArrowLeft}');
+    await expect(first).toHaveAttribute('aria-selected', 'true');
+    await expect(consumerEvents).toHaveTextContent('last key: ArrowLeft');
+
+    await userEvent.click(first);
+    await expect(consumerEvents).toHaveTextContent('Clicks: 1');
   },
 };
 

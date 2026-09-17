@@ -45,6 +45,8 @@ export const Tab = (props: TabProps) => {
     badge,
     badgeTooltip,
     disabled = false,
+    onClick,
+    onKeyDown,
     ...rest
   } = props;
 
@@ -101,10 +103,14 @@ export const Tab = (props: TabProps) => {
       tabIndex={isSelected && !isOverflowed ? 0 : -1}
       className={cx(tabClassName, className)}
       onClick={(event) => {
-        if (disabled) return;
+        onClick?.(event);
+        if (disabled || event.defaultPrevented) return;
         selectTab(event, value, 'clicked-on-tab');
       }}
-      onKeyDown={onTabKeyDown}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (!event.defaultPrevented) onTabKeyDown(event);
+      }}
       {...otherProps}
     >
       {children}
