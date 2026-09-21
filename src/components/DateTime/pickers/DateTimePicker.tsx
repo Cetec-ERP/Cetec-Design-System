@@ -21,6 +21,8 @@ export type DateTimePickerProps = Pick<
   | 'after'
   | 'iconBefore'
   | 'iconAfter'
+  | 'clearable'
+  | 'clearLabel'
   | 'error'
   | 'disabled'
   | 'invalid'
@@ -82,6 +84,8 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
     after,
     iconBefore,
     iconAfter,
+    clearable,
+    clearLabel,
     error,
     disabled,
     invalid,
@@ -126,6 +130,12 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
     },
   );
   const resolvedValue = currentValue ?? EMPTY_VALUE;
+  const handleInputChange = (nextValue: DateTimeValue | null) => {
+    emitChange(nextValue);
+    if (nextValue === null) {
+      setOpenState(false);
+    }
+  };
 
   return (
     <DateTimeMenu
@@ -133,13 +143,15 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
         <DateTimeInput
           id={id}
           value={resolvedValue}
-          onChange={emitChange}
+          onChange={handleInputChange}
           dateLabel={dateLabel}
           timeLabel={timeLabel}
           before={before}
           after={after}
           iconBefore={iconBefore}
           iconAfter={iconAfter}
+          clearable={clearable}
+          clearLabel={clearLabel}
           error={error}
           disabled={disabled}
           invalid={invalid}
