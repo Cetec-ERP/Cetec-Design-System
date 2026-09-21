@@ -205,6 +205,7 @@ Packages are published from the repo root with `dist` included in the published 
 - **No-release labels**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, and `revert` are changelog labels. They do not publish on their own unless paired with a semver label.
 - **Skip label**: Use `skip-release` to prevent publishing.
 - **Version source of truth**: Publish version selection is based on versions already published to npm. `package.json` is only a fallback when there is no published history yet.
+- **Version handoff**: The workflow passes its resolved version directly to Auto. Prereleases use npm's `next` dist-tag and a prerelease GitHub release without invoking Auto's separate `next` version-calculation path.
 - **Stable releases**: A `release` label promotes the PR’s semver bump from the highest published stable version.
 - **Prereleases**: Without `release`, the workflow bumps from the highest published version overall, including existing prereleases, then publishes the next prerelease for that line.
 - **Changelog**: Auto-generated based on PR labels and titles
