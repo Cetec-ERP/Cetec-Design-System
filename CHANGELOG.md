@@ -1,3 +1,29 @@
+# 3.1.0 (Mon Sep 21 2026)
+
+#### 🚀 Features
+
+- feat(minor): add Alert, PageBanner, Toast and InlineNote [#204](https://github.com/Cetec-ERP/Cetec-Design-System/pull/204) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): vNext Figma standards, drawer icons, and completion plan [#202](https://github.com/Cetec-ERP/Cetec-Design-System/pull/202) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): fixes for Autocomplete custom-value, blur commit, and listbox [#205](https://github.com/Cetec-ERP/Cetec-Design-System/pull/205) ([@atkinsdavid](https://github.com/atkinsdavid))
+
+#### 🐛 Bug Fixes
+
+- fix(patch): add clear actions to date and time pickers [#208](https://github.com/Cetec-ERP/Cetec-Design-System/pull/208) ([@shaunrfox](https://github.com/shaunrfox))
+- fix: auto version resolution [#207](https://github.com/Cetec-ERP/Cetec-Design-System/pull/207) ([@Etwigg](https://github.com/Etwigg))
+- fix(patch): isolate Panda preset from runtime entry [#201](https://github.com/Cetec-ERP/Cetec-Design-System/pull/201) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🏠 Chores
+
+- chore(config): sync package.json version to published npm next tag [#206](https://github.com/Cetec-ERP/Cetec-Design-System/pull/206) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### Authors: 3
+
+- David ([@atkinsdavid](https://github.com/atkinsdavid))
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
 # 2.0.0 (Tue Sep 08 2026)
 
 #### ⚠️ Pushed to `main`
