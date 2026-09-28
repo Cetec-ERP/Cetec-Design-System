@@ -14,6 +14,7 @@ import type { MenuVariantProps } from '@styled-system/recipes';
 import type { BoxProps } from '~/components/Box';
 import type { IconNamesList } from '~/components/Icon';
 import type { ListDensity } from '~/components/List';
+import { getCompoundComponentType } from '~/utils/compoundComponent';
 
 import type { Placement } from '@floating-ui/react';
 
@@ -368,16 +369,7 @@ export const isItemMatch = ({
 
 /** Returns the internal menu compound-component marker for a React element, or `null` for other values. */
 export const getComponentType = (node: unknown) => {
-  if (!node || typeof node !== 'object') {
-    return null;
-  }
-
-  if (!('type' in node)) {
-    return null;
-  }
-
-  const type = (node as { type?: { [menuComponentTypeKey]?: string } }).type;
-  return type?.[menuComponentTypeKey] ?? null;
+  return getCompoundComponentType(node, menuComponentTypeKey);
 };
 
 /** Returns whether a child tree contains any visible menu item, subgroup, or submenu for a filter. */
