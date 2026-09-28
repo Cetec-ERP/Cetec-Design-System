@@ -19,6 +19,8 @@ export type TimeRangePickerProps = Pick<
   | 'after'
   | 'iconBefore'
   | 'iconAfter'
+  | 'clearable'
+  | 'clearLabel'
   | 'error'
   | 'disabled'
   | 'invalid'
@@ -69,6 +71,8 @@ export const TimeRangePicker = (props: TimeRangePickerProps) => {
     after,
     iconBefore,
     iconAfter,
+    clearable,
+    clearLabel,
     error,
     disabled,
     invalid,
@@ -103,6 +107,12 @@ export const TimeRangePicker = (props: TimeRangePickerProps) => {
       onChange,
     });
   const resolvedValue = currentValue ?? EMPTY_RANGE;
+  const handleInputChange = (nextValue: TimeRangeValue | null) => {
+    emitChange(nextValue);
+    if (nextValue === null) {
+      setOpenState(false);
+    }
+  };
 
   return (
     <TimeRangeMenu
@@ -110,13 +120,15 @@ export const TimeRangePicker = (props: TimeRangePickerProps) => {
         <TimeRangeInput
           id={id}
           value={resolvedValue}
-          onChange={emitChange}
+          onChange={handleInputChange}
           startLabel={startLabel}
           endLabel={endLabel}
           before={before}
           after={after}
           iconBefore={iconBefore}
           iconAfter={iconAfter}
+          clearable={clearable}
+          clearLabel={clearLabel}
           error={error}
           disabled={disabled}
           invalid={invalid}

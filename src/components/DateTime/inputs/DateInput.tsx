@@ -10,10 +10,12 @@ import { Icon, type IconNamesList } from '~/components/Icon';
 import { useFieldContext } from '~/system/context/FieldContext';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
+import { useControllableState } from '~/utils/useControllableState';
 
 import { Box, type BoxProps } from '../../Box';
 import { SegmentedDate } from '../../SegmentedInputs/SegmentedDate';
 
+import { getClearButton } from './ClearButton';
 import { InputSlot } from './InputSlot';
 
 import type { DateFormat, DateValue } from '../helpers/types';
@@ -44,6 +46,10 @@ export type DateInputProps = Omit<
     iconBefore?: IconNamesList;
     /** Legacy icon rendered after the field when `after` is absent. */
     iconAfter?: IconNamesList;
+    /** Shows a clear action in the `after` slot when it is otherwise unused and the field has a value. @default true */
+    clearable?: boolean;
+    /** Accessible label for the clear action. @default 'Clear date' */
+    clearLabel?: string;
     /** Applies error styling. Overrides field context when provided. */
     error?: boolean;
     /** Prevents editing. Overrides field context when provided. */
@@ -82,6 +88,8 @@ export const DateInput = (props: DateInputProps) => {
     after,
     iconBefore,
     iconAfter,
+    clearable = true,
+    clearLabel = 'Clear date',
     error: errorProp,
     disabled: disabledProp,
     invalid: invalidProp,
@@ -97,8 +105,22 @@ export const DateInput = (props: DateInputProps) => {
   const disabled = disabledProp ?? fieldContext?.disabled;
   const resolvedBefore =
     before ?? (iconBefore ? <Icon name={iconBefore} aria-hidden /> : undefined);
-  const resolvedAfter =
+  const explicitAfter =
     after ?? (iconAfter ? <Icon name={iconAfter} aria-hidden /> : undefined);
+
+  const [currentValue, setCurrentValue] =
+    useControllableState<DateValue | null>({
+      value,
+      defaultValue: defaultValue ?? null,
+      onChange,
+    });
+  const clearAction = getClearButton({
+    clearable,
+    hasValue: currentValue !== null,
+    label: clearLabel,
+    onClear: () => setCurrentValue(null),
+  });
+  const resolvedAfter = explicitAfter ?? clearAction;
 
   const classes = segmentedFields({
     size,
@@ -130,18 +152,19 @@ export const DateInput = (props: DateInputProps) => {
         buttonSlotClassName={classes.buttonSlot}
         slotClassName={classes.slot}
       />
-      <SegmentedDate
-        id={id}
-        label={label}
-        value={value}
-        defaultValue={defaultValue}
-        onChange={onChange}
-        format={dateFormat}
-        size={size}
-        disabled={disabled}
-        onFocusWithin={onFocusWithin}
-        onBlurWithin={onBlurWithin}
-      />
+      <Box className={classes.content}>
+        <SegmentedDate
+          id={id}
+          label={label}
+          value={currentValue}
+          onChange={setCurrentValue}
+          format={dateFormat}
+          size={size}
+          disabled={disabled}
+          onFocusWithin={onFocusWithin}
+          onBlurWithin={onBlurWithin}
+        />
+      </Box>
       <InputSlot
         owner="DateInput"
         placement="after"
