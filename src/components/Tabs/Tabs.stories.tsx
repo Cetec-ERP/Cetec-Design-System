@@ -345,6 +345,105 @@ export const ControlledFallback: Story = {
   },
 };
 
+const UncontrolledConditionalTabs = () => {
+  const [hasSchedule, setHasSchedule] = useState(true);
+
+  return (
+    <Box>
+      <Button
+        variant="hollow"
+        size="sm"
+        onClick={() => setHasSchedule((current) => !current)}
+      >
+        {hasSchedule ? 'Remove Schedule tab' : 'Add Schedule tab'}
+      </Button>
+      <Tabs aria-label="Uncontrolled sections" defaultValue="schedule">
+        <Tab value="work">Work</Tab>
+        {hasSchedule ? <Tab value="schedule">Schedule</Tab> : null}
+        <Tab value="history">History</Tab>
+        <TabPanel value="work">Work content.</TabPanel>
+        <TabPanel value="schedule">Schedule content.</TabPanel>
+        <TabPanel value="history">History content.</TabPanel>
+      </Tabs>
+    </Box>
+  );
+};
+
+export const UncontrolledFallback: Story = {
+  name: 'Test: removed uncontrolled value does not return',
+  parameters: { controls: { disable: true } },
+  render: () => <UncontrolledConditionalTabs />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Remove Schedule tab' }),
+    );
+    await expect(canvas.getByRole('tab', { name: 'Work' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Add Schedule tab' }),
+    );
+    await expect(canvas.getByRole('tab', { name: 'Work' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await expect(canvas.getByRole('tab', { name: 'Schedule' })).toHaveAttribute(
+      'aria-selected',
+      'false',
+    );
+  },
+};
+
+export const OverflowMetadata: Story = {
+  name: 'Test: overflow keeps badge details and selection semantics',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Box data-overflow-metadata-wrapper>
+      <Tabs {...args} defaultValue="work">
+        <Tab value="work">Work</Tab>
+        <Tab
+          value="materials"
+          badge={3}
+          badgeTooltip="2 Open Part Requests, 1 Short Part"
+        >
+          Materials
+        </Tab>
+        <Tab value="documents">Documents</Tab>
+        <Tab value="history">History</Tab>
+        <TabPanel value="work">Work content.</TabPanel>
+        <TabPanel value="materials">Materials content.</TabPanel>
+        <TabPanel value="documents">Documents content.</TabPanel>
+        <TabPanel value="history">History content.</TabPanel>
+      </Tabs>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const wrapper = canvasElement.querySelector<HTMLElement>(
+      '[data-overflow-metadata-wrapper]',
+    );
+
+    if (!wrapper) throw new Error('overflow metadata wrapper not found');
+    wrapper.style.width = '180px';
+
+    const trigger = await canvas.findByRole('button', { name: 'More tabs' });
+    await userEvent.click(trigger);
+
+    const materials = await body.findByRole('menuitemradio', {
+      name: /Materials \(3\)/,
+    });
+    await expect(materials).toHaveAttribute('aria-checked', 'false');
+    await expect(materials).toHaveTextContent(
+      '2 Open Part Requests, 1 Short Part',
+    );
+  },
+};
+
 const ComposedTabHandlersExample = () => {
   const [clickCount, setClickCount] = useState(0);
   const [lastKey, setLastKey] = useState('none');
@@ -485,9 +584,9 @@ export const ToggleReserveOnlyOnOverflow: Story = {
   render: (args) => (
     <Box>
       <Text pb="12" color="text.subtlest">
-        The wrapper is sized to the strip plus 16px, which is less than the 32px
-        toggle reserve. Every tab fits, so no toggle renders. Shrinking it below
-        the strip makes the toggle appear.
+        The wrapper is sized just above the strip width. Every tab fits, so no
+        toggle renders. Shrinking it below the strip makes the measured toggle
+        appear.
       </Text>
       <Box
         data-fit-wrapper
@@ -524,7 +623,7 @@ export const ToggleReserveOnlyOnOverflow: Story = {
       tabs.reduce((sum, tab) => sum + tab.getBoundingClientRect().width, 0) +
       gap * (tabs.length - 1);
 
-    // Room for every tab, but not for the 32px toggle on top of them.
+    // Room for every tab, without reserving a toggle that is not rendered.
     wrapper.style.width = `${String(Math.ceil(needed) + 16)}px`;
 
     await waitFor(async () => {

@@ -1,3 +1,5 @@
+import { setCompoundComponentType } from '~/utils/compoundComponent';
+
 import { ListItemGroup } from '../List/ListItemGroup';
 
 import {
@@ -45,6 +47,8 @@ export const MenuGroup = (props: MenuGroupProps) => {
   );
 };
 
-(MenuGroup as unknown as { [menuComponentTypeKey]: string })[
-  menuComponentTypeKey
-] = MENU_COMPONENT_TYPES.group;
+setCompoundComponentType(
+  MenuGroup,
+  menuComponentTypeKey,
+  MENU_COMPONENT_TYPES.group,
+);

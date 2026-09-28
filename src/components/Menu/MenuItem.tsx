@@ -5,6 +5,7 @@ import { useFloatingTree, useListItem } from '@floating-ui/react';
 import { css, cx } from '@styled-system/css';
 import { listItem as listItemRecipe } from '@styled-system/recipes';
 
+import { setCompoundComponentType } from '~/utils/compoundComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
@@ -295,6 +296,8 @@ export const MenuItem = (props: MenuItemProps) => {
   );
 };
 
-(MenuItem as unknown as { [menuComponentTypeKey]: string })[
-  menuComponentTypeKey
-] = MENU_COMPONENT_TYPES.item;
+setCompoundComponentType(
+  MenuItem,
+  menuComponentTypeKey,
+  MENU_COMPONENT_TYPES.item,
+);

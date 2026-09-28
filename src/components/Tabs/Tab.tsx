@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { cx } from '@styled-system/css';
 import { tabs as tabsRecipe } from '@styled-system/recipes';
 
+import { setCompoundComponentType } from '~/utils/compoundComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Badge } from '../Badge';
@@ -119,5 +120,4 @@ export const Tab = (props: TabProps) => {
   );
 };
 
-(Tab as unknown as { [tabsComponentTypeKey]: string })[tabsComponentTypeKey] =
-  TABS_COMPONENT_TYPES.tab;
+setCompoundComponentType(Tab, tabsComponentTypeKey, TABS_COMPONENT_TYPES.tab);

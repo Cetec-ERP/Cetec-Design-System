@@ -16,10 +16,73 @@ import {
   TabsProvider,
   getTabsComponentType,
   type TabsClasses,
+  type TabsChangeEvent,
+  type TabsChangeReason,
   type TabsContextValue,
   type TabsProps,
 } from './context/tabsContext';
-import { useTabs } from './useTabs';
+import { useTabs, type TabDescriptor } from './useTabs';
+
+type TabsOverflowMenuProps = {
+  className: string;
+  focusTab: (value: string) => void;
+  tabs: TabDescriptor[];
+  selectTab: (
+    event: TabsChangeEvent,
+    value: string,
+    reason: TabsChangeReason,
+  ) => void;
+  selectedValue: string;
+};
+
+const TabsOverflowMenu = ({
+  className,
+  focusTab,
+  tabs,
+  selectTab,
+  selectedValue,
+}: TabsOverflowMenuProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Menu
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      placement="bottom-end"
+      className={className}
+      trigger={
+        <IconButton
+          variant="ghost"
+          size="md"
+          iconName={isOpen ? 'caret-up' : 'caret-down'}
+          altText="More tabs"
+          aria-haspopup="menu"
+        />
+      }
+    >
+      {tabs.map((tab) => {
+        const hasBadge = typeof tab.badge === 'number' && tab.badge !== 0;
+
+        return (
+          <MenuItem
+            key={tab.value}
+            label={hasBadge ? `${tab.label} (${String(tab.badge)})` : tab.label}
+            description={hasBadge ? tab.badgeTooltip : undefined}
+            disabled={tab.disabled}
+            selected={tab.value === selectedValue}
+            role="menuitemradio"
+            aria-checked={tab.value === selectedValue}
+            onClick={(event) => {
+              selectTab(event, tab.value, 'selected-from-overflow');
+              focusTab(tab.value);
+              setIsOpen(false);
+            }}
+          />
+        );
+      })}
+    </Menu>
+  );
+};
 
 /**
  * Groups related content into a single view with one panel visible at a time.
@@ -58,8 +121,8 @@ export const Tabs = (props: TabsProps) => {
 
   const [className, otherProps] = splitProps(rest);
   const listRef = useRef<HTMLDivElement>(null);
+  const overflowRef = useRef<HTMLDivElement>(null);
   const baseId = useId();
-  const [isOverflowOpen, setIsOverflowOpen] = useState(false);
 
   const {
     focusTab,
@@ -70,9 +133,19 @@ export const Tabs = (props: TabsProps) => {
     registerTabElement,
     selectTab,
     selectedValue,
-  } = useTabs({ children, value, defaultValue, onChange, listRef });
+  } = useTabs({
+    children,
+    value,
+    defaultValue,
+    onChange,
+    listRef,
+    overflowRef,
+  });
 
-  const classes = useMemo(() => tabsRecipe() as TabsClasses, []);
+  const classes = useMemo(
+    () => tabsRecipe({ hasOverflow }) as TabsClasses,
+    [hasOverflow],
+  );
 
   // `Tab` children belong in the strip; everything else (panels and any
   // consumer markup) renders below it.
@@ -133,39 +206,30 @@ export const Tabs = (props: TabsProps) => {
           >
             {tabChildren}
           </Box>
-          {hasOverflow && (
-            <Box className={classes.overflow}>
-              <Menu
-                open={isOverflowOpen}
-                onOpenChange={setIsOverflowOpen}
-                placement="bottom-end"
+          <Box
+            ref={overflowRef}
+            className={classes.overflow}
+            aria-hidden={!hasOverflow || undefined}
+          >
+            {hasOverflow ? (
+              <TabsOverflowMenu
                 className={classes.menu}
-                trigger={
-                  <IconButton
-                    variant="ghost"
-                    size="md"
-                    iconName={isOverflowOpen ? 'caret-up' : 'caret-down'}
-                    altText="More tabs"
-                    aria-haspopup="menu"
-                  />
-                }
-              >
-                {overflowTabs.map((tab) => (
-                  <MenuItem
-                    key={tab.value}
-                    label={tab.label}
-                    disabled={tab.disabled}
-                    selected={tab.value === selectedValue}
-                    onClick={(event) => {
-                      focusTab(tab.value);
-                      selectTab(event, tab.value, 'selected-from-overflow');
-                      setIsOverflowOpen(false);
-                    }}
-                  />
-                ))}
-              </Menu>
-            </Box>
-          )}
+                focusTab={focusTab}
+                tabs={overflowTabs}
+                selectTab={selectTab}
+                selectedValue={selectedValue}
+              />
+            ) : (
+              <IconButton
+                variant="ghost"
+                size="md"
+                iconName="caret-down"
+                altText="More tabs"
+                disabled
+                tabIndex={-1}
+              />
+            )}
+          </Box>
         </Box>
         {restChildren}
       </Box>

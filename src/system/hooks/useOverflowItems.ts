@@ -27,6 +27,11 @@ export type UseOverflowItemsOptions<TKey extends OverflowItemKey> = {
    */
   reserve?: number;
   /**
+   * Element whose rendered width is held back for the overflow toggle. When
+   * present, its measured width takes precedence over `reserve`.
+   */
+  reserveRef?: RefObject<HTMLElement | null>;
+  /**
    * Enables measurement. When `false`, every item is reported as visible.
    * @default true
    */
@@ -43,6 +48,8 @@ export type UseOverflowItemsResult<TKey extends OverflowItemKey> = {
   hasOverflow: boolean;
   /** Forces a synchronous remeasure, for content changes no observer reports. */
   measure: () => void;
+  /** Makes an item visible, then runs a callback after the DOM updates. */
+  ensureVisible: (key: TKey, onVisible?: () => void) => void;
 };
 
 const DEFAULT_RESERVE = 32;
@@ -51,6 +58,21 @@ const areKeysEqual = <TKey extends OverflowItemKey>(
   a: readonly TKey[],
   b: readonly TKey[],
 ) => a.length === b.length && a.every((key, index) => key === b[index]);
+
+const syncObservedElements = (
+  observer: ResizeObserver | null,
+  current: ReadonlySet<Element>,
+  desired: Set<Element>,
+) => {
+  for (const element of current) {
+    if (!desired.has(element)) observer?.unobserve(element);
+  }
+  for (const element of desired) {
+    if (!current.has(element)) observer?.observe(element);
+  }
+
+  return desired;
+};
 
 /**
  * Splits a row of items into the ones that fit and the ones that overflow.
@@ -87,18 +109,33 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
   getItemElement,
   activeItem = null,
   reserve = DEFAULT_RESERVE,
+  reserveRef,
   enabled = true,
 }: UseOverflowItemsOptions<TKey>): UseOverflowItemsResult<TKey> => {
   const [visible, setVisible] = useState<TKey[]>(() => [...items]);
   const [overflow, setOverflow] = useState<TKey[]>([]);
+  const [forcedItem, setForcedItem] = useState<TKey | null>(null);
   const frameRef = useRef<number | null>(null);
+  const itemsRef = useRef<readonly TKey[]>(items);
+  const activeItemRef = useRef<TKey | null>(activeItem);
+  const forcedItemRef = useRef<TKey | null>(forcedItem);
+  const reserveValueRef = useRef(reserve);
+  const reserveElementRef = useRef<HTMLElement | null>(null);
+  const enabledRef = useRef(enabled);
+  const observerRef = useRef<ResizeObserver | null>(null);
+  const observedElementsRef = useRef(new Set<Element>());
+  const pendingVisibilityRef = useRef<{
+    key: TKey;
+    onVisible?: () => void;
+  } | null>(null);
 
   const measure = useCallback(() => {
     const container = containerRef.current;
+    const currentItems = itemsRef.current;
 
-    if (!enabled || !container) {
+    if (!enabledRef.current || !container) {
       setVisible((current) =>
-        areKeysEqual(current, items) ? current : [...items],
+        areKeysEqual(current, currentItems) ? current : [...currentItems],
       );
       setOverflow((current) => (current.length === 0 ? current : []));
       return;
@@ -111,15 +148,17 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
     const gap = Number.parseFloat(styles.columnGap || '0') || 0;
     const fullWidth = container.clientWidth - paddingInline;
 
-    const widths = items.map(
+    const widths = currentItems.map(
       (key) => getItemElement(key)?.offsetWidth ?? Number.POSITIVE_INFINITY,
     );
 
-    const activeIndex = activeItem === null ? -1 : items.indexOf(activeItem);
+    const priorityItem = forcedItemRef.current ?? activeItemRef.current;
+    const activeIndex =
+      priorityItem === null ? -1 : currentItems.indexOf(priorityItem);
     const anchor = activeIndex === -1 ? 0 : activeIndex;
 
     // Nearest the active item wins the space; source order only breaks ties.
-    const byDistanceFromActive = items
+    const byDistanceFromActive = currentItems
       .map((_key, index) => index)
       .sort((a, b) => {
         const distance = Math.abs(a - anchor) - Math.abs(b - anchor);
@@ -154,10 +193,12 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
     // overflows, so reserving its space up front would hide an item that fits.
     let kept = fit(null, fullWidth);
 
-    if (kept.size < items.length) {
-      // Something overflows, so the toggle renders: hold back its width plus
-      // the gap that separates it from the last visible item.
-      const usable = fullWidth - reserve - gap;
+    if (kept.size < currentItems.length) {
+      // Something overflows, so the toggle renders: hold back its measured
+      // width. It is positioned outside the row, so it does not consume a gap.
+      const reservedWidth =
+        reserveElementRef.current?.offsetWidth ?? reserveValueRef.current;
+      const usable = fullWidth - reservedWidth;
       kept = fit(null, usable);
 
       // The active item must always end up visible.
@@ -169,7 +210,7 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
     const nextVisible: TKey[] = [];
     const nextOverflow: TKey[] = [];
 
-    items.forEach((key, index) => {
+    currentItems.forEach((key, index) => {
       if (kept.has(index)) {
         nextVisible.push(key);
       } else {
@@ -183,11 +224,24 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
     setOverflow((current) =>
       areKeysEqual(current, nextOverflow) ? current : nextOverflow,
     );
-  }, [activeItem, containerRef, enabled, getItemElement, items, reserve]);
+  }, [containerRef, getItemElement]);
+
+  const ensureVisible = useCallback(
+    (key: TKey, onVisible?: () => void) => {
+      if (!itemsRef.current.includes(key)) return;
+
+      if (!overflow.includes(key)) {
+        onVisible?.();
+        return;
+      }
+
+      pendingVisibilityRef.current = { key, onVisible };
+      setForcedItem(key);
+    },
+    [overflow],
+  );
 
   useLayoutEffect(() => {
-    const container = containerRef.current;
-
     const schedule = () => {
       if (frameRef.current !== null) {
         globalThis.cancelAnimationFrame(frameRef.current);
@@ -199,32 +253,18 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
       });
     };
 
-    measure();
-
-    if (!enabled || !container) {
-      return () => {
-        if (frameRef.current !== null) {
-          globalThis.cancelAnimationFrame(frameRef.current);
-          frameRef.current = null;
-        }
-      };
-    }
-
     const observer =
       typeof ResizeObserver === 'undefined'
         ? null
         : new ResizeObserver(schedule);
-
-    observer?.observe(container);
-    for (const key of items) {
-      const element = getItemElement(key);
-      if (element) observer?.observe(element);
-    }
+    observerRef.current = observer;
 
     globalThis.addEventListener('resize', schedule);
 
     return () => {
       observer?.disconnect();
+      observerRef.current = null;
+      observedElementsRef.current.clear();
       globalThis.removeEventListener('resize', schedule);
 
       if (frameRef.current !== null) {
@@ -232,12 +272,73 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
         frameRef.current = null;
       }
     };
-  }, [containerRef, enabled, getItemElement, items, measure]);
+  }, [measure]);
+
+  useLayoutEffect(() => {
+    if (!areKeysEqual(itemsRef.current, items)) {
+      itemsRef.current = [...items];
+    }
+    activeItemRef.current = activeItem;
+    forcedItemRef.current = forcedItem;
+    reserveValueRef.current = reserve;
+    reserveElementRef.current = reserveRef?.current ?? null;
+    enabledRef.current = enabled;
+
+    const desiredElements = new Set<Element>();
+    const container = containerRef.current;
+
+    if (enabled && container) {
+      desiredElements.add(container);
+      if (reserveElementRef.current) {
+        desiredElements.add(reserveElementRef.current);
+      }
+      for (const key of itemsRef.current) {
+        const element = getItemElement(key);
+        if (element) desiredElements.add(element);
+      }
+    }
+
+    observedElementsRef.current = syncObservedElements(
+      observerRef.current,
+      observedElementsRef.current,
+      desiredElements,
+    );
+
+    measure();
+  }, [
+    activeItem,
+    containerRef,
+    enabled,
+    forcedItem,
+    getItemElement,
+    items,
+    measure,
+    reserve,
+    reserveRef,
+  ]);
+
+  useLayoutEffect(() => {
+    const pending = pendingVisibilityRef.current;
+    if (!pending) return;
+
+    if (!itemsRef.current.includes(pending.key)) {
+      pendingVisibilityRef.current = null;
+      setForcedItem(null);
+      return;
+    }
+
+    if (overflow.includes(pending.key)) return;
+
+    pendingVisibilityRef.current = null;
+    pending.onVisible?.();
+    setForcedItem(null);
+  }, [overflow]);
 
   return {
     visible,
     overflow,
     hasOverflow: overflow.length > 0,
     measure,
+    ensureVisible,
   };
 };

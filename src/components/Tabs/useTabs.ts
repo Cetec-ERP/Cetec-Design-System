@@ -23,14 +23,13 @@ import {
   type TabsProps,
 } from './context/tabsContext';
 
-/** Width in CSS pixels held back in the strip for the overflow toggle. */
-const OVERFLOW_TOGGLE_RESERVE = 32;
-
 /** One `Tab` child, described from its props. */
 export type TabDescriptor = {
   value: string;
   label: string;
   disabled: boolean;
+  badge?: number;
+  badgeTooltip?: string;
 };
 
 type UseTabsOptions = Pick<
@@ -39,6 +38,8 @@ type UseTabsOptions = Pick<
 > & {
   /** Ref for the `tablist` element, used as the measurement container. */
   listRef: RefObject<HTMLElement | null>;
+  /** Ref for the rendered overflow control whose width is reserved. */
+  overflowRef: RefObject<HTMLElement | null>;
 };
 
 /** Flattens a label node to plain text for the overflow menu and tooltips. */
@@ -72,6 +73,7 @@ export const useTabs = ({
   defaultValue,
   onChange,
   listRef,
+  overflowRef,
 }: UseTabsOptions) => {
   const tabs = useMemo<TabDescriptor[]>(() => {
     const descriptors: TabDescriptor[] = [];
@@ -89,6 +91,8 @@ export const useTabs = ({
         children?: ReactNode;
         label?: string;
         disabled?: boolean;
+        badge?: number;
+        badgeTooltip?: string;
       };
 
       if (typeof props.value !== 'string') return;
@@ -99,6 +103,8 @@ export const useTabs = ({
         // fall back to `value` when the children carry no text at all.
         label: props.label || getNodeText(props.children) || props.value,
         disabled: Boolean(props.disabled),
+        badge: props.badge,
+        badgeTooltip: props.badgeTooltip,
       });
     });
 
@@ -125,13 +131,14 @@ export const useTabs = ({
   const isStoredValueSelectable = Boolean(storedTab && !storedTab.disabled);
   const selectedValue = isStoredValueSelectable ? storedValue : firstValue;
 
-  // Controlled parents need to learn about an automatic fallback. Otherwise
-  // the strip can display one selection while the parent's value remains on a
-  // removed tab indefinitely. A ref prevents repeated notifications when a
-  // parent intentionally leaves the invalid value unchanged.
+  // Commit automatic fallbacks to the real state, not only the rendered
+  // selection. Otherwise an uncontrolled value can silently resurrect if its
+  // tab is later added again. Controlled parents receive the same fallback so
+  // their value remains aligned. A ref prevents repeated notifications when a
+  // parent intentionally leaves an invalid controlled value unchanged.
   const fallbackNotificationRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!isControlled || isStoredValueSelectable || firstValue === '') {
+    if (isStoredValueSelectable) {
       fallbackNotificationRef.current = null;
       return;
     }
@@ -140,12 +147,18 @@ export const useTabs = ({
     if (fallbackNotificationRef.current === notificationKey) return;
 
     fallbackNotificationRef.current = notificationKey;
-    onChange?.(null, firstValue, 'fallback-after-removal');
+    if (!isControlled) {
+      setStoredValue(firstValue);
+    }
+    if (firstValue !== '') {
+      onChange?.(null, firstValue, 'fallback-after-removal');
+    }
   }, [
     firstValue,
     isControlled,
     isStoredValueSelectable,
     onChange,
+    setStoredValue,
     storedValue,
   ]);
 
@@ -167,12 +180,12 @@ export const useTabs = ({
     [],
   );
 
-  const { overflow, hasOverflow } = useOverflowItems({
+  const { ensureVisible, overflow, hasOverflow } = useOverflowItems({
     items: tabValues,
     containerRef: listRef,
     getItemElement,
     activeItem: selectedValue || null,
-    reserve: OVERFLOW_TOGGLE_RESERVE,
+    reserveRef: overflowRef,
   });
 
   const selectTab = useCallback(
@@ -185,25 +198,14 @@ export const useTabs = ({
     [onChange, setStoredValue, storedValue],
   );
 
-  // A tab reached by the keyboard can still be in overflow at that moment, and
-  // a hidden element cannot take focus. Record the intent and focus it once the
-  // next measurement has put it back in the strip.
-  const pendingFocusRef = useRef<string | null>(null);
-
-  const focusTab = useCallback((tabValue: string) => {
-    pendingFocusRef.current = tabValue;
-  }, []);
-
-  useEffect(() => {
-    const pending = pendingFocusRef.current;
-    if (pending === null) return;
-
-    const element = elementsRef.current.get(pending);
-    if (!element || overflow.includes(pending)) return;
-
-    pendingFocusRef.current = null;
-    element.focus();
-  }, [overflow, selectedValue]);
+  const focusTab = useCallback(
+    (tabValue: string) => {
+      ensureVisible(tabValue, () => {
+        elementsRef.current.get(tabValue)?.focus();
+      });
+    },
+    [ensureVisible],
+  );
 
   const onTabKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLElement>) => {
@@ -242,14 +244,9 @@ export const useTabs = ({
 
       selectTab(event, nextValue, 'clicked-on-tab');
 
-      const element = elementsRef.current.get(nextValue);
-      if (element && !overflow.includes(nextValue)) {
-        element.focus();
-      } else {
-        pendingFocusRef.current = nextValue;
-      }
+      focusTab(nextValue);
     },
-    [overflow, selectTab, selectedValue, tabs],
+    [focusTab, selectTab, selectedValue, tabs],
   );
 
   const overflowTabs = useMemo(

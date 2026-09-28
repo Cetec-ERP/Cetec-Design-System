@@ -128,6 +128,20 @@ export const tabsRecipe = defineSlotRecipe({
     },
   },
   variants: {
+    hasOverflow: {
+      false: {
+        overflow: {
+          visibility: 'hidden',
+          pointerEvents: 'none',
+        },
+      },
+      true: {
+        overflow: {
+          visibility: 'visible',
+          pointerEvents: 'auto',
+        },
+      },
+    },
     /** Keeps an overflowed tab measurable while removing it from the strip. */
     overflowed: {
       true: {
@@ -140,5 +154,8 @@ export const tabsRecipe = defineSlotRecipe({
         },
       },
     },
+  },
+  defaultVariants: {
+    hasOverflow: false,
   },
 });

@@ -8,6 +8,7 @@ import type {
 import type { TabsVariantProps } from '@styled-system/recipes';
 
 import type { BoxProps } from '~/components/Box';
+import { getCompoundComponentType } from '~/utils/compoundComponent';
 
 /** Slot class names produced by the `tabs` recipe and shared with tab parts. */
 export type TabsClasses = Record<
@@ -209,11 +210,5 @@ export const tabsComponentTypeKey = '__tabsComponentType' as const;
 
 /** Returns the internal tab compound-component marker for a node, or `null`. */
 export const getTabsComponentType = (node: unknown): string | null => {
-  if (!node || typeof node !== 'object' || !('type' in node)) {
-    return null;
-  }
-
-  const type = (node as { type?: { [tabsComponentTypeKey]?: string } }).type;
-
-  return type?.[tabsComponentTypeKey] ?? null;
+  return getCompoundComponentType(node, tabsComponentTypeKey);
 };

@@ -1,5 +1,6 @@
 import { cx } from '@styled-system/css';
 
+import { setCompoundComponentType } from '~/utils/compoundComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box } from '../Box';
@@ -63,6 +64,8 @@ export const TabPanel = (props: TabPanelProps) => {
   );
 };
 
-(TabPanel as unknown as { [tabsComponentTypeKey]: string })[
-  tabsComponentTypeKey
-] = TABS_COMPONENT_TYPES.panel;
+setCompoundComponentType(
+  TabPanel,
+  tabsComponentTypeKey,
+  TABS_COMPONENT_TYPES.panel,
+);
