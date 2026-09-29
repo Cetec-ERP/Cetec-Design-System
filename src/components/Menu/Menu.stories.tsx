@@ -1,5 +1,7 @@
 import { type ChangeEvent, type KeyboardEvent, useState } from 'react';
 
+import { expect, userEvent, within } from '@storybook/test';
+
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
 import { Box } from '../Box';
@@ -579,6 +581,47 @@ export const SubMenuDigin: Story = {
       </SubMenu>
     </Menu>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+const LONG_MENU_LABELS = Array.from(
+  { length: 40 },
+  (_, index) => `${index + 1} - Item ${index + 1}`,
+);
+
+export const ExLongMenu: Story = {
+  name: 'Ex: Long Menu',
+  render: () => (
+    <Menu trigger={<Button iconAfter="caret-down">Open long menu</Button>}>
+      <SubMenu label="More items">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+      </SubMenu>
+      {LONG_MENU_LABELS.map((label) => (
+        <MenuItem key={label} label={label} />
+      ))}
+    </Menu>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open long menu/i }),
+    );
+    const menuElement = await screen.findByRole('menu');
+
+    // The menu is capped to the space beside the trigger and scrolls,
+    // rather than running past the viewport edge.
+    const viewportHeight =
+      canvasElement.ownerDocument.documentElement.clientHeight;
+    const rect = menuElement.getBoundingClientRect();
+    expect(rect.top).toBeGreaterThanOrEqual(0);
+    expect(rect.bottom).toBeLessThanOrEqual(viewportHeight);
+    expect(getComputedStyle(menuElement).overflowY).toBe('auto');
+    expect(menuElement.scrollHeight).toBeGreaterThan(menuElement.clientHeight);
+  },
   parameters: { controls: { disable: true } },
 };
 
