@@ -124,6 +124,16 @@ const menuVariants = {
       },
     },
   },
+  // Caps the wrapper to `--available-height`, which Floating UI's `size()`
+  // middleware writes at runtime, and scrolls the overflow.
+  scrollable: {
+    true: {
+      wrapper: {
+        maxHeight: 'var(--available-height)',
+        overflowY: 'auto',
+      },
+    },
+  },
 };
 
 export const menuRecipe = defineSlotRecipe({
