@@ -378,7 +378,11 @@ export const Select = (props: SelectProps) => {
   const typeahead = useTypeahead(floating.context, {
     listRef: labelsRef,
     activeIndex: resolvedActiveIndex,
-    onMatch: setActiveIndex,
+    onMatch: (index) => {
+      setActiveIndex(index);
+      setHoveredIndex(null);
+      setKeyboardNavigated(true);
+    },
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
