@@ -4,7 +4,6 @@ import { Flex, Grid, Wrap, VStack } from '@styled-system/jsx';
 
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
-import { Box } from '../Box';
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
@@ -497,14 +496,21 @@ export const SizesMatrix: Story = {
 
 export const InlineWithText: Story = {
   render: () => (
-    <Box maxW="lg">
+    <VStack maxW="lg" alignItems="stretch" gap="8">
       <Text>
         Chips can appear inline within text, like tagging{' '}
         <Chip before={<Icon name="user" />}>John Doe</Chip> in a conversation.
         referencing <Chip before={<Icon name="file" />}>Project Plan</Chip> in
         your notes.
       </Text>
-    </Box>
+      <Text>
+        Chips with more than two items collapse to a count and should stay on
+        the same baseline as plain chips: <Chip>Design</Chip>{' '}
+        <Chip>{['Design', 'Engineering', 'Product']}</Chip> and{' '}
+        <Chip before={<Icon name="user" />}>{['Ann', 'Bob', 'Cy', 'Di']}</Chip>{' '}
+        <Chip>Design, Engineering</Chip> sit in one line of text.
+      </Text>
+    </VStack>
   ),
 };
 
@@ -575,6 +581,18 @@ const DismissableExample = () => {
       )}
     </Flex>
   );
+};
+
+export const MultipleItems: Story = {
+  render: () => (
+    <Flex gap="4" alignItems="center">
+      <Chip>{['Design', 'Engineering']}</Chip>
+      <Chip>{['Design', 'Engineering', 'Product']}</Chip>
+      <Chip dismissable onDismiss={() => {}}>
+        {['Design', 'Engineering', 'Product', 'Support', 'Sales']}
+      </Chip>
+    </Flex>
+  ),
 };
 
 export const Dismissable: Story = {

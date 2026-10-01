@@ -15,6 +15,7 @@ import { chip, type ChipVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
+import { Tooltip } from '~/components/Tooltip';
 import { useFieldContext } from '~/system/context/FieldContext';
 import {
   SlotContext,
@@ -26,11 +27,18 @@ import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
 
+/** Number of array items shown before the rest collapse into `+N`. */
+const MAX_VISIBLE_ITEMS = 2;
+
 /** Props for {@link Chip}, a compact label that can be static, actionable, selectable, or dismissible. */
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
   Omit<ChipVariantProps, 'before' | 'after' | 'dismissable'> & {
-    /** Visible chip label, also used in the default dismissal label. */
-    children: string;
+    /**
+     * Visible chip label, also used in the default dismissal label. An array
+     * renders comma-joined; with more than two items only the first two are
+     * shown, followed by `+N` for the rest, and a tooltip lists every item.
+     */
+    children: string | string[];
     /** Content displayed before the chip label. */
     before?: ReactNode;
     /** Content displayed after the chip label and before the dismiss control. */
@@ -45,7 +53,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     dismissable?: boolean;
     /**
      * Accessible name for the dismiss button.
-     * @default `Remove ${children}`
+     * @default `Remove ${children}`; array children are comma-joined
      */
     dismissLabel?: string;
     /** Ref forwarded to the dismiss button. */
@@ -76,6 +84,9 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
  * `ChipGroup`. Grouped single-select chips use radio behavior and arrow-key
  * roving focus; grouped multi-select chips use checkbox behavior. `before` and
  * `after` slots inherit state through slot context.
+ *
+ * `children` may be an array of strings. Arrays with more than two items show
+ * the first two plus a `+N` count and reveal the full list in a tooltip.
  *
  * @example
  * ```tsx
@@ -263,7 +274,16 @@ export const Chip = (props: ChipProps) => {
     return 0;
   };
 
-  const resolvedDismissLabel = dismissLabel || `Remove ${children}`;
+  const items = Array.isArray(children) ? children : null;
+  const isOverflowing = items !== null && items.length > MAX_VISIBLE_ITEMS;
+  const label = items
+    ? isOverflowing
+      ? `${items.slice(0, MAX_VISIBLE_ITEMS).join(', ')} +${items.length - MAX_VISIBLE_ITEMS}`
+      : items.join(', ')
+    : children;
+
+  const resolvedDismissLabel =
+    dismissLabel || `Remove ${items ? items.join(', ') : children}`;
 
   const handleDismissClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -302,7 +322,16 @@ export const Chip = (props: ChipProps) => {
       )}
       {renderSlot(before, 'before')}
       <Box as="span" className={classes.mainContent}>
-        {children}
+        {isOverflowing ? (
+          <>
+            <span aria-hidden>{label}</span>
+            <Box as="span" srOnly>
+              {items.join(', ')}
+            </Box>
+          </>
+        ) : (
+          label
+        )}
       </Box>
       {renderSlot(after, 'after')}
     </>
@@ -358,7 +387,7 @@ export const Chip = (props: ChipProps) => {
       aria-invalid={invalid || undefined}
       {...otherProps}
     >
-      {body}
+      {isOverflowing ? <Tooltip text={items.join(', ')}>{body}</Tooltip> : body}
       {dismissable && dismissButton}
       {loading && <Spinner size="sm" centered />}
     </Box>
