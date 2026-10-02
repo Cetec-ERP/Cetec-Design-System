@@ -1,6 +1,6 @@
 import { type ChangeEvent, type KeyboardEvent, useState } from 'react';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
@@ -621,6 +621,74 @@ export const ExLongMenu: Story = {
     expect(rect.bottom).toBeLessThanOrEqual(viewportHeight);
     expect(getComputedStyle(menuElement).overflowY).toBe('auto');
     expect(menuElement.scrollHeight).toBeGreaterThan(menuElement.clientHeight);
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ExLongDiginMenu: Story = {
+  name: 'Ex: Long Drill-In Menu',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+      </SubMenu>
+      <SubMenu label="Short list">
+        <MenuItem label="First" />
+        <MenuItem label="Second" />
+      </SubMenu>
+      {LONG_MENU_LABELS.map((label) => (
+        <MenuItem key={label} label={label} />
+      ))}
+    </Menu>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    const menuElement = await screen.findByRole('menu');
+
+    // In a long level, the back header stays pinned while the level scrolls.
+    await userEvent.click(screen.getByRole('menuitem', { name: /long list/i }));
+    const longBack = await screen.findByRole('button', { name: /long list/i });
+    const longLevel = longBack.parentElement as HTMLElement;
+    await waitFor(() =>
+      expect(longLevel.scrollHeight).toBeGreaterThan(longLevel.clientHeight),
+    );
+    longLevel.scrollTop = longLevel.scrollHeight;
+    await waitFor(() =>
+      expect(
+        Math.abs(
+          longBack.getBoundingClientRect().top -
+            longLevel.getBoundingClientRect().top,
+        ),
+      ).toBeLessThanOrEqual(1),
+    );
+
+    // A short level after a long one has no blank space to scroll into.
+    await userEvent.click(longBack);
+    await userEvent.click(
+      await screen.findByRole('menuitem', { name: /short list/i }),
+    );
+    const shortBack = await screen.findByRole('button', {
+      name: /short list/i,
+    });
+    const shortLevel = shortBack.parentElement as HTMLElement;
+    await waitFor(() => {
+      expect(menuElement.scrollHeight).toBeLessThanOrEqual(
+        menuElement.clientHeight + 1,
+      );
+      expect(shortLevel.scrollHeight).toBeLessThanOrEqual(
+        shortLevel.clientHeight + 1,
+      );
+    });
   },
   parameters: { controls: { disable: true } },
 };
