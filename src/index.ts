@@ -194,6 +194,35 @@ export {
 } from './components/Toast';
 export { ToggleInput, type ToggleInputProps } from './components/ToggleInput';
 export { Skeleton, type SkeletonProps } from './components/Skeleton';
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverClose,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverDescription,
+  PopoverBody,
+  PopoverMedia,
+  PopoverFooter,
+  PopoverArrow,
+  type PopoverProps,
+  type PopoverTriggerProps,
+  type PopoverAnchorProps,
+  type PopoverContentProps,
+  type PopoverCloseProps,
+  type PopoverHeaderProps,
+  type PopoverTitleProps,
+  type PopoverDescriptionProps,
+  type PopoverBodyProps,
+  type PopoverMediaProps,
+  type PopoverFooterProps,
+  type PopoverArrowProps,
+  type PopoverInteraction,
+  type PopoverSize,
+  type PopoverTone,
+} from './components/Popover';
 export { Tooltip, type TooltipProps } from './components/Tooltip';
 
 // Public component hooks and helpers
@@ -210,6 +239,7 @@ export {
   useMenuRootContext,
 } from './components/Menu/context/menuContext';
 export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
+export { usePopoverContext } from './components/Popover/PopoverContext';
 export { useToast } from './components/Toast/useToast';
 
 // TanStack Form — peer dependency re-exported for a single library instance
