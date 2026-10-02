@@ -36,6 +36,7 @@ const meta: Meta<typeof Tooltip> = {
     },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },
     caret: { control: 'boolean' },
+    disabled: { control: 'boolean' },
     delay: { control: 'number' },
   },
 };

@@ -4,8 +4,8 @@ import { Flex, Grid, Wrap, VStack } from '@styled-system/jsx';
 
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
-import { Box } from '../Box';
 import { BreakpointIndicator } from '../BreakpointIndicator';
+import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 
@@ -497,14 +497,21 @@ export const SizesMatrix: Story = {
 
 export const InlineWithText: Story = {
   render: () => (
-    <Box maxW="lg">
+    <VStack maxW="lg" alignItems="stretch" gap="8">
       <Text>
         Chips can appear inline within text, like tagging{' '}
         <Chip before={<Icon name="user" />}>John Doe</Chip> in a conversation.
         referencing <Chip before={<Icon name="file" />}>Project Plan</Chip> in
         your notes.
       </Text>
-    </Box>
+      <Text>
+        Chips with more than two items collapse to a count and should stay on
+        the same baseline as plain chips: <Chip>Design</Chip>{' '}
+        <Chip>{['Design', 'Engineering', 'Product']}</Chip> and{' '}
+        <Chip before={<Icon name="user" />}>{['Ann', 'Bob', 'Cy', 'Di']}</Chip>{' '}
+        <Chip>Design, Engineering</Chip> sit in one line of text.
+      </Text>
+    </VStack>
   ),
 };
 
@@ -575,6 +582,59 @@ const DismissableExample = () => {
       )}
     </Flex>
   );
+};
+
+export const MultipleItems: Story = {
+  render: () => (
+    <Flex gap="4" alignItems="center">
+      <Chip>{['Design', 'Engineering']}</Chip>
+      <Chip>{['Design', 'Engineering', 'Product']}</Chip>
+      <Chip dismissable onDismiss={() => {}}>
+        {['Design', 'Engineering', 'Product', 'Support', 'Sales']}
+      </Chip>
+    </Flex>
+  ),
+};
+
+const allTags = ['Design', 'Engineering', 'Product', 'Support', 'Sales'];
+
+const OverflowFocusExample = () => {
+  const [count, setCount] = useState(2);
+  const tags = allTags.slice(0, count);
+
+  return (
+    <VStack gap="12" alignItems="flex-start">
+      <Text>
+        Focus the chip, then change the count with the buttons (Shift+Tab back
+        to the chip). Focus should stay on the chip when crossing three items.
+      </Text>
+      <Flex gap="8" alignItems="center">
+        <Chip onClick={() => {}}>{tags}</Chip>
+        <Chip>{tags}</Chip>
+        <Chip dismissable onDismiss={() => {}}>
+          {tags}
+        </Chip>
+      </Flex>
+      <Flex gap="8">
+        <Button
+          onClick={() => setCount((c) => Math.max(1, c - 1))}
+          disabled={count <= 1}
+        >
+          Remove item
+        </Button>
+        <Button
+          onClick={() => setCount((c) => Math.min(allTags.length, c + 1))}
+          disabled={count >= allTags.length}
+        >
+          Add item
+        </Button>
+      </Flex>
+    </VStack>
+  );
+};
+
+export const OverflowKeyboardAndFocus: Story = {
+  render: () => <OverflowFocusExample />,
 };
 
 export const Dismissable: Story = {
