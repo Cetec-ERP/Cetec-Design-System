@@ -207,6 +207,86 @@ export const PreventOutsideClose: Story = {
   render: () => <FiltersDrawer preventOutsideClose />,
 };
 
+const CloseRequestCounter = () => {
+  const [open, setOpen] = useState(false);
+  const [closeRequests, setCloseRequests] = useState(0);
+  const titleId = useId();
+
+  const handleOpenChange = (next: boolean) => {
+    if (!next) {
+      setCloseRequests((count) => count + 1);
+    }
+    setOpen(next);
+  };
+
+  return (
+    <Box p="24">
+      <Button onClick={() => setOpen(true)}>Open drawer</Button>
+      <Text>{`Close requests: ${closeRequests}`}</Text>
+      <Drawer
+        open={open}
+        onOpenChange={handleOpenChange}
+        aria-labelledby={titleId}
+      >
+        <DrawerHeader title="Close requests" titleId={titleId} />
+        <DrawerBody>
+          <Text>Click the scrim or the close button.</Text>
+        </DrawerBody>
+      </Drawer>
+    </Box>
+  );
+};
+
+/**
+ * One scrim click or close-button click calls `onOpenChange(false)` once. The
+ * panel and scrim stay mounted for the exit animation, so a repeat press
+ * during it must not request close again.
+ */
+export const A11ySingleCloseRequest: Story = {
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  tags: ['!dev', '!autodocs'],
+  render: () => <CloseRequestCounter />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('button', { name: 'Open drawer' });
+
+    // Scrim: pointerdown and click arrive from one press.
+    await userEvent.click(trigger);
+    const drawer = await body.findByRole('dialog', { name: 'Close requests' });
+    const scrim = drawer.parentElement?.querySelector<HTMLElement>(
+      '[class*="drawer__overlay"]',
+    );
+    expect(scrim).toBeTruthy();
+    await userEvent.click(scrim as HTMLElement);
+    // A second press while the scrim is still fading out.
+    if (scrim?.isConnected) {
+      await userEvent.click(scrim);
+    }
+    await waitFor(() =>
+      expect(body.queryByRole('dialog', { name: 'Close requests' })).toBeNull(),
+    );
+    expect(canvas.getByText('Close requests: 1')).toBeVisible();
+
+    // Close button: a second click lands during the exit animation.
+    await userEvent.click(trigger);
+    const reopened = await body.findByRole('dialog', {
+      name: 'Close requests',
+    });
+    const closeButton = within(reopened).getByRole('button', {
+      name: 'Close drawer',
+    });
+    await userEvent.click(closeButton);
+    if (closeButton.isConnected) {
+      await userEvent.click(closeButton);
+    }
+    await waitFor(() =>
+      expect(body.queryByRole('dialog', { name: 'Close requests' })).toBeNull(),
+    );
+    expect(canvas.getByText('Close requests: 2')).toBeVisible();
+  },
+};
+
 // ============================================================================
 // SCROLLING
 // ============================================================================

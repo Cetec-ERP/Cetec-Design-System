@@ -211,7 +211,13 @@ export const Drawer = (props: DrawerProps) => {
     [refs],
   );
 
-  const onClose = useCallback(() => onOpenChange(false), [onOpenChange]);
+  // The panel stays mounted through the exit animation, so a second press on
+  // the close button or a second Escape must not request close again.
+  const onClose = useCallback(() => {
+    if (open) {
+      onOpenChange(false);
+    }
+  }, [open, onOpenChange]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (modal || event.key !== 'Escape' || event.defaultPrevented) {
@@ -246,12 +252,17 @@ export const Drawer = (props: DrawerProps) => {
            * calls `refs.setReference`, the same as ModalWrapper.
            */}
           <DsChainPortalRoot>
+            {/*
+             * No click handler: useDismiss already closes on a scrim press as
+             * an outside press. A second handler would call onOpenChange twice
+             * for one click. useDismiss stops listening once `open` is false,
+             * so presses on the fading scrim request nothing.
+             */}
             {modal && (
               <FloatingOverlay
                 lockScroll
                 className={classes.overlay}
                 data-state={dataState}
-                onClick={preventOutsideClose ? undefined : onClose}
                 aria-hidden="true"
               />
             )}
