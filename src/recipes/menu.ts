@@ -133,6 +133,24 @@ const menuVariants = {
         maxHeight: 'max(var(--available-height), token(sizes.120))',
         overflowY: 'auto',
       },
+      // Drill-in sets an explicit wrapper height, so each level can fill it
+      // and scroll on its own. Otherwise every level stretches to the tallest
+      // one and a short level scrolls into blank space. Single-level menus
+      // have no explicit height, so the wrapper still does the scrolling.
+      levelsViewport: {
+        height: 'full',
+      },
+      levelsTrack: {
+        height: 'full',
+      },
+      level: {
+        overflowY: 'auto',
+      },
+      backHeader: {
+        position: 'sticky',
+        top: '0',
+        zIndex: '1',
+      },
     },
   },
 };
