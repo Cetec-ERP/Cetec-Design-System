@@ -5,6 +5,7 @@ import { Flex, Grid, Wrap, VStack } from '@styled-system/jsx';
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { BreakpointIndicator } from '../BreakpointIndicator';
+import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 
@@ -593,6 +594,47 @@ export const MultipleItems: Story = {
       </Chip>
     </Flex>
   ),
+};
+
+const allTags = ['Design', 'Engineering', 'Product', 'Support', 'Sales'];
+
+const OverflowFocusExample = () => {
+  const [count, setCount] = useState(2);
+  const tags = allTags.slice(0, count);
+
+  return (
+    <VStack gap="12" alignItems="flex-start">
+      <Text>
+        Focus the chip, then change the count with the buttons (Shift+Tab back
+        to the chip). Focus should stay on the chip when crossing three items.
+      </Text>
+      <Flex gap="8" alignItems="center">
+        <Chip onClick={() => {}}>{tags}</Chip>
+        <Chip>{tags}</Chip>
+        <Chip dismissable onDismiss={() => {}}>
+          {tags}
+        </Chip>
+      </Flex>
+      <Flex gap="8">
+        <Button
+          onClick={() => setCount((c) => Math.max(1, c - 1))}
+          disabled={count <= 1}
+        >
+          Remove item
+        </Button>
+        <Button
+          onClick={() => setCount((c) => Math.min(allTags.length, c + 1))}
+          disabled={count >= allTags.length}
+        >
+          Add item
+        </Button>
+      </Flex>
+    </VStack>
+  );
+};
+
+export const OverflowKeyboardAndFocus: Story = {
+  render: () => <OverflowFocusExample />,
 };
 
 export const Dismissable: Story = {

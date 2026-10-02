@@ -86,7 +86,9 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
  * `after` slots inherit state through slot context.
  *
  * `children` may be an array of strings. Arrays with more than two items show
- * the first two plus a `+N` count and reveal the full list in a tooltip.
+ * the first two plus a `+N` count and reveal the full list in a tooltip. A
+ * static overflowing chip becomes keyboard-focusable so the tooltip can be
+ * opened without a pointer, and its full list is also exposed to screen readers.
  *
  * @example
  * ```tsx
@@ -322,12 +324,14 @@ export const Chip = (props: ChipProps) => {
       )}
       {renderSlot(before, 'before')}
       <Box as="span" className={classes.mainContent}>
-        {isOverflowing ? (
+        {items ? (
           <>
-            <span aria-hidden>{label}</span>
-            <Box as="span" srOnly>
-              {items.join(', ')}
-            </Box>
+            <span aria-hidden={isOverflowing || undefined}>{label}</span>
+            {isOverflowing && (
+              <Box as="span" srOnly>
+                {items.join(', ')}
+              </Box>
+            )}
           </>
         ) : (
           label
@@ -363,6 +367,7 @@ export const Chip = (props: ChipProps) => {
     <Box
       as="span"
       className={classes.body}
+      tabIndex={isOverflowing && !isDisabled ? 0 : undefined}
       data-deleted={deleted ? true : undefined}
       data-disabled={isDisabled || undefined}
       data-error={error || undefined}
@@ -387,7 +392,13 @@ export const Chip = (props: ChipProps) => {
       aria-invalid={invalid || undefined}
       {...otherProps}
     >
-      {isOverflowing ? <Tooltip text={items.join(', ')}>{body}</Tooltip> : body}
+      {items ? (
+        <Tooltip text={items.join(', ')} disabled={!isOverflowing || loading}>
+          {body}
+        </Tooltip>
+      ) : (
+        body
+      )}
       {dismissable && dismissButton}
       {loading && <Spinner size="sm" centered />}
     </Box>
