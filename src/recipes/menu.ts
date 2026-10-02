@@ -125,11 +125,12 @@ const menuVariants = {
     },
   },
   // Caps the wrapper to `--available-height`, which Floating UI's `size()`
-  // middleware writes at runtime, and scrolls the overflow.
+  // middleware writes at runtime, and scrolls the overflow. The floor keeps a
+  // few rows visible when the trigger sits at the viewport edge.
   scrollable: {
     true: {
       wrapper: {
-        maxHeight: 'var(--available-height)',
+        maxHeight: 'max(var(--available-height), token(sizes.120))',
         overflowY: 'auto',
       },
     },
