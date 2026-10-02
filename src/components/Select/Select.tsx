@@ -258,6 +258,8 @@ export const Select = (props: SelectProps) => {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [internalValue, setInternalValue] = useState<SelectValue>(defaultValue);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [keyboardNavigated, setKeyboardNavigated] = useState(false);
 
   const isOpenControlled = controlledOpen !== undefined;
   const isOpen = isOpenControlled ? controlledOpen : internalOpen;
@@ -316,6 +318,7 @@ export const Select = (props: SelectProps) => {
 
   const setOpenState = (nextOpen: boolean) => {
     setActiveIndex(nextOpen ? initialActiveIndex : null);
+    setHoveredIndex(null);
     if (!isOpenControlled) {
       setInternalOpen(nextOpen);
     }
@@ -375,7 +378,11 @@ export const Select = (props: SelectProps) => {
   const typeahead = useTypeahead(floating.context, {
     listRef: labelsRef,
     activeIndex: resolvedActiveIndex,
-    onMatch: setActiveIndex,
+    onMatch: (index) => {
+      setActiveIndex(index);
+      setHoveredIndex(null);
+      setKeyboardNavigated(true);
+    },
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
@@ -411,6 +418,7 @@ export const Select = (props: SelectProps) => {
         event.key === ' ')
     ) {
       event.preventDefault();
+      setKeyboardNavigated(true);
       setOpenState(true);
     }
 
@@ -499,6 +507,7 @@ export const Select = (props: SelectProps) => {
         data-open={isOpen || undefined}
         {...(getReferenceProps({
           onKeyDown: handleTriggerKeyDown,
+          onPointerDown: () => setKeyboardNavigated(false),
         }) as Record<string, unknown>)}
         {...otherProps}
       >
@@ -570,6 +579,15 @@ export const Select = (props: SelectProps) => {
                   const isSelected = multiple
                     ? selectedValueSet.has(option.props.value)
                     : value === option.props.value;
+                  // floating-ui makes the selected row active as soon as the
+                  // list opens, so `activeIndex` alone can't tell whether the
+                  // user is pointing at it. Offer the clear affordance on
+                  // pointer hover, or when the last input was the keyboard
+                  // (opening with a key or arrowing through the list).
+                  const isPointed =
+                    !option.props.disabled &&
+                    (hoveredIndex === index ||
+                      (keyboardNavigated && activeIndex === index));
 
                   return (
                     <ListItem
@@ -586,7 +604,9 @@ export const Select = (props: SelectProps) => {
                       description={option.props.description}
                       iconBefore={
                         !multiple
-                          ? (option.props.iconLeft ?? 'check')
+                          ? isSelected && isPointed
+                            ? (option.props.iconLeft ?? 'x')
+                            : (option.props.iconLeft ?? 'check')
                           : option.props.iconLeft
                       }
                       iconBeforeFill={
@@ -600,6 +620,22 @@ export const Select = (props: SelectProps) => {
                       }
                       iconAfter={option.props.iconRight}
                       {...(getItemProps({
+                        onMouseEnter: () => {
+                          setHoveredIndex(index);
+                          setKeyboardNavigated(false);
+                        },
+                        onMouseLeave: () => setHoveredIndex(null),
+                        onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+                          if (
+                            event.key === 'ArrowDown' ||
+                            event.key === 'ArrowUp' ||
+                            event.key === 'Home' ||
+                            event.key === 'End'
+                          ) {
+                            setHoveredIndex(null);
+                            setKeyboardNavigated(true);
+                          }
+                        },
                         onClick: () => {
                           if (!option.props.disabled) {
                             handleOptionSelect(option.props.value);
