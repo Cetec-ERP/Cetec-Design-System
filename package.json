@@ -9,7 +9,7 @@
     "prepare": "npx panda codegen && npx simple-git-hooks",
     "predev": "npm run check:jsdoc",
     "dev": "npx panda --watch & vite",
-    "build": "rm -rf dist && PANDA_STATIC=true npx panda && npx panda spec && npx panda ship --outfile ./panda.buildinfo.json && vite build && npm run check:runtime-deps",
+    "build": "rm -rf dist && PANDA_STATIC=true npx panda && npx panda spec && npx panda ship --outfile ./panda.buildinfo.json && vite build && node tools/build-fonts.mjs && npm run check:runtime-deps",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:staged": "lint-staged",
@@ -49,8 +49,6 @@
     "./src/utils/*.ts"
   ],
   "peerDependencies": {
-    "@fontsource-variable/recursive": "^5.1.1",
-    "@fontsource-variable/ruda": "^5.1.1",
     "@tanstack/react-form": "^1.0.0",
     "react": "19.0.0",
     "react-dom": "19.0.0"
@@ -63,6 +61,8 @@
     "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.28.5",
     "@eslint/js": "^9.17.0",
+    "@fontsource-variable/recursive": "^5.1.1",
+    "@fontsource-variable/ruda": "^5.1.1",
     "@pandacss/dev": "^1.8.0",
     "@storybook/addon-a11y": "^8.6.17",
     "@storybook/addon-essentials": "^8.6.17",
@@ -125,6 +125,7 @@
     "./sprite.svg": "./dist/sprite.svg",
     "./styles.css": "./dist/styles.css",
     "./reset.css": "./dist/reset.css",
+    "./fonts.css": "./dist/fonts.css",
     "./panda.buildinfo.json": "./dist/panda.buildinfo.json"
   },
   "repository": {
