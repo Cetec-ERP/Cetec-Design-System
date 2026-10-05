@@ -15,6 +15,7 @@ import {
   FloatingPortal,
   useDismiss,
   useInteractions,
+  useMergeRefs,
 } from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
@@ -163,6 +164,9 @@ export const Drawer = (props: DrawerProps) => {
     returnFocus = true,
     children,
     id,
+    ref,
+    onKeyDown,
+    onAnimationEnd,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -210,6 +214,9 @@ export const Drawer = (props: DrawerProps) => {
     },
     [refs],
   );
+  // A consumer ref must not replace the internal one: Floating UI needs the
+  // panel for initial focus, the focus trap, and non-modal Escape.
+  const mergedPanelRef = useMergeRefs([setPanelRef, ref]);
 
   // The panel stays mounted through the exit animation, so a second press on
   // the close button or a second Escape must not request close again.
@@ -220,7 +227,14 @@ export const Drawer = (props: DrawerProps) => {
   }, [open, onOpenChange]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    // The consumer handler runs first, so it can opt out with preventDefault.
+    onKeyDown?.(event);
     if (modal || event.key !== 'Escape' || event.defaultPrevented) {
+      return;
+    }
+    // Escape during IME composition cancels the composition, not the drawer.
+    // Modal drawers get the same guard from useDismiss.
+    if (event.nativeEvent.isComposing) {
       return;
     }
     // React bubbles key events out of portals. Ignore Escape from a menu or
@@ -275,7 +289,7 @@ export const Drawer = (props: DrawerProps) => {
             >
               <Box
                 {...dsComponent('Drawer')}
-                ref={setPanelRef}
+                ref={mergedPanelRef}
                 className={cx(classes.container, className)}
                 data-state={dataState}
                 data-side={side}
@@ -283,8 +297,12 @@ export const Drawer = (props: DrawerProps) => {
                 role="dialog"
                 aria-modal={modal ? 'true' : undefined}
                 {...(getFloatingProps({
+                  // Consumer props go through Floating UI so its handlers
+                  // merge with them instead of being overwritten.
+                  ...otherProps,
                   onKeyDown: handleKeyDown,
                   onAnimationEnd: (event) => {
+                    onAnimationEnd?.(event);
                     if (
                       phase === 'closing' &&
                       event.target === event.currentTarget
@@ -293,7 +311,6 @@ export const Drawer = (props: DrawerProps) => {
                     }
                   },
                 }) as Record<string, unknown>)}
-                {...otherProps}
               >
                 {children}
               </Box>

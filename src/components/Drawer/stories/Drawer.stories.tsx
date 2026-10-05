@@ -657,3 +657,62 @@ export const A11yNonModalCaseList: Story = {
     );
   },
 };
+
+const ConsumerHandlersDrawer = () => {
+  const [open, setOpen] = useState(false);
+  const [keyDowns, setKeyDowns] = useState(0);
+  const [refTarget, setRefTarget] = useState('none');
+
+  return (
+    <Box p="24">
+      <Button onClick={() => setOpen(true)}>Open drawer</Button>
+      <Text>{`Consumer key downs: ${keyDowns}`}</Text>
+      <Text>{`Consumer ref: ${refTarget}`}</Text>
+      <Drawer
+        open={open}
+        onOpenChange={setOpen}
+        modal={false}
+        aria-label="Consumer handlers"
+        ref={(node: HTMLDivElement | null) => {
+          if (node) setRefTarget(node.getAttribute('role') ?? 'unknown');
+        }}
+        onKeyDown={() => setKeyDowns((count) => count + 1)}
+      >
+        <DrawerBody>
+          <Text>Press Escape to close.</Text>
+        </DrawerBody>
+      </Drawer>
+    </Box>
+  );
+};
+
+/**
+ * A consumer `ref` and `onKeyDown` add to the drawer's own wiring instead of
+ * replacing it: the panel still takes initial focus and Escape still closes a
+ * non-modal drawer.
+ */
+export const A11yConsumerRefAndKeyDown: Story = {
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  tags: ['!dev', '!autodocs'],
+  render: () => <ConsumerHandlersDrawer />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open drawer' }));
+    const drawer = await body.findByRole('dialog', {
+      name: 'Consumer handlers',
+    });
+    expect(canvas.getByText('Consumer ref: dialog')).toBeVisible();
+    // Initial focus needs the internal panel ref.
+    await waitFor(() => expect(drawer).toHaveFocus());
+
+    await userEvent.keyboard('{Escape}');
+    expect(canvas.getByText('Consumer key downs: 1')).toBeVisible();
+    await waitFor(() =>
+      expect(
+        body.queryByRole('dialog', { name: 'Consumer handlers' }),
+      ).toBeNull(),
+    );
+  },
+};
