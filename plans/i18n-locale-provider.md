@@ -41,8 +41,14 @@ Out of scope for 5.0:
 
 - Month names, month abbreviations, weekday headers and day accessible names
   come from `Intl.DateTimeFormat(locale)`.
+- Weekday headers use the `short` form without a trailing period. English
+  changes from `SU MO TU` to `SUN MON TUE`, because `Intl` has no two-letter
+  form.
+- An invalid or unsupported locale falls back to `en-US`.
+- All dates are formatted in UTC, so the user's time zone cannot shift a day.
 - The week still starts on Sunday.
-- Stories for `fr-FR` and `es-ES`.
+- Stories for `fr-FR` and `es-ES`. The Docs / Localization page lists what the
+  locale changes.
 
 ## Not changed
 
