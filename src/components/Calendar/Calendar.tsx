@@ -17,6 +17,8 @@ import {
 } from '~/components/DateTime/helpers';
 import { IconButton } from '~/components/IconButton';
 import { Text } from '~/components/Text';
+import type { LocaleLabels } from '~/system/context/locale-labels';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -120,13 +122,14 @@ function getDayAriaLabel(
   date: DateValue,
   monthName: string,
   state: CellState,
+  labels: LocaleLabels,
 ): string {
-  const labels = [`${monthName} ${date.day}, ${date.year}`];
-  if (state.isToday) labels.push('today');
-  if (state.isSelected) labels.push('selected');
-  if (state.isRangeStart) labels.push('range start');
-  if (state.isRangeEnd) labels.push('range end');
-  return labels.join(', ');
+  const parts = [`${monthName} ${date.day}, ${date.year}`];
+  if (state.isToday) parts.push(labels.today);
+  if (state.isSelected) parts.push(labels.selected);
+  if (state.isRangeStart) parts.push(labels.rangeStart);
+  if (state.isRangeEnd) parts.push(labels.rangeEnd);
+  return parts.join(', ');
 }
 
 type CalendarClasses = ReturnType<typeof calendar>;
@@ -178,6 +181,7 @@ type DayGridContentProps = {
   disabled: boolean;
   getDayState: (date: DateValue) => CellState;
   handleDaySelect: (date: DateValue) => void;
+  labels: LocaleLabels;
   monthName: string;
   viewDate: ViewDate;
 };
@@ -188,6 +192,7 @@ const DayGridContent = ({
   disabled,
   getDayState,
   handleDaySelect,
+  labels,
   monthName,
   viewDate,
 }: DayGridContentProps) => (
@@ -233,7 +238,7 @@ const DayGridContent = ({
                 classes={classes}
                 disabled={disabled}
                 label={day}
-                ariaLabel={getDayAriaLabel(date, monthName, state)}
+                ariaLabel={getDayAriaLabel(date, monthName, state, labels)}
                 state={state}
                 onClick={() => handleDaySelect(date)}
                 onKeyDown={(event) => {
@@ -366,6 +371,7 @@ export type CalendarProps = Omit<
  * ```
  */
 export const Calendar = (props: CalendarProps) => {
+  const { labels } = useLocale();
   const {
     value = null,
     onChange,
@@ -377,7 +383,7 @@ export const Calendar = (props: CalendarProps) => {
     defaultViewDate,
     onViewDateChange,
     disabled = false,
-    label = 'Choose date',
+    label = labels.chooseDate,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -489,8 +495,8 @@ export const Calendar = (props: CalendarProps) => {
     switch (viewLevel) {
       case 'days':
         return {
-          previousLabel: 'Previous month',
-          nextLabel: 'Next month',
+          previousLabel: labels.previousMonth,
+          nextLabel: labels.nextMonth,
           title: monthLabel,
           onTitleClick: () => setViewLevel('months'),
           previousDisabled:
@@ -509,8 +515,8 @@ export const Calendar = (props: CalendarProps) => {
         };
       case 'months':
         return {
-          previousLabel: 'Previous year',
-          nextLabel: 'Next year',
+          previousLabel: labels.previousYear,
+          nextLabel: labels.nextYear,
           title: String(viewDate.year),
           onTitleClick: () => {
             // Recenter the year window on the current view before showing it.
@@ -527,8 +533,8 @@ export const Calendar = (props: CalendarProps) => {
         };
       case 'years':
         return {
-          previousLabel: 'Previous years',
-          nextLabel: 'Next years',
+          previousLabel: labels.previousYears,
+          nextLabel: labels.nextYears,
           title: `${yearWindowStart}-${yearWindowEnd}`,
           titleDisabled: true,
           previousDisabled:
@@ -548,8 +554,8 @@ export const Calendar = (props: CalendarProps) => {
     viewLevel === 'days'
       ? monthLabel
       : viewLevel === 'months'
-        ? `Choose a month in ${viewDate.year}`
-        : 'Choose a year';
+        ? labels.chooseMonthIn(viewDate.year)
+        : labels.chooseYear;
 
   return (
     <Box
@@ -596,6 +602,7 @@ export const Calendar = (props: CalendarProps) => {
             disabled={disabled}
             getDayState={getDayState}
             handleDaySelect={handleDaySelect}
+            labels={labels}
             monthName={monthName}
             viewDate={viewDate}
           />

@@ -21,6 +21,7 @@ import {
   type SlotPlacement,
   useSlotContext,
 } from '~/system/context/SlotContext';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -85,6 +86,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
 export const Chip = (props: ChipProps) => {
   const groupContext = useChipGroup();
   const fieldContext = useFieldContext();
+  const { labels } = useLocale();
   const slotContext = useSlotContext();
   const {
     size: sizeProp,
@@ -263,7 +265,8 @@ export const Chip = (props: ChipProps) => {
     return 0;
   };
 
-  const resolvedDismissLabel = dismissLabel || `Remove ${children}`;
+  const resolvedDismissLabel =
+    dismissLabel || labels.removeItem(String(children));
 
   const handleDismissClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

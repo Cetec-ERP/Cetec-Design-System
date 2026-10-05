@@ -8,6 +8,7 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { IconButton } from '~/components/IconButton';
 import { Text } from '~/components/Text';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -92,6 +93,7 @@ export type AlertProps = Omit<
  * ```
  */
 export const Alert = (props: AlertProps) => {
+  const { labels } = useLocale();
   const {
     tone = 'info',
     title,
@@ -100,7 +102,7 @@ export const Alert = (props: AlertProps) => {
     secondaryAction,
     dismissible = false,
     onDismiss,
-    dismissLabel = 'Dismiss',
+    dismissLabel = labels.dismiss,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);

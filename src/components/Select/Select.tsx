@@ -30,6 +30,7 @@ import { cx } from '@styled-system/css';
 import { menu, select, type SelectVariantProps } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu/context/menuContext';
+import { useLocale } from '~/system/context/useLocale';
 import {
   createOverlayMiddleware,
   useOverlayFloating,
@@ -218,13 +219,14 @@ export type SelectProps = Omit<
  * ```
  */
 export const Select = (props: SelectProps) => {
+  const { labels } = useLocale();
   const floatingLayer = useFloatingLayer();
   const {
     value: controlledValue,
     defaultValue = null,
     onChange,
     multiple = false,
-    placeholder = 'Select...',
+    placeholder = labels.selectPlaceholder,
     open: controlledOpen,
     defaultOpen = false,
     onOpenChange,
