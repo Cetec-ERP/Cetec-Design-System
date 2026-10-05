@@ -1,4 +1,11 @@
-import { createContext, useContext } from 'react';
+import {
+  Children,
+  Fragment,
+  cloneElement,
+  createContext,
+  isValidElement,
+  useContext,
+} from 'react';
 import type {
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
@@ -211,4 +218,36 @@ export const tabsComponentTypeKey = '__tabsComponentType' as const;
 /** Returns the internal tab compound-component marker for a node, or `null`. */
 export const getTabsComponentType = (node: unknown): string | null => {
   return getCompoundComponentType(node, tabsComponentTypeKey);
+};
+
+/**
+ * Flattens `Tabs` children into a single list, expanding React fragments at any
+ * depth so tabs and panels grouped in `<>…</>` are treated as direct children.
+ * Arrays are already flattened by `Children.toArray`. Each fragment's key
+ * prefixes the keys of its children, so siblings from different fragments
+ * keep unique keys.
+ */
+export const flattenTabsChildren = (children: ReactNode): ReactNode[] => {
+  const flattened: ReactNode[] = [];
+
+  const visit = (nodes: ReactNode, keyPrefix: string) => {
+    Children.toArray(nodes).forEach((child) => {
+      if (
+        isValidElement<{ children?: ReactNode }>(child) &&
+        child.type === Fragment
+      ) {
+        visit(child.props.children, `${keyPrefix}${String(child.key)}/`);
+        return;
+      }
+
+      flattened.push(
+        keyPrefix !== '' && isValidElement(child)
+          ? cloneElement(child, { key: `${keyPrefix}${String(child.key)}` })
+          : child,
+      );
+    });
+  };
+
+  visit(children, '');
+  return flattened;
 };

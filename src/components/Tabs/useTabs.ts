@@ -1,11 +1,4 @@
-import {
-  Children,
-  isValidElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
+import { isValidElement, useCallback, useEffect, useMemo, useRef } from 'react';
 import type {
   KeyboardEvent as ReactKeyboardEvent,
   ReactNode,
@@ -17,6 +10,7 @@ import { useControllableState } from '~/utils/useControllableState';
 
 import {
   TABS_COMPONENT_TYPES,
+  flattenTabsChildren,
   getTabsComponentType,
   type TabsChangeEvent,
   type TabsChangeReason,
@@ -78,7 +72,7 @@ export const useTabs = ({
   const tabs = useMemo<TabDescriptor[]>(() => {
     const descriptors: TabDescriptor[] = [];
 
-    Children.forEach(children, (child) => {
+    flattenTabsChildren(children).forEach((child) => {
       if (
         !isValidElement(child) ||
         getTabsComponentType(child) !== TABS_COMPONENT_TYPES.tab

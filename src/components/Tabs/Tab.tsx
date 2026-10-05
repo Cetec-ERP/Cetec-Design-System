@@ -1,14 +1,36 @@
-import { useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
+
+import {
+  FloatingArrow,
+  FloatingPortal,
+  arrow,
+  useDismiss,
+  useFocus,
+  useHover,
+  useInteractions,
+  useMergeRefs,
+  useRole,
+} from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
-import { tabs as tabsRecipe } from '@styled-system/recipes';
+import {
+  tabs as tabsRecipe,
+  tooltip as tooltipRecipe,
+} from '@styled-system/recipes';
+import { token } from '@styled-system/tokens';
 
+import {
+  createOverlayMiddleware,
+  useOverlayFloating,
+} from '~/system/floating-ui/floating';
 import { setCompoundComponentType } from '~/utils/compoundComponent';
+import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Badge } from '../Badge';
 import { Box, type BoxProps } from '../Box';
-import { Tooltip } from '../Tooltip';
+import { DsChainPortalRoot } from '../DsChainScope/DsChainPortalRoot';
 
 import {
   TABS_COMPONENT_TYPES,
@@ -20,6 +42,9 @@ import {
 /** Static class for a tab that overflowed: hidden, but still measurable. */
 const overflowedTabClass = tabsRecipe({ overflowed: true }).tab;
 
+/** Same slots the standalone `Tooltip` uses at its default size. */
+const badgeTooltipClasses = tooltipRecipe({ size: 'md', hasTitle: false });
+
 /**
  * Selects one panel inside a {@link Tabs} strip.
  *
@@ -28,6 +53,9 @@ const overflowedTabClass = tabsRecipe({ overflowed: true }).tab;
  * the strip stays mounted but hidden so it can still be measured, and it is
  * offered in the overflow menu instead. The menu row is plain text, so give
  * `label` when `children` are not plain text.
+ *
+ * `badgeTooltip` opens on hover and on keyboard focus of the tab itself, points
+ * at the badge, and is linked to the tab with `aria-describedby` while open.
  *
  * @example
  * ```tsx
@@ -48,6 +76,7 @@ export const Tab = (props: TabProps) => {
     disabled = false,
     onClick,
     onKeyDown,
+    ref,
     ...rest
   } = props;
 
@@ -76,47 +105,103 @@ export const Tab = (props: TabProps) => {
   const tabClassName = isOverflowed ? overflowedTabClass : classes.tab;
 
   const hasBadge = typeof badge === 'number' && badge !== 0;
+  const hasBadgeTooltip = hasBadge && Boolean(badgeTooltip) && !isOverflowed;
+
+  // The badge tooltip is anchored to the focusable tab button, not to a span
+  // around the badge: a descendant never receives the button's focus, so a
+  // nested `Tooltip` would be unreachable by keyboard. The badge is only the
+  // position reference the tooltip points at.
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const arrowRef = useRef<SVGSVGElement>(null);
+  const tooltipOpen = hasBadgeTooltip && isTooltipOpen;
+
+  const { refs, elements, floatingStyles, context } = useOverlayFloating({
+    open: tooltipOpen,
+    onOpenChange: setIsTooltipOpen,
+    placement: 'bottom',
+    middleware: createOverlayMiddleware({
+      offset: 8,
+      extras: [arrow({ element: arrowRef })],
+    }),
+  });
+
+  const hover = useHover(context, { enabled: hasBadgeTooltip, move: false });
+  const focus = useFocus(context, { enabled: hasBadgeTooltip });
+  const dismiss = useDismiss(context, { enabled: hasBadgeTooltip });
+  const role = useRole(context, { enabled: hasBadgeTooltip, role: 'tooltip' });
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role,
+  ]);
+
+  // A consumer `ref` must not replace tab registration: overflow measurement
+  // and keyboard focus both read the registered element.
+  const mergedRef = useMergeRefs([setElement, refs.setReference, ref]);
+
   const badgeElement = hasBadge ? (
-    <Box className={classes.badge}>
-      {badgeTooltip ? (
-        <Tooltip text={badgeTooltip}>
-          <Badge count={badge} variant="subtle" />
-        </Tooltip>
-      ) : (
-        <Badge count={badge} variant="subtle" />
-      )}
+    <Box ref={refs.setPositionReference} className={classes.badge}>
+      <Badge count={badge} variant="subtle" />
     </Box>
   ) : null;
 
   return (
-    <Box
-      {...({
-        as: 'button',
-        type: 'button',
-      } satisfies BoxProps<'button'>)}
-      ref={setElement}
-      id={getTabId(value)}
-      role="tab"
-      aria-selected={isSelected}
-      aria-controls={getPanelId(value)}
-      aria-hidden={isOverflowed || undefined}
-      disabled={disabled}
-      tabIndex={isSelected && !isOverflowed ? 0 : -1}
-      className={cx(tabClassName, className)}
-      onClick={(event) => {
-        onClick?.(event);
-        if (disabled || event.defaultPrevented) return;
-        selectTab(event, value, 'clicked-on-tab');
-      }}
-      onKeyDown={(event) => {
-        onKeyDown?.(event);
-        if (!event.defaultPrevented) onTabKeyDown(event);
-      }}
-      {...otherProps}
-    >
-      {children}
-      {badgeElement}
-    </Box>
+    <>
+      <Box
+        {...({
+          as: 'button',
+          type: 'button',
+        } satisfies BoxProps<'button'>)}
+        ref={mergedRef}
+        id={getTabId(value)}
+        role="tab"
+        aria-selected={isSelected}
+        aria-controls={getPanelId(value)}
+        aria-hidden={isOverflowed || undefined}
+        disabled={disabled}
+        tabIndex={isSelected && !isOverflowed ? 0 : -1}
+        className={cx(tabClassName, className)}
+        {...getReferenceProps({
+          ...otherProps,
+          onClick: (event: MouseEvent<HTMLButtonElement>) => {
+            onClick?.(event);
+            if (disabled || event.defaultPrevented) return;
+            selectTab(event, value, 'clicked-on-tab');
+          },
+          onKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => {
+            onKeyDown?.(event);
+            if (!event.defaultPrevented) onTabKeyDown(event);
+          },
+        })}
+      >
+        {children}
+        {badgeElement}
+      </Box>
+
+      {/* Rendered beside the button, not inside it, so React events from the
+          portalled tooltip never bubble into the tab's click handler. */}
+      {tooltipOpen ? (
+        <FloatingPortal>
+          <DsChainPortalRoot reference={elements.domReference}>
+            <Box
+              {...dsComponent('Tooltip')}
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className={badgeTooltipClasses.tooltipContent}
+              {...(getFloatingProps() as Record<string, unknown>)}
+            >
+              <Box className={badgeTooltipClasses.text}>{badgeTooltip}</Box>
+              <FloatingArrow
+                ref={arrowRef}
+                context={context}
+                fill={token.var('colors.bg.neutral.inverse')}
+              />
+            </Box>
+          </DsChainPortalRoot>
+        </FloatingPortal>
+      ) : null}
+    </>
   );
 };
 

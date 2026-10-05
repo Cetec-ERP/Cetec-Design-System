@@ -1,4 +1,4 @@
-import { Children, useId, useMemo, useRef, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
 import { cx } from '@styled-system/css';
@@ -14,6 +14,7 @@ import { Menu, MenuItem } from '../Menu';
 import {
   TABS_COMPONENT_TYPES,
   TabsProvider,
+  flattenTabsChildren,
   getTabsComponentType,
   type TabsClasses,
   type TabsChangeEvent,
@@ -148,12 +149,13 @@ export const Tabs = (props: TabsProps) => {
   );
 
   // `Tab` children belong in the strip; everything else (panels and any
-  // consumer markup) renders below it.
+  // consumer markup) renders below it. Fragments are expanded first so tabs
+  // grouped in `<>…</>` still reach the strip.
   const [tabChildren, restChildren] = useMemo(() => {
     const strip: ReactNode[] = [];
     const below: ReactNode[] = [];
 
-    Children.forEach(children, (child) => {
+    flattenTabsChildren(children).forEach((child) => {
       if (getTabsComponentType(child) === TABS_COMPONENT_TYPES.tab) {
         strip.push(child);
       } else {

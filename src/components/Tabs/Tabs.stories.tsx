@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from 'react';
+import { useRef, useState, type KeyboardEvent } from 'react';
 
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
@@ -86,7 +86,7 @@ export const WithBadges: Story = {
       </TabPanel>
       <TabPanel value="materials">
         <Text py="16">
-          Hover or focus the Materials badge to read what the count means.
+          Hover or focus the Materials tab to read what the count means.
         </Text>
       </TabPanel>
       <TabPanel value="status">
@@ -644,5 +644,112 @@ export const ToggleReserveOnlyOnOverflow: Story = {
         fitTabs.length,
       );
     });
+  },
+};
+
+export const FragmentChildren: Story = {
+  name: 'Test: tabs grouped in fragments join the strip',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Tabs {...args} aria-label="Fragment children" defaultValue="work">
+      <>
+        <Tab value="work">Work</Tab>
+        <>
+          <Tab value="materials">Materials</Tab>
+        </>
+      </>
+      <>
+        <TabPanel value="work">Work content.</TabPanel>
+        <TabPanel value="materials">Materials content.</TabPanel>
+      </>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const list = canvas.getByRole('tablist');
+    const materials = canvas.getByRole('tab', { name: 'Materials' });
+
+    await expect(within(list).getAllByRole('tab')).toHaveLength(2);
+
+    await userEvent.click(materials);
+    await expect(materials).toHaveAttribute('aria-selected', 'true');
+    await expect(canvas.getByText('Materials content.')).toBeVisible();
+  },
+};
+
+const ConsumerRefExample = () => {
+  const tabRef = useRef<HTMLButtonElement>(null);
+  const [refTag, setRefTag] = useState('none');
+
+  return (
+    <Box>
+      <Button
+        variant="standard"
+        mb="8"
+        onClick={() => setRefTag(tabRef.current?.tagName ?? 'none')}
+      >
+        Read ref
+      </Button>
+      <Text pb="8" data-testid="consumer-ref">
+        Ref: {refTag}
+      </Text>
+      <Tabs aria-label="Consumer ref" defaultValue="first">
+        <Tab value="first">First</Tab>
+        <Tab value="second" ref={tabRef}>
+          Second
+        </Tab>
+        <TabPanel value="first">First content.</TabPanel>
+        <TabPanel value="second">Second content.</TabPanel>
+      </Tabs>
+    </Box>
+  );
+};
+
+export const ConsumerRef: Story = {
+  name: 'Test: consumer ref keeps tab registration',
+  parameters: { controls: { disable: true } },
+  render: () => <ConsumerRefExample />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const first = canvas.getByRole('tab', { name: 'First' });
+    const second = canvas.getByRole('tab', { name: 'Second' });
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Read ref' }));
+    await expect(canvas.getByTestId('consumer-ref')).toHaveTextContent(
+      'Ref: BUTTON',
+    );
+
+    // Keyboard focus reaches the ref'd tab only if it is still registered.
+    await userEvent.click(first);
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(second).toHaveAttribute('aria-selected', 'true');
+    await expect(second).toHaveFocus();
+  },
+};
+
+export const BadgeTooltipOnFocus: Story = {
+  name: 'Test: badge tooltip opens on tab keyboard focus',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Tabs {...args} aria-label="Badge tooltip" defaultValue="materials">
+      <Tab value="materials" badge={3} badgeTooltip="2 Open Part Requests">
+        Materials
+      </Tab>
+      <Tab value="status">Status</Tab>
+      <TabPanel value="materials">Materials content.</TabPanel>
+      <TabPanel value="status">Status content.</TabPanel>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const materials = canvas.getByRole('tab', { name: /Materials/ });
+
+    await userEvent.tab();
+    await expect(materials).toHaveFocus();
+
+    const tooltip = await body.findByRole('tooltip');
+    await expect(tooltip).toHaveTextContent('2 Open Part Requests');
+    await expect(materials).toHaveAttribute('aria-describedby', tooltip.id);
   },
 };
