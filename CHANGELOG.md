@@ -1,3 +1,32 @@
+# 3.1.0 (Mon Oct 05 2026)
+
+#### 🚀 Features
+
+- feat(minor): add circle-dashed, square-dashed and not-equal icons [#211](https://github.com/Cetec-ERP/Cetec-Design-System/pull/211) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): add Alert, PageBanner, Toast and InlineNote [#204](https://github.com/Cetec-ERP/Cetec-Design-System/pull/204) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): vNext Figma standards, drawer icons, and completion plan [#202](https://github.com/Cetec-ERP/Cetec-Design-System/pull/202) ([@shaunrfox](https://github.com/shaunrfox))
+- feat(minor): fixes for Autocomplete custom-value, blur commit, and listbox [#205](https://github.com/Cetec-ERP/Cetec-Design-System/pull/205) ([@atkinsdavid](https://github.com/atkinsdavid))
+
+#### 🐛 Bug Fixes
+
+- fix(patch): cap Select listbox height to available viewport space [#212](https://github.com/Cetec-ERP/Cetec-Design-System/pull/212) ([@atkinsdavid](https://github.com/atkinsdavid) [@shaunrfox](https://github.com/shaunrfox))
+- fix(patch): add clear actions to date and time pickers [#208](https://github.com/Cetec-ERP/Cetec-Design-System/pull/208) ([@shaunrfox](https://github.com/shaunrfox))
+- fix: auto version resolution [#207](https://github.com/Cetec-ERP/Cetec-Design-System/pull/207) ([@Etwigg](https://github.com/Etwigg))
+- fix(patch): isolate Panda preset from runtime entry [#201](https://github.com/Cetec-ERP/Cetec-Design-System/pull/201) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### 🏠 Chores
+
+- chore(config): ignore Floating UI focus guards in Storybook a11y checks [#214](https://github.com/Cetec-ERP/Cetec-Design-System/pull/214) ([@atkinsdavid](https://github.com/atkinsdavid))
+- chore(config): sync package.json version to published npm next tag [#206](https://github.com/Cetec-ERP/Cetec-Design-System/pull/206) ([@shaunrfox](https://github.com/shaunrfox))
+
+#### Authors: 3
+
+- David ([@atkinsdavid](https://github.com/atkinsdavid))
+- Ethan W. ([@Etwigg](https://github.com/Etwigg))
+- Shaun Fox ([@shaunrfox](https://github.com/shaunrfox))
+
+---
+
 # 3.1.0 (Fri Oct 02 2026)
 
 #### 🚀 Features
