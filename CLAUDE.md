@@ -61,12 +61,12 @@ The design system is built on **Panda CSS** with a strict tokens-first approach:
 - **Semantic Tokens**: Theme-specific tokens in `src/styles/semantics/` (aliases for light/dark themes)
 - **Recipes**: Component style variants in `src/recipes/` (ex: button, input, text, etc.) - use these instead of ad-hoc CSS
 - **Slot Recipes**: Multi-part component recipes (ex: checkbox, radio, tooltip, menu)
-- **Conditions**: Custom responsive and state conditions in `src/styles/conditions.ts`
+- **Conditions**: Custom responsive and state conditions in `src/styles/utilities/conditions.ts`
 
 #### Panda CSS Configuration
 
-- **Config files**: `panda.config.ts` (project config) and `panda-preset.ts` (preset for consumers)
-- **Output**: Generated to `styled-system/` directory (gitignored)
+- **Config files**: `panda.config.ts` (project config) and `src/cetec-preset.ts` (preset for consumers, published as `cetec-design-system/preset`)
+- **Output**: Generated to `src/styled-system/` directory (gitignored)
 - **Import map**: `@styled-system` alias for generated utilities
 - **Strict tokens**: `strictTokens: true` enforces token-only usage (no hard-coded values)
 - **Prefix**: `cetec` prefix on generated CSS classes
@@ -103,7 +103,7 @@ Icons are managed as an SVG sprite system:
 
 ### Theme System
 
-- **Provider**: `ThemeProvider` from `src/contexts/ThemeProvider.tsx` wraps the app
+- **Provider**: `ThemeProvider` from `src/system/context/ThemeProvider.tsx` wraps the app
 - **Themes**: Defined as Panda CSS conditions (light/dark modes)
 - **Switcher**: `ThemeSwitcher` component for toggling themes
 - **Implementation**: Uses data attributes and CSS conditions for theme switching
@@ -112,19 +112,19 @@ Icons are managed as an SVG sprite system:
 
 - **Entry**: `src/index.ts` exports all public components
 - **Format**: ES modules only (`"type": "module"`)
-- **Output**: `dist/cetec-design-system.es.js` (main bundle)
-- **Types**: Generated via `vite-plugin-dts` to `dist/`
-- **Styled System**: Panda CSS output in `styled-system/` is also distributed
+- **Output**: `dist/index.js` (main bundle) and `dist/preset.js` (build-time preset)
+- **Types**: Generated via `vite-plugin-dts` to `dist/types/`
+- **Styles**: Prebuilt Panda CSS output ships as `dist/styles.css` (`cetec-design-system/styles.css`); `src/styled-system/` is not distributed
 - **Externals**: React and React-DOM are peer dependencies (not bundled)
 
 ### Path Aliases
 
 - `~` → `./src`
-- `@styled-system` → `./styled-system`
+- `@styled-system` → `./src/styled-system`
 
 ## Code Style & Conventions
 
-### Panda CSS Rules (from `.cursor/rules/panda-css.mdc`)
+### Panda CSS Rules
 
 - **Tokens-first**: All colors, spacing, radii, typography via design tokens (no hard-coded hex/px values)
 - **Recipes over ad-hoc CSS**: Use existing recipes for components; create new recipes for repeated patterns
@@ -132,7 +132,7 @@ Icons are managed as an SVG sprite system:
 - **Semantic HTML + baseline a11y**: Choose correct elements, visible focus, labels/focus management
 - **Flat selectors**: Prefer utilities/patterns over deep nesting
 
-### TypeScript + React Rules (from `.cursor/rules/typescript-react.mdc`)
+### TypeScript + React Rules
 
 - **Semantic first**: Pick correct HTML element before styling; ARIA only to fill semantic gaps
 - **Baseline a11y**: Visible focus, label-control associations, keyboard paths, motion-reduce support
@@ -142,7 +142,7 @@ Icons are managed as an SVG sprite system:
 - **Controlled vs uncontrolled**: Prefer controlled state when the UI needs React to own the current value. Use uncontrolled entrypoints when the browser can own the value safely, especially for native inputs and binary controls (`Checkbox`, `Radio`, `Toggle`) and for group/value components that expose `defaultChecked`, `defaultValue`, or `defaultOpen`.
 - **Props typing**: Use `React.ComponentProps<"element">` for intrinsic elements
 
-### Git Conventions (from `.cursor/rules/git.mdc`)
+### Git Conventions
 
 - **Commit format**: Conventional commits `type(scope): summary`
 - **Types**: `feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `chore`, `build`, `ci`
@@ -203,12 +203,11 @@ This project uses **Auto** for automated releases:
 
 Projects consuming this design system must:
 
-1. Install the package and configure Panda CSS with the preset from `panda-preset.ts` or follow the example in README.md
-2. Import `@styled-system/styles.css` at the project root
-3. Configure `include` paths in their `panda.config.ts` to watch their source files
-4. Import components: `import { Button, Text } from "cetec-design-system"`
-5. Import icons: `import * as icons from "cetec-design-system/icons"`
-6. Wrap app with `<ThemeProvider>` for theme support
+1. Import the prebuilt stylesheet at the project root: `import "cetec-design-system/styles.css"`
+2. Import components: `import { Button, Text } from "cetec-design-system"`
+3. Load the icon sprite from `cetec-design-system/sprite.svg`
+4. Wrap app with `<ThemeProvider>` for theme support
+5. Optional: to generate their own Panda CSS, use the preset from `cetec-design-system/preset` and configure `include` paths in their `panda.config.ts`
 
 ## Working with This Codebase
 
@@ -216,8 +215,8 @@ Projects consuming this design system must:
 
 1. Create directory: `src/components/[ComponentName]/`
 2. Create recipe in `src/recipes/[componentname].ts` with variants
-3. Export recipe from `src/recipes/index.ts`
-4. Standard `recipes` are registered automatically, but new `slotRecipes` need to be manually registered in `panda.config.ts` under `theme.extend.recipes`
+3. Export the recipe from `src/recipes/recipes-regular.ts` or, for a slot recipe, `src/recipes/recipes-slot.ts`
+4. Both files are registered automatically through the preset (`src/cetec-preset.ts`); no manual registration is needed
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
 7. Create Storybook stories, including uncontrolled examples when the API supports them
@@ -243,4 +242,4 @@ Projects consuming this design system must:
 - `src/styles/` - Design tokens and global styles
 - `src/recipes/` - Component style recipes
 - `.autorc` - Auto release configuration
-- `.cursor/rules/` - Development guidelines and conventions
+- `standards/` - Development guidelines and conventions

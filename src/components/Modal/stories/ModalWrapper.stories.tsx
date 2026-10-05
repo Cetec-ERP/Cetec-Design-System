@@ -607,7 +607,7 @@ export const TopPosition: Story = {
             <ModalBody>
               <Text>
                 This modal uses{' '}
-                <Text as="span" fontWeight="semibold">
+                <Text as="span" fontWeight="medium">
                   position=&quot;top&quot;
                 </Text>
                 . It is offset from the top of the viewport and centered on the
