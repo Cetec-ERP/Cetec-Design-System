@@ -27,18 +27,31 @@ import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
 
-/** Number of array items shown before the rest collapse into `+N`. */
+/** Number of `items` shown before the rest collapse into `+N`. */
 const MAX_VISIBLE_ITEMS = 2;
+
+/** The chip label: either a single `children` string or an `items` list, never both. */
+type ChipLabelProps =
+  | {
+      /** Visible chip label, also used in the default dismissal label. Interpolate values with a template string rather than mixed JSX text. */
+      children: string;
+      items?: never;
+    }
+  | {
+      children?: never;
+      /**
+       * Label list rendered comma-joined. With more than two items only the
+       * first two are shown, followed by `+N` for the rest, and a tooltip
+       * lists every item. Overflow is decided by item count, not available
+       * width. An empty list renders nothing.
+       */
+      items: string[];
+    };
 
 /** Props for {@link Chip}, a compact label that can be static, actionable, selectable, or dismissible. */
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
-  Omit<ChipVariantProps, 'before' | 'after' | 'dismissable'> & {
-    /**
-     * Visible chip label, also used in the default dismissal label. An array
-     * renders comma-joined; with more than two items only the first two are
-     * shown, followed by `+N` for the rest, and a tooltip lists every item.
-     */
-    children: string | string[];
+  Omit<ChipVariantProps, 'before' | 'after' | 'dismissable'> &
+  ChipLabelProps & {
     /** Content displayed before the chip label. */
     before?: ReactNode;
     /** Content displayed after the chip label and before the dismiss control. */
@@ -53,7 +66,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     dismissable?: boolean;
     /**
      * Accessible name for the dismiss button.
-     * @default `Remove ${children}`; array children are comma-joined
+     * @default `Remove ${children}`, or `Remove` plus the comma-joined `items`
      */
     dismissLabel?: string;
     /** Ref forwarded to the dismiss button. */
@@ -85,10 +98,11 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
  * roving focus; grouped multi-select chips use checkbox behavior. `before` and
  * `after` slots inherit state through slot context.
  *
- * `children` may be an array of strings. Arrays with more than two items show
- * the first two plus a `+N` count and reveal the full list in a tooltip. A
- * static overflowing chip becomes keyboard-focusable so the tooltip can be
- * opened without a pointer, and its full list is also exposed to screen readers.
+ * Pass `items` instead of `children` to show a list. Lists with more than two
+ * items show the first two plus a `+N` count (by item count, not width) and
+ * reveal the full list in a tooltip. A static overflowing chip becomes
+ * keyboard-focusable so the tooltip can be opened without a pointer, and its
+ * full list is also exposed to screen readers.
  *
  * @example
  * ```tsx
@@ -102,6 +116,7 @@ export const Chip = (props: ChipProps) => {
   const {
     size: sizeProp,
     children,
+    items,
     before,
     after,
     loading,
@@ -276,8 +291,7 @@ export const Chip = (props: ChipProps) => {
     return 0;
   };
 
-  const items = Array.isArray(children) ? children : null;
-  const isOverflowing = items !== null && items.length > MAX_VISIBLE_ITEMS;
+  const isOverflowing = items !== undefined && items.length > MAX_VISIBLE_ITEMS;
   const label = items
     ? isOverflowing
       ? `${items.slice(0, MAX_VISIBLE_ITEMS).join(', ')} +${items.length - MAX_VISIBLE_ITEMS}`
@@ -377,6 +391,10 @@ export const Chip = (props: ChipProps) => {
       {bodyContent}
     </Box>
   );
+
+  if (items?.length === 0) {
+    return null;
+  }
 
   return (
     <Box
