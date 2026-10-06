@@ -93,7 +93,9 @@ const drawerVariants = {
         animation: 'drawerSlideInRight 200ms ease-out forwards',
         '&[data-state="closing"]': {
           animation: 'drawerSlideOutRight 200ms ease-in forwards',
+          _motionReduce: { animation: 'none' },
         },
+        _motionReduce: { animation: 'none' },
       },
     },
     left: {
@@ -102,7 +104,9 @@ const drawerVariants = {
         animation: 'drawerSlideInLeft 200ms ease-out forwards',
         '&[data-state="closing"]': {
           animation: 'drawerSlideOutLeft 200ms ease-in forwards',
+          _motionReduce: { animation: 'none' },
         },
+        _motionReduce: { animation: 'none' },
       },
     },
   },
