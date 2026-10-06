@@ -209,6 +209,64 @@ export const Multiple: Story = {
   parameters: { controls: { disable: true } },
 };
 
+const LONG_OPTION_LABELS = Array.from(
+  { length: 40 },
+  (_, index) => `${index + 1} - Option ${index + 1}`,
+);
+
+export const ExLongOptionList: Story = {
+  name: 'Ex: Long Option List',
+  render: () => (
+    <Box display="flex" flexDirection="column" gap="8" maxW="xs">
+      <Select
+        data-testid="long-multiple"
+        multiple
+        placeholder="Choose options..."
+      >
+        {LONG_OPTION_LABELS.map((label, index) => (
+          <SelectOption key={label} value={String(index + 1)} label={label} />
+        ))}
+      </Select>
+      <Select data-testid="long-selected-near-end" defaultValue="35">
+        {LONG_OPTION_LABELS.map((label, index) => (
+          <SelectOption key={label} value={String(index + 1)} label={label} />
+        ))}
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByTestId('long-multiple'));
+    const listbox = await screen.findByRole('listbox');
+
+    // The listbox is capped to the space beside the trigger and scrolls,
+    // rather than running past the viewport edge.
+    const viewportHeight =
+      canvasElement.ownerDocument.documentElement.clientHeight;
+    const rect = listbox.getBoundingClientRect();
+    expect(rect.top).toBeGreaterThanOrEqual(0);
+    expect(rect.bottom).toBeLessThanOrEqual(viewportHeight);
+    expect(getComputedStyle(listbox).overflowY).toBe('auto');
+    expect(listbox.scrollHeight).toBeGreaterThan(listbox.clientHeight);
+
+    await userEvent.keyboard('{Escape}');
+
+    // A selected option past the fold is scrolled into view on open.
+    await userEvent.click(canvas.getByTestId('long-selected-near-end'));
+    const selectedListbox = await screen.findByRole('listbox');
+    const selectedOption = within(selectedListbox).getByRole('option', {
+      selected: true,
+    });
+    const listboxRect = selectedListbox.getBoundingClientRect();
+    const optionRect = selectedOption.getBoundingClientRect();
+    expect(optionRect.top).toBeGreaterThanOrEqual(listboxRect.top);
+    expect(optionRect.bottom).toBeLessThanOrEqual(listboxRect.bottom);
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const ExAutoSize: Story = {
   name: 'Ex: Auto Size',
   render: function ExAutoSizeRender() {

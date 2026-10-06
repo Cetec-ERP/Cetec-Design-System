@@ -9,6 +9,7 @@ import {
   type ReactNode,
   useCallback,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -17,7 +18,6 @@ import {
 import {
   FloatingFocusManager,
   FloatingPortal,
-  size as floatingSize,
   type Placement,
   useClick,
   useDismiss,
@@ -32,6 +32,7 @@ import { menu, select, type SelectVariantProps } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu/context/menuContext';
 import {
+  availableHeightMiddleware,
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
@@ -372,17 +373,30 @@ export const Select = (props: SelectProps) => {
     middleware: createOverlayMiddleware({
       offset,
       extras: [
-        floatingSize({
-          apply({ rects, elements }) {
-            elements.floating.style.minWidth = `${rects.reference.width}px`;
-          },
-        }),
+        // Floating UI only positions the listbox; without a height cap a long
+        // option list overflows the viewport on whichever side flip() picks.
+        // The `menu` recipe's `scrollable` variant applies the cap.
+        availableHeightMiddleware({ matchReferenceWidth: true }),
       ],
     }),
   });
 
   const itemRefs = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
+
+  // Focus stays on the trigger when the listbox opens, so nothing scrolls the
+  // initially active option into view. Wait for positioning so the height cap
+  // is in place before scrolling within the capped listbox.
+  const { isPositioned } = floating;
+  useLayoutEffect(() => {
+    if (!isOpen || !isPositioned || initialActiveIndex === null) {
+      return;
+    }
+
+    itemRefs.current[initialActiveIndex]?.scrollIntoView({ block: 'nearest' });
+    // Only on open; later navigation scrolls via useListNavigation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, isPositioned]);
 
   const click = useClick(floating.context, {
     enabled: !disabled,
@@ -417,7 +431,11 @@ export const Select = (props: SelectProps) => {
   );
   const selectedOptions = getSelectedOptions(options, value, multiple);
   const classes = select({ size, multiple, autoSize });
-  const menuClasses = menu({ density, layer: floatingLayer });
+  const menuClasses = menu({
+    density,
+    layer: floatingLayer,
+    scrollable: true,
+  });
   const hasValue = value !== null && value !== undefined && value !== '';
   const chipSize = resolveChipSize(size);
   const accessibleName =

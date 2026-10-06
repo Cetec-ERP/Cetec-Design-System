@@ -19,5 +19,5 @@ Single-value tokens are acceptable when both themes intentionally share the same
 ## Example
 
 ```ts
-bg: { base: 'bg.default', _dark: 'bg.inverse' }
+bg: { base: 'surface', _dark: 'surface.sunken' }
 ```
