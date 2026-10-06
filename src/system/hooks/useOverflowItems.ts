@@ -48,7 +48,11 @@ export type UseOverflowItemsResult<TKey extends OverflowItemKey> = {
   hasOverflow: boolean;
   /** Forces a synchronous remeasure, for content changes no observer reports. */
   measure: () => void;
-  /** Makes an item visible, then runs a callback after the DOM updates. */
+  /**
+   * Makes an item visible, then runs a callback after the DOM updates. The
+   * item stays visible until `activeItem` changes or the item is removed, so a
+   * deferred selection update does not hide it again.
+   */
   ensureVisible: (key: TKey, onVisible?: () => void) => void;
 };
 
@@ -119,6 +123,9 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
   const itemsRef = useRef<readonly TKey[]>(items);
   const activeItemRef = useRef<TKey | null>(activeItem);
   const forcedItemRef = useRef<TKey | null>(forcedItem);
+  // The committed `activeItem` when `forcedItem` was requested. The forced
+  // item is released only once the selection moves away from this value.
+  const forcedFromActiveRef = useRef<TKey | null>(null);
   const reserveValueRef = useRef(reserve);
   const reserveElementRef = useRef<HTMLElement | null>(null);
   const enabledRef = useRef(enabled);
@@ -152,10 +159,24 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
       (key) => getItemElement(key)?.offsetWidth ?? Number.POSITIVE_INFINITY,
     );
 
-    const priorityItem = forcedItemRef.current ?? activeItemRef.current;
-    const activeIndex =
+    const forcedKey = forcedItemRef.current;
+    const activeKey = activeItemRef.current;
+    const priorityItem = forcedKey ?? activeKey;
+    const priorityIndex =
       priorityItem === null ? -1 : currentItems.indexOf(priorityItem);
-    const anchor = activeIndex === -1 ? 0 : activeIndex;
+    const anchor = priorityIndex === -1 ? 0 : priorityIndex;
+
+    // Both the forced item and the active item must end up visible. While a
+    // controlled parent has not yet committed a requested selection, the
+    // forced item holds focus and the active item keeps the tab stop.
+    const requiredIndices = [
+      ...new Set(
+        [forcedKey, activeKey]
+          .filter((key): key is TKey => key !== null)
+          .map((key) => currentItems.indexOf(key))
+          .filter((index) => index !== -1),
+      ),
+    ];
 
     // Nearest the active item wins the space; source order only breaks ties.
     const byDistanceFromActive = currentItems
@@ -166,13 +187,13 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
       });
 
     // Each kept item after the first also costs one column gap.
-    const fit = (forcedIndex: number | null, usable: number) => {
+    const fit = (forcedIndices: readonly number[], usable: number) => {
       const kept = new Set<number>();
       let used = 0;
 
-      if (forcedIndex !== null) {
-        kept.add(forcedIndex);
-        used += widths[forcedIndex] ?? 0;
+      for (const index of forcedIndices) {
+        used += (widths[index] ?? 0) + (kept.size > 0 ? gap : 0);
+        kept.add(index);
       }
 
       for (const index of byDistanceFromActive) {
@@ -191,7 +212,7 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
 
     // Try the full width first: the toggle only exists once something
     // overflows, so reserving its space up front would hide an item that fits.
-    let kept = fit(null, fullWidth);
+    let kept = fit([], fullWidth);
 
     if (kept.size < currentItems.length) {
       // Something overflows, so the toggle renders: hold back its measured
@@ -199,11 +220,10 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
       const reservedWidth =
         reserveElementRef.current?.offsetWidth ?? reserveValueRef.current;
       const usable = fullWidth - reservedWidth;
-      kept = fit(null, usable);
+      kept = fit([], usable);
 
-      // The active item must always end up visible.
-      if (activeIndex !== -1 && !kept.has(activeIndex)) {
-        kept = fit(activeIndex, usable);
+      if (requiredIndices.some((index) => !kept.has(index))) {
+        kept = fit(requiredIndices, usable);
       }
     }
 
@@ -236,6 +256,7 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
       }
 
       pendingVisibilityRef.current = { key, onVisible };
+      forcedFromActiveRef.current = activeItemRef.current;
       setForcedItem(key);
     },
     [overflow],
@@ -329,10 +350,29 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
 
     if (overflow.includes(pending.key)) return;
 
+    // The forced item stays visible after the callback. Releasing it here
+    // would hide a just-focused item again when a controlled parent commits
+    // the matching selection in a later render.
     pendingVisibilityRef.current = null;
     pending.onVisible?.();
-    setForcedItem(null);
   }, [overflow]);
+
+  // Release the forced item once the selection moves (the parent committed
+  // the request, or a newer selection superseded it), or once the item is
+  // removed. Until then it stays visible so keyboard focus remains usable.
+  useLayoutEffect(() => {
+    if (forcedItem === null) return;
+
+    const isRemoved = !items.includes(forcedItem);
+    if (!isRemoved && activeItem === forcedFromActiveRef.current) return;
+
+    const pending = pendingVisibilityRef.current;
+    if (pending && (isRemoved || pending.key !== activeItem)) {
+      pendingVisibilityRef.current = null;
+    }
+    forcedFromActiveRef.current = null;
+    setForcedItem(null);
+  }, [activeItem, forcedItem, items]);
 
   return {
     visible,

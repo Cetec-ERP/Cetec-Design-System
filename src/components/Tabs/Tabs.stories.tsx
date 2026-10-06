@@ -753,3 +753,73 @@ export const BadgeTooltipOnFocus: Story = {
     await expect(materials).toHaveAttribute('aria-describedby', tooltip.id);
   },
 };
+
+const DeferredControlledTabs = () => {
+  const [value, setValue] = useState('alpha');
+
+  return (
+    <Box>
+      <Text pb="8" data-testid="deferred-value">
+        Parent value: {value}
+      </Text>
+      <Box data-deferred-wrapper>
+        <Tabs
+          aria-label="Deferred selection"
+          value={value}
+          // The parent commits the new value a moment later, the way a
+          // transition or a server round trip would.
+          onChange={(_event, nextValue) => {
+            globalThis.setTimeout(() => setValue(nextValue), 300);
+          }}
+        >
+          <Tab value="alpha">Alpha section</Tab>
+          <Tab value="bravo">Bravo section</Tab>
+          <Tab value="charlie">Charlie section</Tab>
+          <TabPanel value="alpha">Alpha content.</TabPanel>
+          <TabPanel value="bravo">Bravo content.</TabPanel>
+          <TabPanel value="charlie">Charlie content.</TabPanel>
+        </Tabs>
+      </Box>
+    </Box>
+  );
+};
+
+export const DeferredControlledOverflow: Story = {
+  name: 'Test: deferred controlled selection keeps the focused tab visible',
+  parameters: { controls: { disable: true } },
+  render: () => <DeferredControlledTabs />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const wrapper = canvasElement.querySelector<HTMLElement>(
+      '[data-deferred-wrapper]',
+    );
+
+    if (!wrapper) throw new Error('deferred wrapper not found');
+
+    const alpha = canvas.getByRole('tab', { name: 'Alpha section' });
+    // Room for the selected tab and the toggle only.
+    wrapper.style.width = `${String(Math.ceil(alpha.getBoundingClientRect().width) + 48)}px`;
+
+    await waitFor(async () => {
+      await expect(canvas.getAllByRole('tab')).toHaveLength(1);
+    });
+
+    await userEvent.click(alpha);
+    await userEvent.keyboard('{ArrowRight}');
+
+    // Before the parent commits, the requested tab stays visible and focused.
+    const bravo = await canvas.findByRole('tab', { name: 'Bravo section' });
+    await expect(bravo).toHaveFocus();
+    await expect(canvas.getByTestId('deferred-value')).toHaveTextContent(
+      'Parent value: alpha',
+    );
+
+    await waitFor(async () => {
+      await expect(canvas.getByTestId('deferred-value')).toHaveTextContent(
+        'Parent value: bravo',
+      );
+    });
+    await expect(bravo).toHaveAttribute('aria-selected', 'true');
+    await expect(bravo).toHaveFocus();
+  },
+};
