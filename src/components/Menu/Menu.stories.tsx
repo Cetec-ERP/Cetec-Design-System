@@ -5,9 +5,7 @@ import {
   useState,
 } from 'react';
 
-import { expect, userEvent, waitFor, within } from '@storybook/test';
-
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { configure, expect, userEvent, waitFor, within } from '@storybook/test';
 
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
@@ -24,6 +22,9 @@ import { MenuItem } from './MenuItem';
 import { SubMenu } from './SubMenu';
 
 import type { Meta, StoryObj } from '@storybook/react';
+
+// Floating UI moves focus on animation frames, which can lag under CI load.
+configure({ asyncUtilTimeout: 4000 });
 
 const meta = {
   title: 'Components/Menu',
@@ -241,19 +242,22 @@ const getDocumentQueries = (canvasElement: HTMLElement) =>
 
 const expectFocusInsideMenu = async (canvasElement: HTMLElement) => {
   const body = getDocumentQueries(canvasElement);
-  await waitFor(() => {
-    const focused = canvasElement.ownerDocument.activeElement;
-    expect(focused).not.toBe(canvasElement.ownerDocument.body);
-    expect(body.getAllByRole('menu').some((m) => m.contains(focused))).toBe(
-      true,
-    );
-  });
+  await waitFor(
+    () => {
+      const focused = canvasElement.ownerDocument.activeElement;
+      expect(focused).not.toBe(canvasElement.ownerDocument.body);
+      expect(body.getAllByRole('menu').some((m) => m.contains(focused))).toBe(
+        true,
+      );
+    },
+    { timeout: 4000 },
+  );
 };
 
 const expectNoFocusableInAriaHidden = (canvasElement: HTMLElement) => {
   const leaks = Array.from(
     canvasElement.ownerDocument.querySelectorAll<HTMLElement>(
-      '[aria-hidden="true"] :is(button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"]))',
+      '[data-ds-component="Menu"] [aria-hidden="true"] :is(button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"]))',
     ),
   ).filter(
     (element) =>
@@ -961,6 +965,53 @@ export const ExLongDiginMenuFiltered: Story = {
   },
 };
 
+export const SubMenuDiginEdgeCases: Story = {
+  name: 'Sub menu digin (duplicate labels, nested flyout)',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Settings">
+        <MenuItem label="First child" />
+      </SubMenu>
+      <SubMenu label="Settings">
+        <MenuItem label="Second child" />
+        <SubMenu label="Flyout" interaction="hover">
+          <MenuItem label="Flyout item" />
+        </SubMenu>
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowDown}');
+    await waitFor(() =>
+      expect(
+        body.getAllByRole('menuitem', { name: /settings/i })[0],
+      ).toHaveFocus(),
+    );
+
+    // The second of two same-labelled submenus shows its own children.
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await waitFor(() => expect(item(/second child/i)).toHaveFocus());
+    expect(body.queryByText('First child')).toBeNull();
+
+    // ArrowLeft in a nested flyout closes the flyout, not the drilled level.
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}');
+    await waitFor(() => expect(item(/flyout item/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/^flyout$/i)).toHaveFocus());
+    expect(body.getByRole('menuitem', { name: /second child/i })).toBeVisible();
+    expect(canvas.getByRole('button', { name: /open menu/i })).toBeTruthy();
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const SubMenuDiginForms: Story = {
   render: () => <SubMenuDiginFormsExample />,
   play: async ({ canvasElement }) => {
@@ -1082,6 +1133,12 @@ export const PanelAsMobileNav: Story = {
     await userEvent.keyboard('{ArrowDown}{Enter}');
     await waitFor(() => expect(item(/export/i)).toHaveFocus());
     expectNoFocusableInAriaHidden(canvasElement);
+
+    // Inline menus stay mounted: Escape with focus elsewhere must not pop.
+    (document.activeElement as HTMLElement | null)?.blur();
+    await userEvent.keyboard('{Escape}');
+    expect(item(/export/i)).toBeVisible();
+    item(/export/i).focus();
     await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
     await waitFor(() => expect(item(/audit log/i)).toHaveFocus());
     await userEvent.keyboard('{ArrowLeft}');

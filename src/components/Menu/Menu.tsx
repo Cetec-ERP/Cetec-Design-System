@@ -55,6 +55,7 @@ import { Text } from '../Text/Text';
 
 import {
   findSubMenuChildren,
+  findSubMenuKeyPath,
   hasMatchingItems,
   MenuFilterProvider,
   MenuListProvider,
@@ -74,8 +75,8 @@ type DiginLevel = {
   children: ReactNode;
   /** Index of the parent-level row that opened this level (focus target on pop). */
   returnIndex: number | null;
-  /** SubMenu labels from the root to this level, used to resolve live children. */
-  path: string[];
+  /** Structural key path of the opening SubMenu, used to resolve live children. */
+  path: string[] | null;
 };
 
 /** Where focus should land after the drill-in level changes. */
@@ -90,9 +91,7 @@ const isTextEntryTarget = (target: EventTarget | null) =>
     target instanceof HTMLTextAreaElement ||
     target instanceof HTMLSelectElement ||
     (target instanceof HTMLInputElement &&
-      !['button', 'checkbox', 'radio', 'submit', 'reset'].includes(
-        target.type,
-      )));
+      !['button', 'checkbox', 'submit', 'reset'].includes(target.type)));
 
 const defaultGetItemText = ({
   label,
@@ -242,7 +241,6 @@ export const Menu = (props: MenuProps) => {
   };
 
   const diginFocusIntentRef = useRef<DiginFocusIntent | null>(null);
-  const activeLevelRef = useRef<HTMLDivElement | null>(null);
   const [diginLevels, setDiginLevels] = useState<DiginLevel[]>([]);
   const [wrapperSize, setWrapperSize] = useState<{
     width: number | null;
@@ -338,7 +336,9 @@ export const Menu = (props: MenuProps) => {
   // (controlled inputs, filtering) reach it; fall back to the pushed snapshot.
   const liveDiginLevels = diginLevels.map((level) => ({
     ...level,
-    children: findSubMenuChildren(children, level.path) ?? level.children,
+    children:
+      (level.path && findSubMenuChildren(children, level.path)) ??
+      level.children,
   }));
 
   const activeLevelChildren =
@@ -380,7 +380,7 @@ export const Menu = (props: MenuProps) => {
             title,
             children: levelChildren,
             returnIndex,
-            path: [...prev.map((level) => level.title), title],
+            path: findSubMenuKeyPath(children, levelChildren),
           },
         ];
       });
@@ -422,6 +422,8 @@ export const Menu = (props: MenuProps) => {
         !item.hasAttribute('disabled')
       ) {
         item.focus({ preventScroll: true });
+        // The level remounts at scrollTop 0; bring the target row into view.
+        item.scrollIntoView?.({ block: 'nearest' });
         setActiveIndex(index);
         return;
       }
@@ -450,6 +452,54 @@ export const Menu = (props: MenuProps) => {
     };
   }, [diginDepth]);
 
+  // Floating UI moves focus with a single shared animation-frame handle, so
+  // competing focus requests on keyboard open (list navigation and the focus
+  // manager) can cancel each other and leave the active row highlighted while
+  // focus stays on the trigger. Finish the job here so the arrow keys keep
+  // working. Menubar and focus-triggered menus intentionally keep focus on the
+  // trigger.
+  const keepsFocusOnTrigger =
+    Boolean(onMenubarEdgeNavigate) || triggerInteraction === 'focus';
+  useEffect(() => {
+    if (
+      !hasReference ||
+      !isOpen ||
+      activeIndex === null ||
+      keepsFocusOnTrigger
+    ) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const referenceElement = floating.elements.domReference;
+      const floatingElement = floating.elements.floating;
+      const activeElement = document.activeElement;
+      const focusIsStranded =
+        Boolean(referenceElement) &&
+        (activeElement === referenceElement || activeElement === document.body);
+      const item = listRef.current[activeIndex];
+
+      if (
+        focusIsStranded &&
+        item?.isConnected &&
+        floatingElement?.contains(item)
+      ) {
+        item.focus({ preventScroll: true });
+      }
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [
+    activeIndex,
+    floating.elements.domReference,
+    floating.elements.floating,
+    hasReference,
+    isOpen,
+    keepsFocusOnTrigger,
+  ]);
+
   // Escape steps back one drill-in level instead of closing the whole menu.
   useEffect(() => {
     if (diginDepth === 0) {
@@ -464,7 +514,7 @@ export const Menu = (props: MenuProps) => {
       const referenceElement = floating.elements.domReference;
       const floatingElement = floating.elements.floating;
       const focusIsInMenu =
-        activeElement === document.body ||
+        (hasReference && activeElement === document.body) ||
         Boolean(floatingElement?.contains(activeElement)) ||
         Boolean(referenceElement?.contains(activeElement));
       if (!focusIsInMenu) {

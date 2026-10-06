@@ -448,46 +448,74 @@ export const hasMatchingItems = (
 };
 
 /**
- * Finds the live children of the nested `SubMenu` reached by following `path`
- * (labels, outermost first) through submenus and groups. Used so drilled-in
- * levels render current props (controlled inputs, filters) instead of the
- * snapshot taken when the level was pushed.
+ * Returns the structural key path (`Children.toArray` keys, outermost first)
+ * of the `SubMenu` whose `children` prop is `target`, searching through groups
+ * and submenus. Keys identify a submenu by position, so duplicate labels are
+ * safe.
  */
-export const findSubMenuChildren = (
+export const findSubMenuKeyPath = (
   children: ReactNode,
-  path: string[],
-): ReactNode | undefined => {
-  const [label, ...rest] = path;
-  if (label === undefined) {
-    return children;
-  }
-
+  target: ReactNode,
+  trail: string[] = [],
+): string[] | null => {
   for (const childNode of Children.toArray(children)) {
     if (!isValidElement(childNode)) {
       continue;
     }
     const child = childNode as ReactElement<Record<string, unknown>>;
     const componentType = getComponentType(child);
+    const nextTrail = [...trail, String(child.key)];
 
-    if (
-      componentType === MENU_COMPONENT_TYPES.subMenu &&
-      child.props.label === label
-    ) {
-      return findSubMenuChildren(child.props.children as ReactNode, rest);
-    }
-
-    if (componentType === MENU_COMPONENT_TYPES.group) {
-      const found = findSubMenuChildren(
+    if (componentType === MENU_COMPONENT_TYPES.subMenu) {
+      if (child.props.children === target) {
+        return nextTrail;
+      }
+      const nested = findSubMenuKeyPath(
         child.props.children as ReactNode,
-        path,
+        target,
+        nextTrail,
       );
-      if (found !== undefined) {
-        return found;
+      if (nested) {
+        return nested;
+      }
+    } else if (componentType === MENU_COMPONENT_TYPES.group) {
+      const nested = findSubMenuKeyPath(
+        child.props.children as ReactNode,
+        target,
+        nextTrail,
+      );
+      if (nested) {
+        return nested;
       }
     }
   }
 
-  return undefined;
+  return null;
+};
+
+/**
+ * Resolves the live children of the `SubMenu` at `keyPath` (see
+ * {@link findSubMenuKeyPath}) so drilled-in levels render current props
+ * (controlled inputs, filters) instead of the snapshot taken when the level
+ * was pushed. Returns `undefined` when the path no longer exists.
+ */
+export const findSubMenuChildren = (
+  children: ReactNode,
+  keyPath: string[],
+): ReactNode | undefined => {
+  const [key, ...rest] = keyPath;
+  if (key === undefined) {
+    return children;
+  }
+
+  const match = Children.toArray(children).find(
+    (childNode) => isValidElement(childNode) && String(childNode.key) === key,
+  ) as ReactElement<Record<string, unknown>> | undefined;
+  if (!match) {
+    return undefined;
+  }
+
+  return findSubMenuChildren(match.props.children as ReactNode, rest);
 };
 
 /** Splits text into case-insensitive query-match parts for highlight rendering. */

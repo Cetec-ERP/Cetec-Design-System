@@ -138,8 +138,13 @@ export const MenuItem = (props: MenuItemProps) => {
   const { onKeyDown: itemOnKeyDown, ...itemPropsRest } = itemProps;
 
   const handleItemKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'ArrowLeft' && rootContext.diginDepth > 0) {
-      // Drilled in: Left goes back a level (before menubar/flyout handling).
+    if (
+      event.key === 'ArrowLeft' &&
+      rootContext.diginDepth > 0 &&
+      (listContext?.nestedMenuDepth ?? 0) === 0
+    ) {
+      // Drilled in: Left goes back a level (before menubar handling). Rows in
+      // a nested flyout fall through so Left closes the flyout first.
       event.preventDefault();
       event.stopPropagation();
       rootContext.onPopDiginLevel();
