@@ -888,6 +888,64 @@ export const ExLongDiginMenuFocusReturn: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ExLongDiginMenuMouseBack: Story = {
+  name: 'Ex: Long Drill-In Menu (focus return on mouse back)',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+        <SubMenu label="Deep submenu">
+          <MenuItem label="Deep first" />
+        </SubMenu>
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    await userEvent.click(
+      await body.findByRole('menuitem', { name: /long list/i }),
+    );
+    await waitFor(() => expect(item(/nested 1 - item 1$/i)).toBeVisible());
+
+    // Open the submenu from a row below the fold, then use the Back header
+    // with the mouse. The remounted level starts at scrollTop 0.
+    item(/deep submenu/i).scrollIntoView({ block: 'nearest' });
+    await userEvent.click(item(/deep submenu/i));
+    await waitFor(() => expect(item(/deep first/i)).toBeVisible());
+    const back = body
+      .getByRole('menu')
+      .querySelector<HTMLElement>('[data-menu-back]');
+    expect(back).not.toBeNull();
+    await userEvent.click(back as HTMLElement);
+
+    await waitFor(() => expect(item(/deep submenu/i)).toHaveFocus());
+    await waitFor(() => {
+      const menu = body.getByRole('menu');
+      const header = menu.querySelector<HTMLElement>('[data-menu-back]');
+      const rowRect = item(/deep submenu/i).getBoundingClientRect();
+      expect(header).not.toBeNull();
+      expect(rowRect.top).toBeGreaterThanOrEqual(
+        (header as HTMLElement).getBoundingClientRect().bottom - 1,
+      );
+      expect(rowRect.bottom).toBeLessThanOrEqual(
+        menu.getBoundingClientRect().bottom + 1,
+      );
+    });
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const ExLongDiginMenuKeyboard: Story = {
   name: 'Ex: Long Drill-In Menu (keyboard repro)',
   parameters: {
@@ -1089,6 +1147,19 @@ export const SubMenuDiginForms: Story = {
     await userEvent.keyboard('abc{ArrowLeft}');
     expect(nameInput).toHaveFocus();
     expect(nameInput).toHaveValue('abc');
+
+    // Escape that cancels an IME candidate must not pop the level.
+    nameInput.dispatchEvent(
+      new CompositionEvent('compositionstart', { bubbles: true }),
+    );
+    await userEvent.keyboard('{Escape}');
+    expect(nameInput).toBeInTheDocument();
+    expect(nameInput).toHaveFocus();
+    nameInput.dispatchEvent(
+      new CompositionEvent('compositionend', { bubbles: true }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
     await userEvent.keyboard('{Escape}');
     await waitFor(() =>
       expect(

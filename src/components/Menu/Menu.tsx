@@ -422,6 +422,10 @@ export const Menu = (props: MenuProps) => {
         !item.hasAttribute('disabled')
       ) {
         item.focus({ preventScroll: true });
+        // The level remounts at scrollTop 0. Floating UI skips its own scroll
+        // after pointer navigation (e.g. clicking Back), so scroll explicitly;
+        // the level's scroll-padding keeps the row clear of the sticky header.
+        item.scrollIntoView?.({ block: 'nearest' });
         setActiveIndex(index);
         return;
       }
@@ -498,6 +502,32 @@ export const Menu = (props: MenuProps) => {
     keepsFocusOnTrigger,
   ]);
 
+  // Track IME composition so Escape that cancels a candidate is not treated as
+  // "go back" (mirrors Floating UI's useDismiss, which escapeKey:false bypasses).
+  const isComposingRef = useRef(false);
+  useEffect(() => {
+    let compositionTimeout: ReturnType<typeof setTimeout> | undefined;
+    const handleCompositionStart = () => {
+      clearTimeout(compositionTimeout);
+      isComposingRef.current = true;
+    };
+    const handleCompositionEnd = () => {
+      // Safari fires compositionend before the keydown that ended it, so wait
+      // a few ms before clearing the flag.
+      compositionTimeout = setTimeout(() => {
+        isComposingRef.current = false;
+      }, 5);
+    };
+
+    document.addEventListener('compositionstart', handleCompositionStart);
+    document.addEventListener('compositionend', handleCompositionEnd);
+    return () => {
+      clearTimeout(compositionTimeout);
+      document.removeEventListener('compositionstart', handleCompositionStart);
+      document.removeEventListener('compositionend', handleCompositionEnd);
+    };
+  }, []);
+
   // Escape steps back one drill-in level instead of closing the whole menu.
   useEffect(() => {
     if (diginDepth === 0) {
@@ -505,7 +535,12 @@ export const Menu = (props: MenuProps) => {
     }
 
     const handleEscape = (event: globalThis.KeyboardEvent) => {
-      if (event.key !== 'Escape' || event.defaultPrevented) {
+      if (
+        event.key !== 'Escape' ||
+        event.defaultPrevented ||
+        event.isComposing ||
+        isComposingRef.current
+      ) {
         return;
       }
       const activeElement = document.activeElement;
