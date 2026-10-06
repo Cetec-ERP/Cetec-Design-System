@@ -833,6 +833,61 @@ export const ExLongDiginMenu: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ExLongDiginMenuFocusReturn: Story = {
+  name: 'Ex: Long Drill-In Menu (focus return on back)',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+        <SubMenu label="Deep submenu">
+          <MenuItem label="Deep first" />
+          <MenuItem label="Deep second" />
+        </SubMenu>
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowDown}');
+    await waitFor(() => expect(item(/long list/i)).toHaveFocus());
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(item(/nested 1 - item 1$/i)).toHaveFocus());
+
+    // Jump to the last row (a submenu below the fold) and drill into it.
+    await userEvent.keyboard('{End}');
+    await waitFor(() => expect(item(/deep submenu/i)).toHaveFocus());
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(item(/deep first/i)).toHaveFocus());
+
+    // Going back remounts the long level at scrollTop 0. Focus must return to
+    // the opening row and that row must end up in view, not left below the
+    // fold or underneath the sticky back header.
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/deep submenu/i)).toHaveFocus());
+    await waitFor(() => {
+      const menu = body.getByRole('menu');
+      const header = menu.querySelector<HTMLElement>('[data-menu-back]');
+      const rowRect = item(/deep submenu/i).getBoundingClientRect();
+      expect(header).not.toBeNull();
+      expect(rowRect.top).toBeGreaterThanOrEqual(
+        (header as HTMLElement).getBoundingClientRect().bottom - 1,
+      );
+      expect(rowRect.bottom).toBeLessThanOrEqual(
+        menu.getBoundingClientRect().bottom + 1,
+      );
+    });
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const ExLongDiginMenuKeyboard: Story = {
   name: 'Ex: Long Drill-In Menu (keyboard repro)',
   parameters: {

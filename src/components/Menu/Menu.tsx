@@ -422,8 +422,6 @@ export const Menu = (props: MenuProps) => {
         !item.hasAttribute('disabled')
       ) {
         item.focus({ preventScroll: true });
-        // The level remounts at scrollTop 0; bring the target row into view.
-        item.scrollIntoView?.({ block: 'nearest' });
         setActiveIndex(index);
         return;
       }
