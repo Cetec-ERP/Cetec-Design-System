@@ -43,7 +43,9 @@ type ChipLabelProps =
        * Label list rendered comma-joined. With more than two items only the
        * first two are shown, followed by `+N` for the rest, and a tooltip
        * lists every item. Overflow is decided by item count, not available
-       * width. An empty list renders nothing.
+       * width. An empty list renders nothing and the chip does not register
+       * with a parent `ChipGroup`. If the emptied chip was the group's selected
+       * value, clear that value; otherwise no visible chip is the tab stop.
        */
       items: string[];
     };
@@ -156,6 +158,8 @@ export const Chip = (props: ChipProps) => {
 
   const isSelectable = value !== undefined && groupContext !== null;
   const hasPrimaryAction = Boolean(onClick) || isSelectable;
+  // An empty list renders nothing, so the chip must not register with its group.
+  const isEmpty = items?.length === 0;
 
   const isMultiSelected =
     isSelectable &&
@@ -179,6 +183,7 @@ export const Chip = (props: ChipProps) => {
     if (
       !isSelectable ||
       isDisabled ||
+      isEmpty ||
       !registerChip ||
       !unregisterChip ||
       value === undefined
@@ -191,7 +196,7 @@ export const Chip = (props: ChipProps) => {
     return () => {
       unregisterChip(value);
     };
-  }, [isDisabled, isSelectable, registerChip, unregisterChip, value]);
+  }, [isDisabled, isEmpty, isSelectable, registerChip, unregisterChip, value]);
 
   const classes = chip({
     size,
@@ -392,7 +397,7 @@ export const Chip = (props: ChipProps) => {
     </Box>
   );
 
-  if (items?.length === 0) {
+  if (isEmpty) {
     return null;
   }
 

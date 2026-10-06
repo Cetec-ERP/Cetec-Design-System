@@ -724,6 +724,34 @@ export const OverflowStates: Story = {
   ),
 };
 
+const EmptyItemsInGroupExample = () => {
+  const [empty, setEmpty] = useState(true);
+
+  return (
+    <VStack gap="12" alignItems="flex-start">
+      <Text textStyle="mono.xs">
+        The first chip has an empty `items` list, so it renders nothing and must
+        not register with the group. Tab into the group: the first visible chip
+        (Open) should be the tab stop, and arrow keys should move focus and
+        selection only between visible chips. Toggle the button to switch the
+        first chip between empty and populated; registration should follow.
+      </Text>
+      <ChipGroup type="single" label="Status">
+        <Chip value="hidden" items={empty ? [] : ['Draft', 'Review']} />
+        <Chip value="open">Open</Chip>
+        <Chip value="closed">Closed</Chip>
+      </ChipGroup>
+      <Button onClick={() => setEmpty((current) => !current)}>
+        {empty ? 'Populate first chip' : 'Empty first chip'}
+      </Button>
+    </VStack>
+  );
+};
+
+export const EmptyItemsInChipGroup: Story = {
+  render: () => <EmptyItemsInGroupExample />,
+};
+
 export const OverflowInChipGroup: Story = {
   render: () => (
     <VStack gap="12" alignItems="flex-start">
