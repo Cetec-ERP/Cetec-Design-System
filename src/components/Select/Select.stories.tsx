@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, userEvent, within } from '@storybook/test';
 
 import { Box } from '../Box';
+import { Button } from '../Button';
 import { FormField } from '../FormField';
 import { Text } from '../Text';
 
@@ -605,6 +606,55 @@ export const TestClearIconOverridesCustomIcon: Story = {
 
     await userEvent.hover(screen.getByRole('option', { name: /phone/i }));
     expect(getOptionIconName(email)).toBe('envelope');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const TestClearIconResetsOnControlledOpen: Story = {
+  name: 'Test: Clear icon resets when open is controlled',
+  render: function TestClearIconResetsOnControlledOpenRender() {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Box display="grid" gap="12" w="xs">
+        {/* Above the Select so the open list never covers them. The Select
+            has no `onOpenChange`, so only these buttons open or close it. */}
+        <Box display="flex" gap="8">
+          <Button onClick={() => setOpen(true)}>Open</Button>
+          <Button onClick={() => setOpen(false)}>Close</Button>
+        </Box>
+
+        <Select
+          open={open}
+          defaultValue="growth"
+          placeholder="Choose an option..."
+        >
+          <SelectOption value="starter" label="Starter" />
+          <SelectOption value="growth" label="Growth" />
+          <SelectOption value="enterprise" label="Enterprise" />
+        </Select>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // The parent opens and closes the Select directly, so none of this goes
+    // through the Select's own open handling.
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    const growth = await screen.findByRole('option', { name: /growth/i });
+    expect(getOptionIconName(growth)).toBe('check');
+
+    await userEvent.hover(growth);
+    expect(getOptionIconName(growth)).toBe('x');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    // Reopened without any fresh interaction with the list.
+    const reopened = await screen.findByRole('option', { name: /growth/i });
+    expect(getOptionIconName(reopened)).toBe('check');
   },
   parameters: { controls: { disable: true } },
 };

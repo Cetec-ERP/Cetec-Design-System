@@ -268,10 +268,12 @@ export const Select = (props: SelectProps) => {
   const [internalValue, setInternalValue] = useState<SelectValue>(defaultValue);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [hasNavigated, setHasNavigated] = useState(false);
+  const [openedByKeyboard, setOpenedByKeyboard] = useState(false);
 
   const isOpenControlled = controlledOpen !== undefined;
   const isOpen = isOpenControlled ? controlledOpen : internalOpen;
   const value = controlledValue !== undefined ? controlledValue : internalValue;
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
   const options = useMemo(() => {
     return Children.toArray(children).filter(isSelectOptionElement);
@@ -315,6 +317,18 @@ export const Select = (props: SelectProps) => {
       : firstEnabledIndex >= 0
         ? firstEnabledIndex
         : null;
+  // Each open or close starts a fresh interaction, whether the user caused it
+  // or a controlling parent changed `open` directly. Reset during render
+  // rather than in `setOpenState`, which that second path never reaches. Only
+  // opening from the keyboard starts out as navigated, so its selected row
+  // shows the clear icon right away.
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    setActiveIndex(isOpen ? initialActiveIndex : null);
+    setHasNavigated(isOpen && openedByKeyboard);
+    setOpenedByKeyboard(false);
+  }
+
   // Until the user has navigated, the selected row stands in as the active
   // one. After that, a null `activeIndex` is real (the pointer left the
   // options), and must reach floating-ui as null so the next arrow key moves
@@ -329,8 +343,6 @@ export const Select = (props: SelectProps) => {
       : undefined;
 
   const setOpenState = (nextOpen: boolean) => {
-    setActiveIndex(nextOpen ? initialActiveIndex : null);
-    setHasNavigated(false);
     if (!isOpenControlled) {
       setInternalOpen(nextOpen);
     }
@@ -426,8 +438,8 @@ export const Select = (props: SelectProps) => {
         event.key === ' ')
     ) {
       event.preventDefault();
+      setOpenedByKeyboard(true);
       setOpenState(true);
-      setHasNavigated(true);
     }
 
     if (
