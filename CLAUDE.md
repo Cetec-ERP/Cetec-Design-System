@@ -92,6 +92,12 @@ Components follow these patterns:
    - Recipe-based styling via Panda CSS (no inline styles or hard-coded values)
    - Export from `src/index.ts` for package consumers
 
+### Fonts
+
+- **Source**: `src/styles/font-imports.css` (bare `@fontsource-variable/*` paths, resolved by Vite in development)
+- **Build**: `tools/build-fonts.mjs` copies the `.woff2` files and their OFL licenses to `dist/fonts/` and writes `dist/fonts.css` with relative paths
+- **Consumers**: `import 'cetec-design-system/fonts.css'`; the `@fontsource-variable/*` packages are devDependencies only
+
 ### Icon System
 
 Icons are managed as an SVG sprite system:

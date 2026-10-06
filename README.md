@@ -189,6 +189,20 @@ function MyComponent() {
 }
 ```
 
+### Fonts
+
+The package ships the Ruda and Recursive variable fonts. Import the font
+stylesheet once, next to the main stylesheet:
+
+```typescript
+import 'cetec-design-system/fonts.css';
+```
+
+`fonts.css` points at `./fonts/*.woff2` relative to itself, so any bundler
+(Vite, webpack, esbuild) resolves the files from `node_modules`. Consumers do not
+need to install `@fontsource-variable/*`. The source is
+`src/styles/font-imports.css`; `tools/build-fonts.mjs` builds the published copy.
+
 ## Release Process
 
 This project uses [Auto](https://intuit.github.io/auto/) for automated releases and changelog generation.
