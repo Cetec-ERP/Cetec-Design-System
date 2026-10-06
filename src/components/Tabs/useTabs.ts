@@ -110,12 +110,13 @@ export const useTabs = ({
   // The default selection must be reachable: a disabled tab has no focusable
   // button, and every other tab sits at tabIndex -1, so selecting a disabled
   // first tab would leave keyboard users with no way into the tablist.
-  const firstValue = tabs.find((tab) => !tab.disabled)?.value ?? '';
+  // `undefined` means no tab is selectable; `''` is a valid tab value.
+  const firstValue = tabs.find((tab) => !tab.disabled)?.value;
 
   const [storedValue, setStoredValue, isControlled] =
     useControllableState<string>({
       value,
-      defaultValue: defaultValue ?? firstValue,
+      defaultValue: defaultValue ?? firstValue ?? '',
     });
 
   // A conditionally rendered or newly disabled tab cannot remain selected:
@@ -123,7 +124,10 @@ export const useTabs = ({
   // unreachable by keyboard.
   const storedTab = tabs.find((tab) => tab.value === storedValue);
   const isStoredValueSelectable = Boolean(storedTab && !storedTab.disabled);
-  const selectedValue = isStoredValueSelectable ? storedValue : firstValue;
+  const hasSelection = isStoredValueSelectable || firstValue !== undefined;
+  const selectedValue = isStoredValueSelectable
+    ? storedValue
+    : (firstValue ?? '');
 
   // Commit automatic fallbacks to the real state, not only the rendered
   // selection. Otherwise an uncontrolled value can silently resurrect if its
@@ -137,14 +141,14 @@ export const useTabs = ({
       return;
     }
 
-    const notificationKey = `${storedValue}\u0000${firstValue}`;
+    const notificationKey = JSON.stringify([storedValue, firstValue ?? null]);
     if (fallbackNotificationRef.current === notificationKey) return;
 
     fallbackNotificationRef.current = notificationKey;
     if (!isControlled) {
-      setStoredValue(firstValue);
+      setStoredValue(firstValue ?? '');
     }
-    if (firstValue !== '') {
+    if (firstValue !== undefined) {
       onChange?.(null, firstValue, 'fallback-after-removal');
     }
   }, [
@@ -178,7 +182,7 @@ export const useTabs = ({
     items: tabValues,
     containerRef: listRef,
     getItemElement,
-    activeItem: selectedValue || null,
+    activeItem: hasSelection ? selectedValue : null,
     reserveRef: overflowRef,
   });
 

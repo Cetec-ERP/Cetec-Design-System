@@ -823,3 +823,72 @@ export const DeferredControlledOverflow: Story = {
     await expect(bravo).toHaveFocus();
   },
 };
+
+const EmptyStringValueTabs = () => {
+  const [value, setValue] = useState('missing');
+
+  return (
+    <Box>
+      <Text pb="8" data-testid="empty-fallback-value">
+        Parent value: &quot;{value}&quot;
+      </Text>
+      <Tabs
+        aria-label="Empty fallback"
+        value={value}
+        onChange={(_event, nextValue) => setValue(nextValue)}
+      >
+        <Tab value="">Overview</Tab>
+        <Tab value="details">Details</Tab>
+        <TabPanel value="">Overview content.</TabPanel>
+        <TabPanel value="details">Details content.</TabPanel>
+      </Tabs>
+      <Box data-empty-wrapper pt="16">
+        <Tabs aria-label="Empty selected" defaultValue="">
+          <Tab value="work">Work section</Tab>
+          <Tab value="materials">Materials section</Tab>
+          <Tab value="">Summary section</Tab>
+          <TabPanel value="work">Work content.</TabPanel>
+          <TabPanel value="materials">Materials content.</TabPanel>
+          <TabPanel value="">Summary content.</TabPanel>
+        </Tabs>
+      </Box>
+    </Box>
+  );
+};
+
+export const EmptyStringValue: Story = {
+  name: 'Test: an empty-string tab value is a real selection',
+  parameters: { controls: { disable: true } },
+  render: () => <EmptyStringValueTabs />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Fallback notifies the parent even when the first tab's value is ''.
+    await waitFor(async () => {
+      await expect(
+        canvas.getByTestId('empty-fallback-value'),
+      ).toHaveTextContent('Parent value: ""');
+    });
+    await expect(canvas.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    // A selected '' tab stays visible in a narrow strip and keeps the tab stop.
+    const wrapper = canvasElement.querySelector<HTMLElement>(
+      '[data-empty-wrapper]',
+    );
+    if (!wrapper) throw new Error('empty wrapper not found');
+
+    const summary = canvas.getByRole('tab', { name: 'Summary section' });
+    wrapper.style.width = `${String(Math.ceil(summary.getBoundingClientRect().width) + 48)}px`;
+
+    const list = canvas.getByRole('tablist', { name: 'Empty selected' });
+    await waitFor(async () => {
+      await expect(within(list).getAllByRole('tab')).toHaveLength(1);
+    });
+    const visible = within(list).getByRole('tab', { name: 'Summary section' });
+    await expect(visible).toHaveAttribute('aria-selected', 'true');
+    await expect(visible).toHaveAttribute('tabindex', '0');
+  },
+};
