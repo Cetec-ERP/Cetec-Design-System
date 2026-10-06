@@ -380,7 +380,8 @@ export const Menu = (props: MenuProps) => {
   const activeBackHeaderRef = useRef<HTMLButtonElement | null>(null);
 
   // The back header is sticky inside the scrolling level, so keyboard focus
-  // scrolling must reserve its height or items land underneath it.
+  // scrolling must reserve its height or items land underneath it. A filter
+  // with no matches unmounts the level, so re-measure when it comes back.
   useLayoutEffect(() => {
     const levelEl = activeLevelRef.current;
     const headerEl = activeBackHeaderRef.current;
@@ -398,7 +399,7 @@ export const Menu = (props: MenuProps) => {
     const observer = new ResizeObserver(update);
     observer.observe(headerEl);
     return () => observer.disconnect();
-  }, [diginDepth, density]);
+  }, [diginDepth, density, hasVisibleResults]);
 
   useLayoutEffect(() => {
     if (!isMenuVisible || !shouldUseDiginSizing) {

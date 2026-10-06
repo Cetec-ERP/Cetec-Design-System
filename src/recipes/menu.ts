@@ -36,8 +36,10 @@ const menuBase = {
       bg: { base: 'tan.20', _dark: 'tan.70' },
     },
   },
+  // `clip` (not `hidden`) so the oversized size probe inside can't make this a
+  // programmatically scrollable ancestor that `scrollIntoView()` would move.
   levelsViewport: {
-    overflow: 'hidden',
+    overflow: 'clip',
     width: 'full',
     position: 'relative',
   },

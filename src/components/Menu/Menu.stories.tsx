@@ -1,4 +1,9 @@
-import { type ChangeEvent, type KeyboardEvent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type KeyboardEvent,
+  useEffect,
+  useState,
+} from 'react';
 
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
@@ -655,6 +660,15 @@ export const ExLongDiginMenu: Story = {
     );
     const menuElement = await screen.findByRole('menu');
 
+    // The viewport clips the size probe; it must not be a scrollable ancestor
+    // that keyboard `scrollIntoView()` can move out from under the header.
+    const levelsViewport = menuElement.querySelector<HTMLElement>(
+      '[class*="menu__levelsViewport"]',
+    ) as HTMLElement;
+    expect(getComputedStyle(levelsViewport).overflowY).toBe('clip');
+    levelsViewport.scrollTop = 48;
+    expect(levelsViewport.scrollTop).toBe(0);
+
     // In a long level, the back header stays pinned while the level scrolls.
     await userEvent.click(screen.getByRole('menuitem', { name: /long list/i }));
     const longBack = await screen.findByRole('button', { name: /long list/i });
@@ -737,6 +751,91 @@ export const ExLongDiginMenuKeyboard: Story = {
       expect(level.scrollHeight).toBeGreaterThan(level.clientHeight),
     );
     level.scrollTop = level.scrollHeight;
+  },
+};
+
+const DiginFilterExample = ({ query: initialQuery }: { query?: string }) => {
+  const [query, setQuery] = useState(initialQuery ?? '');
+
+  useEffect(() => {
+    setQuery(initialQuery ?? '');
+  }, [initialQuery]);
+
+  return (
+    <VStack gap="12">
+      <HStack gap="8">
+        <Button onClick={() => setQuery('zzz')}>Filter: no match</Button>
+        <Button onClick={() => setQuery('')}>Clear filter</Button>
+      </HStack>
+      <Menu
+        trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+        subMenuInteraction="digin"
+        density="spacious"
+        query={query}
+        filterMode="contains"
+      >
+        <SubMenu label="Long list">
+          {LONG_MENU_LABELS.map((label) => (
+            <MenuItem key={label} label={`Nested ${label}`} />
+          ))}
+        </SubMenu>
+      </Menu>
+    </VStack>
+  );
+};
+
+export const ExLongDiginMenuFiltered: Story = {
+  name: 'Ex: Long Drill-In Menu (filtered)',
+  args: { query: '' },
+  argTypes: { query: { control: 'text' } },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A filter with no matches unmounts the drill-in level and its back ' +
+          'header. After the filter is cleared, keyboard scrolling must still ' +
+          'reserve the header height. Use the Controls panel (`query`) to ' +
+          'filter: clicking buttons on the canvas closes the floating menu.',
+      },
+    },
+  },
+  render: (args: { query?: string }) => (
+    <DiginFilterExample query={args.query} />
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+    const levelPadding = () => {
+      const levels = canvasElement.ownerDocument.querySelectorAll<HTMLElement>(
+        '[class*="menu__level"]:not([aria-hidden])',
+      );
+      const level = levels[levels.length - 1] as HTMLElement;
+      return {
+        variable: level.style.getPropertyValue('--menu-back-header-height'),
+        padding: getComputedStyle(level).scrollPaddingTop,
+      };
+    };
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    await userEvent.click(
+      await screen.findByRole('menuitem', { name: /long list/i }),
+    );
+    await screen.findByRole('button', { name: /long list/i });
+    await waitFor(() => expect(levelPadding().variable).not.toBe(''));
+    const measured = levelPadding().variable;
+
+    // Programmatic clicks avoid the outside-press that would close the menu.
+    canvas.getByRole('button', { name: /filter: no match/i }).click();
+    await screen.findByText(/no results found/i);
+
+    canvas.getByRole('button', { name: /clear filter/i }).click();
+    await screen.findByRole('button', { name: /long list/i });
+    await waitFor(() => {
+      expect(levelPadding().variable).toBe(measured);
+      expect(levelPadding().padding).toBe(measured);
+    });
   },
 };
 
