@@ -7,6 +7,8 @@ import {
 
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
+import { expect, userEvent, waitFor, within } from '@storybook/test';
+
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
 import { Box } from '../Box';
@@ -233,6 +235,35 @@ const AutocompleteFilteringExample = () => {
   );
 };
 
+/** Menus render in a portal, so queries run against the document body. */
+const getDocumentQueries = (canvasElement: HTMLElement) =>
+  within(canvasElement.ownerDocument.body);
+
+const expectFocusInsideMenu = async (canvasElement: HTMLElement) => {
+  const body = getDocumentQueries(canvasElement);
+  await waitFor(() => {
+    const focused = canvasElement.ownerDocument.activeElement;
+    expect(focused).not.toBe(canvasElement.ownerDocument.body);
+    expect(body.getAllByRole('menu').some((m) => m.contains(focused))).toBe(
+      true,
+    );
+  });
+};
+
+const expectNoFocusableInAriaHidden = (canvasElement: HTMLElement) => {
+  const leaks = Array.from(
+    canvasElement.ownerDocument.querySelectorAll<HTMLElement>(
+      '[aria-hidden="true"] :is(button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"]))',
+    ),
+  ).filter(
+    (element) =>
+      !element.closest('[inert]') &&
+      !element.hasAttribute('data-floating-ui-focus-guard') &&
+      !element.closest('[data-floating-ui-focus-guard]'),
+  );
+  expect(leaks).toHaveLength(0);
+};
+
 export const Actions: Story = {
   render: () => (
     <Menu inline>
@@ -241,6 +272,22 @@ export const Actions: Story = {
       <MenuItem label="Archive" iconBefore="trash" />
     </Menu>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Keyboard only: Tab enters the menu without any hover, then arrows/Home/End.
+    await userEvent.tab();
+    expect(canvas.getByRole('menuitem', { name: /edit/i })).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowDown}');
+    expect(canvas.getByRole('menuitem', { name: /duplicate/i })).toHaveFocus();
+
+    await userEvent.keyboard('{End}');
+    expect(canvas.getByRole('menuitem', { name: /archive/i })).toHaveFocus();
+
+    await userEvent.keyboard('{Home}');
+    expect(canvas.getByRole('menuitem', { name: /edit/i })).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -353,6 +400,39 @@ export const SubMenuHover: Story = {
       </SubMenu>
     </Menu>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const trigger = canvas.getByRole('button', { name: /open menu/i });
+
+    await userEvent.tab();
+    expect(trigger).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() =>
+      expect(
+        body.getByRole('menuitem', { name: /view profile/i }),
+      ).toHaveFocus(),
+    );
+
+    await userEvent.keyboard('{ArrowDown}');
+    expect(body.getByRole('menuitem', { name: /more actions/i })).toHaveFocus();
+
+    // ArrowRight opens the flyout and focuses its first row; ArrowLeft returns.
+    await userEvent.keyboard('{ArrowRight}');
+    await waitFor(() =>
+      expect(body.getByRole('menuitem', { name: /export/i })).toHaveFocus(),
+    );
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() =>
+      expect(
+        body.getByRole('menuitem', { name: /more actions/i }),
+      ).toHaveFocus(),
+    );
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    expect(trigger).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -586,6 +666,48 @@ export const SubMenuDigin: Story = {
       </SubMenu>
     </Menu>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const trigger = canvas.getByRole('button', { name: /open menu/i });
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    // Keyboard only: open from the trigger and land inside the menu.
+    await userEvent.tab();
+    expect(trigger).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expectFocusInsideMenu(canvasElement);
+    await waitFor(() => expect(item(/dashboard/i)).toHaveFocus());
+
+    await userEvent.keyboard('{ArrowDown}');
+    expect(item(/settings/i)).toHaveFocus();
+
+    // Drill in: focus moves to the first row of the new level and stays usable.
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(item(/profile/i)).toHaveFocus());
+    expectNoFocusableInAriaHidden(canvasElement);
+    await userEvent.keyboard('{ArrowDown}');
+    expect(item(/billing/i)).toHaveFocus();
+
+    // Left goes back and restores focus to the row that opened the level.
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/settings/i)).toHaveFocus());
+
+    // Space drills in again; a second level pushes the same way.
+    await userEvent.keyboard(' ');
+    await waitFor(() => expect(item(/profile/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowRight}');
+    await waitFor(() => expect(item(/members/i)).toHaveFocus());
+
+    // Escape steps back one level at a time, then closes and returns to the trigger.
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(item(/team/i)).toHaveFocus());
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(item(/settings/i)).toHaveFocus());
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    expect(trigger).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -841,6 +963,37 @@ export const ExLongDiginMenuFiltered: Story = {
 
 export const SubMenuDiginForms: Story = {
   render: () => <SubMenuDiginFormsExample />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const trigger = canvas.getByRole('button', { name: /open menu/i });
+
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowDown}');
+    await waitFor(() =>
+      expect(body.getByRole('menuitem', { name: /dashboard/i })).toHaveFocus(),
+    );
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+
+    // A level without menu rows still receives focus (first control).
+    const nameInput = await body.findByLabelText('Profile name');
+    await waitFor(() => expect(nameInput).toHaveFocus());
+
+    // Left/Right edit text instead of navigating; Escape goes back.
+    await userEvent.keyboard('abc{ArrowLeft}');
+    expect(nameInput).toHaveFocus();
+    expect(nameInput).toHaveValue('abc');
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(
+        body.getByRole('menuitem', { name: /edit profile/i }),
+      ).toHaveFocus(),
+    );
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    expect(trigger).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -877,6 +1030,17 @@ export const PanelAsSidebar: Story = {
       </Menu>
     </Flex>
   ),
+  play: async ({ canvasElement }) => {
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    expect(item(/view profile/i)).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}');
+    await waitFor(() => expect(item(/export/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/more actions/i)).toHaveFocus());
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -909,5 +1073,21 @@ export const PanelAsMobileNav: Story = {
       </Menu>
     </Flex>
   ),
+  play: async ({ canvasElement }) => {
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    expect(item(/view profile/i)).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await waitFor(() => expect(item(/export/i)).toHaveFocus());
+    expectNoFocusableInAriaHidden(canvasElement);
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+    await waitFor(() => expect(item(/audit log/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/advanced/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/more actions/i)).toHaveFocus());
+  },
   parameters: { controls: { disable: true } },
 };

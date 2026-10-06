@@ -54,6 +54,7 @@ import { Icon } from '../Icon/Icon';
 import { Text } from '../Text/Text';
 
 import {
+  findSubMenuChildren,
   hasMatchingItems,
   MenuFilterProvider,
   MenuListProvider,
@@ -62,13 +63,36 @@ import {
   type MenuRootContextValue,
 } from './context/menuContext';
 import { useBlockPointerEventsForHoverPolygon } from './hooks/useBlockPointerEventsForHoverPolygon';
-import { navigateListMainAxisLoop } from './utils/navigateListMainAxis';
+import {
+  findFirstEnabledListIndex,
+  navigateListMainAxisLoop,
+} from './utils/navigateListMainAxis';
 
 type DiginLevel = {
   key: string;
   title: string;
   children: ReactNode;
+  /** Index of the parent-level row that opened this level (focus target on pop). */
+  returnIndex: number | null;
+  /** SubMenu labels from the root to this level, used to resolve live children. */
+  path: string[];
 };
+
+/** Where focus should land after the drill-in level changes. */
+type DiginFocusIntent = 'first' | { index: number | null };
+
+const focusableInLevelSelector =
+  'input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])';
+
+const isTextEntryTarget = (target: EventTarget | null) =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    target instanceof HTMLTextAreaElement ||
+    target instanceof HTMLSelectElement ||
+    (target instanceof HTMLInputElement &&
+      !['button', 'checkbox', 'radio', 'submit', 'reset'].includes(
+        target.type,
+      )));
 
 const defaultGetItemText = ({
   label,
@@ -217,6 +241,8 @@ export const Menu = (props: MenuProps) => {
     onOpenChange?.(nextOpen);
   };
 
+  const diginFocusIntentRef = useRef<DiginFocusIntent | null>(null);
+  const activeLevelRef = useRef<HTMLDivElement | null>(null);
   const [diginLevels, setDiginLevels] = useState<DiginLevel[]>([]);
   const [wrapperSize, setWrapperSize] = useState<{
     width: number | null;
@@ -274,7 +300,12 @@ export const Menu = (props: MenuProps) => {
   const focus = useFocus(floating.context, {
     enabled: hasReference && triggerInteraction === 'focus',
   });
-  const dismiss = useDismiss(floating.context, { enabled: hasReference });
+  // While drilled in, Escape steps back one level (handled below) and only
+  // closes the menu from the root level.
+  const dismiss = useDismiss(floating.context, {
+    enabled: hasReference,
+    escapeKey: diginDepth === 0,
+  });
   const role = useRole(floating.context, { role: 'menu' });
   const listNavigation = useListNavigation(floating.context, {
     listRef,
@@ -303,8 +334,15 @@ export const Menu = (props: MenuProps) => {
     [filterMode, getItemText, highlightMatches, query],
   );
 
+  // Resolve each drilled-in level from the current children so state changes
+  // (controlled inputs, filtering) reach it; fall back to the pushed snapshot.
+  const liveDiginLevels = diginLevels.map((level) => ({
+    ...level,
+    children: findSubMenuChildren(children, level.path) ?? level.children,
+  }));
+
   const activeLevelChildren =
-    diginLevels[diginLevels.length - 1]?.children ?? children;
+    liveDiginLevels[liveDiginLevels.length - 1]?.children ?? children;
 
   const hasVisibleResults = hasMatchingItems(
     activeLevelChildren,
@@ -322,6 +360,8 @@ export const Menu = (props: MenuProps) => {
       setDiginLevels([]);
     },
     onPushDiginLevel: (title, levelChildren) => {
+      const returnIndex = activeIndex;
+      diginFocusIntentRef.current = 'first';
       setDiginLevels((prev) => {
         const activeLevel = prev[prev.length - 1];
 
@@ -339,15 +379,132 @@ export const Menu = (props: MenuProps) => {
             key: `${title}-${prev.length}`,
             title,
             children: levelChildren,
+            returnIndex,
+            path: [...prev.map((level) => level.title), title],
           },
         ];
       });
     },
     onPopDiginLevel: () => {
+      const poppedLevel = diginLevels[diginLevels.length - 1];
+      if (!poppedLevel) {
+        return;
+      }
+      diginFocusIntentRef.current = { index: poppedLevel.returnIndex };
       setDiginLevels((prev) => prev.slice(0, -1));
     },
     diginDepth,
     onMenubarEdgeNavigate,
+  };
+
+  // Pushing or popping a level swaps the rendered list, which unmounts the row
+  // that had focus. Reset the roving index and move focus into the new level so
+  // the keyboard keeps working (push: first row, pop: the row that opened it).
+  useEffect(() => {
+    const intent = diginFocusIntentRef.current;
+    if (!intent) {
+      return;
+    }
+    diginFocusIntentRef.current = null;
+    setActiveIndex(null);
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const focusLevel = (attemptsLeft: number) => {
+      const levelElement = activeLevelRef.current;
+      const index =
+        intent === 'first' ? findFirstEnabledListIndex(listRef) : intent.index;
+      const item = index === null ? null : listRef.current[index];
+
+      if (
+        item &&
+        item.isConnected &&
+        levelElement?.contains(item) &&
+        !item.hasAttribute('disabled')
+      ) {
+        item.focus({ preventScroll: true });
+        setActiveIndex(index);
+        return;
+      }
+
+      if (attemptsLeft > 0) {
+        timer = setTimeout(() => focusLevel(attemptsLeft - 1), 16);
+        return;
+      }
+
+      // Levels without list rows (e.g. forms): focus the first control, else
+      // the back header, so focus never falls to <body>.
+      const focusables = Array.from(
+        levelElement?.querySelectorAll<HTMLElement>(focusableInLevelSelector) ??
+          [],
+      );
+      const fallback =
+        focusables.find((element) => !element.matches('[data-menu-back]')) ??
+        focusables[0];
+      fallback?.focus({ preventScroll: true });
+    };
+
+    timer = setTimeout(() => focusLevel(3), 0);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [diginDepth]);
+
+  // Escape steps back one drill-in level instead of closing the whole menu.
+  useEffect(() => {
+    if (diginDepth === 0) {
+      return;
+    }
+
+    const handleEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== 'Escape' || event.defaultPrevented) {
+        return;
+      }
+      const activeElement = document.activeElement;
+      const referenceElement = floating.elements.domReference;
+      const floatingElement = floating.elements.floating;
+      const focusIsInMenu =
+        activeElement === document.body ||
+        Boolean(floatingElement?.contains(activeElement)) ||
+        Boolean(referenceElement?.contains(activeElement));
+      if (!focusIsInMenu) {
+        return;
+      }
+      event.preventDefault();
+      event.stopPropagation();
+      rootContextValue.onPopDiginLevel();
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  });
+
+  // Floating UI's typeahead and list navigation call preventDefault on typed
+  // characters and arrow/Home/End keys while the menu is open, which would
+  // swallow typing in inputs rendered inside a level. Keep those keys local to
+  // the input (Escape and Tab still reach dismiss and focus handling).
+  const handleLevelsKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (
+      event.key !== 'Escape' &&
+      event.key !== 'Tab' &&
+      isTextEntryTarget(event.target)
+    ) {
+      event.stopPropagation();
+    }
+  };
+
+  const handleDiginKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (
+      diginDepth > 0 &&
+      event.key === 'ArrowLeft' &&
+      !event.defaultPrevented
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+      rootContextValue.onPopDiginLevel();
+    }
   };
 
   const navigateMainAxis = useCallback((direction: 1 | -1) => {
@@ -356,15 +513,38 @@ export const Menu = (props: MenuProps) => {
     );
   }, []);
 
+  // Roving tab stop: before any row is active (nothing hovered or arrowed to
+  // yet) the first enabled row stays tabbable so keyboard users can enter.
+  const [firstEnabledIndex, setFirstEnabledIndex] = useState<number | null>(
+    null,
+  );
+  // Runs every render on purpose: rows register in a follow-up render of the
+  // list, so read the list in a microtask. The same-value bail-out prevents an
+  // update loop.
+  useEffect(() => {
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) {
+        return;
+      }
+      const next = findFirstEnabledListIndex(listRef);
+      setFirstEnabledIndex((previous) => (previous === next ? previous : next));
+    });
+    return () => {
+      cancelled = true;
+    };
+  });
+
   const menuListContextValue = {
     activeIndex,
+    tabbableIndex: activeIndex ?? firstEnabledIndex,
     getItemProps: (userProps?: HTMLProps<HTMLElement>) =>
       getItemProps(userProps) as HTMLProps<HTMLElement>,
     navigateMainAxis,
     nestedMenuDepth: 0,
   };
 
-  const levels = [{ key: 'root', title: 'Menu', children }, ...diginLevels];
+  const levels = [{ key: 'root', title: 'Menu', children }, ...liveDiginLevels];
   const activeLevel = levels[Math.min(diginDepth, levels.length - 1)]!;
   const levelCount = levels.length;
   const trackWidthPercent = levelCount * 100;
@@ -447,6 +627,15 @@ export const Menu = (props: MenuProps) => {
     shouldUseDiginSizing,
   ]);
 
+  // The probe is a hidden measuring copy of the active level. Duplicate ids
+  // would hijack `<label for>` / `aria-labelledby` from the real controls, so
+  // drop them from the copy after every render.
+  useLayoutEffect(() => {
+    sizeProbeRef.current
+      ?.querySelectorAll('[id]')
+      .forEach((element) => element.removeAttribute('id'));
+  });
+
   const diginWrapperStyle: CSSProperties =
     shouldUseDiginSizing && wrapperSize.width && wrapperSize.height
       ? {
@@ -471,7 +660,7 @@ export const Menu = (props: MenuProps) => {
           {...dsComponent('Menu')}
           ref={floating.refs.setFloating}
           className={cx(classes.wrapper, className)}
-          {...getFloatingProps()}
+          {...getFloatingProps({ onKeyDown: handleDiginKeyDown })}
           {...otherProps}
           style={floatingStyle}
         >
@@ -484,12 +673,16 @@ export const Menu = (props: MenuProps) => {
           )}
 
           {hasVisibleResults && (
-            <Box className={classes.levelsViewport}>
+            <Box
+              className={classes.levelsViewport}
+              onKeyDown={handleLevelsKeyDown}
+            >
               {shouldUseDiginSizing && (
                 <Box
                   ref={sizeProbeRef}
                   className={classes.sizeProbe}
                   aria-hidden
+                  inert
                   style={diginSizeProbeStyle}
                 >
                   <Box className={classes.level}>
@@ -536,6 +729,7 @@ export const Menu = (props: MenuProps) => {
                           flex: `0 0 ${levelWidthPercent}%`,
                         }}
                         aria-hidden
+                        inert
                       >
                         {index > 0 && (
                           <Box
@@ -571,6 +765,7 @@ export const Menu = (props: MenuProps) => {
                               as="button"
                               type="button"
                               ref={activeBackHeaderRef}
+                              data-menu-back=""
                               className={classes.backHeader}
                               onClick={rootContextValue.onPopDiginLevel}
                             >

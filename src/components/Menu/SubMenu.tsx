@@ -279,7 +279,7 @@ export const SubMenu = (props: SubMenuProps) => {
       return true;
     };
     if (!applyFirst()) {
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         if (!applyFirst()) {
           openedFromParentArrowRightRef.current = false;
         }
@@ -486,7 +486,8 @@ export const SubMenu = (props: SubMenuProps) => {
         }
         tabIndex={
           parentListContext
-            ? parentListContext.activeIndex === listItemData.index
+            ? (parentListContext.tabbableIndex ??
+                parentListContext.activeIndex) === listItemData.index
               ? 0
               : -1
             : 0
@@ -555,7 +556,8 @@ export const SubMenu = (props: SubMenuProps) => {
         }
         tabIndex={
           parentListContext
-            ? parentListContext.activeIndex === listItemData.index
+            ? (parentListContext.tabbableIndex ??
+                parentListContext.activeIndex) === listItemData.index
               ? 0
               : -1
             : 0

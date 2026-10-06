@@ -238,6 +238,11 @@ export type MenuRootContextValue = {
 /** Roving-focus state for one menu level. */
 export type MenuListContextValue = {
   activeIndex: number | null;
+  /**
+   * Row that holds the roving tab stop. Falls back to `activeIndex` when
+   * omitted; the root menu sets it so Tab can enter before any row is active.
+   */
+  tabbableIndex?: number | null;
   getItemProps: (userProps?: HTMLProps<HTMLElement>) => HTMLProps<HTMLElement>;
   /** Move active item along the list main axis (looping), for nested submenu delegation. */
   navigateMainAxis?: (direction: 1 | -1) => void;
@@ -440,6 +445,49 @@ export const hasMatchingItems = (
 
     return true;
   });
+};
+
+/**
+ * Finds the live children of the nested `SubMenu` reached by following `path`
+ * (labels, outermost first) through submenus and groups. Used so drilled-in
+ * levels render current props (controlled inputs, filters) instead of the
+ * snapshot taken when the level was pushed.
+ */
+export const findSubMenuChildren = (
+  children: ReactNode,
+  path: string[],
+): ReactNode | undefined => {
+  const [label, ...rest] = path;
+  if (label === undefined) {
+    return children;
+  }
+
+  for (const childNode of Children.toArray(children)) {
+    if (!isValidElement(childNode)) {
+      continue;
+    }
+    const child = childNode as ReactElement<Record<string, unknown>>;
+    const componentType = getComponentType(child);
+
+    if (
+      componentType === MENU_COMPONENT_TYPES.subMenu &&
+      child.props.label === label
+    ) {
+      return findSubMenuChildren(child.props.children as ReactNode, rest);
+    }
+
+    if (componentType === MENU_COMPONENT_TYPES.group) {
+      const found = findSubMenuChildren(
+        child.props.children as ReactNode,
+        path,
+      );
+      if (found !== undefined) {
+        return found;
+      }
+    }
+  }
+
+  return undefined;
 };
 
 /** Splits text into case-insensitive query-match parts for highlight rendering. */
