@@ -17,7 +17,6 @@ import {
 import {
   FloatingFocusManager,
   FloatingPortal,
-  size as floatingSize,
   type Placement,
   useClick,
   useDismiss,
@@ -32,6 +31,7 @@ import { menu, select, type SelectVariantProps } from '@styled-system/recipes';
 
 import type { MenuDensity } from '~/components/Menu/context/menuContext';
 import {
+  availableHeightMiddleware,
   createOverlayMiddleware,
   useOverlayFloating,
 } from '~/system/floating-ui/floating';
@@ -348,19 +348,8 @@ export const Select = (props: SelectProps) => {
       extras: [
         // Floating UI only positions the listbox; without a height cap a long
         // option list overflows the viewport on whichever side flip() picks.
-        // Only measured values are written here; the `menu` recipe's
-        // `scrollable` variant applies the cap and scrolling. `padding`
-        // mirrors the overlay middleware's default `shiftPadding`.
-        floatingSize({
-          padding: 8,
-          apply({ rects, elements, availableHeight }) {
-            elements.floating.style.minWidth = `${rects.reference.width}px`;
-            elements.floating.style.setProperty(
-              '--available-height',
-              `${Math.max(availableHeight, 0)}px`,
-            );
-          },
-        }),
+        // The `menu` recipe's `scrollable` variant applies the cap.
+        availableHeightMiddleware({ matchReferenceWidth: true }),
       ],
     }),
   });

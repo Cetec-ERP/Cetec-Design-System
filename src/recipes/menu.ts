@@ -36,8 +36,10 @@ const menuBase = {
       bg: { base: 'tan.20', _dark: 'tan.70' },
     },
   },
+  // `clip` (not `hidden`) so the oversized size probe inside can't make this a
+  // programmatically scrollable ancestor that `scrollIntoView()` would move.
   levelsViewport: {
-    overflow: 'hidden',
+    overflow: 'clip',
     width: 'full',
     position: 'relative',
   },
@@ -132,6 +134,27 @@ const menuVariants = {
       wrapper: {
         maxHeight: 'max(var(--available-height), token(sizes.120))',
         overflowY: 'auto',
+      },
+      // Drill-in sets an explicit wrapper height, so each level can fill it
+      // and scroll on its own. Otherwise every level stretches to the tallest
+      // one and a short level scrolls into blank space. Single-level menus
+      // have no explicit height, so the wrapper still does the scrolling.
+      levelsViewport: {
+        height: 'full',
+      },
+      levelsTrack: {
+        height: 'full',
+      },
+      // Keeps keyboard focus scrolling from landing under the sticky header;
+      // Menu measures the header into `--menu-back-header-height`.
+      level: {
+        overflowY: 'auto',
+        scrollPaddingTop: 'var(--menu-back-header-height, 0px)',
+      },
+      backHeader: {
+        position: 'sticky',
+        top: '0',
+        zIndex: '1',
       },
     },
   },

@@ -1,4 +1,11 @@
-import { type ChangeEvent, type KeyboardEvent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type KeyboardEvent,
+  useEffect,
+  useState,
+} from 'react';
+
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
@@ -580,6 +587,256 @@ export const SubMenuDigin: Story = {
     </Menu>
   ),
   parameters: { controls: { disable: true } },
+};
+
+const LONG_MENU_LABELS = Array.from(
+  { length: 40 },
+  (_, index) => `${index + 1} - Item ${index + 1}`,
+);
+
+export const ExLongMenu: Story = {
+  name: 'Ex: Long Menu',
+  render: () => (
+    <Menu trigger={<Button iconAfter="caret-down">Open long menu</Button>}>
+      <SubMenu label="More items">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+      </SubMenu>
+      {LONG_MENU_LABELS.map((label) => (
+        <MenuItem key={label} label={label} />
+      ))}
+    </Menu>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open long menu/i }),
+    );
+    const menuElement = await screen.findByRole('menu');
+
+    // The menu is capped to the space beside the trigger and scrolls,
+    // rather than running past the viewport edge.
+    const viewportHeight =
+      canvasElement.ownerDocument.documentElement.clientHeight;
+    const rect = menuElement.getBoundingClientRect();
+    expect(rect.top).toBeGreaterThanOrEqual(0);
+    expect(rect.bottom).toBeLessThanOrEqual(viewportHeight);
+    expect(getComputedStyle(menuElement).overflowY).toBe('auto');
+    expect(menuElement.scrollHeight).toBeGreaterThan(menuElement.clientHeight);
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ExLongDiginMenu: Story = {
+  name: 'Ex: Long Drill-In Menu',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+      </SubMenu>
+      <SubMenu label="Short list">
+        <MenuItem label="First" />
+        <MenuItem label="Second" />
+      </SubMenu>
+      {LONG_MENU_LABELS.map((label) => (
+        <MenuItem key={label} label={label} />
+      ))}
+    </Menu>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    const menuElement = await screen.findByRole('menu');
+
+    // The viewport clips the size probe; it must not be a scrollable ancestor
+    // that keyboard `scrollIntoView()` can move out from under the header.
+    const levelsViewport = menuElement.querySelector<HTMLElement>(
+      '[class*="menu__levelsViewport"]',
+    ) as HTMLElement;
+    expect(getComputedStyle(levelsViewport).overflowY).toBe('clip');
+    levelsViewport.scrollTop = 48;
+    expect(levelsViewport.scrollTop).toBe(0);
+
+    // In a long level, the back header stays pinned while the level scrolls.
+    await userEvent.click(screen.getByRole('menuitem', { name: /long list/i }));
+    const longBack = await screen.findByRole('button', { name: /long list/i });
+    const longLevel = longBack.parentElement as HTMLElement;
+    await waitFor(() =>
+      expect(longLevel.scrollHeight).toBeGreaterThan(longLevel.clientHeight),
+    );
+    longLevel.scrollTop = longLevel.scrollHeight;
+    await waitFor(() =>
+      expect(
+        Math.abs(
+          longBack.getBoundingClientRect().top -
+            longLevel.getBoundingClientRect().top,
+        ),
+      ).toBeLessThanOrEqual(1),
+    );
+
+    // A short level after a long one has no blank space to scroll into.
+    await userEvent.click(longBack);
+    await userEvent.click(
+      await screen.findByRole('menuitem', { name: /short list/i }),
+    );
+    const shortBack = await screen.findByRole('button', {
+      name: /short list/i,
+    });
+    const shortLevel = shortBack.parentElement as HTMLElement;
+    await waitFor(() => {
+      expect(menuElement.scrollHeight).toBeLessThanOrEqual(
+        menuElement.clientHeight + 1,
+      );
+      expect(shortLevel.scrollHeight).toBeLessThanOrEqual(
+        shortLevel.clientHeight + 1,
+      );
+    });
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ExLongDiginMenuKeyboard: Story = {
+  name: 'Ex: Long Drill-In Menu (keyboard repro)',
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Repro for the sticky back header covering keyboard-focused items. ' +
+          'The play function opens the menu, drills into "Long list" and ' +
+          'scrolls it to the bottom, then leaves it open. Press Home, or ' +
+          'ArrowUp repeatedly, and check whether the focused item scrolls ' +
+          'underneath the pinned back header.',
+      },
+    },
+  },
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+      density="spacious"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    await userEvent.click(
+      await screen.findByRole('menuitem', { name: /long list/i }),
+    );
+    const back = await screen.findByRole('button', { name: /long list/i });
+    const level = back.parentElement as HTMLElement;
+    await waitFor(() =>
+      expect(level.scrollHeight).toBeGreaterThan(level.clientHeight),
+    );
+    level.scrollTop = level.scrollHeight;
+  },
+};
+
+const DiginFilterExample = ({ query: initialQuery }: { query?: string }) => {
+  const [query, setQuery] = useState(initialQuery ?? '');
+
+  useEffect(() => {
+    setQuery(initialQuery ?? '');
+  }, [initialQuery]);
+
+  return (
+    <VStack gap="12">
+      <HStack gap="8">
+        <Button onClick={() => setQuery('zzz')}>Filter: no match</Button>
+        <Button onClick={() => setQuery('')}>Clear filter</Button>
+      </HStack>
+      <Menu
+        trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+        subMenuInteraction="digin"
+        density="spacious"
+        query={query}
+        filterMode="contains"
+      >
+        <SubMenu label="Long list">
+          {LONG_MENU_LABELS.map((label) => (
+            <MenuItem key={label} label={`Nested ${label}`} />
+          ))}
+        </SubMenu>
+      </Menu>
+    </VStack>
+  );
+};
+
+export const ExLongDiginMenuFiltered: Story = {
+  name: 'Ex: Long Drill-In Menu (filtered)',
+  args: { query: '' },
+  argTypes: { query: { control: 'text' } },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A filter with no matches unmounts the drill-in level and its back ' +
+          'header. After the filter is cleared, keyboard scrolling must still ' +
+          'reserve the header height. Use the Controls panel (`query`) to ' +
+          'filter: clicking buttons on the canvas closes the floating menu.',
+      },
+    },
+  },
+  render: (args: { query?: string }) => (
+    <DiginFilterExample query={args.query} />
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+    const levelPadding = () => {
+      const levels = canvasElement.ownerDocument.querySelectorAll<HTMLElement>(
+        '[class*="menu__level"]:not([aria-hidden])',
+      );
+      const level = levels[levels.length - 1] as HTMLElement;
+      return {
+        variable: level.style.getPropertyValue('--menu-back-header-height'),
+        padding: getComputedStyle(level).scrollPaddingTop,
+      };
+    };
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    await userEvent.click(
+      await screen.findByRole('menuitem', { name: /long list/i }),
+    );
+    await screen.findByRole('button', { name: /long list/i });
+    await waitFor(() => expect(levelPadding().variable).not.toBe(''));
+    const measured = levelPadding().variable;
+
+    // Programmatic clicks avoid the outside-press that would close the menu.
+    canvas.getByRole('button', { name: /filter: no match/i }).click();
+    await screen.findByText(/no results found/i);
+
+    canvas.getByRole('button', { name: /clear filter/i }).click();
+    await screen.findByRole('button', { name: /long list/i });
+    await waitFor(() => {
+      expect(levelPadding().variable).toBe(measured);
+      expect(levelPadding().padding).toBe(measured);
+    });
+  },
 };
 
 export const SubMenuDiginForms: Story = {
