@@ -3,7 +3,7 @@ export { textRecipe, headingRecipe, linkRecipe, labelRecipe } from './text';
 export { spinnerRecipe } from './spinner';
 export { skeletonRecipe } from './skeleton';
 export { dividerRecipe } from './divider';
-export { preRecipe, codeRecipe } from './code';
+export { codeRecipe } from './code';
 export { boxRecipe } from './box';
 export { toggleRecipe } from './toggle';
 export { toggleInputRecipe } from './toggleInput';
