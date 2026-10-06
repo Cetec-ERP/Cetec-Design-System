@@ -118,7 +118,7 @@ import { splitProps } from '~/utils/splitProps';
 **Path Aliases:**
 
 - `~/*` → `./src/*` (internal imports)
-- `@styled-system/*` → `./styled-system/*` (Panda CSS generated)
+- `@styled-system/*` → `./src/styled-system/*` (Panda CSS generated)
 
 **Type Imports:** Use `type` keyword for type-only imports when mixing with value imports:
 
@@ -294,8 +294,8 @@ export { buttonRecipe } from './recipes/button';
 
 1. **Create directory:** `src/components/[ComponentName]/`
 2. **Create recipe:** `src/recipes/[componentname].ts` with variants
-3. **Export recipe:** Add to `src/recipes/index.ts`
-4. **For slot recipes:** Register in `panda.config.ts` under `theme.extend.recipes`
+3. **Export recipe:** Add to `src/recipes/recipes-regular.ts`, or `src/recipes/recipes-slot.ts` for a slot recipe
+4. **Registration:** Automatic through the preset (`src/cetec-preset.ts`); no manual step
 5. **Run codegen:** `npm run prepare` to regenerate Panda CSS types
 6. **Implement component:** `src/components/[ComponentName]/ComponentName.tsx`
 7. **Create stories:** `src/components/[ComponentName]/ComponentName.stories.tsx`
@@ -338,10 +338,10 @@ type(scope)!: breaking change summary
 
 **Format:** ES modules only (`"type": "module"`)
 
-**Output:** `dist/cetec-design-system.es.js` (main bundle)
+**Output:** `dist/index.js` (main bundle) and `dist/preset.js` (build-time preset)
 
-**Types:** Generated via `vite-plugin-dts` to `dist/`
+**Types:** Generated via `vite-plugin-dts` to `dist/types/`
 
 **Externals:** React and React-DOM are peer dependencies (not bundled)
 
-**Panda CSS:** `styled-system/` output is distributed with package
+**Panda CSS:** Prebuilt output ships as `dist/styles.css`; `src/styled-system/` is not distributed
