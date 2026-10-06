@@ -8,6 +8,7 @@ import {
   type ReactNode,
   useCallback,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -345,9 +346,19 @@ export const Select = (props: SelectProps) => {
     middleware: createOverlayMiddleware({
       offset,
       extras: [
+        // Floating UI only positions the listbox; without a height cap a long
+        // option list overflows the viewport on whichever side flip() picks.
+        // Only measured values are written here; the `menu` recipe's
+        // `scrollable` variant applies the cap and scrolling. `padding`
+        // mirrors the overlay middleware's default `shiftPadding`.
         floatingSize({
-          apply({ rects, elements }) {
+          padding: 8,
+          apply({ rects, elements, availableHeight }) {
             elements.floating.style.minWidth = `${rects.reference.width}px`;
+            elements.floating.style.setProperty(
+              '--available-height',
+              `${Math.max(availableHeight, 0)}px`,
+            );
           },
         }),
       ],
@@ -356,6 +367,20 @@ export const Select = (props: SelectProps) => {
 
   const itemRefs = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
+
+  // Focus stays on the trigger when the listbox opens, so nothing scrolls the
+  // initially active option into view. Wait for positioning so the height cap
+  // is in place before scrolling within the capped listbox.
+  const { isPositioned } = floating;
+  useLayoutEffect(() => {
+    if (!isOpen || !isPositioned || initialActiveIndex === null) {
+      return;
+    }
+
+    itemRefs.current[initialActiveIndex]?.scrollIntoView({ block: 'nearest' });
+    // Only on open; later navigation scrolls via useListNavigation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, isPositioned]);
 
   const click = useClick(floating.context, {
     enabled: !disabled,
@@ -390,7 +415,11 @@ export const Select = (props: SelectProps) => {
   );
   const selectedOptions = getSelectedOptions(options, value, multiple);
   const classes = select({ size, multiple, autoSize });
-  const menuClasses = menu({ density, layer: floatingLayer });
+  const menuClasses = menu({
+    density,
+    layer: floatingLayer,
+    scrollable: true,
+  });
   const hasValue = value !== null && value !== undefined && value !== '';
   const chipSize = resolveChipSize(size);
   const accessibleName =
