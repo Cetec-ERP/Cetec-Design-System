@@ -114,7 +114,7 @@ jobs:
           # See: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser#headerpattern
           headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?(!)?: (.*)$'
           headerPatternCorrespondence: type, scope, breaking, subject
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         if: always()
         env:
           PR_TYPE: ${{ steps.lint_pr_title.outputs.type }}

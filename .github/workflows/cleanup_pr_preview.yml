@@ -19,7 +19,7 @@ jobs:
       queue: max
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: gh-pages
           fetch-depth: 0
