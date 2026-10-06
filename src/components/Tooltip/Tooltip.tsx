@@ -53,6 +53,11 @@ export type TooltipProps = Omit<
      * @default 8
      */
     offset?: number;
+    /**
+     * Turns the tooltip off while keeping the trigger wrapper in the tree, so toggling it does not remount `children`.
+     * @default false
+     */
+    disabled?: boolean;
     /** Hover open/close delay in milliseconds, or separate `open` and `close` delays. */
     delay?: number | { open: number; close: number };
     /** Trigger content, wrapped in an inline-flex span to receive floating interaction props. */
@@ -69,7 +74,8 @@ export type TooltipProps = Omit<
  *
  * The trigger is wrapped in a span and linked with `aria-describedby`; Escape
  * dismisses the portalled tooltip. Do not use a tooltip as the only accessible
- * name or instruction for an interactive control.
+ * name or instruction for an interactive control. Set `disabled` to suppress
+ * the tooltip without changing the rendered structure.
  *
  * @example
  * ```tsx
@@ -86,15 +92,18 @@ export const Tooltip = (props: TooltipProps) => {
     placement = 'bottom',
     offset = 8,
     delay,
+    disabled = false,
     ...rest
   } = props;
 
   const [className, otherProps] = splitProps(rest);
   const [isOpen, setIsOpen] = useState(false);
+  // Drop any open state when disabled so re-enabling doesn't reopen a stale tooltip.
+  if (disabled && isOpen) setIsOpen(false);
   const arrowRef = useRef<SVGSVGElement>(null);
 
   const { refs, elements, floatingStyles, context } = useOverlayFloating({
-    open: isOpen,
+    open: isOpen && !disabled,
     onOpenChange: setIsOpen,
     placement,
     middleware: createOverlayMiddleware({
@@ -103,12 +112,12 @@ export const Tooltip = (props: TooltipProps) => {
     }),
   });
 
-  const hover = useHover(context, { move: false, delay });
-  const focus = useFocus(context);
-  const dismiss = useDismiss(context);
+  const hover = useHover(context, { move: false, delay, enabled: !disabled });
+  const focus = useFocus(context, { enabled: !disabled });
+  const dismiss = useDismiss(context, { enabled: !disabled });
   // useRole sets role="tooltip" on the floating element and
   // aria-describedby on the reference — no manual useId needed
-  const role = useRole(context, { role: 'tooltip' });
+  const role = useRole(context, { role: 'tooltip', enabled: !disabled });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
@@ -133,7 +142,7 @@ export const Tooltip = (props: TooltipProps) => {
         {children}
       </Box>
 
-      {isOpen && (
+      {isOpen && !disabled && (
         <FloatingPortal>
           <DsChainPortalRoot reference={elements.domReference}>
             <Box
