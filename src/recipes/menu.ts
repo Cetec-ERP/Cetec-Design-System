@@ -143,8 +143,11 @@ const menuVariants = {
       levelsTrack: {
         height: 'full',
       },
+      // Keeps keyboard focus scrolling from landing under the sticky header;
+      // Menu measures the header into `--menu-back-header-height`.
       level: {
         overflowY: 'auto',
+        scrollPaddingTop: 'var(--menu-back-header-height, 0px)',
       },
       backHeader: {
         position: 'sticky',

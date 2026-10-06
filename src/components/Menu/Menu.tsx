@@ -376,6 +376,29 @@ export const Menu = (props: MenuProps) => {
     subMenuInteraction === 'digin' && hasVisibleResults;
 
   const sizeProbeRef = useRef<HTMLDivElement | null>(null);
+  const activeLevelRef = useRef<HTMLDivElement | null>(null);
+  const activeBackHeaderRef = useRef<HTMLButtonElement | null>(null);
+
+  // The back header is sticky inside the scrolling level, so keyboard focus
+  // scrolling must reserve its height or items land underneath it.
+  useLayoutEffect(() => {
+    const levelEl = activeLevelRef.current;
+    const headerEl = activeBackHeaderRef.current;
+    if (!levelEl) return;
+    if (!headerEl) {
+      levelEl.style.removeProperty('--menu-back-header-height');
+      return;
+    }
+    const update = () =>
+      levelEl.style.setProperty(
+        '--menu-back-header-height',
+        `${headerEl.offsetHeight}px`,
+      );
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(headerEl);
+    return () => observer.disconnect();
+  }, [diginDepth, density]);
 
   useLayoutEffect(() => {
     if (!isMenuVisible || !shouldUseDiginSizing) {
@@ -536,6 +559,7 @@ export const Menu = (props: MenuProps) => {
                     >
                       <FloatingList elementsRef={listRef} labelsRef={labelsRef}>
                         <Box
+                          ref={activeLevelRef}
                           className={classes.level}
                           style={{
                             flex: `0 0 ${levelWidthPercent}%`,
@@ -545,6 +569,7 @@ export const Menu = (props: MenuProps) => {
                             <Box
                               as="button"
                               type="button"
+                              ref={activeBackHeaderRef}
                               className={classes.backHeader}
                               onClick={rootContextValue.onPopDiginLevel}
                             >

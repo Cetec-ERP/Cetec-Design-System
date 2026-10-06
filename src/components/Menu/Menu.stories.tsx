@@ -693,6 +693,53 @@ export const ExLongDiginMenu: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ExLongDiginMenuKeyboard: Story = {
+  name: 'Ex: Long Drill-In Menu (keyboard repro)',
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Repro for the sticky back header covering keyboard-focused items. ' +
+          'The play function opens the menu, drills into "Long list" and ' +
+          'scrolls it to the bottom, then leaves it open. Press Home, or ' +
+          'ArrowUp repeatedly, and check whether the focused item scrolls ' +
+          'underneath the pinned back header.',
+      },
+    },
+  },
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+      density="spacious"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    await userEvent.click(
+      await screen.findByRole('menuitem', { name: /long list/i }),
+    );
+    const back = await screen.findByRole('button', { name: /long list/i });
+    const level = back.parentElement as HTMLElement;
+    await waitFor(() =>
+      expect(level.scrollHeight).toBeGreaterThan(level.clientHeight),
+    );
+    level.scrollTop = level.scrollHeight;
+  },
+};
+
 export const SubMenuDiginForms: Story = {
   render: () => <SubMenuDiginFormsExample />,
   parameters: { controls: { disable: true } },
