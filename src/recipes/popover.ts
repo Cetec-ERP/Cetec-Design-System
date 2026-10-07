@@ -82,7 +82,8 @@ const popoverBase = {
     ms: 'auto',
   },
   // Applied only to the fallback element PopoverTrigger renders for plain
-  // content, never to a consumer's cloned child.
+  // content, never to a consumer's cloned child. Reads as an inline
+  // dashed-underline phrase whether it renders a button or a span.
   trigger: {
     appearance: 'none',
     display: 'inline',
@@ -94,6 +95,11 @@ const popoverBase = {
     color: 'inherit',
     font: 'inherit',
     textAlign: 'inherit',
+    textDecoration: 'underline',
+    textDecorationStyle: 'dashed',
+    textDecorationThickness: '[0.0625em]',
+    textUnderlineOffset: '[0.15625em]',
+    textDecorationSkipInk: 'all',
     cursor: 'pointer',
     _focusVisible: {
       borderRadius: '2',

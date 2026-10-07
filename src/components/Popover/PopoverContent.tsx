@@ -31,7 +31,8 @@ export type PopoverContentProps = Omit<BoxProps, 'children'> & {
  * trapping.
  *
  * For `interaction="rich"`, focus is trapped inside the panel and restored to
- * the trigger on close. For `interaction="definition"`, there is no focus trap.
+ * the trigger on close. For `interaction="definition"`, there is no focus trap
+ * and keyboard users cannot reach the content, so keep it non-interactive.
  * Escape and outside press dismiss the panel. Tone is visual only and never
  * sets `role="alert"`.
  *

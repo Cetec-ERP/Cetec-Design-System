@@ -38,7 +38,9 @@ export type PopoverProps = {
   children: ReactNode;
   /**
    * How the popover opens and manages focus.
-   * - `definition`: hover + focus, no focus trap (handbook definitions)
+   * - `definition`: hover + focus, no focus trap (handbook definitions).
+   *   Keyboard users cannot move focus into the content, so it must be
+   *   non-interactive: no links, buttons, or `PopoverClose`.
    * - `rich`: click open, focus trap + restore focus (interactive content)
    * @default 'rich'
    */
@@ -86,15 +88,13 @@ export type PopoverProps = {
  * Compose with `PopoverTrigger`, optional `PopoverAnchor`, and
  * `PopoverContent` (plus Header/Title/Description/Body/Media/Footer/Close).
  * Use `interaction="definition"` for hover/focus plain notes without a focus
- * trap, and `interaction="rich"` for click-to-open interactive content with
- * focus trapping.
+ * trap (content must be non-interactive), and `interaction="rich"` for
+ * click-to-open interactive content with focus trapping.
  *
  * @example
  * ```tsx
  * <Popover interaction="definition" tone="warning">
- *   <PopoverTrigger>
- *     <Text dashedUnderline tabIndex={0}>cycle time</Text>
- *   </PopoverTrigger>
+ *   <PopoverTrigger>cycle time</PopoverTrigger>
  *   <PopoverContent>
  *     <PopoverHeader>
  *       <PopoverTitle>Warning</PopoverTitle>

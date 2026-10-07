@@ -32,15 +32,15 @@ export type PopoverTriggerProps = Omit<BoxProps, 'children'> & {
 /**
  * Marks the control that opens a parent {@link Popover}.
  *
- * For `interaction="definition"`, prefer a dashed-underline phrase (for
- * example `Text` with `dashedUnderline`) so keyboard users can focus it. For
- * `interaction="rich"`, prefer a button or other interactive control.
+ * Pass plain text for an inline dashed-underline phrase: it renders a
+ * `button` in `rich` mode and a focusable `span` in `definition` mode. Pass a
+ * single element (such as `Button`) to use it as the trigger as-is; it must be
+ * focusable, and for `rich` it should be a button so screen readers announce
+ * it as one.
  *
  * @example
  * ```tsx
- * <PopoverTrigger>
- *   <Text dashedUnderline tabIndex={0}>cycle time</Text>
- * </PopoverTrigger>
+ * <PopoverTrigger>cycle time</PopoverTrigger>
  * ```
  */
 export const PopoverTrigger = (props: PopoverTriggerProps) => {
