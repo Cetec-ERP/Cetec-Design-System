@@ -4,6 +4,7 @@ import {
   isValidElement,
   type KeyboardEvent,
   type MouseEvent,
+  type PointerEvent,
   type ReactElement,
   type ReactNode,
   useCallback,
@@ -86,6 +87,14 @@ const isSelectOptionElement = (
 const getOptionText = (option: ReactElement<SelectOptionProps>) => {
   return option.props.label;
 };
+
+const NAVIGATION_KEYS = new Set(['ArrowUp', 'ArrowDown', 'Home', 'End']);
+
+// Keys floating-ui treats as moving through the list: arrows, Home/End, and
+// printable characters (typeahead). Modifiers, Tab and the like don't count.
+const isNavigationKey = (event: KeyboardEvent<HTMLElement>) =>
+  NAVIGATION_KEYS.has(event.key) ||
+  (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey);
 
 const getSelectedDisplay = (
   options: ReactElement<SelectOptionProps>[],
@@ -259,10 +268,13 @@ export const Select = (props: SelectProps) => {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [internalValue, setInternalValue] = useState<SelectValue>(defaultValue);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [hasNavigated, setHasNavigated] = useState(false);
+  const [openedByKeyboard, setOpenedByKeyboard] = useState(false);
 
   const isOpenControlled = controlledOpen !== undefined;
   const isOpen = isOpenControlled ? controlledOpen : internalOpen;
   const value = controlledValue !== undefined ? controlledValue : internalValue;
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
   const options = useMemo(() => {
     return Children.toArray(children).filter(isSelectOptionElement);
@@ -306,8 +318,24 @@ export const Select = (props: SelectProps) => {
       : firstEnabledIndex >= 0
         ? firstEnabledIndex
         : null;
+  // Each open or close starts a fresh interaction, whether the user caused it
+  // or a controlling parent changed `open` directly. Reset during render
+  // rather than in `setOpenState`, which that second path never reaches. Only
+  // opening from the keyboard starts out as navigated, so its selected row
+  // shows the clear icon right away.
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    setActiveIndex(isOpen ? initialActiveIndex : null);
+    setHasNavigated(isOpen && openedByKeyboard);
+    setOpenedByKeyboard(false);
+  }
+
+  // Until the user has navigated, the selected row stands in as the active
+  // one. After that, a null `activeIndex` is real (the pointer left the
+  // options), and must reach floating-ui as null so the next arrow key moves
+  // focus to a row instead of re-activating the one it already thinks is active.
   const resolvedActiveIndex = isOpen
-    ? (activeIndex ?? initialActiveIndex)
+    ? (activeIndex ?? (hasNavigated ? null : initialActiveIndex))
     : null;
 
   const activeOptionId =
@@ -316,7 +344,6 @@ export const Select = (props: SelectProps) => {
       : undefined;
 
   const setOpenState = (nextOpen: boolean) => {
-    setActiveIndex(nextOpen ? initialActiveIndex : null);
     if (!isOpenControlled) {
       setInternalOpen(nextOpen);
     }
@@ -429,6 +456,7 @@ export const Select = (props: SelectProps) => {
         event.key === ' ')
     ) {
       event.preventDefault();
+      setOpenedByKeyboard(true);
       setOpenState(true);
     }
 
@@ -581,13 +609,36 @@ export const Select = (props: SelectProps) => {
                 density={density}
                 className={menuClasses.wrapper}
                 style={floating.floatingStyles}
-                {...(getFloatingProps() as Record<string, unknown>)}
+                {...(getFloatingProps({
+                  // floating-ui also reports `onNavigate` while opening, so
+                  // only real input on the list counts as the user pointing
+                  // at a row. Option events bubble here, and the listbox
+                  // itself holds focus after the pointer leaves the options.
+                  onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+                    if (isNavigationKey(event)) {
+                      setHasNavigated(true);
+                    }
+                  },
+                  onPointerMove: (event: PointerEvent<HTMLElement>) => {
+                    if (event.pointerType !== 'touch') {
+                      setHasNavigated(true);
+                    }
+                  },
+                }) as Record<string, unknown>)}
               >
                 {options.map((option, index) => {
                   const optionLabel = getOptionText(option);
                   const isSelected = multiple
                     ? selectedValueSet.has(option.props.value)
                     : value === option.props.value;
+                  // The selected row is made active as soon as the list opens,
+                  // so `activeIndex` alone can't tell whether the user is
+                  // pointing at it. Once the list has seen pointer or key
+                  // input, the active row is the one being pointed at.
+                  const isPointed =
+                    !option.props.disabled &&
+                    hasNavigated &&
+                    activeIndex === index;
 
                   return (
                     <ListItem
@@ -604,7 +655,9 @@ export const Select = (props: SelectProps) => {
                       description={option.props.description}
                       iconBefore={
                         !multiple
-                          ? (option.props.iconLeft ?? 'check')
+                          ? isSelected && isPointed
+                            ? 'x'
+                            : (option.props.iconLeft ?? 'check')
                           : option.props.iconLeft
                       }
                       iconBeforeFill={
