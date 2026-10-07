@@ -55,8 +55,13 @@ export const TabPanel = (props: TabPanelProps) => {
         aria-labelledby={getTabId(value)}
         tabIndex={isActive ? 0 : -1}
         display={isActive ? 'block' : 'none'}
+        // A consumer's responsive `display` (for example `{ md: 'flex' }`)
+        // must not reveal an inactive panel. The `[hidden]` rule outranks
+        // single-class breakpoint utilities on specificity.
+        _hidden={{ display: 'none' }}
         className={cx(classes.panel, className)}
         {...otherProps}
+        hidden={!isActive}
       >
         {content}
       </Box>

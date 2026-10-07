@@ -926,3 +926,35 @@ export const EmptyStringValue: Story = {
     await expect(visible).toHaveAttribute('tabindex', '0');
   },
 };
+
+export const ResponsivePanelDisplay: Story = {
+  name: 'Test: a responsive panel display never reveals an inactive panel',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Tabs {...args} aria-label="Responsive panels" defaultValue="work">
+      <Tab value="work">Work</Tab>
+      <Tab value="materials">Materials</Tab>
+      <TabPanel value="work" display={{ xs: 'flex' }} gap="8" py="16">
+        <Text>Work content.</Text>
+        <Button>Start work</Button>
+      </TabPanel>
+      <TabPanel value="materials" display={{ xs: 'flex' }} gap="8" py="16">
+        <Text>Materials content.</Text>
+        <Button>Issue materials</Button>
+      </TabPanel>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.getByText('Work content.')).toBeVisible();
+    await expect(canvas.getByText('Materials content.')).not.toBeVisible();
+    await expect(
+      canvas.queryByRole('button', { name: 'Issue materials' }),
+    ).toBeNull();
+
+    await userEvent.click(canvas.getByRole('tab', { name: 'Materials' }));
+    await expect(canvas.getByText('Materials content.')).toBeVisible();
+    await expect(canvas.getByText('Work content.')).not.toBeVisible();
+  },
+};
