@@ -81,7 +81,7 @@ export type CodeBlockProps = Omit<
   BoxProps,
   keyof CodeBlockVariantProps | keyof CodeBlockOwnProps
 > &
-  Omit<CodeBlockVariantProps, 'lineNumbers' | 'collapsed'> &
+  Omit<CodeBlockVariantProps, 'lineNumbers' | 'collapsed' | 'actionGutter'> &
   CodeBlockOwnProps;
 
 const stripTrailingNewline = (value: string) => value.replace(/\r?\n$/, '');
@@ -142,12 +142,15 @@ export const CodeBlock = (props: CodeBlockProps) => {
   const canCollapse = maxLines !== undefined && lineCount > maxLines;
   const collapsed = canCollapse && !expanded;
 
+  const floatingCopy = copyable && title === undefined;
+
   const classes = codeBlock({
     tone,
     size,
     wrap,
     lineNumbers: showLineNumbers,
     collapsed,
+    actionGutter: floatingCopy,
   });
 
   const { copy, copied, failed } = useClipboard();
@@ -156,12 +159,32 @@ export const CodeBlock = (props: CodeBlockProps) => {
   const contentId = useId();
   const contentRef = useRef<HTMLDivElement>(null);
   const [overflowing, setOverflowing] = useState(false);
+  const [collapsedHeight, setCollapsedHeight] = useState<number>();
 
   useLayoutEffect(() => {
     const element = contentRef.current;
     if (!element) return undefined;
 
     const measure = () => {
+      // A wrapped source line is taller than one line height, so the
+      // collapsed height comes from the bottom of the last visible line plus
+      // the bottom padding of the `pre`.
+      const lastVisibleLine =
+        collapsed && maxLines !== undefined
+          ? element.querySelector('code')?.children[maxLines - 1]
+          : undefined;
+      const pre = element.firstElementChild;
+      if (lastVisibleLine && pre) {
+        const bottom =
+          lastVisibleLine.getBoundingClientRect().bottom -
+          element.getBoundingClientRect().top +
+          element.scrollTop +
+          parseFloat(getComputedStyle(pre).paddingBottom);
+        setCollapsedHeight(Math.ceil(bottom));
+      } else {
+        setCollapsedHeight(undefined);
+      }
+
       setOverflowing(
         element.scrollWidth > element.clientWidth ||
           element.scrollHeight > element.clientHeight,
@@ -172,14 +195,22 @@ export const CodeBlock = (props: CodeBlockProps) => {
     if (typeof ResizeObserver === 'undefined') return undefined;
     const observer = new ResizeObserver(measure);
     observer.observe(element);
+    // The code can change height without the clipped content box changing,
+    // for example when a web font loads.
+    const codeElement = element.querySelector('code');
+    if (codeElement) observer.observe(codeElement);
     return () => observer.disconnect();
-  }, [text, collapsed, wrap, showLineNumbers]);
+  }, [text, collapsed, maxLines, wrap, showLineNumbers, size]);
 
   const labelSource = typeof title === 'string' ? title : language;
   const label = labelSource ? `${labelSource} code block` : 'Code block';
 
   const rootStyle = {
     '--code-block-max-lines': maxLines,
+    '--code-block-collapsed-h':
+      collapsed && collapsedHeight !== undefined
+        ? `${String(collapsedHeight)}px`
+        : undefined,
     '--code-block-gutter': `${String(Math.max(lastLineNumber, 1)).length}ch`,
     ...style,
   } as CSSProperties;
@@ -215,7 +246,7 @@ export const CodeBlock = (props: CodeBlockProps) => {
           {copyButton && <Box className={classes.actions}>{copyButton}</Box>}
         </Box>
       )}
-      {title === undefined && copyButton && (
+      {floatingCopy && (
         <Box className={classes.floatingActions}>{copyButton}</Box>
       )}
 
@@ -234,25 +265,25 @@ export const CodeBlock = (props: CodeBlockProps) => {
             as="code"
             className={cx(classes.code, language && `language-${language}`)}
           >
-            {showLineNumbers
-              ? lines.map((line, index) => (
+            {lines.map((line, index) => (
+              <Box
+                as="span"
+                // Lines are positional and never reorder.
+
+                key={index}
+                className={classes.line}
+              >
+                {showLineNumbers && (
                   <Box
                     as="span"
-                    // Lines are positional and never reorder.
-
-                    key={index}
-                    className={classes.line}
-                  >
-                    <Box
-                      as="span"
-                      aria-hidden="true"
-                      className={classes.lineNumber}
-                      data-line={lineStart + index}
-                    />
-                    {line}
-                  </Box>
-                ))
-              : text}
+                    aria-hidden="true"
+                    className={classes.lineNumber}
+                    data-line={lineStart + index}
+                  />
+                )}
+                {line}
+              </Box>
+            ))}
           </Box>
         </Box>
       </Box>

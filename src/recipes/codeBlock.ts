@@ -220,12 +220,30 @@ const codeBlockVariants = {
     },
     false: {},
   },
-  /** Limits the visible height to `--code-block-max-lines` lines. */
+  /**
+   * Limits the visible height to the first `--code-block-max-lines` source
+   * lines. The component measures the bottom of the last visible line into
+   * `--code-block-collapsed-h`, so a wrapped line shows in full. The `calc`
+   * is the fallback before measurement, and it is exact when lines do not
+   * wrap.
+   */
   collapsed: {
     true: {
       content: {
-        maxH: 'calc(var(--code-block-max-lines) * 1lh + token(spacing.24))',
+        maxH: 'var(--code-block-collapsed-h, calc(var(--code-block-max-lines) * 1lh + token(spacing.24)))',
         overflowY: 'hidden',
+      },
+    },
+    false: {},
+  },
+  /**
+   * Reserves a gutter on the right of the code for the floating copy button,
+   * so the button never covers code. Set when there is no header.
+   */
+  actionGutter: {
+    true: {
+      content: {
+        mr: '32',
       },
     },
     false: {},
@@ -256,5 +274,6 @@ export const codeBlockRecipe = defineSlotRecipe({
     wrap: false,
     lineNumbers: false,
     collapsed: false,
+    actionGutter: false,
   },
 });

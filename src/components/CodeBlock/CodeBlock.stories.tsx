@@ -181,6 +181,73 @@ export const ExpandToggle: Story = {
   },
 };
 
+const longLine = 'abcdefghijklmnopqrstuvwxyz'.repeat(6);
+
+const overlaps = (a: DOMRect, b: DOMRect) =>
+  a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+
+export const CopyButtonClearsCode: Story = {
+  name: 'Test: copy button clears the code',
+  render: () => (
+    <Box display="grid" gap="16">
+      <CodeBlock data-testid="scroll" code={longLine} />
+      <CodeBlock data-testid="wrap" code={longLine} wrap />
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    for (const testId of ['scroll', 'wrap']) {
+      const block = canvas.getByTestId(testId);
+      const button = within(block).getByRole('button', { name: 'Copy code' });
+      const content = block.querySelector('pre')?.parentElement;
+      const firstLine = block.querySelector('code > span');
+      if (!content || !firstLine) throw new Error('Code not rendered');
+
+      // Only the part of the line inside the scroll area is visible.
+      const area = content.getBoundingClientRect();
+      const line = firstLine.getBoundingClientRect();
+      const visibleLine = new DOMRect(
+        Math.max(line.left, area.left),
+        Math.max(line.top, area.top),
+        Math.min(line.right, area.right) - Math.max(line.left, area.left),
+        Math.min(line.bottom, area.bottom) - Math.max(line.top, area.top),
+      );
+
+      expect(overlaps(button.getBoundingClientRect(), visibleLine)).toBe(false);
+    }
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const CollapseKeepsWholeLines: Story = {
+  name: 'Test: collapse keeps whole wrapped lines',
+  args: { wrap: true, code: logSample, language: 'log', maxLines: 2 },
+  decorators: [
+    (Story) => (
+      <Box maxW="sm">
+        <Story />
+      </Box>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const [first, second] = canvasElement.querySelectorAll('code > span');
+    const content = canvasElement.querySelector('pre')?.parentElement;
+    if (!first || !second || !content) throw new Error('Lines not rendered');
+
+    await waitFor(() => {
+      const secondBox = second.getBoundingClientRect();
+      const area = content.getBoundingClientRect();
+      const lineHeight = parseFloat(getComputedStyle(first).lineHeight);
+
+      // The second source line wraps, so it is taller than one row.
+      expect(secondBox.height).toBeGreaterThan(lineHeight * 1.5);
+      // All of it stays visible above the collapse.
+      expect(secondBox.bottom).toBeLessThanOrEqual(area.bottom);
+    });
+  },
+};
+
 export const ExIntegrationSetup: Story = {
   name: 'Ex: Integration Setup',
   render: () => (
