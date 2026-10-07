@@ -215,7 +215,18 @@ export const useTabs = ({
 
       if (navigable.length === 0) return;
 
-      const currentIndex = Math.max(0, navigable.indexOf(selectedValue));
+      // Start from the tab that holds focus, not the selected value. A
+      // controlled parent may commit the selection after focus has moved, and
+      // repeated keys must keep walking from the focused tab.
+      let currentValue = selectedValue;
+      for (const [tabValue, element] of elementsRef.current) {
+        if (element === event.currentTarget) {
+          currentValue = tabValue;
+          break;
+        }
+      }
+
+      const currentIndex = Math.max(0, navigable.indexOf(currentValue));
       let nextIndex: number;
 
       switch (event.key) {

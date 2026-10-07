@@ -821,6 +821,40 @@ export const DeferredControlledOverflow: Story = {
     });
     await expect(bravo).toHaveAttribute('aria-selected', 'true');
     await expect(bravo).toHaveFocus();
+
+    // Repeated keys walk from the focused tab, not the committed value.
+    wrapper.style.width = '';
+    await waitFor(async () => {
+      await expect(canvas.getAllByRole('tab')).toHaveLength(3);
+    });
+
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(async () => {
+      await expect(canvas.getByTestId('deferred-value')).toHaveTextContent(
+        'Parent value: alpha',
+      );
+    });
+
+    // Both presses land before the parent commits: Alpha → Bravo → Charlie.
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+    const charlie = canvas.getByRole('tab', { name: 'Charlie section' });
+    await expect(charlie).toHaveFocus();
+    await waitFor(async () => {
+      await expect(canvas.getByTestId('deferred-value')).toHaveTextContent(
+        'Parent value: charlie',
+      );
+    });
+
+    // And back again: Charlie → Bravo → Alpha.
+    await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
+    await expect(
+      canvas.getByRole('tab', { name: 'Alpha section' }),
+    ).toHaveFocus();
+    await waitFor(async () => {
+      await expect(canvas.getByTestId('deferred-value')).toHaveTextContent(
+        'Parent value: alpha',
+      );
+    });
   },
 };
 
