@@ -23,7 +23,8 @@ import { usePopoverContext } from './PopoverContext';
 export type PopoverTriggerProps = Omit<BoxProps, 'children'> & {
   /**
    * Trigger content. A single React element receives refs and interaction
-   * props via `cloneElement`. Otherwise content is wrapped in an inline span.
+   * props via `cloneElement` and keeps its own styles. Otherwise content is
+   * wrapped in an inline `button` (`rich`) or focusable `span` (`definition`).
    */
   children: ReactNode;
 };
@@ -43,18 +44,18 @@ export type PopoverTriggerProps = Omit<BoxProps, 'children'> & {
  * ```
  */
 export const PopoverTrigger = (props: PopoverTriggerProps) => {
-  const { children, ...rest } = props;
+  const { children, ref, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
-  const { open, interaction, contentId, getReferenceProps, setReferenceRef } =
+  const { interaction, getReferenceProps, setReferenceRef } =
     usePopoverContext();
-  const classes = popover();
+  const classes = popover({ interaction });
 
   const childArray = Children.toArray(children);
   const onlyChild = childArray.length === 1 ? childArray[0] : null;
   const childRefProp = isValidElement(onlyChild)
     ? (onlyChild.props as { ref?: Ref<Element | null> }).ref
     : undefined;
-  const mergedRef = useMergeRefs([childRefProp, setReferenceRef]);
+  const mergedRef = useMergeRefs([childRefProp, ref, setReferenceRef]);
 
   if (isValidElement(onlyChild)) {
     const child = onlyChild as ReactElement<
@@ -68,29 +69,31 @@ export const PopoverTrigger = (props: PopoverTriggerProps) => {
     return cloneElement(child, {
       ...referenceProps,
       ref: mergedRef,
-      'aria-expanded':
-        interaction === 'rich' ? (open ? 'true' : 'false') : undefined,
-      'aria-controls': open ? contentId : undefined,
-      'aria-haspopup': interaction === 'rich' ? 'dialog' : undefined,
-      className: cx(classes.trigger, child.props.className, className),
+      className: cx(child.props.className, className) || undefined,
     } as HTMLAttributes<HTMLElement>);
+  }
+
+  if (interaction === 'rich') {
+    return (
+      <Box
+        as="button"
+        type="button"
+        ref={mergedRef}
+        className={cx(classes.trigger, className)}
+        {...getReferenceProps(otherProps)}
+      >
+        {children}
+      </Box>
+    );
   }
 
   return (
     <Box
       as="span"
-      ref={setReferenceRef}
-      display="inline"
-      width="fit"
+      ref={mergedRef}
+      tabIndex={0}
       className={cx(classes.trigger, className)}
-      aria-expanded={
-        interaction === 'rich' ? (open ? 'true' : 'false') : undefined
-      }
-      aria-controls={open ? contentId : undefined}
-      aria-haspopup={interaction === 'rich' ? 'dialog' : undefined}
-      tabIndex={interaction === 'definition' ? 0 : undefined}
-      {...(getReferenceProps() as Record<string, unknown>)}
-      {...otherProps}
+      {...getReferenceProps(otherProps)}
     >
       {children}
     </Box>

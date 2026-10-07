@@ -1,6 +1,6 @@
 import {
   useCallback,
-  useId,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -135,7 +135,6 @@ export const Popover = (props: PopoverProps) => {
   );
 
   const arrowRef = useRef<SVGSVGElement | null>(null);
-  const contentId = useId();
   const [titleId, setTitleId] = useState<string | undefined>();
   const [descriptionId, setDescriptionId] = useState<string | undefined>();
   const [hasAnchor, setHasAnchor] = useState(false);
@@ -164,6 +163,16 @@ export const Popover = (props: PopoverProps) => {
   const role = useRole(context, {
     role: isDefinition ? 'tooltip' : 'dialog',
   });
+
+  // Unmounting an Anchor clears the position reference; hand positioning back
+  // to the trigger so the content keeps tracking it.
+  const { domReference } = elements;
+  const { setReference } = refs;
+  useEffect(() => {
+    if (!hasAnchor && domReference) {
+      setReference(domReference);
+    }
+  }, [hasAnchor, domReference, setReference]);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
@@ -210,7 +219,6 @@ export const Popover = (props: PopoverProps) => {
       getFloatingProps: (userProps) =>
         getFloatingProps(userProps) as Record<string, unknown>,
       arrowRef,
-      contentId,
       titleId,
       setTitleId,
       descriptionId,
@@ -237,7 +245,6 @@ export const Popover = (props: PopoverProps) => {
       elements.domReference,
       getReferenceProps,
       getFloatingProps,
-      contentId,
       titleId,
       descriptionId,
       hasAnchor,

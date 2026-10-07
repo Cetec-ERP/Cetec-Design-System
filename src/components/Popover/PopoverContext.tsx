@@ -67,8 +67,6 @@ export type PopoverContextValue = {
   ) => Record<string, unknown>;
   /** Ref for the Floating UI arrow element. */
   arrowRef: MutableRefObject<SVGSVGElement | null>;
-  /** Stable id for the content element (`aria-controls`). */
-  contentId: string;
   /** Optional id for the title (`aria-labelledby`). */
   titleId: string | undefined;
   setTitleId: Dispatch<SetStateAction<string | undefined>>;

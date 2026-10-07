@@ -35,8 +35,8 @@ export type PopoverCloseProps = Omit<
  * ```
  */
 export const PopoverClose = (props: PopoverCloseProps) => {
-  const { altText = 'Close', className, onClick, ...rest } = props;
-  const [, otherProps] = splitProps(rest as Record<string, unknown>);
+  const { altText = 'Close', onClick, ...rest } = props;
+  const [className, otherProps] = splitProps(rest as Record<string, unknown>);
   const { setOpen } = usePopoverContext();
   const classes = popover();
 

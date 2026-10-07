@@ -12,9 +12,7 @@ const popoverBase = {
     borderRadius: '8',
     border: 'default',
     boxShadow: 'overlay',
-    zIndex: 'elevated',
     outline: 'none',
-    overflow: 'hidden',
   },
   header: {
     display: 'flex',
@@ -55,10 +53,14 @@ const popoverBase = {
     color: 'text',
     lineHeight: 'default',
   },
+  // Content can't clip overflow without clipping the arrow, so media rounds
+  // its own corners when it sits at the top or bottom edge of the panel.
   media: {
     display: 'block',
     width: 'full',
     overflow: 'hidden',
+    _first: { borderTopRadius: '8' },
+    _last: { borderBottomRadius: '8' },
     '& img': {
       display: 'block',
       width: 'full',
@@ -79,14 +81,39 @@ const popoverBase = {
     flex: 'none',
     ms: 'auto',
   },
+  // Applied only to the fallback element PopoverTrigger renders for plain
+  // content, never to a consumer's cloned child.
   trigger: {
+    appearance: 'none',
     display: 'inline',
     width: 'fit',
-    cursor: 'help',
+    p: '0',
+    m: '0',
+    bg: 'transparent',
+    borderWidth: '0',
+    color: 'inherit',
+    font: 'inherit',
+    textAlign: 'inherit',
+    cursor: 'pointer',
+    _focusVisible: {
+      borderRadius: '2',
+      outlineWidth: '2',
+      outlineStyle: 'solid',
+      outlineColor: 'border.focused',
+    },
   },
 };
 
 const popoverVariants = {
+  interaction: {
+    definition: { trigger: { cursor: 'help' } },
+    rich: {},
+  },
+  /** z-index layer inherited from FloatingLayerContext (raised inside modals). */
+  layer: {
+    elevated: { content: { zIndex: 'elevated' } },
+    modalFloating: { content: { zIndex: 'modalFloating' } },
+  },
   size: {
     sm: {
       content: { maxW: '280', fontSize: '12' },
@@ -167,5 +194,7 @@ export const popoverRecipe = defineSlotRecipe({
   variants: popoverVariants,
   defaultVariants: {
     size: 'md',
+    interaction: 'rich',
+    layer: 'elevated',
   },
 });

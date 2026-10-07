@@ -4,12 +4,14 @@ import {
   FloatingArrow,
   FloatingFocusManager,
   FloatingPortal,
+  useMergeRefs,
 } from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
 import { popover } from '@styled-system/recipes';
 import { token } from '@styled-system/tokens';
 
+import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -42,7 +44,7 @@ export type PopoverContentProps = Omit<BoxProps, 'children'> & {
  * ```
  */
 export const PopoverContent = (props: PopoverContentProps) => {
-  const { children, ...rest } = props;
+  const { children, ref, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
   const {
     open,
@@ -56,12 +58,13 @@ export const PopoverContent = (props: PopoverContentProps) => {
     getFloatingProps,
     setFloatingRef,
     arrowRef,
-    contentId,
     titleId,
     descriptionId,
   } = usePopoverContext();
+  const floatingLayer = useFloatingLayer();
+  const mergedRef = useMergeRefs([ref, setFloatingRef]);
 
-  const classes = popover({ size, tone });
+  const classes = popover({ size, tone, layer: floatingLayer });
   const isRich = interaction === 'rich';
 
   if (!open) {
@@ -74,14 +77,12 @@ export const PopoverContent = (props: PopoverContentProps) => {
   const panel = (
     <Box
       {...dsComponent('PopoverContent')}
-      ref={setFloatingRef}
-      id={contentId}
-      style={floatingStyles}
+      ref={mergedRef}
       className={cx(classes.content, className)}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      {...(getFloatingProps() as Record<string, unknown>)}
-      {...otherProps}
+      {...getFloatingProps(otherProps)}
+      style={floatingStyles}
     >
       {children}
       {showArrow && (
