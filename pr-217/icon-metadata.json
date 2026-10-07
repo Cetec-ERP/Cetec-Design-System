@@ -1120,6 +1120,22 @@
     "category": "Shapes",
     "deprecated": false
   },
+  "circle-dashed": {
+    "aliases": [
+      "circle dashed",
+      "dashed circle",
+      "dotted circle",
+      "empty",
+      "placeholder",
+      "draft",
+      "pending",
+      "not started",
+      "backlog"
+    ],
+    "tags": [],
+    "category": "Shapes",
+    "deprecated": false
+  },
   "circles-add": {
     "aliases": [
       "round",
@@ -3297,6 +3313,23 @@
     "category": "Doc / note",
     "deprecated": false
   },
+  "not-equal": {
+    "aliases": [
+      "not equal",
+      "not equals",
+      "inequality",
+      "unequal",
+      "different",
+      "mismatch",
+      "≠",
+      "!="
+    ],
+    "tags": [
+      "math"
+    ],
+    "category": "Math",
+    "deprecated": false
+  },
   "note": {
     "aliases": [
       "notes",
@@ -4448,6 +4481,21 @@
       "finances",
       "plus",
       "square"
+    ],
+    "tags": [],
+    "category": "Shapes",
+    "deprecated": false
+  },
+  "square-dashed": {
+    "aliases": [
+      "square dashed",
+      "dashed square",
+      "dotted square",
+      "marquee",
+      "selection area",
+      "bounding box",
+      "drop zone",
+      "empty slot"
     ],
     "tags": [],
     "category": "Shapes",
