@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { configure, expect, userEvent, waitFor, within } from '@storybook/test';
 
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
@@ -22,6 +22,9 @@ import { MenuItem } from './MenuItem';
 import { SubMenu } from './SubMenu';
 
 import type { Meta, StoryObj } from '@storybook/react';
+
+// Floating UI moves focus on animation frames, which can lag under CI load.
+configure({ asyncUtilTimeout: 4000 });
 
 const meta = {
   title: 'Components/Menu',
@@ -233,6 +236,38 @@ const AutocompleteFilteringExample = () => {
   );
 };
 
+/** Menus render in a portal, so queries run against the document body. */
+const getDocumentQueries = (canvasElement: HTMLElement) =>
+  within(canvasElement.ownerDocument.body);
+
+const expectFocusInsideMenu = async (canvasElement: HTMLElement) => {
+  const body = getDocumentQueries(canvasElement);
+  await waitFor(
+    () => {
+      const focused = canvasElement.ownerDocument.activeElement;
+      expect(focused).not.toBe(canvasElement.ownerDocument.body);
+      expect(body.getAllByRole('menu').some((m) => m.contains(focused))).toBe(
+        true,
+      );
+    },
+    { timeout: 4000 },
+  );
+};
+
+const expectNoFocusableInAriaHidden = (canvasElement: HTMLElement) => {
+  const leaks = Array.from(
+    canvasElement.ownerDocument.querySelectorAll<HTMLElement>(
+      '[data-ds-component="Menu"] [aria-hidden="true"] :is(button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"]))',
+    ),
+  ).filter(
+    (element) =>
+      !element.closest('[inert]') &&
+      !element.hasAttribute('data-floating-ui-focus-guard') &&
+      !element.closest('[data-floating-ui-focus-guard]'),
+  );
+  expect(leaks).toHaveLength(0);
+};
+
 export const Actions: Story = {
   render: () => (
     <Menu inline>
@@ -241,6 +276,22 @@ export const Actions: Story = {
       <MenuItem label="Archive" iconBefore="trash" />
     </Menu>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Keyboard only: Tab enters the menu without any hover, then arrows/Home/End.
+    await userEvent.tab();
+    expect(canvas.getByRole('menuitem', { name: /edit/i })).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowDown}');
+    expect(canvas.getByRole('menuitem', { name: /duplicate/i })).toHaveFocus();
+
+    await userEvent.keyboard('{End}');
+    expect(canvas.getByRole('menuitem', { name: /archive/i })).toHaveFocus();
+
+    await userEvent.keyboard('{Home}');
+    expect(canvas.getByRole('menuitem', { name: /edit/i })).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -353,6 +404,39 @@ export const SubMenuHover: Story = {
       </SubMenu>
     </Menu>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const trigger = canvas.getByRole('button', { name: /open menu/i });
+
+    await userEvent.tab();
+    expect(trigger).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() =>
+      expect(
+        body.getByRole('menuitem', { name: /view profile/i }),
+      ).toHaveFocus(),
+    );
+
+    await userEvent.keyboard('{ArrowDown}');
+    expect(body.getByRole('menuitem', { name: /more actions/i })).toHaveFocus();
+
+    // ArrowRight opens the flyout and focuses its first row; ArrowLeft returns.
+    await userEvent.keyboard('{ArrowRight}');
+    await waitFor(() =>
+      expect(body.getByRole('menuitem', { name: /export/i })).toHaveFocus(),
+    );
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() =>
+      expect(
+        body.getByRole('menuitem', { name: /more actions/i }),
+      ).toHaveFocus(),
+    );
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    expect(trigger).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -586,6 +670,48 @@ export const SubMenuDigin: Story = {
       </SubMenu>
     </Menu>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const trigger = canvas.getByRole('button', { name: /open menu/i });
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    // Keyboard only: open from the trigger and land inside the menu.
+    await userEvent.tab();
+    expect(trigger).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expectFocusInsideMenu(canvasElement);
+    await waitFor(() => expect(item(/dashboard/i)).toHaveFocus());
+
+    await userEvent.keyboard('{ArrowDown}');
+    expect(item(/settings/i)).toHaveFocus();
+
+    // Drill in: focus moves to the first row of the new level and stays usable.
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(item(/profile/i)).toHaveFocus());
+    expectNoFocusableInAriaHidden(canvasElement);
+    await userEvent.keyboard('{ArrowDown}');
+    expect(item(/billing/i)).toHaveFocus();
+
+    // Left goes back and restores focus to the row that opened the level.
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/settings/i)).toHaveFocus());
+
+    // Space drills in again; a second level pushes the same way.
+    await userEvent.keyboard(' ');
+    await waitFor(() => expect(item(/profile/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowRight}');
+    await waitFor(() => expect(item(/members/i)).toHaveFocus());
+
+    // Escape steps back one level at a time, then closes and returns to the trigger.
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(item(/team/i)).toHaveFocus());
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(item(/settings/i)).toHaveFocus());
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    expect(trigger).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -701,6 +827,119 @@ export const ExLongDiginMenu: Story = {
       );
       expect(shortLevel.scrollHeight).toBeLessThanOrEqual(
         shortLevel.clientHeight + 1,
+      );
+    });
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ExLongDiginMenuFocusReturn: Story = {
+  name: 'Ex: Long Drill-In Menu (focus return on back)',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+        <SubMenu label="Deep submenu">
+          <MenuItem label="Deep first" />
+          <MenuItem label="Deep second" />
+        </SubMenu>
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowDown}');
+    await waitFor(() => expect(item(/long list/i)).toHaveFocus());
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(item(/nested 1 - item 1$/i)).toHaveFocus());
+
+    // Jump to the last row (a submenu below the fold) and drill into it.
+    await userEvent.keyboard('{End}');
+    await waitFor(() => expect(item(/deep submenu/i)).toHaveFocus());
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(item(/deep first/i)).toHaveFocus());
+
+    // Going back remounts the long level at scrollTop 0. Focus must return to
+    // the opening row and that row must end up in view, not left below the
+    // fold or underneath the sticky back header.
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/deep submenu/i)).toHaveFocus());
+    await waitFor(() => {
+      const menu = body.getByRole('menu');
+      const header = menu.querySelector<HTMLElement>('[data-menu-back]');
+      const rowRect = item(/deep submenu/i).getBoundingClientRect();
+      expect(header).not.toBeNull();
+      expect(rowRect.top).toBeGreaterThanOrEqual(
+        (header as HTMLElement).getBoundingClientRect().bottom - 1,
+      );
+      expect(rowRect.bottom).toBeLessThanOrEqual(
+        menu.getBoundingClientRect().bottom + 1,
+      );
+    });
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const ExLongDiginMenuMouseBack: Story = {
+  name: 'Ex: Long Drill-In Menu (focus return on mouse back)',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+        <SubMenu label="Deep submenu">
+          <MenuItem label="Deep first" />
+        </SubMenu>
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    await userEvent.click(
+      await body.findByRole('menuitem', { name: /long list/i }),
+    );
+    await waitFor(() => expect(item(/nested 1 - item 1$/i)).toBeVisible());
+
+    // Open the submenu from a row below the fold, then use the Back header
+    // with the mouse. The remounted level starts at scrollTop 0.
+    item(/deep submenu/i).scrollIntoView({ block: 'nearest' });
+    await userEvent.click(item(/deep submenu/i));
+    await waitFor(() => expect(item(/deep first/i)).toBeVisible());
+    const back = body
+      .getByRole('menu')
+      .querySelector<HTMLElement>('[data-menu-back]');
+    expect(back).not.toBeNull();
+    await userEvent.click(back as HTMLElement);
+
+    await waitFor(() => expect(item(/deep submenu/i)).toHaveFocus());
+    await waitFor(() => {
+      const menu = body.getByRole('menu');
+      const header = menu.querySelector<HTMLElement>('[data-menu-back]');
+      const rowRect = item(/deep submenu/i).getBoundingClientRect();
+      expect(header).not.toBeNull();
+      expect(rowRect.top).toBeGreaterThanOrEqual(
+        (header as HTMLElement).getBoundingClientRect().bottom - 1,
+      );
+      expect(rowRect.bottom).toBeLessThanOrEqual(
+        menu.getBoundingClientRect().bottom + 1,
       );
     });
   },
@@ -839,8 +1078,99 @@ export const ExLongDiginMenuFiltered: Story = {
   },
 };
 
+export const SubMenuDiginEdgeCases: Story = {
+  name: 'Sub menu digin (duplicate labels, nested flyout)',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Settings">
+        <MenuItem label="First child" />
+      </SubMenu>
+      <SubMenu label="Settings">
+        <MenuItem label="Second child" />
+        <SubMenu label="Flyout" interaction="hover">
+          <MenuItem label="Flyout item" />
+        </SubMenu>
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowDown}');
+    await waitFor(() =>
+      expect(
+        body.getAllByRole('menuitem', { name: /settings/i })[0],
+      ).toHaveFocus(),
+    );
+
+    // The second of two same-labelled submenus shows its own children.
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await waitFor(() => expect(item(/second child/i)).toHaveFocus());
+    expect(body.queryByText('First child')).toBeNull();
+
+    // ArrowLeft in a nested flyout closes the flyout, not the drilled level.
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}');
+    await waitFor(() => expect(item(/flyout item/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/^flyout$/i)).toHaveFocus());
+    expect(body.getByRole('menuitem', { name: /second child/i })).toBeVisible();
+    expect(canvas.getByRole('button', { name: /open menu/i })).toBeTruthy();
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const SubMenuDiginForms: Story = {
   render: () => <SubMenuDiginFormsExample />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const trigger = canvas.getByRole('button', { name: /open menu/i });
+
+    await userEvent.tab();
+    await userEvent.keyboard('{ArrowDown}');
+    await waitFor(() =>
+      expect(body.getByRole('menuitem', { name: /dashboard/i })).toHaveFocus(),
+    );
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+
+    // A level without menu rows still receives focus (first control).
+    const nameInput = await body.findByLabelText('Profile name');
+    await waitFor(() => expect(nameInput).toHaveFocus());
+
+    // Left/Right edit text instead of navigating; Escape goes back.
+    await userEvent.keyboard('abc{ArrowLeft}');
+    expect(nameInput).toHaveFocus();
+    expect(nameInput).toHaveValue('abc');
+
+    // Escape that cancels an IME candidate must not pop the level.
+    nameInput.dispatchEvent(
+      new CompositionEvent('compositionstart', { bubbles: true }),
+    );
+    await userEvent.keyboard('{Escape}');
+    expect(nameInput).toBeInTheDocument();
+    expect(nameInput).toHaveFocus();
+    nameInput.dispatchEvent(
+      new CompositionEvent('compositionend', { bubbles: true }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(
+        body.getByRole('menuitem', { name: /edit profile/i }),
+      ).toHaveFocus(),
+    );
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    expect(trigger).toHaveFocus();
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -877,6 +1207,17 @@ export const PanelAsSidebar: Story = {
       </Menu>
     </Flex>
   ),
+  play: async ({ canvasElement }) => {
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    expect(item(/view profile/i)).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}');
+    await waitFor(() => expect(item(/export/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/more actions/i)).toHaveFocus());
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -909,5 +1250,27 @@ export const PanelAsMobileNav: Story = {
       </Menu>
     </Flex>
   ),
+  play: async ({ canvasElement }) => {
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+
+    await userEvent.tab();
+    expect(item(/view profile/i)).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await waitFor(() => expect(item(/export/i)).toHaveFocus());
+    expectNoFocusableInAriaHidden(canvasElement);
+
+    // Inline menus stay mounted: Escape with focus elsewhere must not pop.
+    (document.activeElement as HTMLElement | null)?.blur();
+    await userEvent.keyboard('{Escape}');
+    expect(item(/export/i)).toBeVisible();
+    item(/export/i).focus();
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+    await waitFor(() => expect(item(/audit log/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/advanced/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/more actions/i)).toHaveFocus());
+  },
   parameters: { controls: { disable: true } },
 };
