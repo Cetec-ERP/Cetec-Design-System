@@ -26,7 +26,12 @@ const drawerBase = {
     bottom: '0',
     display: 'flex',
     flexDirection: 'column',
+    // Size to the visible viewport, so the footer stays on screen when mobile
+    // browser controls expand. 100vh is the fallback for browsers without dvh.
     h: '100vh',
+    '@supports (height: 100dvh)': {
+      h: '100dvh',
+    },
     maxW: '100vw',
     bg: 'surface.overlay',
     boxShadow: 'overlay',
