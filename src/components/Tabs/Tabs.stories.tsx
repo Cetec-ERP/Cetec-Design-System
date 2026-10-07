@@ -958,3 +958,30 @@ export const ResponsivePanelDisplay: Story = {
     await expect(canvas.getByText('Work content.')).not.toBeVisible();
   },
 };
+
+export const ValuesWithSpaces: Story = {
+  name: 'Test: tab values with spaces still link tab and panel',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Tabs {...args} aria-label="Order sections" defaultValue="work orders">
+      <Tab value="work orders">Work orders</Tab>
+      <Tab value="sales orders">Sales orders</Tab>
+      <TabPanel value="work orders">
+        <Text py="16">Open work orders.</Text>
+      </TabPanel>
+      <TabPanel value="sales orders">
+        <Text py="16">Open sales orders.</Text>
+      </TabPanel>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const tab = canvas.getByRole('tab', { name: 'Work orders' });
+    const panel = canvas.getByRole('tabpanel', { name: 'Work orders' });
+
+    await expect(panel.id).not.toMatch(/\s/);
+    await expect(tab.id).not.toMatch(/\s/);
+    await expect(tab).toHaveAttribute('aria-controls', panel.id);
+    await expect(panel).toHaveAttribute('aria-labelledby', tab.id);
+  },
+};

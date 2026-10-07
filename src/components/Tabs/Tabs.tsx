@@ -169,8 +169,12 @@ export const Tabs = (props: TabsProps) => {
   const contextValue = useMemo<TabsContextValue>(
     () => ({
       classes,
-      getPanelId: (tabValue: string) => `${baseId}-panel-${tabValue}`,
-      getTabId: (tabValue: string) => `${baseId}-tab-${tabValue}`,
+      // Values are free text; encoding keeps spaces out of the IDs that
+      // `aria-controls` and `aria-labelledby` parse as token lists.
+      getPanelId: (tabValue: string) =>
+        `${baseId}-panel-${encodeURIComponent(tabValue)}`,
+      getTabId: (tabValue: string) =>
+        `${baseId}-tab-${encodeURIComponent(tabValue)}`,
       onTabKeyDown,
       overflowValues,
       registerTabElement,
