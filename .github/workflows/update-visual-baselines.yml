@@ -1,0 +1,56 @@
+name: Update visual baselines
+
+# Add the `update-visual-baselines` label to a PR, or run it from the Actions
+# tab on a branch (manual runs need this file on main). Baselines must come
+# from Linux CI, never from a local Mac, because fonts render differently there.
+#
+# This workflow does not push. A push made with GITHUB_TOKEN starts no CI,
+# so the PR's required checks would never run on that commit. Download the
+# artifact, review the images, and commit them yourself:
+#
+#   gh run download <run-id> -n visual-baselines -D __vis__/linux/__baselines__
+
+on:
+  pull_request:
+    types: [labeled]
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update visual baselines
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'update-visual-baselines'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          # The PR's own commit, not the merge preview with the base branch.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Panda CSS
+        run: npm run prepare
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Regenerate every baseline
+        run: |
+          rm -rf __vis__/linux/__baselines__
+          npm run test:visual:update
+
+      - name: Upload baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines
+          path: __vis__/linux/__baselines__
+          if-no-files-found: error
+          retention-days: 14

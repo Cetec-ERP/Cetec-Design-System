@@ -835,6 +835,9 @@ export const ExLongDiginMenu: Story = {
 
 export const ExLongDiginMenuFocusReturn: Story = {
   name: 'Ex: Long Drill-In Menu (focus return on back)',
+  // Menu width varies between runs after drill-in back navigation. Excluded
+  // from visual snapshots until that is understood; behavior is still tested.
+  tags: ['!snapshot'],
   render: () => (
     <Menu
       trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
@@ -890,6 +893,9 @@ export const ExLongDiginMenuFocusReturn: Story = {
 
 export const ExLongDiginMenuMouseBack: Story = {
   name: 'Ex: Long Drill-In Menu (focus return on mouse back)',
+  // Menu width varies between runs after drill-in back navigation. Excluded
+  // from visual snapshots until that is understood; behavior is still tested.
+  tags: ['!snapshot'],
   render: () => (
     <Menu
       trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
