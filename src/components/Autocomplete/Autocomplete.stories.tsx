@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
@@ -212,7 +212,8 @@ export const Multiple: Story = {
     await expect(
       canvas.queryByRole('button', { name: 'Remove React' }),
     ).not.toBeInTheDocument();
-    await expect(input).toHaveFocus();
+    // Focus returns to the input after the removal commits.
+    await waitFor(() => expect(input).toHaveFocus());
   },
   parameters: { controls: { disable: true } },
 };
