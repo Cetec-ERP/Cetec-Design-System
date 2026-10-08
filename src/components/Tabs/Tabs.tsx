@@ -33,7 +33,7 @@ type TabsOverflowMenuProps = {
     value: string,
     reason: TabsChangeReason,
   ) => void;
-  selectedValue: string;
+  selectedValue: string | undefined;
 };
 
 const TabsOverflowMenu = ({

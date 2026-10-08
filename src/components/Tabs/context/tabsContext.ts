@@ -141,8 +141,8 @@ export type TabPanelProps = Omit<BoxProps, keyof TabPanelOwnProps> &
 
 /** State and behavior shared by tab compound components. */
 export type TabsContextValue = {
-  /** Currently selected tab value. */
-  selectedValue: string;
+  /** Currently selected tab value, or `undefined` when no tab is selectable. */
+  selectedValue: string | undefined;
   /** Applies a selection request from a tab or the overflow menu. */
   selectTab: (
     event: TabsChangeEvent,

@@ -130,10 +130,12 @@ export const useTabs = ({
   // unreachable by keyboard.
   const storedTab = tabs.find((tab) => tab.value === storedValue);
   const isStoredValueSelectable = Boolean(storedTab && !storedTab.disabled);
-  const hasSelection = isStoredValueSelectable || firstValue !== undefined;
-  const selectedValue = isStoredValueSelectable
+  // `undefined` means no tab is selected. It must stay distinct from `''`,
+  // which is a valid tab value: with no enabled tabs, a disabled `value=""`
+  // tab must not report itself selected.
+  const selectedValue: string | undefined = isStoredValueSelectable
     ? storedValue
-    : (firstValue ?? '');
+    : firstValue;
 
   // Commit automatic fallbacks to the real state, not only the rendered
   // selection. Otherwise an uncontrolled value can silently resurrect if its
@@ -189,7 +191,7 @@ export const useTabs = ({
     items: tabValues,
     containerRef: listRef,
     getItemElement,
-    activeItem: hasSelection ? selectedValue : null,
+    activeItem: selectedValue ?? null,
     reserveRef: overflowRef,
   });
 
@@ -239,7 +241,10 @@ export const useTabs = ({
         }
       }
 
-      const currentIndex = Math.max(0, navigable.indexOf(currentValue));
+      const currentIndex =
+        currentValue === undefined
+          ? 0
+          : Math.max(0, navigable.indexOf(currentValue));
       let nextIndex: number;
 
       switch (event.key) {

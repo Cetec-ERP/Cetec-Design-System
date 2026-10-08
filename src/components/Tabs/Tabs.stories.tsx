@@ -958,6 +958,36 @@ export const EmptyStringValue: Story = {
   },
 };
 
+export const NoEnabledTabs: Story = {
+  name: 'Test: with no enabled tabs, an empty-string tab is not selected',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Tabs {...args} aria-label="No enabled tabs">
+      <Tab value="" disabled>
+        Overview
+      </Tab>
+      <Tab value="details" disabled>
+        Details
+      </Tab>
+      <TabPanel value="">
+        <Text py="16">Overview content.</Text>
+      </TabPanel>
+      <TabPanel value="details">
+        <Text py="16">Details content.</Text>
+      </TabPanel>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    for (const tab of canvas.getAllByRole('tab')) {
+      await expect(tab).toHaveAttribute('aria-selected', 'false');
+    }
+    await expect(canvas.getByText('Overview content.')).not.toBeVisible();
+    await expect(canvas.getByText('Details content.')).not.toBeVisible();
+  },
+};
+
 export const ResponsivePanelDisplay: Story = {
   name: 'Test: a responsive panel display never reveals an inactive panel',
   parameters: { controls: { disable: true } },
