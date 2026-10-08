@@ -74,6 +74,14 @@ type CodeBlockOwnProps = {
    * @default false
    */
   lineNumbers?: boolean | { start: number };
+  /**
+   * Surface tone. `inverse` follows the theme: it is dark in the light theme
+   * and light in the dark theme. Takes a plain value, not a responsive or
+   * conditional object, because the copy button variant follows it.
+   *
+   * @default "default"
+   */
+  tone?: 'default' | 'inverse';
 };
 
 /** Props accepted by {@link CodeBlock}. Includes compatible native element props. */
@@ -81,10 +89,25 @@ export type CodeBlockProps = Omit<
   BoxProps,
   keyof CodeBlockVariantProps | keyof CodeBlockOwnProps
 > &
-  Omit<CodeBlockVariantProps, 'lineNumbers' | 'collapsed' | 'actionGutter'> &
+  Omit<
+    CodeBlockVariantProps,
+    'tone' | 'lineNumbers' | 'collapsed' | 'actionGutter'
+  > &
   CodeBlockOwnProps;
 
 const stripTrailingNewline = (value: string) => value.replace(/\r?\n$/, '');
+
+/** Height of a classic horizontal scrollbar. Overlay scrollbars return 0. */
+const scrollbarHeight = (element: HTMLElement) => {
+  const styles = getComputedStyle(element);
+  return Math.max(
+    0,
+    element.offsetHeight -
+      element.clientHeight -
+      parseFloat(styles.borderTopWidth) -
+      parseFloat(styles.borderBottomWidth),
+  );
+};
 
 /**
  * Displays read-only, multi-line code or machine output with a copy button.
@@ -168,7 +191,8 @@ export const CodeBlock = (props: CodeBlockProps) => {
     const measure = () => {
       // A wrapped source line is taller than one line height, so the
       // collapsed height comes from the bottom of the last visible line plus
-      // the bottom padding of the `pre`.
+      // the bottom padding of the `pre`. A classic horizontal scrollbar takes
+      // height from the content box, so its height is added too.
       const lastVisibleLine =
         collapsed && maxLines !== undefined
           ? element.querySelector('code')?.children[maxLines - 1]
@@ -179,7 +203,8 @@ export const CodeBlock = (props: CodeBlockProps) => {
           lastVisibleLine.getBoundingClientRect().bottom -
           element.getBoundingClientRect().top +
           element.scrollTop +
-          parseFloat(getComputedStyle(pre).paddingBottom);
+          parseFloat(getComputedStyle(pre).paddingBottom) +
+          scrollbarHeight(element);
         setCollapsedHeight(Math.ceil(bottom));
       } else {
         setCollapsedHeight(undefined);

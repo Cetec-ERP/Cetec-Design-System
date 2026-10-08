@@ -45,6 +45,9 @@ export function useClipboard(
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Counts copy attempts so a slow, older attempt cannot overwrite the
+  // result of a newer one.
+  const attemptRef = useRef(0);
 
   useEffect(
     () => () => {
@@ -55,6 +58,7 @@ export function useClipboard(
 
   const copy = useCallback(
     async (text: string) => {
+      const attempt = ++attemptRef.current;
       if (timerRef.current) clearTimeout(timerRef.current);
       setFailed(false);
 
@@ -64,12 +68,15 @@ export function useClipboard(
         }
         await navigator.clipboard.writeText(text);
       } catch {
+        if (attempt !== attemptRef.current) return false;
         setCopied(false);
         setFailed(true);
         return false;
       }
 
+      if (attempt !== attemptRef.current) return true;
       setCopied(true);
+      if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setCopied(false), timeout);
       return true;
     },
