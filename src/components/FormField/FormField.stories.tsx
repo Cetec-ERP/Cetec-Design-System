@@ -13,7 +13,7 @@ import { TextInput } from '../TextInput';
 
 import { FormField } from './FormField';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/FormField',

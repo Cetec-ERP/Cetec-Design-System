@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { Grid, VStack, Flex } from '@styled-system/jsx';
 
@@ -12,7 +12,7 @@ import { Text } from '../Text';
 
 import { Badge } from './Badge';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof Badge> = {
   title: 'Components/Badge',

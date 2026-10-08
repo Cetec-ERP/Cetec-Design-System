@@ -12,7 +12,7 @@ import { Text } from '../Text';
 import { Chip } from './Chip';
 import { ChipGroup } from './ChipGroup';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 // Sample avatar images (using placeholder service)
 const sampleImages = {
