@@ -202,3 +202,21 @@ export const SpanishLocale: Story = {
     ).toBeInTheDocument();
   },
 };
+
+export const ThaiLocale: Story = {
+  name: 'Locale: Thai (Gregorian Names)',
+  render: () => (
+    <LocaleProvider locale="th-TH">
+      <Calendar defaultViewDate={{ year: 2026, month: 1 }} />
+    </LocaleProvider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // th-TH defaults to the Buddhist calendar (year 2569). Calendar's grid is
+    // Gregorian, so the title must show 2026.
+    await expect(
+      canvas.getByRole('button', { name: 'มกราคม 2026' }),
+    ).toBeInTheDocument();
+  },
+};

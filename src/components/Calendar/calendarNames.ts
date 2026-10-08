@@ -65,13 +65,19 @@ function getFirstDayOfWeek(locale: string): number {
 /**
  * Builds month and weekday names, the first day of the week, and date
  * formatters for a locale with `Intl`. Falls back to `en-US` when the locale is invalid or
- * unsupported. All dates are formatted in UTC, so the user's time zone cannot
- * shift a day.
+ * unsupported. All dates use the Gregorian calendar and UTC, so a locale's
+ * default calendar or the user's time zone cannot change a name or shift a day.
  */
 export function getCalendarNames(locale: string): CalendarNames {
   const resolved = resolveLocale(locale);
+  // Calendar's grid is Gregorian, so its names must be too. Some locales
+  // default to another calendar, such as th-TH (Buddhist) or fa-IR (Persian).
   const format = (options: Intl.DateTimeFormatOptions) =>
-    new Intl.DateTimeFormat(resolved, { ...options, timeZone: 'UTC' });
+    new Intl.DateTimeFormat(resolved, {
+      ...options,
+      calendar: 'gregory',
+      timeZone: 'UTC',
+    });
 
   const monthLong = format({ month: 'long' });
   const monthShort = format({ month: 'short' });
