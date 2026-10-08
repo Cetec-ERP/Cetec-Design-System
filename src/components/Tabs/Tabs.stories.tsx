@@ -1046,3 +1046,36 @@ export const ValuesWithSpaces: Story = {
     await expect(panel).toHaveAttribute('aria-labelledby', tab.id);
   },
 };
+
+// `id` is not part of the Tab or TabPanel types; this simulates an untyped
+// consumer passing one anyway.
+const consumerId = (id: string) => ({ id }) as object;
+
+export const ConsumerIdsIgnored: Story = {
+  name: 'Test: a consumer id never breaks the tab and panel links',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Tabs {...args} aria-label="Consumer ids" defaultValue="work">
+      <Tab value="work" {...consumerId('work-tab')}>
+        Work
+      </Tab>
+      <Tab value="materials">Materials</Tab>
+      <TabPanel value="work" {...consumerId('work-panel')}>
+        <Text py="16">Work content.</Text>
+      </TabPanel>
+      <TabPanel value="materials">
+        <Text py="16">Materials content.</Text>
+      </TabPanel>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const tab = canvas.getByRole('tab', { name: 'Work' });
+    const panel = canvas.getByRole('tabpanel', { name: 'Work' });
+
+    await expect(tab.id).not.toBe('work-tab');
+    await expect(panel.id).not.toBe('work-panel');
+    await expect(tab).toHaveAttribute('aria-controls', panel.id);
+    await expect(panel).toHaveAttribute('aria-labelledby', tab.id);
+  },
+};

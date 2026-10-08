@@ -154,7 +154,6 @@ export const Tab = (props: TabProps) => {
           type: 'button',
         } satisfies BoxProps<'button'>)}
         ref={mergedRef}
-        id={getTabId(value)}
         role="tab"
         aria-selected={isSelected}
         aria-controls={getPanelId(value)}
@@ -174,6 +173,9 @@ export const Tab = (props: TabProps) => {
             if (!event.defaultPrevented) onTabKeyDown(event);
           },
         })}
+        // Spread after consumer props: an untyped `id` must not break the
+        // panel's `aria-labelledby`.
+        id={getTabId(value)}
       >
         {children}
         {badgeElement}

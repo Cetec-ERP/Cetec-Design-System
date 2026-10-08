@@ -50,7 +50,6 @@ export const TabPanel = (props: TabPanelProps) => {
   return (
     <TabPanelActiveProvider value={isActive}>
       <Box
-        id={getPanelId(value)}
         role="tabpanel"
         aria-labelledby={getTabId(value)}
         tabIndex={isActive ? 0 : -1}
@@ -61,6 +60,9 @@ export const TabPanel = (props: TabPanelProps) => {
         _hidden={{ display: 'none' }}
         className={cx(classes.panel, className)}
         {...otherProps}
+        // Set after consumer props: an untyped `id` must not break the tab's
+        // `aria-controls`.
+        id={getPanelId(value)}
         hidden={!isActive}
       >
         {content}

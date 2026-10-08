@@ -116,8 +116,13 @@ type TabOwnProps = {
   disabled?: boolean;
 };
 
-/** Props for {@link Tab}, one selectable item in a {@link Tabs} strip. */
-export type TabProps = Omit<BoxProps, keyof TabOwnProps> & TabOwnProps;
+/**
+ * Props for {@link Tab}, one selectable item in a {@link Tabs} strip.
+ *
+ * `id` is omitted: `Tabs` generates it so `aria-controls` and
+ * `aria-labelledby` always point at the matching panel.
+ */
+export type TabProps = Omit<BoxProps, keyof TabOwnProps | 'id'> & TabOwnProps;
 
 /** Argument passed to a {@link TabPanel} render-prop child. */
 export type TabPanelRenderProps = {
@@ -135,8 +140,13 @@ type TabPanelOwnProps = {
   children?: ReactNode | ((props: TabPanelRenderProps) => ReactNode);
 };
 
-/** Props for {@link TabPanel}, the content region for one {@link Tab}. */
-export type TabPanelProps = Omit<BoxProps, keyof TabPanelOwnProps> &
+/**
+ * Props for {@link TabPanel}, the content region for one {@link Tab}.
+ *
+ * `id` is omitted: `Tabs` generates it so `aria-controls` and
+ * `aria-labelledby` always point at the matching tab.
+ */
+export type TabPanelProps = Omit<BoxProps, keyof TabPanelOwnProps | 'id'> &
   TabPanelOwnProps;
 
 /** State and behavior shared by tab compound components. */
