@@ -119,6 +119,12 @@ export const useTabs = ({
       defaultValue: defaultValue ?? firstValue ?? '',
     });
 
+  // The last value this strip asked for. A controlled parent may commit a
+  // request after a delay, so the stored value alone cannot tell whether a
+  // request is still pending: pressing Right then Left before the parent
+  // commits must still send the return request back to the parent.
+  const requestedValueRef = useRef(storedValue);
+
   // A conditionally rendered or newly disabled tab cannot remain selected:
   // its button is absent from the tab order and would make the strip
   // unreachable by keyboard.
@@ -149,6 +155,7 @@ export const useTabs = ({
       setStoredValue(firstValue ?? '');
     }
     if (firstValue !== undefined) {
+      requestedValueRef.current = firstValue;
       onChange?.(null, firstValue, 'fallback-after-removal');
     }
   }, [
@@ -188,8 +195,14 @@ export const useTabs = ({
 
   const selectTab = useCallback(
     (event: TabsChangeEvent, nextValue: string, reason: TabsChangeReason) => {
-      if (nextValue === storedValue) return;
+      if (
+        nextValue === storedValue &&
+        requestedValueRef.current === storedValue
+      ) {
+        return;
+      }
 
+      requestedValueRef.current = nextValue;
       setStoredValue(nextValue);
       onChange?.(event, nextValue, reason);
     },

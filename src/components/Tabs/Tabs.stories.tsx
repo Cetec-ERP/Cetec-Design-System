@@ -756,11 +756,15 @@ export const BadgeTooltipOnFocus: Story = {
 
 const DeferredControlledTabs = () => {
   const [value, setValue] = useState('alpha');
+  const [requests, setRequests] = useState<string[]>([]);
 
   return (
     <Box>
       <Text pb="8" data-testid="deferred-value">
         Parent value: {value}
+      </Text>
+      <Text pb="8" data-testid="deferred-requests">
+        Requests: {requests.join(', ')}
       </Text>
       <Box data-deferred-wrapper>
         <Tabs
@@ -769,6 +773,7 @@ const DeferredControlledTabs = () => {
           // The parent commits the new value a moment later, the way a
           // transition or a server round trip would.
           onChange={(_event, nextValue) => {
+            setRequests((current) => [...current, nextValue]);
             globalThis.setTimeout(() => setValue(nextValue), 300);
           }}
         >
@@ -855,6 +860,32 @@ export const DeferredControlledOverflow: Story = {
         'Parent value: alpha',
       );
     });
+  },
+};
+
+export const DeferredControlledReversal: Story = {
+  name: 'Test: a deferred return to the committed tab still reaches the parent',
+  parameters: { controls: { disable: true } },
+  render: () => <DeferredControlledTabs />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const alpha = canvas.getByRole('tab', { name: 'Alpha section' });
+
+    await userEvent.click(alpha);
+    // Right then Left before the parent commits Bravo.
+    await userEvent.keyboard('{ArrowRight}{ArrowLeft}');
+    await expect(alpha).toHaveFocus();
+    await expect(canvas.getByTestId('deferred-requests')).toHaveTextContent(
+      'Requests: bravo, alpha',
+    );
+
+    // Both commits land in order, so the parent ends on the focused tab.
+    await new Promise((resolve) => globalThis.setTimeout(resolve, 500));
+    await expect(canvas.getByTestId('deferred-value')).toHaveTextContent(
+      'Parent value: alpha',
+    );
+    await expect(alpha).toHaveAttribute('aria-selected', 'true');
+    await expect(alpha).toHaveFocus();
   },
 };
 
