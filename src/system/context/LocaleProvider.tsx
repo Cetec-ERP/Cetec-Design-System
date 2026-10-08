@@ -4,6 +4,21 @@ import { LocaleContext } from './locale-context';
 
 import type { LocaleLabels } from './locale-labels';
 
+/**
+ * Merges label overrides onto the parent labels. An override set to
+ * `undefined` keeps the parent value, so a missing translation can never
+ * remove a label that a component needs.
+ */
+function mergeLabels(
+  parent: LocaleLabels,
+  overrides: Partial<LocaleLabels>,
+): LocaleLabels {
+  const defined = Object.fromEntries(
+    Object.entries(overrides).filter(([, value]) => value !== undefined),
+  ) as Partial<LocaleLabels>;
+  return { ...parent, ...defined };
+}
+
 /** Props for {@link LocaleProvider}. */
 export interface LocaleProviderProps {
   /**
@@ -12,8 +27,8 @@ export interface LocaleProviderProps {
    */
   locale?: string;
   /**
-   * Translated built-in labels. An entry left out keeps the parent provider's
-   * value, then the English default.
+   * Translated built-in labels. An entry left out, or set to `undefined`,
+   * keeps the parent provider's value, then the English default.
    */
   labels?: Partial<LocaleLabels>;
   /** Content that reads the locale and labels. */
@@ -47,7 +62,7 @@ export function LocaleProvider({
   const contextValue = useMemo(
     () => ({
       locale: locale ?? parent.locale,
-      labels: labels ? { ...parent.labels, ...labels } : parent.labels,
+      labels: labels ? mergeLabels(parent.labels, labels) : parent.labels,
     }),
     [locale, labels, parent],
   );
