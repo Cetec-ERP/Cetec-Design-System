@@ -61,7 +61,12 @@ const menuBase = {
     visibility: 'hidden',
     top: '0',
     left: '0',
-    width: 'fit-content',
+    // `max-content`, not `fit-content`: the probe sits inside the wrapper, so
+    // `fit-content` capped it at the wrapper's current width. Going back from
+    // a narrow level then measured the wider level at the narrow width, and
+    // its labels wrapped. `100vw` keeps very long labels on screen.
+    width: 'max-content',
+    maxWidth: '100vw',
     height: 'fit-content',
     overflow: 'visible',
   },
