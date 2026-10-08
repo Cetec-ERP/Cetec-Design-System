@@ -14,14 +14,13 @@ The design system uses a locale for two things only:
 
 1. **Built-in labels.** Text that components render or announce, such as
    "Close dialog", "No results found" and "Previous month".
-2. **Date components.** Month and weekday names in `Calendar`, from the
-   browser's `Intl` formatters.
+2. **Date components.** Month and weekday names and the first day of the
+   week in `Calendar`, from the browser's `Intl` data.
 
 Out of scope for 5.0:
 
-- Date order, 12- or 24-hour time, and first day of week. These stay as
-  component props (`format`, `timeFormat`) and the week still starts on
-  Sunday. A separate format setting comes later.
+- Date order and 12- or 24-hour time. These stay as component props
+  (`format`, `timeFormat`). A separate format setting comes later.
 - The `AM` / `PM` values in 12-hour time controls. They belong with the
   hour-cycle format setting.
 - Text direction. Components read it from `<html dir>`.
@@ -46,7 +45,9 @@ Out of scope for 5.0:
   form.
 - An invalid or unsupported locale falls back to `en-US`.
 - All dates are formatted in UTC, so the user's time zone cannot shift a day.
-- The week still starts on Sunday.
+- The first day of the week comes from `Intl.Locale` week info, so `fr-FR`
+  and `es-ES` start on Monday and `en-US` on Sunday. A browser without week
+  info falls back to Sunday.
 - Stories for `fr-FR` and `es-ES`. The Docs / Localization page lists what the
   locale changes.
 

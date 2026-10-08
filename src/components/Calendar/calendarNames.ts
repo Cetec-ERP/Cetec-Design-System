@@ -7,9 +7,11 @@ export interface CalendarNames {
   months: string[];
   /** Abbreviated month names, January first. */
   monthsShort: string[];
-  /** Full weekday names, Sunday first. */
+  /** First day of the week for the locale, 0 = Sunday through 6 = Saturday. */
+  firstDayOfWeek: number;
+  /** Full weekday names, starting on {@link CalendarNames.firstDayOfWeek}. */
   weekdays: string[];
-  /** Abbreviated weekday names without a trailing period, Sunday first. */
+  /** Abbreviated weekday names without a trailing period, starting on {@link CalendarNames.firstDayOfWeek}. */
   weekdaysShort: string[];
   /** Formats a month and year, such as "October 2026". */
   formatMonthYear: (year: number, month: number) => string;
@@ -39,9 +41,30 @@ function resolveLocale(locale: string): string {
   }
 }
 
+type WeekInfo = { firstDay: number };
+type LocaleWithWeekInfo = Intl.Locale & {
+  getWeekInfo?: () => WeekInfo;
+  weekInfo?: WeekInfo;
+};
+
 /**
- * Builds month and weekday names and date formatters for a locale with
- * `Intl.DateTimeFormat`. Falls back to `en-US` when the locale is invalid or
+ * Returns the locale's first day of the week, 0 = Sunday through 6 = Saturday.
+ * `Intl.Locale` week info numbers days 1 = Monday through 7 = Sunday. Falls
+ * back to Sunday when the browser has no week info.
+ */
+function getFirstDayOfWeek(locale: string): number {
+  try {
+    const intlLocale = new Intl.Locale(locale) as LocaleWithWeekInfo;
+    const weekInfo = intlLocale.getWeekInfo?.() ?? intlLocale.weekInfo;
+    return weekInfo ? weekInfo.firstDay % 7 : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * Builds month and weekday names, the first day of the week, and date
+ * formatters for a locale with `Intl`. Falls back to `en-US` when the locale is invalid or
  * unsupported. All dates are formatted in UTC, so the user's time zone cannot
  * shift a day.
  */
@@ -60,12 +83,15 @@ export function getCalendarNames(locale: string): CalendarNames {
   const monthDates = Array.from({ length: 12 }, (_, index) =>
     utcDate(2000, index + 1, 1),
   );
+  const firstDayOfWeek = getFirstDayOfWeek(resolved);
   const weekDates = Array.from(
     { length: 7 },
-    (_, index) => new Date(WEEK_START_UTC + index * DAY_MS),
+    (_, index) =>
+      new Date(WEEK_START_UTC + ((firstDayOfWeek + index) % 7) * DAY_MS),
   );
 
   return {
+    firstDayOfWeek,
     months: monthDates.map((date) => monthLong.format(date)),
     monthsShort: monthDates.map((date) => monthShort.format(date)),
     weekdays: weekDates.map((date) => weekdayLong.format(date)),

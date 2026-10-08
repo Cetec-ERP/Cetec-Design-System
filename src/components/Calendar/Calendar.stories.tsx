@@ -159,6 +159,10 @@ export const FrenchLocale: Story = {
     await expect(
       canvas.getByRole('columnheader', { name: 'dimanche' }),
     ).toHaveTextContent('dim');
+    // fr-FR weeks start on Monday.
+    await expect(canvas.getAllByRole('columnheader')[0]).toHaveAccessibleName(
+      'lundi',
+    );
     await expect(
       canvas.getByRole('gridcell', { name: '15 janvier 2026' }),
     ).toBeInTheDocument();
@@ -189,6 +193,10 @@ export const SpanishLocale: Story = {
     await expect(
       canvas.getByRole('columnheader', { name: 'miércoles' }),
     ).toHaveTextContent('mié');
+    // es-ES weeks start on Monday.
+    await expect(canvas.getAllByRole('columnheader')[0]).toHaveAccessibleName(
+      'lunes',
+    );
     await expect(
       canvas.getByRole('button', { name: 'Mes anterior' }),
     ).toBeInTheDocument();

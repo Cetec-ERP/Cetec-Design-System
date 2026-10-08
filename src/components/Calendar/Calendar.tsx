@@ -383,14 +383,18 @@ export const Calendar = (props: CalendarProps) => {
   const yearWindowEnd = yearWindowStart + YEAR_WINDOW_SIZE - 1;
 
   const dayCells = useMemo(() => {
-    const firstDay = firstWeekdayOfMonth(viewDate.year, viewDate.month);
+    const leadingDays =
+      (firstWeekdayOfMonth(viewDate.year, viewDate.month) -
+        names.firstDayOfWeek +
+        7) %
+      7;
     const totalDays = daysInMonth(viewDate.year, viewDate.month);
     const cells: Array<number | null> = [];
-    for (let i = 0; i < firstDay; i += 1) cells.push(null);
+    for (let i = 0; i < leadingDays; i += 1) cells.push(null);
     for (let day = 1; day <= totalDays; day += 1) cells.push(day);
     while (cells.length % 7 !== 0) cells.push(null);
     return cells;
-  }, [viewDate.month, viewDate.year]);
+  }, [names.firstDayOfWeek, viewDate.month, viewDate.year]);
 
   const windowYears = useMemo(
     () =>

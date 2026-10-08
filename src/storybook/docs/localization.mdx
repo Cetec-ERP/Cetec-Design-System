@@ -237,7 +237,7 @@ export const LabelTable = () => (
 
     <Text maxW="prose">
       <code>Calendar</code>, and every date menu and picker built on it, takes
-      these from the browser's <code>Intl.DateTimeFormat</code> for the locale:
+      these from the browser's <code>Intl</code> data for the locale:
     </Text>
 
     <Box as="ul" pl="24" display="grid" gap="6">
@@ -256,6 +256,13 @@ export const LabelTable = () => (
       <Box as="li" listStyleType="disc">
         <Text>The accessible name of each day, such as "5 octobre 2026".</Text>
       </Box>
+      <Box as="li" listStyleType="disc">
+        <Text>
+          The first day of the week. <code>fr-FR</code> and <code>es-ES</code>{' '}
+          start on Monday, <code>en-US</code> on Sunday. A browser without
+          week data starts the week on Sunday.
+        </Text>
+      </Box>
     </Box>
 
     <Text maxW="prose">
@@ -273,11 +280,6 @@ export const LabelTable = () => (
           <strong>Date order and 12- or 24-hour time</strong> are props:
           <code>format</code> and <code>timeFormat</code>. They do not follow the
           locale.
-        </Text>
-      </Box>
-      <Box as="li" listStyleType="disc">
-        <Text>
-          <strong>The calendar week starts on Sunday</strong> in every locale.
         </Text>
       </Box>
       <Box as="li" listStyleType="disc">
