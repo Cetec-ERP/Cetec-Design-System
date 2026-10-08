@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
@@ -464,6 +464,12 @@ export const A11yKeyboardInteraction: Story = {
 
     const listbox = screen.getByRole('listbox');
     expect(listbox).toBeVisible();
+
+    // Focus moves into the listbox after it opens. Keys sent before that land
+    // on the trigger, which a real keyboard never does.
+    await waitFor(() =>
+      expect(listbox).toContainElement(document.activeElement as HTMLElement),
+    );
 
     await userEvent.keyboard('{ArrowDown}{Enter}');
 
