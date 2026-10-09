@@ -186,7 +186,10 @@ export const ListItem = (props: ListItemProps) => {
       ) : (
         <>
           {before && (
-            <Box className={classes.beforeSlot} aria-hidden>
+            <Box
+              className={cx(classes.beforeSlot, classes.beforeContent)}
+              aria-hidden
+            >
               {before}
             </Box>
           )}

@@ -2,7 +2,11 @@ export { Alert, type AlertProps, type AlertTone } from './components/Alert';
 export { Avatar, type AvatarProps } from './components/Avatar';
 export { Badge, type BadgeProps } from './components/Badge';
 export { Box, type BoxProps } from './components/Box';
-export { Breadcrumbs, type BreadcrumbsProps } from './components/Breadcrumbs';
+export {
+  type BreadcrumbItem,
+  Breadcrumbs,
+  type BreadcrumbsProps,
+} from './components/Breadcrumbs';
 export {
   BreakpointIndicator,
   type BreakpointIndicatorProps,

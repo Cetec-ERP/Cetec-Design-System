@@ -78,6 +78,16 @@ const selectBase = {
     minWidth: '0',
     width: 'full',
     flex: '1',
+    ps: 'var(--select-px)',
+  },
+  before: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    flex: '0 0 auto',
+    alignSelf: 'center',
+    px: 'var(--select-slot-px)',
+    fill: 'icon.decorative',
+    pointerEvents: 'none',
   },
   value: {
     flex: 1,
@@ -147,10 +157,11 @@ const selectVariants = {
         '--icon-size': 'token(sizes.22)',
         '--icon-margin': 'token(sizes.2)',
         '--input-icon-padding': '[26px]',
+        '--select-px': 'token(sizes.8)',
+        '--select-slot-px': 'token(sizes.4)',
       },
       content: {
         py: '0',
-        ps: '8',
         fontSize: '14',
       },
       chips: {
@@ -163,10 +174,11 @@ const selectVariants = {
         '--icon-size': 'token(sizes.24)',
         '--icon-margin': 'token(sizes.3)',
         '--input-icon-padding': '[31px]',
+        '--select-px': 'token(sizes.10)',
+        '--select-slot-px': 'token(sizes.6)',
       },
       content: {
         py: '3',
-        ps: '10',
         fontSize: '16',
       },
       chips: {
@@ -179,10 +191,11 @@ const selectVariants = {
         '--icon-size': 'token(sizes.24)',
         '--icon-margin': 'token(sizes.5)',
         '--input-icon-padding': '[34px]',
+        '--select-px': 'token(sizes.12)',
+        '--select-slot-px': 'token(sizes.8)',
       },
       content: {
         py: '7',
-        ps: '12',
         fontSize: '16',
       },
       chips: {
@@ -195,15 +208,23 @@ const selectVariants = {
         '--icon-size': 'token(sizes.28)',
         '--icon-margin': 'token(sizes.7)',
         '--input-icon-padding': '[42px]',
+        '--select-px': 'token(sizes.16)',
+        '--select-slot-px': 'token(sizes.10)',
       },
       content: {
         py: '9',
-        ps: '16',
         fontSize: '20',
       },
       chips: {
         gap: '6',
         py: '2',
+      },
+    },
+  },
+  before: {
+    true: {
+      content: {
+        ps: '0',
       },
     },
   },
@@ -258,6 +279,7 @@ export const selectRecipe = defineSlotRecipe({
     'value',
     'placeholder',
     'chips',
+    'before',
     'icon',
   ],
   base: selectBase,
