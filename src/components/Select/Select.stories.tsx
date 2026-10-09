@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import { expect, userEvent, within } from 'storybook/test';
 
+import { Avatar } from '../Avatar';
 import { Box } from '../Box';
 import { Button } from '../Button';
 import { FormField } from '../FormField';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 
 import { Select } from './Select';
@@ -174,6 +176,115 @@ export const WithDescriptionsAndIcons: Story = {
       </Select>
     </Box>
   ),
+  parameters: { controls: { disable: true } },
+};
+
+const STATUS_OPTIONS = [
+  { value: 'new', label: 'New', fill: 'icon.danger' },
+  { value: 'in-progress', label: 'In progress', fill: 'icon.info' },
+  { value: 'waiting', label: 'Waiting on customer', fill: 'icon.warning' },
+  { value: 'resolved', label: 'Resolved', fill: 'icon.success' },
+] as const;
+
+const ASSIGNEE_OPTIONS = [
+  { value: 'unassigned', label: 'Unassigned', initials: '?' },
+  { value: 'avery', label: 'Avery Jones', initials: 'AJ' },
+  { value: 'sam', label: 'Sam Patel', initials: 'SP' },
+  { value: 'riley', label: 'Riley Chen', initials: 'RC' },
+] as const;
+
+export const WithBefore: Story = {
+  name: 'Before slot',
+  render: () => (
+    <Box display="grid" gap="12" w="xs">
+      <Select defaultValue="waiting" clearable={false} aria-label="Status">
+        {STATUS_OPTIONS.map((option) => (
+          <SelectOption
+            key={option.value}
+            value={option.value}
+            label={option.label}
+            before={<Icon name="clock" size="20" fill={option.fill} />}
+          />
+        ))}
+      </Select>
+
+      <Select defaultValue="avery" clearable={false} aria-label="Assignee">
+        {ASSIGNEE_OPTIONS.map((option) => (
+          <SelectOption
+            key={option.value}
+            value={option.value}
+            label={option.label}
+            before={<Avatar size="sm" fallback={option.initials} />}
+          />
+        ))}
+      </Select>
+    </Box>
+  ),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          "Give each `SelectOption` a `before` to show an avatar or a colored icon. The trigger shows the selected option's `before`. Pass `before` on the `Select` itself to show something else. `clearable={false}` keeps a value that must never be empty.",
+      },
+    },
+  },
+};
+
+export const ExCaseWorkflowControls: Story = {
+  name: 'Ex: Assignee and status on a support case',
+  render: function ExCaseWorkflowControlsRender() {
+    const [assignee, setAssignee] = useState<string>('unassigned');
+    const [status, setStatus] = useState<string>('new');
+
+    return (
+      <Box display="grid" gap="12">
+        <Box display="flex" gap="8">
+          <Select
+            w="200"
+            size="sm"
+            clearable={false}
+            aria-label="Assignee"
+            value={assignee}
+            onChange={(nextValue: string | string[] | null) => {
+              if (typeof nextValue === 'string') setAssignee(nextValue);
+            }}
+          >
+            {ASSIGNEE_OPTIONS.map((option) => (
+              <SelectOption
+                key={option.value}
+                value={option.value}
+                label={option.label}
+                before={<Avatar size="sm" fallback={option.initials} />}
+              />
+            ))}
+          </Select>
+          <Select
+            w="200"
+            size="sm"
+            clearable={false}
+            aria-label="Status"
+            value={status}
+            onChange={(nextValue: string | string[] | null) => {
+              if (typeof nextValue === 'string') setStatus(nextValue);
+            }}
+          >
+            {STATUS_OPTIONS.map((option) => (
+              <SelectOption
+                key={option.value}
+                value={option.value}
+                label={option.label}
+                before={<Icon name="clock" size="20" fill={option.fill} />}
+              />
+            ))}
+          </Select>
+        </Box>
+        <Text size="14" color="text.subtle">
+          Assignee: {assignee}. Status: {status}.
+        </Text>
+      </Box>
+    );
+  },
   parameters: { controls: { disable: true } },
 };
 
@@ -713,6 +824,84 @@ export const TestClearIconResetsOnControlledOpen: Story = {
     // Reopened without any fresh interaction with the list.
     const reopened = await screen.findByRole('option', { name: /growth/i });
     expect(getOptionIconName(reopened)).toBe('check');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const TestNotClearable: Story = {
+  name: 'Test: clearable={false} keeps the value',
+  tags: ['!dev', '!autodocs'],
+  render: () => (
+    <Box w="xs">
+      <Select defaultValue="growth" clearable={false}>
+        <SelectOption value="starter" label="Starter" />
+        <SelectOption value="growth" label="Growth" />
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('combobox');
+
+    // Hovering the selected row shows the check, not the clear icon.
+    await userEvent.click(trigger);
+    const growth = await screen.findByRole('option', { name: /growth/i });
+    await userEvent.hover(growth);
+    expect(getOptionIconName(growth)).toBe('check');
+
+    // Choosing it again closes the list and keeps the value.
+    await userEvent.click(growth);
+    expect(trigger).toHaveTextContent('Growth');
+
+    // Backspace does not clear it either.
+    trigger.focus();
+    await userEvent.keyboard('{Backspace}');
+    expect(trigger).toHaveTextContent('Growth');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const TestBeforeFollowsSelection: Story = {
+  name: 'Test: Trigger shows the selected option before',
+  tags: ['!dev', '!autodocs'],
+  render: () => (
+    <Box w="xs">
+      <Select defaultValue="new" clearable={false} aria-label="Status">
+        {STATUS_OPTIONS.map((option) => (
+          <SelectOption
+            key={option.value}
+            value={option.value}
+            label={option.label}
+            before={
+              <Icon
+                name="clock"
+                size="20"
+                fill={option.fill}
+                data-testid={`status-icon-${option.value}`}
+              />
+            }
+          />
+        ))}
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('combobox');
+
+    expect(within(trigger).getByTestId('status-icon-new')).toBeInTheDocument();
+
+    await userEvent.click(trigger);
+    await userEvent.click(
+      await screen.findByRole('option', { name: /resolved/i }),
+    );
+
+    expect(
+      within(trigger).getByTestId('status-icon-resolved'),
+    ).toBeInTheDocument();
+    expect(within(trigger).queryByTestId('status-icon-new')).toBeNull();
   },
   parameters: { controls: { disable: true } },
 };
