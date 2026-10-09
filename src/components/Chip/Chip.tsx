@@ -15,6 +15,7 @@ import { chip, type ChipVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
+import { Tooltip } from '~/components/Tooltip';
 import { useFieldContext } from '~/system/context/FieldContext';
 import {
   SlotContext,
@@ -26,11 +27,33 @@ import { splitProps } from '~/utils/splitProps';
 
 import { useChipGroup } from './ChipGroupContext';
 
+/** Number of `items` shown before the rest collapse into `+N`. */
+const MAX_VISIBLE_ITEMS = 2;
+
+/** The chip label: either a single `children` string or an `items` list, never both. */
+type ChipLabelProps =
+  | {
+      /** Visible chip label, also used in the default dismissal label. Interpolate values with a template string rather than mixed JSX text. */
+      children: string;
+      items?: never;
+    }
+  | {
+      children?: never;
+      /**
+       * Label list rendered comma-joined. With more than two items only the
+       * first two are shown, followed by `+N` for the rest, and a tooltip
+       * lists every item. Overflow is decided by item count, not available
+       * width. An empty list renders nothing and the chip does not register
+       * with a parent `ChipGroup`. If the emptied chip was the group's selected
+       * value, clear that value; otherwise no visible chip is the tab stop.
+       */
+      items: string[];
+    };
+
 /** Props for {@link Chip}, a compact label that can be static, actionable, selectable, or dismissible. */
 export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
-  Omit<ChipVariantProps, 'before' | 'after' | 'dismissable'> & {
-    /** Visible chip label, also used in the default dismissal label. */
-    children: string;
+  Omit<ChipVariantProps, 'before' | 'after' | 'dismissable'> &
+  ChipLabelProps & {
     /** Content displayed before the chip label. */
     before?: ReactNode;
     /** Content displayed after the chip label and before the dismiss control. */
@@ -45,7 +68,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     dismissable?: boolean;
     /**
      * Accessible name for the dismiss button.
-     * @default `Remove ${children}`
+     * @default `Remove ${children}`, or `Remove` plus the comma-joined `items`
      */
     dismissLabel?: string;
     /** Ref forwarded to the dismiss button. */
@@ -77,6 +100,12 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
  * roving focus; grouped multi-select chips use checkbox behavior. `before` and
  * `after` slots inherit state through slot context.
  *
+ * Pass `items` instead of `children` to show a list. Lists with more than two
+ * items show the first two plus a `+N` count (by item count, not width) and
+ * reveal the full list in a tooltip. A static overflowing chip becomes
+ * keyboard-focusable so the tooltip can be opened without a pointer, and its
+ * full list is also exposed to screen readers.
+ *
  * @example
  * ```tsx
  * <Chip dismissable onDismiss={() => remove('design')}>Design</Chip>
@@ -89,6 +118,7 @@ export const Chip = (props: ChipProps) => {
   const {
     size: sizeProp,
     children,
+    items,
     before,
     after,
     loading,
@@ -128,6 +158,8 @@ export const Chip = (props: ChipProps) => {
 
   const isSelectable = value !== undefined && groupContext !== null;
   const hasPrimaryAction = Boolean(onClick) || isSelectable;
+  // An empty list renders nothing, so the chip must not register with its group.
+  const isEmpty = items?.length === 0;
 
   const isMultiSelected =
     isSelectable &&
@@ -151,6 +183,7 @@ export const Chip = (props: ChipProps) => {
     if (
       !isSelectable ||
       isDisabled ||
+      isEmpty ||
       !registerChip ||
       !unregisterChip ||
       value === undefined
@@ -163,7 +196,7 @@ export const Chip = (props: ChipProps) => {
     return () => {
       unregisterChip(value);
     };
-  }, [isDisabled, isSelectable, registerChip, unregisterChip, value]);
+  }, [isDisabled, isEmpty, isSelectable, registerChip, unregisterChip, value]);
 
   const classes = chip({
     size,
@@ -263,7 +296,15 @@ export const Chip = (props: ChipProps) => {
     return 0;
   };
 
-  const resolvedDismissLabel = dismissLabel || `Remove ${children}`;
+  const isOverflowing = items !== undefined && items.length > MAX_VISIBLE_ITEMS;
+  const label = items
+    ? isOverflowing
+      ? `${items.slice(0, MAX_VISIBLE_ITEMS).join(', ')} +${items.length - MAX_VISIBLE_ITEMS}`
+      : items.join(', ')
+    : children;
+
+  const resolvedDismissLabel =
+    dismissLabel || `Remove ${items ? items.join(', ') : children}`;
 
   const handleDismissClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -302,7 +343,18 @@ export const Chip = (props: ChipProps) => {
       )}
       {renderSlot(before, 'before')}
       <Box as="span" className={classes.mainContent}>
-        {children}
+        {items ? (
+          <>
+            <span aria-hidden={isOverflowing || undefined}>{label}</span>
+            {isOverflowing && (
+              <Box as="span" srOnly>
+                {items.join(', ')}
+              </Box>
+            )}
+          </>
+        ) : (
+          label
+        )}
       </Box>
       {renderSlot(after, 'after')}
     </>
@@ -334,6 +386,7 @@ export const Chip = (props: ChipProps) => {
     <Box
       as="span"
       className={classes.body}
+      tabIndex={isOverflowing && !isDisabled ? 0 : undefined}
       data-deleted={deleted ? true : undefined}
       data-disabled={isDisabled || undefined}
       data-error={error || undefined}
@@ -343,6 +396,10 @@ export const Chip = (props: ChipProps) => {
       {bodyContent}
     </Box>
   );
+
+  if (isEmpty) {
+    return null;
+  }
 
   return (
     <Box
@@ -358,7 +415,13 @@ export const Chip = (props: ChipProps) => {
       aria-invalid={invalid || undefined}
       {...otherProps}
     >
-      {body}
+      {items ? (
+        <Tooltip text={items.join(', ')} disabled={!isOverflowing || loading}>
+          {body}
+        </Tooltip>
+      ) : (
+        body
+      )}
       {dismissable && dismissButton}
       {loading && <Spinner size="sm" centered />}
     </Box>

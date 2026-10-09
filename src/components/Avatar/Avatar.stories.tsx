@@ -7,7 +7,7 @@ import { Text } from '../Text';
 
 import { Avatar } from './Avatar';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',

@@ -38,6 +38,7 @@ import {
 import { cx } from '@styled-system/css';
 import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
+import { availableHeightMiddleware } from '~/system/floating-ui/floating';
 import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
@@ -110,9 +111,11 @@ export const SubMenu = (props: SubMenuProps) => {
   const resolvedInteraction = interaction ?? rootContext.subMenuInteraction;
   const resolvedDensity =
     typeof density === 'string' ? density : rootContext.density;
+  // `classes.wrapper` is only used by the floating flyout.
   const classes = menu({
     density: resolvedDensity,
     layer: floatingLayer,
+    scrollable: true,
   });
   const listClassName = list({ density: resolvedDensity });
   const itemClassName = listItemRecipe({
@@ -179,6 +182,7 @@ export const SubMenu = (props: SubMenuProps) => {
       offset({ mainAxis: 0, alignmentAxis: -4 }),
       flip(),
       shift({ padding: 8 }),
+      availableHeightMiddleware(),
     ],
   });
 
@@ -275,7 +279,7 @@ export const SubMenu = (props: SubMenuProps) => {
       return true;
     };
     if (!applyFirst()) {
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         if (!applyFirst()) {
           openedFromParentArrowRightRef.current = false;
         }
@@ -482,7 +486,8 @@ export const SubMenu = (props: SubMenuProps) => {
         }
         tabIndex={
           parentListContext
-            ? parentListContext.activeIndex === listItemData.index
+            ? (parentListContext.tabbableIndex ??
+                parentListContext.activeIndex) === listItemData.index
               ? 0
               : -1
             : 0
@@ -551,7 +556,8 @@ export const SubMenu = (props: SubMenuProps) => {
         }
         tabIndex={
           parentListContext
-            ? parentListContext.activeIndex === listItemData.index
+            ? (parentListContext.tabbableIndex ??
+                parentListContext.activeIndex) === listItemData.index
               ? 0
               : -1
             : 0

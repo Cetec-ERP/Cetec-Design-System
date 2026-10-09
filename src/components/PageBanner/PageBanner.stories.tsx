@@ -1,4 +1,4 @@
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { VStack } from '@styled-system/jsx';
 
@@ -8,7 +8,7 @@ import { Text } from '../Text';
 
 import { PageBanner } from './PageBanner';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const description = `
 \`PageBanner\` is the page-width placement in the notification set. It reports a

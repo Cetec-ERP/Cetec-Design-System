@@ -1,4 +1,4 @@
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Heading } from '../Heading';
@@ -6,7 +6,7 @@ import { Text } from '../Text';
 
 import { Code } from './Code';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/Code',

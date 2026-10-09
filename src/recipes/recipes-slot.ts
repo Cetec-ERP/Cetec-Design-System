@@ -11,6 +11,7 @@ export { chipRecipe } from './chip';
 export { listItemRecipe } from './listItem';
 export { listItemGroupRecipe } from './listItemGroup';
 export { modalRecipe } from './modal';
+export { drawerRecipe } from './drawer';
 export { breadcrumbsRecipe } from './breadcrumbs';
 export { selectRecipe } from './select';
 export { kbdRecipe } from './kbd';
