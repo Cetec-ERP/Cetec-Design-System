@@ -7,7 +7,7 @@ import { Text } from '~/components/Text';
 
 import { Calendar } from './Calendar';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/Calendar',

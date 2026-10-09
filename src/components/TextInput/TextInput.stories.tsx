@@ -1,4 +1,4 @@
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { Grid, VStack, Wrap, HStack } from '@styled-system/jsx';
 
@@ -14,7 +14,7 @@ import { Text } from '../Text';
 
 import { TextInput } from './TextInput';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * TextInput component for single-line text entry.

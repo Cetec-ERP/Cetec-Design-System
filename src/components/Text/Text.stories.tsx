@@ -6,7 +6,7 @@ import { Link } from '../Link';
 
 import { Text } from './Text';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/Text',

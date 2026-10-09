@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Grid, VStack } from '@styled-system/jsx';
 
@@ -21,7 +21,7 @@ import type {
   TimeRangeValue,
   TimeValue,
 } from '../helpers/types';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * The six Date/Time pickers — each composes an Input (typed segmented entry)

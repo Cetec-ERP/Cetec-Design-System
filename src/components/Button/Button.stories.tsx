@@ -1,4 +1,4 @@
-import { expect, fn, within } from '@storybook/test';
+import { expect, fn, within } from 'storybook/test';
 
 import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
@@ -14,7 +14,7 @@ import { Text } from '../Text';
 
 import { Button } from './Button';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * Button component with comprehensive variant support.
