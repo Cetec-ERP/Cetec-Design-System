@@ -4,7 +4,7 @@ import { Button } from '../Button';
 
 import { Tooltip } from './Tooltip';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof Tooltip> = {
   title: 'Components/Tooltip',
@@ -36,6 +36,7 @@ const meta: Meta<typeof Tooltip> = {
     },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },
     caret: { control: 'boolean' },
+    disabled: { control: 'boolean' },
     delay: { control: 'number' },
   },
 };

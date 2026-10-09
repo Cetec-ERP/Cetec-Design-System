@@ -7,7 +7,7 @@ import { FormField } from '../../FormField';
 import { TextInput } from '../../TextInput';
 import { Modal } from '../Modal';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof Modal> = {
   title: 'Components/Modals/Modal',

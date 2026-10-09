@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { VStack } from '@styled-system/jsx';
 
@@ -9,7 +9,7 @@ import { Text } from '../Text';
 
 import { Alert } from './Alert';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const decisionTable = `
 Four components cover notification, chosen on three axes: **category** (why the

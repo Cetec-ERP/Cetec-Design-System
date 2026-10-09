@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Box } from '../Box';
+import { Button } from '../Button';
 import { FormField } from '../FormField';
 import { Text } from '../Text';
 
 import { Select } from './Select';
 import { SelectOption } from './SelectOption';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/Select',
@@ -204,6 +205,64 @@ export const Multiple: Story = {
         </Text>
       </Box>
     );
+  },
+  parameters: { controls: { disable: true } },
+};
+
+const LONG_OPTION_LABELS = Array.from(
+  { length: 40 },
+  (_, index) => `${index + 1} - Option ${index + 1}`,
+);
+
+export const ExLongOptionList: Story = {
+  name: 'Ex: Long Option List',
+  render: () => (
+    <Box display="flex" flexDirection="column" gap="8" maxW="xs">
+      <Select
+        data-testid="long-multiple"
+        multiple
+        placeholder="Choose options..."
+      >
+        {LONG_OPTION_LABELS.map((label, index) => (
+          <SelectOption key={label} value={String(index + 1)} label={label} />
+        ))}
+      </Select>
+      <Select data-testid="long-selected-near-end" defaultValue="35">
+        {LONG_OPTION_LABELS.map((label, index) => (
+          <SelectOption key={label} value={String(index + 1)} label={label} />
+        ))}
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByTestId('long-multiple'));
+    const listbox = await screen.findByRole('listbox');
+
+    // The listbox is capped to the space beside the trigger and scrolls,
+    // rather than running past the viewport edge.
+    const viewportHeight =
+      canvasElement.ownerDocument.documentElement.clientHeight;
+    const rect = listbox.getBoundingClientRect();
+    expect(rect.top).toBeGreaterThanOrEqual(0);
+    expect(rect.bottom).toBeLessThanOrEqual(viewportHeight);
+    expect(getComputedStyle(listbox).overflowY).toBe('auto');
+    expect(listbox.scrollHeight).toBeGreaterThan(listbox.clientHeight);
+
+    await userEvent.keyboard('{Escape}');
+
+    // A selected option past the fold is scrolled into view on open.
+    await userEvent.click(canvas.getByTestId('long-selected-near-end'));
+    const selectedListbox = await screen.findByRole('listbox');
+    const selectedOption = within(selectedListbox).getByRole('option', {
+      selected: true,
+    });
+    const listboxRect = selectedListbox.getBoundingClientRect();
+    const optionRect = selectedOption.getBoundingClientRect();
+    expect(optionRect.top).toBeGreaterThanOrEqual(listboxRect.top);
+    expect(optionRect.bottom).toBeLessThanOrEqual(listboxRect.bottom);
   },
   parameters: { controls: { disable: true } },
 };
@@ -519,6 +578,141 @@ export const DsComponentAttribute: Story = {
 
     expect(listbox).not.toHaveAttribute('data-ds-component', 'Select');
     expect(listbox).not.toHaveAttribute('data-ds-component', 'StatusSelect');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+// `Icon` renders its sprite name as the `name` attribute on the svg.
+const getOptionIconName = (option: HTMLElement) =>
+  option.querySelector('svg[name]')?.getAttribute('name');
+
+export const TestClearIconOnNavigation: Story = {
+  name: 'Test: Clear icon follows hover and keyboard',
+  render: () => (
+    <Box w="xs">
+      <Select defaultValue="starter" placeholder="Choose an option...">
+        <SelectOption value="starter" label="Starter" />
+        <SelectOption value="growth" label="Growth" />
+        <SelectOption value="enterprise" label="Enterprise" />
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('combobox');
+
+    // Opened with the pointer, the selected row is active but untouched.
+    await userEvent.click(trigger);
+    const starter = await screen.findByRole('option', { name: /starter/i });
+    const growth = screen.getByRole('option', { name: /growth/i });
+    expect(getOptionIconName(starter)).toBe('check');
+
+    // Hovering the selected row offers the clear icon; moving to another row
+    // takes it back.
+    await userEvent.hover(starter);
+    expect(getOptionIconName(starter)).toBe('x');
+    await userEvent.hover(growth);
+    expect(getOptionIconName(starter)).toBe('check');
+
+    // Once the pointer leaves the options, focus moves to the listbox rather
+    // than an option. Arrowing from there must still be treated as navigation.
+    await userEvent.hover(starter);
+    await userEvent.unhover(starter);
+    expect(getOptionIconName(starter)).toBe('check');
+    await userEvent.keyboard('{ArrowDown}');
+    expect(getOptionIconName(starter)).toBe('x');
+
+    // Arrowing away restores the check.
+    await userEvent.keyboard('{ArrowDown}');
+    expect(getOptionIconName(starter)).toBe('check');
+
+    // Typeahead is keyboard navigation too.
+    await userEvent.keyboard('s');
+    expect(getOptionIconName(starter)).toBe('x');
+
+    // Opened with the keyboard, the selected row starts with the clear icon.
+    await userEvent.keyboard('{Escape}');
+    trigger.focus();
+    await userEvent.keyboard('{ArrowDown}');
+    const reopened = await screen.findByRole('option', { name: /starter/i });
+    expect(getOptionIconName(reopened)).toBe('x');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const TestClearIconOverridesCustomIcon: Story = {
+  name: 'Test: Clear icon replaces a custom option icon',
+  render: () => (
+    <Box w="xs">
+      <Select defaultValue="email" placeholder="Choose an option...">
+        <SelectOption value="email" label="Email" iconLeft="envelope" />
+        <SelectOption value="phone" label="Phone" iconLeft="at" />
+      </Select>
+    </Box>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByRole('combobox'));
+    const email = await screen.findByRole('option', { name: /email/i });
+    expect(getOptionIconName(email)).toBe('envelope');
+
+    await userEvent.hover(email);
+    expect(getOptionIconName(email)).toBe('x');
+
+    await userEvent.hover(screen.getByRole('option', { name: /phone/i }));
+    expect(getOptionIconName(email)).toBe('envelope');
+  },
+  parameters: { controls: { disable: true } },
+};
+
+export const TestClearIconResetsOnControlledOpen: Story = {
+  name: 'Test: Clear icon resets when open is controlled',
+  render: function TestClearIconResetsOnControlledOpenRender() {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Box display="grid" gap="12" w="xs">
+        {/* Above the Select so the open list never covers them. The Select
+            has no `onOpenChange`, so only these buttons open or close it. */}
+        <Box display="flex" gap="8">
+          <Button onClick={() => setOpen(true)}>Open</Button>
+          <Button onClick={() => setOpen(false)}>Close</Button>
+        </Box>
+
+        <Select
+          open={open}
+          defaultValue="growth"
+          placeholder="Choose an option..."
+        >
+          <SelectOption value="starter" label="Starter" />
+          <SelectOption value="growth" label="Growth" />
+          <SelectOption value="enterprise" label="Enterprise" />
+        </Select>
+      </Box>
+    );
+  },
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const screen = within(canvasElement.ownerDocument.body);
+
+    // The parent opens and closes the Select directly, so none of this goes
+    // through the Select's own open handling.
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    const growth = await screen.findByRole('option', { name: /growth/i });
+    expect(getOptionIconName(growth)).toBe('check');
+
+    await userEvent.hover(growth);
+    expect(getOptionIconName(growth)).toBe('x');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    // Reopened without any fresh interaction with the list.
+    const reopened = await screen.findByRole('option', { name: /growth/i });
+    expect(getOptionIconName(reopened)).toBe('check');
   },
   parameters: { controls: { disable: true } },
 };

@@ -1,9 +1,10 @@
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { LocaleProvider, type LocaleLabels } from '~/system/context';
 
 import { Box } from '../Box';
 import { Calendar } from '../Calendar';
+import { Chip } from '../Chip';
 import { DateTimeInput } from '../DateTime';
 import { Select, SelectOption } from '../Select';
 
@@ -100,6 +101,25 @@ export const PropOverridesProvider: Story = {
     ).toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: 'Mes anterior' }),
+    ).toBeInTheDocument();
+  },
+};
+
+export const UndefinedLabelKeepsDefault: Story = {
+  name: 'Undefined Label Keeps Default',
+  render: () => (
+    <LocaleProvider labels={{ removeItem: undefined }}>
+      <Chip dismissable onDismiss={() => {}}>
+        Widget
+      </Chip>
+    </LocaleProvider>
+  ),
+  parameters: { controls: { disable: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(
+      canvas.getByRole('button', { name: 'Remove Widget' }),
     ).toBeInTheDocument();
   },
 };

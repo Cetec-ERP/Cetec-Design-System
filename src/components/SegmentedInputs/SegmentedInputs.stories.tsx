@@ -10,7 +10,7 @@ import { SegmentedInput } from './SegmentedInput';
 import { SegmentedTime } from './SegmentedTime';
 
 import type { SegmentedInputItem, SegmentedInputValueMap } from './types';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/SegmentedInputs',

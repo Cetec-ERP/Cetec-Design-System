@@ -19,7 +19,7 @@ import type {
   TimeRangeValue,
   TimeValue,
 } from '../helpers/types';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * Segmented Date/Time input fields — DateInput, DateRangeInput, TimeInput,
