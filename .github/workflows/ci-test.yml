@@ -5,10 +5,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Vitest's --changed follows JS imports only. Styles reach components
+  # through generated code, so a token, recipe, or config change has no
+  # import path to the stories. Those changes run the full suite. So does a
+  # baseline change, so new baselines are checked against every story.
+  scope:
+    name: Choose test scope
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.scope.outputs.mode }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Choose test scope
+        id: scope
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ -z "$BASE_REF" ]; then
+            echo "mode=full" >> "$GITHUB_OUTPUT"
+            echo "No base branch (manual run): full suite."
+            exit 0
+          fi
+          changed=$(git diff --name-only "origin/$BASE_REF...HEAD")
+          full_pattern='^(panda\.config\.ts|src/cetec-preset\.ts|src/recipes/|src/styles/|package\.json|package-lock\.json|vitest\.config\.ts|\.storybook/|__vis__/)'
+          if echo "$changed" | grep -Eq "$full_pattern"; then
+            echo "mode=full" >> "$GITHUB_OUTPUT"
+            echo "Full suite. Matched:"
+            echo "$changed" | grep -E "$full_pattern"
+          else
+            echo "mode=changed" >> "$GITHUB_OUTPUT"
+            echo "Changed files only."
+          fi
+
   storybook-tests:
     name: Storybook tests
+    needs: scope
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -30,34 +66,57 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
-      # Vitest's --changed follows JS imports only. Styles reach components
-      # through generated code, so a token, recipe, or config change has no
-      # import path to the stories. Those changes run the full suite.
-      - name: Choose test scope
-        id: scope
-        env:
-          BASE_REF: ${{ github.base_ref }}
-        run: |
-          if [ -z "$BASE_REF" ]; then
-            echo "mode=full" >> "$GITHUB_OUTPUT"
-            echo "No base branch (manual run): full suite."
-            exit 0
-          fi
-          changed=$(git diff --name-only "origin/$BASE_REF...HEAD")
-          full_pattern='^(panda\.config\.ts|src/cetec-preset\.ts|src/recipes/|src/styles/|package\.json|package-lock\.json|vitest\.config\.ts|\.storybook/)'
-          if echo "$changed" | grep -Eq "$full_pattern"; then
-            echo "mode=full" >> "$GITHUB_OUTPUT"
-            echo "Full suite. Matched:"
-            echo "$changed" | grep -E "$full_pattern"
-          else
-            echo "mode=changed" >> "$GITHUB_OUTPUT"
-            echo "Changed files only."
-          fi
-
       - name: Run Storybook tests (full suite)
-        if: steps.scope.outputs.mode == 'full'
+        if: needs.scope.outputs.mode == 'full'
         run: npm test
 
       - name: Run Storybook tests (changed files)
-        if: steps.scope.outputs.mode == 'changed'
+        if: needs.scope.outputs.mode == 'changed'
         run: npm test -- --changed "origin/${{ github.base_ref }}" --passWithNoTests
+
+  # Not a required check while thresholds are tuned. On failure, download the
+  # `visual-diffs` artifact to see what changed. To accept the change, run the
+  # "Update visual baselines" workflow on this branch (see AGENTS.md).
+  visual-tests:
+    name: Visual tests
+    needs: scope
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Panda CSS
+        run: npm run prepare
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run visual tests (full suite)
+        if: needs.scope.outputs.mode == 'full'
+        run: npm run test:visual
+
+      - name: Run visual tests (changed files)
+        if: needs.scope.outputs.mode == 'changed'
+        run: npm run test:visual -- --changed "origin/${{ github.base_ref }}" --passWithNoTests
+
+      - name: Upload diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: |
+            __vis__/linux/__diffs__
+            __vis__/linux/__results__
+          if-no-files-found: ignore
+          retention-days: 14

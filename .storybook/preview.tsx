@@ -1,4 +1,5 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
+import { visAnnotations } from 'storybook-addon-vis';
 
 import { IconProvider } from '../src/components/Icon';
 import DocTemplate from '../src/storybook/doctemplate.mdx';
@@ -8,6 +9,8 @@ import '../src/styles/index.css';
 import './story-docs-style.css';
 
 const preview: Preview = {
+  // Turns on image snapshots per story under Vitest. A no-op in Storybook.
+  ...visAnnotations,
   decorators: [
     (Story) => (
       <IconProvider spritePath={`${import.meta.env.BASE_URL}sprite.svg`}>
@@ -73,7 +76,8 @@ const preview: Preview = {
       },
     },
   },
-  tags: ['autodocs'],
+  // `snapshot` opts every story into visual tests. Opt one out with '!snapshot'.
+  tags: ['autodocs', 'snapshot'],
 };
 
 export default preview;
