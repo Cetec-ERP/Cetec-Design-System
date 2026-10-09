@@ -82,6 +82,16 @@ export {
 } from './components/DateTime';
 export { Divider, type DividerProps } from './components/Divider';
 export {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  type DrawerBodyProps,
+  type DrawerFooterProps,
+  type DrawerHeaderProps,
+  type DrawerProps,
+} from './components/Drawer';
+export {
   DsChainScope,
   type DsChainScopeProps,
 } from './components/DsChainScope';
@@ -221,6 +231,7 @@ export {
   useMenuListContext,
   useMenuRootContext,
 } from './components/Menu/context/menuContext';
+export { useDrawerContext } from './components/Drawer/DrawerContext';
 export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
 export {
   useTabPanelActive,

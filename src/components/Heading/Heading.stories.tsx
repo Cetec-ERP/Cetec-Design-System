@@ -1,4 +1,4 @@
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { Flex, VStack, Grid } from '@styled-system/jsx';
 
@@ -7,7 +7,7 @@ import { Text } from '../Text';
 
 import { Heading } from './Heading';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/Heading',

@@ -12,7 +12,7 @@ import { Icon } from './Icon';
 import iconMetadata from './iconMetadata.json';
 import { IconNames } from './iconNames';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 type IconMetadataEntry = {
   aliases?: string[];

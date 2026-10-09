@@ -1,4 +1,4 @@
-import { create } from '@storybook/theming';
+import { create } from 'storybook/theming';
 
 // TODO: Static Import Logo?
 // TODO: Implement Tokens or use DS colors

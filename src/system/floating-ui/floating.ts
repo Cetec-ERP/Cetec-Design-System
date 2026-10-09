@@ -3,6 +3,7 @@ import {
   flip,
   offset as floatingOffset,
   shift,
+  size,
   useFloating,
   type Middleware,
   type Placement,
@@ -42,6 +43,37 @@ export const createOverlayMiddleware = (
     shift({ padding: shiftPadding }),
     ...extras,
   ];
+};
+
+export type AvailableHeightMiddlewareOptions = {
+  /** Sets the floating element's `minWidth` to the reference width. */
+  matchReferenceWidth?: boolean;
+  padding?: number;
+};
+
+/**
+ * Writes the space beside the reference to `--available-height` so a recipe
+ * (e.g. the `menu` recipe's `scrollable` variant) can cap and scroll the
+ * floating element. Place it after `flip()` and `shift()`. The default
+ * `padding` matches `createOverlayMiddleware`'s default `shiftPadding`.
+ */
+export const availableHeightMiddleware = (
+  options: AvailableHeightMiddlewareOptions = {},
+) => {
+  const { matchReferenceWidth = false, padding = 8 } = options;
+
+  return size({
+    padding,
+    apply({ rects, elements, availableHeight }) {
+      if (matchReferenceWidth) {
+        elements.floating.style.minWidth = `${rects.reference.width}px`;
+      }
+      elements.floating.style.setProperty(
+        '--available-height',
+        `${Math.max(availableHeight, 0)}px`,
+      );
+    },
+  });
 };
 
 export const useOverlayFloating = (options: OverlayFloatingOptions) => {

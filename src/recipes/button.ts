@@ -58,6 +58,10 @@ const buttonBaseStyles = {
     py: 'var(--main-py)',
     px: 'var(--main-px)',
     fontSize: 'var(--main-fs)',
+    // Set here, not only on the container: calc(1em + …) resolves to a fixed
+    // length where it is declared, so the label would inherit the container's
+    // line height instead of one based on its own font size.
+    lineHeight: 'default',
   },
   slot: {
     display: 'inline-flex',
@@ -214,7 +218,7 @@ const buttonVariants = {
         borderColor: 'transparent',
         _hover: {
           bg: 'bg.selected.hovered',
-          color: 'text.selected.hovered',
+          color: 'text.selected',
         },
         _active: {
           bg: 'bg.selected.pressed',

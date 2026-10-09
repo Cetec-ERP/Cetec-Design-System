@@ -239,6 +239,11 @@ export type MenuRootContextValue = {
 /** Roving-focus state for one menu level. */
 export type MenuListContextValue = {
   activeIndex: number | null;
+  /**
+   * Row that holds the roving tab stop. Falls back to `activeIndex` when
+   * omitted; the root menu sets it so Tab can enter before any row is active.
+   */
+  tabbableIndex?: number | null;
   getItemProps: (userProps?: HTMLProps<HTMLElement>) => HTMLProps<HTMLElement>;
   /** Move active item along the list main axis (looping), for nested submenu delegation. */
   navigateMainAxis?: (direction: 1 | -1) => void;
@@ -432,6 +437,77 @@ export const hasMatchingItems = (
 
     return true;
   });
+};
+
+/**
+ * Returns the structural key path (`Children.toArray` keys, outermost first)
+ * of the `SubMenu` whose `children` prop is `target`, searching through groups
+ * and submenus. Keys identify a submenu by position, so duplicate labels are
+ * safe.
+ */
+export const findSubMenuKeyPath = (
+  children: ReactNode,
+  target: ReactNode,
+  trail: string[] = [],
+): string[] | null => {
+  for (const childNode of Children.toArray(children)) {
+    if (!isValidElement(childNode)) {
+      continue;
+    }
+    const child = childNode as ReactElement<Record<string, unknown>>;
+    const componentType = getComponentType(child);
+    const nextTrail = [...trail, String(child.key)];
+
+    if (componentType === MENU_COMPONENT_TYPES.subMenu) {
+      if (child.props.children === target) {
+        return nextTrail;
+      }
+      const nested = findSubMenuKeyPath(
+        child.props.children as ReactNode,
+        target,
+        nextTrail,
+      );
+      if (nested) {
+        return nested;
+      }
+    } else if (componentType === MENU_COMPONENT_TYPES.group) {
+      const nested = findSubMenuKeyPath(
+        child.props.children as ReactNode,
+        target,
+        nextTrail,
+      );
+      if (nested) {
+        return nested;
+      }
+    }
+  }
+
+  return null;
+};
+
+/**
+ * Resolves the live children of the `SubMenu` at `keyPath` (see
+ * {@link findSubMenuKeyPath}) so drilled-in levels render current props
+ * (controlled inputs, filters) instead of the snapshot taken when the level
+ * was pushed. Returns `undefined` when the path no longer exists.
+ */
+export const findSubMenuChildren = (
+  children: ReactNode,
+  keyPath: string[],
+): ReactNode | undefined => {
+  const [key, ...rest] = keyPath;
+  if (key === undefined) {
+    return children;
+  }
+
+  const match = Children.toArray(children).find(
+    (childNode) => isValidElement(childNode) && String(childNode.key) === key,
+  ) as ReactElement<Record<string, unknown>> | undefined;
+  if (!match) {
+    return undefined;
+  }
+
+  return findSubMenuChildren(match.props.children as ReactNode, rest);
 };
 
 /** Splits text into case-insensitive query-match parts for highlight rendering. */

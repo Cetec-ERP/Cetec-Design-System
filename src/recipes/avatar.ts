@@ -42,7 +42,7 @@ export const avatarRecipe = defineSlotRecipe({
       borderRadius: '100',
       borderWidth: '1',
       borderStyle: 'solid',
-      borderColor: 'bg',
+      borderColor: 'surface',
       zIndex: 1,
     },
     status: {

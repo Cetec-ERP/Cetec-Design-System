@@ -79,8 +79,8 @@ Repository plan documents now live in `plans/`.
 
 This design system is built on **Panda CSS** with a strict tokens-first approach:
 
-- **Tokens** (`src/styles/tokens.ts`) - Design tokens for colors, spacing, typography, shadows, etc.
-- **Semantic Tokens** (`src/styles/semanticTokens.ts`) - Theme-specific token aliases for light/dark modes
+- **Tokens** (`src/styles/primitives/`) - Design tokens for colors, spacing, typography, shadows, etc.
+- **Semantic Tokens** (`src/styles/semantics/`) - Theme-specific token aliases for light/dark modes
 - **Recipes** (`src/recipes/`) - Component style variants (button, input, text, etc.)
 - **Components** (`src/components/`) - React components using recipes and tokens
 - **Icons** (`src/utils/svgsSource/`) - SVG icons compiled into a sprite system
@@ -99,8 +99,8 @@ This design system is built on **Panda CSS** with a strict tokens-first approach
 
 1. Create component directory: `src/components/[ComponentName]/`
 2. Create a recipe in `src/recipes/[componentname].ts` defining style variants
-3. Export recipe from `src/recipes/index.ts`
-4. Standard `recipes` are registered automatically, but new `slotRecipes` need to be manually registered in `panda.config.ts` under `theme.extend.recipes`
+3. Export the recipe from `src/recipes/recipes-regular.ts` or, for a slot recipe, `src/recipes/recipes-slot.ts`
+4. Both files are registered automatically through the preset (`src/cetec-preset.ts`); no manual registration is needed
 5. Run `npm run prepare` to regenerate Panda CSS types
 6. Implement component using the recipe
 7. Create Storybook story in component directory: `ComponentName.stories.tsx`
@@ -156,7 +156,7 @@ building `styled-system` and `styles.css`.
 1. **Import the stylesheet** at the root of your project:
 
 ```typescript
-import '@styled-system/styles.css';
+import 'cetec-design-system/styles.css';
 ```
 
 2. **Wrap your app with ThemeProvider**:
@@ -188,6 +188,20 @@ function MyComponent() {
   );
 }
 ```
+
+### Fonts
+
+The package ships the Ruda and Recursive variable fonts. Import the font
+stylesheet once, next to the main stylesheet:
+
+```typescript
+import 'cetec-design-system/fonts.css';
+```
+
+`fonts.css` points at `./fonts/*.woff2` relative to itself, so any bundler
+(Vite, webpack, esbuild) resolves the files from `node_modules`. Consumers do not
+need to install `@fontsource-variable/*`. The source is
+`src/styles/font-imports.css`; `tools/build-fonts.mjs` builds the published copy.
 
 ## Release Process
 
