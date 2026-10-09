@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
