@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { HStack, VStack } from '@styled-system/jsx';
 
@@ -367,16 +367,17 @@ export const FocusWithinKeepsPause: Story = {
     const first = canvas.getByRole('button', { name: 'First action' });
     const second = canvas.getByRole('button', { name: 'Second action' });
 
+    // The pause state commits after the focus event, so wait for it.
     first.focus();
-    await expect(toast).toHaveAttribute('data-paused', 'true');
+    await waitFor(() => expect(toast).toHaveAttribute('data-paused', 'true'));
 
     await userEvent.hover(toast);
     await userEvent.unhover(toast);
-    await expect(toast).toHaveAttribute('data-paused', 'true');
+    await waitFor(() => expect(toast).toHaveAttribute('data-paused', 'true'));
 
     await userEvent.tab();
     await expect(second).toHaveFocus();
-    await expect(toast).toHaveAttribute('data-paused', 'true');
+    await waitFor(() => expect(toast).toHaveAttribute('data-paused', 'true'));
   },
 };
 
