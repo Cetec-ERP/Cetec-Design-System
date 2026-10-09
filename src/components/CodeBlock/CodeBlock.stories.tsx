@@ -125,19 +125,30 @@ export const CopyWritesPlainText: Story = {
   },
   play: async ({ canvasElement }) => {
     const writeText = fn().mockResolvedValue(undefined);
+    // Keep the original so other stories in this window use the real clipboard.
+    const original = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
     Object.defineProperty(navigator, 'clipboard', {
       value: { writeText },
       configurable: true,
     });
 
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('button', { name: 'Copy code' }));
+    try {
+      const canvas = within(canvasElement);
+      await userEvent.click(canvas.getByRole('button', { name: 'Copy code' }));
 
-    // Line numbers and the trailing line break are not copied.
-    expect(writeText).toHaveBeenCalledWith('line one\nline two');
-    await waitFor(() =>
-      expect(canvas.getByRole('status')).toHaveTextContent('Copied'),
-    );
+      // Line numbers and the trailing line break are not copied.
+      expect(writeText).toHaveBeenCalledWith('line one\nline two');
+      await waitFor(() =>
+        expect(canvas.getByRole('status')).toHaveTextContent('Copied'),
+      );
+    } finally {
+      if (original) {
+        Object.defineProperty(navigator, 'clipboard', original);
+      } else {
+        // The real clipboard lives on Navigator.prototype; drop the own override.
+        Reflect.deleteProperty(navigator, 'clipboard');
+      }
+    }
   },
 };
 
