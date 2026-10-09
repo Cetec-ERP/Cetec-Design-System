@@ -1,0 +1,107 @@
+import{j as e,r as p,G as L,a as w,T as N,B as O}from"./iframe-CXsJ8nBA.js";import{B as A}from"./BreakpointIndicator-BwQvunHU.js";import{B as D}from"./Button-CZE1N6w8.js";import{C as x}from"./CheckboxInput-B8_c_Ijd.js";import{T as U}from"./Textarea-CrmFX0Du.js";import{T as o}from"./TextInput-BueRVBeI.js";import{F as t}from"./FormField-C8rcDu8o.js";import"./preload-helper-CNOPt5Zm.js";import"./mq.hook-DrwCf88W.js";import"./breakpoints-DU_5_Zhy.js";import"./Tag-DyFS-3Qz.js";import"./Spinner-D-dkI8vG.js";import"./FieldContext-B4fdc69l.js";import"./Checkbox-B8P2AyWW.js";import"./Label-BFoBrT1R.js";import"./IconButton-Bkoqj9RS.js";const ae={title:"Components/FormField",component:t,tags:["autodocs"],parameters:{layout:"centered"},args:{label:"Company Name",labelFor:"company-name",children:null}},i={render:function(){const[n,a]=p.useState("");return e.jsx(t,{label:"Company Name",labelFor:"company-name",helpText:"Use your legal business name for billing.",children:e.jsx(o,{id:"company-name",name:"company-name",value:n,onChange:r=>a(r.target.value),placeholder:"Acme Manufacturing"})})}},l={render:function(){const[n,a]=p.useState("");return e.jsx(t,{layout:"inline",label:"Order Number",labelFor:"order-number",helpText:"Used for matching external invoices.",maxW:"xl",children:e.jsx(o,{id:"order-number",name:"order-number",value:n,onChange:r=>a(r.target.value),placeholder:"SO-28417"})})},parameters:{controls:{disable:!0}}},c={render:()=>e.jsxs(L,{w:"full",h:"full",position:"relative",placeContent:"center",alignItems:"center",justifyItems:"center",gap:"16",children:[e.jsxs(t,{label:"Order Number",labelFor:"order-number",helpText:"Used for matching external invoices.",size:{base:"xl",xs:"lg",sm:"md",md:"sm"},maxW:"md",children:[e.jsx(o,{name:"pizza",placeholder:"Fave pizza",before:e.jsx(w,{name:"question-mark"})}),e.jsx(U,{name:"description",placeholder:"Describe how pizza makes you feel..."}),e.jsx(D,{iconAfter:"send",children:"Button, yo"})]}),e.jsxs(N,{textAlign:"center",textStyle:"mono.sm",_after:{display:"inline",content:{base:'"xl"',xs:'"lg"',sm:'"md"',md:'"sm"'},color:"text.bold",fontWeight:"bold"},children:["Size:"," "]}),e.jsx(A,{})]}),parameters:{controls:{disable:!0}}},m={name:"Ex: Validation Error",render:function(){const[n,a]=p.useState(""),r=n.length>0&&!n.includes("@");return e.jsx(t,{label:"Notification Email",labelFor:"notification-email",required:!0,error:r,errorText:"Enter a valid email address.",children:e.jsx(o,{id:"notification-email",name:"notification-email",value:n,onChange:R=>a(R.target.value),placeholder:"team@company.com",type:"email"})})},parameters:{controls:{disable:!0}}},d={name:"Ex: Validation Success",render:function(){return e.jsx(t,{label:"Enter your domain",labelFor:"domain",success:!0,successText:"This domain is available",w:"xs",size:"lg",children:e.jsx(o,{id:"domain",name:"domain",placeholder:"name.com",defaultValue:"shauns-pizza-company.com",before:e.jsx(w,{name:"check",fill:"icon.success"})})})},parameters:{controls:{disable:!0}}},u={name:"Ex: Label + Input Wrapper Composition",render:function(){const[n,a]=p.useState({invoices:!0,alerts:!1});return e.jsx(O,{maxW:"lg",children:e.jsxs(t,{label:"Email Preferences",labelFor:"invoices",helpText:"Choose which events should trigger notifications.",children:[e.jsx(x,{id:"invoices",name:"invoices",checked:n.invoices,onChange:r=>a({...n,invoices:r.target.checked}),children:"Invoice sent notifications"}),e.jsx(x,{id:"alerts",name:"alerts",checked:n.alerts,onChange:r=>a({...n,alerts:r.target.checked}),children:"Critical system alerts"})]})})},parameters:{controls:{disable:!0}}},te=["Default","InlineLayout","ConditionalBreakpoints","ExFieldWithError","ExFieldWithSuccess","ExWithInputWrappers"];var h,b,g;i.parameters={...i.parameters,docs:{...(h=i.parameters)==null?void 0:h.docs,source:{originalSource:`{
+  render: function DefaultRender() {
+    const [value, setValue] = useState('');
+    return <FormField label="Company Name" labelFor="company-name" helpText="Use your legal business name for billing.">
+        <TextInput id="company-name" name="company-name" value={value} onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)} placeholder="Acme Manufacturing" />
+      </FormField>;
+  }
+}`,...(g=(b=i.parameters)==null?void 0:b.docs)==null?void 0:g.source}}};var f,F,v;l.parameters={...l.parameters,docs:{...(f=l.parameters)==null?void 0:f.docs,source:{originalSource:`{
+  render: function InlineLayoutRender() {
+    const [value, setValue] = useState('');
+    return <FormField layout="inline" label="Order Number" labelFor="order-number" helpText="Used for matching external invoices." maxW="xl">
+        <TextInput id="order-number" name="order-number" value={value} onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)} placeholder="SO-28417" />
+      </FormField>;
+  },
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(v=(F=l.parameters)==null?void 0:F.docs)==null?void 0:v.source}}};var E,y,I;c.parameters={...c.parameters,docs:{...(E=c.parameters)==null?void 0:E.docs,source:{originalSource:`{
+  render: () => <Grid w="full" h="full" position="relative" placeContent="center" alignItems="center" justifyItems="center" gap="16">
+      <FormField label="Order Number" labelFor="order-number" helpText="Used for matching external invoices." size={{
+      base: 'xl',
+      xs: 'lg',
+      sm: 'md',
+      md: 'sm'
+    }} maxW="md">
+        <TextInput name="pizza" placeholder="Fave pizza" before={<Icon name="question-mark" />} />
+        <Textarea name="description" placeholder="Describe how pizza makes you feel..." />
+        <Button iconAfter="send">Button, yo</Button>
+      </FormField>
+      <Text textAlign="center" textStyle="mono.sm" _after={{
+      display: 'inline',
+      content: {
+        base: '"xl"',
+        xs: '"lg"',
+        sm: '"md"',
+        md: '"sm"'
+      },
+      color: 'text.bold',
+      fontWeight: 'bold'
+    }}>
+        Size:{' '}
+      </Text>
+      <BreakpointIndicator />
+    </Grid>,
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(I=(y=c.parameters)==null?void 0:y.docs)==null?void 0:I.source}}};var C,T,S;m.parameters={...m.parameters,docs:{...(C=m.parameters)==null?void 0:C.docs,source:{originalSource:`{
+  name: 'Ex: Validation Error',
+  render: function ExFieldWithErrorRender() {
+    const [email, setEmail] = useState('');
+    const showError = email.length > 0 && !email.includes('@');
+    return <FormField label="Notification Email" labelFor="notification-email" required error={showError} errorText="Enter a valid email address.">
+        <TextInput id="notification-email" name="notification-email" value={email} onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} placeholder="team@company.com" type="email" />
+      </FormField>;
+  },
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(S=(T=m.parameters)==null?void 0:T.docs)==null?void 0:S.source}}};var W,j,k;d.parameters={...d.parameters,docs:{...(W=d.parameters)==null?void 0:W.docs,source:{originalSource:`{
+  name: 'Ex: Validation Success',
+  render: function ExFieldWithSuccessRender() {
+    return <FormField label="Enter your domain" labelFor="domain" success={true} successText="This domain is available" w="xs" size="lg">
+        <TextInput id="domain" name="domain" placeholder="name.com" defaultValue="shauns-pizza-company.com" before={<Icon name="check" fill="icon.success" />} />
+      </FormField>;
+  },
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(k=(j=d.parameters)==null?void 0:j.docs)==null?void 0:k.source}}};var z,B,V;u.parameters={...u.parameters,docs:{...(z=u.parameters)==null?void 0:z.docs,source:{originalSource:`{
+  name: 'Ex: Label + Input Wrapper Composition',
+  render: function ExWithInputWrappersRender() {
+    const [settings, setSettings] = useState({
+      invoices: true,
+      alerts: false
+    });
+    return <Box maxW="lg">
+        <FormField label="Email Preferences" labelFor="invoices" helpText="Choose which events should trigger notifications.">
+          <CheckboxInput id="invoices" name="invoices" checked={settings.invoices} onChange={e => setSettings({
+          ...settings,
+          invoices: e.target.checked
+        })}>
+            Invoice sent notifications
+          </CheckboxInput>
+          <CheckboxInput id="alerts" name="alerts" checked={settings.alerts} onChange={e => setSettings({
+          ...settings,
+          alerts: e.target.checked
+        })}>
+            Critical system alerts
+          </CheckboxInput>
+        </FormField>
+      </Box>;
+  },
+  parameters: {
+    controls: {
+      disable: true
+    }
+  }
+}`,...(V=(B=u.parameters)==null?void 0:B.docs)==null?void 0:V.source}}};export{c as ConditionalBreakpoints,i as Default,m as ExFieldWithError,d as ExFieldWithSuccess,u as ExWithInputWrappers,l as InlineLayout,te as __namedExportsOrder,ae as default};
