@@ -6,7 +6,7 @@ import { Text } from '../Text';
 
 import { Textarea } from './Textarea';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * Textarea component for multi-line text entry.

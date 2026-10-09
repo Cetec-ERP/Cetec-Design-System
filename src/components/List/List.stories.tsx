@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { HStack, VStack } from '@styled-system/jsx';
 
@@ -10,7 +10,7 @@ import { Text } from '../Text';
 
 import { List, ListItem, ListItemGroup } from './index';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const items = [
   { id: 'acct', label: 'Account settings', desc: 'Manage profile and access' },

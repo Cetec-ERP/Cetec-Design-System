@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, fn, userEvent, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { HStack, VStack } from '@styled-system/jsx';
 
@@ -11,7 +11,7 @@ import { Toast } from './Toast';
 import { ToastProvider } from './ToastProvider';
 import { useToast } from './useToast';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const description = `
 \`Toast\` is the transient, non-blocking placement: it confirms an outcome and

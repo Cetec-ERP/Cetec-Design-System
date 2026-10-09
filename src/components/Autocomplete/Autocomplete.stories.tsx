@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
@@ -10,7 +10,7 @@ import { Autocomplete } from './Autocomplete';
 import { Option } from './Option';
 
 import type { AutocompleteChangeReason } from './types';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const baseOptions = [
   { value: 'react', label: 'React', description: 'UI library' },

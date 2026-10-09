@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { useDsChain } from '~/utils/dsChain';
 
@@ -13,7 +13,7 @@ import { Text } from '../Text';
 
 import { DsChainScope } from './DsChainScope';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * Reads the chain at its own position in the React tree and writes it to a

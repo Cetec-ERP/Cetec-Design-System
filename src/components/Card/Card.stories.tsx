@@ -1,4 +1,4 @@
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 
 import { HStack, VStack, Grid, Flex, Wrap } from '@styled-system/jsx';
 
@@ -11,7 +11,7 @@ import { Text } from '../Text';
 
 import { Card } from './Card';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * Card component for containing content with optional interactivity.
