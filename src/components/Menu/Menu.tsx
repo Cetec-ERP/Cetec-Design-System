@@ -676,8 +676,11 @@ export const Menu = (props: MenuProps) => {
     }
 
     const updateWrapperSize = () => {
-      const nextWidth = Math.ceil(sizeProbe.scrollWidth);
-      const nextHeight = Math.ceil(sizeProbe.scrollHeight);
+      // `scrollWidth`/`scrollHeight` are rounded integers, so a 123.33px level
+      // would measure 123 and wrap. Read the fractional size, then round up.
+      const rect = sizeProbe.getBoundingClientRect();
+      const nextWidth = Math.ceil(rect.width);
+      const nextHeight = Math.ceil(rect.height);
 
       setWrapperSize((previous) => {
         if (previous.width === nextWidth && previous.height === nextHeight) {
