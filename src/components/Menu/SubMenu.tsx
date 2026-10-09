@@ -40,6 +40,7 @@ import { list, listItem as listItemRecipe, menu } from '@styled-system/recipes';
 
 import { availableHeightMiddleware } from '~/system/floating-ui/floating';
 import { useFloatingLayer } from '~/system/floating-ui/FloatingLayerContext';
+import { setCompoundComponentType } from '~/utils/compoundComponent';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -643,6 +644,8 @@ export const SubMenu = (props: SubMenuProps) => {
   );
 };
 
-(SubMenu as unknown as { [menuComponentTypeKey]: string })[
-  menuComponentTypeKey
-] = MENU_COMPONENT_TYPES.subMenu;
+setCompoundComponentType(
+  SubMenu,
+  menuComponentTypeKey,
+  MENU_COMPONENT_TYPES.subMenu,
+);
