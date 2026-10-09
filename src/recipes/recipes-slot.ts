@@ -26,3 +26,4 @@ export { alertRecipe } from './alert';
 export { pageBannerRecipe } from './pageBanner';
 export { toastRecipe } from './toast';
 export { inlineNoteRecipe } from './inlineNote';
+export { codeBlockRecipe } from './codeBlock';
