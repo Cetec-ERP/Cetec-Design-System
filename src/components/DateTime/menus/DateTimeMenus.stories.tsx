@@ -17,7 +17,7 @@ import type {
   TimeRangeValue,
   TimeValue,
 } from '../helpers/types';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 /**
  * Menus for the Date/Time family — DateMenu, DateRangeMenu, TimeMenu,

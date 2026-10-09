@@ -1,4 +1,4 @@
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
 import { VStack } from '@styled-system/jsx';
 
@@ -7,7 +7,7 @@ import { TextInput } from '../TextInput';
 
 import { InlineNote } from './InlineNote';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const description = `
 \`InlineNote\` is the smallest placement in the notification set: field-level

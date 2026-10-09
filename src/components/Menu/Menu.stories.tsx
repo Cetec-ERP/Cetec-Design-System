@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 
-import { configure, expect, userEvent, waitFor, within } from '@storybook/test';
+import { configure, expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { HStack, VStack, Flex } from '@styled-system/jsx';
 
@@ -21,7 +21,7 @@ import { MenuGroup } from './MenuGroup';
 import { MenuItem } from './MenuItem';
 import { SubMenu } from './SubMenu';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 // Floating UI moves focus on animation frames, which can lag under CI load.
 configure({ asyncUtilTimeout: 4000 });

@@ -3,7 +3,7 @@ import { withThemeByClassName } from '@storybook/addon-themes';
 import { IconProvider } from '../src/components/Icon';
 import DocTemplate from '../src/storybook/doctemplate.mdx';
 
-import type { Preview, ReactRenderer } from '@storybook/react';
+import type { Preview, ReactRenderer } from '@storybook/react-vite';
 import '../src/styles/index.css';
 import './story-docs-style.css';
 
@@ -40,7 +40,7 @@ const preview: Preview = {
         ],
       },
     },
-    backgrounds: { disable: true },
+    backgrounds: { disabled: true },
     controls: {
       disableSaveFromUI: true,
       matchers: {
