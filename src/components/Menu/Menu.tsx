@@ -39,6 +39,7 @@ import {
 import { cx } from '@styled-system/css';
 import { list, menu } from '@styled-system/recipes';
 
+import { useLocale } from '~/system/context/useLocale';
 import {
   availableHeightMiddleware,
   createOverlayMiddleware,
@@ -177,6 +178,7 @@ const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
  * ```
  */
 export const Menu = (props: MenuProps) => {
+  const { labels } = useLocale();
   const nodeId = useFloatingNodeId();
   const floatingLayer = useFloatingLayer();
   const {
@@ -750,7 +752,7 @@ export const Menu = (props: MenuProps) => {
           {!hasVisibleResults && (
             <Box className={classes.noResults}>
               {renderNoResults ?? (
-                <Text textStyle="body.sm">No results found</Text>
+                <Text textStyle="body.sm">{labels.noResults}</Text>
               )}
             </Box>
           )}

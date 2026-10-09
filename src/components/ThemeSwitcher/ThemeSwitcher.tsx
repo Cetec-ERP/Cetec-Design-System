@@ -1,5 +1,6 @@
 import { IconButton } from '~/components/IconButton';
 import { useTheme } from '~/system/context';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 
 /**
@@ -17,6 +18,7 @@ import { dsComponent } from '~/utils/dsComponent';
  */
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
+  const { labels } = useLocale();
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
@@ -25,7 +27,7 @@ export const ThemeSwitcher = () => {
     <IconButton
       {...dsComponent('ThemeSwitcher')}
       variant="ghost"
-      altText={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+      altText={labels.switchToTheme(theme === 'light' ? 'dark' : 'light')}
       onClick={toggleTheme}
       iconName={theme === 'light' ? 'moon' : 'sun'}
     />

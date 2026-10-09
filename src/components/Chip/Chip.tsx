@@ -22,6 +22,7 @@ import {
   type SlotPlacement,
   useSlotContext,
 } from '~/system/context/SlotContext';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -68,7 +69,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
     dismissable?: boolean;
     /**
      * Accessible name for the dismiss button.
-     * @default `Remove ${children}`, or `Remove` plus the comma-joined `items`
+     * @default `labels.removeItem` (English: `Remove ${children}`, or `Remove` plus the comma-joined `items`)
      */
     dismissLabel?: string;
     /** Ref forwarded to the dismiss button. */
@@ -114,6 +115,7 @@ export type ChipProps = Omit<BoxProps, keyof ChipVariantProps> &
 export const Chip = (props: ChipProps) => {
   const groupContext = useChipGroup();
   const fieldContext = useFieldContext();
+  const { labels } = useLocale();
   const slotContext = useSlotContext();
   const {
     size: sizeProp,
@@ -304,7 +306,8 @@ export const Chip = (props: ChipProps) => {
     : children;
 
   const resolvedDismissLabel =
-    dismissLabel || `Remove ${items ? items.join(', ') : children}`;
+    dismissLabel ||
+    labels.removeItem(items ? items.join(', ') : String(children));
 
   const handleDismissClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

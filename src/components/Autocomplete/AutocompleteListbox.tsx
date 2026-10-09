@@ -7,6 +7,7 @@ import type {
 } from 'react';
 
 import type { MenuDensity } from '~/components/Menu/context/menuContext';
+import { useLocale } from '~/system/context/useLocale';
 
 import { Box } from '../Box/Box';
 import { Icon } from '../Icon/Icon';
@@ -43,6 +44,7 @@ type AutocompleteListboxProps = {
 };
 
 export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
+  const { labels } = useLocale();
   const {
     activeIndex,
     baseId,
@@ -77,7 +79,7 @@ export const AutocompleteListbox = (props: AutocompleteListboxProps) => {
       ref={floatingRef}
       id={listboxId}
       role="listbox"
-      aria-label="Suggestions"
+      aria-label={labels.suggestions}
       aria-multiselectable={multiple || undefined}
       aria-busy={loading || loadingMore || undefined}
       density={density}

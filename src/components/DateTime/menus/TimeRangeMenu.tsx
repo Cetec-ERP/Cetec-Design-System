@@ -7,6 +7,7 @@ import { Button } from '~/components/Button';
 import { Divider } from '~/components/Divider';
 import { List, ListItem } from '~/components/List';
 import { Menu, type MenuProps } from '~/components/Menu';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
@@ -91,6 +92,7 @@ const TimeColumns = ({
   value,
   onChange,
 }: ColumnsProps) => {
+  const { labels } = useLocale();
   const displayHour =
     value && timeFormat === '12'
       ? to12Hour(value.hour).hour12
@@ -144,10 +146,10 @@ const TimeColumns = ({
         ref={hourColRef}
         className={classes.column}
         role="listbox"
-        aria-label={`${label} hour`}
+        aria-label={labels.fieldHour(label)}
       >
         <Box data-column-header className={classes.columnHeader}>
-          HR
+          {labels.hourColumn}
         </Box>
         <List>
           {hourValues.map((hour) => (
@@ -165,10 +167,10 @@ const TimeColumns = ({
         ref={minuteColRef}
         className={classes.column}
         role="listbox"
-        aria-label={`${label} minute`}
+        aria-label={labels.fieldMinute(label)}
       >
         <Box data-column-header className={classes.columnHeader}>
-          MIN
+          {labels.minuteColumn}
         </Box>
         <List>
           {minuteValues.map((minute) => (
@@ -187,10 +189,10 @@ const TimeColumns = ({
           ref={meridiemColRef}
           className={classes.column}
           role="listbox"
-          aria-label={`${label} AM or PM`}
+          aria-label={labels.fieldMeridiem(label)}
         >
           <Box data-column-header className={classes.columnHeader}>
-            AM/PM
+            {labels.meridiemColumn}
           </Box>
           <List>
             {(['AM', 'PM'] as Meridiem[]).map((meridiem) => (
@@ -225,6 +227,7 @@ const TimeColumns = ({
  * ```
  */
 export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
+  const { labels } = useLocale();
   const {
     trigger,
     open: controlledOpen,
@@ -236,8 +239,8 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
     timeFormat = '12',
     minuteStep = 1,
     disabled = false,
-    startLabel = 'Start time',
-    endLabel = 'End time',
+    startLabel = labels.startTime,
+    endLabel = labels.endTime,
     ...rest
   } = props;
   const isInline = rest.inline === true;
@@ -318,14 +321,14 @@ export const TimeRangeMenu = (props: TimeRangeMenuProps) => {
         </Box>
         <Box className={classes.footer}>
           <Button variant="standard" onClick={handleCancel}>
-            Cancel
+            {labels.cancel}
           </Button>
           <Button
             variant="primary"
             disabled={!draft.start || !draft.end}
             onClick={handleApply}
           >
-            Apply
+            {labels.apply}
           </Button>
         </Box>
       </Box>

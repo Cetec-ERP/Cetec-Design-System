@@ -230,6 +230,16 @@ export type { FormApi } from '@tanstack/react-form';
 // Theme handling
 export { ThemeProvider, useTheme } from './system/context';
 
+// Locale and built-in labels
+export {
+  LocaleProvider,
+  useLocale,
+  defaultLocaleLabels,
+  type LocaleProviderProps,
+  type LocaleLabels,
+  type LocaleContextType,
+} from './system/context';
+
 // Export splitProps helper
 export { splitProps } from './utils/splitProps';
 
