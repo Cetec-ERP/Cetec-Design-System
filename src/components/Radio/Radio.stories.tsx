@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 
-import { expect, fn, userEvent, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Card } from '../Card';
@@ -8,7 +8,7 @@ import { RadioInput } from '../RadioInput';
 
 import { Radio } from './Radio';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
   title: 'Components/Radio',

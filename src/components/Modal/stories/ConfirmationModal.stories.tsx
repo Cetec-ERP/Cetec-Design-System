@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '../../Button';
 import { ConfirmationModal } from '../ConfirmationModal';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof ConfirmationModal> = {
   title: 'Components/Modals/ConfirmationModal',

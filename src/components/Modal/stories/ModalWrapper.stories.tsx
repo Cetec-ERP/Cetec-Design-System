@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Flex, Grid, VStack } from '@styled-system/jsx';
 
@@ -19,7 +19,7 @@ import { ModalFooter } from '../ModalFooter';
 import { ModalHeader } from '../ModalHeader';
 import { ModalWrapper } from '../ModalWrapper';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof ModalWrapper> = {
   title: 'Components/Modals/ModalWrapper',
