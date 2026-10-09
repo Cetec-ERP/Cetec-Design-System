@@ -15,7 +15,12 @@ export default defineConfig({
   },
   // Pre-bundle deps the story tests discover late; otherwise Vite reloads mid-run on a cold cache (every CI run).
   optimizeDeps: {
-    include: ['react/jsx-dev-runtime'],
+    include: [
+      'react/jsx-dev-runtime',
+      '@storybook/addon-themes',
+      '@floating-ui/react',
+      '@tanstack/react-form',
+    ],
   },
   test: {
     projects: [
