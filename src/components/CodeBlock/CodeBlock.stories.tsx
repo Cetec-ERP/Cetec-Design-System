@@ -1,4 +1,4 @@
-import { expect, fn, userEvent, waitFor, within } from '@storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Code } from '../Code';
