@@ -125,6 +125,35 @@ export const useTabs = ({
   // commits must still send the return request back to the parent.
   const requestedValueRef = useRef(storedValue);
 
+  // Requests sent to the parent and not yet committed, oldest first.
+  const pendingRequestsRef = useRef<string[]>([]);
+
+  const recordRequest = useCallback((nextValue: string) => {
+    requestedValueRef.current = nextValue;
+    pendingRequestsRef.current = [
+      ...pendingRequestsRef.current.filter((pending) => pending !== nextValue),
+      nextValue,
+    ];
+  }, []);
+
+  // A stored value this strip requested is a commit: it settles that request
+  // and every older one, and newer requests stay pending. Any other stored
+  // value came from the parent alone, so no request is pending any more.
+  // Without this, an external change leaves the ref on the old value, and a
+  // click on the already-selected tab sends a redundant `onChange`.
+  useEffect(() => {
+    const pending = pendingRequestsRef.current;
+    const index = pending.indexOf(storedValue);
+
+    if (index === -1) {
+      pendingRequestsRef.current = [];
+      requestedValueRef.current = storedValue;
+      return;
+    }
+
+    pendingRequestsRef.current = pending.slice(index + 1);
+  }, [storedValue]);
+
   // A conditionally rendered or newly disabled tab cannot remain selected:
   // its button is absent from the tab order and would make the strip
   // unreachable by keyboard.
@@ -157,7 +186,7 @@ export const useTabs = ({
       setStoredValue(firstValue ?? '');
     }
     if (firstValue !== undefined) {
-      requestedValueRef.current = firstValue;
+      recordRequest(firstValue);
       onChange?.(null, firstValue, 'fallback-after-removal');
     }
   }, [
@@ -165,6 +194,7 @@ export const useTabs = ({
     isControlled,
     isStoredValueSelectable,
     onChange,
+    recordRequest,
     setStoredValue,
     storedValue,
   ]);
@@ -204,17 +234,26 @@ export const useTabs = ({
         return;
       }
 
-      requestedValueRef.current = nextValue;
+      recordRequest(nextValue);
       setStoredValue(nextValue);
       onChange?.(event, nextValue, reason);
     },
-    [onChange, setStoredValue, storedValue],
+    [onChange, recordRequest, setStoredValue, storedValue],
   );
 
   const focusTab = useCallback(
-    (tabValue: string) => {
+    (tabValue: string, options?: { afterMenuClose?: boolean }) => {
       ensureVisible(tabValue, () => {
-        elementsRef.current.get(tabValue)?.focus();
+        const focus = () => elementsRef.current.get(tabValue)?.focus();
+
+        // Closing the overflow menu queues a focus return to its trigger as a
+        // microtask in the same commit. Queue the tab focus after it, so the
+        // chosen tab keeps focus instead of the "More tabs" button.
+        if (options?.afterMenuClose) {
+          queueMicrotask(focus);
+        } else {
+          focus();
+        }
       });
     },
     [ensureVisible],

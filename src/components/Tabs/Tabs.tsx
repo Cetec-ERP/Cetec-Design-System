@@ -26,7 +26,7 @@ import { useTabs, type TabDescriptor } from './useTabs';
 
 type TabsOverflowMenuProps = {
   className: string;
-  focusTab: (value: string) => void;
+  focusTab: (value: string, options?: { afterMenuClose?: boolean }) => void;
   tabs: TabDescriptor[];
   selectTab: (
     event: TabsChangeEvent,
@@ -75,8 +75,8 @@ const TabsOverflowMenu = ({
             aria-checked={tab.value === selectedValue}
             onClick={(event) => {
               selectTab(event, tab.value, 'selected-from-overflow');
-              focusTab(tab.value);
               setIsOpen(false);
+              focusTab(tab.value, { afterMenuClose: true });
             }}
           />
         );

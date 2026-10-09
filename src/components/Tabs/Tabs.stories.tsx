@@ -1079,3 +1079,101 @@ export const ConsumerIdsIgnored: Story = {
     await expect(panel).toHaveAttribute('aria-labelledby', tab.id);
   },
 };
+
+export const OverflowMenuFocus: Story = {
+  name: 'Test: choosing a hidden tab from the menu focuses that tab',
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <Box data-overflow-focus-wrapper>
+      <Tabs {...args} aria-label="Overflow focus" defaultValue="work">
+        <Tab value="work">Work</Tab>
+        <Tab value="materials">Materials</Tab>
+        <Tab value="documents">Documents</Tab>
+        <Tab value="history">History</Tab>
+        <TabPanel value="work">Work content.</TabPanel>
+        <TabPanel value="materials">Materials content.</TabPanel>
+        <TabPanel value="documents">Documents content.</TabPanel>
+        <TabPanel value="history">History content.</TabPanel>
+      </Tabs>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const wrapper = canvasElement.querySelector<HTMLElement>(
+      '[data-overflow-focus-wrapper]',
+    );
+
+    if (!wrapper) throw new Error('overflow focus wrapper not found');
+    wrapper.style.width = '180px';
+
+    await waitFor(async () => {
+      await expect(canvas.queryByRole('tab', { name: 'History' })).toBeNull();
+    });
+
+    const trigger = await canvas.findByRole('button', { name: 'More tabs' });
+    await userEvent.click(trigger);
+    await userEvent.click(
+      await body.findByRole('menuitemradio', { name: 'History' }),
+    );
+
+    const history = await canvas.findByRole('tab', { name: 'History' });
+    await expect(history).toHaveAttribute('aria-selected', 'true');
+
+    // Closing the menu queues a focus return to its trigger. Wait a frame so
+    // that queued work has run, then check that focus stayed on the tab.
+    await new Promise((resolve) => globalThis.requestAnimationFrame(resolve));
+    await expect(history).toHaveFocus();
+  },
+};
+
+const ExternallyControlledTabs = () => {
+  const [value, setValue] = useState('alpha');
+  const [requests, setRequests] = useState<string[]>([]);
+
+  return (
+    <Box>
+      <Button variant="hollow" size="sm" onClick={() => setValue('bravo')}>
+        Select Bravo from outside
+      </Button>
+      <Text py="8" data-testid="external-requests">
+        Requests: {requests.length > 0 ? requests.join(', ') : 'none'}
+      </Text>
+      <Tabs
+        aria-label="External selection"
+        value={value}
+        onChange={(_event, nextValue) => {
+          setRequests((current) => [...current, nextValue]);
+          setValue(nextValue);
+        }}
+      >
+        <Tab value="alpha">Alpha section</Tab>
+        <Tab value="bravo">Bravo section</Tab>
+        <TabPanel value="alpha">Alpha content.</TabPanel>
+        <TabPanel value="bravo">Bravo content.</TabPanel>
+      </Tabs>
+    </Box>
+  );
+};
+
+export const ExternalValueChange: Story = {
+  name: 'Test: clicking a tab the parent already selected sends no change',
+  parameters: { controls: { disable: true } },
+  render: () => <ExternallyControlledTabs />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const requests = canvas.getByTestId('external-requests');
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Select Bravo from outside' }),
+    );
+    const bravo = canvas.getByRole('tab', { name: 'Bravo section' });
+    await expect(bravo).toHaveAttribute('aria-selected', 'true');
+
+    await userEvent.click(bravo);
+    await expect(requests).toHaveTextContent('Requests: none');
+
+    await userEvent.click(canvas.getByRole('tab', { name: 'Alpha section' }));
+    await expect(requests).toHaveTextContent('Requests: alpha');
+  },
+};
