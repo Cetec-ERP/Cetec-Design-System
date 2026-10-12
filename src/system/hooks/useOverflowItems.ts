@@ -50,8 +50,10 @@ export type UseOverflowItemsResult<TKey extends OverflowItemKey> = {
   measure: () => void;
   /**
    * Makes an item visible, then runs a callback after the DOM updates. The
-   * item stays visible until `activeItem` changes or the item is removed, so a
-   * deferred selection update does not hide it again.
+   * latest requested item stays visible until `activeItem` reaches it, moves to
+   * a key that was never requested, or the item is removed. A deferred
+   * selection update, including the commit of an older request, does not hide
+   * it again.
    */
   ensureVisible: (key: TKey, onVisible?: () => void) => void;
 };
@@ -123,9 +125,12 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
   const itemsRef = useRef<readonly TKey[]>(items);
   const activeItemRef = useRef<TKey | null>(activeItem);
   const forcedItemRef = useRef<TKey | null>(forcedItem);
-  // The committed `activeItem` when `forcedItem` was requested. The forced
-  // item is released only once the selection moves away from this value.
-  const forcedFromActiveRef = useRef<TKey | null>(null);
+  // Keys requested through `ensureVisible` that `activeItem` has not reached
+  // yet, oldest first. The last one is `forcedItem`. When `activeItem` moves
+  // to an older request, that request and every earlier one are settled, and
+  // the newest request keeps its forced visibility.
+  const requestsRef = useRef<TKey[]>([]);
+  const lastActiveItemRef = useRef<TKey | null>(activeItem);
   const reserveValueRef = useRef(reserve);
   const reserveElementRef = useRef<HTMLElement | null>(null);
   const enabledRef = useRef(enabled);
@@ -250,13 +255,29 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
     (key: TKey, onVisible?: () => void) => {
       if (!itemsRef.current.includes(key)) return;
 
+      // A request for the already active item needs no tracking unless older
+      // requests are still waiting: their commits would move `activeItem` away
+      // from this item before it returns.
+      const requests = requestsRef.current;
+      const isTracked = requests.length > 0 || key !== activeItemRef.current;
+
+      if (isTracked) {
+        requestsRef.current = [
+          ...requests.filter((request) => request !== key),
+          key,
+        ];
+        // The newest request is the one that holds focus, so it is the one
+        // that must stay visible, even when it is visible right now.
+        setForcedItem(key);
+      }
+
       if (!overflow.includes(key)) {
+        pendingVisibilityRef.current = null;
         onVisible?.();
         return;
       }
 
       pendingVisibilityRef.current = { key, onVisible };
-      forcedFromActiveRef.current = activeItemRef.current;
       setForcedItem(key);
     },
     [overflow],
@@ -357,20 +378,29 @@ export const useOverflowItems = <TKey extends OverflowItemKey>({
     pending.onVisible?.();
   }, [overflow]);
 
-  // Release the forced item once the selection moves (the parent committed
-  // the request, or a newer selection superseded it), or once the item is
-  // removed. Until then it stays visible so keyboard focus remains usable.
+  // Settle requests as `activeItem` reaches them. A commit of an older request
+  // keeps the newest one forced, so the item that holds focus stays visible.
+  // The forced item is released once `activeItem` reaches it, once
+  // `activeItem` moves to a key that was never requested (the selection
+  // changed on its own), or once the item is removed.
   useLayoutEffect(() => {
+    if (lastActiveItemRef.current !== activeItem) {
+      lastActiveItemRef.current = activeItem;
+      const requests = requestsRef.current;
+      const index = activeItem === null ? -1 : requests.indexOf(activeItem);
+      requestsRef.current = index === -1 ? [] : requests.slice(index + 1);
+    }
+
     if (forcedItem === null) return;
 
     const isRemoved = !items.includes(forcedItem);
-    if (!isRemoved && activeItem === forcedFromActiveRef.current) return;
+    if (!isRemoved && requestsRef.current.length > 0) return;
 
     const pending = pendingVisibilityRef.current;
     if (pending && (isRemoved || pending.key !== activeItem)) {
       pendingVisibilityRef.current = null;
     }
-    forcedFromActiveRef.current = null;
+    requestsRef.current = [];
     setForcedItem(null);
   }, [activeItem, forcedItem, items]);
 

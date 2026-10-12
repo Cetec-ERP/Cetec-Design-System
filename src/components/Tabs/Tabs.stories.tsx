@@ -889,6 +889,73 @@ export const DeferredControlledReversal: Story = {
   },
 };
 
+export const DeferredControlledNarrowStrip: Story = {
+  name: 'Test: rapid keys in a narrow deferred strip keep focus through intermediate commits',
+  parameters: { controls: { disable: true } },
+  render: () => <DeferredControlledTabs />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const wrapper = canvasElement.querySelector<HTMLElement>(
+      '[data-deferred-wrapper]',
+    );
+
+    if (!wrapper) throw new Error('deferred wrapper not found');
+
+    const value = canvas.getByTestId('deferred-value');
+    const settle = async (expected: string) => {
+      await waitFor(async () => {
+        await expect(value).toHaveTextContent(`Parent value: ${expected}`);
+      });
+      // Let the last commit's layout and focus work finish.
+      await new Promise((resolve) => globalThis.setTimeout(resolve, 100));
+    };
+
+    const alpha = canvas.getByRole('tab', { name: 'Alpha section' });
+    // Room for the selected tab and the toggle only. The strip stays this
+    // narrow for the whole test, so every requested tab starts overflowed.
+    wrapper.style.width = `${String(Math.ceil(alpha.getBoundingClientRect().width) + 48)}px`;
+
+    await waitFor(async () => {
+      await expect(canvas.getAllByRole('tab')).toHaveLength(1);
+    });
+
+    await userEvent.click(alpha);
+
+    // Both presses land before the parent commits: Alpha → Bravo → Charlie.
+    // The Bravo commit arrives while Charlie still holds focus.
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+    const charlie = await canvas.findByRole('tab', { name: 'Charlie section' });
+    await expect(charlie).toHaveFocus();
+
+    await waitFor(async () => {
+      await expect(value).toHaveTextContent('Parent value: bravo');
+    });
+    await expect(charlie).toBeVisible();
+    await expect(charlie).toHaveFocus();
+
+    await settle('charlie');
+    await expect(charlie).toHaveAttribute('aria-selected', 'true');
+    await expect(charlie).toHaveFocus();
+
+    // And back: Charlie → Bravo → Alpha, with the Bravo commit in between.
+    await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
+    await settle('alpha');
+    const alphaAgain = canvas.getByRole('tab', { name: 'Alpha section' });
+    await expect(alphaAgain).toHaveAttribute('aria-selected', 'true');
+    await expect(alphaAgain).toHaveFocus();
+
+    // A return to the committed tab: Right then Left before Bravo commits.
+    await userEvent.keyboard('{ArrowRight}{ArrowLeft}');
+    await settle('alpha');
+    await expect(canvas.getByTestId('deferred-requests')).toHaveTextContent(
+      /bravo, alpha$/,
+    );
+    await expect(
+      canvas.getByRole('tab', { name: 'Alpha section' }),
+    ).toHaveFocus();
+  },
+};
+
 const EmptyStringValueTabs = () => {
   const [value, setValue] = useState('missing');
 
