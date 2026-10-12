@@ -44,7 +44,7 @@ jobs:
             exit 0
           fi
           changed=$(git diff --name-only "origin/$BASE_REF...HEAD")
-          full_pattern='^(panda\.config\.ts|src/cetec-preset\.ts|src/recipes/|src/styles/|package\.json|package-lock\.json|vitest\.config\.ts|\.storybook/)'
+          full_pattern='^(panda\.config\.ts|postcss\.config\.cjs|src/cetec-preset\.ts|src/recipes/|src/styles/|package\.json|package-lock\.json|vitest\.config\.ts|\.storybook/)'
           if echo "$changed" | grep -Eq "$full_pattern"; then
             echo "mode=full" >> "$GITHUB_OUTPUT"
             echo "Full suite. Matched:"
