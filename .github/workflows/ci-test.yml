@@ -7,8 +7,9 @@ on:
 jobs:
   # Vitest's --changed follows JS imports only. Styles reach components
   # through generated code, so a token, recipe, or config change has no
-  # import path to the stories. Those changes run the full suite. So does a
-  # baseline change, so new baselines are checked against every story.
+  # import path to the stories. Those changes run the full suite. So do
+  # files in public/: stories load the icon sprite by URL, not by import. So
+  # does a baseline change, so new baselines are checked against every story.
   scope:
     name: Choose test scope
     runs-on: ubuntu-latest
@@ -31,7 +32,7 @@ jobs:
             exit 0
           fi
           changed=$(git diff --name-only "origin/$BASE_REF...HEAD")
-          full_pattern='^(panda\.config\.ts|postcss\.config\.cjs|src/cetec-preset\.ts|src/recipes/|src/styles/|package\.json|package-lock\.json|vitest\.config\.ts|\.storybook/|__vis__/)'
+          full_pattern='^(panda\.config\.ts|postcss\.config\.cjs|src/cetec-preset\.ts|src/recipes/|src/styles/|package\.json|package-lock\.json|vitest\.config\.ts|\.storybook/|public/|__vis__/)'
           if echo "$changed" | grep -Eq "$full_pattern"; then
             echo "mode=full" >> "$GITHUB_OUTPUT"
             echo "Full suite. Matched:"
