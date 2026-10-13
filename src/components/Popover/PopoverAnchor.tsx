@@ -38,7 +38,11 @@ export type PopoverAnchorProps = Omit<BoxProps, 'children'> & {
  * ```
  */
 export const PopoverAnchor = (props: PopoverAnchorProps) => {
-  const { children, ...rest } = props;
+  const {
+    children,
+    ref: consumerRef,
+    ...rest
+  } = props as PopoverAnchorProps & { ref?: Ref<Element | null> };
   const { refs, setHasAnchor } = usePopoverContext();
 
   useEffect(() => {
@@ -51,7 +55,11 @@ export const PopoverAnchor = (props: PopoverAnchorProps) => {
   const childRefProp = isValidElement(onlyChild)
     ? (onlyChild.props as { ref?: Ref<Element | null> }).ref
     : undefined;
-  const mergedRef = useMergeRefs([childRefProp, refs.setPositionReference]);
+  const mergedRef = useMergeRefs([
+    consumerRef,
+    childRefProp,
+    refs.setPositionReference,
+  ]);
 
   if (isValidElement(onlyChild)) {
     const child = onlyChild as ReactElement<HTMLAttributes<HTMLElement>>;
@@ -63,7 +71,7 @@ export const PopoverAnchor = (props: PopoverAnchorProps) => {
   }
 
   return (
-    <Box as="span" display="inline" ref={refs.setPositionReference} {...rest}>
+    <Box as="span" display="inline" {...rest} ref={mergedRef}>
       {children}
     </Box>
   );

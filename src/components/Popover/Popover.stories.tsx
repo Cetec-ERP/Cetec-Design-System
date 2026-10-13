@@ -362,6 +362,7 @@ export const A11yInsideModal: Story = {
 const AnchorToggle = () => {
   const [showAnchor, setShowAnchor] = useState(true);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const [anchorNode, setAnchorNode] = useState<HTMLElement | null>(null);
   return (
     <Box display="flex" flexDirection="column" alignItems="flex-start" gap="48">
       <Button size="sm" onClick={() => setShowAnchor(false)}>
@@ -370,7 +371,7 @@ const AnchorToggle = () => {
       <Popover interaction="definition" open onOpenChange={() => {}}>
         <PopoverTrigger>trigger</PopoverTrigger>
         {showAnchor && (
-          <PopoverAnchor>
+          <PopoverAnchor ref={setAnchorNode}>
             <Box p="8" mt="96" borderWidth="1" borderColor="border">
               anchor
             </Box>
@@ -380,13 +381,15 @@ const AnchorToggle = () => {
           <PopoverBody>Positioned content</PopoverBody>
         </PopoverContent>
       </Popover>
+      <Box data-testid="anchor-ref-attached">{String(anchorNode !== null)}</Box>
     </Box>
   );
 };
 
 /**
  * Content follows the anchor while it is mounted and returns to the trigger
- * when it unmounts. A consumer ref on content does not break positioning.
+ * when it unmounts. Consumer refs on both Anchor and Content do not break
+ * positioning.
  */
 export const A11yAnchorUnmount: Story = {
   // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
@@ -403,6 +406,8 @@ export const A11yAnchorUnmount: Story = {
           (reference.getBoundingClientRect().bottom + offset),
       ) < 2;
 
+    // Consumer ref on PopoverAnchor still resolves to the anchor DOM node.
+    expect(canvas.getByTestId('anchor-ref-attached')).toHaveTextContent('true');
     await waitFor(() => expect(isBelow(canvas.getByText('anchor'))).toBe(true));
 
     await userEvent.click(
