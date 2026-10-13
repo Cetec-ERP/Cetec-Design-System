@@ -2,6 +2,8 @@ import { useState, type ReactNode } from 'react';
 
 import { Flex, Grid, Wrap, VStack } from '@styled-system/jsx';
 
+import { sampleAvatars } from '~/storybook/fixtures/avatars';
+
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { BreakpointIndicator } from '../BreakpointIndicator';
@@ -13,15 +15,6 @@ import { Chip } from './Chip';
 import { ChipGroup } from './ChipGroup';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-// Sample avatar images (using placeholder service)
-const sampleImages = {
-  user1: 'https://i.pravatar.cc/150?img=1',
-  user2: 'https://i.pravatar.cc/150?img=2',
-  user3: 'https://i.pravatar.cc/150?img=3',
-  user4: 'https://i.pravatar.cc/150?img=4',
-  user5: 'https://i.pravatar.cc/150?img=5',
-};
 
 const meta: Meta<typeof Chip> = {
   title: 'Components/Chip',
@@ -118,7 +111,7 @@ export const Sizes: Story = {
       </Chip>
       <Chip
         size="sm"
-        before={<Avatar src={sampleImages.user1} name="John Doe" />}
+        before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
       >
         sm Chip
       </Chip>
@@ -134,7 +127,7 @@ export const Sizes: Story = {
       </Chip>
       <Chip
         size="md"
-        before={<Avatar src={sampleImages.user1} name="John Doe" />}
+        before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
       >
         md Chip
       </Chip>
@@ -150,7 +143,7 @@ export const Sizes: Story = {
       </Chip>
       <Chip
         size="lg"
-        before={<Avatar src={sampleImages.user1} name="John Doe" />}
+        before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
       >
         lg Chip
       </Chip>
@@ -185,7 +178,7 @@ export const ConditionalBreakpoints = () => {
         </Chip>
         <Chip
           size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
-          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+          before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         >
           Chip
         </Chip>
@@ -235,22 +228,22 @@ export const WithBefore: Story = {
       <Flex gap="4" alignItems="center">
         <Chip
           size="sm"
-          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+          before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         >
           Small
         </Chip>
-        <Chip before={<Avatar src={sampleImages.user1} name="John Doe" />}>
+        <Chip before={<Avatar src={sampleAvatars.user1} name="John Doe" />}>
           Medium
         </Chip>
         <Chip
           size="lg"
-          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+          before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         >
           Large
         </Chip>
         <Chip
           size="xl"
-          before={<Avatar src={sampleImages.user1} name="John Doe" />}
+          before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         >
           XLarge
         </Chip>
@@ -289,22 +282,22 @@ export const WithAfter: Story = {
       <Flex gap="4" alignItems="center">
         <Chip
           size="sm"
-          after={<Avatar src={sampleImages.user1} name="John Doe" />}
+          after={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         >
           Small
         </Chip>
-        <Chip after={<Avatar src={sampleImages.user1} name="John Doe" />}>
+        <Chip after={<Avatar src={sampleAvatars.user1} name="John Doe" />}>
           Medium
         </Chip>
         <Chip
           size="lg"
-          after={<Avatar src={sampleImages.user1} name="John Doe" />}
+          after={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         >
           Large
         </Chip>
         <Chip
           size="xl"
-          after={<Avatar src={sampleImages.user1} name="John Doe" />}
+          after={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         >
           XLarge
         </Chip>
@@ -351,7 +344,7 @@ export const WithSlots: Story = {
         <Chip before={<Icon name="hash" />}>Icon Slot</Chip>
         <Chip after={<Badge count={3} variant="success" />}>Badge Slot</Chip>
         <Chip
-          before={<Avatar src={sampleImages.user2} name="Jane Doe" />}
+          before={<Avatar src={sampleAvatars.user2} name="Jane Doe" />}
           after={<Icon name="x" />}
         >
           Avatar Slot
@@ -892,7 +885,7 @@ export const DismissableWithCustomLabel: Story = {
       <Chip
         dismissable
         dismissLabel="Remove assignee John Doe"
-        before={<Avatar src={sampleImages.user1} name="John Doe" />}
+        before={<Avatar src={sampleAvatars.user1} name="John Doe" />}
         onDismiss={() => {}}
       >
         John Doe

@@ -2,6 +2,8 @@ import { expect, fn, within } from 'storybook/test';
 
 import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
+import { sampleAvatars } from '~/storybook/fixtures/avatars';
+
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { BreakpointIndicator } from '../BreakpointIndicator';
@@ -202,9 +204,7 @@ export const ConditionalBreakpoints: Story = {
       </Button>
       <Button
         size={{ base: 'xl', xs: 'lg', sm: 'md', md: 'sm' }}
-        before={
-          <Avatar name="John Doe" src="https://i.pravatar.cc/150?img=1" />
-        }
+        before={<Avatar name="John Doe" src={sampleAvatars.user1} />}
       >
         Button
       </Button>
