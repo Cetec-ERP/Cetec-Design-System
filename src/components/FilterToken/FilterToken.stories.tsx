@@ -4,6 +4,8 @@ import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { HStack, VStack, Wrap } from '@styled-system/jsx';
 
+import { LocaleProvider } from '~/system/context';
+
 import { Box } from '../Box';
 import { Button } from '../Button';
 import { Text } from '../Text';
@@ -367,6 +369,33 @@ const StagedRemovalDemo = () => {
       </HStack>
     </VStack>
   );
+};
+
+export const TranslatedLabels: Story = {
+  args: {
+    field: 'Etapa',
+    operator: 'es',
+    value: 'Abierta',
+  },
+  render: (args) => (
+    <LocaleProvider
+      labels={{ removeFilter: (filter) => `Quitar filtro: ${filter}` }}
+    >
+      <HStack gap="8">
+        <FilterToken {...args} />
+        <FilterToken {...args} removeLabel="Quitar etapa" />
+      </HStack>
+    </LocaleProvider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // The provider label names the remove button. A removeLabel prop wins.
+    expect(
+      canvas.getByRole('button', { name: 'Quitar filtro: Etapa es Abierta' }),
+    ).toBeVisible();
+    expect(canvas.getByRole('button', { name: 'Quitar etapa' })).toBeVisible();
+  },
 };
 
 export const ExFilterRow: Story = {

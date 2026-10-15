@@ -24,6 +24,8 @@ export interface LocaleLabels {
   closeDialog: string;
   /** Accessible name of the remove button on a dismissible `Chip`. */
   removeItem: (item: string) => string;
+  /** Accessible name of the remove button on a `FilterToken`, given the filter as a sentence. */
+  removeFilter: (filter: string) => string;
   /** Accessible name of `ThemeSwitcher`, given the theme it switches to. */
   switchToTheme: (nextTheme: Theme) => string;
 
@@ -148,6 +150,7 @@ export const defaultLocaleLabels: LocaleLabels = {
   dismiss: 'Dismiss',
   closeDialog: 'Close dialog',
   removeItem: (item) => `Remove ${item}`,
+  removeFilter: (filter) => `Remove filter: ${filter}`,
   switchToTheme: (nextTheme) => `Switch to ${nextTheme} theme`,
 
   selectPlaceholder: 'Select...',

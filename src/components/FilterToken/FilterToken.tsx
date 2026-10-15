@@ -6,6 +6,7 @@ import { filterToken } from '@styled-system/recipes';
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon } from '~/components/Icon';
 import { Tooltip } from '~/components/Tooltip';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -81,7 +82,7 @@ type FilterTokenOwnProps = {
   onRemove?: () => void;
   /**
    * Accessible name for the remove button.
-   * @default `Remove filter: ${field} ${operator} ${values}`, with every value
+   * @default `labels.removeFilter` (English: `Remove filter: ${field} ${operator} ${values}`), with every value
    */
   removeLabel?: string;
 };
@@ -135,6 +136,7 @@ export const FilterToken = (props: FilterTokenProps) => {
   } = props;
   const [className, otherProps] = splitProps(rest);
   const classes = filterToken();
+  const { labels } = useLocale();
 
   const values = Array.isArray(value) ? value : undefined;
   const fullValue = Array.isArray(value) ? value.join(', ') : value;
@@ -234,7 +236,7 @@ export const FilterToken = (props: FilterTokenProps) => {
           as="button"
           type="button"
           className={classes.remove}
-          aria-label={removeLabel ?? `Remove filter: ${sentence}`}
+          aria-label={removeLabel ?? labels.removeFilter(sentence)}
           disabled={disabled}
           onMouseDown={keepFocus}
           onClick={onRemove}
