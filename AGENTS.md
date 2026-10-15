@@ -24,6 +24,7 @@ npm run typecheck           # Run TypeScript type checking
 npm run validate            # Run lint + typecheck
 npm run validate:full       # Run validate + production build
 npm test                    # Run every story as a test (Vitest + Playwright Chromium)
+npm run test:visual         # Same, plus a light and a dark image snapshot of each story
 npm run doctor              # Run react-doctor + storybook doctor
 npm run prepare             # Run Panda CSS codegen (auto-runs on install)
 
@@ -38,6 +39,14 @@ npm run panda-mcp           # Run local Panda CSS MCP server to expose the desig
 
 - A11y checks run but do not fail the suite yet (`a11y.test: 'todo'` in `.storybook/preview.tsx`).
 - In CI, a PR runs only the stories affected by its changed files. A change to tokens, recipes, `panda.config.ts`, `.storybook/`, or dependencies runs the full suite, because styles reach components through generated code that `--changed` cannot follow.
+  **Visual tests:** `npm run test:visual` compares a light and a dark screenshot of every story with the baselines in `__vis__/linux/__baselines__/`.
+
+- **Baselines come only from Linux CI.** Never commit images made on a Mac: fonts render differently, and local runs write to `__vis__/local/`, which git ignores.
+- **To accept a visual change:** add the `update-visual-baselines` label to the PR. The workflow uploads a `visual-baselines` artifact. Review the images, then `gh run download <run-id> -n visual-baselines -D __vis__/linux/__baselines__` and commit them. The workflow does not push, because a push by the Actions token starts no CI.
+- **When the `Visual tests` check fails,** download its `visual-diffs` artifact to see the changed pixels.
+- The visual setup freezes `Date` at 2026-01-14 12:00, settles animations, and waits for fonts and icons before each screenshot (`.storybook/vitest.visual.setup.ts`).
+- Opt a story out with `tags: ['!snapshot']`, and say why in a comment.
+
 - In `play` functions, wait for state that React commits after an event: `await waitFor(() => expect(...))`, or `findBy*` instead of `getBy*`. A check right after `focus()` or a key press can run before the commit.
 
 ## Canonical Standards
