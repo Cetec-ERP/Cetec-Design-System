@@ -27,7 +27,8 @@ export {
   type ChipGroupProps,
   type ChipProps,
 } from './components/Chip';
-export { Code, Pre, type CodeProps, type PreProps } from './components/Code';
+export { Code, type CodeProps } from './components/Code';
+export { CodeBlock, type CodeBlockProps } from './components/CodeBlock';
 export {
   DateInput,
   DateRangeInput,
@@ -234,7 +235,11 @@ export { ThemeProvider, useTheme } from './system/context';
 export { splitProps } from './utils/splitProps';
 
 // Export hooks
-export { useMediaQuery, useContainerQuery } from './system/hooks';
+export { useMediaQuery, useContainerQuery, useClipboard } from './system/hooks';
+export type {
+  UseClipboardOptions,
+  UseClipboardReturn,
+} from './system/hooks/clipboard.hook';
 
 // Load minimal Panda helper type shims for declaration output (used during build)
 import './types/panda-augment';
