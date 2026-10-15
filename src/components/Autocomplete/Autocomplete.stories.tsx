@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Box } from '../Box';
 import { Button } from '../Button';
@@ -129,8 +129,10 @@ export const Filtering: Story = {
 
     await userEvent.clear(input);
     await userEvent.type(input, 'workshop');
-    const descriptionMatch = body.getByRole('option', {
-      name: /storybook component workshop/i,
+    // Testing Library computes this name without the space before the <mark>
+    // highlight ("Storybook Componentworkshop"); browsers keep it.
+    const descriptionMatch = await body.findByRole('option', {
+      name: /storybook component\s*workshop/i,
     });
     await expect(
       within(descriptionMatch).getByText('workshop', { selector: 'mark' }),
@@ -210,7 +212,8 @@ export const Multiple: Story = {
     await expect(
       canvas.queryByRole('button', { name: 'Remove React' }),
     ).not.toBeInTheDocument();
-    await expect(input).toHaveFocus();
+    // Focus returns to the input after the removal commits.
+    await waitFor(() => expect(input).toHaveFocus());
   },
   parameters: { controls: { disable: true } },
 };
@@ -759,12 +762,20 @@ export const KeyboardTokenEditing: Story = {
     });
     await userEvent.click(input);
     await userEvent.keyboard('{Backspace}');
-    await expect(removeTypeScript).toHaveFocus();
+    await waitFor(() => expect(removeTypeScript).toHaveFocus());
     await expect(removeTypeScript).toBeInTheDocument();
     await userEvent.keyboard('{Backspace}');
     await expect(
       canvas.queryByRole('button', { name: 'Remove TypeScript' }),
     ).not.toBeInTheDocument();
+    // Focus moves to the previous token; the listbox stays open. Wait for
+    // both so the story always ends in the same state.
+    await waitFor(() =>
+      expect(
+        canvas.getByRole('button', { name: 'Remove React' }),
+      ).toHaveFocus(),
+    );
+    await within(document.body).findByRole('listbox');
   },
   parameters: { controls: { disable: true } },
 };
