@@ -13,6 +13,7 @@ export const listItemRecipe = defineSlotRecipe({
     'beforeSlot',
     'beforeContent',
     'afterSlot',
+    'afterContent',
     'itemMain',
     'itemLabel',
     'itemDescription',
@@ -95,6 +96,19 @@ export const listItemRecipe = defineSlotRecipe({
     },
     afterSlot: {
       me: 'calc(var(--list-item-slot-margin) * -1)',
+    },
+    // Short trailing text, such as a date range or a count. It stays on the
+    // first line of the label and never wraps.
+    afterContent: {
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: '0',
+      minH: 'var(--list-item-icon-size)',
+      ms: 'auto',
+      ps: '8',
+      color: 'text.subtlest',
+      fontSize: 'var(--list-item-description-size)',
+      whiteSpace: 'nowrap',
     },
     divider: {
       width: 'full',

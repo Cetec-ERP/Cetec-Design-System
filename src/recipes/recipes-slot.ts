@@ -28,4 +28,5 @@ export { pageBannerRecipe } from './pageBanner';
 export { toastRecipe } from './toast';
 export { inlineNoteRecipe } from './inlineNote';
 export { codeBlockRecipe } from './codeBlock';
+export { filterMenuRecipe } from './filterMenu';
 export { filterTokenRecipe } from './filterToken';
