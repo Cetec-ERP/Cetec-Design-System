@@ -129,8 +129,10 @@ export const Filtering: Story = {
 
     await userEvent.clear(input);
     await userEvent.type(input, 'workshop');
-    const descriptionMatch = body.getByRole('option', {
-      name: /storybook component workshop/i,
+    // Testing Library computes this name without the space before the <mark>
+    // highlight ("Storybook Componentworkshop"); browsers keep it.
+    const descriptionMatch = await body.findByRole('option', {
+      name: /storybook component\s*workshop/i,
     });
     await expect(
       within(descriptionMatch).getByText('workshop', { selector: 'mark' }),
