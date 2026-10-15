@@ -82,26 +82,26 @@ jobs:
     name: Visual tests
     needs: scope
     runs-on: ubuntu-latest
+    # Same image as `npm run test:visual:docker`, so local and CI screenshots
+    # match. The tag must match the Playwright version in package-lock.json.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --ipc=host
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 24
-        uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: npm
+      # The container runs as root, so git refuses the workspace without this.
+      - name: Trust the workspace
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Generate Panda CSS
         run: npm run prepare
-
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
 
       - name: Run visual tests (full suite)
         if: needs.scope.outputs.mode == 'full'

@@ -41,8 +41,10 @@ npm run panda-mcp           # Run local Panda CSS MCP server to expose the desig
 - In CI, a PR runs only the stories affected by its changed files. A change to tokens, recipes, `panda.config.ts`, `.storybook/`, or dependencies runs the full suite, because styles reach components through generated code that `--changed` cannot follow.
   **Visual tests:** `npm run test:visual` compares a light and a dark screenshot of every story with the baselines in `__vis__/linux/__baselines__/`.
 
-- **Baselines come only from Linux CI.** Never commit images made on a Mac: fonts render differently, and local runs write to `__vis__/local/`, which git ignores.
-- **To accept a visual change:** add the `update-visual-baselines` label to the PR. The workflow uploads a `visual-baselines` artifact. Review the images, then `gh run download <run-id> -n visual-baselines -D __vis__/linux/__baselines__` and commit them. The workflow does not push, because a push by the Actions token starts no CI.
+- **Baselines come only from the Playwright Docker image** (`mcr.microsoft.com/playwright`, tag matching the Playwright version in `package-lock.json`). CI runs the visual tests in the same image. Never commit images made by a plain Mac run: fonts render differently, and those runs write to `__vis__/local/`, which git ignores.
+- **Before you push a visual change,** start Docker Desktop and run `npm run test:visual:docker:update -- <paths>` for the stories you changed, or with no paths to regenerate every baseline. Review the images in `__vis__/linux/__baselines__/` and commit them with the code. `npm run test:visual:docker` compares without updating.
+- **Backup path:** add the `update-visual-baselines` label to the PR. The workflow uploads a `visual-baselines` artifact. Review the images, then `gh run download <run-id> -n visual-baselines -D __vis__/linux/__baselines__` and commit them. The workflow does not push, because a push by the Actions token starts no CI.
+- **When Playwright is upgraded,** change the image tag in `.github/workflows/ci-test.yml` and `.github/workflows/update-visual-baselines.yml` in the same PR, and regenerate every baseline. The Docker script refuses to run while they disagree.
 - **When the `Visual tests` check fails,** download its `visual-diffs` artifact to see the changed pixels.
 - The visual setup freezes `Date` at 2026-01-14 12:00, settles animations, and waits for fonts and icons before each screenshot (`.storybook/vitest.visual.setup.ts`).
 - Opt a story out with `tags: ['!snapshot']`, and say why in a comment.

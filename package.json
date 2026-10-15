@@ -21,6 +21,8 @@
     "test": "vitest run --project=storybook",
     "test:visual": "vitest run --project=visual",
     "test:visual:update": "vitest run --project=visual --update",
+    "test:visual:docker": "tools/visual-docker.sh",
+    "test:visual:docker:update": "tools/visual-docker.sh --update",
     "validate:full": "npm run validate && npm run build",
     "preview": "vite preview",
     "generate-sprite": "node src/utils/generate-sprite.js",
