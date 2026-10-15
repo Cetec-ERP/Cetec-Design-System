@@ -22,6 +22,8 @@ export interface LocaleLabels {
   dismiss: string;
   /** Accessible name of the close button in `ModalHeader`. */
   closeDialog: string;
+  /** Accessible name of the close button in `DrawerHeader`. */
+  closeDrawer: string;
   /** Accessible name of the remove button on a dismissible `Chip`. */
   removeItem: (item: string) => string;
   /** Accessible name of the remove button on a `FilterToken`, given the filter as a sentence. */
@@ -50,6 +52,22 @@ export interface LocaleLabels {
   optionRemoved: (label: string) => string;
   /** Accessible name of the `Autocomplete` hidden-tag count. */
   moreSelected: (count: number) => string;
+
+  // ─── Code blocks ──────────────────────────────────────────────────────────
+  /** Default accessible name and tooltip of the `CodeBlock` copy button. */
+  copyCode: string;
+  /** Tooltip and announcement after `CodeBlock` copies its code. */
+  copied: string;
+  /** Announcement when `CodeBlock` cannot copy its code. */
+  copyFailed: string;
+  /** Text of the `CodeBlock` button that expands a collapsed block. */
+  showAllLines: (count: number) => string;
+  /** Text of the `CodeBlock` button that collapses an expanded block. */
+  showLess: string;
+
+  // ─── Tabs ─────────────────────────────────────────────────────────────────
+  /** Accessible name of the `Tabs` overflow menu button. */
+  moreTabs: string;
 
   // ─── Calendar ─────────────────────────────────────────────────────────────
   /** Default accessible name of `Calendar`. */
@@ -149,6 +167,7 @@ export const defaultLocaleLabels: LocaleLabels = {
   apply: 'Apply',
   dismiss: 'Dismiss',
   closeDialog: 'Close dialog',
+  closeDrawer: 'Close drawer',
   removeItem: (item) => `Remove ${item}`,
   removeFilter: (filter) => `Remove filter: ${filter}`,
   switchToTheme: (nextTheme) => `Switch to ${nextTheme} theme`,
@@ -163,6 +182,14 @@ export const defaultLocaleLabels: LocaleLabels = {
   optionCreated: (value) => `${value} created and selected.`,
   optionRemoved: (label) => `${label} removed.`,
   moreSelected: (count) => `${count} more selected`,
+
+  copyCode: 'Copy code',
+  copied: 'Copied',
+  copyFailed: 'Copy failed',
+  showAllLines: (count) => `Show all ${count} lines`,
+  showLess: 'Show less',
+
+  moreTabs: 'More tabs',
 
   chooseDate: 'Choose date',
   previousMonth: 'Previous month',

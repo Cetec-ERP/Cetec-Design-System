@@ -45,6 +45,7 @@ npm run panda-mcp           # Run local Panda CSS MCP server to expose the desig
 - **Before you push a visual change,** start Docker Desktop and run `npm run test:visual:docker:update -- <paths>` for the stories you changed, or with no paths to regenerate every baseline. Review the images in `__vis__/linux/__baselines__/` and commit them with the code. `npm run test:visual:docker` compares without updating.
 - **Backup path:** add the `update-visual-baselines` label to the PR. The workflow uploads a `visual-baselines` artifact. Review the images, then `gh run download <run-id> -n visual-baselines -D __vis__/linux/__baselines__` and commit them. The workflow does not push, because a push by the Actions token starts no CI.
 - **When Playwright is upgraded,** change the image tag in `.github/workflows/ci-test.yml` and `.github/workflows/update-visual-baselines.yml` in the same PR, and regenerate every baseline. The Docker script refuses to run while they disagree.
+- **After a full update,** commit only the images for stories you changed. A full update also rewrites some images with small pixel noise. Those pass compare within tolerance, so restore them with `git restore`.
 - **When the `Visual tests` check fails,** download its `visual-diffs` artifact to see the changed pixels.
 - The visual setup freezes `Date` at 2026-01-14 12:00, settles animations, and waits for fonts and icons before each screenshot (`.storybook/vitest.visual.setup.ts`).
 - Opt a story out with `tags: ['!snapshot']`, and say why in a comment.
@@ -62,6 +63,8 @@ The canonical standards set is in `standards/`.
 - `standards/index.yml`
 
 Use these files as the source of truth for component, recipe, and lint conventions.
+
+Built-in text that a component renders or announces must come from `LocaleProvider` labels. Follow `standards/components/localized-text.md`.
 
 ## Repo Organization
 
