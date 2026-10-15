@@ -51,6 +51,14 @@ export interface LocaleLabels {
   /** Accessible name of the `Autocomplete` hidden-tag count. */
   moreSelected: (count: number) => string;
 
+  // ─── Filter field ─────────────────────────────────────────────────────────
+  /** Default accessible name of the `FilterField` input. */
+  filterOrSearch: string;
+  /** Default accessible name of the `FilterField` clear button. */
+  clearFilters: string;
+  /** Text of the `FilterField` button that lists the tokens that do not fit. */
+  moreFilters: (count: number) => string;
+
   // ─── Calendar ─────────────────────────────────────────────────────────────
   /** Default accessible name of `Calendar`. */
   chooseDate: string;
@@ -163,6 +171,10 @@ export const defaultLocaleLabels: LocaleLabels = {
   optionCreated: (value) => `${value} created and selected.`,
   optionRemoved: (label) => `${label} removed.`,
   moreSelected: (count) => `${count} more selected`,
+
+  filterOrSearch: 'Filter or search',
+  clearFilters: 'Clear all filters',
+  moreFilters: (count) => `+${count} more`,
 
   chooseDate: 'Choose date',
   previousMonth: 'Previous month',

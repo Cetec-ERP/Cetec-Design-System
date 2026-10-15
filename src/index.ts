@@ -101,6 +101,11 @@ export {
   type DsChainScopeProps,
 } from './components/DsChainScope';
 export {
+  FilterField,
+  type FilterFieldProps,
+  type FilterFieldToken,
+} from './components/FilterField';
+export {
   FilterMenu,
   type FilterMenuItemRow,
   type FilterMenuProps,
