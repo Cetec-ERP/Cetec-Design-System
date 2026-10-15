@@ -2,7 +2,11 @@ export { Alert, type AlertProps, type AlertTone } from './components/Alert';
 export { Avatar, type AvatarProps } from './components/Avatar';
 export { Badge, type BadgeProps } from './components/Badge';
 export { Box, type BoxProps } from './components/Box';
-export { Breadcrumbs, type BreadcrumbsProps } from './components/Breadcrumbs';
+export {
+  type BreadcrumbItem,
+  Breadcrumbs,
+  type BreadcrumbsProps,
+} from './components/Breadcrumbs';
 export {
   BreakpointIndicator,
   type BreakpointIndicatorProps,
@@ -27,7 +31,8 @@ export {
   type ChipGroupProps,
   type ChipProps,
 } from './components/Chip';
-export { Code, Pre, type CodeProps, type PreProps } from './components/Code';
+export { Code, type CodeProps } from './components/Code';
+export { CodeBlock, type CodeBlockProps } from './components/CodeBlock';
 export {
   DateInput,
   DateRangeInput,
@@ -244,7 +249,11 @@ export {
 export { splitProps } from './utils/splitProps';
 
 // Export hooks
-export { useMediaQuery, useContainerQuery } from './system/hooks';
+export { useMediaQuery, useContainerQuery, useClipboard } from './system/hooks';
+export type {
+  UseClipboardOptions,
+  UseClipboardReturn,
+} from './system/hooks/clipboard.hook';
 
 // Load minimal Panda helper type shims for declaration output (used during build)
 import './types/panda-augment';
