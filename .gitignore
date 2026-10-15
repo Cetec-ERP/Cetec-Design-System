@@ -55,3 +55,9 @@ storybook-static
 .conflict-theirs/
 .conflict-files/
 panda.buildinfo.json
+
+# Visual test output. Only CI-generated Linux baselines are committed.
+__vis__/*
+!__vis__/linux/
+__vis__/linux/*
+!__vis__/linux/__baselines__/

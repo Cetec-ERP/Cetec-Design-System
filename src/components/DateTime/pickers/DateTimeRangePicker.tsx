@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Box } from '~/components/Box';
+import { useLocale } from '~/system/context/useLocale';
 import { useControllableState } from '~/utils/useControllableState';
 
 import { DateTimePicker } from './DateTimePicker';
@@ -83,6 +84,7 @@ const EMPTY_RANGE: DateTimeRangeValue = { start: null, end: null };
  * ```
  */
 export const DateTimeRangePicker = (props: DateTimeRangePickerProps) => {
+  const { labels } = useLocale();
   const {
     before,
     after,
@@ -101,12 +103,12 @@ export const DateTimeRangePicker = (props: DateTimeRangePickerProps) => {
     minuteStep,
     minDate,
     maxDate,
-    startDateLabel = 'Start date',
-    startTimeLabel = 'Start time',
-    endDateLabel = 'End date',
-    endTimeLabel = 'End time',
-    startClearLabel = 'Clear start date and time',
-    endClearLabel = 'Clear end date and time',
+    startDateLabel = labels.startDate,
+    startTimeLabel = labels.startTime,
+    endDateLabel = labels.endDate,
+    endTimeLabel = labels.endTime,
+    startClearLabel = labels.clearStartDateTime,
+    endClearLabel = labels.clearEndDateTime,
     placement,
   } = props;
 

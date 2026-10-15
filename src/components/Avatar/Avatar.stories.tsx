@@ -1,5 +1,7 @@
 import { Flex, Grid, HStack } from '@styled-system/jsx';
 
+import { sampleAvatars } from '~/storybook/fixtures/avatars';
+
 import { Box } from '../Box';
 import { BreakpointIndicator } from '../BreakpointIndicator';
 import { Icon } from '../Icon';
@@ -56,22 +58,13 @@ const meta: Meta<typeof Avatar> = {
 export default meta;
 type Story = StoryObj<typeof Avatar>;
 
-// Sample avatar images (using placeholder service)
-const sampleImages = {
-  user1: 'https://i.pravatar.cc/150?img=1',
-  user2: 'https://i.pravatar.cc/150?img=2',
-  user3: 'https://i.pravatar.cc/150?img=3',
-  user4: 'https://i.pravatar.cc/150?img=4',
-  user5: 'https://i.pravatar.cc/150?img=5',
-};
-
 // =============================================================================
 // DEFAULT
 // =============================================================================
 
 export const Default: Story = {
   args: {
-    src: sampleImages.user1,
+    src: sampleAvatars.user1,
     name: 'John Doe',
     alt: 'John Doe',
   },
@@ -84,12 +77,12 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="sm" src={sampleImages.user1} name="John Doe" />
-      <Avatar size="md" src={sampleImages.user1} name="John Doe" />
-      <Avatar size="lg" src={sampleImages.user1} name="John Doe" />
-      <Avatar size="xl" src={sampleImages.user1} name="John Doe" />
-      <Avatar size="2xl" src={sampleImages.user1} name="John Doe" />
-      <Avatar size="3xl" src={sampleImages.user1} name="John Doe" />
+      <Avatar size="sm" src={sampleAvatars.user1} name="John Doe" />
+      <Avatar size="md" src={sampleAvatars.user1} name="John Doe" />
+      <Avatar size="lg" src={sampleAvatars.user1} name="John Doe" />
+      <Avatar size="xl" src={sampleAvatars.user1} name="John Doe" />
+      <Avatar size="2xl" src={sampleAvatars.user1} name="John Doe" />
+      <Avatar size="3xl" src={sampleAvatars.user1} name="John Doe" />
     </Box>
   ),
 };
@@ -102,7 +95,7 @@ export const SizesWithLabels: Story = {
           <Text w="80" fontWeight="medium">
             {size}:
           </Text>
-          <Avatar size={size} src={sampleImages.user1} name="John Doe" />
+          <Avatar size={size} src={sampleAvatars.user1} name="John Doe" />
         </Box>
       ))}
     </Box>
@@ -119,25 +112,25 @@ export const Shapes: Story = {
       <Box display="flex" flexDir="column" gap="2">
         <Text fontWeight="bold">Circle (for users)</Text>
         <Box display="flex" gap="4" alignItems="center">
-          <Avatar shape="circle" size="sm" src={sampleImages.user1} />
-          <Avatar shape="circle" size="md" src={sampleImages.user2} />
-          <Avatar shape="circle" size="lg" src={sampleImages.user3} />
+          <Avatar shape="circle" size="sm" src={sampleAvatars.user1} />
+          <Avatar shape="circle" size="md" src={sampleAvatars.user2} />
+          <Avatar shape="circle" size="lg" src={sampleAvatars.user3} />
         </Box>
       </Box>
       <Box display="flex" flexDir="column" gap="2">
         <Text fontWeight="bold">Square (for projects/entities)</Text>
         <Box display="flex" gap="4" alignItems="center">
-          <Avatar shape="square" size="sm" src={sampleImages.user4} />
-          <Avatar shape="square" size="md" src={sampleImages.user5} />
-          <Avatar shape="square" size="lg" src={sampleImages.user1} />
+          <Avatar shape="square" size="sm" src={sampleAvatars.user4} />
+          <Avatar shape="square" size="md" src={sampleAvatars.user5} />
+          <Avatar shape="square" size="lg" src={sampleAvatars.user1} />
         </Box>
       </Box>
       <Box display="flex" flexDir="column" gap="2">
         <Text fontWeight="bold">Hexagon (for an agent entity)</Text>
         <Box display="flex" gap="4" alignItems="center">
-          <Avatar shape="hexagon" size="sm" src={sampleImages.user4} />
-          <Avatar shape="hexagon" size="md" src={sampleImages.user5} />
-          <Avatar shape="hexagon" size="lg" src={sampleImages.user1} />
+          <Avatar shape="hexagon" size="sm" src={sampleAvatars.user4} />
+          <Avatar shape="hexagon" size="md" src={sampleAvatars.user5} />
+          <Avatar shape="hexagon" size="lg" src={sampleAvatars.user1} />
         </Box>
       </Box>
     </Box>
@@ -199,19 +192,19 @@ export const Presence: Story = {
       </Text>
       <Box display="flex" gap="6" alignItems="center">
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
-          <Avatar size="lg" src={sampleImages.user1} presence="online" />
+          <Avatar size="lg" src={sampleAvatars.user1} presence="online" />
           <Text fontSize="12">Online</Text>
         </Box>
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
-          <Avatar size="lg" src={sampleImages.user2} presence="busy" />
+          <Avatar size="lg" src={sampleAvatars.user2} presence="busy" />
           <Text fontSize="12">Busy</Text>
         </Box>
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
-          <Avatar size="lg" src={sampleImages.user3} presence="offline" />
+          <Avatar size="lg" src={sampleAvatars.user3} presence="offline" />
           <Text fontSize="12">Offline</Text>
         </Box>
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
-          <Avatar size="lg" src={sampleImages.user4} presence="focus" />
+          <Avatar size="lg" src={sampleAvatars.user4} presence="focus" />
           <Text fontSize="12">Focus</Text>
         </Box>
       </Box>
@@ -222,12 +215,12 @@ export const Presence: Story = {
 export const PresenceAllSizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="sm" src={sampleImages.user1} presence="online" />
-      <Avatar size="md" src={sampleImages.user1} presence="online" />
-      <Avatar size="lg" src={sampleImages.user1} presence="online" />
-      <Avatar size="xl" src={sampleImages.user1} presence="online" />
-      <Avatar size="2xl" src={sampleImages.user1} presence="online" />
-      <Avatar size="3xl" src={sampleImages.user1} presence="online" />
+      <Avatar size="sm" src={sampleAvatars.user1} presence="online" />
+      <Avatar size="md" src={sampleAvatars.user1} presence="online" />
+      <Avatar size="lg" src={sampleAvatars.user1} presence="online" />
+      <Avatar size="xl" src={sampleAvatars.user1} presence="online" />
+      <Avatar size="2xl" src={sampleAvatars.user1} presence="online" />
+      <Avatar size="3xl" src={sampleAvatars.user1} presence="online" />
     </Box>
   ),
 };
@@ -244,15 +237,15 @@ export const Status: Story = {
       </Text>
       <Box display="flex" gap="6" alignItems="center">
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
-          <Avatar size="lg" src={sampleImages.user1} status="approved" />
+          <Avatar size="lg" src={sampleAvatars.user1} status="approved" />
           <Text fontSize="12">Approved</Text>
         </Box>
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
-          <Avatar size="lg" src={sampleImages.user2} status="declined" />
+          <Avatar size="lg" src={sampleAvatars.user2} status="declined" />
           <Text fontSize="12">Declined</Text>
         </Box>
         <Box display="flex" flexDir="column" gap="2" alignItems="center">
-          <Avatar size="lg" src={sampleImages.user3} status="locked" />
+          <Avatar size="lg" src={sampleAvatars.user3} status="locked" />
           <Text fontSize="12">Locked</Text>
         </Box>
       </Box>
@@ -263,12 +256,12 @@ export const Status: Story = {
 export const StatusAllSizes: Story = {
   render: () => (
     <Box display="flex" gap="4" alignItems="center">
-      <Avatar size="sm" src={sampleImages.user1} status="approved" />
-      <Avatar size="md" src={sampleImages.user1} status="approved" />
-      <Avatar size="lg" src={sampleImages.user1} status="approved" />
-      <Avatar size="xl" src={sampleImages.user1} status="approved" />
-      <Avatar size="2xl" src={sampleImages.user1} status="approved" />
-      <Avatar size="3xl" src={sampleImages.user1} status="approved" />
+      <Avatar size="sm" src={sampleAvatars.user1} status="approved" />
+      <Avatar size="md" src={sampleAvatars.user1} status="approved" />
+      <Avatar size="lg" src={sampleAvatars.user1} status="approved" />
+      <Avatar size="xl" src={sampleAvatars.user1} status="approved" />
+      <Avatar size="2xl" src={sampleAvatars.user1} status="approved" />
+      <Avatar size="3xl" src={sampleAvatars.user1} status="approved" />
     </Box>
   ),
 };
@@ -284,19 +277,19 @@ export const PresenceAndStatus: Story = {
       <Box display="flex" gap="4" alignItems="center">
         <Avatar
           size="lg"
-          src={sampleImages.user1}
+          src={sampleAvatars.user1}
           presence="online"
           status="approved"
         />
         <Avatar
           size="lg"
-          src={sampleImages.user2}
+          src={sampleAvatars.user2}
           presence="busy"
           status="declined"
         />
         <Avatar
           size="lg"
-          src={sampleImages.user3}
+          src={sampleAvatars.user3}
           presence="offline"
           status="locked"
         />
@@ -322,7 +315,7 @@ export const ConditionalBreakpoints: Story = {
     >
       <HStack gap="20">
         <Avatar
-          src={sampleImages.user1}
+          src={sampleAvatars.user1}
           presence="online"
           status="approved"
           size={{
@@ -336,7 +329,7 @@ export const ConditionalBreakpoints: Story = {
           shape="circle"
         />
         <Avatar
-          src={sampleImages.user2}
+          src={sampleAvatars.user2}
           presence="online"
           status="approved"
           size={{
@@ -350,7 +343,7 @@ export const ConditionalBreakpoints: Story = {
           shape="square"
         />
         <Avatar
-          src={sampleImages.user3}
+          src={sampleAvatars.user3}
           presence="online"
           status="approved"
           size={{
@@ -400,22 +393,22 @@ export const UserList: Story = {
         {
           name: 'Alice Johnson',
           presence: 'online' as const,
-          img: sampleImages.user1,
+          img: sampleAvatars.user1,
         },
         {
           name: 'Bob Smith',
           presence: 'busy' as const,
-          img: sampleImages.user2,
+          img: sampleAvatars.user2,
         },
         {
           name: 'Charlie Brown',
           presence: 'offline' as const,
-          img: sampleImages.user3,
+          img: sampleAvatars.user3,
         },
         {
           name: 'Diana Prince',
           presence: 'focus' as const,
-          img: sampleImages.user4,
+          img: sampleAvatars.user4,
         },
       ].map((user) => (
         <Box key={user.name} display="flex" gap="8" alignItems="center">
@@ -477,10 +470,10 @@ export const AvatarStack: Story = {
       <Text fontWeight="bold">Stacked Avatars</Text>
       <Box display="flex">
         {[
-          sampleImages.user1,
-          sampleImages.user2,
-          sampleImages.user3,
-          sampleImages.user4,
+          sampleAvatars.user1,
+          sampleAvatars.user2,
+          sampleAvatars.user3,
+          sampleAvatars.user4,
         ].map((src, i) => (
           <Box key={src} ml={i > 0 ? '-8' : '0'} position="relative">
             <Avatar size="md" src={src} />
