@@ -8,6 +8,7 @@ import {
 
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { useFieldContext } from '~/system/context/FieldContext';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 import { useControllableState } from '~/utils/useControllableState';
@@ -79,6 +80,7 @@ export type TimeInputProps = Omit<
  */
 export const TimeInput = (props: TimeInputProps) => {
   const fieldContext = useFieldContext();
+  const { labels } = useLocale();
   const {
     id,
     value,
@@ -92,7 +94,7 @@ export const TimeInput = (props: TimeInputProps) => {
     iconBefore,
     iconAfter,
     clearable = true,
-    clearLabel = 'Clear time',
+    clearLabel = labels.clearTime,
     error: errorProp,
     disabled: disabledProp,
     invalid: invalidProp,
