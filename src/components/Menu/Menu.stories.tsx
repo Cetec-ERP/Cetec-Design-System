@@ -946,6 +946,65 @@ export const ExLongDiginMenuMouseBack: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const ExLongDiginMenuWidthAfterBack: Story = {
+  name: 'Ex: Long Drill-In Menu (width after back)',
+  render: () => (
+    <Menu
+      trigger={<Button iconAfter="caret-down">Open drill-in menu</Button>}
+      subMenuInteraction="digin"
+    >
+      <SubMenu label="Long list">
+        {LONG_MENU_LABELS.map((label) => (
+          <MenuItem key={label} label={`Nested ${label}`} />
+        ))}
+        <SubMenu label="Deep submenu">
+          <MenuItem label="Deep first" />
+        </SubMenu>
+      </SubMenu>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = getDocumentQueries(canvasElement);
+    const item = (name: RegExp) => body.getByRole('menuitem', { name });
+    const menu = () =>
+      canvasElement.ownerDocument.querySelector<HTMLElement>(
+        '[data-ds-component="Menu"]',
+      ) as HTMLElement;
+    // Let the width transition finish, as it does at human speed.
+    const settled = () =>
+      waitFor(() =>
+        expect(menu().getAnimations({ subtree: true })).toHaveLength(0),
+      );
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: /open drill-in menu/i }),
+    );
+    await userEvent.click(
+      await body.findByRole('menuitem', { name: /long list/i }),
+    );
+    await waitFor(() => expect(item(/nested 1 - item 1$/i)).toBeVisible());
+    await settled();
+
+    // Drill into the narrow level and let the menu shrink to it.
+    item(/deep submenu/i).scrollIntoView({ block: 'nearest' });
+    await userEvent.click(item(/deep submenu/i));
+    await waitFor(() => expect(item(/deep first/i)).toBeVisible());
+    await settled();
+
+    // Back to the long level: the menu must grow back, so no row wraps.
+    await userEvent.keyboard('{ArrowLeft}');
+    await waitFor(() => expect(item(/deep submenu/i)).toHaveFocus());
+    await settled();
+    const rows = body
+      .getAllByRole('menuitem')
+      .filter((row) => !row.closest('[aria-hidden="true"]'));
+    const heights = new Set(rows.map((row) => row.offsetHeight));
+    expect(heights.size).toBe(1);
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const ExLongDiginMenuKeyboard: Story = {
   name: 'Ex: Long Drill-In Menu (keyboard repro)',
   parameters: {

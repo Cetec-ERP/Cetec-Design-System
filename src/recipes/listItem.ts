@@ -11,6 +11,7 @@ export const listItemRecipe = defineSlotRecipe({
     'wrapper',
     'icon',
     'beforeSlot',
+    'beforeContent',
     'afterSlot',
     'itemMain',
     'itemLabel',
@@ -81,6 +82,16 @@ export const listItemRecipe = defineSlotRecipe({
     },
     beforeSlot: {
       ms: 'calc(var(--list-item-slot-margin) * -1)',
+    },
+    // Centers custom `before` content, such as a 20px icon or an avatar,
+    // on the first line of the label, the same way a built-in icon sits.
+    beforeContent: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: '0',
+      minW: 'var(--list-item-icon-size)',
+      minH: 'var(--list-item-icon-size)',
     },
     afterSlot: {
       me: 'calc(var(--list-item-slot-margin) * -1)',
