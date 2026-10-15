@@ -1,8 +1,10 @@
 name: Update visual baselines
 
-# Add the `update-visual-baselines` label to a PR, or run it from the Actions
-# tab on a branch (manual runs need this file on main). Baselines must come
-# from Linux CI, never from a local Mac, because fonts render differently there.
+# Backup path. The usual way is `npm run test:visual:docker:update` before you
+# push (see AGENTS.md). Add the `update-visual-baselines` label to a PR, or run
+# it from the Actions tab on a branch (manual runs need this file on main).
+# Baselines must come from the Playwright image, never from a plain Mac run,
+# because fonts render differently there.
 #
 # This workflow does not push. A push made with GITHUB_TOKEN starts no CI,
 # so the PR's required checks would never run on that commit. Download the
@@ -20,6 +22,10 @@ jobs:
     name: Update visual baselines
     if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'update-visual-baselines'
     runs-on: ubuntu-latest
+    # Same image as the Visual tests job and `npm run test:visual:docker`.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --ipc=host
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -27,20 +33,11 @@ jobs:
           # The PR's own commit, not the merge preview with the base branch.
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
-      - name: Setup Node.js 24
-        uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: npm
-
       - name: Install dependencies
         run: npm ci
 
       - name: Generate Panda CSS
         run: npm run prepare
-
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
 
       - name: Regenerate every baseline
         run: |
