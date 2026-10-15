@@ -210,6 +210,20 @@ export type SelectProps = Omit<
      * @default false
      */
     autoSize?: boolean;
+    /**
+     * Decorative content, such as an `Avatar` or a colored `Icon`, shown in
+     * the trigger before the selected value. When omitted, a single select
+     * shows the selected option's `before` instead.
+     */
+    before?: ReactNode;
+    /**
+     * Lets the user clear a single selection by choosing the selected option
+     * again or by pressing Backspace or Delete. Set it to `false` for a field
+     * that must always hold a value, such as a status. It has no effect when
+     * `multiple` is set.
+     * @default true
+     */
+    clearable?: boolean;
   };
 
 /**
@@ -218,6 +232,10 @@ export type SelectProps = Omit<
  * The trigger uses combobox/listbox semantics. Arrow keys, Enter, and Space open
  * it; typeahead and arrow keys navigate options; Escape or outside press closes
  * it. Focus stays on the trigger when the non-modal popup opens.
+ *
+ * Use `before` on the `Select` or on each `SelectOption` to show an avatar or
+ * a status icon beside the value. Set `clearable={false}` when the field must
+ * always hold a value.
  *
  * @example
  * ```tsx
@@ -248,6 +266,8 @@ export const Select = (props: SelectProps) => {
     size = 'md',
     density = defaultDensity,
     autoSize = false,
+    before,
+    clearable = true,
     'data-ds-component': dsComponentName,
     ...rest
   } = props;
@@ -430,7 +450,16 @@ export const Select = (props: SelectProps) => {
     placeholder,
   );
   const selectedOptions = getSelectedOptions(options, value, multiple);
-  const classes = select({ size, multiple, autoSize });
+  const resolvedBefore =
+    before ??
+    (multiple
+      ? undefined
+      : options.find((option) => option.props.value === value)?.props.before);
+  const hasBefore =
+    resolvedBefore !== undefined &&
+    resolvedBefore !== null &&
+    resolvedBefore !== false;
+  const classes = select({ size, multiple, autoSize, before: hasBefore });
   const menuClasses = menu({
     density,
     layer: floatingLayer,
@@ -462,6 +491,7 @@ export const Select = (props: SelectProps) => {
 
     if (
       !multiple &&
+      clearable &&
       hasValue &&
       (event.key === 'Backspace' || event.key === 'Delete')
     ) {
@@ -482,7 +512,9 @@ export const Select = (props: SelectProps) => {
     }
 
     if (value === optionValue) {
-      handleValueChange(null);
+      if (clearable) {
+        handleValueChange(null);
+      }
       setOpenState(false);
       return;
     }
@@ -548,6 +580,11 @@ export const Select = (props: SelectProps) => {
         }) as Record<string, unknown>)}
         {...otherProps}
       >
+        {hasBefore && (
+          <Box className={classes.before} aria-hidden>
+            {resolvedBefore}
+          </Box>
+        )}
         {multiple && selectedOptions.length > 0 ? (
           <Box className={cx(classes.content, classes.chips)}>
             {selectedOptions.map((option) => (
@@ -639,6 +676,15 @@ export const Select = (props: SelectProps) => {
                     !option.props.disabled &&
                     hasNavigated &&
                     activeIndex === index;
+                  const showClearIcon = clearable && isSelected && isPointed;
+                  const optionBefore = option.props.before;
+                  // A `before` slot takes the leading position, so the
+                  // selection check moves to the end of the row.
+                  const hasOptionBefore =
+                    optionBefore !== undefined &&
+                    optionBefore !== null &&
+                    optionBefore !== false;
+                  const selectionIcon = showClearIcon ? 'x' : 'check';
 
                   return (
                     <ListItem
@@ -653,23 +699,39 @@ export const Select = (props: SelectProps) => {
                       variant={multiple ? 'checkbox' : 'default'}
                       label={optionLabel}
                       description={option.props.description}
+                      before={hasOptionBefore ? optionBefore : undefined}
                       iconBefore={
-                        !multiple
-                          ? isSelected && isPointed
-                            ? 'x'
-                            : (option.props.iconLeft ?? 'check')
-                          : option.props.iconLeft
+                        hasOptionBefore
+                          ? undefined
+                          : !multiple
+                            ? showClearIcon
+                              ? 'x'
+                              : (option.props.iconLeft ?? 'check')
+                            : option.props.iconLeft
                       }
                       iconBeforeFill={
-                        !multiple
+                        hasOptionBefore
+                          ? undefined
+                          : !multiple
+                            ? isSelected
+                              ? 'icon'
+                              : option.props.iconLeft
+                                ? undefined
+                                : 'transparent'
+                            : undefined
+                      }
+                      iconAfter={
+                        hasOptionBefore && !multiple
+                          ? selectionIcon
+                          : option.props.iconRight
+                      }
+                      iconAfterFill={
+                        hasOptionBefore && !multiple
                           ? isSelected
                             ? 'icon'
-                            : option.props.iconLeft
-                              ? undefined
-                              : 'transparent'
+                            : 'transparent'
                           : undefined
                       }
-                      iconAfter={option.props.iconRight}
                       {...(getItemProps({
                         onClick: () => {
                           if (!option.props.disabled) {
