@@ -17,6 +17,7 @@ const recipeNames = [
 ].map((key) => key.replace(/Recipe$/, ''));
 
 const recipeOverrides: Record<string, RecipeRule[]> = {
+  codeBlock: [{ actionGutter: ['*'], collapsed: ['*'], lineNumbers: ['*'] }],
   avatar: [{ size: ['*'], responsive: true }, { shape: ['*'] }],
   badge: [
     {
