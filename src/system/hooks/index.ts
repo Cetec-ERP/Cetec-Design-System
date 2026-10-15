@@ -6,3 +6,4 @@ export {
   type UseOverflowItemsOptions,
   type UseOverflowItemsResult,
 } from './useOverflowItems';
+export { useClipboard } from './clipboard.hook';
