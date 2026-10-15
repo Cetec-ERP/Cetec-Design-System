@@ -171,6 +171,18 @@ export {
 } from './components/Radio';
 export { RadioInput, type RadioInputProps } from './components/RadioInput';
 export { Spinner, type SpinnerProps } from './components/Spinner';
+export {
+  Tab,
+  TabPanel,
+  Tabs,
+  type TabPanelProps,
+  type TabPanelRenderProps,
+  type TabProps,
+  type TabsChangeEvent,
+  type TabsChangeHandler,
+  type TabsChangeReason,
+  type TabsProps,
+} from './components/Tabs';
 export { Tag, type TagProps } from './components/Tag';
 export {
   Autocomplete,
@@ -226,6 +238,10 @@ export {
 } from './components/Menu/context/menuContext';
 export { useDrawerContext } from './components/Drawer/DrawerContext';
 export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
+export {
+  useTabPanelActive,
+  useTabsContext,
+} from './components/Tabs/context/tabsContext';
 export { useToast } from './components/Toast/useToast';
 
 // TanStack Form — peer dependency re-exported for a single library instance
@@ -249,7 +265,15 @@ export {
 export { splitProps } from './utils/splitProps';
 
 // Export hooks
-export { useMediaQuery, useContainerQuery, useClipboard } from './system/hooks';
+export {
+  useMediaQuery,
+  useContainerQuery,
+  useClipboard,
+  useOverflowItems,
+  type OverflowItemKey,
+  type UseOverflowItemsOptions,
+  type UseOverflowItemsResult,
+} from './system/hooks';
 export type {
   UseClipboardOptions,
   UseClipboardReturn,
