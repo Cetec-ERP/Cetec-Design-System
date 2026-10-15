@@ -101,6 +101,12 @@ export {
   type DsChainScopeProps,
 } from './components/DsChainScope';
 export {
+  FilterMenu,
+  type FilterMenuItemRow,
+  type FilterMenuProps,
+  type FilterMenuRow,
+} from './components/FilterMenu';
+export {
   FilterToken,
   type FilterTokenProps,
   type FilterTokenState,
@@ -231,6 +237,12 @@ export { Tooltip, type TooltipProps } from './components/Tooltip';
 
 // Public component hooks and helpers
 export { useIconConfig } from './components/Icon/IconContext';
+export {
+  getFilterMenuOptionId,
+  useFilterMenu,
+  type UseFilterMenuOptions,
+  type UseFilterMenuResult,
+} from './components/FilterMenu/useFilterMenu';
 export { useListContext } from './components/List/listContext';
 export {
   deriveItemTextValue,
