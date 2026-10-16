@@ -17,6 +17,8 @@ components:
     description: Public API JSDoc requirements for components, props, hooks, helpers, and types
   public-api-exports:
     description: Package entrypoint, component barrel, runtime value, and type export policy
+  localized-text:
+    description: Built-in component text comes from LocaleProvider labels, never hard-coded English
 
 recipes:
   naming-registration:
