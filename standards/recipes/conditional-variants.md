@@ -16,6 +16,9 @@ the narrow path.
 5. Do not declare `staticCss` inside recipe files.
 6. Register conservative `staticCss` coverage in `panda.config.ts` instead,
    where recipe-level static CSS is actually collected.
+7. When a component computes a variant value at runtime, add the variant to
+   `recipeOverrides` in `panda.config.ts`. Panda reads values from source text
+   only. It extracts `collapsed="true"` but not `collapsed={isCollapsed}`.
 
 ## Guidance
 
@@ -23,6 +26,9 @@ the narrow path.
   compose with recipe-level compound variants in a predictable way.
 - `useCorrectConditionalVariantType` should focus on the usual conditional
   variant props first: `size` and `variant`.
+- Storybook and the package build set `PANDA_STATIC=true`, which emits every
+  variant. The tests do not. A variant missing from `recipeOverrides` looks
+  correct in Storybook and fails in the story tests.
 - `noStaticCssInRecipeFiles` exists because `staticCss` inside a recipe file has
   no effect when static recipe coverage is controlled centrally in
   `panda.config.ts`.

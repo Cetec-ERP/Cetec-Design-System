@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { tabs as tabsRecipe } from '@styled-system/recipes';
 
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -44,6 +45,7 @@ const TabsOverflowMenu = ({
   selectedValue,
 }: TabsOverflowMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { labels } = useLocale();
 
   return (
     <Menu
@@ -56,7 +58,7 @@ const TabsOverflowMenu = ({
           variant="ghost"
           size="md"
           iconName={isOpen ? 'caret-up' : 'caret-down'}
-          altText="More tabs"
+          altText={labels.moreTabs}
           aria-haspopup="menu"
         />
       }
@@ -109,6 +111,7 @@ const TabsOverflowMenu = ({
  * ```
  */
 export const Tabs = (props: TabsProps) => {
+  const { labels } = useLocale();
   const {
     children,
     value,
@@ -230,7 +233,7 @@ export const Tabs = (props: TabsProps) => {
                 variant="ghost"
                 size="md"
                 iconName="caret-down"
-                altText="More tabs"
+                altText={labels.moreTabs}
                 disabled
                 tabIndex={-1}
               />

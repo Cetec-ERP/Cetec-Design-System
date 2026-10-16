@@ -13,6 +13,7 @@ import { codeBlock, type CodeBlockVariantProps } from '@styled-system/recipes';
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon } from '~/components/Icon';
 import { IconButton } from '~/components/IconButton';
+import { useLocale } from '~/system/context/useLocale';
 import { useClipboard } from '~/system/hooks/clipboard.hook';
 import { dsComponent } from '~/utils/dsComponent';
 import { dsPart } from '~/utils/dsPart';
@@ -46,7 +47,8 @@ type CodeBlockOwnProps = {
    */
   copyable?: boolean;
   /**
-   * Accessible label and tooltip for the copy button.
+   * Accessible label and tooltip for the copy button. Overrides the
+   * `copyCode` label from `LocaleProvider`.
    *
    * @default "Copy code"
    */
@@ -130,13 +132,14 @@ const scrollbarHeight = (element: HTMLElement) => {
  * ```
  */
 export const CodeBlock = (props: CodeBlockProps) => {
+  const { labels } = useLocale();
   const {
     code: codeProp,
     children,
     language,
     title,
     copyable = true,
-    copyLabel = 'Copy code',
+    copyLabel = labels.copyCode,
     maxLines,
     expanded: expandedProp,
     defaultExpanded = false,
@@ -244,7 +247,7 @@ export const CodeBlock = (props: CodeBlockProps) => {
     <IconButton
       {...dsPart('copy')}
       iconName={copied ? 'check' : 'copy'}
-      altText={copied ? 'Copied' : copyLabel}
+      altText={copied ? labels.copied : copyLabel}
       variant={tone === 'inverse' ? 'primary' : 'ghost'}
       size="sm"
       onClick={() => {
@@ -329,12 +332,12 @@ export const CodeBlock = (props: CodeBlockProps) => {
             fill="current"
             aria-hidden="true"
           />
-          {expanded ? 'Show less' : `Show all ${lineCount} lines`}
+          {expanded ? labels.showLess : labels.showAllLines(lineCount)}
         </Box>
       )}
 
       <Box as="span" role="status" aria-live="polite" srOnly>
-        {copied ? 'Copied' : failed ? 'Copy failed' : ''}
+        {copied ? labels.copied : failed ? labels.copyFailed : ''}
       </Box>
     </Box>
   );
