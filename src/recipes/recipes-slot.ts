@@ -28,3 +28,4 @@ export { pageBannerRecipe } from './pageBanner';
 export { toastRecipe } from './toast';
 export { inlineNoteRecipe } from './inlineNote';
 export { codeBlockRecipe } from './codeBlock';
+export { filterTokenRecipe } from './filterToken';

@@ -100,6 +100,12 @@ export {
   DsChainScope,
   type DsChainScopeProps,
 } from './components/DsChainScope';
+export {
+  FilterToken,
+  type FilterTokenProps,
+  type FilterTokenState,
+  type FilterTokenTone,
+} from './components/FilterToken';
 export { FormField, type FormFieldProps } from './components/FormField';
 export { Heading, type HeadingProps } from './components/Heading';
 export {
