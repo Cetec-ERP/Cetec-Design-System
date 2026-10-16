@@ -29,3 +29,4 @@ export { toastRecipe } from './toast';
 export { inlineNoteRecipe } from './inlineNote';
 export { codeBlockRecipe } from './codeBlock';
 export { filterTokenRecipe } from './filterToken';
+export { filterMenuRecipe } from './filterMenu';
