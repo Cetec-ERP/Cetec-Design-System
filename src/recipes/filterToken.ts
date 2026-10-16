@@ -61,6 +61,10 @@ export const filterTokenRecipe = defineSlotRecipe({
       transitionDuration: 'fast',
       transitionProperty: 'background, border-color, opacity',
       transitionTimingFunction: 'default',
+      // Lets every part shrink, the tooltip wrapper around the value included.
+      '& > *': {
+        minW: '0',
+      },
       '&[data-state=editing]': {
         bg: 'surface',
         borderColor: 'border.focused',

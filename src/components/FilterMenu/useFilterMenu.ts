@@ -4,10 +4,11 @@ import type { FilterMenuItemRow, FilterMenuRow } from './types';
 
 /**
  * Returns the DOM id of one option in a {@link FilterMenu}. The input uses
- * it in `aria-activedescendant`.
+ * it in `aria-activedescendant`. The key is percent-encoded, so two different
+ * keys always give two different ids, and the id never holds whitespace.
  */
 export const getFilterMenuOptionId = (menuId: string, key: string) =>
-  `${menuId}-option-${key.replace(/\s+/g, '_')}`;
+  `${menuId}-option-${encodeURIComponent(key)}`;
 
 const isPickable = (row: FilterMenuRow): row is FilterMenuItemRow =>
   row.type === 'item' && !row.disabled;
@@ -97,6 +98,9 @@ export const useFilterMenu = (
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (!open) return;
+    // Keys that confirm an IME candidate belong to the input, not the menu.
+    // Safari reports them with keyCode 229 and isComposing false.
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();

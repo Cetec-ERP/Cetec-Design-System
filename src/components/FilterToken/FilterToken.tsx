@@ -1,4 +1,10 @@
-import { type MouseEvent, type ReactNode } from 'react';
+import {
+  type MouseEvent,
+  type ReactNode,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { cx } from '@styled-system/css';
 import { filterToken } from '@styled-system/recipes';
@@ -40,7 +46,8 @@ type FilterTokenOwnProps = {
   /**
    * The filter value. A string shows as is, such as "Sep 1 – Sep 30". A list
    * shows its first two items, then `+N` for the rest, and a tooltip lists
-   * every item. Overflow is decided by item count, not by width. An empty
+   * every item. A value cut off by the width limit also shows the tooltip,
+   * so the full text can be read on hover or focus. An empty
    * string or list shows "…" for a filter that has no value yet. Omit it for
    * an operator that takes no value, such as "is empty".
    */
@@ -59,7 +66,7 @@ type FilterTokenOwnProps = {
    * place, usually a text input. The value text stays before it.
    */
   editor?: ReactNode;
-  /** Disables every part of the token. */
+  /** Disables every part of the token, the `editor` included. */
   disabled?: boolean;
   /**
    * Keeps focus where it is when a part is clicked with a pointer. A filter
@@ -149,6 +156,23 @@ export const FilterToken = (props: FilterTokenProps) => {
     ? (e: MouseEvent) => e.preventDefault()
     : undefined;
 
+  // A value cut off by its max width gets the tooltip too, not only `+N`.
+  const valueTextRef = useRef<HTMLSpanElement>(null);
+  const [clipped, setClipped] = useState(false);
+  useLayoutEffect(() => {
+    const node = valueTextRef.current;
+    if (!node) {
+      setClipped(false);
+      return;
+    }
+    const check = () => setClipped(node.scrollWidth > node.clientWidth);
+    check();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(check);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [shownValue, editor]);
+
   const part = (
     slot: string,
     content: ReactNode,
@@ -178,6 +202,7 @@ export const FilterToken = (props: FilterTokenProps) => {
     <>
       <Box
         as="span"
+        ref={valueTextRef}
         className={classes.valueText}
         aria-hidden={hidden > 0 || undefined}
       >
@@ -216,7 +241,12 @@ export const FilterToken = (props: FilterTokenProps) => {
         operatorLocked ? { 'data-locked': true } : undefined,
       )}
       {editor !== undefined ? (
-        <Box as="span" className={cx(classes.part, classes.editor)}>
+        // `inert` keeps a disabled token's editor out of the tab order.
+        <Box
+          as="span"
+          className={cx(classes.part, classes.editor)}
+          inert={disabled || undefined}
+        >
           {shownValue && (
             <Box as="span" className={classes.value}>
               {valueContent}
@@ -226,7 +256,7 @@ export const FilterToken = (props: FilterTokenProps) => {
         </Box>
       ) : (
         value !== undefined && (
-          <Tooltip text={fullValue ?? ''} disabled={hidden === 0}>
+          <Tooltip text={fullValue ?? ''} disabled={hidden === 0 && !clipped}>
             {part(classes.value, valueContent, onValueClick)}
           </Tooltip>
         )
