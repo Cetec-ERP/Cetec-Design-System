@@ -127,7 +127,7 @@ export const FilterMenu = (props: FilterMenuProps) => {
   useEffect(() => {
     if (!open || activeKey == null) return;
     const node = listRef.current?.querySelector(
-      `[id="${getFilterMenuOptionId(id, activeKey)}"]`,
+      `#${CSS.escape(getFilterMenuOptionId(id, activeKey))}`,
     );
     node?.scrollIntoView?.({ block: 'nearest' });
   }, [open, activeKey, id]);
