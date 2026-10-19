@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { modal as modalRecipe } from '@styled-system/recipes';
 
+import { useLocale } from '~/system/context/useLocale';
 import { useMediaQuery } from '~/system/hooks';
 import { splitProps } from '~/utils/splitProps';
 
@@ -43,6 +44,7 @@ export type ModalHeaderProps = Omit<BoxProps, 'children'> & {
  * ```
  */
 export const ModalHeader = (props: ModalHeaderProps) => {
+  const { labels } = useLocale();
   const { title, titleId, showCloseButton = true, children, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
   const classes = modalRecipe();
@@ -71,8 +73,8 @@ export const ModalHeader = (props: ModalHeaderProps) => {
               variant="ghost"
               size={isSm ? 'md' : 'lg'}
               onClick={onClose}
-              altText="Close dialog"
-              aria-label="Close dialog"
+              altText={labels.closeDialog}
+              aria-label={labels.closeDialog}
               className={classes.closeButton}
               iconName="x"
             />

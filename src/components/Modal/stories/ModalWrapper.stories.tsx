@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Flex, Grid, VStack } from '@styled-system/jsx';
 
@@ -686,15 +686,20 @@ export const FloatingContent: Story = {
     await userEvent.click(
       canvas.getByRole('button', { name: 'Open Floating Content Modal' }),
     );
+    const dialog = await body.findByRole('dialog', {
+      name: 'Floating content example',
+    });
+    // The modal moves focus inside one frame after it opens. A click before
+    // that loses focus to the modal, and the menu closes.
+    await waitFor(() =>
+      expect(dialog).toContainElement(document.activeElement as HTMLElement),
+    );
     await userEvent.click(
       await body.findByRole('spinbutton', { name: 'Year' }),
     );
 
     const floatingElement = await body.findByRole('menu');
     const calendar = within(floatingElement).getByRole('grid');
-    const dialog = body.getByRole('dialog', {
-      name: 'Floating content example',
-    });
 
     expect(calendar).toBeVisible();
     const floatingZIndex = Number(getComputedStyle(floatingElement).zIndex);

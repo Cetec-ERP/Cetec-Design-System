@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { cx } from '@styled-system/css';
 import { drawer as drawerRecipe } from '@styled-system/recipes';
 
+import { useLocale } from '~/system/context/useLocale';
 import { useMediaQuery } from '~/system/hooks';
 import { splitProps } from '~/utils/splitProps';
 
@@ -54,6 +55,7 @@ export const DrawerHeader = (props: DrawerHeaderProps) => {
   const { onClose } = useDrawerContext();
 
   const isSm = useMediaQuery('sm');
+  const { labels } = useLocale();
 
   return (
     <Box className={cx(classes.header, className)} {...otherProps}>
@@ -76,8 +78,8 @@ export const DrawerHeader = (props: DrawerHeaderProps) => {
               variant="ghost"
               size={isSm ? 'md' : 'lg'}
               onClick={onClose}
-              altText="Close drawer"
-              aria-label="Close drawer"
+              altText={labels.closeDrawer}
+              aria-label={labels.closeDrawer}
               className={classes.closeButton}
               iconName="x"
             />

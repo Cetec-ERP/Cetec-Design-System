@@ -19,6 +19,11 @@ type Story = StoryObj<typeof meta>;
 2. Use Panda components/props for layout (`Box`, `VStack`, `HStack`, etc.), not inline style objects.
 3. Include practical usage coverage: default/variants/states plus at least one realistic `Ex: ...` story.
 4. Story files follow repo code conventions (import ordering, quote style, valid paths, type imports).
+5. A story that compares many overlays side by side (tones, sizes, placements)
+   renders their content as static inline panels. Do not open many popovers,
+   menus, or tooltips on load. Open overlays overlap each other and the page,
+   and their position changes the visual snapshots. Keep one interactive story
+   that opens a real overlay from its trigger.
 
 ## Style Refactor Playbook
 

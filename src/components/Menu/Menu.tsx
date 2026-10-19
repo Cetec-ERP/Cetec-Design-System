@@ -39,6 +39,7 @@ import {
 import { cx } from '@styled-system/css';
 import { list, menu } from '@styled-system/recipes';
 
+import { useLocale } from '~/system/context/useLocale';
 import {
   availableHeightMiddleware,
   createOverlayMiddleware,
@@ -177,6 +178,7 @@ const withLevelScopedKeys = (nodes: ReactNode, levelKey: string) => {
  * ```
  */
 export const Menu = (props: MenuProps) => {
+  const { labels } = useLocale();
   const nodeId = useFloatingNodeId();
   const floatingLayer = useFloatingLayer();
   const {
@@ -676,8 +678,21 @@ export const Menu = (props: MenuProps) => {
     }
 
     const updateWrapperSize = () => {
-      const nextWidth = Math.ceil(sizeProbe.scrollWidth);
-      const nextHeight = Math.ceil(sizeProbe.scrollHeight);
+      // `scrollWidth`/`scrollHeight` are rounded integers, so a 123.33px level
+      // would measure 123 and wrap. Read the fractional size, then round up.
+      const rect = sizeProbe.getBoundingClientRect();
+      // The probe is never height-capped, so it never scrolls. The visible
+      // level does, and a classic (non-overlay) scrollbar takes its width out
+      // of the content box, so labels sized to the probe would wrap. Add the
+      // visible level's scrollbar width. A panel's probe fills the wrapper, so
+      // adding to it there would grow the wrapper on every measure.
+      const activeLevelEl = activeLevelRef.current;
+      const scrollbarWidth =
+        activeLevelEl && !shouldUsePanelDiginProbeFill
+          ? activeLevelEl.offsetWidth - activeLevelEl.clientWidth
+          : 0;
+      const nextWidth = Math.ceil(rect.width) + scrollbarWidth;
+      const nextHeight = Math.ceil(rect.height);
 
       setWrapperSize((previous) => {
         if (previous.width === nextWidth && previous.height === nextHeight) {
@@ -695,6 +710,11 @@ export const Menu = (props: MenuProps) => {
 
     const resizeObserver = new ResizeObserver(updateWrapperSize);
     resizeObserver.observe(sizeProbe);
+    // The level's scrollbar appears only once the wrapper height caps it, and
+    // that shrinks the level's content box, so re-measure when it does.
+    if (activeLevelRef.current) {
+      resizeObserver.observe(activeLevelRef.current);
+    }
 
     return () => {
       resizeObserver.disconnect();
@@ -708,6 +728,7 @@ export const Menu = (props: MenuProps) => {
     hasVisibleResults,
     isMenuVisible,
     shouldUseDiginSizing,
+    shouldUsePanelDiginProbeFill,
   ]);
 
   // The probe is a hidden measuring copy of the active level. Duplicate ids
@@ -750,7 +771,7 @@ export const Menu = (props: MenuProps) => {
           {!hasVisibleResults && (
             <Box className={classes.noResults}>
               {renderNoResults ?? (
-                <Text textStyle="body.sm">No results found</Text>
+                <Text textStyle="body.sm">{labels.noResults}</Text>
               )}
             </Box>
           )}

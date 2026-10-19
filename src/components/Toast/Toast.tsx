@@ -12,6 +12,7 @@ import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { IconButton } from '~/components/IconButton';
 import { Text } from '~/components/Text';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
@@ -99,6 +100,7 @@ export type ToastProps = Omit<
  * ```
  */
 export const Toast = (props: ToastProps) => {
+  const { labels } = useLocale();
   const {
     tone = 'neutral',
     children,
@@ -107,7 +109,7 @@ export const Toast = (props: ToastProps) => {
     dismissible = true,
     onDismiss,
     duration = null,
-    dismissLabel = 'Dismiss',
+    dismissLabel = labels.dismiss,
     state = 'open',
     onMouseEnter,
     onMouseLeave,

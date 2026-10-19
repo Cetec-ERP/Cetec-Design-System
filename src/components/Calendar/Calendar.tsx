@@ -17,49 +17,15 @@ import {
 } from '~/components/DateTime/helpers';
 import { IconButton } from '~/components/IconButton';
 import { Text } from '~/components/Text';
+import type { LocaleLabels } from '~/system/context/locale-labels';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
+import { getCalendarNames, type CalendarNames } from './calendarNames';
+
 // ─── Static data ────────────────────────────────────────────────────────────────
 
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-const MONTH_ABBR = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-const WEEKDAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-const WEEKDAY_FULL = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
 const YEAR_WINDOW_SIZE = 12;
 
 type ViewLevel = 'days' | 'months' | 'years';
@@ -118,15 +84,16 @@ function getCellVariant(state: CellState) {
 
 function getDayAriaLabel(
   date: DateValue,
-  monthName: string,
   state: CellState,
+  labels: LocaleLabels,
+  names: CalendarNames,
 ): string {
-  const labels = [`${monthName} ${date.day}, ${date.year}`];
-  if (state.isToday) labels.push('today');
-  if (state.isSelected) labels.push('selected');
-  if (state.isRangeStart) labels.push('range start');
-  if (state.isRangeEnd) labels.push('range end');
-  return labels.join(', ');
+  const parts = [names.formatDate(date)];
+  if (state.isToday) parts.push(labels.today);
+  if (state.isSelected) parts.push(labels.selected);
+  if (state.isRangeStart) parts.push(labels.rangeStart);
+  if (state.isRangeEnd) parts.push(labels.rangeEnd);
+  return parts.join(', ');
 }
 
 type CalendarClasses = ReturnType<typeof calendar>;
@@ -178,7 +145,8 @@ type DayGridContentProps = {
   disabled: boolean;
   getDayState: (date: DateValue) => CellState;
   handleDaySelect: (date: DateValue) => void;
-  monthName: string;
+  labels: LocaleLabels;
+  names: CalendarNames;
   viewDate: ViewDate;
 };
 
@@ -188,18 +156,19 @@ const DayGridContent = ({
   disabled,
   getDayState,
   handleDaySelect,
-  monthName,
+  labels,
+  names,
   viewDate,
 }: DayGridContentProps) => (
   <>
-    {WEEKDAY_LABELS.map((weekday, index) => (
+    {names.weekdaysShort.map((weekday, index) => (
       <Text
-        key={weekday}
+        key={index}
         textStyle="mono.xs"
         allCaps
         className={classes.weekdayLabel}
         role="columnheader"
-        aria-label={WEEKDAY_FULL[index] ?? weekday}
+        aria-label={names.weekdays[index] ?? weekday}
       >
         {weekday}
       </Text>
@@ -233,7 +202,7 @@ const DayGridContent = ({
                 classes={classes}
                 disabled={disabled}
                 label={day}
-                ariaLabel={getDayAriaLabel(date, monthName, state)}
+                ariaLabel={getDayAriaLabel(date, state, labels, names)}
                 state={state}
                 onClick={() => handleDaySelect(date)}
                 onKeyDown={(event) => {
@@ -255,6 +224,7 @@ type MonthGridContentProps = {
   disabled: boolean;
   getMonthState: (month: number) => CellState;
   handleMonthSelect: (month: number) => void;
+  names: CalendarNames;
   year: number;
 };
 
@@ -263,19 +233,19 @@ const MonthGridContent = ({
   disabled,
   getMonthState,
   handleMonthSelect,
+  names,
   year,
 }: MonthGridContentProps) => (
   <>
-    {MONTH_ABBR.map((label, index) => {
+    {names.monthsShort.map((label, index) => {
       const month = index + 1;
-      const fullMonthName = MONTH_NAMES[index] ?? label;
       return (
         <CalendarCell
-          key={label}
+          key={month}
           classes={classes}
           disabled={disabled}
           label={label}
-          ariaLabel={`${fullMonthName} ${year}`}
+          ariaLabel={names.formatMonthYear(year, month)}
           state={getMonthState(month)}
           onClick={() => handleMonthSelect(month)}
         />
@@ -366,6 +336,8 @@ export type CalendarProps = Omit<
  * ```
  */
 export const Calendar = (props: CalendarProps) => {
+  const { labels, locale } = useLocale();
+  const names = useMemo(() => getCalendarNames(locale), [locale]);
   const {
     value = null,
     onChange,
@@ -377,7 +349,7 @@ export const Calendar = (props: CalendarProps) => {
     defaultViewDate,
     onViewDateChange,
     disabled = false,
-    label = 'Choose date',
+    label = labels.chooseDate,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -407,19 +379,22 @@ export const Calendar = (props: CalendarProps) => {
   );
 
   const classes = calendar({ type: viewLevel });
-  const monthName = MONTH_NAMES[viewDate.month - 1] ?? '';
-  const monthLabel = `${monthName} ${viewDate.year}`;
+  const monthLabel = names.formatMonthYear(viewDate.year, viewDate.month);
   const yearWindowEnd = yearWindowStart + YEAR_WINDOW_SIZE - 1;
 
   const dayCells = useMemo(() => {
-    const firstDay = firstWeekdayOfMonth(viewDate.year, viewDate.month);
+    const leadingDays =
+      (firstWeekdayOfMonth(viewDate.year, viewDate.month) -
+        names.firstDayOfWeek +
+        7) %
+      7;
     const totalDays = daysInMonth(viewDate.year, viewDate.month);
     const cells: Array<number | null> = [];
-    for (let i = 0; i < firstDay; i += 1) cells.push(null);
+    for (let i = 0; i < leadingDays; i += 1) cells.push(null);
     for (let day = 1; day <= totalDays; day += 1) cells.push(day);
     while (cells.length % 7 !== 0) cells.push(null);
     return cells;
-  }, [viewDate.month, viewDate.year]);
+  }, [names.firstDayOfWeek, viewDate.month, viewDate.year]);
 
   const windowYears = useMemo(
     () =>
@@ -489,8 +464,8 @@ export const Calendar = (props: CalendarProps) => {
     switch (viewLevel) {
       case 'days':
         return {
-          previousLabel: 'Previous month',
-          nextLabel: 'Next month',
+          previousLabel: labels.previousMonth,
+          nextLabel: labels.nextMonth,
           title: monthLabel,
           onTitleClick: () => setViewLevel('months'),
           previousDisabled:
@@ -509,8 +484,8 @@ export const Calendar = (props: CalendarProps) => {
         };
       case 'months':
         return {
-          previousLabel: 'Previous year',
-          nextLabel: 'Next year',
+          previousLabel: labels.previousYear,
+          nextLabel: labels.nextYear,
           title: String(viewDate.year),
           onTitleClick: () => {
             // Recenter the year window on the current view before showing it.
@@ -527,8 +502,8 @@ export const Calendar = (props: CalendarProps) => {
         };
       case 'years':
         return {
-          previousLabel: 'Previous years',
-          nextLabel: 'Next years',
+          previousLabel: labels.previousYears,
+          nextLabel: labels.nextYears,
           title: `${yearWindowStart}-${yearWindowEnd}`,
           titleDisabled: true,
           previousDisabled:
@@ -548,8 +523,8 @@ export const Calendar = (props: CalendarProps) => {
     viewLevel === 'days'
       ? monthLabel
       : viewLevel === 'months'
-        ? `Choose a month in ${viewDate.year}`
-        : 'Choose a year';
+        ? labels.chooseMonthIn(viewDate.year)
+        : labels.chooseYear;
 
   return (
     <Box
@@ -596,7 +571,8 @@ export const Calendar = (props: CalendarProps) => {
             disabled={disabled}
             getDayState={getDayState}
             handleDaySelect={handleDaySelect}
-            monthName={monthName}
+            labels={labels}
+            names={names}
             viewDate={viewDate}
           />
         ) : viewLevel === 'months' ? (
@@ -605,6 +581,7 @@ export const Calendar = (props: CalendarProps) => {
             disabled={disabled}
             getMonthState={getMonthState}
             handleMonthSelect={handleMonthSelect}
+            names={names}
             year={viewDate.year}
           />
         ) : (

@@ -26,6 +26,7 @@ export type IconNamesList =
   | 'attachment'
   | 'bank'
   | 'barcode-off'
+  | 'barcode-reader-off'
   | 'barcode-reader'
   | 'barcode'
   | 'barricade'

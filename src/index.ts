@@ -2,7 +2,11 @@ export { Alert, type AlertProps, type AlertTone } from './components/Alert';
 export { Avatar, type AvatarProps } from './components/Avatar';
 export { Badge, type BadgeProps } from './components/Badge';
 export { Box, type BoxProps } from './components/Box';
-export { Breadcrumbs, type BreadcrumbsProps } from './components/Breadcrumbs';
+export {
+  type BreadcrumbItem,
+  Breadcrumbs,
+  type BreadcrumbsProps,
+} from './components/Breadcrumbs';
 export {
   BreakpointIndicator,
   type BreakpointIndicatorProps,
@@ -27,7 +31,8 @@ export {
   type ChipGroupProps,
   type ChipProps,
 } from './components/Chip';
-export { Code, Pre, type CodeProps, type PreProps } from './components/Code';
+export { Code, type CodeProps } from './components/Code';
+export { CodeBlock, type CodeBlockProps } from './components/CodeBlock';
 export {
   DateInput,
   DateRangeInput,
@@ -95,6 +100,23 @@ export {
   DsChainScope,
   type DsChainScopeProps,
 } from './components/DsChainScope';
+export {
+  FilterField,
+  type FilterFieldProps,
+  type FilterFieldToken,
+} from './components/FilterField';
+export {
+  FilterMenu,
+  type FilterMenuItemRow,
+  type FilterMenuProps,
+  type FilterMenuRow,
+} from './components/FilterMenu';
+export {
+  FilterToken,
+  type FilterTokenProps,
+  type FilterTokenState,
+  type FilterTokenTone,
+} from './components/FilterToken';
 export { FormField, type FormFieldProps } from './components/FormField';
 export { Heading, type HeadingProps } from './components/Heading';
 export {
@@ -166,6 +188,18 @@ export {
 } from './components/Radio';
 export { RadioInput, type RadioInputProps } from './components/RadioInput';
 export { Spinner, type SpinnerProps } from './components/Spinner';
+export {
+  Tab,
+  TabPanel,
+  Tabs,
+  type TabPanelProps,
+  type TabPanelRenderProps,
+  type TabProps,
+  type TabsChangeEvent,
+  type TabsChangeHandler,
+  type TabsChangeReason,
+  type TabsProps,
+} from './components/Tabs';
 export { Tag, type TagProps } from './components/Tag';
 export {
   Autocomplete,
@@ -237,6 +271,12 @@ export { Tooltip, type TooltipProps } from './components/Tooltip';
 
 // Public component hooks and helpers
 export { useIconConfig } from './components/Icon/IconContext';
+export {
+  getFilterMenuOptionId,
+  useFilterMenu,
+  type UseFilterMenuOptions,
+  type UseFilterMenuResult,
+} from './components/FilterMenu/useFilterMenu';
 export { useListContext } from './components/List/listContext';
 export {
   deriveItemTextValue,
@@ -251,6 +291,10 @@ export {
 export { useDrawerContext } from './components/Drawer/DrawerContext';
 export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
 export { usePopoverContext } from './components/Popover/PopoverContext';
+export {
+  useTabPanelActive,
+  useTabsContext,
+} from './components/Tabs/context/tabsContext';
 export { useToast } from './components/Toast/useToast';
 
 // TanStack Form — peer dependency re-exported for a single library instance
@@ -260,11 +304,33 @@ export type { FormApi } from '@tanstack/react-form';
 // Theme handling
 export { ThemeProvider, useTheme } from './system/context';
 
+// Locale and built-in labels
+export {
+  LocaleProvider,
+  useLocale,
+  defaultLocaleLabels,
+  type LocaleProviderProps,
+  type LocaleLabels,
+  type LocaleContextType,
+} from './system/context';
+
 // Export splitProps helper
 export { splitProps } from './utils/splitProps';
 
 // Export hooks
-export { useMediaQuery, useContainerQuery } from './system/hooks';
+export {
+  useMediaQuery,
+  useContainerQuery,
+  useClipboard,
+  useOverflowItems,
+  type OverflowItemKey,
+  type UseOverflowItemsOptions,
+  type UseOverflowItemsResult,
+} from './system/hooks';
+export type {
+  UseClipboardOptions,
+  UseClipboardReturn,
+} from './system/hooks/clipboard.hook';
 
 // Load minimal Panda helper type shims for declaration output (used during build)
 import './types/panda-augment';

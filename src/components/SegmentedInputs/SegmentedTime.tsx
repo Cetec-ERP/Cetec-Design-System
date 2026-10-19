@@ -9,6 +9,7 @@ import type {
   TimeFormat,
   TimeValue,
 } from '~/components/DateTime/helpers/types';
+import { useLocale } from '~/system/context/useLocale';
 import { dsComponent } from '~/utils/dsComponent';
 
 import { SegmentedInput } from './SegmentedInput';
@@ -91,6 +92,7 @@ const to24Hour = (hour12: number, meridiem: string) => {
  * ```
  */
 export const SegmentedTime = (props: SegmentedTimeProps) => {
+  const { labels } = useLocale();
   const {
     value,
     defaultValue = null,
@@ -98,7 +100,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
     timeFormat,
     minuteStep = 1,
     separators,
-    label = 'Time',
+    label = labels.time,
     disabled,
     onFocusWithin,
     onBlurWithin,
@@ -139,8 +141,8 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
         type: 'segment',
         kind: 'numeric',
         id: 'hour',
-        label: 'Hour',
-        placeholder: 'HH',
+        label: labels.hour,
+        placeholder: labels.hourPlaceholder,
         value: displayHour,
         digits: 2,
         min: resolvedTimeFormat === '12' ? 1 : 0,
@@ -156,8 +158,8 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
         type: 'segment',
         kind: 'numeric',
         id: 'minute',
-        label: 'Minute',
-        placeholder: 'MM',
+        label: labels.minute,
+        placeholder: labels.minutePlaceholder,
         value: resolvedValue?.minute ?? null,
         digits: 2,
         min: 0,
@@ -178,7 +180,7 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
           type: 'segment',
           kind: 'choice',
           id: 'meridiem',
-          label: 'AM or PM',
+          label: labels.meridiem,
           placeholder: 'AM',
           value: meridiem,
           choices: ['AM', 'PM'],
@@ -191,7 +193,13 @@ export const SegmentedTime = (props: SegmentedTimeProps) => {
     }
 
     return nextItems;
-  }, [resolvedMinuteStep, resolvedTimeFormat, resolvedValue, separators]);
+  }, [
+    labels,
+    resolvedMinuteStep,
+    resolvedTimeFormat,
+    resolvedValue,
+    separators,
+  ]);
 
   return (
     <SegmentedInput

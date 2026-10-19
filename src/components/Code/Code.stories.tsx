@@ -1,10 +1,10 @@
 import { expect, within } from 'storybook/test';
 
 import { Box } from '../Box';
+import { Heading } from '../Heading';
 import { Text } from '../Text';
 
 import { Code } from './Code';
-import { Pre } from './Pre';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -25,103 +25,87 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const InlineUsage: Story = {
+export const Variants: Story = {
+  render: () => (
+    <Box display="grid" gap="12" maxW="prose">
+      <Text>
+        Subtle: run <Code variant="subtle">npm run prepare</Code> first.
+      </Text>
+      <Text>
+        Outline: run <Code variant="outline">npm run prepare</Code> first.
+      </Text>
+      <Text>
+        Plain: run <Code variant="plain">npm run prepare</Code> first.
+      </Text>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const SizeFollowsText: Story = {
+  render: () => (
+    <Box display="grid" gap="12" maxW="prose">
+      <Heading level="h3">
+        Configure <Code>preshared_token</Code>
+      </Heading>
+      <Text>
+        Body text with <Code>preshared_token</Code> inline.
+      </Text>
+      <Text textStyle="body.xs">
+        Small text with <Code>preshared_token</Code> inline.
+      </Text>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const LongValueWraps: Story = {
+  render: () => (
+    <Box maxW="xs" borderWidth="1" borderColor="border" p="12">
+      <Text>
+        Token:{' '}
+        <Code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0In0</Code>
+      </Text>
+    </Box>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const NativeSemantics: Story = {
+  name: 'Test: native code element',
   render: () => (
     <Text>
-      Run <Code>npm run prepare</Code> before building to regenerate Panda CSS
-      types.
+      Run{' '}
+      <Code language="shell" data-testid="inline-code">
+        npm test
+      </Code>
+      .
     </Text>
   ),
-  parameters: { controls: { disable: true } },
-};
-
-export const CodeBlock: Story = {
-  render: () => (
-    <Box maxW="2xl">
-      <Pre lang="tsx">{`import { Button } from 'cetec-design-system';
-
-export function SaveAction() {
-  return <Button variant="primary">Save Changes</Button>;
-}`}</Pre>
-    </Box>
-  ),
-  parameters: { controls: { disable: true } },
-};
-
-export const PreRootProps: Story = {
-  name: 'Test: Pre root props',
-  render: () => (
-    <Box maxW="2xl">
-      <Pre
-        lang="tsx"
-        id="pre-root"
-        data-testid="pre-root"
-        data-ds-component="CodeBlock"
-      >
-        {'const ready = true;'}
-      </Pre>
-    </Box>
-  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const pre = canvas.getByTestId('pre-root');
-    const code = pre.querySelector('code');
+    const code = canvas.getByTestId('inline-code');
 
-    if (!(code instanceof HTMLElement)) {
-      throw new Error('Pre should render a nested code element.');
-    }
-
-    // Consumer props land on the root `pre` only.
-    expect(pre).toHaveAttribute('id', 'pre-root');
-    expect(pre).toHaveAttribute('data-ds-component', 'CodeBlock');
-
-    // The nested `code` keeps its own identity and does not receive the
-    // consumer props spread onto the root.
-    expect(code).not.toHaveAttribute('id');
-    expect(code).not.toHaveAttribute('data-testid');
+    expect(code.tagName).toBe('CODE');
+    expect(code).toHaveAttribute('data-language', 'shell');
     expect(code).toHaveAttribute('data-ds-component', 'Code');
-    expect(code).toHaveAttribute('lang', 'tsx');
+    // Children render directly in the code element, with no wrapper.
+    expect(code.children).toHaveLength(0);
+    expect(code).not.toHaveAttribute('lang');
   },
   parameters: { controls: { disable: true } },
 };
 
-export const DsComponentAttribute: Story = {
-  name: 'Test: data-ds-component',
-  render: () => (
-    <>
-      <Pre>{'const defaultPre = true;'}</Pre>
-      <Pre data-ds-component="ExamplePre">{'const customPre = true;'}</Pre>
-    </>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const defaultPre = canvas
-      .getByText('const defaultPre = true;')
-      .closest('pre');
-    const customPre = canvas
-      .getByText('const customPre = true;')
-      .closest('pre');
-
-    expect(defaultPre).toHaveAttribute('data-ds-component', 'Pre');
-    expect(defaultPre?.querySelector('code')).toHaveAttribute(
-      'data-ds-component',
-      'Code',
-    );
-    expect(customPre).toHaveAttribute('data-ds-component', 'ExamplePre');
-    expect(customPre?.querySelector('code')).toHaveAttribute(
-      'data-ds-component',
-      'Code',
-    );
-  },
-  parameters: { controls: { disable: true } },
-};
-
-export const ExCommandSnippet: Story = {
-  name: 'Ex: Command Snippet',
+export const ExApiSetupNote: Story = {
+  name: 'Ex: API Setup Note',
   render: () => (
     <Box display="grid" gap="8" maxW="prose">
-      <Text>Build Storybook for review:</Text>
-      <Pre>npm run storybook:build</Pre>
+      <Text>
+        Search for <Code>JSON API Token</Code> in Admin &gt; Configuration. The
+        value is sent as <Code>preshared_token</Code> on all internal API calls,
+        and as an <Code>Authorization: Bearer &lt;token&gt;</Code> header on
+        external ones.
+      </Text>
     </Box>
   ),
   parameters: { controls: { disable: true } },
