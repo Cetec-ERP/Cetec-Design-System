@@ -488,6 +488,28 @@
     "category": "System objects",
     "deprecated": false
   },
+  "barcode-reader-off": {
+    "aliases": [
+      "upc",
+      "qr",
+      "products",
+      "shopping",
+      "scanner",
+      "barcode",
+      "gun",
+      "handheld",
+      "device",
+      "scanning",
+      "point of sale",
+      "offline",
+      "off",
+      "unavailable",
+      "disabled"
+    ],
+    "tags": [],
+    "category": "System objects",
+    "deprecated": false
+  },
   "barricade": {
     "aliases": [
       "construction",
