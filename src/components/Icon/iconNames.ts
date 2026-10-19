@@ -26,6 +26,7 @@ export const IconNames = {
   attachment: 'attachment',
   bank: 'bank',
   'barcode-off': 'barcode-off',
+  'barcode-reader-off': 'barcode-reader-off',
   'barcode-reader': 'barcode-reader',
   barcode: 'barcode',
   barricade: 'barricade',
