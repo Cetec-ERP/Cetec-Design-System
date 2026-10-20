@@ -650,36 +650,98 @@ export const ExAddAFilter: Story = {
 
 /* ---------- Ex: Filter bar with Apply ---------- */
 
-type BarFieldKind = 'many' | 'one' | 'lookup' | 'date' | 'text';
+/*
+ * The Phase 1 filter bar on a list backend as it is today. Each token maps to
+ * one backend filter, so each field has at most one token, and only dates
+ * have more than one operator. There is no "is not" or "is empty" yet.
+ */
+
+type BarKind = 'many' | 'one' | 'lookup' | 'date' | 'text';
+type BarOp = 'in' | 'between' | 'onOrAfter' | 'onOrBefore' | 'contains';
+
+type BarRecord = { name: string; description: string };
 
 type BarField = {
-  kind: BarFieldKind;
+  kind: BarKind;
   /** Operators. The first is the default. */
-  ops: string[];
-  /** Values of a `many` or `one` field. */
+  ops: BarOp[];
+  /** Values of a `many` or `one` field, in order. */
   options?: string[];
+  /** Values that stand for a set, listed above the single values. */
+  groups?: { value: string; label: string }[];
+  /** Records of a `lookup` field. Too many to list until the person types. */
+  records?: BarRecord[];
+  /** A `lookup` field that takes several records and typed text. */
+  multiple?: boolean;
+  /** Hint in an empty `lookup` menu. */
+  prompt?: string;
 };
+
+const BAR_CUSTOMERS: BarRecord[] = [
+  { name: 'Acme Corp', description: 'Austin, TX' },
+  { name: 'Apex Machining', description: 'Dallas, TX' },
+  { name: 'Bluebird Labs', description: 'Denver, CO' },
+  { name: 'Cobalt Motors', description: 'Detroit, MI' },
+  { name: 'Delta Fabrication', description: 'Tulsa, OK' },
+  { name: 'Evergreen Plastics', description: 'Portland, OR' },
+  { name: 'Granite Controls', description: 'Austin, TX' },
+  { name: 'Harbor Instruments', description: 'Seattle, WA' },
+  { name: 'Ironwood Tooling', description: 'Akron, OH' },
+  { name: 'Juniper Medical', description: 'Boise, ID' },
+];
+
+const BAR_PARTS: BarRecord[] = [
+  { name: 'HNG-1001', description: 'Hinge, 110°, full overlay' },
+  { name: 'HNG-1002', description: 'Hinge, 110°, half overlay' },
+  { name: 'HNG-1010', description: 'Hinge, soft close, clip-on' },
+  { name: 'PLT-2001', description: 'Mounting plate, steel' },
+  { name: 'SLD-3018', description: 'Drawer slide, full extension, 18 in' },
+  { name: 'SLD-3021', description: 'Drawer slide, full extension, 21 in' },
+  { name: 'LEV-4001', description: 'Cabinet leveler, adjustable' },
+  { name: 'SCR-5005', description: 'Screw, euro, 5 x 13 mm' },
+  { name: 'KIT-6001', description: 'Install kit, base cabinet' },
+  { name: 'KIT-6002', description: 'Install kit, water damage repair' },
+];
 
 const BAR_FIELDS: Record<string, BarField> = {
+  Resolution: {
+    kind: 'one',
+    ops: ['in'],
+    groups: [
+      { value: '@open', label: 'All open' },
+      { value: '@closed', label: 'All closed' },
+    ],
+    options: ['Fixed', 'Duplicate', 'Will not fix'],
+  },
   Stage: {
     kind: 'many',
-    ops: ['is any of', 'is none of'],
+    ops: ['in'],
     options: ['Open', 'In progress', 'Waiting on customer', 'Closed'],
   },
-  Priority: {
-    kind: 'one',
-    ops: ['is', 'is not'],
-    options: ['High', 'Medium', 'Low'],
+  Priority: { kind: 'one', ops: ['in'], options: ['High', 'Medium', 'Low'] },
+  Customer: {
+    kind: 'lookup',
+    ops: ['in'],
+    records: BAR_CUSTOMERS,
+    prompt: 'Type a customer name',
   },
-  Customer: { kind: 'lookup', ops: ['is', 'is not'] },
-  'Entered On': { kind: 'date', ops: ['is on or after', 'is before'] },
-  'All text': { kind: 'text', ops: ['contains'] },
+  Part: {
+    kind: 'lookup',
+    ops: ['in'],
+    records: BAR_PARTS,
+    multiple: true,
+    prompt: 'Type a part number or text',
+  },
+  Intercompany: { kind: 'one', ops: ['in'], options: ['Yes', 'No'] },
+  'Entered On': { kind: 'date', ops: ['between', 'onOrAfter', 'onOrBefore'] },
+  'Cust PO': { kind: 'text', ops: ['contains'] },
+  Search: { kind: 'text', ops: ['contains'] },
 };
 
-/** Fields a person can pick. "All text" comes from the search row only. */
-const BAR_PICKABLE = ['Stage', 'Priority', 'Customer', 'Entered On'];
+/** Fields a person can pick. "Search" comes from typed text only. */
+const BAR_PICKABLE = Object.keys(BAR_FIELDS).filter((f) => f !== 'Search');
 
-const KIND_DETAIL: Record<BarFieldKind, string> = {
+const KIND_DETAIL: Record<BarKind, string> = {
   many: 'pick many',
   one: 'pick one',
   lookup: 'search',
@@ -687,62 +749,193 @@ const KIND_DETAIL: Record<BarFieldKind, string> = {
   text: 'text',
 };
 
-const EXCLUDE_OPS = new Set(['is none of', 'is not']);
+const OP_TEXT: Record<Exclude<BarOp, 'in'>, string> = {
+  between: 'is between',
+  onOrAfter: 'is on or after',
+  onOrBefore: 'is on or before',
+  contains: 'contains',
+};
 
-const CUSTOMERS = [
-  { name: 'Acme Corp', city: 'Austin, TX' },
-  { name: 'Apex Machining', city: 'Dallas, TX' },
-  { name: 'Bluebird Labs', city: 'Denver, CO' },
-  { name: 'Cobalt Motors', city: 'Detroit, MI' },
-  { name: 'Delta Fabrication', city: 'Tulsa, OK' },
-  { name: 'Evergreen Plastics', city: 'Portland, OR' },
-  { name: 'Granite Controls', city: 'Austin, TX' },
-];
+/** Matches a lookup menu lists before "keep typing". */
+const LOOKUP_LIMIT = 8;
+
+/** "Today" for the demo, so the presets and the snapshots never change. */
+const TODAY = '2026-10-20';
+const THIS_YEAR = Number(TODAY.slice(0, 4));
 
 const DATE_PRESETS = [
-  { label: 'Start of this month', value: 'Oct 1, 2026' },
-  { label: 'Start of last month', value: 'Sep 1, 2026' },
-  { label: 'Start of the year', value: 'Jan 1, 2026' },
+  { label: 'Start of this month', value: '2026-10-01' },
+  { label: 'Start of last month', value: '2026-09-01' },
+  { label: 'Start of the year', value: '2026-01-01' },
 ];
 
-type BarFilter = { id: string; field: string; op: string; values: string[] };
-
-const BAR_APPLIED: BarFilter[] = [
-  {
-    id: 'stage',
-    field: 'Stage',
-    op: 'is any of',
-    values: ['Open', 'In progress'],
-  },
-  { id: 'priority', field: 'Priority', op: 'is', values: ['High'] },
-  {
-    id: 'entered',
-    field: 'Entered On',
-    op: 'is on or after',
-    values: ['Sep 1, 2026'],
-  },
-  { id: 'customer', field: 'Customer', op: 'is not', values: ['Acme Corp'] },
+const RANGE_PRESETS: { label: string; values: [string, string] }[] = [
+  { label: 'Last 7 days', values: ['2026-10-14', TODAY] },
+  { label: 'Last 30 days', values: ['2026-09-21', TODAY] },
+  { label: 'This month', values: ['2026-10-01', TODAY] },
+  { label: 'Last month', values: ['2026-09-01', '2026-09-30'] },
+  { label: 'Last quarter', values: ['2026-07-01', '2026-09-30'] },
 ];
+
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+const isoParts = (iso: string) => iso.split('-').map(Number) as number[];
+
+const formatDate = (iso: string) => {
+  const [y, m, d] = isoParts(iso);
+  return `${MONTHS[(m ?? 1) - 1]} ${d}, ${y}`;
+};
+
+/** "Sep 1 – 30, 2026", "Sep 14 – Oct 13, 2026", or full dates across years. */
+const formatRange = (from: string, to: string) => {
+  const [fy, fm, fd] = isoParts(from);
+  const [ty, tm, td] = isoParts(to);
+  if (fy !== ty) return `${formatDate(from)} – ${formatDate(to)}`;
+  if (fm === tm) return `${MONTHS[(fm ?? 1) - 1]} ${fd} – ${td}, ${ty}`;
+  return `${MONTHS[(fm ?? 1) - 1]} ${fd} – ${MONTHS[(tm ?? 1) - 1]} ${td}, ${ty}`;
+};
+
+const toIso = (y: number, m: number, d: number) =>
+  m < 1 || m > 12 || d < 1 || d > 31
+    ? null
+    : `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+/**
+ * Reads "2026-10-15", "10/15", "10/15/2026" or "Oct 15". A date with no year
+ * is in this year.
+ */
+const parseDate = (text: string) => {
+  const t = text.trim().toLowerCase();
+  let m = t.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (m) return toIso(Number(m[1]), Number(m[2]), Number(m[3]));
+  m = t.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?$/);
+  if (m) {
+    return toIso(m[3] ? Number(m[3]) : THIS_YEAR, Number(m[1]), Number(m[2]));
+  }
+  m = t.match(/^([a-z]{3})[a-z]*\.? (\d{1,2})(?:,? (\d{4}))?$/);
+  if (m) {
+    const month = MONTHS.findIndex((x) => x.toLowerCase() === m?.[1]);
+    if (month >= 0) {
+      return toIso(m[3] ? Number(m[3]) : THIS_YEAR, month + 1, Number(m[2]));
+    }
+  }
+  return null;
+};
+
+/** Reads "10/1 - 10/15" or "Oct 1 to Oct 15" as a range, earliest first. */
+const parseDateRange = (text: string): [string, string] | null => {
+  const parts = text.trim().split(/\s+(?:-|to)\s+|\s*–\s*/i);
+  if (parts.length !== 2) return null;
+  const a = parseDate(parts[0] ?? '');
+  const b = parseDate(parts[1] ?? '');
+  if (!a || !b) return null;
+  return a <= b ? [a, b] : [b, a];
+};
+
+type BarFilter = { id: string; field: string; op: BarOp; values: string[] };
+
+/** A Part entry that matches typed text instead of one part number. */
+const TEXT_PREFIX = '*';
+const isTextEntry = (v: string) => v.startsWith(TEXT_PREFIX);
+const quoted = (v: string) =>
+  `“${isTextEntry(v) ? v.slice(TEXT_PREFIX.length) : v}”`;
+
+const groupLabel = (field: string, v: string) =>
+  BAR_FIELDS[field]?.groups?.find((g) => g.value === v)?.label ?? v;
+
+/** Values an operator needs before the filter can apply. */
+const valuesNeeded = (op: BarOp) => (op === 'between' ? 2 : 1);
+
+const isComplete = (f: BarFilter) => f.values.length >= valuesNeeded(f.op);
+
+type TokenWords = {
+  operator: string;
+  value: string | string[];
+  joined?: { operator: string; value: string };
+};
+
+/**
+ * The operator and value a token shows. A list reads "is" for one value and
+ * "is any of" for more. Typed Part text joins as "or contains".
+ */
+const tokenWords = (f: BarFilter): TokenWords => {
+  const def = BAR_FIELDS[f.field];
+  if (f.op === 'between') {
+    const [from, to] = f.values;
+    return {
+      operator: OP_TEXT.between,
+      value:
+        from && to
+          ? formatRange(from, to)
+          : from
+            ? `${formatDate(from)} –`
+            : '',
+    };
+  }
+  if (f.op !== 'in') {
+    const v = f.values[0];
+    return {
+      operator: OP_TEXT[f.op],
+      value: !v ? '' : def?.kind === 'date' ? formatDate(v) : quoted(v),
+    };
+  }
+  const exact = f.values.filter((v) => !isTextEntry(v));
+  const texts = f.values.filter(isTextEntry).map(quoted).join(' or ');
+  const listOp = exact.length > 1 ? 'is any of' : 'is';
+  const labels = exact.map((v) => groupLabel(f.field, v));
+  const value =
+    def?.kind === 'many' || def?.multiple ? labels : (labels[0] ?? '');
+  if (!texts) return { operator: listOp, value };
+  if (exact.length === 0) return { operator: 'contains', value: texts };
+  return {
+    operator: listOp,
+    value,
+    joined: { operator: 'or contains', value: texts },
+  };
+};
+
+const describeFilter = (f: BarFilter) => {
+  const w = tokenWords(f);
+  const value = Array.isArray(w.value) ? w.value.join(', ') : w.value;
+  const joined = w.joined ? ` ${w.joined.operator} ${w.joined.value}` : '';
+  return `${f.field} ${w.operator} ${value}${joined}`;
+};
 
 const sameFilter = (a: BarFilter, b: BarFilter) =>
   a.field === b.field &&
   a.op === b.op &&
   a.values.join('\n') === b.values.join('\n');
 
-const describeFilter = (f: BarFilter) =>
-  `${f.field} ${f.op} ${f.values.join(', ')}`;
+/** Pending changes: added or changed filters in the draft. */
+const countPending = (draft: BarFilter[], applied: BarFilter[]) =>
+  draft.filter((f) => {
+    const before = applied.find((a) => a.id === f.id);
+    return !before || !sameFilter(before, f);
+  }).length;
 
-// A typed date needs a digit, so "Sep" alone is not read as a date.
-const parseDate = (text: string) => {
-  if (!/\d/.test(text)) return null;
-  const date = new Date(text);
-  if (Number.isNaN(date.getTime())) return null;
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-};
+const BAR_APPLIED: BarFilter[] = [
+  { id: 'resolution', field: 'Resolution', op: 'in', values: ['@open'] },
+  { id: 'stage', field: 'Stage', op: 'in', values: ['Open', 'In progress'] },
+  {
+    id: 'entered',
+    field: 'Entered On',
+    op: 'between',
+    values: ['2026-09-01', '2026-09-30'],
+  },
+];
 
 type BarMode =
   | { type: 'closed' }
@@ -771,11 +964,27 @@ const StagedFilterBarDemo = () => {
   const [text, setText] = useState('');
   const [input, setInput] = useState<HTMLInputElement | null>(null);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  // The results load for a moment after Apply.
+  const [loading, setLoading] = useState(false);
+  // The last discarded draft, which Undo brings back for a few seconds.
+  const [discarded, setDiscarded] = useState<BarFilter[] | null>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(0);
   // The input moves back out of a token when an edit ends, and gets focus
   // again. That focus must not open the menu.
   const quietFocus = useRef(false);
+
+  useEffect(() => {
+    if (!loading) return;
+    const timer = window.setTimeout(() => setLoading(false), 800);
+    return () => window.clearTimeout(timer);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!discarded) return;
+    const timer = window.setTimeout(() => setDiscarded(null), 6000);
+    return () => window.clearTimeout(timer);
+  }, [discarded]);
 
   /* What the field shows */
 
@@ -783,7 +992,7 @@ const StagedFilterBarDemo = () => {
     const before = applied.find((a) => a.id === f.id);
     return !before || !sameFilter(before, f);
   };
-  const pending = draft.filter(isPending).length;
+  const pending = countPending(draft, applied);
 
   const shown: BarToken[] = [
     ...draft.map(
@@ -814,11 +1023,12 @@ const StagedFilterBarDemo = () => {
     menu.setActiveKey(null);
   };
 
-  // Keeps the edit in the draft. A filter left with no value is dropped.
+  // Keeps the edit in the draft. A filter without the values it needs is
+  // dropped.
   const commit = (next: BarFilter | null = edit) => {
     if (next) {
       setDraft((current) => {
-        if (next.values.length === 0) {
+        if (!isComplete(next)) {
           return current.filter((f) => f.id !== next.id);
         }
         return current.some((f) => f.id === next.id)
@@ -842,7 +1052,14 @@ const StagedFilterBarDemo = () => {
     menu.setActiveKey(null);
   };
 
+  // A field maps to one backend filter, so picking a field that has a token
+  // opens that token instead of adding a second one.
   const startField = (field: string) => {
+    const existing = draft.find((f) => f.field === field);
+    if (existing) {
+      open(existing, 'values', null);
+      return;
+    }
     const f: BarFilter = {
       id: `new-${nextId.current++}`,
       field,
@@ -855,30 +1072,24 @@ const StagedFilterBarDemo = () => {
     menu.setActiveKey(null);
   };
 
-  // A value picked from the root menu. A field that has a filter with the
-  // default operator gets the value, so two Stage tokens never show.
-  const addValue = (field: string, value: string) => {
-    const def = BAR_FIELDS[field]!;
+  // Typed text becomes a search. A second search replaces the first.
+  const search = (query: string) => {
     setDraft((current) => {
-      const same = current.find(
-        (f) => f.field === field && f.op === def.ops[0],
-      );
-      if (!same) {
-        return [
-          ...current,
-          {
-            id: `new-${nextId.current++}`,
-            field,
-            op: def.ops[0]!,
-            values: [value],
-          },
-        ];
+      const same = current.find((f) => f.field === 'Search');
+      if (same) {
+        return current.map((f) =>
+          f.id === same.id ? { ...f, values: [query] } : f,
+        );
       }
-      const values =
-        def.kind === 'many'
-          ? [...same.values.filter((v) => v !== value), value]
-          : [value];
-      return current.map((f) => (f.id === same.id ? { ...f, values } : f));
+      return [
+        ...current,
+        {
+          id: `new-${nextId.current++}`,
+          field: 'Search',
+          op: 'contains',
+          values: [query],
+        },
+      ];
     });
     reset();
   };
@@ -888,16 +1099,25 @@ const StagedFilterBarDemo = () => {
     if (edit?.id === id) reset();
     setDraft((current) => current.filter((f) => f.id !== id));
     setApplied((current) => current.filter((f) => f.id !== id));
+    setLoading(true);
   };
 
   const apply = () => {
     setApplied(draft);
+    setDiscarded(null);
+    setLoading(true);
     reset();
   };
 
   const discard = () => {
+    setDiscarded(draft);
     setDraft(applied);
     reset();
+  };
+
+  const undoDiscard = () => {
+    if (discarded) setDraft(discarded);
+    setDiscarded(null);
   };
 
   // A click outside the field and the menu keeps the edit and closes.
@@ -931,10 +1151,18 @@ const StagedFilterBarDemo = () => {
   const query = text.trim();
   const q = query.toLowerCase();
   const editField = edit ? BAR_FIELDS[edit.field] : undefined;
+  const editingMany =
+    mode.type === 'values' &&
+    (editField?.kind === 'many' ||
+      (editField?.kind === 'lookup' && Boolean(editField.multiple)));
   let footer = 'Enter picks · Esc cancels';
 
   if (mode.type === 'root') {
-    const fields = BAR_PICKABLE.filter((f) => f.toLowerCase().includes(q));
+    // Fields already in use go last.
+    const used = new Set(draft.map((f) => f.field));
+    const fields = BAR_PICKABLE.filter((f) => f.toLowerCase().includes(q)).sort(
+      (a, b) => Number(used.has(a)) - Number(used.has(b)),
+    );
     if (fields.length > 0) rows.push({ type: 'group', label: 'Fields' });
     for (const field of fields) {
       addRow(
@@ -947,49 +1175,39 @@ const StagedFilterBarDemo = () => {
       );
     }
     if (q) {
-      const matches = BAR_PICKABLE.flatMap((field) =>
-        (BAR_FIELDS[field]!.options ?? CUSTOMERS.map((c) => c.name))
-          .filter((value) => value.toLowerCase().includes(q))
-          .map((value) => ({ field, value })),
-      ).filter(({ field }) => BAR_FIELDS[field]!.kind !== 'date');
-      if (matches.length > 0) {
-        rows.push({ type: 'group', label: `Values matching “${query}”` });
-      }
-      for (const { field, value } of matches) {
-        addRow(
-          { key: `value:${field}:${value}`, label: `${field} is ${value}` },
-          () => addValue(field, value),
-        );
-      }
       rows.push({ type: 'group', label: 'Search' });
-      addRow({ key: 'search', label: `All text contains “${query}”` }, () =>
-        addValue('All text', query),
+      addRow(
+        { key: 'search', label: `Search contains “${query}”`, detail: 'Tab' },
+        () => search(query),
       );
+      footer = 'Enter picks · Tab searches the text';
+    } else {
+      footer =
+        pending > 0
+          ? 'Type a field or text · Enter applies'
+          : 'Type a field or text · Enter picks';
     }
-    footer =
-      pending > 0 && !q
-        ? 'Type a field or a value · Enter applies'
-        : 'Type a field or a value · Enter picks';
   }
 
   if (mode.type === 'op' && edit && editField) {
     rows.push({ type: 'group', label: `${edit.field} operator` });
     for (const op of editField.ops) {
+      if (op === 'in') continue;
       addRow(
         {
           key: `op:${op}`,
-          label: op,
+          label: OP_TEXT[op],
           selected: op === edit.op,
-          detail:
-            op === edit.op
-              ? 'current'
-              : EXCLUDE_OPS.has(op)
-                ? 'excludes'
-                : undefined,
+          detail: op === edit.op ? 'current' : undefined,
         },
         () => {
-          const next = { ...edit, op };
-          if (next.values.length > 0) {
+          // Keep the dates that still fit: a range keeps two, one date keeps one.
+          const values =
+            op === 'between'
+              ? edit.values.slice(0, 2)
+              : edit.values.slice(0, 1);
+          const next = { ...edit, op, values };
+          if (isComplete(next)) {
             commit(next);
           } else {
             setEdit(next);
@@ -1002,73 +1220,203 @@ const StagedFilterBarDemo = () => {
   }
 
   if (mode.type === 'values' && edit && editField) {
-    rows.push({ type: 'group', label: `${edit.field} ${edit.op}` });
+    const words = tokenWords(edit);
+    rows.push({ type: 'group', label: `${edit.field} ${words.operator}` });
+
+    // A pick-many field toggles. A pick-one field picks and closes.
+    const toggle = (value: string) => {
+      setEdit({
+        ...edit,
+        values: edit.values.includes(value)
+          ? edit.values.filter((v) => v !== value)
+          : [...edit.values, value],
+      });
+      setText('');
+    };
+    const pickOne = (value: string) => commit({ ...edit, values: [value] });
+    const current = (value: string) =>
+      edit.values.includes(value)
+        ? { selected: true, detail: 'current' }
+        : { selected: false };
+
     if (editField.kind === 'many') {
       for (const value of editField.options ?? []) {
         if (!value.toLowerCase().includes(q)) continue;
         addRow(
           { key: value, label: value, checked: edit.values.includes(value) },
-          () => {
-            setEdit({
-              ...edit,
-              values: edit.values.includes(value)
-                ? edit.values.filter((v) => v !== value)
-                : [...edit.values, value],
-            });
-            setText('');
-          },
+          () => toggle(value),
         );
       }
       footer = 'Space toggles · Enter done · Esc cancels';
     } else if (editField.kind === 'one') {
-      for (const value of editField.options ?? []) {
-        if (!value.toLowerCase().includes(q)) continue;
-        addRow(
-          { key: value, label: value, selected: edit.values[0] === value },
-          () => commit({ ...edit, values: [value] }),
+      const groups = (editField.groups ?? []).filter((g) =>
+        g.label.toLowerCase().includes(q),
+      );
+      const options = (editField.options ?? []).filter((v) =>
+        v.toLowerCase().includes(q),
+      );
+      for (const g of groups) {
+        addRow({ key: g.value, label: g.label, ...current(g.value) }, () =>
+          pickOne(g.value),
+        );
+      }
+      if (groups.length > 0 && options.length > 0) {
+        rows.push({ type: 'group', label: `Each ${edit.field.toLowerCase()}` });
+      }
+      for (const value of options) {
+        addRow({ key: value, label: value, ...current(value) }, () =>
+          pickOne(value),
         );
       }
     } else if (editField.kind === 'lookup') {
-      // A lookup lists nothing until the person types.
-      const current = edit.values[0];
-      if (!q && current) {
-        addRow({ key: current, label: current, selected: true }, () =>
-          commit(),
+      const records = editField.records ?? [];
+      const describe = (name: string) =>
+        records.find((r) => r.name === name)?.description;
+      const pick = editField.multiple ? toggle : pickOne;
+      if (!q) {
+        // Nothing lists until the person types, except what is picked.
+        for (const value of edit.values) {
+          addRow(
+            {
+              key: `picked:${value}`,
+              label: isTextEntry(value) ? `contains ${quoted(value)}` : value,
+              description: describe(value),
+              ...(editField.multiple ? { checked: true } : current(value)),
+            },
+            () => pick(value),
+          );
+        }
+        if (edit.values.length === 0) {
+          rows.push({
+            type: 'empty',
+            label: editField.prompt ?? 'Type to find',
+          });
+        }
+      } else {
+        const matched = records.filter(
+          (r) =>
+            r.name.toLowerCase().includes(q) ||
+            r.description.toLowerCase().includes(q),
         );
+        for (const r of matched.slice(0, LOOKUP_LIMIT)) {
+          addRow(
+            {
+              key: r.name,
+              label: r.name,
+              description: r.description,
+              ...(editField.multiple
+                ? { checked: edit.values.includes(r.name) }
+                : current(r.name)),
+            },
+            () => pick(r.name),
+          );
+        }
+        if (matched.length > LOOKUP_LIMIT) {
+          rows.push({
+            type: 'empty',
+            label: `${matched.length - LOOKUP_LIMIT} more · keep typing to narrow`,
+          });
+        }
+        if (editField.multiple) {
+          // Typed text can also match: "or contains “water”".
+          const entry = `${TEXT_PREFIX}${query}`;
+          rows.push({ type: 'group', label: 'Or match the text' });
+          addRow(
+            {
+              key: `text:${query}`,
+              label: `contains “${query}”`,
+              checked: edit.values.includes(entry),
+            },
+            () => toggle(entry),
+          );
+        }
       }
-      if (!q) rows.push({ type: 'empty', label: 'Type a customer name' });
-      for (const customer of CUSTOMERS) {
-        if (!q || !customer.name.toLowerCase().includes(q)) continue;
-        addRow(
-          {
-            key: customer.name,
-            label: customer.name,
-            description: customer.city,
-            selected: current === customer.name,
-          },
-          () => commit({ ...edit, values: [customer.name] }),
-        );
-      }
-      footer = 'Type to find · Enter picks · Esc cancels';
+      footer = editField.multiple
+        ? 'Type to find · Space toggles · Enter done · Esc cancels'
+        : 'Type to find · Enter picks · Esc cancels';
     } else if (editField.kind === 'date') {
-      const typed = parseDate(query);
-      if (typed) {
-        addRow({ key: 'typed', label: typed, detail: 'typed' }, () =>
-          commit({ ...edit, values: [typed] }),
-        );
+      // "is between" takes two picks: a start date, then an end date. A
+      // range preset or a typed range fills both at once.
+      const range = edit.op === 'between';
+      // A full range being edited starts over, so its start can change too.
+      const from =
+        range && edit.values.length === 1 ? edit.values[0] : undefined;
+      const pickDate = (iso: string) => {
+        if (!range) return pickOne(iso);
+        if (!from) {
+          setEdit({ ...edit, values: [iso] });
+          setText('');
+          menu.setActiveKey(null);
+          return;
+        }
+        commit({ ...edit, values: from <= iso ? [from, iso] : [iso, from] });
+      };
+      if (range && from) {
+        rows[rows.length - 1] = {
+          type: 'group',
+          label: `${edit.field} is between ${formatDate(from)} and …`,
+        };
       }
-      for (const preset of DATE_PRESETS) {
+      const typedRange = range && !from && q ? parseDateRange(query) : null;
+      if (typedRange) {
         addRow(
           {
-            key: preset.value,
-            label: preset.label,
-            detail: preset.value,
-            selected: edit.values[0] === preset.value,
+            key: 'typed-range',
+            label: formatRange(...typedRange),
+            detail: 'typed',
           },
-          () => commit({ ...edit, values: [preset.value] }),
+          () => commit({ ...edit, values: typedRange }),
         );
       }
-      footer = 'Type a date, such as 10/15/2026 · Esc cancels';
+      const typed = q && !typedRange ? parseDate(query) : null;
+      if (typed) {
+        addRow(
+          {
+            key: 'typed',
+            label: formatDate(typed),
+            detail: range ? (from ? 'end date' : 'start date') : 'typed',
+          },
+          () => pickDate(typed),
+        );
+      }
+      if (range && !from && !q) {
+        for (const p of RANGE_PRESETS) {
+          addRow(
+            {
+              key: `range:${p.label}`,
+              label: p.label,
+              detail: formatRange(...p.values),
+            },
+            () => commit({ ...edit, values: p.values }),
+          );
+        }
+        rows.push({ type: 'group', label: 'Or pick a start date' });
+      }
+      if (!q) {
+        for (const p of DATE_PRESETS) {
+          addRow(
+            {
+              key: p.value,
+              label: p.label,
+              detail: formatDate(p.value),
+              selected: !range && edit.values[0] === p.value,
+            },
+            () => pickDate(p.value),
+          );
+        }
+      }
+      footer = range
+        ? from
+          ? 'Type or pick the end date · Esc cancels'
+          : 'Type a range, such as 10/1 - 10/15 · Esc cancels'
+        : 'Type a date, such as 10/15 · Esc cancels';
+    } else {
+      if (q) {
+        addRow({ key: 'typed', label: `“${query}”` }, () => pickOne(query));
+      } else {
+        rows.push({ type: 'empty', label: 'Type the text to match' });
+      }
+      footer = 'Enter adds the text · Esc cancels';
     }
     if (q && !rows.some((row) => row.type === 'item')) {
       rows.push({
@@ -1094,7 +1442,6 @@ const StagedFilterBarDemo = () => {
     footer = 'Pick a filter to edit it';
   }
 
-  const editingMany = mode.type === 'values' && editField?.kind === 'many';
   const menu = useFilterMenu({
     rows,
     open: mode.type !== 'closed',
@@ -1122,6 +1469,24 @@ const StagedFilterBarDemo = () => {
       commit();
       return;
     }
+    // Backspace on an empty input takes back the last value picked.
+    if (
+      event.key === 'Backspace' &&
+      text === '' &&
+      editingMany &&
+      edit &&
+      edit.values.length > 0
+    ) {
+      event.preventDefault();
+      setEdit({ ...edit, values: edit.values.slice(0, -1) });
+      return;
+    }
+    // Tab turns typed text into a search.
+    if (event.key === 'Tab' && mode.type === 'root' && !empty) {
+      event.preventDefault();
+      search(text.trim());
+      return;
+    }
     // Esc with no menu open throws away the pending changes.
     if (event.key === 'Escape' && mode.type === 'closed' && pending > 0) {
       event.preventDefault();
@@ -1138,13 +1503,14 @@ const StagedFilterBarDemo = () => {
 
   const tokens = shown.map(({ filter, state }): FilterFieldToken => {
     const field = BAR_FIELDS[filter.field]!;
+    const words = tokenWords(filter);
     return {
       key: filter.id,
       field: filter.field,
-      operator: filter.op,
-      value: field.kind === 'many' ? filter.values : (filter.values[0] ?? ''),
+      operator: words.operator,
+      value: words.value,
+      joined: words.joined,
       state,
-      tone: EXCLUDE_OPS.has(filter.op) ? 'exclude' : 'default',
       operatorLocked: field.ops.length === 1,
       onValueClick: () => open(filter, 'values', null),
       onOperatorClick: (event) => open(filter, 'op', event.currentTarget),
@@ -1154,6 +1520,7 @@ const StagedFilterBarDemo = () => {
 
   const menuAnchor =
     mode.type === 'op' || mode.type === 'more' ? anchor : input;
+  const discardedCount = discarded ? countPending(discarded, applied) : 0;
 
   return (
     <VStack alignItems="stretch" gap="12" w="full" minH="md">
@@ -1192,6 +1559,7 @@ const StagedFilterBarDemo = () => {
             onClearAll={() => {
               setDraft([]);
               setApplied([]);
+              setLoading(true);
               reset();
             }}
           />
@@ -1201,17 +1569,28 @@ const StagedFilterBarDemo = () => {
             <Button variant="ghost" onClick={discard}>
               Discard
             </Button>
-            <Button variant="primary" onClick={apply}>
+            <Button variant="primary" disabled={loading} onClick={apply}>
               {`Apply (${pending})`}
             </Button>
           </>
         )}
       </HStack>
-      <Text textStyle="body.sm" color="text.subtle">
-        {pending > 0
-          ? `These results do not include ${pending} pending ${pending === 1 ? 'change' : 'changes'}. Press Enter or Apply to update them. Press Esc or Discard to undo.`
-          : 'The results match the applied filters.'}
-      </Text>
+      <HStack gap="8">
+        <Text textStyle="body.sm" color="text.subtle">
+          {loading
+            ? 'Updating the results…'
+            : pending > 0
+              ? `These results do not include ${pending} pending ${pending === 1 ? 'change' : 'changes'}. Press Enter or Apply to update them. Press Esc or Discard to undo.`
+              : discarded && discardedCount > 0
+                ? `Discarded ${discardedCount} ${discardedCount === 1 ? 'change' : 'changes'}.`
+                : 'The results match the applied filters.'}
+        </Text>
+        {!loading && pending === 0 && discarded && discardedCount > 0 && (
+          <Button size="sm" variant="ghost" onClick={undoDiscard}>
+            Undo
+          </Button>
+        )}
+      </HStack>
       <Text textStyle="body.sm" color="text.subtlest" data-testid="applied">
         {`Applied: ${applied.map(describeFilter).join(' · ') || 'none'}`}
       </Text>
@@ -1225,7 +1604,7 @@ const StagedFilterBarDemo = () => {
               ? 'Operators'
               : mode.type === 'more'
                 ? 'More filters'
-                : 'Fields and values'
+                : 'Fields'
         }
         query={mode.type === 'op' || mode.type === 'more' ? undefined : text}
         footer={footer}
@@ -1243,18 +1622,42 @@ export const ExFilterBarWithApply: Story = {
     const body = within(canvasElement.ownerDocument.body);
     // While a combobox menu is open, Floating UI hides the rest of the page
     // from screen readers. So queries in the field allow hidden elements.
-    const token = (name: RegExp) =>
-      canvas.getByRole('group', { name, hidden: true });
-    const part = (name: RegExp, partName: string) =>
-      within(token(name)).getByRole('button', { name: partName, hidden: true });
+    // Menu groups have names too, so a token is found among the tokens only.
+    const tokens = () =>
+      Array.from(
+        canvasElement.querySelectorAll<HTMLElement>(
+          '[data-ds-component="FilterToken"]',
+        ),
+      );
+    const token = (name: RegExp) => {
+      const found = tokens().find((node) =>
+        name.test(node.getAttribute('aria-label') ?? ''),
+      );
+      if (!found) throw new Error(`No filter token named ${name}`);
+      return found;
+    };
+    // While a menu is open, the token parts are hidden from screen readers
+    // and have no accessible name, so a part is found by its text.
+    const part = (name: RegExp, text: string) => {
+      const found = Array.from(token(name).querySelectorAll('button')).find(
+        (node) => node.textContent === text,
+      );
+      if (!found) throw new Error(`No part "${text}" in ${name}`);
+      return found;
+    };
     const applyButton = () =>
       canvas.queryByRole('button', { name: /^Apply/, hidden: true });
     // The input remounts when it moves into a token, so find it each time.
     const input = () =>
       canvas.getByRole('combobox', { name: 'Filter or search', hidden: true });
+    const applied = () => canvas.getByTestId('applied');
+    // A token behind "+N more" is inert, so role queries skip it. Its
+    // accessible name still says what the draft holds.
+    const hasToken = (sentence: string) =>
+      tokens().some((node) => node.getAttribute('aria-label') === sentence);
 
-    // A click on the value opens its menu, with the picked values checked.
-    // A new pick waits for Apply.
+    // A pick-many value menu checks the picked values. A new pick waits for
+    // Apply, and the token reads "is any of" once it has two or more.
     await userEvent.click(part(/^Stage/, 'Open, In progress'));
     await waitFor(() =>
       expect(token(/^Stage/)).toHaveAttribute('data-state', 'editing'),
@@ -1262,6 +1665,12 @@ export const ExFilterBarWithApply: Story = {
     await userEvent.click(
       await body.findByRole('option', { name: /^Waiting on customer/ }),
     );
+    // Backspace takes back the last value picked.
+    await userEvent.keyboard('{Backspace}');
+    await waitFor(() =>
+      expect(hasToken('Stage is any of Open, In progress')).toBe(true),
+    );
+    await userEvent.click(await body.findByRole('option', { name: /^Closed/ }));
     await userEvent.keyboard('{Enter}');
     await waitFor(() =>
       expect(token(/^Stage/)).toHaveAttribute('data-state', 'pending'),
@@ -1272,67 +1681,123 @@ export const ExFilterBarWithApply: Story = {
     await userEvent.click(part(/^Stage/, 'Stage'));
     await body.findByRole('option', { name: /^Open/ });
     await userEvent.keyboard(' ');
-    await waitFor(() =>
-      expect(token(/^Stage/)).toHaveAccessibleName(
-        'Stage is any of In progress, Waiting on customer',
-      ),
-    );
     await userEvent.keyboard('{Escape}');
     await waitFor(() =>
-      expect(token(/^Stage/)).toHaveAccessibleName(
-        'Stage is any of Open, In progress, Waiting on customer',
-      ),
+      expect(hasToken('Stage is any of Open, In progress, Closed')).toBe(true),
     );
 
-    // The operator menu switches to an excluding operator.
-    await userEvent.click(part(/^Priority/, 'is'));
-    await userEvent.click(await body.findByRole('option', { name: /^is not/ }));
-    await waitFor(() =>
-      expect(token(/^Priority/)).toHaveAttribute('data-tone', 'exclude'),
+    // Picking a field that has a token opens that token. It never adds a
+    // second one.
+    const openEnteredOn = async () => {
+      await userEvent.click(input());
+      await userEvent.type(input(), 'entered');
+      await userEvent.keyboard('{Enter}');
+      await waitFor(() =>
+        expect(token(/^Entered On/)).toHaveAttribute('data-state', 'editing'),
+      );
+    };
+    await openEnteredOn();
+    expect(
+      tokens().filter((node) =>
+        node.getAttribute('aria-label')?.startsWith('Entered On'),
+      ),
+    ).toHaveLength(1);
+
+    // A range switched to one date keeps its start date.
+    await userEvent.click(part(/^Entered On/, 'is between'));
+    await userEvent.click(
+      await body.findByRole('option', { name: /^is on or after/ }),
     );
-    expect(token(/^Priority/)).toHaveAttribute('data-state', 'pending');
-    expect(applyButton()).toHaveTextContent('Apply (2)');
+    await waitFor(() =>
+      expect(hasToken('Entered On is on or after Sep 1, 2026')).toBe(true),
+    );
+
+    // A typed date with no year is in this year.
+    await openEnteredOn();
+    await userEvent.keyboard('9/15');
+    await body.findByRole('option', { name: /^Sep 15, 2026/ });
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() =>
+      expect(hasToken('Entered On is on or after Sep 15, 2026')).toBe(true),
+    );
+
+    // A pick-one field reads "is", picks once and closes.
+    await userEvent.click(input());
+    await userEvent.type(input(), 'prio');
+    await userEvent.keyboard('{Enter}');
+    await body.findByRole('option', { name: /^High/ });
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(hasToken('Priority is High')).toBe(true));
+    expect(applyButton()).toHaveTextContent('Apply (3)');
 
     // Apply makes the draft the applied set.
     await userEvent.click(applyButton()!);
     await waitFor(() => expect(applyButton()).toBeNull());
-    expect(canvas.getByTestId('applied')).toHaveTextContent(
-      'Priority is not High',
-    );
+    expect(applied()).toHaveTextContent('Priority is High');
 
-    // The remove button applies at once. It does not wait for Apply.
-    await userEvent.click(
-      within(token(/^Priority/)).getByRole('button', {
-        name: /^Remove filter/,
-        hidden: true,
-      }),
-    );
-    await waitFor(() =>
-      expect(canvas.getByTestId('applied')).not.toHaveTextContent('Priority'),
-    );
-    expect(applyButton()).toBeNull();
-
-    // Backspace twice removes the last filter, also at once.
+    // Backspace twice removes the last filter. A removal applies at once
+    // and does not wait for Apply.
     await userEvent.click(input());
-    await userEvent.keyboard('{Backspace}{Backspace}');
-    await waitFor(() =>
-      expect(canvas.getByTestId('applied')).not.toHaveTextContent('Customer'),
-    );
+    await userEvent.keyboard('{Escape}{Backspace}{Backspace}');
+    await waitFor(() => expect(applied()).not.toHaveTextContent('Priority'));
     expect(applyButton()).toBeNull();
 
-    // An edit waits for Apply. Esc with no menu open throws it away.
+    // Esc with no menu open throws the pending changes away. Undo brings
+    // them back.
     await userEvent.click(part(/^Stage/, 'Stage'));
-    await userEvent.click(await body.findByRole('option', { name: /^Closed/ }));
+    await userEvent.click(
+      await body.findByRole('option', { name: /^Waiting on customer/ }),
+    );
     await userEvent.keyboard('{Enter}');
     await waitFor(() => expect(applyButton()).toHaveTextContent('Apply (1)'));
     await userEvent.keyboard('{Escape}');
     await waitFor(() => expect(applyButton()).toBeNull());
+    await userEvent.click(
+      await canvas.findByRole('button', { name: 'Undo', hidden: true }),
+    );
+    await waitFor(() => expect(applyButton()).toHaveTextContent('Apply (1)'));
 
-    // Typing finds fields, values and a text search. Leave the menu open for
-    // the visual snapshot.
-    await userEvent.type(input(), 'clo');
-    // The test library drops the space before a highlight, so the name is
-    // matched on the value alone.
-    await body.findByRole('option', { name: /Closed$/ });
+    // Tab turns typed text into a search.
+    await userEvent.click(input());
+    await userEvent.type(input(), 'hinge');
+    await userEvent.keyboard('{Tab}');
+    await waitFor(() => expect(hasToken('Search contains “hinge”')).toBe(true));
+
+    // A lookup lists nothing until the person types. Picked parts and typed
+    // text mix in one token: "Part is KIT-6001 or contains “water damage”".
+    await userEvent.click(input());
+    await userEvent.type(input(), 'part');
+    await userEvent.keyboard('{Enter}');
+    await body.findByText('Type a part number or text');
+    await userEvent.keyboard('kit-6001');
+    await userEvent.click(
+      await body.findByRole('option', { name: /^KIT-6001/ }),
+    );
+    await userEvent.keyboard('water damage');
+    await userEvent.click(
+      await body.findByRole('option', { name: /^contains “water damage”/ }),
+    );
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() =>
+      expect(applied()).toHaveTextContent(
+        'Part is KIT-6001 or contains “water damage”',
+      ),
+    );
+
+    // The results finish loading before the snapshot, so it never catches
+    // "Updating the results…".
+    await canvas.findByText(
+      'The results match the applied filters.',
+      {},
+      { timeout: 3000 },
+    );
+
+    // Leave a lookup menu open for the visual snapshot.
+    await userEvent.click(input());
+    await userEvent.type(input(), 'part');
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard('hng');
+    await body.findByRole('option', { name: /HNG-1001/ });
   },
 };

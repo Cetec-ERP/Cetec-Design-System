@@ -113,6 +113,7 @@ export {
 } from './components/FilterMenu';
 export {
   FilterToken,
+  type FilterTokenJoined,
   type FilterTokenProps,
   type FilterTokenState,
   type FilterTokenTone,

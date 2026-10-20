@@ -149,6 +149,31 @@ export const LockedOperator: Story = {
   },
 };
 
+export const Joined: Story = {
+  args: {
+    field: 'Part',
+    operator: 'is any of',
+    value: ['KIT-6001', 'KIT-6002'],
+    joined: { operator: 'or contains', value: '“water damage”' },
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // The sentence reads both operators and both values.
+    expect(canvas.getByRole('group')).toHaveAccessibleName(
+      'Part is any of KIT-6001, KIT-6002 or contains “water damage”',
+    );
+
+    // The joined parts open the same menus as the first ones.
+    await userEvent.click(canvas.getByRole('button', { name: 'or contains' }));
+    expect(args.onOperatorClick).toHaveBeenCalledTimes(1);
+    await userEvent.click(
+      canvas.getByRole('button', { name: '“water damage”' }),
+    );
+    expect(args.onValueClick).toHaveBeenCalledTimes(1);
+  },
+};
+
 export const ValueStates: Story = {
   render: (args) => (
     <VStack alignItems="start" gap="12">

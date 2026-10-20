@@ -38,6 +38,17 @@ export type FilterTokenTone = 'default' | 'exclude';
 /** Number of list values shown before the rest collapse into `+N`. */
 const MAX_VISIBLE_VALUES = 2;
 
+/**
+ * A second operator and value joined to the first, for a filter that mixes
+ * exact picks with typed text: "Part is any of A, B or contains “water”".
+ */
+export type FilterTokenJoined = {
+  /** Operator text, including the joining word, such as "or contains". */
+  operator: string;
+  /** Value text, such as "“water”". */
+  value: string;
+};
+
 type FilterTokenOwnProps = {
   /** Name of the filtered field, such as "Stage". */
   field: string;
@@ -52,6 +63,12 @@ type FilterTokenOwnProps = {
    * an operator that takes no value, such as "is empty".
    */
   value?: string | string[];
+  /**
+   * A second operator and value after the first. The operator part opens the
+   * operator menu (`onOperatorClick`), and the value part opens the value
+   * menu (`onValueClick`), as the first ones do.
+   */
+  joined?: FilterTokenJoined;
   /** @default "applied" */
   state?: FilterTokenState;
   /** @default "default" */
@@ -63,7 +80,8 @@ type FilterTokenOwnProps = {
   operatorLocked?: boolean;
   /**
    * Content that replaces the value button while the token is edited in
-   * place, usually a text input. The value text stays before it.
+   * place, usually a text input. Every value stays before it, with no `+N`
+   * count, so the person sees the whole list they are editing.
    */
   editor?: ReactNode;
   /** Disables every part of the token, the `editor` included. */
@@ -128,6 +146,7 @@ export const FilterToken = (props: FilterTokenProps) => {
     field,
     operator,
     value,
+    joined,
     state = 'applied',
     tone = 'default',
     operatorLocked,
@@ -147,11 +166,13 @@ export const FilterToken = (props: FilterTokenProps) => {
 
   const values = Array.isArray(value) ? value : undefined;
   const fullValue = Array.isArray(value) ? value.join(', ') : value;
-  const hidden = values ? Math.max(0, values.length - MAX_VISIBLE_VALUES) : 0;
-  const shownValue = values
-    ? values.slice(0, MAX_VISIBLE_VALUES).join(', ')
-    : value;
-  const sentence = [field, operator, fullValue].filter(Boolean).join(' ');
+  // While edited in place, every value shows, so nothing hides behind +N.
+  const maxVisible = editor !== undefined ? Infinity : MAX_VISIBLE_VALUES;
+  const hidden = values ? Math.max(0, values.length - maxVisible) : 0;
+  const shownValue = values ? values.slice(0, maxVisible).join(', ') : value;
+  const sentence = [field, operator, fullValue, joined?.operator, joined?.value]
+    .filter(Boolean)
+    .join(' ');
   const keepFocus = retainFocus
     ? (e: MouseEvent) => e.preventDefault()
     : undefined;
@@ -221,6 +242,15 @@ export const FilterToken = (props: FilterTokenProps) => {
     </>
   );
 
+  const joinedOperator =
+    joined &&
+    part(
+      classes.operator,
+      joined.operator,
+      operatorLocked ? undefined : onOperatorClick,
+      operatorLocked ? { 'data-locked': true } : undefined,
+    );
+
   return (
     <Box
       {...dsComponent('FilterToken')}
@@ -252,13 +282,29 @@ export const FilterToken = (props: FilterTokenProps) => {
               {valueContent}
             </Box>
           )}
+          {joined && (
+            <>
+              {joinedOperator}
+              <Box as="span" className={classes.value}>
+                {joined.value}
+              </Box>
+            </>
+          )}
           {editor}
         </Box>
       ) : (
         value !== undefined && (
-          <Tooltip text={fullValue ?? ''} disabled={hidden === 0 && !clipped}>
-            {part(classes.value, valueContent, onValueClick)}
-          </Tooltip>
+          <>
+            <Tooltip text={fullValue ?? ''} disabled={hidden === 0 && !clipped}>
+              {part(classes.value, valueContent, onValueClick)}
+            </Tooltip>
+            {joined && (
+              <>
+                {joinedOperator}
+                {part(classes.value, joined.value, onValueClick)}
+              </>
+            )}
+          </>
         )
       )}
       {onRemove && state !== 'removing' && (
