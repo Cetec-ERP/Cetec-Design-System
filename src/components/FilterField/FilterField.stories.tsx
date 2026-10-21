@@ -1,8 +1,8 @@
-import { useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
-import { VStack } from '@styled-system/jsx';
+import { HStack, VStack } from '@styled-system/jsx';
 
 import { LocaleProvider } from '~/system/context';
 
@@ -12,7 +12,11 @@ import { FilterMenu, type FilterMenuRow } from '../FilterMenu';
 import { useFilterMenu } from '../FilterMenu/useFilterMenu';
 import { Text } from '../Text';
 
-import { FilterField, type FilterFieldProps } from './FilterField';
+import {
+  FilterField,
+  type FilterFieldProps,
+  type FilterFieldToken,
+} from './FilterField';
 
 import type { FilterTokenState } from '../FilterToken';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -641,5 +645,694 @@ export const ExAddAFilter: Story = {
     // Leave the menu open for the visual snapshot.
     await userEvent.type(input(), 'p');
     await body.findByRole('option', { name: /^Priority/ });
+  },
+};
+
+/* ---------- Ex: Filter bar with Apply ---------- */
+
+type BarFieldKind = 'many' | 'one' | 'lookup' | 'date' | 'text';
+
+type BarField = {
+  kind: BarFieldKind;
+  /** Operators. The first is the default. */
+  ops: string[];
+  /** Values of a `many` or `one` field. */
+  options?: string[];
+};
+
+const BAR_FIELDS: Record<string, BarField> = {
+  Stage: {
+    kind: 'many',
+    ops: ['is any of', 'is none of'],
+    options: ['Open', 'In progress', 'Waiting on customer', 'Closed'],
+  },
+  Priority: {
+    kind: 'one',
+    ops: ['is', 'is not'],
+    options: ['High', 'Medium', 'Low'],
+  },
+  Customer: { kind: 'lookup', ops: ['is', 'is not'] },
+  'Entered On': { kind: 'date', ops: ['is on or after', 'is before'] },
+  'All text': { kind: 'text', ops: ['contains'] },
+};
+
+/** Fields a person can pick. "All text" comes from the search row only. */
+const BAR_PICKABLE = ['Stage', 'Priority', 'Customer', 'Entered On'];
+
+const KIND_DETAIL: Record<BarFieldKind, string> = {
+  many: 'pick many',
+  one: 'pick one',
+  lookup: 'search',
+  date: 'date',
+  text: 'text',
+};
+
+const EXCLUDE_OPS = new Set(['is none of', 'is not']);
+
+const CUSTOMERS = [
+  { name: 'Acme Corp', city: 'Austin, TX' },
+  { name: 'Apex Machining', city: 'Dallas, TX' },
+  { name: 'Bluebird Labs', city: 'Denver, CO' },
+  { name: 'Cobalt Motors', city: 'Detroit, MI' },
+  { name: 'Delta Fabrication', city: 'Tulsa, OK' },
+  { name: 'Evergreen Plastics', city: 'Portland, OR' },
+  { name: 'Granite Controls', city: 'Austin, TX' },
+];
+
+const DATE_PRESETS = [
+  { label: 'Start of this month', value: 'Oct 1, 2026' },
+  { label: 'Start of last month', value: 'Sep 1, 2026' },
+  { label: 'Start of the year', value: 'Jan 1, 2026' },
+];
+
+type BarFilter = { id: string; field: string; op: string; values: string[] };
+
+const BAR_APPLIED: BarFilter[] = [
+  {
+    id: 'stage',
+    field: 'Stage',
+    op: 'is any of',
+    values: ['Open', 'In progress'],
+  },
+  { id: 'priority', field: 'Priority', op: 'is', values: ['High'] },
+  {
+    id: 'entered',
+    field: 'Entered On',
+    op: 'is on or after',
+    values: ['Sep 1, 2026'],
+  },
+  { id: 'customer', field: 'Customer', op: 'is not', values: ['Acme Corp'] },
+];
+
+const sameFilter = (a: BarFilter, b: BarFilter) =>
+  a.field === b.field &&
+  a.op === b.op &&
+  a.values.join('\n') === b.values.join('\n');
+
+const describeFilter = (f: BarFilter) =>
+  `${f.field} ${f.op} ${f.values.join(', ')}`;
+
+// A typed date needs a digit, so "Sep" alone is not read as a date.
+const parseDate = (text: string) => {
+  if (!/\d/.test(text)) return null;
+  const date = new Date(text);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+type BarMode =
+  | { type: 'closed' }
+  | { type: 'root' }
+  | { type: 'values'; id: string }
+  | { type: 'op'; id: string }
+  | { type: 'more'; keys: string[] };
+
+type BarToken = {
+  filter: BarFilter;
+  state: 'applied' | 'editing' | 'pending';
+};
+
+/**
+ * A filter bar with staged changes: added and edited filters wait for Apply.
+ * A removed filter applies at once, so it never waits. The app owns the
+ * applied set, the draft, the edited token and the menu mode. The field and
+ * the menu only show them.
+ */
+const StagedFilterBarDemo = () => {
+  const [applied, setApplied] = useState(BAR_APPLIED);
+  const [draft, setDraft] = useState(BAR_APPLIED);
+  // A copy of the token being edited. Esc throws it away.
+  const [edit, setEdit] = useState<BarFilter | null>(null);
+  const [mode, setMode] = useState<BarMode>({ type: 'closed' });
+  const [text, setText] = useState('');
+  const [input, setInput] = useState<HTMLInputElement | null>(null);
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const nextId = useRef(0);
+  // The input moves back out of a token when an edit ends, and gets focus
+  // again. That focus must not open the menu.
+  const quietFocus = useRef(false);
+
+  /* What the field shows */
+
+  const isPending = (f: BarFilter) => {
+    const before = applied.find((a) => a.id === f.id);
+    return !before || !sameFilter(before, f);
+  };
+  const pending = draft.filter(isPending).length;
+
+  const shown: BarToken[] = [
+    ...draft.map(
+      (f): BarToken =>
+        edit?.id === f.id
+          ? { filter: edit, state: 'editing' }
+          : { filter: f, state: isPending(f) ? 'pending' : 'applied' },
+    ),
+    ...(edit && !draft.some((f) => f.id === edit.id)
+      ? [{ filter: edit, state: 'editing' } as BarToken]
+      : []),
+  ];
+
+  /* Open, keep, cancel */
+
+  const reset = () => {
+    if (mode.type === 'values') {
+      quietFocus.current = true;
+      requestAnimationFrame(() => {
+        quietFocus.current = false;
+      });
+    }
+    setEdit(null);
+    setMode({ type: 'closed' });
+    setText('');
+    setAnchor(null);
+    // The next menu starts on its first row, not the last row used.
+    menu.setActiveKey(null);
+  };
+
+  // Keeps the edit in the draft. A filter left with no value is dropped.
+  const commit = (next: BarFilter | null = edit) => {
+    if (next) {
+      setDraft((current) => {
+        if (next.values.length === 0) {
+          return current.filter((f) => f.id !== next.id);
+        }
+        return current.some((f) => f.id === next.id)
+          ? current.map((f) => (f.id === next.id ? next : f))
+          : [...current, next];
+      });
+    }
+    reset();
+  };
+
+  const open = (
+    f: BarFilter,
+    type: 'values' | 'op',
+    from: HTMLElement | null,
+  ) => {
+    if (edit && edit.id !== f.id) commit(edit);
+    setEdit({ ...f, values: [...f.values] });
+    setMode({ type, id: f.id });
+    setText('');
+    setAnchor(from);
+    menu.setActiveKey(null);
+  };
+
+  const startField = (field: string) => {
+    const f: BarFilter = {
+      id: `new-${nextId.current++}`,
+      field,
+      op: BAR_FIELDS[field]!.ops[0]!,
+      values: [],
+    };
+    setEdit(f);
+    setMode({ type: 'values', id: f.id });
+    setText('');
+    menu.setActiveKey(null);
+  };
+
+  // A value picked from the root menu. A field that has a filter with the
+  // default operator gets the value, so two Stage tokens never show.
+  const addValue = (field: string, value: string) => {
+    const def = BAR_FIELDS[field]!;
+    setDraft((current) => {
+      const same = current.find(
+        (f) => f.field === field && f.op === def.ops[0],
+      );
+      if (!same) {
+        return [
+          ...current,
+          {
+            id: `new-${nextId.current++}`,
+            field,
+            op: def.ops[0]!,
+            values: [value],
+          },
+        ];
+      }
+      const values =
+        def.kind === 'many'
+          ? [...same.values.filter((v) => v !== value), value]
+          : [value];
+      return current.map((f) => (f.id === same.id ? { ...f, values } : f));
+    });
+    reset();
+  };
+
+  // A removal applies at once. Other pending changes still wait.
+  const remove = (id: string) => {
+    if (edit?.id === id) reset();
+    setDraft((current) => current.filter((f) => f.id !== id));
+    setApplied((current) => current.filter((f) => f.id !== id));
+  };
+
+  const apply = () => {
+    setApplied(draft);
+    reset();
+  };
+
+  const discard = () => {
+    setDraft(applied);
+    reset();
+  };
+
+  // A click outside the field and the menu keeps the edit and closes.
+  useEffect(() => {
+    if (mode.type === 'closed') return;
+    const onMouseDown = (event: globalThis.MouseEvent) => {
+      const target = event.target as Element;
+      if (
+        fieldRef.current?.contains(target) ||
+        target.closest('[data-filter-bar-menu]')
+      ) {
+        return;
+      }
+      commit();
+    };
+    document.addEventListener('mousedown', onMouseDown);
+    return () => document.removeEventListener('mousedown', onMouseDown);
+  });
+
+  /* Menu rows */
+
+  const rows: FilterMenuRow[] = [];
+  const actions = new Map<string, () => void>();
+  const addRow = (
+    row: Omit<Extract<FilterMenuRow, { type: 'item' }>, 'type'>,
+    action: () => void,
+  ) => {
+    rows.push({ type: 'item', ...row });
+    actions.set(row.key, action);
+  };
+  const query = text.trim();
+  const q = query.toLowerCase();
+  const editField = edit ? BAR_FIELDS[edit.field] : undefined;
+  let footer = 'Enter picks · Esc cancels';
+
+  if (mode.type === 'root') {
+    const fields = BAR_PICKABLE.filter((f) => f.toLowerCase().includes(q));
+    if (fields.length > 0) rows.push({ type: 'group', label: 'Fields' });
+    for (const field of fields) {
+      addRow(
+        {
+          key: `field:${field}`,
+          label: field,
+          detail: KIND_DETAIL[BAR_FIELDS[field]!.kind],
+        },
+        () => startField(field),
+      );
+    }
+    if (q) {
+      const matches = BAR_PICKABLE.flatMap((field) =>
+        (BAR_FIELDS[field]!.options ?? CUSTOMERS.map((c) => c.name))
+          .filter((value) => value.toLowerCase().includes(q))
+          .map((value) => ({ field, value })),
+      ).filter(({ field }) => BAR_FIELDS[field]!.kind !== 'date');
+      if (matches.length > 0) {
+        rows.push({ type: 'group', label: `Values matching “${query}”` });
+      }
+      for (const { field, value } of matches) {
+        addRow(
+          { key: `value:${field}:${value}`, label: `${field} is ${value}` },
+          () => addValue(field, value),
+        );
+      }
+      rows.push({ type: 'group', label: 'Search' });
+      addRow({ key: 'search', label: `All text contains “${query}”` }, () =>
+        addValue('All text', query),
+      );
+    }
+    footer =
+      pending > 0 && !q
+        ? 'Type a field or a value · Enter applies'
+        : 'Type a field or a value · Enter picks';
+  }
+
+  if (mode.type === 'op' && edit && editField) {
+    rows.push({ type: 'group', label: `${edit.field} operator` });
+    for (const op of editField.ops) {
+      addRow(
+        {
+          key: `op:${op}`,
+          label: op,
+          selected: op === edit.op,
+          detail:
+            op === edit.op
+              ? 'current'
+              : EXCLUDE_OPS.has(op)
+                ? 'excludes'
+                : undefined,
+        },
+        () => {
+          const next = { ...edit, op };
+          if (next.values.length > 0) {
+            commit(next);
+          } else {
+            setEdit(next);
+            setMode({ type: 'values', id: next.id });
+            setAnchor(null);
+          }
+        },
+      );
+    }
+  }
+
+  if (mode.type === 'values' && edit && editField) {
+    rows.push({ type: 'group', label: `${edit.field} ${edit.op}` });
+    if (editField.kind === 'many') {
+      for (const value of editField.options ?? []) {
+        if (!value.toLowerCase().includes(q)) continue;
+        addRow(
+          { key: value, label: value, checked: edit.values.includes(value) },
+          () => {
+            setEdit({
+              ...edit,
+              values: edit.values.includes(value)
+                ? edit.values.filter((v) => v !== value)
+                : [...edit.values, value],
+            });
+            setText('');
+          },
+        );
+      }
+      footer = 'Space toggles · Enter done · Esc cancels';
+    } else if (editField.kind === 'one') {
+      for (const value of editField.options ?? []) {
+        if (!value.toLowerCase().includes(q)) continue;
+        addRow(
+          { key: value, label: value, selected: edit.values[0] === value },
+          () => commit({ ...edit, values: [value] }),
+        );
+      }
+    } else if (editField.kind === 'lookup') {
+      // A lookup lists nothing until the person types.
+      const current = edit.values[0];
+      if (!q && current) {
+        addRow({ key: current, label: current, selected: true }, () =>
+          commit(),
+        );
+      }
+      if (!q) rows.push({ type: 'empty', label: 'Type a customer name' });
+      for (const customer of CUSTOMERS) {
+        if (!q || !customer.name.toLowerCase().includes(q)) continue;
+        addRow(
+          {
+            key: customer.name,
+            label: customer.name,
+            description: customer.city,
+            selected: current === customer.name,
+          },
+          () => commit({ ...edit, values: [customer.name] }),
+        );
+      }
+      footer = 'Type to find · Enter picks · Esc cancels';
+    } else if (editField.kind === 'date') {
+      const typed = parseDate(query);
+      if (typed) {
+        addRow({ key: 'typed', label: typed, detail: 'typed' }, () =>
+          commit({ ...edit, values: [typed] }),
+        );
+      }
+      for (const preset of DATE_PRESETS) {
+        addRow(
+          {
+            key: preset.value,
+            label: preset.label,
+            detail: preset.value,
+            selected: edit.values[0] === preset.value,
+          },
+          () => commit({ ...edit, values: [preset.value] }),
+        );
+      }
+      footer = 'Type a date, such as 10/15/2026 · Esc cancels';
+    }
+    if (q && !rows.some((row) => row.type === 'item')) {
+      rows.push({
+        type: 'empty',
+        label: `No ${edit.field.toLowerCase()} matches “${query}”`,
+      });
+    }
+  }
+
+  if (mode.type === 'more') {
+    const hidden = shown.filter((t) => mode.keys.includes(t.filter.id));
+    rows.push({ type: 'group', label: `${hidden.length} more filters` });
+    for (const { filter, state } of hidden) {
+      addRow(
+        {
+          key: filter.id,
+          label: describeFilter(filter),
+          detail: state === 'pending' ? state : undefined,
+        },
+        () => open(filter, 'values', null),
+      );
+    }
+    footer = 'Pick a filter to edit it';
+  }
+
+  const editingMany = mode.type === 'values' && editField?.kind === 'many';
+  const menu = useFilterMenu({
+    rows,
+    open: mode.type !== 'closed',
+    onSelect: (key) => actions.get(key)?.(),
+    onClose: reset,
+    spaceSelects: editingMany && text === '',
+  });
+
+  const openRoot = () => {
+    if (mode.type === 'closed') setMode({ type: 'root' });
+  };
+
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    const empty = text.trim() === '';
+    const atRoot = mode.type === 'closed' || mode.type === 'root';
+    // Enter on an empty input applies the pending changes.
+    if (event.key === 'Enter' && empty && atRoot && pending > 0) {
+      event.preventDefault();
+      apply();
+      return;
+    }
+    // Enter on an empty input ends a pick-many edit.
+    if (event.key === 'Enter' && empty && editingMany) {
+      event.preventDefault();
+      commit();
+      return;
+    }
+    // Esc with no menu open throws away the pending changes.
+    if (event.key === 'Escape' && mode.type === 'closed' && pending > 0) {
+      event.preventDefault();
+      discard();
+      return;
+    }
+    if (event.key === 'ArrowDown' && mode.type === 'closed') {
+      event.preventDefault();
+      openRoot();
+      return;
+    }
+    menu.inputProps.onKeyDown(event);
+  };
+
+  const tokens = shown.map(({ filter, state }): FilterFieldToken => {
+    const field = BAR_FIELDS[filter.field]!;
+    return {
+      key: filter.id,
+      field: filter.field,
+      operator: filter.op,
+      value: field.kind === 'many' ? filter.values : (filter.values[0] ?? ''),
+      state,
+      tone: EXCLUDE_OPS.has(filter.op) ? 'exclude' : 'default',
+      operatorLocked: field.ops.length === 1,
+      onValueClick: () => open(filter, 'values', null),
+      onOperatorClick: (event) => open(filter, 'op', event.currentTarget),
+      onRemove: () => remove(filter.id),
+    };
+  });
+
+  const menuAnchor =
+    mode.type === 'op' || mode.type === 'more' ? anchor : input;
+
+  return (
+    <VStack alignItems="stretch" gap="12" w="full" minH="md">
+      <HStack gap="8" alignItems="start">
+        <Box ref={fieldRef} flex="1" minW="0">
+          <FilterField
+            w="full"
+            tokens={tokens}
+            inputValue={text}
+            onInputChange={(value) => {
+              setText(value);
+              menu.setActiveKey(null);
+              if (mode.type === 'closed' || mode.type === 'more') {
+                setMode({ type: 'root' });
+              }
+            }}
+            inputRef={setInput}
+            inputProps={{
+              ...menu.inputProps,
+              onFocus: () => {
+                if (!quietFocus.current) openRoot();
+              },
+              onMouseDown: openRoot,
+              onKeyDown,
+            }}
+            placeholder="Filter or search…"
+            editingKey={mode.type === 'values' ? (edit?.id ?? null) : null}
+            onMoreClick={(keys, from) => {
+              if (mode.type === 'more') return reset();
+              commit();
+              setMode({ type: 'more', keys });
+              setAnchor(from);
+            }}
+            moreOpen={mode.type === 'more'}
+            shortcut="/"
+            onClearAll={() => {
+              setDraft([]);
+              setApplied([]);
+              reset();
+            }}
+          />
+        </Box>
+        {pending > 0 && (
+          <>
+            <Button variant="ghost" onClick={discard}>
+              Discard
+            </Button>
+            <Button variant="primary" onClick={apply}>
+              {`Apply (${pending})`}
+            </Button>
+          </>
+        )}
+      </HStack>
+      <Text textStyle="body.sm" color="text.subtle">
+        {pending > 0
+          ? `These results do not include ${pending} pending ${pending === 1 ? 'change' : 'changes'}. Press Enter or Apply to update them. Press Esc or Discard to undo.`
+          : 'The results match the applied filters.'}
+      </Text>
+      <Text textStyle="body.sm" color="text.subtlest" data-testid="applied">
+        {`Applied: ${applied.map(describeFilter).join(' · ') || 'none'}`}
+      </Text>
+      <FilterMenu
+        {...menu.menuProps}
+        anchor={menuAnchor}
+        aria-label={
+          mode.type === 'values'
+            ? `${edit?.field ?? ''} values`
+            : mode.type === 'op'
+              ? 'Operators'
+              : mode.type === 'more'
+                ? 'More filters'
+                : 'Fields and values'
+        }
+        query={mode.type === 'op' || mode.type === 'more' ? undefined : text}
+        footer={footer}
+        data-filter-bar-menu
+      />
+    </VStack>
+  );
+};
+
+export const ExFilterBarWithApply: Story = {
+  name: 'Ex: Filter bar with Apply',
+  render: () => <StagedFilterBarDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    // While a combobox menu is open, Floating UI hides the rest of the page
+    // from screen readers. So queries in the field allow hidden elements.
+    const token = (name: RegExp) =>
+      canvas.getByRole('group', { name, hidden: true });
+    const part = (name: RegExp, partName: string) =>
+      within(token(name)).getByRole('button', { name: partName, hidden: true });
+    const applyButton = () =>
+      canvas.queryByRole('button', { name: /^Apply/, hidden: true });
+    // The input remounts when it moves into a token, so find it each time.
+    const input = () =>
+      canvas.getByRole('combobox', { name: 'Filter or search', hidden: true });
+
+    // A click on the value opens its menu, with the picked values checked.
+    // A new pick waits for Apply.
+    await userEvent.click(part(/^Stage/, 'Open, In progress'));
+    await waitFor(() =>
+      expect(token(/^Stage/)).toHaveAttribute('data-state', 'editing'),
+    );
+    await userEvent.click(
+      await body.findByRole('option', { name: /^Waiting on customer/ }),
+    );
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() =>
+      expect(token(/^Stage/)).toHaveAttribute('data-state', 'pending'),
+    );
+    expect(applyButton()).toHaveTextContent('Apply (1)');
+
+    // Esc cancels an edit and puts the token back as it was.
+    await userEvent.click(part(/^Stage/, 'Stage'));
+    await body.findByRole('option', { name: /^Open/ });
+    await userEvent.keyboard(' ');
+    await waitFor(() =>
+      expect(token(/^Stage/)).toHaveAccessibleName(
+        'Stage is any of In progress, Waiting on customer',
+      ),
+    );
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(token(/^Stage/)).toHaveAccessibleName(
+        'Stage is any of Open, In progress, Waiting on customer',
+      ),
+    );
+
+    // The operator menu switches to an excluding operator.
+    await userEvent.click(part(/^Priority/, 'is'));
+    await userEvent.click(await body.findByRole('option', { name: /^is not/ }));
+    await waitFor(() =>
+      expect(token(/^Priority/)).toHaveAttribute('data-tone', 'exclude'),
+    );
+    expect(token(/^Priority/)).toHaveAttribute('data-state', 'pending');
+    expect(applyButton()).toHaveTextContent('Apply (2)');
+
+    // Apply makes the draft the applied set.
+    await userEvent.click(applyButton()!);
+    await waitFor(() => expect(applyButton()).toBeNull());
+    expect(canvas.getByTestId('applied')).toHaveTextContent(
+      'Priority is not High',
+    );
+
+    // The remove button applies at once. It does not wait for Apply.
+    await userEvent.click(
+      within(token(/^Priority/)).getByRole('button', {
+        name: /^Remove filter/,
+        hidden: true,
+      }),
+    );
+    await waitFor(() =>
+      expect(canvas.getByTestId('applied')).not.toHaveTextContent('Priority'),
+    );
+    expect(applyButton()).toBeNull();
+
+    // Backspace twice removes the last filter, also at once.
+    await userEvent.click(input());
+    await userEvent.keyboard('{Backspace}{Backspace}');
+    await waitFor(() =>
+      expect(canvas.getByTestId('applied')).not.toHaveTextContent('Customer'),
+    );
+    expect(applyButton()).toBeNull();
+
+    // An edit waits for Apply. Esc with no menu open throws it away.
+    await userEvent.click(part(/^Stage/, 'Stage'));
+    await userEvent.click(await body.findByRole('option', { name: /^Closed/ }));
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(applyButton()).toHaveTextContent('Apply (1)'));
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(applyButton()).toBeNull());
+
+    // Typing finds fields, values and a text search. Leave the menu open for
+    // the visual snapshot.
+    await userEvent.type(input(), 'clo');
+    // The test library drops the space before a highlight, so the name is
+    // matched on the value alone.
+    await body.findByRole('option', { name: /Closed$/ });
   },
 };
