@@ -35,6 +35,29 @@ export type FilterTokenState =
 /** Visual tone of a filter token. `exclude` marks a negated operator, such as "is not". */
 export type FilterTokenTone = 'default' | 'exclude';
 
+/**
+ * Watches a value's text and reports whether its max width cuts it off.
+ * The check runs again when `text` or `mode` changes, and on resize.
+ */
+const useClipped = (text: unknown, mode: unknown) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [clipped, setClipped] = useState(false);
+  useLayoutEffect(() => {
+    const node = ref.current;
+    if (!node) {
+      setClipped(false);
+      return;
+    }
+    const check = () => setClipped(node.scrollWidth > node.clientWidth);
+    check();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(check);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [text, mode]);
+  return [ref, clipped] as const;
+};
+
 /** Number of list values shown before the rest collapse into `+N`. */
 const MAX_VISIBLE_VALUES = 2;
 
@@ -178,21 +201,8 @@ export const FilterToken = (props: FilterTokenProps) => {
     : undefined;
 
   // A value cut off by its max width gets the tooltip too, not only `+N`.
-  const valueTextRef = useRef<HTMLSpanElement>(null);
-  const [clipped, setClipped] = useState(false);
-  useLayoutEffect(() => {
-    const node = valueTextRef.current;
-    if (!node) {
-      setClipped(false);
-      return;
-    }
-    const check = () => setClipped(node.scrollWidth > node.clientWidth);
-    check();
-    if (typeof ResizeObserver === 'undefined') return;
-    const observer = new ResizeObserver(check);
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [shownValue, editor]);
+  const [valueTextRef, clipped] = useClipped(shownValue, editor);
+  const [joinedTextRef, joinedClipped] = useClipped(joined?.value, editor);
 
   const part = (
     slot: string,
@@ -251,6 +261,13 @@ export const FilterToken = (props: FilterTokenProps) => {
       operatorLocked ? { 'data-locked': true } : undefined,
     );
 
+  // The joined value truncates like the first value.
+  const joinedContent = joined && (
+    <Box as="span" ref={joinedTextRef} className={classes.valueText}>
+      {joined.value}
+    </Box>
+  );
+
   return (
     <Box
       {...dsComponent('FilterToken')}
@@ -282,30 +299,34 @@ export const FilterToken = (props: FilterTokenProps) => {
               {valueContent}
             </Box>
           )}
+          {/* While the editor is open, the joined parts are text, like the
+              first value. They are part of the value being edited. */}
           {joined && (
             <>
-              {joinedOperator}
+              {part(classes.operator, joined.operator, undefined)}
               <Box as="span" className={classes.value}>
-                {joined.value}
+                {joinedContent}
               </Box>
             </>
           )}
           {editor}
         </Box>
       ) : (
-        value !== undefined && (
-          <>
+        <>
+          {value !== undefined && (
             <Tooltip text={fullValue ?? ''} disabled={hidden === 0 && !clipped}>
               {part(classes.value, valueContent, onValueClick)}
             </Tooltip>
-            {joined && (
-              <>
-                {joinedOperator}
-                {part(classes.value, joined.value, onValueClick)}
-              </>
-            )}
-          </>
-        )
+          )}
+          {joined && (
+            <>
+              {joinedOperator}
+              <Tooltip text={joined.value} disabled={!joinedClipped}>
+                {part(classes.value, joinedContent, onValueClick)}
+              </Tooltip>
+            </>
+          )}
+        </>
       )}
       {onRemove && state !== 'removing' && (
         <Box

@@ -1024,9 +1024,12 @@ const StagedFilterBarDemo = () => {
   };
 
   // Keeps the edit in the draft. A filter without the values it needs is
-  // dropped.
+  // dropped. An applied filter emptied this way is a removal, so it applies
+  // at once, like the × button.
   const commit = (next: BarFilter | null = edit) => {
-    if (next) {
+    if (next && !isComplete(next) && applied.some((f) => f.id === next.id)) {
+      remove(next.id);
+    } else if (next) {
       setDraft((current) => {
         if (!isComplete(next)) {
           return current.filter((f) => f.id !== next.id);
@@ -1784,6 +1787,28 @@ export const ExFilterBarWithApply: Story = {
         'Part is KIT-6001 or contains “water damage”',
       ),
     );
+
+    // Unchecking every value of an applied filter removes it, like ×. The
+    // removal applies at once, so no Apply button waits for it.
+    await userEvent.click(part(/^Stage/, 'Stage'));
+    for (const value of [
+      'Open',
+      'In progress',
+      'Waiting on customer',
+      'Closed',
+    ]) {
+      await userEvent.click(
+        await body.findByRole('option', { name: new RegExp(`^${value}`) }),
+      );
+    }
+    await userEvent.keyboard('{Enter}');
+    await waitFor(() => expect(applied()).not.toHaveTextContent('Stage'));
+    expect(
+      tokens().some((node) =>
+        node.getAttribute('aria-label')?.startsWith('Stage'),
+      ),
+    ).toBe(false);
+    expect(applyButton()).toBeNull();
 
     // The results finish loading before the snapshot, so it never catches
     // "Updating the results…".

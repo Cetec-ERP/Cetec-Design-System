@@ -174,6 +174,88 @@ export const Joined: Story = {
   },
 };
 
+export const JoinedStates: Story = {
+  render: (args) => (
+    <VStack alignItems="start" gap="12">
+      <FilterToken
+        {...args}
+        field="Part"
+        operator="contains"
+        value={undefined}
+        joined={{ operator: 'or contains', value: '“hinge”' }}
+      />
+      <FilterToken
+        {...args}
+        field="Description"
+        operator="is"
+        value="KIT-6001"
+        joined={{
+          operator: 'or contains',
+          value:
+            '“install kit for a base cabinet with water damage repair parts”',
+        }}
+      />
+      <FilterToken
+        {...args}
+        field="Customer"
+        operator="is"
+        value="Acme"
+        joined={{ operator: 'or contains', value: '“west”' }}
+        state="editing"
+        editor={
+          <Box
+            as="input"
+            aria-label="Customer"
+            size={8}
+            h="22"
+            p="0"
+            bg="transparent"
+            borderWidth="0"
+            outline="none"
+            fontFamily="body"
+            fontSize="body.sm"
+            color="text"
+          />
+        }
+      />
+    </VStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // The joined part shows even when the first value is not set.
+    const part = canvas.getByRole('group', {
+      name: 'Part contains or contains “hinge”',
+    });
+    expect(within(part).getByRole('button', { name: '“hinge”' })).toBeVisible();
+
+    // A long joined value truncates and gets a tooltip, like the first value.
+    const long =
+      '“install kit for a base cabinet with water damage repair parts”';
+    const joinedValue = canvas.getByRole('button', { name: long });
+    await waitFor(() =>
+      expect(joinedValue.getBoundingClientRect().width).toBeLessThan(260),
+    );
+    await userEvent.hover(joinedValue);
+    const tooltip = await within(document.body).findByRole('tooltip');
+    expect(tooltip).toHaveTextContent(long);
+    await userEvent.unhover(joinedValue);
+
+    // While the editor is open, the joined operator and value are text, like
+    // the first value.
+    const editing = canvas.getByRole('group', {
+      name: 'Customer is Acme or contains “west”',
+    });
+    expect(
+      within(editing).queryByRole('button', { name: 'or contains' }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(editing).queryByRole('button', { name: '“west”' }),
+    ).not.toBeInTheDocument();
+    expect(within(editing).getByText('“west”')).toBeVisible();
+  },
+};
+
 export const ValueStates: Story = {
   render: (args) => (
     <VStack alignItems="start" gap="12">
