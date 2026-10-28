@@ -29,25 +29,13 @@ export type PopoverArrowProps = {
  */
 export const PopoverArrow = (props: PopoverArrowProps) => {
   const { fill, stroke } = props;
-  const { floatingContext, arrowRef, tone } = usePopoverContext();
-
-  const defaultFill = tone
-    ? token.var(
-        tone === 'note'
-          ? 'colors.bg.neutral'
-          : tone === 'tip'
-            ? 'colors.bg.info.subtle'
-            : tone === 'important'
-              ? 'colors.bg.danger.subtle'
-              : 'colors.bg.warning.subtle',
-      )
-    : token.var('colors.surface.overlay');
+  const { floatingContext, arrowRef } = usePopoverContext();
 
   return (
     <FloatingArrow
       ref={arrowRef}
       context={floatingContext}
-      fill={fill ?? defaultFill}
+      fill={fill ?? token.var('colors.surface.overlay')}
       stroke={stroke ?? token.var('colors.border')}
       strokeWidth={1}
     />

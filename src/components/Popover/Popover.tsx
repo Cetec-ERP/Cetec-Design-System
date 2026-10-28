@@ -147,6 +147,7 @@ export const Popover = (props: PopoverProps) => {
     placement,
     middleware: createOverlayMiddleware({
       offset,
+      flipOptions: { fallbackAxisSideDirection: 'end' },
       extras: [arrow({ element: arrowRef })],
     }),
   });

@@ -2,6 +2,9 @@ import { useRef, useState } from 'react';
 
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
+import { popover } from '@styled-system/recipes';
+import { token } from '@styled-system/tokens';
+
 import { Box } from '../Box';
 import { Button } from '../Button';
 import { Link } from '../Link';
@@ -12,6 +15,7 @@ import { Text } from '../Text';
 
 import { Popover, type PopoverProps } from './Popover';
 import { PopoverAnchor } from './PopoverAnchor';
+import { PopoverArrow } from './PopoverArrow';
 import { PopoverBody } from './PopoverBody';
 import { PopoverClose } from './PopoverClose';
 import { PopoverContent } from './PopoverContent';
@@ -67,6 +71,20 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+// Literal recipe calls let Panda extract every swatch's styles.
+const tonePanelClasses = {
+  note: popover({ tone: 'note' }).content,
+  tip: popover({ tone: 'tip' }).content,
+  warning: popover({ tone: 'warning' }).content,
+  important: popover({ tone: 'important' }).content,
+  caution: popover({ tone: 'caution' }).content,
+};
+const sizePanelClasses = {
+  sm: popover({ size: 'sm', tone: 'note' }).content,
+  md: popover({ size: 'md', tone: 'note' }).content,
+  lg: popover({ size: 'lg', tone: 'note' }).content,
+};
 
 /** Handbook definition note — hover or focus the dashed phrase. */
 export const DefinitionNote: Story = {
@@ -159,23 +177,13 @@ export const Tones: Story = {
       display="flex"
       flexDirection="column"
       alignItems="flex-start"
-      gap="80"
+      gap="16"
       p="32"
-      pe="[22rem]"
     >
       {(['note', 'tip', 'warning', 'important', 'caution'] as const).map(
         (tone) => (
-          <Popover
-            key={tone}
-            interaction="definition"
-            tone={tone}
-            placement="right"
-            defaultOpen
-          >
-            <PopoverTrigger>
-              <Button size="sm">{tone}</Button>
-            </PopoverTrigger>
-            <PopoverContent>
+          <Popover key={tone} interaction="definition" tone={tone}>
+            <Box className={tonePanelClasses[tone]}>
               <PopoverHeader>
                 <PopoverTitle>
                   {tone.charAt(0).toUpperCase() + tone.slice(1)}
@@ -184,7 +192,7 @@ export const Tones: Story = {
               <PopoverBody>
                 Visual tone only — this never maps to role=&quot;alert&quot;.
               </PopoverBody>
-            </PopoverContent>
+            </Box>
           </Popover>
         ),
       )}
@@ -194,19 +202,10 @@ export const Tones: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <Box display="flex" gap="48" alignItems="flex-start" p="32">
+    <Box display="flex" flexWrap="wrap" gap="24" alignItems="flex-start" p="32">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Popover
-          key={size}
-          interaction="definition"
-          tone="note"
-          size={size}
-          defaultOpen
-        >
-          <PopoverTrigger>
-            <Button size="sm">{size}</Button>
-          </PopoverTrigger>
-          <PopoverContent>
+        <Popover key={size} interaction="definition" tone="note" size={size}>
+          <Box className={sizePanelClasses[size]}>
             <PopoverHeader>
               <PopoverTitle>Size {size}</PopoverTitle>
             </PopoverHeader>
@@ -214,11 +213,108 @@ export const Sizes: Story = {
               Popover panels are wider than Tooltip (max 240) so handbook notes
               can carry multi-line guidance.
             </PopoverBody>
-          </PopoverContent>
+          </Box>
         </Popover>
       ))}
     </Box>
   ),
+};
+
+/** A tall panel can use the space beside a trigger near the left edge. */
+export const EdgePlacement: Story = {
+  parameters: { layout: 'fullscreen' },
+  render: () => (
+    <Box h="4xl" display="flex" alignItems="center" p="16">
+      <Popover placement="bottom">
+        <PopoverTrigger>Setup notes</PopoverTrigger>
+        <PopoverContent h="lg" w="280" data-testid="edge-panel">
+          <PopoverHeader>
+            <PopoverTitle>Room beside the trigger</PopoverTitle>
+            <PopoverClose />
+          </PopoverHeader>
+          <PopoverBody>
+            When this panel cannot fit above or below, it opens to the side.
+            Resize the viewport to see the placement adapt.
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('button', { name: 'Setup notes' });
+    await userEvent.click(trigger);
+    const panel = await body.findByTestId('edge-panel');
+    await waitFor(() => {
+      const panelRect = panel.getBoundingClientRect();
+      expect(panelRect.left).toBeGreaterThanOrEqual(
+        trigger.getBoundingClientRect().right,
+      );
+      expect(panelRect.top).toBeGreaterThanOrEqual(0);
+      expect(panelRect.bottom).toBeLessThanOrEqual(window.innerHeight);
+    });
+    // Keep the close control's focus tooltip out of the placement snapshot.
+    panel.focus();
+    await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
+  },
+};
+
+export const A11yExplicitArrow: Story = {
+  // Behavior-only coverage cycles through tones and an explicit fill override.
+  tags: ['!dev', '!autodocs', '!snapshot'],
+  render: () => (
+    <Box display="flex" gap="16">
+      {(['note', 'tip', 'warning', 'important', 'caution'] as const).map(
+        (tone) => (
+          <Popover key={tone} tone={tone} showArrow={false}>
+            <PopoverTrigger>{tone}</PopoverTrigger>
+            <PopoverContent>
+              <PopoverTitle>{tone}</PopoverTitle>
+              <PopoverClose />
+              <PopoverArrow />
+            </PopoverContent>
+          </Popover>
+        ),
+      )}
+      <Popover showArrow={false}>
+        <PopoverTrigger>Custom fill</PopoverTrigger>
+        <PopoverContent>
+          <PopoverTitle>Custom fill</PopoverTitle>
+          <PopoverClose />
+          <PopoverArrow fill={token.var('colors.bg.info.subtle')} />
+        </PopoverContent>
+      </Popover>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    for (const name of [
+      'note',
+      'tip',
+      'warning',
+      'important',
+      'caution',
+      'Custom fill',
+    ]) {
+      await userEvent.click(canvas.getByRole('button', { name }));
+      const panel = await body.findByRole('dialog', { name });
+      const arrow = panel.querySelector('svg[aria-hidden="true"]');
+      expect(arrow).toHaveAttribute(
+        'fill',
+        token.var(
+          name === 'Custom fill'
+            ? 'colors.bg.info.subtle'
+            : 'colors.surface.overlay',
+        ),
+      );
+      await userEvent.click(
+        within(panel).getByRole('button', { name: 'Close' }),
+      );
+      await waitFor(() => expect(panel).not.toBeInTheDocument());
+    }
+  },
 };
 
 // ============================================================================
@@ -400,22 +496,36 @@ export const A11yAnchorUnmount: Story = {
     const body = within(canvasElement.ownerDocument.body);
     const content = await body.findByTestId('anchor-content');
     const offset = 8;
-    const isBelow = (reference: Element) =>
-      Math.abs(
-        content.getBoundingClientRect().top -
-          (reference.getBoundingClientRect().bottom + offset),
-      ) < 2;
+    const tracksReference = (reference: Element) => {
+      const panel = content.getBoundingClientRect();
+      const target = reference.getBoundingClientRect();
+      const verticalGap = Math.min(
+        Math.abs(panel.top - target.bottom - offset),
+        Math.abs(target.top - panel.bottom - offset),
+      );
+      const horizontalGap = Math.min(
+        Math.abs(panel.left - target.right - offset),
+        Math.abs(target.left - panel.right - offset),
+      );
+      const centeredBeside =
+        Math.abs(
+          panel.top + panel.height / 2 - target.top - target.height / 2,
+        ) < 2;
+      return verticalGap < 2 || (horizontalGap < 2 && centeredBeside);
+    };
 
     // Consumer ref on PopoverAnchor still resolves to the anchor DOM node.
     expect(canvas.getByTestId('anchor-ref-attached')).toHaveTextContent('true');
-    await waitFor(() => expect(isBelow(canvas.getByText('anchor'))).toBe(true));
+    await waitFor(() =>
+      expect(tracksReference(canvas.getByText('anchor'))).toBe(true),
+    );
 
     await userEvent.click(
       canvas.getByRole('button', { name: 'Remove anchor' }),
     );
     expect(canvas.queryByText('anchor')).toBeNull();
     await waitFor(() =>
-      expect(isBelow(canvas.getByText('trigger'))).toBe(true),
+      expect(tracksReference(canvas.getByText('trigger'))).toBe(true),
     );
   },
 };
