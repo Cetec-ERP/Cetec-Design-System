@@ -180,6 +180,18 @@ export {
   type PageBannerProps,
 } from './components/PageBanner';
 export {
+  PrintPage,
+  PrintPreview,
+  type PageMargins,
+  type PageOrientation,
+  type PageSize,
+  type PageUnit,
+  type PrintPageProps,
+  type PrintPreviewFit,
+  type PrintPreviewProps,
+} from './components/PrintPreview';
+export { pageSizes } from './components/PrintPreview/pageSizes';
+export {
   Radio,
   RadioGroup,
   type RadioChangeEvent,
@@ -262,6 +274,7 @@ export {
 } from './components/Menu/context/menuContext';
 export { useDrawerContext } from './components/Drawer/DrawerContext';
 export { useModalWrapperContext } from './components/Modal/ModalWrapperContext';
+export { usePrintPage } from './components/PrintPreview/usePrintPage';
 export {
   useTabPanelActive,
   useTabsContext,
