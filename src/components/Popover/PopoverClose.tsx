@@ -3,6 +3,7 @@ import type { MouseEvent } from 'react';
 import { cx } from '@styled-system/css';
 import { popover } from '@styled-system/recipes';
 
+import { useLocale } from '~/system/context/useLocale';
 import { splitProps } from '~/utils/splitProps';
 
 import { IconButton, type IconButtonProps } from '../IconButton';
@@ -35,7 +36,8 @@ export type PopoverCloseProps = Omit<
  * ```
  */
 export const PopoverClose = (props: PopoverCloseProps) => {
-  const { altText = 'Close', onClick, ...rest } = props;
+  const { labels } = useLocale();
+  const { altText = labels.closePopover, onClick, ...rest } = props;
   const [className, otherProps] = splitProps(rest as Record<string, unknown>);
   const { setOpen } = usePopoverContext();
   const classes = popover();

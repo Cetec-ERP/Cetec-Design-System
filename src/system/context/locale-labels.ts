@@ -24,6 +24,8 @@ export interface LocaleLabels {
   closeDialog: string;
   /** Accessible name of the close button in `DrawerHeader`. */
   closeDrawer: string;
+  /** Accessible name and tooltip of the close button in `PopoverClose`. */
+  closePopover: string;
   /** Accessible name of the remove button on a dismissible `Chip`. */
   removeItem: (item: string) => string;
   /** Accessible name of the remove button on a `FilterToken`, given the filter as a sentence. */
@@ -176,6 +178,7 @@ export const defaultLocaleLabels: LocaleLabels = {
   dismiss: 'Dismiss',
   closeDialog: 'Close dialog',
   closeDrawer: 'Close drawer',
+  closePopover: 'Close',
   removeItem: (item) => `Remove ${item}`,
   removeFilter: (filter) => `Remove filter: ${filter}`,
   switchToTheme: (nextTheme) => `Switch to ${nextTheme} theme`,
