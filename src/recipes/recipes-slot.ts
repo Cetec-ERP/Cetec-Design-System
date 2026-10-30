@@ -32,3 +32,4 @@ export { codeBlockRecipe } from './codeBlock';
 export { filterFieldRecipe } from './filterField';
 export { filterMenuRecipe } from './filterMenu';
 export { filterTokenRecipe } from './filterToken';
+export { printPreviewRecipe } from './printPreview';
