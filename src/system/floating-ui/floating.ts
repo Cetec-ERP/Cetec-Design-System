@@ -6,6 +6,7 @@ import {
   size,
   useFloating,
   type Middleware,
+  type FlipOptions,
   type Placement,
 } from '@floating-ui/react';
 
@@ -29,17 +30,19 @@ export type OverlayFloatingOptions = {
 export type OverlayMiddlewareOptions = {
   offset?: number;
   shiftPadding?: number;
+  /** Optional collision fallback settings; omitted to preserve Floating UI defaults. */
+  flipOptions?: FlipOptions;
   extras?: Middleware[];
 };
 
 export const createOverlayMiddleware = (
   options: OverlayMiddlewareOptions = {},
 ) => {
-  const { offset = 4, shiftPadding = 8, extras = [] } = options;
+  const { offset = 4, shiftPadding = 8, flipOptions, extras = [] } = options;
 
   return [
     floatingOffset(offset),
-    flip(),
+    flip(flipOptions),
     shift({ padding: shiftPadding }),
     ...extras,
   ];
