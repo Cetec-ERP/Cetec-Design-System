@@ -3,6 +3,7 @@ import { createContext, useContext } from 'react';
 import type { ConditionalValue } from '@styled-system/types';
 
 export type SlotOwner =
+  | 'AvatarStack'
   | 'Button'
   | 'Chip'
   | 'TextInput'
