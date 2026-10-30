@@ -24,7 +24,7 @@ export type AvatarStatus = 'approved' | 'declined' | 'locked';
 
 /** Props accepted by {@link Avatar}. */
 export type AvatarProps = Omit<BoxProps, keyof AvatarVariantProps> &
-  Omit<AvatarVariantProps, 'size' | 'shape'> & {
+  Omit<AvatarVariantProps, 'size' | 'shape' | 'stacked'> & {
     /** Image URL. A failed or missing image falls back to custom content, initials, or a user icon. */
     src?: string;
     /** Alternative text for the image. Use an empty string when nearby text already identifies the entity. */
@@ -145,13 +145,14 @@ export const Avatar = (props: AvatarProps) => {
   } = props;
   const size =
     sizeProp ?? (slotContext?.size as AvatarProps['size'] | undefined);
+  const stacked = slotContext?.owner === 'AvatarStack';
 
   const [className, otherProps] = splitProps(rest);
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
 
   // Type-safe size for indexing
-  const classes = avatar({ size, shape });
+  const classes = avatar({ size, shape, stacked });
 
   // Determine what to show: image, fallback, or initials
   const showImage = Boolean(src) && failedSrc !== src;

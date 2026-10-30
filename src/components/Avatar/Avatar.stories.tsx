@@ -459,30 +459,3 @@ export const ProjectAvatars: Story = {
     </Box>
   ),
 };
-
-// =============================================================================
-// AVATAR GROUP (STACKED)
-// =============================================================================
-
-export const AvatarStack: Story = {
-  render: () => (
-    <Box display="flex" flexDir="column" gap="4">
-      <Text fontWeight="bold">Stacked Avatars</Text>
-      <Box display="flex">
-        {[
-          sampleAvatars.user1,
-          sampleAvatars.user2,
-          sampleAvatars.user3,
-          sampleAvatars.user4,
-        ].map((src, i) => (
-          <Box key={src} ml={i > 0 ? '-8' : '0'} position="relative">
-            <Avatar size="md" src={src} />
-          </Box>
-        ))}
-        <Box ml="-8" position="relative">
-          <Avatar size="md" fallback="+3" />
-        </Box>
-      </Box>
-    </Box>
-  ),
-};
