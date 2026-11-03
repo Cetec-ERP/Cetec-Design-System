@@ -175,6 +175,19 @@ export const avatarRecipe = defineSlotRecipe({
         },
       },
     },
+    stacked: {
+      true: {
+        root: {
+          outlineWidth: '2',
+          outlineStyle: 'solid',
+          outlineColor: 'surface',
+          outlineOffset: '-2',
+          '&:not(:first-child)': {
+            ml: '-4',
+          },
+        },
+      },
+    },
   },
   defaultVariants: {
     size: 'md',

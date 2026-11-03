@@ -1,5 +1,6 @@
 export { Alert, type AlertProps, type AlertTone } from './components/Alert';
 export { Avatar, type AvatarProps } from './components/Avatar';
+export { AvatarStack, type AvatarStackProps } from './components/AvatarStack';
 export { Badge, type BadgeProps } from './components/Badge';
 export { Box, type BoxProps } from './components/Box';
 export {

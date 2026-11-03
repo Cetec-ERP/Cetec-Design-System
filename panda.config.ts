@@ -18,7 +18,11 @@ const recipeNames = [
 
 const recipeOverrides: Record<string, RecipeRule[]> = {
   codeBlock: [{ actionGutter: ['*'], collapsed: ['*'], lineNumbers: ['*'] }],
-  avatar: [{ size: ['*'], responsive: true }, { shape: ['*'] }],
+  avatar: [
+    { size: ['*'], responsive: true },
+    { shape: ['*'] },
+    { stacked: ['*'] },
+  ],
   badge: [
     {
       size: ['*'],
