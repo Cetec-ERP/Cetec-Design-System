@@ -16,6 +16,8 @@ export interface LocaleLabels {
   cancel: string;
   /** Default submit button text in `Modal`. */
   submit: string;
+  /** Accessible name and tooltip of the save button in `KeyFact`. */
+  save: string;
   /** Apply button text in range and date-time menus. */
   apply: string;
   /** Accessible name of the dismiss button in `Alert` and `Toast`. */
@@ -32,6 +34,10 @@ export interface LocaleLabels {
   removeFilter: (filter: string) => string;
   /** Accessible name of `ThemeSwitcher`, given the theme it switches to. */
   switchToTheme: (nextTheme: Theme) => string;
+
+  // ─── Key facts ────────────────────────────────────────────────────────────
+  /** Label of a horizontal `KeyFact`, written before its value ("Owner:"). */
+  keyFactLabel: (label: string) => string;
 
   // ─── Selection lists ──────────────────────────────────────────────────────
   /** Default placeholder for `Select` and `Autocomplete`. */
@@ -174,6 +180,7 @@ export interface LocaleLabels {
 export const defaultLocaleLabels: LocaleLabels = {
   cancel: 'Cancel',
   submit: 'Submit',
+  save: 'Save',
   apply: 'Apply',
   dismiss: 'Dismiss',
   closeDialog: 'Close dialog',
@@ -182,6 +189,8 @@ export const defaultLocaleLabels: LocaleLabels = {
   removeItem: (item) => `Remove ${item}`,
   removeFilter: (filter) => `Remove filter: ${filter}`,
   switchToTheme: (nextTheme) => `Switch to ${nextTheme} theme`,
+
+  keyFactLabel: (label) => `${label}:`,
 
   selectPlaceholder: 'Select...',
   noResults: 'No results found',
