@@ -33,6 +33,10 @@ export interface LocaleLabels {
   /** Accessible name of `ThemeSwitcher`, given the theme it switches to. */
   switchToTheme: (nextTheme: Theme) => string;
 
+  // ─── Key facts ────────────────────────────────────────────────────────────
+  /** Label of a horizontal `KeyFact`, written before its value ("Owner:"). */
+  keyFactLabel: (label: string) => string;
+
   // ─── Selection lists ──────────────────────────────────────────────────────
   /** Default placeholder for `Select` and `Autocomplete`. */
   selectPlaceholder: string;
@@ -182,6 +186,8 @@ export const defaultLocaleLabels: LocaleLabels = {
   removeItem: (item) => `Remove ${item}`,
   removeFilter: (filter) => `Remove filter: ${filter}`,
   switchToTheme: (nextTheme) => `Switch to ${nextTheme} theme`,
+
+  keyFactLabel: (label) => `${label}:`,
 
   selectPlaceholder: 'Select...',
   noResults: 'No results found',
