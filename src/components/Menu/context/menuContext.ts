@@ -228,6 +228,12 @@ export type MenuRootContextValue = {
   closeOnSelect: boolean;
   subMenuInteraction: SubMenuInteraction;
   inline: boolean;
+  /**
+   * True when the root list renders in the page with no popup of its own
+   * (`inline`, or no `trigger`). No root popup returns focus on close, so a
+   * flyout restores focus to its own trigger instead.
+   */
+  rendersInline: boolean;
   onCloseMenu: () => void;
   onPushDiginLevel: (title: string, levelChildren: ReactNode) => void;
   onPopDiginLevel: () => void;
@@ -296,6 +302,7 @@ export const defaultMenuRootContextValue: MenuRootContextValue = {
   closeOnSelect: true,
   subMenuInteraction: 'hover',
   inline: false,
+  rendersInline: false,
   onCloseMenu: noop,
   onPushDiginLevel: noop,
   onPopDiginLevel: noop,

@@ -357,6 +357,7 @@ export const Menu = (props: MenuProps) => {
     closeOnSelect,
     subMenuInteraction,
     inline,
+    rendersInline: inline || !trigger,
     onCloseMenu: () => {
       setOpenState(false);
       setDiginLevels([]);
