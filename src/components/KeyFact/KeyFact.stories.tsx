@@ -1,9 +1,12 @@
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { useState } from 'react';
+
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { HStack, VStack, Wrap } from '@styled-system/jsx';
 
 import { Box } from '../Box';
 import { Divider } from '../Divider';
+import { IconButton } from '../IconButton';
 
 import { KeyFact } from './KeyFact';
 
@@ -89,6 +92,76 @@ export const Editing: Story = {
   parameters: { controls: { disable: true } },
 };
 
+/**
+ * `editMode="confirm"` adds save and cancel buttons, for a fact saved on its
+ * own. Enter saves and Escape cancels.
+ */
+export const EditingWithSaveAndCancel: Story = {
+  name: 'Editing With Save and Cancel',
+  render: () => (
+    <VStack gap="24" alignItems="flex-start">
+      <KeyFact
+        label="PO number"
+        value="PO-88213"
+        editing
+        editMode="confirm"
+        onSave={fn()}
+        onCancel={fn()}
+        inputProps={{ name: 'poNumberConfirm' }}
+      />
+      <KeyFact
+        label="PO number"
+        value="PO-88213"
+        layout="vertical"
+        editing
+        editMode="confirm"
+        onSave={fn()}
+        onCancel={fn()}
+        inputProps={{ name: 'poNumberConfirmVertical' }}
+      />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+/**
+ * Use case: a fact that switches to edit in place and saves on its own.
+ */
+export const ExEditInPlace: Story = {
+  name: 'Ex: Edit in Place',
+  render: function Render() {
+    const [value, setValue] = useState('PO-88213');
+    const [editing, setEditing] = useState(false);
+
+    return (
+      <HStack gap="8">
+        <KeyFact
+          label="PO number"
+          value={value}
+          editing={editing}
+          editMode="confirm"
+          onSave={(next) => {
+            setValue(next);
+            setEditing(false);
+          }}
+          onCancel={() => setEditing(false)}
+          inputProps={{ name: 'poNumberInPlace' }}
+        />
+        {!editing && (
+          <IconButton
+            variant="ghost"
+            size="sm"
+            iconName="edit"
+            altText="Edit PO number"
+            onClick={() => setEditing(true)}
+          />
+        )}
+      </HStack>
+    );
+  },
+  parameters: { controls: { disable: true } },
+};
+
 export const Truncated: Story = {
   render: () => (
     <Box w="224">
@@ -154,6 +227,42 @@ export const EditingLabelsInput: Story = {
 
     await expect(input).toHaveValue('PO-88213');
     await expect(input).toHaveAttribute('name', 'poNumber');
+  },
+};
+
+export const ConfirmSavesAndCancels: Story = {
+  name: 'Test: confirm mode saves and cancels',
+  args: {
+    label: 'PO number',
+    value: 'PO-88213',
+    editing: true,
+    editMode: 'confirm',
+    onSave: fn(),
+    onCancel: fn(),
+    inputProps: { name: 'poNumber' },
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox', { name: 'PO number:' });
+
+    // The save button sends the edited value.
+    await userEvent.clear(input);
+    await userEvent.type(input, 'PO-90001');
+    await userEvent.click(canvas.getByRole('button', { name: 'Save' }));
+    await expect(args.onSave).toHaveBeenLastCalledWith('PO-90001');
+
+    // Enter saves too.
+    await userEvent.type(input, '{Enter}');
+    await expect(args.onSave).toHaveBeenCalledTimes(2);
+
+    // Escape cancels and puts the value back.
+    await userEvent.type(input, '-X{Escape}');
+    await expect(args.onCancel).toHaveBeenCalledOnce();
+    await expect(input).toHaveValue('PO-88213');
+
+    // The cancel button cancels too.
+    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+    await expect(args.onCancel).toHaveBeenCalledTimes(2);
   },
 };
 

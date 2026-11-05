@@ -16,6 +16,8 @@ export interface LocaleLabels {
   cancel: string;
   /** Default submit button text in `Modal`. */
   submit: string;
+  /** Accessible name and tooltip of the save button in `KeyFact`. */
+  save: string;
   /** Apply button text in range and date-time menus. */
   apply: string;
   /** Accessible name of the dismiss button in `Alert` and `Toast`. */
@@ -178,6 +180,7 @@ export interface LocaleLabels {
 export const defaultLocaleLabels: LocaleLabels = {
   cancel: 'Cancel',
   submit: 'Submit',
+  save: 'Save',
   apply: 'Apply',
   dismiss: 'Dismiss',
   closeDialog: 'Close dialog',

@@ -23,6 +23,13 @@ const keyFactBase = {
       minW: '0',
     },
   },
+  actions: {
+    display: 'flex',
+    alignItems: 'center',
+    flex: 'none',
+    gap: '2',
+    ms: '4',
+  },
   text: {
     display: 'block',
     minW: '0',
@@ -63,7 +70,7 @@ const keyFactVariants = {
 export const keyFactRecipe = defineSlotRecipe({
   className: 'keyFact',
   jsx: ['KeyFact'],
-  slots: ['root', 'label', 'value', 'text'],
+  slots: ['root', 'label', 'value', 'text', 'actions'],
   base: keyFactBase,
   variants: keyFactVariants,
   defaultVariants: {
