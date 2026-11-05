@@ -9,6 +9,7 @@ import { Button } from '../Button';
 import { Drawer, DrawerBody } from '../Drawer';
 import { Heading } from '../Heading';
 import { Text } from '../Text';
+import { TextInput } from '../TextInput';
 
 import { PeekBar } from './PeekBar';
 
@@ -21,6 +22,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * - Previous and next, disabled at the ends of the list
  * - "Open" to go to the full page, shown when `openHref` or `onOpen` is set
  * - Close, which defaults to the parent `Drawer`'s close
+ * - Keyboard: "," opens the previous record and "." the next
  */
 const meta = {
   title: 'Components/PeekBar',
@@ -139,6 +141,51 @@ export const ButtonStates: Story = {
 
     await userEvent.click(canvas.getByRole('button', { name: 'Close drawer' }));
     await expect(args.onClose).toHaveBeenCalledOnce();
+  },
+};
+
+export const KeyboardShortcuts: Story = {
+  name: 'Test: comma and period shortcuts',
+  args: { index: 2, total: 3 },
+  render: (args) => (
+    <VStack gap="8" alignItems="stretch">
+      <PeekBar {...args} />
+      <Box px="16" pb="8">
+        <TextInput name="notes" aria-label="Notes" />
+      </Box>
+    </VStack>
+  ),
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(
+      canvas.getByRole('button', { name: 'Previous case' }),
+    ).toHaveAttribute('aria-keyshortcuts', ',');
+    await expect(
+      canvas.getByRole('button', { name: 'Next case' }),
+    ).toHaveAttribute('aria-keyshortcuts', '.');
+
+    // From the page: "," is previous and "." is next.
+    await userEvent.keyboard(',');
+    await expect(args.onPrevious).toHaveBeenCalledOnce();
+    await userEvent.keyboard('.');
+    await expect(args.onNext).toHaveBeenCalledOnce();
+
+    // Typing in a field does not move between records.
+    await userEvent.click(canvas.getByRole('textbox', { name: 'Notes' }));
+    await userEvent.keyboard(',.');
+    await expect(args.onPrevious).toHaveBeenCalledOnce();
+    await expect(args.onNext).toHaveBeenCalledOnce();
+  },
+};
+
+export const ShortcutsStopAtEnds: Story = {
+  name: 'Test: shortcuts stop at the ends',
+  args: { index: 1, total: 1 },
+  play: async ({ args }) => {
+    await userEvent.keyboard(',.');
+    await expect(args.onPrevious).not.toHaveBeenCalled();
+    await expect(args.onNext).not.toHaveBeenCalled();
   },
 };
 

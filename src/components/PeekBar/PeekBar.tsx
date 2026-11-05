@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { cx } from '@styled-system/css';
 import { peekBar } from '@styled-system/recipes';
@@ -33,14 +33,36 @@ export type PeekBarProps = Omit<BoxProps, 'children'> & {
    * The close button is hidden when there is no close action.
    */
   onClose?: () => void;
+  /**
+   * Turns on the keyboard shortcuts: "," opens the previous record and "."
+   * opens the next. They work anywhere on the page while the bar is shown,
+   * except while a text field has focus or a modifier key is held.
+   *
+   * @default true
+   */
+  shortcuts?: boolean;
 };
+
+/** Key that opens the previous record. */
+const PREVIOUS_KEY = ',';
+/** Key that opens the next record. */
+const NEXT_KEY = '.';
+
+const isTextEntry = (target: EventTarget | null) =>
+  target instanceof HTMLElement &&
+  Boolean(
+    target.closest(
+      'input, textarea, select, [contenteditable=""], [contenteditable="true"]',
+    ),
+  );
 
 /**
  * Drawer chrome for a record opened from a list: position, previous and next,
  * open full page, and close.
  *
  * Place it at the top of a `Drawer`, above the record's page header. The
- * position text ("Case 3 of 40") is announced when it changes. All text comes
+ * position text ("Case 3 of 40") is announced when it changes. "," and "."
+ * open the previous and next records from anywhere on the page. All text comes
  * from `LocaleProvider` (`peekPosition`, `previousItem`, `nextItem`,
  * `openFullPage`, and `closeDrawer`).
  *
@@ -59,6 +81,7 @@ export const PeekBar = (props: PeekBarProps) => {
     openHref,
     onOpen,
     onClose: onCloseProp,
+    shortcuts = true,
     ...rest
   } = props;
   const { labels } = useLocale();
@@ -67,6 +90,33 @@ export const PeekBar = (props: PeekBarProps) => {
   const classes = peekBar();
   const [className, otherProps] = splitProps(rest);
   const showOpen = Boolean(openHref || onOpen);
+  const canPrevious = Boolean(onPrevious) && index > 1;
+  const canNext = Boolean(onNext) && index < total;
+
+  // Page-wide "," and "." shortcuts, unless someone is typing.
+  useEffect(() => {
+    if (!shortcuts) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.defaultPrevented ||
+        isTextEntry(event.target)
+      ) {
+        return;
+      }
+      if (event.key === PREVIOUS_KEY && canPrevious) {
+        event.preventDefault();
+        onPrevious?.();
+      } else if (event.key === NEXT_KEY && canNext) {
+        event.preventDefault();
+        onNext?.();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [shortcuts, canPrevious, canNext, onPrevious, onNext]);
 
   return (
     <Box
@@ -83,16 +133,18 @@ export const PeekBar = (props: PeekBarProps) => {
           size="sm"
           iconName="arrow-left"
           altText={labels.previousItem(noun)}
-          disabled={!onPrevious || index <= 1}
+          disabled={!canPrevious}
           onClick={onPrevious}
+          aria-keyshortcuts={shortcuts ? PREVIOUS_KEY : undefined}
         />
         <IconButton
           variant="ghost"
           size="sm"
           iconName="arrow-right"
           altText={labels.nextItem(noun)}
-          disabled={!onNext || index >= total}
+          disabled={!canNext}
           onClick={onNext}
+          aria-keyshortcuts={shortcuts ? NEXT_KEY : undefined}
         />
         {showOpen && (
           <Button
