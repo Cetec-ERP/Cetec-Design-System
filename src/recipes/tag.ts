@@ -18,6 +18,13 @@ const tagBase = {
   whiteSpace: 'nowrap',
 };
 const tagVariant = {
+  size: {
+    sm: {
+      h: '16',
+      fontSize: '12',
+    },
+    md: {},
+  },
   variant: {
     default: {},
     bold: {},
@@ -67,6 +74,7 @@ export const tagRecipe = defineRecipe({
   base: tagBase,
   variants: tagVariant,
   defaultVariants: {
+    size: 'md',
     variant: 'default',
     hue: 'slate',
   },

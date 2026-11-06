@@ -24,6 +24,9 @@ export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
     /** Color family used by the tag treatment. */
     /** @default "slate" */
     hue?: TagVariantProps['hue'];
+    /** Height and text size. Use `sm` in dense rows such as table cells. */
+    /** @default "md" */
+    size?: TagVariantProps['size'];
   };
 
 /**
@@ -38,7 +41,10 @@ export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
  * ```
  */
 export const Tag = (props: TagProps) => {
-  const { variant, hue, iconBefore, iconAfter, children, ...rest } = props;
+  const { variant, hue, size, iconBefore, iconAfter, children, ...rest } =
+    props;
+  // Icon sizes share the names: sm is 16, md is 20.
+  const iconSize = size ?? 'md';
   const [className, otherProps] = splitProps(rest);
 
   return (
@@ -46,6 +52,7 @@ export const Tag = (props: TagProps) => {
       {...dsComponent('Tag')}
       className={cx(
         tag({
+          size,
           variant,
           hue,
           iconBefore: Boolean(iconBefore),
@@ -56,11 +63,16 @@ export const Tag = (props: TagProps) => {
       {...otherProps}
     >
       {iconBefore && (
-        <Icon name={iconBefore} fill="current" color="inherit" size="20" />
+        <Icon
+          name={iconBefore}
+          fill="current"
+          color="inherit"
+          size={iconSize}
+        />
       )}
       {children}
       {iconAfter && (
-        <Icon name={iconAfter} fill="current" color="inherit" size="20" />
+        <Icon name={iconAfter} fill="current" color="inherit" size={iconSize} />
       )}
     </Box>
   );
