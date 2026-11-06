@@ -10,6 +10,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * Tag component for labeling, categorizing, and organizing items.
  *
  * Features:
+ * - Two sizes (md, sm)
  * - Two visual variants (default, bold)
  * - 16 color hues
  * - Optional leading/trailing icons
@@ -31,6 +32,14 @@ const meta = {
       description: 'Visual style variant',
       table: {
         defaultValue: { summary: 'default' },
+      },
+    },
+    size: {
+      control: 'select',
+      options: ['md', 'sm'],
+      description: 'Height and text size',
+      table: {
+        defaultValue: { summary: 'md' },
       },
     },
     hue: {
@@ -160,6 +169,55 @@ export const VariantComparison: Story = {
             {hue}
           </Tag>
         ))}
+      </Wrap>
+    </Grid>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+// ============================================================================
+// Sizes
+// ============================================================================
+
+export const Sizes: Story = {
+  render: () => (
+    <Grid
+      gridTemplateColumns="auto 1fr"
+      columnGap="12"
+      rowGap="24"
+      alignItems="center"
+    >
+      <Text textStyle="mono.md" mr="16">
+        md
+      </Text>
+      <Wrap gap="8" alignItems="center">
+        <Tag hue="green">Approved</Tag>
+        <Tag hue="blue" variant="bold">
+          Released
+        </Tag>
+        <Tag hue="green" iconBefore="check">
+          Approved
+        </Tag>
+        <Tag hue="yellow" iconAfter="star">
+          Featured
+        </Tag>
+      </Wrap>
+      <Text textStyle="mono.md" mr="16">
+        sm
+      </Text>
+      <Wrap gap="8" alignItems="center">
+        <Tag size="sm" hue="green">
+          Approved
+        </Tag>
+        <Tag size="sm" hue="blue" variant="bold">
+          Released
+        </Tag>
+        <Tag size="sm" hue="green" iconBefore="check">
+          Approved
+        </Tag>
+        <Tag size="sm" hue="yellow" iconAfter="star">
+          Featured
+        </Tag>
       </Wrap>
     </Grid>
   ),
