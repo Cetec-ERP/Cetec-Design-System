@@ -1,4 +1,4 @@
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
 
@@ -543,6 +543,72 @@ export const FormSubmitting: Story = {
     </HStack>
   ),
   parameters: { controls: { disable: true } },
+};
+
+/**
+ * Use case: an action the user can't take right now, with the reason. The
+ * button stays focusable, so keyboard and screen-reader users get the reason.
+ */
+export const DisabledWithReason: Story = {
+  name: 'Ex: Disabled With Reason',
+  render: () => (
+    <HStack gap="8">
+      <Button
+        variant="primary"
+        disabledReason="Closed orders can't be edited. Reopen the order first."
+      >
+        Edit order
+      </Button>
+      <Button disabledReason="You need the Purchasing role to approve.">
+        Approve
+      </Button>
+      <IconButton
+        iconName="trash"
+        altText="Delete order"
+        variant="danger"
+        disabledReason="Orders with shipments can't be deleted."
+      />
+    </HStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DisabledReasonBehavior: Story = {
+  name: 'Test: disabledReason',
+  args: {
+    children: 'Edit order',
+    disabledReason: "Closed orders can't be edited.",
+    onClick: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: 'Edit order' });
+
+    // Disabled for assistive tech and styling, but still in the tab order.
+    await expect(button).toHaveAttribute('aria-disabled', 'true');
+    await expect(button).not.toHaveAttribute('disabled');
+    await expect(button).toHaveAccessibleDescription(
+      "Closed orders can't be edited.",
+    );
+
+    // The recipe turns off pointer events. Keyboard activation is blocked too.
+    button.focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+    await expect(args.onClick).not.toHaveBeenCalled();
+
+    // Keyboard focus shows the reason.
+    button.blur();
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+    const tooltip = await within(document.body).findByRole('tooltip');
+    await expect(tooltip).toHaveTextContent("Closed orders can't be edited.");
+
+    button.blur();
+    await waitFor(() =>
+      expect(within(document.body).queryByRole('tooltip')).toBeNull(),
+    );
+  },
 };
 
 export const DsComponentAttribute: Story = {

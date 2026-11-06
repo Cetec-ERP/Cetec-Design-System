@@ -1,4 +1,4 @@
-import { fn } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { Wrap } from '@styled-system/jsx';
 
@@ -62,4 +62,50 @@ export const ExLoadingAndDisabled: Story = {
     </Wrap>
   ),
   parameters: { controls: { disable: true } },
+};
+
+export const ExDisabledWithReason: Story = {
+  name: 'Ex: Disabled With Reason',
+  render: () => (
+    <Wrap gap="14">
+      <IconButton
+        iconName="edit"
+        altText="Edit order"
+        disabledReason="Closed orders can't be edited."
+      />
+      <IconButton
+        iconName="trash"
+        altText="Delete order"
+        variant="danger"
+        disabledReason="Orders with shipments can't be deleted."
+      />
+    </Wrap>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+export const DisabledReasonBehavior: Story = {
+  name: 'Test: disabledReason',
+  args: {
+    iconName: 'trash',
+    altText: 'Delete order',
+    disabledReason: "Orders with shipments can't be deleted.",
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    // altText stays the accessible name; the reason is the description.
+    const button = canvas.getByRole('button', { name: 'Delete order' });
+
+    await expect(button).toHaveAttribute('aria-disabled', 'true');
+    await expect(button).not.toHaveAttribute('disabled');
+    await expect(button).toHaveAccessibleDescription(
+      "Orders with shipments can't be deleted.",
+    );
+
+    // The recipe turns off pointer events. Keyboard activation is blocked too.
+    button.focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
 };

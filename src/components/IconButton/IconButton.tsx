@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import { type MouseEvent, useId } from 'react';
 
 import { cx } from '@styled-system/css';
 import {
@@ -47,6 +47,13 @@ export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
      */
     disabled?: boolean;
     /**
+     * Disables the action and explains why. The control stays focusable and
+     * is marked `aria-disabled`, clicks are blocked, the tooltip shows the
+     * reason instead of `altText`, and the reason is linked with
+     * `aria-describedby`. `altText` stays the accessible name.
+     */
+    disabledReason?: string;
+    /**
      * Native button type; ignored when `href` causes the component to render an
      * anchor.
      *
@@ -61,7 +68,9 @@ export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
  * Renders a native `button` by default, or an anchor when `href` is supplied.
  * Its explicit `size`, `error`, `invalid`, and `disabled` values take
  * precedence over slot context, which takes precedence over field context.
- * Its recipe defaults to the `standard` variant and `md` size.
+ * Its recipe defaults to the `standard` variant and `md` size. Set
+ * `disabledReason` instead of `disabled` when the user needs to know why the
+ * action is unavailable.
  *
  * @example
  * ```tsx
@@ -81,44 +90,57 @@ export const IconButton = (props: IconButtonProps) => {
     error: errorProp,
     invalid: invalidProp,
     disabled: disabledProp,
+    disabledReason,
     type = 'button',
+    onClick,
+    'aria-describedby': ariaDescribedBy,
     ...rest
   } = props;
+  const reasonId = useId();
+  const hasReason = Boolean(disabledReason);
   const size =
     sizeProp ??
     (slotContext?.size as IconButtonVariantProps['size'] | undefined) ??
     fieldContext?.size;
   const error = errorProp ?? slotContext?.error ?? fieldContext?.error;
   const invalid = invalidProp ?? slotContext?.invalid ?? fieldContext?.invalid;
-  const disabled =
-    disabledProp ?? slotContext?.disabled ?? fieldContext?.disabled;
+  const disabled = hasReason
+    ? true
+    : (disabledProp ?? slotContext?.disabled ?? fieldContext?.disabled);
   const classes = iconButton({ variant, size });
   const [className, otherProps] = splitProps(rest);
 
   return (
-    <Tooltip text={altText}>
+    <Tooltip text={hasReason ? (disabledReason ?? '') : altText}>
       <Box
         {...dsComponent('IconButton')}
         {...(href
           ? ({
               as: 'a',
               href,
-              ...(disabled && {
-                onClick: (e: MouseEvent<HTMLAnchorElement>) =>
-                  e.preventDefault(),
-              }),
             } satisfies BoxProps<'a'>)
           : ({
               as: 'button',
               type,
-              disabled,
+              // A reason keeps the button focusable, so it can show the reason.
+              disabled: hasReason ? undefined : disabled,
             } satisfies BoxProps<'button'>))}
+        onClick={
+          disabled && (href || hasReason)
+            ? (e: MouseEvent<HTMLElement>) => e.preventDefault()
+            : onClick
+        }
         className={`${cx(classes.container, className)} group`}
         {...(loading && {
           'aria-busy': true,
           'aria-live': 'polite',
         })}
         aria-disabled={disabled}
+        aria-describedby={
+          [hasReason ? reasonId : undefined, ariaDescribedBy]
+            .filter(Boolean)
+            .join(' ') || undefined
+        }
         aria-invalid={invalid || undefined}
         aria-label={altText}
         data-error={error || undefined}
@@ -140,6 +162,11 @@ export const IconButton = (props: IconButtonProps) => {
           />
         )}
       </Box>
+      {hasReason && (
+        <span id={reasonId} hidden>
+          {disabledReason}
+        </span>
+      )}
     </Tooltip>
   );
 };
