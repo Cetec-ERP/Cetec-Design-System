@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useLayoutEffect } from 'react';
 
 import { cx } from '@styled-system/css';
 import { modal as modalRecipe } from '@styled-system/recipes';
@@ -48,7 +48,12 @@ export const ModalHeader = (props: ModalHeaderProps) => {
   const { title, titleId, showCloseButton = true, children, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
   const classes = modalRecipe();
-  const { onClose } = useModalWrapperContext();
+  const { onClose, registerHeaderCloseButton } = useModalWrapperContext();
+  const rendersCloseButton = !children && showCloseButton;
+  useLayoutEffect(
+    () => (rendersCloseButton ? registerHeaderCloseButton() : undefined),
+    [rendersCloseButton, registerHeaderCloseButton],
+  );
 
   const isSm = useMediaQuery('sm');
 
