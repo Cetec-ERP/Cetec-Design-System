@@ -102,7 +102,7 @@ export const DisabledReasonBehavior: Story = {
       "Orders with shipments can't be deleted.",
     );
 
-    // The recipe turns off pointer events. Keyboard activation is blocked too.
+    // Clicks and keyboard activation do nothing.
     button.focus();
     await userEvent.keyboard('{Enter}');
     await userEvent.keyboard(' ');

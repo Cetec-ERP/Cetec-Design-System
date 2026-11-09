@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { HStack, Wrap, Grid, VStack } from '@styled-system/jsx';
@@ -591,7 +593,7 @@ export const DisabledReasonBehavior: Story = {
       "Closed orders can't be edited.",
     );
 
-    // The recipe turns off pointer events. Keyboard activation is blocked too.
+    // Clicks and keyboard activation do nothing.
     button.focus();
     await userEvent.keyboard('{Enter}');
     await userEvent.keyboard(' ');
@@ -608,6 +610,50 @@ export const DisabledReasonBehavior: Story = {
     await waitFor(() =>
       expect(within(document.body).queryByRole('tooltip')).toBeNull(),
     );
+
+    // Hover shows the reason too, and a click does nothing.
+    await userEvent.hover(button);
+    await expect(
+      await within(document.body).findByRole('tooltip'),
+    ).toHaveTextContent("Closed orders can't be edited.");
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
+    await userEvent.unhover(button);
+    button.blur();
+    await waitFor(() =>
+      expect(within(document.body).queryByRole('tooltip')).toBeNull(),
+    );
+  },
+};
+
+export const DisabledReasonKeepsFocus: Story = {
+  name: 'Test: focus stays when a reason appears',
+  // Behavior test only. It ends in the same state as "Test: disabledReason".
+  tags: ['!snapshot'],
+  render: function Render() {
+    const [reason, setReason] = useState<string>();
+    return (
+      <Button
+        disabledReason={reason}
+        onClick={() => setReason('This case is already closed.')}
+      >
+        Close case
+      </Button>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: 'Close case' });
+
+    await userEvent.click(button);
+
+    await waitFor(() =>
+      expect(button).toHaveAttribute('aria-disabled', 'true'),
+    );
+    await expect(canvas.getByRole('button', { name: 'Close case' })).toBe(
+      button,
+    );
+    await expect(button).toHaveFocus();
   },
 };
 

@@ -220,6 +220,9 @@ export const Button = (props: ButtonProps) => {
           ? (e: MouseEvent<HTMLElement>) => e.preventDefault()
           : onClick
       }
+      // The global disabled style turns off pointer events. A reason needs
+      // hover to show its tooltip. The onClick guard above still blocks clicks.
+      pointerEvents={hasReason ? 'auto' : undefined}
       className={`${cx(classes.container, className)} group`}
       {...(loading && {
         'aria-busy': true,
@@ -261,17 +264,24 @@ export const Button = (props: ButtonProps) => {
     </Box>
   );
 
-  if (!hasReason) {
-    return control;
-  }
-
+  // Always in a Tooltip, so a reason that comes or goes does not remount the
+  // button and drop its focus. `asChild` adds no wrapper, so layout is unchanged.
   return (
-    <Tooltip text={disabledReason ?? ''} placement="top">
-      {control}
-      <span id={reasonId} hidden>
-        {disabledReason}
-      </span>
-    </Tooltip>
+    <>
+      <Tooltip
+        asChild
+        text={disabledReason ?? ''}
+        placement="top"
+        disabled={!hasReason}
+      >
+        {control}
+      </Tooltip>
+      {hasReason && (
+        <span id={reasonId} hidden>
+          {disabledReason}
+        </span>
+      )}
+    </>
   );
 };
 

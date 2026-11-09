@@ -1,6 +1,6 @@
 // src/components/Tooltip/Tooltip.tsx
-import { useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import { cloneElement, isValidElement, useRef, useState } from 'react';
+import type { ReactElement, ReactNode, Ref } from 'react';
 
 import {
   FloatingArrow,
@@ -11,6 +11,7 @@ import {
   useFocus,
   useHover,
   useInteractions,
+  useMergeRefs,
   useRole,
 } from '@floating-ui/react';
 
@@ -60,7 +61,14 @@ export type TooltipProps = Omit<
     disabled?: boolean;
     /** Hover open/close delay in milliseconds, or separate `open` and `close` delays. */
     delay?: number | { open: number; close: number };
-    /** Trigger content, wrapped in an inline-flex span to receive floating interaction props. */
+    /**
+     * Puts the trigger props on `children` instead of a wrapper span, so the
+     * tooltip adds nothing to layout. `children` must be one element that
+     * takes a `ref`. An `aria-describedby` on the child is kept.
+     * @default false
+     */
+    asChild?: boolean;
+    /** Trigger content, wrapped in an inline-flex span to receive floating interaction props unless `asChild` is set. */
     children?: ReactNode;
     /**
      * Tooltip recipe size.
@@ -72,8 +80,9 @@ export type TooltipProps = Omit<
 /**
  * Shows nonessential contextual text for a trigger on hover and keyboard focus.
  *
- * The trigger is wrapped in a span and linked with `aria-describedby`; Escape
- * dismisses the portalled tooltip. Do not use a tooltip as the only accessible
+ * The trigger is wrapped in a span, or takes the props itself with `asChild`,
+ * and is linked with `aria-describedby`; Escape dismisses the portalled
+ * tooltip. Do not use a tooltip as the only accessible
  * name or instruction for an interactive control. Set `disabled` to suppress
  * the tooltip without changing the rendered structure.
  *
@@ -93,6 +102,7 @@ export const Tooltip = (props: TooltipProps) => {
     offset = 8,
     delay,
     disabled = false,
+    asChild = false,
     ...rest
   } = props;
 
@@ -128,8 +138,24 @@ export const Tooltip = (props: TooltipProps) => {
 
   const classes = tooltip({ size, hasTitle: !!title });
 
-  return (
-    <>
+  const child =
+    asChild && isValidElement<Record<string, unknown>>(children)
+      ? children
+      : null;
+  const childRef = (child?.props.ref ?? null) as Ref<Element> | null;
+  const childReferenceRef = useMergeRefs([refs.setReference, childRef]);
+
+  let trigger: ReactNode;
+  if (child) {
+    const referenceProps = getReferenceProps(child.props);
+    trigger = cloneElement(child as ReactElement<Record<string, unknown>>, {
+      ...referenceProps,
+      'aria-describedby':
+        child.props['aria-describedby'] ?? referenceProps['aria-describedby'],
+      ref: childReferenceRef,
+    });
+  } else {
+    trigger = (
       <Box
         as="span"
         ref={refs.setReference}
@@ -141,6 +167,12 @@ export const Tooltip = (props: TooltipProps) => {
       >
         {children}
       </Box>
+    );
+  }
+
+  return (
+    <>
+      {trigger}
 
       {isOpen && !disabled && (
         <FloatingPortal>
