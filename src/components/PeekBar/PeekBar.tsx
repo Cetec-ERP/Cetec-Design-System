@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { useMergeRefs } from '@floating-ui/react';
 
@@ -52,11 +52,8 @@ const NEXT_KEY = '.';
 
 const isTextEntry = (target: EventTarget | null) =>
   target instanceof HTMLElement &&
-  Boolean(
-    target.closest(
-      'input, textarea, select, [contenteditable=""], [contenteditable="true"]',
-    ),
-  );
+  (target.isContentEditable ||
+    Boolean(target.closest('input, textarea, select')));
 
 /**
  * Drawer chrome for a record opened from a list: position, previous and next,
@@ -99,6 +96,14 @@ export const PeekBar = (props: PeekBarProps) => {
   const canPrevious = Boolean(onPrevious) && index > 1;
   const canNext = Boolean(onNext) && index < total;
   const inDrawer = Boolean(drawer);
+
+  // The bar's buttons show a tooltip on keyboard focus, which would take the
+  // first Escape. Registering makes a modal drawer focus its panel on open.
+  const registerHeaderCloseButton = drawer?.registerHeaderCloseButton;
+  useLayoutEffect(
+    () => registerHeaderCloseButton?.(),
+    [registerHeaderCloseButton],
+  );
 
   // Single-key shortcuts are active only while focus is in the bar or its
   // drawer, so a user can always step away from them (WCAG 2.1.4).

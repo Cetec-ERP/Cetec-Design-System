@@ -1,6 +1,13 @@
 import { useState } from 'react';
 
-import { expect, fn, userEvent, within } from 'storybook/test';
+import {
+  expect,
+  fireEvent,
+  fn,
+  userEvent,
+  waitFor,
+  within,
+} from 'storybook/test';
 
 import { VStack } from '@styled-system/jsx';
 
@@ -220,6 +227,82 @@ export const ShortcutsInDrawer: Story = {
     (await page.findByRole('button', { name: 'Assign' })).focus();
     await userEvent.keyboard('.');
     await expect(args.onNext).toHaveBeenCalledOnce();
+  },
+};
+
+export const ShortcutsSkipPlainTextEditor: Story = {
+  name: 'Test: punctuation in a plain-text editor',
+  // Behavior test only. The open drawer adds nothing to look at.
+  tags: ['!snapshot'],
+  args: { onClose: undefined },
+  render: (args) => (
+    <Drawer open onOpenChange={() => {}} modal={false} aria-label="Case 3">
+      <PeekBar {...args} />
+      <DrawerBody>
+        <Box
+          contentEditable="plaintext-only"
+          suppressContentEditableWarning
+          role="textbox"
+          aria-label="Reply"
+          aria-multiline
+          minH="16"
+          borderWidth="1"
+          borderColor="border"
+        />
+      </DrawerBody>
+    </Drawer>
+  ),
+  play: async ({ args }) => {
+    const page = within(document.body);
+    const editor = await page.findByRole('textbox', { name: 'Reply' });
+    editor.focus();
+
+    // fireEvent returns false when a handler cancels the key, which would
+    // stop the browser from inserting the character.
+    await expect(fireEvent.keyDown(editor, { key: ',' })).toBe(true);
+    await expect(fireEvent.keyDown(editor, { key: '.' })).toBe(true);
+    await expect(args.onPrevious).not.toHaveBeenCalled();
+    await expect(args.onNext).not.toHaveBeenCalled();
+  },
+};
+
+export const A11yModalDrawerKeyboard: Story = {
+  name: 'A11y Modal Drawer Keyboard',
+  // Behavior test only. The drawer is closed when the snapshot is taken.
+  tags: ['!snapshot'],
+  decorators: [(Story) => <Story />],
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open case drawer</Button>
+        <Drawer open={open} onOpenChange={setOpen} aria-label="Case 3">
+          <PeekBar {...args} onClose={undefined} />
+          <DrawerBody>
+            <Text>Label printer drops the last line</Text>
+          </DrawerBody>
+        </Drawer>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('button', { name: 'Open case drawer' });
+
+    // Open by keyboard. The panel takes focus, not a bar button, so no
+    // tooltip opens and one Escape closes the drawer.
+    trigger.focus();
+    await userEvent.keyboard('{Enter}');
+    const drawer = await body.findByRole('dialog', { name: 'Case 3' });
+    await waitFor(() => expect(drawer).toHaveFocus());
+    await expect(body.queryByRole('tooltip')).toBeNull();
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(body.queryByRole('dialog', { name: 'Case 3' })).toBeNull(),
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
   },
 };
 
