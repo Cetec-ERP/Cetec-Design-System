@@ -22,7 +22,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * - Previous and next, disabled at the ends of the list
  * - "Open" to go to the full page, shown when `openHref` or `onOpen` is set
  * - Close, which defaults to the parent `Drawer`'s close
- * - Keyboard: "," opens the previous record and "." the next
+ * - Keyboard: "," opens the previous record and "." the next, while focus is
+ *   in the bar or its drawer
  */
 const meta = {
   title: 'Components/PeekBar',
@@ -153,6 +154,9 @@ export const KeyboardShortcuts: Story = {
       <Box px="16" pb="8">
         <TextInput name="notes" aria-label="Notes" />
       </Box>
+      <Box px="16" pb="8">
+        <Button variant="standard">Outside</Button>
+      </Box>
     </VStack>
   ),
   play: async ({ args, canvasElement }) => {
@@ -165,7 +169,14 @@ export const KeyboardShortcuts: Story = {
       canvas.getByRole('button', { name: 'Next case' }),
     ).toHaveAttribute('aria-keyshortcuts', '.');
 
-    // From the page: "," is previous and "." is next.
+    // Focus outside the bar: the keys do nothing.
+    canvas.getByRole('button', { name: 'Outside' }).focus();
+    await userEvent.keyboard(',.');
+    await expect(args.onPrevious).not.toHaveBeenCalled();
+    await expect(args.onNext).not.toHaveBeenCalled();
+
+    // Focus in the bar: "," is previous and "." is next.
+    canvas.getByRole('button', { name: 'Close drawer' }).focus();
     await userEvent.keyboard(',');
     await expect(args.onPrevious).toHaveBeenCalledOnce();
     await userEvent.keyboard('.');
@@ -182,10 +193,33 @@ export const KeyboardShortcuts: Story = {
 export const ShortcutsStopAtEnds: Story = {
   name: 'Test: shortcuts stop at the ends',
   args: { index: 1, total: 1 },
-  play: async ({ args }) => {
+  play: async ({ args, canvasElement }) => {
+    within(canvasElement).getByRole('button', { name: 'Close drawer' }).focus();
     await userEvent.keyboard(',.');
     await expect(args.onPrevious).not.toHaveBeenCalled();
     await expect(args.onNext).not.toHaveBeenCalled();
+  },
+};
+
+export const ShortcutsInDrawer: Story = {
+  name: 'Test: shortcuts work anywhere in the drawer',
+  // Behavior test only. The open drawer adds nothing to look at.
+  tags: ['!snapshot'],
+  args: { onClose: undefined },
+  render: (args) => (
+    <Drawer open onOpenChange={() => {}} modal={false} aria-label="Case 3">
+      <PeekBar {...args} />
+      <DrawerBody>
+        <Button variant="standard">Assign</Button>
+      </DrawerBody>
+    </Drawer>
+  ),
+  play: async ({ args }) => {
+    const page = within(document.body);
+
+    (await page.findByRole('button', { name: 'Assign' })).focus();
+    await userEvent.keyboard('.');
+    await expect(args.onNext).toHaveBeenCalledOnce();
   },
 };
 

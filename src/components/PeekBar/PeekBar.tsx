@@ -1,4 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
+
+import { useMergeRefs } from '@floating-ui/react';
 
 import { cx } from '@styled-system/css';
 import { peekBar } from '@styled-system/recipes';
@@ -35,8 +37,8 @@ export type PeekBarProps = Omit<BoxProps, 'children'> & {
   onClose?: () => void;
   /**
    * Turns on the keyboard shortcuts: "," opens the previous record and "."
-   * opens the next. They work anywhere on the page while the bar is shown,
-   * except while a text field has focus or a modifier key is held.
+   * opens the next. They work while focus is in the bar, or anywhere in its
+   * `Drawer`, except while a text field has focus or a modifier key is held.
    *
    * @default true
    */
@@ -62,7 +64,8 @@ const isTextEntry = (target: EventTarget | null) =>
  *
  * Place it at the top of a `Drawer`, above the record's page header. The
  * position text ("Case 3 of 40") is announced when it changes. "," and "."
- * open the previous and next records from anywhere on the page. All text comes
+ * open the previous and next records while focus is in the bar or its drawer.
+ * All text comes
  * from `LocaleProvider` (`peekPosition`, `previousItem`, `nextItem`,
  * `openFullPage`, and `closeDrawer`).
  *
@@ -82,8 +85,11 @@ export const PeekBar = (props: PeekBarProps) => {
     onOpen,
     onClose: onCloseProp,
     shortcuts = true,
+    ref,
     ...rest
   } = props;
+  const rootRef = useRef<HTMLElement | null>(null);
+  const mergedRef = useMergeRefs([rootRef, ref]);
   const { labels } = useLocale();
   const drawer = useContext(DrawerContext);
   const onClose = onCloseProp ?? drawer?.onClose;
@@ -92,12 +98,18 @@ export const PeekBar = (props: PeekBarProps) => {
   const showOpen = Boolean(openHref || onOpen);
   const canPrevious = Boolean(onPrevious) && index > 1;
   const canNext = Boolean(onNext) && index < total;
+  const inDrawer = Boolean(drawer);
 
-  // Page-wide "," and "." shortcuts, unless someone is typing.
+  // Single-key shortcuts are active only while focus is in the bar or its
+  // drawer, so a user can always step away from them (WCAG 2.1.4).
   useEffect(() => {
     if (!shortcuts) return;
     const onKeyDown = (event: KeyboardEvent) => {
+      const root = rootRef.current;
+      const scope = (inDrawer && root?.closest('[role="dialog"]')) || root;
       if (
+        !(event.target instanceof Node) ||
+        !scope?.contains(event.target) ||
         event.metaKey ||
         event.ctrlKey ||
         event.altKey ||
@@ -116,11 +128,12 @@ export const PeekBar = (props: PeekBarProps) => {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [shortcuts, canPrevious, canNext, onPrevious, onNext]);
+  }, [shortcuts, inDrawer, canPrevious, canNext, onPrevious, onNext]);
 
   return (
     <Box
       {...dsComponent('PeekBar')}
+      ref={mergedRef}
       className={cx(classes.root, className)}
       {...otherProps}
     >
