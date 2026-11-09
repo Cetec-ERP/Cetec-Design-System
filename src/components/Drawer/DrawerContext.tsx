@@ -8,6 +8,12 @@ export interface DrawerContextValue {
   onClose: () => void;
   /** Whether the parent drawer traps focus and blocks the page behind it. */
   modal: boolean;
+  /**
+   * Tells the drawer that a header close button is rendered. A modal drawer
+   * then focuses its panel on open, so the close button's tooltip does not
+   * open and take the first Escape. Returns the cleanup that unregisters it.
+   */
+  registerHeaderCloseButton: () => () => void;
 }
 
 export const DrawerContext = createContext<DrawerContextValue | null>(null);
