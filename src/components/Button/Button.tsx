@@ -61,8 +61,8 @@ export type ButtonProps = Omit<
     /** Sets `aria-invalid` and marks the control invalid for styling and slots. */
     invalid?: boolean;
     /**
-     * Disables a native button. For links, marks the anchor `aria-disabled` and
-     * prevents its default click navigation.
+     * Disables a native button. For links, marks the anchor `aria-disabled`,
+     * removes its `href` so it can't navigate, and keeps it focusable.
      */
     disabled?: boolean;
     /**
@@ -207,7 +207,9 @@ export const Button = (props: ButtonProps) => {
       {...(href
         ? ({
             as: 'a',
-            href,
+            // A live href still opens on middle-click or from the context
+            // menu, so a disabled link drops it and keeps its role and focus.
+            ...(disabled ? { role: 'link', tabIndex: 0 } : { href }),
           } satisfies BoxProps<'a'>)
         : ({
             as: 'button',
@@ -266,6 +268,7 @@ export const Button = (props: ButtonProps) => {
 
   // Always in a Tooltip, so a reason that comes or goes does not remount the
   // button and drop its focus. `asChild` adds no wrapper, so layout is unchanged.
+  // The hidden text already describes the button, so the tooltip does not.
   return (
     <>
       <Tooltip
@@ -273,13 +276,14 @@ export const Button = (props: ButtonProps) => {
         text={disabledReason ?? ''}
         placement="top"
         disabled={!hasReason}
+        describeTrigger={false}
       >
         {control}
       </Tooltip>
       {hasReason && (
-        <span id={reasonId} hidden>
+        <Box as="span" id={reasonId} hidden>
           {disabledReason}
-        </span>
+        </Box>
       )}
     </>
   );

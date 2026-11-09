@@ -605,6 +605,10 @@ export const DisabledReasonBehavior: Story = {
     await expect(button).toHaveFocus();
     const tooltip = await within(document.body).findByRole('tooltip');
     await expect(tooltip).toHaveTextContent("Closed orders can't be edited.");
+    // The open tooltip does not add the reason a second time.
+    await expect(button).toHaveAccessibleDescription(
+      "Closed orders can't be edited.",
+    );
 
     button.blur();
     await waitFor(() =>
@@ -626,6 +630,38 @@ export const DisabledReasonBehavior: Story = {
     await expect(args.onClick).not.toHaveBeenCalled();
     await userEvent.unhover(button);
     button.blur();
+    await waitFor(() =>
+      expect(within(document.body).queryByRole('tooltip')).toBeNull(),
+    );
+  },
+};
+
+export const DisabledReasonLink: Story = {
+  name: 'Test: disabled link has no href',
+  // Behavior test only. It looks the same as "Test: disabledReason".
+  tags: ['!snapshot'],
+  args: {
+    href: 'https://example.com/orders/1042',
+    children: 'View order',
+    disabledReason: 'You need the Sales role to view orders.',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // No live href, so middle-click and "Open in new tab" can't navigate.
+    const link = canvas.getByRole('link', { name: 'View order' });
+
+    await expect(link).not.toHaveAttribute('href');
+    await expect(link).toHaveAttribute('aria-disabled', 'true');
+    await expect(link).toHaveAccessibleDescription(
+      'You need the Sales role to view orders.',
+    );
+
+    await userEvent.tab();
+    await expect(link).toHaveFocus();
+    await expect(
+      await within(document.body).findByRole('tooltip'),
+    ).toHaveTextContent('You need the Sales role to view orders.');
+    link.blur();
     await waitFor(() =>
       expect(within(document.body).queryByRole('tooltip')).toBeNull(),
     );

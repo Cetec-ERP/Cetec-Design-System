@@ -64,10 +64,18 @@ export type TooltipProps = Omit<
     /**
      * Puts the trigger props on `children` instead of a wrapper span, so the
      * tooltip adds nothing to layout. `children` must be one element that
-     * takes a `ref`. An `aria-describedby` on the child is kept.
+     * takes a `ref`. An `aria-describedby` on the child is kept, and the
+     * tooltip's ID is added to it while the tooltip is open.
      * @default false
      */
     asChild?: boolean;
+    /**
+     * Links the open tooltip to the trigger with `aria-describedby`. Set it to
+     * `false` only when the trigger already has the same text as its
+     * description, so screen readers do not read it twice.
+     * @default true
+     */
+    describeTrigger?: boolean;
     /** Trigger content, wrapped in an inline-flex span to receive floating interaction props unless `asChild` is set. */
     children?: ReactNode;
     /**
@@ -103,6 +111,7 @@ export const Tooltip = (props: TooltipProps) => {
     delay,
     disabled = false,
     asChild = false,
+    describeTrigger = true,
     ...rest
   } = props;
 
@@ -147,11 +156,19 @@ export const Tooltip = (props: TooltipProps) => {
 
   let trigger: ReactNode;
   if (child) {
-    const referenceProps = getReferenceProps(child.props);
+    // Floating UI lets the child's props win, so take the child's description
+    // out first and join it with the tooltip's.
+    const { 'aria-describedby': childDescribedBy, ...childProps } = child.props;
+    const referenceProps = getReferenceProps(childProps);
     trigger = cloneElement(child as ReactElement<Record<string, unknown>>, {
       ...referenceProps,
       'aria-describedby':
-        child.props['aria-describedby'] ?? referenceProps['aria-describedby'],
+        [
+          childDescribedBy,
+          describeTrigger ? referenceProps['aria-describedby'] : undefined,
+        ]
+          .filter(Boolean)
+          .join(' ') || undefined,
       ref: childReferenceRef,
     });
   } else {
@@ -164,6 +181,7 @@ export const Tooltip = (props: TooltipProps) => {
         lineHeight="none"
         width="fit"
         {...getReferenceProps()}
+        {...(!describeTrigger && { 'aria-describedby': undefined })}
       >
         {children}
       </Box>

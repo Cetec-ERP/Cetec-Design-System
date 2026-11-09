@@ -42,15 +42,15 @@ export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
     /** Sets `aria-invalid` and marks the control invalid for styling. */
     invalid?: boolean;
     /**
-     * Disables a native button. For links, marks the anchor `aria-disabled` and
-     * prevents its default click navigation.
+     * Disables a native button. For links, marks the anchor `aria-disabled`,
+     * removes its `href` so it can't navigate, and keeps it focusable.
      */
     disabled?: boolean;
     /**
      * Disables the action and explains why. The control stays focusable and
-     * is marked `aria-disabled`, clicks are blocked, the tooltip shows the
-     * reason instead of `altText`, and the reason is linked with
-     * `aria-describedby`. `altText` stays the accessible name.
+     * is marked `aria-disabled`, clicks are blocked, the tooltip shows
+     * `altText` as its title with the reason below, and the reason is linked
+     * with `aria-describedby`. `altText` stays the accessible name.
      */
     disabledReason?: string;
     /**
@@ -111,13 +111,19 @@ export const IconButton = (props: IconButtonProps) => {
   const [className, otherProps] = splitProps(rest);
 
   return (
-    <Tooltip text={hasReason ? (disabledReason ?? '') : altText}>
+    <Tooltip
+      // With a reason, the label stays visible as the title above it.
+      title={hasReason ? altText : undefined}
+      text={hasReason ? (disabledReason ?? '') : altText}
+    >
       <Box
         {...dsComponent('IconButton')}
         {...(href
           ? ({
               as: 'a',
-              href,
+              // A live href still opens on middle-click or from the context
+              // menu, so a disabled link drops it and keeps its role and focus.
+              ...(disabled ? { role: 'link', tabIndex: 0 } : { href }),
             } satisfies BoxProps<'a'>)
           : ({
               as: 'button',
@@ -163,9 +169,9 @@ export const IconButton = (props: IconButtonProps) => {
         )}
       </Box>
       {hasReason && (
-        <span id={reasonId} hidden>
+        <Box as="span" id={reasonId} hidden>
           {disabledReason}
-        </span>
+        </Box>
       )}
     </Tooltip>
   );

@@ -165,3 +165,35 @@ export const AsChild: Story = {
     await expect(button).toHaveAccessibleDescription('Copies the link');
   },
 };
+
+export const AsChildJoinsDescriptions: Story = {
+  name: 'Test: asChild joins descriptions',
+  // Behavior test only. It looks the same as "Keyboard Focus".
+  tags: ['!snapshot'],
+  args: { asChild: true, text: 'Copies the link' },
+  render: (args) => (
+    <Box display="flex" gap="16" alignItems="center">
+      <Tooltip {...args}>
+        <Button aria-describedby="copy-link-hint">Copy link</Button>
+      </Tooltip>
+      <Box as="span" id="copy-link-hint">
+        Anyone with the link can view.
+      </Box>
+    </Box>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: 'Copy link' });
+
+    await expect(button).toHaveAccessibleDescription(
+      'Anyone with the link can view.',
+    );
+
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+    await within(document.body).findByRole('tooltip');
+    await expect(button).toHaveAccessibleDescription(
+      'Anyone with the link can view. Copies the link',
+    );
+  },
+};

@@ -107,5 +107,37 @@ export const DisabledReasonBehavior: Story = {
     await userEvent.keyboard('{Enter}');
     await userEvent.keyboard(' ');
     await expect(args.onClick).not.toHaveBeenCalled();
+
+    // Keyboard focus shows the label as the title, with the reason below.
+    button.blur();
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+    const tooltip = await within(document.body).findByRole('tooltip');
+    await expect(tooltip).toHaveTextContent('Delete order');
+    await expect(tooltip).toHaveTextContent(
+      "Orders with shipments can't be deleted.",
+    );
+  },
+};
+
+export const DisabledReasonLink: Story = {
+  name: 'Test: disabled link has no href',
+  // Behavior test only. It looks the same as "Test: disabledReason".
+  tags: ['!snapshot'],
+  args: {
+    iconName: 'edit',
+    altText: 'Edit order',
+    href: 'https://example.com/orders/1042/edit',
+    disabledReason: "Closed orders can't be edited.",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // No live href, so the context menu can't open it in a new tab.
+    const link = canvas.getByRole('link', { name: 'Edit order' });
+
+    await expect(link).not.toHaveAttribute('href');
+    await expect(link).toHaveAttribute('aria-disabled', 'true');
+    await userEvent.tab();
+    await expect(link).toHaveFocus();
   },
 };
