@@ -13,6 +13,22 @@ const keyFactBase = {
     flex: 'none',
     whiteSpace: 'nowrap',
   },
+  // The label's text renders in these, through Box. Box resets font and color,
+  // so they take both from the label.
+  labelWithColon: {
+    color: 'inherit',
+    fontFamily: 'inherit',
+    fontVariationSettings: 'inherit',
+    fontWeight: 'inherit',
+    lineHeight: 'inherit',
+  },
+  labelPlain: {
+    color: 'inherit',
+    fontFamily: 'inherit',
+    fontVariationSettings: 'inherit',
+    fontWeight: 'inherit',
+    lineHeight: 'inherit',
+  },
   value: {
     display: 'flex',
     minW: '0',
@@ -44,16 +60,23 @@ const keyFactVariants = {
    * `horizontal` reads "Label: Value" on one line, for a page header `aside`.
    * `vertical` stacks the label over a larger value, for a facts strip.
    */
+  // Each layout sets every property the other one sets, so a conditional
+  // layout switches cleanly at a breakpoint. The label renders in both forms,
+  // and the layout shows one.
   layout: {
     horizontal: {
       root: { flexDirection: 'row', alignItems: 'center', gap: '4' },
       // A text style sets its own color, so set the label color after it.
       label: { textStyle: 'body.sm', color: 'text.subtle' },
+      labelWithColon: { display: 'inline' },
+      labelPlain: { display: 'none' },
       value: { textStyle: 'body.sm' },
     },
     vertical: {
-      root: { flexDirection: 'column', gap: '2' },
+      root: { flexDirection: 'column', alignItems: 'stretch', gap: '2' },
       label: { textStyle: 'body.sm', color: 'text.subtle' },
+      labelWithColon: { display: 'none' },
+      labelPlain: { display: 'inline' },
       value: { textStyle: 'body.lg' },
     },
   },
@@ -70,7 +93,15 @@ const keyFactVariants = {
 export const keyFactRecipe = defineSlotRecipe({
   className: 'keyFact',
   jsx: ['KeyFact'],
-  slots: ['root', 'label', 'value', 'text', 'actions'],
+  slots: [
+    'root',
+    'label',
+    'labelWithColon',
+    'labelPlain',
+    'value',
+    'text',
+    'actions',
+  ],
   base: keyFactBase,
   variants: keyFactVariants,
   defaultVariants: {

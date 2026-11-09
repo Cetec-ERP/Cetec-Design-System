@@ -13,6 +13,7 @@ import {
 import { HStack, VStack, Wrap } from '@styled-system/jsx';
 
 import { Box } from '../Box';
+import { Button } from '../Button';
 import { Divider } from '../Divider';
 import { IconButton } from '../IconButton';
 
@@ -61,6 +62,86 @@ export const Layouts: Story = {
     </VStack>
   ),
   parameters: { controls: { disable: true } },
+};
+
+const mdBreakpoint = '(min-width: 48rem)';
+
+const expectLayout = (fact: HTMLElement, layout: 'horizontal' | 'vertical') => {
+  const shown = (text: string) =>
+    getComputedStyle(within(fact).getByText(text)).display !== 'none';
+  const link = fact.querySelector('a');
+
+  expect(shown('Customer:')).toBe(layout === 'horizontal');
+  expect(shown('Customer')).toBe(layout === 'vertical');
+  expect(link && getComputedStyle(link).fontSize).toBe(
+    layout === 'horizontal' ? '14px' : '20px',
+  );
+};
+
+const responsiveLayoutStory: Story = {
+  render: () => (
+    <VStack gap="24" alignItems="flex-start">
+      <KeyFact
+        label="Customer"
+        value="Acme Corp"
+        href="#customer"
+        layout={{ base: 'horizontal' }}
+        data-testid="horizontal-base-only"
+      />
+      <KeyFact
+        label="Customer"
+        value="Acme Corp"
+        href="#customer"
+        layout={{ base: 'vertical', md: 'horizontal' }}
+        data-testid="vertical-then-horizontal"
+      />
+      <KeyFact
+        label="Customer"
+        value="Acme Corp"
+        href="#customer"
+        layout={{ md: 'vertical' }}
+        data-testid="horizontal-then-vertical"
+      />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const aboveMd = window.matchMedia(mdBreakpoint).matches;
+
+    expectLayout(canvas.getByTestId('horizontal-base-only'), 'horizontal');
+    expectLayout(
+      canvas.getByTestId('vertical-then-horizontal'),
+      aboveMd ? 'horizontal' : 'vertical',
+    );
+    // With no `base`, the layout starts as `horizontal`.
+    expectLayout(
+      canvas.getByTestId('horizontal-then-vertical'),
+      aboveMd ? 'vertical' : 'horizontal',
+    );
+  },
+};
+
+/**
+ * `layout` accepts conditional values. Resize the viewport across the `md`
+ * breakpoint (768px) to see the label and the value switch together.
+ */
+export const ResponsiveLayout: Story = {
+  ...responsiveLayoutStory,
+  name: 'Responsive Layout',
+};
+
+/** The same facts below the `md` breakpoint. */
+export const ResponsiveLayoutNarrow: Story = {
+  ...responsiveLayoutStory,
+  name: 'Responsive Layout Narrow',
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
+  play: async (context) => {
+    // Fail loudly if the viewport global stops applying, rather than
+    // repeating the wide-viewport checks.
+    expect(window.matchMedia(mdBreakpoint).matches).toBe(false);
+    await responsiveLayoutStory.play?.(context);
+  },
 };
 
 export const AsLink: Story = {
@@ -314,6 +395,52 @@ export const TruncatedShowsTooltip: Story = {
     await new Promise((resolve) => setTimeout(resolve, 200));
     await expect(body.queryByRole('tooltip')).toBeNull();
     await userEvent.unhover(canvas.getByText('Dana Ortiz'));
+  },
+};
+
+export const TooltipAfterBecomingLink: Story = {
+  name: 'Test: tooltip after the value becomes a link',
+  // Behavior test only. It looks the same as "Truncated".
+  tags: ['!snapshot'],
+  render: function Render() {
+    const [isLink, setIsLink] = useState(false);
+    const [narrow, setNarrow] = useState(false);
+
+    return (
+      <VStack gap="12" alignItems="flex-start">
+        <HStack gap="8">
+          <Button onClick={() => setIsLink(true)}>Make link</Button>
+          <Button onClick={() => setNarrow(true)}>Narrow</Button>
+        </HStack>
+        <Box w={narrow ? '160' : 'auto'}>
+          <KeyFact
+            label="Ship to"
+            value="Acme Corp, Receiving Dock 4"
+            href={isLink ? '#ship-to' : undefined}
+          />
+        </Box>
+      </VStack>
+    );
+  },
+  parameters: { controls: { disable: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(document.body);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Make link' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Narrow' }));
+
+    const link = canvas.getByRole('link', {
+      name: 'Acme Corp, Receiving Dock 4',
+    });
+    await waitFor(() =>
+      expect(link.scrollWidth).toBeGreaterThan(link.clientWidth),
+    );
+    await userEvent.hover(link);
+    await expect(await body.findByRole('tooltip')).toHaveTextContent(
+      'Acme Corp, Receiving Dock 4',
+    );
+    await userEvent.unhover(link);
   },
 };
 

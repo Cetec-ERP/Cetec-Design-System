@@ -35,6 +35,8 @@ export type KeyFactProps = Omit<
     /**
      * `horizontal` reads "Label: Value" on one line, for a page header aside.
      * `vertical` stacks the label over a larger value, for a facts strip.
+     * Takes a conditional value, such as `{ base: 'vertical', md: 'horizontal' }`.
+     * A conditional value without `base` starts as `horizontal`.
      *
      * @default 'horizontal'
      */
@@ -64,6 +66,19 @@ export type KeyFactProps = Omit<
     inputProps?: Partial<Omit<TextInputProps, 'id'>>;
   };
 
+/** Fills in the default `horizontal` below the first breakpoint of a conditional layout. */
+const withBaseLayout = (
+  layout: KeyFactProps['layout'],
+): KeyFactProps['layout'] => {
+  if (layout == null) return 'horizontal';
+  if (Array.isArray(layout)) {
+    const [first, ...rest] = layout;
+    return [first ?? 'horizontal', ...rest];
+  }
+  if (typeof layout === 'object') return { base: 'horizontal', ...layout };
+  return layout;
+};
+
 /**
  * Shows one short fact about a record as a label and a value.
  *
@@ -83,7 +98,7 @@ export const KeyFact = (props: KeyFactProps) => {
     label,
     value,
     href,
-    layout = 'horizontal',
+    layout,
     editing = false,
     editMode = 'input',
     onSave,
@@ -97,10 +112,19 @@ export const KeyFact = (props: KeyFactProps) => {
   const inputId = useId();
   const textRef = useRef<HTMLElement>(null);
   const [truncated, setTruncated] = useState(false);
-  const classes = keyFact({ layout, editing });
+  const classes = keyFact({ layout: withBaseLayout(layout), editing });
   const [className, otherProps] = splitProps(rest);
-  const labelText =
-    layout === 'horizontal' ? labels.keyFactLabel(label) : label;
+  const isLink = Boolean(href);
+  const labelText = (
+    <>
+      <Box as="span" className={classes.labelWithColon}>
+        {labels.keyFactLabel(label)}
+      </Box>
+      <Box as="span" className={classes.labelPlain}>
+        {label}
+      </Box>
+    </>
+  );
 
   if (import.meta.env.DEV && editMode !== 'confirm' && (onSave || onCancel)) {
     console.warn(
@@ -152,7 +176,8 @@ export const KeyFact = (props: KeyFactProps) => {
     const observer = new ResizeObserver(measure);
     observer.observe(element);
     return () => observer.disconnect();
-  }, [editing, value]);
+    // `isLink` swaps the span for a link, so the new element is observed.
+  }, [editing, value, isLink]);
 
   return (
     <Box
@@ -201,12 +226,7 @@ export const KeyFact = (props: KeyFactProps) => {
           <Box className={classes.value}>
             <Tooltip text={value} placement="top" disabled={!truncated}>
               {href ? (
-                <Link
-                  ref={textRef}
-                  href={href}
-                  size={layout === 'horizontal' ? '14' : '20'}
-                  className={classes.text}
-                >
+                <Link ref={textRef} href={href} className={classes.text}>
                   {value}
                 </Link>
               ) : (
