@@ -611,11 +611,17 @@ export const DisabledReasonBehavior: Story = {
       expect(within(document.body).queryByRole('tooltip')).toBeNull(),
     );
 
-    // Hover shows the reason too, and a click does nothing.
+    // Hover shows the reason without a hover style, and a click does nothing.
+    const restingBg = getComputedStyle(button).backgroundColor;
     await userEvent.hover(button);
     await expect(
       await within(document.body).findByRole('tooltip'),
     ).toHaveTextContent("Closed orders can't be edited.");
+    // Simulated hover does not set :hover, so use the hover data attribute.
+    button.setAttribute('data-hover', 'true');
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await expect(getComputedStyle(button).backgroundColor).toBe(restingBg);
+    button.removeAttribute('data-hover');
     await userEvent.click(button);
     await expect(args.onClick).not.toHaveBeenCalled();
     await userEvent.unhover(button);
