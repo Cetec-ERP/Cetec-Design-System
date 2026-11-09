@@ -137,16 +137,15 @@ export const A11yModalKeyboard: Story = {
     const body = within(canvasElement.ownerDocument.body);
     const trigger = canvas.getByRole('button', { name: 'Open drawer' });
 
-    // Escape closes and focus returns to the trigger.
-    await userEvent.click(trigger);
+    // Open by keyboard: the close button's tooltip opens on keyboard focus.
+    // The panel takes focus instead, so no tooltip opens and one Escape closes
+    // the drawer. Focus returns to the trigger.
+    trigger.focus();
+    await userEvent.keyboard('{Enter}');
     const drawer = await body.findByRole('dialog', { name: 'Filters' });
     expect(drawer).toHaveAttribute('aria-modal', 'true');
-    await waitFor(() =>
-      expect(drawer).toContainElement(document.activeElement as HTMLElement),
-    );
-    // Focus starts on the close button, whose tooltip takes the first Escape.
-    // Move into a field so a single Escape reaches the drawer.
-    await userEvent.click(within(drawer).getByRole('textbox'));
+    await waitFor(() => expect(drawer).toHaveFocus());
+    expect(body.queryByRole('tooltip')).toBeNull();
     await userEvent.keyboard('{Escape}');
     await waitFor(() =>
       expect(body.queryByRole('dialog', { name: 'Filters' })).toBeNull(),
