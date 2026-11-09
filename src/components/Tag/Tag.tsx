@@ -5,7 +5,7 @@ import { dsComponent } from '~/utils/dsComponent';
 import { splitProps } from '~/utils/splitProps';
 
 import { Box, type BoxProps } from '../Box/Box';
-import { Icon } from '../Icon/Icon';
+import { Icon, type IconProps } from '../Icon/Icon';
 
 import type { IconNamesList } from '../Icon/icons';
 
@@ -30,6 +30,19 @@ export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
   };
 
 /**
+ * Icon sizes share the Tag size names: `sm` is 16 and `md` is 20. The Tag
+ * recipe defaults to `md`, but the Icon recipe has no default, so a
+ * conditional value without `base` gets `base: 'md'` here.
+ */
+const getIconSize = (size: TagProps['size']): IconProps['size'] => {
+  if (size == null) return 'md';
+  if (typeof size === 'object' && !Array.isArray(size)) {
+    return { base: 'md', ...size };
+  }
+  return size;
+};
+
+/**
  * Displays a compact, non-interactive category or status label.
  *
  * Use `Chip` when the item can be selected or dismissed. Icons are decorative,
@@ -43,8 +56,7 @@ export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
 export const Tag = (props: TagProps) => {
   const { variant, hue, size, iconBefore, iconAfter, children, ...rest } =
     props;
-  // Icon sizes share the names: sm is 16, md is 20.
-  const iconSize = size ?? 'md';
+  const iconSize = getIconSize(size);
   const [className, otherProps] = splitProps(rest);
 
   return (

@@ -1,3 +1,5 @@
+import { expect, within } from 'storybook/test';
+
 import { Wrap, Grid } from '@styled-system/jsx';
 
 import { Text } from '../Text';
@@ -222,6 +224,74 @@ export const Sizes: Story = {
     </Grid>
   ),
   parameters: { controls: { disable: true } },
+};
+
+// The `md` breakpoint from src/styles/utilities/breakpoints.ts.
+const mdBreakpoint = '(min-width: 48rem)';
+
+const expectTagSize = (tag: HTMLElement, size: 'sm' | 'md') => {
+  const px = size === 'sm' ? 16 : 20;
+  const icon = tag.querySelector('svg');
+  expect(icon).not.toBeNull();
+  expect(tag.getBoundingClientRect().height).toBe(px);
+  expect(icon?.getBoundingClientRect().width).toBe(px);
+};
+
+const responsiveSizeStory: Story = {
+  render: () => (
+    <Wrap gap="8" alignItems="center">
+      <Tag
+        hue="green"
+        iconBefore="check"
+        size={{ base: 'sm', md: 'md' }}
+        data-testid="small-then-medium"
+      >
+        sm, md from md up
+      </Tag>
+      <Tag
+        hue="blue"
+        iconAfter="star"
+        size={{ md: 'sm' }}
+        data-testid="medium-then-small"
+      >
+        md, sm from md up
+      </Tag>
+    </Wrap>
+  ),
+  parameters: { controls: { disable: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const aboveMd = window.matchMedia(mdBreakpoint).matches;
+
+    // The tag and its icon change size together at the breakpoint.
+    expectTagSize(
+      canvas.getByTestId('small-then-medium'),
+      aboveMd ? 'md' : 'sm',
+    );
+    // With no `base`, the tag and its icon both fall back to `md`.
+    expectTagSize(
+      canvas.getByTestId('medium-then-small'),
+      aboveMd ? 'sm' : 'md',
+    );
+  },
+};
+
+/**
+ * `size` accepts conditional values. Resize the viewport across the `md`
+ * breakpoint (768px) to see each tag and its icon switch size together.
+ */
+export const ResponsiveSize: Story = responsiveSizeStory;
+
+/** The same tags below the `md` breakpoint. */
+export const ResponsiveSizeNarrow: Story = {
+  ...responsiveSizeStory,
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
+  play: async (context) => {
+    // Fail loudly if the viewport global stops applying, rather than
+    // repeating the wide-viewport checks.
+    expect(window.matchMedia(mdBreakpoint).matches).toBe(false);
+    await responsiveSizeStory.play?.(context);
+  },
 };
 
 // ============================================================================
