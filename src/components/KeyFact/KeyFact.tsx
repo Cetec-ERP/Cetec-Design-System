@@ -41,7 +41,8 @@ export type KeyFactProps = Omit<
     layout?: KeyFactVariantProps['layout'];
     /**
      * Replaces the value with a text input labeled by `label`. The input starts
-     * with `value`.
+     * with `value`. On its own, `editing` has no save or cancel: put the
+     * KeyFact in a form with its own Save, or set `editMode="confirm"`.
      *
      * @default false
      */
@@ -55,11 +56,11 @@ export type KeyFactProps = Omit<
      * @default 'input'
      */
     editMode?: 'input' | 'confirm';
-    /** Called with the new value when the user saves. Used by `editMode="confirm"`. */
+    /** Called with the new value when the user saves. Called only in `editMode="confirm"`. */
     onSave?: (value: string) => void;
-    /** Called when the user cancels. Used by `editMode="confirm"`. */
+    /** Called when the user cancels. Called only in `editMode="confirm"`. */
     onCancel?: () => void;
-    /** Props for the text input shown while `editing`, such as `name` and `onChange`. */
+    /** Props for the text input shown while `editing`, such as `name` and `onChange`. Pass `name` when the KeyFact is in a form. */
     inputProps?: Partial<Omit<TextInputProps, 'id'>>;
   };
 
@@ -101,6 +102,12 @@ export const KeyFact = (props: KeyFactProps) => {
   const labelText =
     layout === 'horizontal' ? labels.keyFactLabel(label) : label;
 
+  if (import.meta.env.DEV && editMode !== 'confirm' && (onSave || onCancel)) {
+    console.warn(
+      'KeyFact received "onSave" or "onCancel" without editMode="confirm". They are called only in confirm mode.',
+    );
+  }
+
   // Each edit starts from the current value.
   useEffect(() => {
     if (editing) setDraft(value);
@@ -121,7 +128,7 @@ export const KeyFact = (props: KeyFactProps) => {
         },
         onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => {
           inputProps?.onKeyDown?.(event);
-          if (event.defaultPrevented) return;
+          if (event.defaultPrevented || event.nativeEvent.isComposing) return;
           if (event.key === 'Enter') {
             event.preventDefault();
             save();
@@ -160,7 +167,7 @@ export const KeyFact = (props: KeyFactProps) => {
           </Box>
           <Box className={classes.value}>
             <TextInput
-              name={inputProps?.name ?? inputId}
+              name=""
               size="sm"
               {...inputProps}
               {...confirmInputProps}
@@ -206,6 +213,9 @@ export const KeyFact = (props: KeyFactProps) => {
                 <Box
                   as="span"
                   ref={textRef}
+                  // Focusable while truncated, so keyboard and touch users can
+                  // open the tooltip with the full value.
+                  tabIndex={truncated ? 0 : undefined}
                   className={classes.text}
                   color="text"
                 >

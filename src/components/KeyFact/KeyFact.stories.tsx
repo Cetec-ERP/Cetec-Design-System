@@ -1,6 +1,14 @@
 import { useState } from 'react';
 
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import {
+  expect,
+  fireEvent,
+  fn,
+  spyOn,
+  userEvent,
+  waitFor,
+  within,
+} from 'storybook/test';
 
 import { HStack, VStack, Wrap } from '@styled-system/jsx';
 
@@ -289,10 +297,73 @@ export const TruncatedShowsTooltip: Story = {
     await userEvent.unhover(canvas.getByText('Acme Corp, Receiving Dock 4'));
     await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
 
+    // Keyboard focus reaches a truncated value and shows the full value.
+    await userEvent.tab();
+    await expect(canvas.getByText('Acme Corp, Receiving Dock 4')).toHaveFocus();
+    await expect(await body.findByRole('tooltip')).toHaveTextContent(
+      'Acme Corp, Receiving Dock 4',
+    );
+    await expect(canvas.getByText('Dana Ortiz')).not.toHaveAttribute(
+      'tabindex',
+    );
+    (document.activeElement as HTMLElement).blur();
+    await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
+
     // A value that fits shows no tooltip.
     await userEvent.hover(canvas.getByText('Dana Ortiz'));
     await new Promise((resolve) => setTimeout(resolve, 200));
     await expect(body.queryByRole('tooltip')).toBeNull();
     await userEvent.unhover(canvas.getByText('Dana Ortiz'));
+  },
+};
+
+export const ImeEnterDoesNotSave: Story = {
+  name: 'Test: Enter during IME composition does not save',
+  // Behavior test only. It looks the same as "Test: confirm mode saves and cancels".
+  tags: ['!snapshot'],
+  args: {
+    label: 'PO number',
+    value: 'PO-88213',
+    editing: true,
+    editMode: 'confirm',
+    onSave: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const input = within(canvasElement).getByRole('textbox', {
+      name: 'PO number:',
+    });
+
+    fireEvent.keyDown(input, { key: 'Enter', isComposing: true });
+    await expect(args.onSave).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(input, { key: 'Enter' });
+    await expect(args.onSave).toHaveBeenCalledOnce();
+  },
+};
+
+export const InputModeDefaults: Story = {
+  name: 'Test: input mode has no default name and warns about onSave',
+  // Behavior test only. It looks the same as "Editing".
+  tags: ['!snapshot'],
+  args: {
+    label: 'PO number',
+    value: 'PO-88213',
+    editing: true,
+    onSave: fn(),
+  },
+  beforeEach: () => {
+    const warn = spyOn(console, 'warn').mockImplementation(() => {});
+    return () => warn.mockRestore();
+  },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole('textbox', {
+      name: 'PO number:',
+    });
+
+    // An unnamed input is left out of a form submit.
+    await expect(input.getAttribute('name') ?? '').toBe('');
+    await expect(console.warn).toHaveBeenCalledWith(
+      expect.stringContaining('without editMode="confirm"'),
+    );
   },
 };
