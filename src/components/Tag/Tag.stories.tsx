@@ -227,13 +227,17 @@ export const Sizes: Story = {
 };
 
 // The `md` breakpoint from src/styles/utilities/breakpoints.ts.
+const xsBreakpoint = '(min-width: 30rem)';
 const mdBreakpoint = '(min-width: 48rem)';
 
 const expectTagSize = (tag: HTMLElement, size: 'sm' | 'md') => {
   const px = size === 'sm' ? 16 : 20;
+  const fontPx = size === 'sm' ? 12 : 14;
   const icon = tag.querySelector('svg');
   expect(icon).not.toBeNull();
   expect(tag.getBoundingClientRect().height).toBe(px);
+  // The icon alone can make a tag 20px high, so check the text size too.
+  expect(getComputedStyle(tag).fontSize).toBe(`${fontPx}px`);
   expect(icon?.getBoundingClientRect().width).toBe(px);
 };
 
@@ -256,6 +260,14 @@ const responsiveSizeStory: Story = {
       >
         md, sm from md up
       </Tag>
+      <Tag
+        hue="purple"
+        iconBefore="star"
+        size={[null, 'sm']}
+        data-testid="array-without-base"
+      >
+        md, sm from xs up
+      </Tag>
     </Wrap>
   ),
   parameters: { controls: { disable: true } },
@@ -273,6 +285,11 @@ const responsiveSizeStory: Story = {
       canvas.getByTestId('medium-then-small'),
       aboveMd ? 'sm' : 'md',
     );
+    // The same for an array whose first entry is null.
+    expectTagSize(
+      canvas.getByTestId('array-without-base'),
+      window.matchMedia(xsBreakpoint).matches ? 'sm' : 'md',
+    );
   },
 };
 
@@ -280,7 +297,15 @@ const responsiveSizeStory: Story = {
  * `size` accepts conditional values. Resize the viewport across the `md`
  * breakpoint (768px) to see each tag and its icon switch size together.
  */
-export const ResponsiveSize: Story = responsiveSizeStory;
+export const ResponsiveSize: Story = {
+  ...responsiveSizeStory,
+  play: async (context) => {
+    // Fail loudly if the test viewport drops below `md`, rather than
+    // repeating the narrow-viewport checks.
+    expect(window.matchMedia(mdBreakpoint).matches).toBe(true);
+    await responsiveSizeStory.play?.(context);
+  },
+};
 
 /** The same tags below the `md` breakpoint. */
 export const ResponsiveSizeNarrow: Story = {

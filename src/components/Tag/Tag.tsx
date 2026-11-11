@@ -9,9 +9,12 @@ import { Icon, type IconProps } from '../Icon/Icon';
 
 import type { IconNamesList } from '../Icon/icons';
 
+type TagTreatment = (typeof tag.variantMap.variant)[number];
+type TagHue = (typeof tag.variantMap.hue)[number];
+
 /** Props accepted by {@link Tag}. */
 export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
-  Omit<TagVariantProps, 'iconBefore' | 'iconAfter'> & {
+  Pick<TagVariantProps, 'size'> & {
     /** Visible tag label. */
     children: string;
     /** Decorative icon shown before the label. */
@@ -20,24 +23,29 @@ export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
     iconAfter?: IconNamesList;
     /** Visual emphasis treatment. */
     /** @default "default" */
-    variant?: TagVariantProps['variant'];
+    // eslint-disable-next-line cetec/use-correct-conditional-variant-type -- variant and hue are a fixed color matrix, not responsive
+    variant?: TagTreatment;
     /** Color family used by the tag treatment. */
     /** @default "slate" */
-    hue?: TagVariantProps['hue'];
+    hue?: TagHue;
     /** Height and text size. Use `sm` in dense rows such as table cells. */
     /** @default "md" */
     size?: TagVariantProps['size'];
   };
 
 /**
- * Icon sizes share the Tag size names: `sm` is 16 and `md` is 20. The Tag
- * recipe defaults to `md`, but the Icon recipe has no default, so a
- * conditional value without `base` gets `base: 'md'` here.
+ * Fills in `md` below the first breakpoint. Panda replaces the recipe default
+ * with a conditional value, so `{ md: 'sm' }` or `[null, 'sm']` would leave
+ * small screens with no size. The Tag and its icons share the result, and
+ * icon sizes share the Tag size names: `sm` is 16 and `md` is 20.
  */
-const getIconSize = (size: TagProps['size']): IconProps['size'] => {
+const normalizeSize = (size: TagProps['size']): TagProps['size'] => {
   if (size == null) return 'md';
-  if (typeof size === 'object' && !Array.isArray(size)) {
-    return { base: 'md', ...size };
+  if (Array.isArray(size)) {
+    return size[0] == null ? ['md', ...size.slice(1)] : size;
+  }
+  if (typeof size === 'object') {
+    return size.base == null ? { ...size, base: 'md' } : size;
   }
   return size;
 };
@@ -56,7 +64,8 @@ const getIconSize = (size: TagProps['size']): IconProps['size'] => {
 export const Tag = (props: TagProps) => {
   const { variant, hue, size, iconBefore, iconAfter, children, ...rest } =
     props;
-  const iconSize = getIconSize(size);
+  const tagSize = normalizeSize(size);
+  const iconSize = tagSize as IconProps['size'];
   const [className, otherProps] = splitProps(rest);
 
   return (
@@ -64,7 +73,7 @@ export const Tag = (props: TagProps) => {
       {...dsComponent('Tag')}
       className={cx(
         tag({
-          size,
+          size: tagSize,
           variant,
           hue,
           iconBefore: Boolean(iconBefore),
