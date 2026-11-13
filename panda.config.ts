@@ -81,6 +81,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   popover: [{ layer: ['*'] }],
   tag: [{ variant: ['*'], hue: ['*'] }],
   textarea: [{ size: ['*'], responsive: true }],
+  keyFact: [{ layout: ['*'], responsive: true }, { editing: ['*'] }],
   textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
   tooltip: [{ size: ['*'], responsive: true }],
 };
