@@ -400,6 +400,96 @@ export const NoCloseButton: Story = {
 };
 
 // ============================================================================
+// INITIAL FOCUS
+// ============================================================================
+
+const InitialFocusExample = ({
+  showCloseButton,
+}: {
+  showCloseButton: boolean;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
+      <ModalWrapper
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        size="sm"
+        aria-label="Discard changes"
+      >
+        <ModalHeader
+          title="Discard changes?"
+          showCloseButton={showCloseButton}
+        />
+        <ModalBody>
+          <Text>Your edits to this order will be lost.</Text>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="ghost" onClick={() => setIsOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={() => setIsOpen(false)}>
+            Discard
+          </Button>
+        </ModalFooter>
+      </ModalWrapper>
+    </>
+  );
+};
+
+export const InitialFocusWithCloseButton: Story = {
+  name: 'Initial focus: with close button',
+  render: () => <InitialFocusExample showCloseButton />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('button', { name: 'Open Modal' });
+
+    // Open by keyboard: the close button's tooltip opens on keyboard focus.
+    await userEvent.tab();
+    expect(trigger).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    const dialog = await body.findByRole('dialog', { name: 'Discard changes' });
+
+    // The dialog takes focus, not the close button, so no tooltip opens.
+    await waitFor(() => expect(dialog).toHaveFocus());
+    expect(body.queryByRole('tooltip')).toBeNull();
+
+    // One Escape closes the dialog and returns focus to the trigger.
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('dialog')).toBeNull());
+    await waitFor(() => expect(trigger).toHaveFocus());
+  },
+  // Interaction test only. The end state matches the Default story's button.
+  tags: ['!snapshot'],
+};
+
+export const InitialFocusWithoutCloseButton: Story = {
+  name: 'Initial focus: without close button',
+  render: () => <InitialFocusExample showCloseButton={false} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+    await body.findByRole('dialog', { name: 'Discard changes' });
+
+    // With no close button, the first tabbable element takes focus.
+    await waitFor(() =>
+      expect(body.getByRole('button', { name: 'Cancel' })).toHaveFocus(),
+    );
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(body.queryByRole('dialog')).toBeNull());
+    expect(canvas.getByRole('button', { name: 'Open Modal' })).toBeVisible();
+  },
+  // Interaction test only. The end state matches the Default story's button.
+  tags: ['!snapshot'],
+};
+
+// ============================================================================
 // PREVENT OVERLAY CLOSE
 // ============================================================================
 

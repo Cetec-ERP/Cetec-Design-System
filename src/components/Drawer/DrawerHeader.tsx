@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useLayoutEffect } from 'react';
 
 import { cx } from '@styled-system/css';
 import { drawer as drawerRecipe } from '@styled-system/recipes';
@@ -52,7 +52,12 @@ export const DrawerHeader = (props: DrawerHeaderProps) => {
   const { title, titleId, showCloseButton = true, children, ...rest } = props;
   const [className, otherProps] = splitProps(rest);
   const classes = drawerRecipe();
-  const { onClose } = useDrawerContext();
+  const { onClose, registerHeaderCloseButton } = useDrawerContext();
+  const rendersCloseButton = !children && showCloseButton;
+  useLayoutEffect(
+    () => (rendersCloseButton ? registerHeaderCloseButton() : undefined),
+    [rendersCloseButton, registerHeaderCloseButton],
+  );
 
   const isSm = useMediaQuery('sm');
   const { labels } = useLocale();
