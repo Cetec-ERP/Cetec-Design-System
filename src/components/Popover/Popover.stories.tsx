@@ -255,8 +255,15 @@ export const EdgePlacement: Story = {
       expect(panelRect.bottom).toBeLessThanOrEqual(window.innerHeight);
     });
     // Keep the close control's focus tooltip out of the placement snapshot.
+    // Wait for the panel's initial focus to land on the close control first,
+    // or it can take focus back after the panel is focused.
+    const close = within(panel).getByRole('button');
+    await waitFor(() => expect(close).toHaveFocus());
     panel.focus();
-    await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
+    await waitFor(() => {
+      expect(panel).toHaveFocus();
+      expect(body.queryByRole('tooltip')).toBeNull();
+    });
   },
 };
 

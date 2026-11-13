@@ -79,7 +79,10 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   autocomplete: [{ size: ['*'], responsive: true }, { layer: ['*'] }],
   filterMenu: [{ layer: ['*'] }],
   popover: [{ layer: ['*'] }],
-  tag: [{ variant: ['*'], hue: ['*'] }],
+  tag: [
+    { size: ['*'], responsive: true },
+    { variant: ['*'], hue: ['*'] },
+  ],
   textarea: [{ size: ['*'], responsive: true }],
   keyFact: [{ layout: ['*'], responsive: true }, { editing: ['*'] }],
   textInput: [{ size: ['*'], before: ['*'], after: ['*'], responsive: true }],
