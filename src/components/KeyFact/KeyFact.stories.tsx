@@ -64,6 +64,8 @@ export const Layouts: Story = {
   parameters: { controls: { disable: true } },
 };
 
+// The `xs` and `md` breakpoints from src/styles/utilities/breakpoints.ts.
+const xsBreakpoint = '(min-width: 30rem)';
 const mdBreakpoint = '(min-width: 48rem)';
 
 const expectLayout = (fact: HTMLElement, layout: 'horizontal' | 'vertical') => {
@@ -102,6 +104,20 @@ const responsiveLayoutStory: Story = {
         layout={{ md: 'vertical' }}
         data-testid="horizontal-then-vertical"
       />
+      <KeyFact
+        label="Customer"
+        value="Acme Corp"
+        href="#customer"
+        layout={{ base: undefined, md: 'vertical' }}
+        data-testid="undefined-base-then-vertical"
+      />
+      <KeyFact
+        label="Customer"
+        value="Acme Corp"
+        href="#customer"
+        layout={[null, 'vertical']}
+        data-testid="array-without-base"
+      />
     </VStack>
   ),
   parameters: { controls: { disable: true } },
@@ -114,17 +130,27 @@ const responsiveLayoutStory: Story = {
       canvas.getByTestId('vertical-then-horizontal'),
       aboveMd ? 'horizontal' : 'vertical',
     );
-    // With no `base`, the layout starts as `horizontal`.
+    // With no `base`, or an undefined one, the layout starts as `horizontal`.
     expectLayout(
       canvas.getByTestId('horizontal-then-vertical'),
       aboveMd ? 'vertical' : 'horizontal',
+    );
+    expectLayout(
+      canvas.getByTestId('undefined-base-then-vertical'),
+      aboveMd ? 'vertical' : 'horizontal',
+    );
+    // The same for an array whose first entry is null.
+    expectLayout(
+      canvas.getByTestId('array-without-base'),
+      window.matchMedia(xsBreakpoint).matches ? 'vertical' : 'horizontal',
     );
   },
 };
 
 /**
  * `layout` accepts conditional values. Resize the viewport across the `md`
- * breakpoint (768px) to see the label and the value switch together.
+ * breakpoint (768px) to see the label and the value switch together. The
+ * array example switches at the `xs` breakpoint (480px).
  */
 export const ResponsiveLayout: Story = {
   ...responsiveLayoutStory,
@@ -138,8 +164,9 @@ export const ResponsiveLayoutNarrow: Story = {
   globals: { viewport: { value: 'mobile1', isRotated: false } },
   play: async (context) => {
     // Fail loudly if the viewport global stops applying, rather than
-    // repeating the wide-viewport checks.
-    expect(window.matchMedia(mdBreakpoint).matches).toBe(false);
+    // repeating the wide-viewport checks. Below `xs`, the array fact also
+    // checks its `horizontal` fallback.
+    expect(window.matchMedia(xsBreakpoint).matches).toBe(false);
     await responsiveLayoutStory.play?.(context);
   },
 };
@@ -489,8 +516,12 @@ export const InputModeDefaults: Story = {
 
     // An unnamed input is left out of a form submit.
     await expect(input.getAttribute('name') ?? '').toBe('');
-    await expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('without editMode="confirm"'),
-    );
+    // KeyFact warns only in development builds.
+    const warning = expect.stringContaining('without editMode="confirm"');
+    if (import.meta.env.DEV) {
+      await expect(console.warn).toHaveBeenCalledWith(warning);
+    } else {
+      await expect(console.warn).not.toHaveBeenCalledWith(warning);
+    }
   },
 };

@@ -75,7 +75,9 @@ const withBaseLayout = (
     const [first, ...rest] = layout;
     return [first ?? 'horizontal', ...rest];
   }
-  if (typeof layout === 'object') return { base: 'horizontal', ...layout };
+  if (typeof layout === 'object') {
+    return { ...layout, base: layout.base ?? 'horizontal' };
+  }
   return layout;
 };
 
