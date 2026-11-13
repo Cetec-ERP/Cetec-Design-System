@@ -226,7 +226,7 @@ export const Sizes: Story = {
   parameters: { controls: { disable: true } },
 };
 
-// The `md` breakpoint from src/styles/utilities/breakpoints.ts.
+// The `xs` and `md` breakpoints from src/styles/utilities/breakpoints.ts.
 const xsBreakpoint = '(min-width: 30rem)';
 const mdBreakpoint = '(min-width: 48rem)';
 
@@ -313,8 +313,9 @@ export const ResponsiveSizeNarrow: Story = {
   globals: { viewport: { value: 'mobile1', isRotated: false } },
   play: async (context) => {
     // Fail loudly if the viewport global stops applying, rather than
-    // repeating the wide-viewport checks.
-    expect(window.matchMedia(mdBreakpoint).matches).toBe(false);
+    // repeating the wide-viewport checks. Below `xs`, the array tag also
+    // checks its `md` fallback.
+    expect(window.matchMedia(xsBreakpoint).matches).toBe(false);
     await responsiveSizeStory.play?.(context);
   },
 };

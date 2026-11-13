@@ -9,7 +9,8 @@ import { Icon, type IconProps } from '../Icon/Icon';
 
 import type { IconNamesList } from '../Icon/icons';
 
-type TagTreatment = (typeof tag.variantMap.variant)[number];
+// `variant` and `hue` form a fixed color matrix, so both take scalar values.
+type TagTreatment = Extract<TagVariantProps['variant'], string>;
 type TagHue = (typeof tag.variantMap.hue)[number];
 
 /** Props accepted by {@link Tag}. */
@@ -23,7 +24,6 @@ export type TagProps = Omit<BoxProps, keyof TagVariantProps> &
     iconAfter?: IconNamesList;
     /** Visual emphasis treatment. */
     /** @default "default" */
-    // eslint-disable-next-line cetec/use-correct-conditional-variant-type -- variant and hue are a fixed color matrix, not responsive
     variant?: TagTreatment;
     /** Color family used by the tag treatment. */
     /** @default "slate" */
