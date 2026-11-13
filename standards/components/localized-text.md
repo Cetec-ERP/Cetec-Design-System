@@ -24,6 +24,21 @@ translated.
 6. Text that the app passes in, such as `title` or `label`, is the app's job.
    Do not add a key for it.
 
+## Enforcement
+
+ESLint rule `i18next/no-literal-string` runs as an error on
+`src/components/**/*.tsx` (config in `eslint.config.js`). It flags literal
+text between JSX tags and literal values in text props: `aria-label`,
+`altText`, `title`, `placeholder`, `tooltip`, `label`, and any prop ending in
+`Label`. Stories, tests, and `BreakpointIndicator` are skipped.
+
+The rule does not flag:
+
+- Punctuation and symbols only, such as `–` or `…`.
+- A single lowercase word, such as an icon name (`'check'`). A visible
+  one-word string like `'search'` gets past the rule, so review still applies.
+- Template literals, such as ``alt={`Logo`}``.
+
 ## Guidance
 
 - JSDoc examples and story content can use English. The rule covers text

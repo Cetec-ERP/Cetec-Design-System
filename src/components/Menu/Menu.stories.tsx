@@ -1282,6 +1282,28 @@ export const PanelAsSidebar: Story = {
     await waitFor(() => expect(item(/export/i)).toHaveFocus());
     await userEvent.keyboard('{ArrowLeft}');
     await waitFor(() => expect(item(/more actions/i)).toHaveFocus());
+
+    // A panel has no popup to return focus to, so Escape in a flyout
+    // returns focus to the flyout's trigger, as Arrow Left does.
+    await userEvent.keyboard('{ArrowRight}');
+    await waitFor(() => expect(item(/export/i)).toHaveFocus());
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(body.queryByRole('menuitem', { name: /export/i })).toBeNull(),
+    );
+    await waitFor(() => expect(item(/more actions/i)).toHaveFocus());
+
+    // From a nested flyout, Escape closes every level and lands on the
+    // trigger that is still in the panel.
+    await userEvent.keyboard('{ArrowRight}');
+    await waitFor(() => expect(item(/export/i)).toHaveFocus());
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowRight}');
+    await waitFor(() => expect(item(/audit log/i)).toHaveFocus());
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(body.queryByRole('menuitem', { name: /export/i })).toBeNull(),
+    );
+    await waitFor(() => expect(item(/more actions/i)).toHaveFocus());
   },
   parameters: { controls: { disable: true } },
 };
