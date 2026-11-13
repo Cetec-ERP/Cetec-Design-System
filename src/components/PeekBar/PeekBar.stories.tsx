@@ -230,6 +230,37 @@ export const ShortcutsInDrawer: Story = {
   },
 };
 
+export const ShortcutsInDrawerWithRole: Story = {
+  name: 'Test: shortcuts work in a drawer with its own role',
+  // Behavior test only. The open drawer adds nothing to look at.
+  tags: ['!snapshot'],
+  args: { onClose: undefined },
+  render: (args) => (
+    <Drawer
+      open
+      onOpenChange={() => {}}
+      modal={false}
+      role="alertdialog"
+      aria-label="Case 3"
+    >
+      <PeekBar {...args} />
+      <DrawerBody>
+        <Button variant="standard">Assign</Button>
+      </DrawerBody>
+    </Drawer>
+  ),
+  play: async ({ args }) => {
+    const page = within(document.body);
+
+    await expect(
+      await page.findByRole('alertdialog', { name: 'Case 3' }),
+    ).toBeInTheDocument();
+    (await page.findByRole('button', { name: 'Assign' })).focus();
+    await userEvent.keyboard('.');
+    await expect(args.onNext).toHaveBeenCalledOnce();
+  },
+};
+
 export const ShortcutsSkipPlainTextEditor: Story = {
   name: 'Test: punctuation in a plain-text editor',
   // Behavior test only. The open drawer adds nothing to look at.

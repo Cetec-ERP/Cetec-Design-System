@@ -95,7 +95,7 @@ export const PeekBar = (props: PeekBarProps) => {
   const showOpen = Boolean(openHref || onOpen);
   const canPrevious = Boolean(onPrevious) && index > 1;
   const canNext = Boolean(onNext) && index < total;
-  const inDrawer = Boolean(drawer);
+  const drawerPanelRef = drawer?.panelRef;
 
   // The bar's buttons show a tooltip on keyboard focus, which would take the
   // first Escape. Registering makes a modal drawer focus its panel on open.
@@ -110,8 +110,7 @@ export const PeekBar = (props: PeekBarProps) => {
   useEffect(() => {
     if (!shortcuts) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      const root = rootRef.current;
-      const scope = (inDrawer && root?.closest('[role="dialog"]')) || root;
+      const scope = drawerPanelRef?.current ?? rootRef.current;
       if (
         !(event.target instanceof Node) ||
         !scope?.contains(event.target) ||
@@ -133,7 +132,7 @@ export const PeekBar = (props: PeekBarProps) => {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [shortcuts, inDrawer, canPrevious, canNext, onPrevious, onNext]);
+  }, [shortcuts, drawerPanelRef, canPrevious, canNext, onPrevious, onNext]);
 
   return (
     <Box
