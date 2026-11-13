@@ -261,6 +261,7 @@ export const Drawer = (props: DrawerProps) => {
       onClose,
       modal,
       registerHeaderCloseButton,
+      panelRef,
     }),
     [modal, onClose, phase, registerHeaderCloseButton],
   );
