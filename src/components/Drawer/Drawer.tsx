@@ -7,6 +7,7 @@ import {
   useMemo,
   useReducer,
   useRef,
+  useState,
 } from 'react';
 
 import {
@@ -78,9 +79,10 @@ export type DrawerProps = Omit<
   /**
    * Element to focus when the drawer opens. Forwarded to Floating UI's
    * `FloatingFocusManager`. A number selects by tabbable index; a ref targets
-   * a specific element. Defaults to the first tabbable element for a modal
-   * drawer, and to the drawer panel itself for a non-modal drawer, so opening
-   * it from a list does not show the close button's tooltip.
+   * a specific element. Defaults to the drawer panel itself when the drawer
+   * is non-modal or a `DrawerHeader` close button is shown, so opening it does
+   * not show the close button's tooltip. Otherwise defaults to the first
+   * tabbable element.
    */
   initialFocus?: number | RefObject<HTMLElement | null>;
   /**
@@ -246,10 +248,23 @@ export const Drawer = (props: DrawerProps) => {
     onClose();
   };
 
+  // Registered from a layout effect, so the count is current before Floating
+  // UI moves focus (it waits a microtask after mount).
+  const [headerCloseButtons, setHeaderCloseButtons] = useState(0);
+  const registerHeaderCloseButton = useCallback(() => {
+    setHeaderCloseButtons((count) => count + 1);
+    return () => setHeaderCloseButtons((count) => count - 1);
+  }, []);
   const contextValue: DrawerContextValue = useMemo(
-    () => ({ open: phase === 'open', onClose, modal }),
-    [modal, onClose, phase],
+    () => ({
+      open: phase === 'open',
+      onClose,
+      modal,
+      registerHeaderCloseButton,
+    }),
+    [modal, onClose, phase, registerHeaderCloseButton],
   );
+  const focusPanel = !modal || headerCloseButtons > 0;
 
   if (phase === 'closed') {
     return null;
@@ -283,7 +298,7 @@ export const Drawer = (props: DrawerProps) => {
             <FloatingFocusManager
               context={context}
               modal={modal}
-              initialFocus={initialFocus ?? (modal ? 0 : panelRef)}
+              initialFocus={initialFocus ?? (focusPanel ? panelRef : 0)}
               returnFocus={returnFocus}
               closeOnFocusOut={false}
             >

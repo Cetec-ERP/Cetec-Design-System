@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import globals from 'globals';
+import i18next from 'eslint-plugin-i18next';
 import importPlugin from 'eslint-plugin-import';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
@@ -139,6 +140,59 @@ export default tseslint.config(
     },
     plugins: {
       cetec: cetecPlugin,
+    },
+  },
+  {
+    // Built-in component text must come from LocaleProvider labels.
+    // See standards/components/localized-text.md.
+    files: ['src/components/**/*.tsx'],
+    ignores: [
+      '**/*.stories.tsx',
+      '**/*.test.tsx',
+      'src/components/BreakpointIndicator/**',
+    ],
+    plugins: {
+      i18next,
+    },
+    rules: {
+      'i18next/no-literal-string': [
+        'error',
+        {
+          mode: 'jsx-only',
+          'jsx-attributes': {
+            include: [
+              'aria-label',
+              'aria-description',
+              'aria-roledescription',
+              'aria-valuetext',
+              'alt',
+              'altText',
+              'title',
+              'placeholder',
+              'tooltip',
+              'label',
+              '.*Label',
+            ],
+          },
+          callees: {
+            exclude: ['dsComponent', 'dsPart', 'renderSlot', 'cx'],
+          },
+          'object-properties': {
+            exclude: ['as', 'type', 'role', 'aria-live'],
+          },
+          words: {
+            // Plugin defaults, plus punctuation such as '–' and '…', and
+            // single lowercase tokens such as icon names ('check') and theme
+            // names ('dark'), which never render as text.
+            exclude: [
+              '[0-9!-/:-@[-`{-~]+',
+              '[A-Z_-]+',
+              /^[\p{P}\p{S}\s]+$/u,
+              '[a-z0-9-]+',
+            ],
+          },
+        },
+      ],
     },
   },
   {

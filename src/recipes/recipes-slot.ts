@@ -33,3 +33,4 @@ export { filterFieldRecipe } from './filterField';
 export { filterMenuRecipe } from './filterMenu';
 export { filterTokenRecipe } from './filterToken';
 export { printPreviewRecipe } from './printPreview';
+export { keyFactRecipe } from './keyFact';

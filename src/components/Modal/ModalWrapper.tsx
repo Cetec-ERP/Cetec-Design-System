@@ -6,6 +6,7 @@ import {
   useMemo,
   useReducer,
   useRef,
+  useState,
 } from 'react';
 
 import {
@@ -51,6 +52,9 @@ export type ModalWrapperProps = Omit<BoxProps, keyof ModalVariantProps> &
      * Element to focus when the dialog opens. Forwarded to Floating UI's
      * `FloatingFocusManager`. A number selects by tabbable index; a ref targets
      * a specific element (for example Cancel on a delete confirmation).
+     *
+     * Default: the dialog itself when a `ModalHeader` close button is shown,
+     * otherwise the first tabbable element.
      */
     initialFocus?: number | RefObject<HTMLElement | null>;
     /** Dialog content, typically composed from `ModalHeader`, `ModalBody`, and `ModalFooter`. */
@@ -179,14 +183,24 @@ export const ModalWrapper = (props: ModalWrapperProps) => {
   }, [open]);
 
   const onClose = useCallback(() => onOpenChange(false), [onOpenChange]);
+  // Registered from a layout effect, so the count is current before Floating
+  // UI moves focus (it waits a microtask after mount).
+  const [headerCloseButtons, setHeaderCloseButtons] = useState(0);
+  const registerHeaderCloseButton = useCallback(() => {
+    setHeaderCloseButtons((count) => count + 1);
+    return () => setHeaderCloseButtons((count) => count - 1);
+  }, []);
   const contextValue: ModalWrapperContextValue = useMemo(
     () => ({
       open: phase === 'open',
       onClose,
       preventOverlayClose,
+      registerHeaderCloseButton,
     }),
-    [onClose, phase, preventOverlayClose],
+    [onClose, phase, preventOverlayClose, registerHeaderCloseButton],
   );
+  const resolvedInitialFocus =
+    initialFocus ?? (headerCloseButtons > 0 ? refs.floating : 0);
 
   if (phase === 'closed') {
     return null;
@@ -220,7 +234,7 @@ export const ModalWrapper = (props: ModalWrapperProps) => {
               <FloatingFocusManager
                 context={context}
                 modal={true}
-                initialFocus={initialFocus}
+                initialFocus={resolvedInitialFocus}
               >
                 <Box
                   {...dsComponent('ModalWrapper')}
