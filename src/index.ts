@@ -132,6 +132,7 @@ export {
 export { IconButton, type IconButtonProps } from './components/IconButton';
 export { InlineNote, type InlineNoteProps } from './components/InlineNote';
 export { Kbd, type KbdProps } from './components/Kbd';
+export { KeyFact, type KeyFactProps } from './components/KeyFact';
 export { Label, type LabelProps } from './components/Label';
 export { Link, type LinkProps } from './components/Link';
 export {

@@ -1,6 +1,12 @@
 // src/components/Tooltip/Tooltip.tsx
-import { useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import type { ReactElement, ReactNode, Ref } from 'react';
 
 import {
   FloatingArrow,
@@ -11,6 +17,7 @@ import {
   useFocus,
   useHover,
   useInteractions,
+  useMergeRefs,
   useRole,
 } from '@floating-ui/react';
 
@@ -60,7 +67,22 @@ export type TooltipProps = Omit<
     disabled?: boolean;
     /** Hover open/close delay in milliseconds, or separate `open` and `close` delays. */
     delay?: number | { open: number; close: number };
-    /** Trigger content, wrapped in an inline-flex span to receive floating interaction props. */
+    /**
+     * Puts the trigger props on `children` instead of a wrapper span, so the
+     * tooltip adds nothing to layout. `children` must be one element that
+     * takes a `ref`. An `aria-describedby` on the child is kept, and the
+     * tooltip's ID is added to it while the tooltip is open.
+     * @default false
+     */
+    asChild?: boolean;
+    /**
+     * Links the open tooltip to the trigger with `aria-describedby`. Set it to
+     * `false` only when the trigger already has the same text as its
+     * description, so screen readers do not read it twice.
+     * @default true
+     */
+    describeTrigger?: boolean;
+    /** Trigger content, wrapped in an inline-flex span to receive floating interaction props unless `asChild` is set. */
     children?: ReactNode;
     /**
      * Tooltip recipe size.
@@ -72,8 +94,9 @@ export type TooltipProps = Omit<
 /**
  * Shows nonessential contextual text for a trigger on hover and keyboard focus.
  *
- * The trigger is wrapped in a span and linked with `aria-describedby`; Escape
- * dismisses the portalled tooltip. Do not use a tooltip as the only accessible
+ * The trigger is wrapped in a span, or takes the props itself with `asChild`,
+ * and is linked with `aria-describedby`; Escape dismisses the portalled
+ * tooltip. Do not use a tooltip as the only accessible
  * name or instruction for an interactive control. Set `disabled` to suppress
  * the tooltip without changing the rendered structure.
  *
@@ -93,6 +116,8 @@ export const Tooltip = (props: TooltipProps) => {
     offset = 8,
     delay,
     disabled = false,
+    asChild = false,
+    describeTrigger = true,
     ...rest
   } = props;
 
@@ -112,6 +137,21 @@ export const Tooltip = (props: TooltipProps) => {
     }),
   });
 
+  // A trigger that already has focus when the tooltip is enabled gets no new
+  // focus event, so open the tooltip here.
+  const wasDisabled = useRef(disabled);
+  useEffect(() => {
+    const trigger = elements.domReference;
+    if (
+      wasDisabled.current &&
+      !disabled &&
+      trigger?.contains(document.activeElement)
+    ) {
+      setIsOpen(true);
+    }
+    wasDisabled.current = disabled;
+  }, [disabled, elements.domReference]);
+
   const hover = useHover(context, { move: false, delay, enabled: !disabled });
   const focus = useFocus(context, { enabled: !disabled });
   const dismiss = useDismiss(context, { enabled: !disabled });
@@ -128,8 +168,32 @@ export const Tooltip = (props: TooltipProps) => {
 
   const classes = tooltip({ size, hasTitle: !!title });
 
-  return (
-    <>
+  const child =
+    asChild && isValidElement<Record<string, unknown>>(children)
+      ? children
+      : null;
+  const childRef = (child?.props.ref ?? null) as Ref<Element> | null;
+  const childReferenceRef = useMergeRefs([refs.setReference, childRef]);
+
+  let trigger: ReactNode;
+  if (child) {
+    // Floating UI lets the child's props win, so take the child's description
+    // out first and join it with the tooltip's.
+    const { 'aria-describedby': childDescribedBy, ...childProps } = child.props;
+    const referenceProps = getReferenceProps(childProps);
+    trigger = cloneElement(child as ReactElement<Record<string, unknown>>, {
+      ...referenceProps,
+      'aria-describedby':
+        [
+          childDescribedBy,
+          describeTrigger ? referenceProps['aria-describedby'] : undefined,
+        ]
+          .filter(Boolean)
+          .join(' ') || undefined,
+      ref: childReferenceRef,
+    });
+  } else {
+    trigger = (
       <Box
         as="span"
         ref={refs.setReference}
@@ -138,9 +202,16 @@ export const Tooltip = (props: TooltipProps) => {
         lineHeight="none"
         width="fit"
         {...getReferenceProps()}
+        {...(!describeTrigger && { 'aria-describedby': undefined })}
       >
         {children}
       </Box>
+    );
+  }
+
+  return (
+    <>
+      {trigger}
 
       {isOpen && !disabled && (
         <FloatingPortal>

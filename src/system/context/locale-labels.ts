@@ -16,6 +16,8 @@ export interface LocaleLabels {
   cancel: string;
   /** Default submit button text in `Modal`. */
   submit: string;
+  /** Accessible name and tooltip of the save button in `KeyFact`. */
+  save: string;
   /** Apply button text in range and date-time menus. */
   apply: string;
   /** Accessible name of the dismiss button in `Alert` and `Toast`. */
@@ -32,6 +34,10 @@ export interface LocaleLabels {
   removeFilter: (filter: string) => string;
   /** Accessible name of `ThemeSwitcher`, given the theme it switches to. */
   switchToTheme: (nextTheme: Theme) => string;
+
+  // ─── Key facts ────────────────────────────────────────────────────────────
+  /** Label of a horizontal `KeyFact`, written before its value ("Owner:"). */
+  keyFactLabel: (label: string) => string;
 
   // ─── Peek bar ─────────────────────────────────────────────────────────────
   /** Position text in `PeekBar`, such as "Case 3 of 40". */
@@ -188,6 +194,7 @@ export interface LocaleLabels {
 export const defaultLocaleLabels: LocaleLabels = {
   cancel: 'Cancel',
   submit: 'Submit',
+  save: 'Save',
   apply: 'Apply',
   dismiss: 'Dismiss',
   closeDialog: 'Close dialog',
@@ -197,6 +204,7 @@ export const defaultLocaleLabels: LocaleLabels = {
   removeFilter: (filter) => `Remove filter: ${filter}`,
   switchToTheme: (nextTheme) => `Switch to ${nextTheme} theme`,
 
+  keyFactLabel: (label) => `${label}:`,
   peekPosition: ({ noun, index, total }) => `${noun} ${index} of ${total}`,
   previousItem: (noun) => `Previous ${noun.toLowerCase()}`,
   nextItem: (noun) => `Next ${noun.toLowerCase()}`,
