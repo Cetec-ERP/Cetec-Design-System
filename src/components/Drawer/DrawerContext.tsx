@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, type RefObject, useContext } from 'react';
 
 /** State and close behavior shared with descendants of {@link Drawer}. */
 export interface DrawerContextValue {
@@ -14,6 +14,8 @@ export interface DrawerContextValue {
    * open and take the first Escape. Returns the cleanup that unregisters it.
    */
   registerHeaderCloseButton: () => () => void;
+  /** The drawer panel. Use it to check whether an element is inside the drawer. */
+  panelRef: RefObject<HTMLElement | null>;
 }
 
 export const DrawerContext = createContext<DrawerContextValue | null>(null);

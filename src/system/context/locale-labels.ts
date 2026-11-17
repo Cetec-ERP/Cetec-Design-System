@@ -39,6 +39,20 @@ export interface LocaleLabels {
   /** Label of a horizontal `KeyFact`, written before its value ("Owner:"). */
   keyFactLabel: (label: string) => string;
 
+  // ─── Peek bar ─────────────────────────────────────────────────────────────
+  /** Position text in `PeekBar`, such as "Case 3 of 40". */
+  peekPosition: (position: {
+    noun: string;
+    index: number;
+    total: number;
+  }) => string;
+  /** Accessible name of the previous button in `PeekBar`, given the noun. */
+  previousItem: (noun: string) => string;
+  /** Accessible name of the next button in `PeekBar`, given the noun. */
+  nextItem: (noun: string) => string;
+  /** Text of the open-full-page button in `PeekBar`. */
+  openFullPage: string;
+
   // ─── Selection lists ──────────────────────────────────────────────────────
   /** Default placeholder for `Select` and `Autocomplete`. */
   selectPlaceholder: string;
@@ -191,6 +205,10 @@ export const defaultLocaleLabels: LocaleLabels = {
   switchToTheme: (nextTheme) => `Switch to ${nextTheme} theme`,
 
   keyFactLabel: (label) => `${label}:`,
+  peekPosition: ({ noun, index, total }) => `${noun} ${index} of ${total}`,
+  previousItem: (noun) => `Previous ${noun.toLowerCase()}`,
+  nextItem: (noun) => `Next ${noun.toLowerCase()}`,
+  openFullPage: 'Open',
 
   selectPlaceholder: 'Select...',
   noResults: 'No results found',
