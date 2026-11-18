@@ -93,12 +93,6 @@ export const printSizeTokens = {
   headerBadge: { value: '32pt' },
   /** The widest a stack of totals gets. 3.4 in. */
   totalsWidth: { value: '3.4in' },
-};
-
-/** Fixed sizes of component parts. */
-export const componentSizeTokens = {
-  /** The label width of an `aligned` KeyFact, so values line up. 6 rem. */
-  keyFactLabel: { value: '6rem' },
   /** The longest side of a kit image. 2.4 in. */
   imageMax: { value: '2.4in' },
   /** The starting width of a signature or name line. 1.3 in. */
@@ -109,6 +103,12 @@ export const componentSizeTokens = {
   signDate: { value: '0.9in' },
   /** The width of an initials line. 0.5 in. */
   signInitials: { value: '0.5in' },
+};
+
+/** Fixed sizes of component parts. */
+export const componentSizeTokens = {
+  /** The label width of an `aligned` KeyFact, so values line up. 6 rem. */
+  keyFactLabel: { value: '6rem' },
 };
 
 export const sizes = defineTokens.sizes({
