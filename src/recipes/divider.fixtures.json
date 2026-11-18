@@ -1,0 +1,18 @@
+{
+  "recipe": "divider",
+  "fixtures": [
+    {
+      "name": "between-text",
+      "description": "A divider between two text blocks, in normal ink. The kit element has no props, so Go always writes the horizontal direction and the default weight. On paper the rule is the hairline color at 1 pt.",
+      "input": {},
+      "html": "<p class=\"cetec-text cetec-text--variant_note cetec-text--preserveLines_true\">Disposition: rework per MRB 26-114.</p><hr class=\"cetec-divider cetec-divider--direction_horizontal cetec-divider--weight_thin\" /><p class=\"cetec-text cetec-text--variant_note cetec-text--preserveLines_true\">Root cause: solder bridging on U7, stencil wear.</p>"
+    },
+    {
+      "name": "between-text-thermal",
+      "description": "The same divider in thermal ink. The rule is solid black at 1.5 pt, so a thermal printer prints it.",
+      "input": { "ink": "thermal" },
+      "root": ["cetec-printDoc", "cetec-ink-thermal"],
+      "html": "<p class=\"cetec-text cetec-text--variant_note cetec-text--preserveLines_true\">Disposition: rework per MRB 26-114.</p><hr class=\"cetec-divider cetec-divider--direction_horizontal cetec-divider--weight_thin\" /><p class=\"cetec-text cetec-text--variant_note cetec-text--preserveLines_true\">Root cause: solder bridging on U7, stencil wear.</p>"
+    }
+  ]
+}
