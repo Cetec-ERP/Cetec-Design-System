@@ -40,3 +40,4 @@ export { printSlotRecipe } from './printSlot';
 export { labelFieldRecipe } from './labelField';
 export { barcodeRecipe } from './barcode';
 export { headerRecipe } from './header';
+export { partyRecipe } from './party';

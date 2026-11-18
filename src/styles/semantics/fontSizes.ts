@@ -78,5 +78,7 @@ export const fontSizes = defineSemanticTokens.fontSizes({
     labelValue: { value: '11pt' },
     /** A large value in a canvas slot, such as the part number on a label. */
     labelValueLarge: { value: '17pt' },
+    /** Names in a block, such as the company name in an address. */
+    heading: { value: '11pt' },
   },
 });

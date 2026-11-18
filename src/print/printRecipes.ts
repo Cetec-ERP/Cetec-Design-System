@@ -16,6 +16,7 @@ export const printRecipeNames = [
   'keyFact',
   'tag',
   'header',
+  'party',
 ] as const;
 
 /** The name of a recipe in the print kit. */
