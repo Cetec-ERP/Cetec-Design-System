@@ -133,6 +133,7 @@ const sizeExamples: { name: string; size: PageSize }[] = [
   { name: 'A4', size: pageSizes.a4 },
   { name: 'Legal', size: pageSizes.legal },
   { name: 'Label 4 × 2 in', size: pageSizes.label4x2 },
+  { name: 'Label 3 × 1 in', size: pageSizes.label3x1 },
   { name: 'Label 2 × 1 in', size: pageSizes.label2x1 },
   { name: 'Custom 100 × 50 mm', size: { width: 100, height: 50, unit: 'mm' } },
 ];

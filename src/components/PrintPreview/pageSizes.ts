@@ -64,5 +64,6 @@ export const pageSizes = {
   label4x3: { width: 4, height: 3, unit: 'in' },
   label4x2: { width: 4, height: 2, unit: 'in' },
   label3x2: { width: 3, height: 2, unit: 'in' },
+  label3x1: { width: 3, height: 1, unit: 'in' },
   label2x1: { width: 2, height: 1, unit: 'in' },
 } as const satisfies Record<string, PageSize>;
