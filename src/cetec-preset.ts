@@ -74,6 +74,7 @@ export const cetecPreset: Preset = definePreset({
         borderWidths: semanticTokens.borderWidths,
         fontSizes: semanticTokens.fontSizes,
         shadows: semanticTokens.shadows,
+        sizes: semanticTokens.sizes,
         zIndex: semanticTokens.zIndex,
       },
       breakpoints: breakpoints,
