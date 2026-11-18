@@ -1,6 +1,33 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
-import { globalBaseStyles } from '~/styles/utilities';
+import { fontVariants, globalBaseStyles } from '~/styles/utilities';
+
+import { headerMetaStyles } from './header';
+
+/**
+ * Matches when the nearest container is narrower than
+ * `containerSizes.keyFactStack`. Keep the two widths the same.
+ */
+const narrowContainer = '@container (width < 15rem)';
+
+/** A long value wraps in place of truncating. */
+const wrapText = {
+  whiteSpace: 'normal',
+  overflow: 'visible',
+  textOverflow: 'clip',
+  overflowWrap: 'anywhere',
+} as const;
+
+/** Tabular figures, so digits line up in a column. Mono digits on paper. */
+const figures = {
+  text: {
+    fontVariantNumeric: 'tabular-nums',
+    _printDoc: {
+      fontFamily: 'mono',
+      fontVariationSettings: fontVariants.mono,
+    },
+  },
+};
 
 const keyFactBase = {
   root: {
@@ -8,6 +35,12 @@ const keyFactBase = {
     display: 'flex',
     minW: '0',
     maxW: 'full',
+  },
+  // Holds the label and the value. It has no box of its own, except in the
+  // `aligned` layout, where it stacks them in a narrow container. The root
+  // cannot do that, because an element cannot query its own width.
+  inner: {
+    display: 'contents',
   },
   label: {
     flex: 'none',
@@ -52,6 +85,19 @@ const keyFactBase = {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    // A link keeps its own color.
+    '&:not(a)': { color: 'text' },
+    // Print values never truncate. The text takes its look from the value.
+    _printDoc: {
+      ...wrapText,
+      '&:not(a)': {
+        color: 'inherit',
+        fontFamily: 'inherit',
+        fontVariationSettings: 'inherit',
+        fontWeight: 'inherit',
+        lineHeight: 'inherit',
+      },
+    },
   },
 };
 
@@ -59,25 +105,98 @@ const keyFactVariants = {
   /**
    * `horizontal` reads "Label: Value" on one line, for a page header `aside`.
    * `vertical` stacks the label over a larger value, for a facts strip.
+   * `aligned` puts a fixed width label beside the value, for a grid of facts.
    */
   // Each layout sets every property the other one sets, so a conditional
   // layout switches cleanly at a breakpoint. The label renders in both forms,
   // and the layout shows one.
   layout: {
     horizontal: {
-      root: { flexDirection: 'row', alignItems: 'center', gap: '4' },
+      root: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: '4',
+        ...headerMetaStyles.root,
+      },
+      inner: { display: 'contents' },
       // A text style sets its own color, so set the label color after it.
-      label: { textStyle: 'body.sm', color: 'text.subtle' },
+      label: {
+        w: 'auto',
+        whiteSpace: 'nowrap',
+        textStyle: 'body.sm',
+        color: 'text.subtle',
+        _printDoc: { textStyle: 'print.body', color: 'paper.inkSoft' },
+        ...headerMetaStyles.label,
+      },
       labelWithColon: { display: 'inline' },
       labelPlain: { display: 'none' },
-      value: { textStyle: 'body.sm' },
+      value: {
+        flex: 'initial',
+        textStyle: 'body.sm',
+        _printDoc: { textStyle: 'print.body' },
+        ...headerMetaStyles.value,
+      },
     },
     vertical: {
-      root: { flexDirection: 'column', alignItems: 'stretch', gap: '2' },
-      label: { textStyle: 'body.sm', color: 'text.subtle' },
+      root: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        gap: '2',
+      },
+      inner: { display: 'contents' },
+      label: {
+        w: 'auto',
+        whiteSpace: 'nowrap',
+        textStyle: 'body.sm',
+        color: 'text.subtle',
+        _printDoc: { textStyle: 'print.capsLabel' },
+      },
       labelWithColon: { display: 'none' },
       labelPlain: { display: 'inline' },
-      value: { textStyle: 'body.lg' },
+      value: {
+        flex: 'initial',
+        textStyle: 'body.lg',
+        _printDoc: { textStyle: 'print.fieldValue' },
+      },
+    },
+    /**
+     * `aligned` gives the label a fixed width, so the values of separate
+     * facts line up in a column. A long label wraps. The fact stacks when its
+     * nearest container is narrower than `containerSizes.keyFactStack`. With
+     * no container, it does not stack.
+     */
+    aligned: {
+      root: { display: 'block' },
+      inner: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'baseline',
+        gap: '8',
+        [narrowContainer]: {
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          gap: '1',
+        },
+      },
+      label: {
+        flex: 'none',
+        w: 'keyFactLabel',
+        whiteSpace: 'normal',
+        overflowWrap: 'anywhere',
+        textStyle: 'body.sm',
+        color: 'text.subtle',
+        _printDoc: { textStyle: 'print.capsLabel' },
+        [narrowContainer]: { w: 'auto' },
+      },
+      labelWithColon: { display: 'none' },
+      labelPlain: { display: 'inline' },
+      value: {
+        flex: '1',
+        textStyle: 'body.sm',
+        _printDoc: { textStyle: 'print.fieldValue' },
+      },
     },
   },
   /** Replaces the value with a text input. */
@@ -88,6 +207,54 @@ const keyFactVariants = {
     },
     false: {},
   },
+  /** A long value wraps in place of truncating. Always on in print. */
+  wrap: {
+    true: { text: wrapText },
+    false: {},
+  },
+  /**
+   * The kind of value. `number` and `currency` use tabular figures. A `date`
+   * does not wrap. `text` and `person` have no look of their own.
+   */
+  // After `wrap`, so a date stays on one line when `wrap` is on.
+  type: {
+    text: {},
+    number: figures,
+    currency: figures,
+    date: { text: { whiteSpace: 'nowrap' } },
+    person: {},
+  },
+  /** `total` is the large last row in a stack of totals. */
+  emphasis: {
+    normal: {},
+    total: {
+      label: {
+        color: 'text',
+        _printDoc: { color: 'paper.ink' },
+      },
+      value: {
+        textStyle: 'body.lg',
+        fontWeight: 'bold',
+        _printDoc: { textStyle: 'print.total' },
+      },
+    },
+  },
+  /** `danger` shows the label and the value in the alert color. */
+  tone: {
+    neutral: {},
+    danger: {
+      label: {
+        color: 'text.danger',
+        _printDoc: { color: 'paper.inkAlert' },
+      },
+      value: { _printDoc: { color: 'paper.inkAlert' } },
+      text: {
+        '&:not(a)': { color: 'text.danger' },
+        // On paper the text takes the alert ink from the value.
+        _printDoc: { '&:not(a)': { color: 'inherit' } },
+      },
+    },
+  },
 };
 
 export const keyFactRecipe = defineSlotRecipe({
@@ -95,6 +262,7 @@ export const keyFactRecipe = defineSlotRecipe({
   jsx: ['KeyFact'],
   slots: [
     'root',
+    'inner',
     'label',
     'labelWithColon',
     'labelPlain',
@@ -107,5 +275,9 @@ export const keyFactRecipe = defineSlotRecipe({
   defaultVariants: {
     layout: 'horizontal',
     editing: false,
+    wrap: false,
+    type: 'text',
+    emphasis: 'normal',
+    tone: 'neutral',
   },
 });

@@ -26,6 +26,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  *
  * - `horizontal` ("Label: Value") for up to three facts in a page header aside
  * - `vertical` for a strip of facts under the title
+ * - `aligned` for a grid of facts whose values line up
+ * - `type`, `emphasis`, and `tone` set the look of the value
+ * - In a printed document, see the Print/KeyFact stories
  * - `href` makes the value a link
  * - A long value truncates and shows the full value in a tooltip
  * - `editing` replaces the value with a text input
@@ -44,8 +47,14 @@ const meta = {
   argTypes: {
     layout: {
       control: 'inline-radio',
-      options: ['horizontal', 'vertical'],
+      options: ['horizontal', 'vertical', 'aligned'],
     },
+    type: {
+      control: 'inline-radio',
+      options: ['text', 'number', 'currency', 'date', 'person'],
+    },
+    emphasis: { control: 'inline-radio', options: ['normal', 'total'] },
+    tone: { control: 'inline-radio', options: ['neutral', 'danger'] },
   },
 } satisfies Meta<typeof KeyFact>;
 
@@ -59,7 +68,148 @@ export const Layouts: Story = {
     <VStack gap="24" alignItems="flex-start">
       <KeyFact label="Customer" value="Acme Corp" layout="horizontal" />
       <KeyFact label="Customer" value="Acme Corp" layout="vertical" />
+      <KeyFact label="Customer" value="Acme Corp" layout="aligned" />
     </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+const alignedFacts = (
+  <>
+    <KeyFact layout="aligned" label="Terms" value="Net 30" />
+    <KeyFact layout="aligned" label="Ship via" value="UPS Ground" />
+    <KeyFact layout="aligned" type="date" label="Due" value="Dec 17, 2026" />
+    <KeyFact layout="aligned" type="person" label="Buyer" value="Priya Raman" />
+    <KeyFact layout="aligned" label="Currency" value="USD" />
+  </>
+);
+
+/**
+ * `aligned` gives each label the same width, so values line up in a column.
+ * In a container narrower than 15rem, each fact stacks its label over its
+ * value. The second box is 224px wide and is an inline size container.
+ * With no container around it, an aligned fact does not stack.
+ */
+export const Aligned: Story = {
+  render: () => (
+    <VStack gap="32" alignItems="flex-start">
+      <VStack gap="8" alignItems="stretch" w="xs" data-testid="wide">
+        {alignedFacts}
+      </VStack>
+      <VStack
+        gap="8"
+        alignItems="stretch"
+        w="224"
+        containerType="inline-size"
+        data-testid="narrow"
+      >
+        {alignedFacts}
+      </VStack>
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+  play: async ({ canvasElement }) => {
+    const directions = (testId: string) =>
+      [
+        ...within(canvasElement)
+          .getByTestId(testId)
+          .querySelectorAll('[data-ds-component="KeyFact"] > *'),
+      ].map((inner) => getComputedStyle(inner).flexDirection);
+    await expect(directions('wide')).toEqual(Array(5).fill('row'));
+    await expect(directions('narrow')).toEqual(Array(5).fill('column'));
+  },
+};
+
+/**
+ * `type` sets the look of the value. `number` and `currency` use tabular
+ * figures, so digits line up. A `date` does not wrap. Pass the value already
+ * formatted.
+ */
+export const Types: Story = {
+  render: () => (
+    <VStack gap="8" alignItems="stretch" w="xs">
+      <KeyFact layout="aligned" type="text" label="Terms" value="Net 30" />
+      <KeyFact layout="aligned" type="number" label="Qty" value="1,250" />
+      <KeyFact layout="aligned" type="date" label="Due" value="Dec 17, 2026" />
+      <KeyFact
+        layout="aligned"
+        type="person"
+        label="Buyer"
+        value="Priya Raman"
+      />
+      <KeyFact
+        layout="aligned"
+        type="currency"
+        label="Deposit"
+        value="$2,500.00"
+      />
+      <KeyFact
+        layout="aligned"
+        type="currency"
+        label="Deposit"
+        value="2.500,00 €"
+      />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+/** `emphasis="total"` shows a large, bold value, for the last row of totals. */
+export const Emphasis: Story = {
+  render: () => (
+    <VStack gap="8" alignItems="stretch" w="xs">
+      <KeyFact
+        layout="aligned"
+        type="currency"
+        label="Total"
+        value="$14,044.30"
+      />
+      <KeyFact
+        layout="aligned"
+        type="currency"
+        emphasis="total"
+        label="Balance due"
+        value="$9,044.30"
+      />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+};
+
+/** `tone="danger"` shows the label and the value in the alert color. */
+export const Tones: Story = {
+  render: () => (
+    <VStack gap="8" alignItems="flex-start">
+      <KeyFact label="Status" value="On schedule" tone="neutral" />
+      <KeyFact
+        label="Line warning"
+        value="Lead time 16 weeks"
+        tone="danger"
+        data-testid="danger"
+      />
+    </VStack>
+  ),
+  parameters: { controls: { disable: true } },
+  play: async ({ canvasElement }) => {
+    const fact = within(canvasElement).getByTestId('danger');
+    const label = getComputedStyle(within(fact).getByText('Line warning:'));
+    const value = getComputedStyle(
+      within(fact).getByText('Lead time 16 weeks'),
+    );
+    await expect(label.color).toBe(value.color);
+  },
+};
+
+/** `wrap` wraps a long value onto more lines in place of truncating it. */
+export const Wrapped: Story = {
+  render: () => (
+    <Box w="224">
+      <KeyFact
+        wrap
+        label="Ship to"
+        value="Acme Corp, Receiving Dock 4, 1200 Industrial Parkway"
+      />
+    </Box>
   ),
   parameters: { controls: { disable: true } },
 };

@@ -39,3 +39,4 @@ export { printCanvasRecipe } from './printCanvas';
 export { printSlotRecipe } from './printSlot';
 export { labelFieldRecipe } from './labelField';
 export { barcodeRecipe } from './barcode';
+export { headerRecipe } from './header';

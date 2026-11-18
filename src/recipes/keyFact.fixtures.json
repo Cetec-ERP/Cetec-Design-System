@@ -1,0 +1,172 @@
+{
+  "recipe": "keyFact",
+  "fixtures": [
+    {
+      "name": "aligned",
+      "description": "One fact in the aligned layout, as a grid or a section writes it. The label has a fixed width, so values line up.",
+      "input": {
+        "parent": "grid",
+        "key_fact": {
+          "label": "Terms",
+          "value": "Net 30"
+        }
+      },
+      "html": "<div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Terms:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Terms</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Net 30</span></div></div></div>"
+    },
+    {
+      "name": "types",
+      "description": "Each type in a 2-column grid. Number and currency use tabular figures. A date does not wrap. Money shows the digits Go formats, in the document format.",
+      "input": {
+        "parent": "grid",
+        "columns": 2,
+        "key_facts": [
+          {
+            "label": "Terms",
+            "value": "Net 30",
+            "type": "text"
+          },
+          {
+            "label": "Qty",
+            "value": "1,250",
+            "type": "number"
+          },
+          {
+            "label": "Due",
+            "value": "Dec 17, 2026",
+            "type": "date"
+          },
+          {
+            "label": "Buyer",
+            "value": "Priya Raman",
+            "type": "person"
+          },
+          {
+            "label": "Deposit",
+            "value": "$2,500.00",
+            "type": "currency"
+          },
+          {
+            "label": "Deposit",
+            "value": "2.500,00 €",
+            "type": "currency"
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_2\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Terms:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Terms</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Net 30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Qty:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Qty</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_number\">1,250</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 17, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Buyer:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Buyer</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Priya Raman</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Deposit:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Deposit</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$2,500.00</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Deposit:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Deposit</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">2.500,00 €</span></div></div></div></div>"
+    },
+    {
+      "name": "aligned-grid",
+      "description": "Five aligned facts in a 2-column grid. The values of each column line up. In a container narrower than 15rem, each fact stacks its label over its value.",
+      "input": {
+        "parent": "grid",
+        "columns": 2,
+        "key_facts": [
+          {
+            "label": "Terms",
+            "value": "Net 30",
+            "type": "text"
+          },
+          {
+            "label": "Ship via",
+            "value": "UPS Ground",
+            "type": "text"
+          },
+          {
+            "label": "Due",
+            "value": "Dec 17, 2026",
+            "type": "date"
+          },
+          {
+            "label": "Buyer",
+            "value": "Priya Raman",
+            "type": "person"
+          },
+          {
+            "label": "Currency",
+            "value": "USD",
+            "type": "text"
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_2\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Terms:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Terms</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Net 30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Ship via:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Ship via</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">UPS Ground</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 17, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Buyer:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Buyer</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Priya Raman</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Currency:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Currency</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">USD</span></div></div></div></div>"
+    },
+    {
+      "name": "wrap",
+      "description": "A long label and a long value both wrap. Print values never truncate.",
+      "input": {
+        "parent": "grid",
+        "columns": 2,
+        "key_facts": [
+          {
+            "label": "Export classification",
+            "value": "EAR99, no license required for this destination"
+          },
+          {
+            "label": "Notes",
+            "value": "Deliver to the north gate between 7 and 11 AM. Call ahead."
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_2\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Export classification:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Export classification</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">EAR99, no license required for this destination</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Notes:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Notes</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Deliver to the north gate between 7 and 11 AM. Call ahead.</span></div></div></div></div>"
+    },
+    {
+      "name": "horizontal",
+      "description": "The horizontal layout, as a header writes its meta list. The label sizes itself and ends in a colon.",
+      "input": {
+        "parent": "header",
+        "key_facts": [
+          {
+            "label": "Invoice date",
+            "value": "Nov 18, 2026",
+            "type": "date"
+          },
+          {
+            "label": "Due",
+            "value": "Dec 18, 2026",
+            "type": "date"
+          },
+          {
+            "label": "P.O. #",
+            "value": "4500-1189"
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-keyFact__root cetec-keyFact__root--layout_horizontal\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_horizontal\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_horizontal\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_horizontal\">Invoice date:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_horizontal\">Invoice date</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_horizontal\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Nov 18, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_horizontal\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_horizontal\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_horizontal\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_horizontal\">Due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_horizontal\">Due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_horizontal\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 18, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_horizontal\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_horizontal\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_horizontal\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_horizontal\">P.O. #:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_horizontal\">P.O. #</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_horizontal\"><span class=\"cetec-keyFact__text\">4500-1189</span></div></div></div>"
+    },
+    {
+      "name": "emphasis-total",
+      "description": "A normal row and a total row. The total prints large in full ink.",
+      "input": {
+        "parent": "grid",
+        "columns": 2,
+        "key_facts": [
+          {
+            "label": "Total",
+            "value": "$14,044.30",
+            "type": "currency"
+          },
+          {
+            "label": "Balance due",
+            "value": "$9,044.30",
+            "type": "currency",
+            "emphasis": "total"
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_2\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Total:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Total</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$14,044.30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned cetec-keyFact__label--emphasis_total\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Balance due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Balance due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned cetec-keyFact__value--emphasis_total\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$9,044.30</span></div></div></div></div>"
+    },
+    {
+      "name": "tone-danger",
+      "description": "Danger tone prints the label and the value in the alert ink, such as a line warning. Thermal ink prints it black.",
+      "input": {
+        "parent": "line",
+        "key_fact": {
+          "label": "Line warning",
+          "value": "Lead time 16 weeks. Last-time-buy notice issued.",
+          "tone": "danger"
+        }
+      },
+      "html": "<div class=\"cetec-keyFact__root cetec-keyFact__root--layout_horizontal\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_horizontal\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_horizontal cetec-keyFact__label--tone_danger\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_horizontal\">Line warning:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_horizontal\">Line warning</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_horizontal cetec-keyFact__value--tone_danger\"><span class=\"cetec-keyFact__text cetec-keyFact__text--tone_danger\">Lead time 16 weeks. Last-time-buy notice issued.</span></div></div></div>"
+    }
+  ]
+}

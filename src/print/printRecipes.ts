@@ -12,6 +12,10 @@ export const printRecipeNames = [
   'printSlot',
   'labelField',
   'barcode',
+  'printGrid',
+  'keyFact',
+  'tag',
+  'header',
 ] as const;
 
 /** The name of a recipe in the print kit. */
