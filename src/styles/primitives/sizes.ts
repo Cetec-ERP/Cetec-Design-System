@@ -85,6 +85,8 @@ export const containerSizeTokens = {
 export const printSizeTokens = {
   /** The narrowest column of a print grid with `columns: fit`. 1.6 in. */
   gridFitColumn: { value: '1.6in' },
+  /** The widest a stack of totals gets. 3.4 in. */
+  totalsWidth: { value: '3.4in' },
 };
 
 /** Fixed sizes of component parts. */
