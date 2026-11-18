@@ -16,3 +16,4 @@ export { checkboxInputRecipe } from './checkboxInput';
 export { iconRecipe } from './icon';
 export { breakpointIndicatorRecipe } from './breakpointIndicator';
 export { printDocRecipe } from './printDoc';
+export { imageRecipe } from './image';

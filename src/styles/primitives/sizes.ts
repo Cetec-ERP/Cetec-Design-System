@@ -81,8 +81,15 @@ export const containerSizeTokens = {
   '8xl': { value: '90rem' }, // 1440px
 };
 
+/** Sizes for parts of printed documents. Inches hold on any printer. */
+export const printSizeTokens = {
+  /** The longest side of a kit image. 2.4 in. */
+  imageMax: { value: '2.4in' },
+};
+
 export const sizes = defineTokens.sizes({
   ...numericSizes,
   ...utilitySizes,
   ...containerSizeTokens,
+  ...printSizeTokens,
 });
