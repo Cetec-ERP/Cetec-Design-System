@@ -81,8 +81,15 @@ export const containerSizeTokens = {
   '8xl': { value: '90rem' }, // 1440px
 };
 
+/** Sizes for parts of printed documents. Inches hold on any printer. */
+export const printSizeTokens = {
+  /** The narrowest column of a print grid with `columns: fit`. 1.6 in. */
+  gridFitColumn: { value: '1.6in' },
+};
+
 export const sizes = defineTokens.sizes({
   ...numericSizes,
   ...utilitySizes,
   ...containerSizeTokens,
+  ...printSizeTokens,
 });

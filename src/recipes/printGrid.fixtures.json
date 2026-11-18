@@ -1,0 +1,37 @@
+{
+  "recipe": "printGrid",
+  "fixtures": [
+    {
+      "name": "columns-2",
+      "description": "Two columns. Each cell is a container, so a part inside can read the cell width.",
+      "input": {
+        "columns": 2
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_2\"><div>Terms: Net 30</div><div>Ship via: UPS Ground</div><div>FOB: Origin</div><div>Buyer: Priya Raman</div></div>"
+    },
+    {
+      "name": "columns-3",
+      "description": "Three columns. Cells fill row by row.",
+      "input": {
+        "columns": 3
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_3\"><div>Terms: Net 30</div><div>Ship via: UPS Ground</div><div>FOB: Origin</div><div>Buyer: Priya Raman</div><div>Due: Dec 17, 2026</div><div>Order: 7731</div></div>"
+    },
+    {
+      "name": "columns-4",
+      "description": "Four columns.",
+      "input": {
+        "columns": 4
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_4\"><div>Customer: Kestrel Robotics</div><div>PO: 4500-1189</div><div>Work start: Nov 18, 2026</div><div>Dock date: Dec 4, 2026</div></div>"
+    },
+    {
+      "name": "columns-fit",
+      "description": "As many columns as fit, each at least 1.6 in wide. A 7.5 in content width fits four. The fifth cell starts a new row.",
+      "input": {
+        "columns": "fit"
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_fit\"><div>Customer: Kestrel Robotics</div><div>PO: 4500-1189</div><div>Work start: Nov 18, 2026</div><div>Dock date: Dec 4, 2026</div><div>Line: 1 of 3</div></div>"
+    }
+  ]
+}
