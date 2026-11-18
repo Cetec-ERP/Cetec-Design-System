@@ -41,3 +41,4 @@ export { labelFieldRecipe } from './labelField';
 export { barcodeRecipe } from './barcode';
 export { headerRecipe } from './header';
 export { partyRecipe } from './party';
+export { printSectionRecipe } from './printSection';

@@ -21,6 +21,7 @@ export const printRecipeNames = [
   'text',
   'divider',
   'checkbox',
+  'printSection',
 ] as const;
 
 /** The name of a recipe in the print kit. */
