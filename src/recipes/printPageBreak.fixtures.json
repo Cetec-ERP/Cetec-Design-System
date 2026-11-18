@@ -1,0 +1,21 @@
+{
+  "recipe": "printPageBreak",
+  "fixtures": [
+    {
+      "name": "between-lines",
+      "description": "One order line per page. The break goes after every line but the last. On screen it shows a dashed line and the label. In print it starts a new page.",
+      "input": {
+        "label": "Page break"
+      },
+      "html": "<p>Part PCB-ASSY-2041</p><p>Sales order 7731, line 1</p><p>Quantity 12</p><div class=\"cetec-printPageBreak__root\"><span class=\"cetec-printPageBreak__label\">Page break</span></div><p>Part CBL-0880</p><p>Sales order 7731, line 2</p><p>Quantity 40</p>"
+    },
+    {
+      "name": "break",
+      "description": "The page break alone, as the Go helper writes it.",
+      "input": {
+        "label": "Page break"
+      },
+      "html": "<div class=\"cetec-printPageBreak__root\"><span class=\"cetec-printPageBreak__label\">Page break</span></div>"
+    }
+  ]
+}
