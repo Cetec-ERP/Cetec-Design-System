@@ -4,6 +4,7 @@ import { printFixture } from '~/print/printFixtureFiles';
 import {
   expectSlotsMatchOverlay,
   expectSlotsOnGrid,
+  flaggedSlots,
 } from '~/storybook/print/canvasChecks';
 import { PrintCanvasFixtureSpec } from '~/storybook/print/PrintCanvasFixture';
 import { canvasLayout } from '~/storybook/print/printCanvasStory';
@@ -63,6 +64,7 @@ export const Variants: Story = {
     const layout = canvasLayout(printFixture('printSlot', 'variants'));
     await expectSlotsOnGrid(layout);
     await expectSlotsMatchOverlay(canvasElement, layout);
+    await expect(await flaggedSlots(canvasElement)).toEqual(['clipped']);
     // Slot text keeps the print reset: no paragraph margins.
     const paragraph = slotContent(canvasElement, 'plain').querySelector('p');
     await expect(getComputedStyle(paragraph as Element).marginBottom).toBe(
@@ -124,6 +126,7 @@ export const Micr: Story = {
   play: async ({ canvasElement }) => {
     const layout = canvasLayout(printFixture('printSlot', 'micr'));
     await expectSlotsMatchOverlay(canvasElement, layout);
+    await expect(await flaggedSlots(canvasElement)).toEqual([]);
     const content = slotContent(canvasElement, 'micr');
     const style = getComputedStyle(content);
     await expect(style.color).toBe('rgb(0, 0, 0)');

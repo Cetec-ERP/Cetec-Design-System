@@ -37,3 +37,4 @@ export { keyFactRecipe } from './keyFact';
 export { peekBarRecipe } from './peekBar';
 export { printCanvasRecipe } from './printCanvas';
 export { printSlotRecipe } from './printSlot';
+export { labelFieldRecipe } from './labelField';

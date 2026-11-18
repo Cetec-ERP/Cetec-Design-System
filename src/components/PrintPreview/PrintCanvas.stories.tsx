@@ -4,6 +4,7 @@ import { printFixture } from '~/print/printFixtureFiles';
 import {
   expectSlotsMatchOverlay,
   expectSlotsOnGrid,
+  flaggedSlots,
 } from '~/storybook/print/canvasChecks';
 import { PrintCanvasFixtureSpec } from '~/storybook/print/PrintCanvasFixture';
 import { canvasLayout } from '~/storybook/print/printCanvasStory';
@@ -63,6 +64,7 @@ export const Check: Story = {
     const layout = canvasLayout(printFixture('printCanvas', 'check'));
     await expectSlotsOnGrid(layout);
     await expectSlotsMatchOverlay(canvasElement, layout);
+    await expect(await flaggedSlots(canvasElement)).toEqual([]);
     const band = layout.micrBand;
     await expect(band).toBeDefined();
     if (!band) return;
@@ -95,6 +97,7 @@ export const PackingLabel: Story = {
     const layout = canvasLayout(printFixture('printCanvas', 'packing-label'));
     await expectSlotsOnGrid(layout);
     await expectSlotsMatchOverlay(canvasElement, layout);
+    await expect(await flaggedSlots(canvasElement)).toEqual([]);
     const part = canvasElement.querySelector('[data-slot="part"]');
     await expect(part).not.toBeNull();
     const style = getComputedStyle(part as Element);
@@ -121,6 +124,7 @@ export const TurnedLabel: Story = {
     const layout = canvasLayout(printFixture('printCanvas', 'turned-label'));
     await expectSlotsOnGrid(layout);
     await expectSlotsMatchOverlay(canvasElement, layout);
+    await expect(await flaggedSlots(canvasElement)).toEqual([]);
     // The layout's top slot lands along the right edge of the stock.
     const part = canvasElement.querySelector('[data-slot="part"]');
     const sheet = canvasElement.querySelector('[data-canvas-page="1"]');
@@ -146,6 +150,7 @@ export const SerialLabels: Story = {
     const layout = canvasLayout(printFixture('printCanvas', 'serial-labels'));
     await expectSlotsOnGrid(layout);
     await expectSlotsMatchOverlay(canvasElement, layout);
+    await expect(await flaggedSlots(canvasElement)).toEqual([]);
     const pages = await waitFor(() => {
       const found = canvasElement.querySelectorAll('[data-canvas-page]');
       if (found.length !== 2) throw new Error('Expected two pages.');

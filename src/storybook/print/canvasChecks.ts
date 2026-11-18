@@ -50,3 +50,22 @@ export const expectSlotsOnGrid = async (layout: CanvasLayoutInput) => {
     }
   }
 };
+
+/**
+ * Returns the names of the slots the editor overlay flags as too long, once
+ * the overlay on every page has measured them.
+ */
+export const flaggedSlots = async (canvasElement: HTMLElement) => {
+  await waitFor(() => {
+    const pages = canvasElement.querySelectorAll('[data-canvas-page]').length;
+    const measured = canvasElement.querySelectorAll(
+      '[data-overlay-measured]',
+    ).length;
+    if (pages === 0 || measured !== pages) {
+      throw new Error('The overlay has not measured the slots yet.');
+    }
+  });
+  return [...canvasElement.querySelectorAll('[data-overflowing]')]
+    .map((element) => element.getAttribute('data-overlay-slot') ?? '')
+    .sort();
+};

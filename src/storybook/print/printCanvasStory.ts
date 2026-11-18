@@ -21,8 +21,8 @@ export type CanvasSlotInput = {
   micr?: boolean;
   /** The author cannot move or change the slot. */
   locked?: boolean;
-  /** The kit elements the slot holds. */
-  holds?: string[];
+  /** The kit elements the slot holds, by name or as element inputs. */
+  holds?: (string | Record<string, unknown>)[];
 };
 
 /** A canvas layout, as the kit template stores it. */
