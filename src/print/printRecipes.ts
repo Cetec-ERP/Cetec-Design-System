@@ -6,7 +6,12 @@
  * Add a recipe here when it gets a print look. A recipe can be print-only,
  * such as `printDoc`, or an app recipe with `_printDoc` styles.
  */
-export const printRecipeNames = ['printDoc', 'printGrid', 'keyFact'] as const;
+export const printRecipeNames = [
+  'printDoc',
+  'printGrid',
+  'keyFact',
+  'tag',
+] as const;
 
 /** The name of a recipe in the print kit. */
 export type PrintRecipeName = (typeof printRecipeNames)[number];
