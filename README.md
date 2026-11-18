@@ -203,6 +203,99 @@ import 'cetec-design-system/fonts.css';
 need to install `@fontsource-variable/*`. The source is
 `src/styles/font-imports.css`; `tools/build-fonts.mjs` builds the published copy.
 
+### Printed documents
+
+The print path does not use React. The Go print helper writes plain HTML with
+the same classes as the print recipes. The package ships four things for it:
+
+| File                                        | What it holds                                                                                    |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `cetec-design-system/print.css`             | Tokens without dark values, the fonts, a small reset, and every print recipe with all variants   |
+| `cetec-design-system/print-classes.json`    | The class manifest: root classes, each print recipe with its slots and variants, the page footer |
+| `cetec-design-system/print-fixtures/*.json` | One markup fixture file per print recipe: an input and the HTML Go must write for it             |
+| `dist/fonts/`                               | The font files. `print.css` points at `./fonts/*.woff2`, so keep this folder next to the file    |
+
+**Link the stylesheet.** Every kit document links `print.css` and nothing
+else. Serve it from a URL that also serves `fonts/` beside it. If you inline the
+CSS into the document, rewrite the `./fonts/` URLs first. Put both root classes
+on `<html>`, not on `<body>`:
+
+```html
+<html class="cetec-printDoc cetec-ink-thermal">
+  <head>
+    <link rel="stylesheet" href="/static/cetec-design-system/print.css" />
+  </head>
+  <body>
+    …
+  </body>
+</html>
+```
+
+- `cetec-printDoc` goes on every kit document. It sets the white sheet, the
+  paper ink, and the body text style.
+- `cetec-ink-thermal` goes next to it for thermal label printers. Every paper
+  ink turns solid black, and rules are at least 1.5 pt.
+- Go writes the `@page` rule. Paper size is a template setting: `letter`, `A4`,
+  or `legal`. The default is `letter`.
+
+**Read the manifest.** Go reads class names from `print-classes.json` and never
+spells them by hand. The build writes the file from the recipe configs and
+tokens, then checks that every class in it is in `print.css`.
+
+```json
+{
+  "stylesheet": "print.css",
+  "roots": {
+    "printDoc": { "className": "cetec-printDoc", "element": "html" },
+    "thermal": { "className": "cetec-ink-thermal", "element": "html" }
+  },
+  "recipes": {
+    "printDoc": {
+      "kind": "recipe",
+      "className": "cetec-printDoc",
+      "variants": {},
+      "defaultVariants": {},
+      "fixtures": "print-fixtures/printDoc.json"
+    }
+  },
+  "pageFooter": {
+    "textStyle": "print.pageFooter",
+    "marginBox": "@bottom-center"
+  }
+}
+```
+
+- A `recipe` has one `className` and `variants`, keyed by variant name, then by
+  value. A `slotRecipe` has `slots` instead, each with its own `className` and
+  `variants`.
+- `defaultVariants` are the values to use when the kit element sets none.
+  Write the default variant classes too.
+- `fixtures` is the path of the recipe's fixture file, relative to `dist`.
+- `pageFooter` is for page numbers ("Page 2", "Page 2 of 3"). A margin box
+  cannot carry a class, so Go writes these declarations into its `@page` rule.
+  `content` holds the counter values. `declarations` use token variables with
+  literal fallbacks. They work in a margin box because margin boxes read custom
+  properties from `<html>`. `literal` and `literalThermal` hold plain values for
+  places with no variables, such as a Chrome `printToPDF` footer template.
+
+**Read the fixtures.** Each fixture has a `name`, a `description`, the kit
+element `input`, the `root` classes for `<html>`, and the `html` Go writes
+inside `<body>`. A Go test can read the files from
+`node_modules/cetec-design-system/dist/print-fixtures/` and compare its own
+output with `html`. Each fixture also has a story in Storybook under "Print",
+which renders the same HTML on a page.
+
+**Types.** CSS and JSON files have no declarations. TypeScript code that reads
+them can use the `PrintClassManifest` and `PrintFixtureFile` types from
+`cetec-design-system`.
+
+**Add a print recipe.** Add its name to `printRecipeNames` in
+`src/print/printRecipes.ts`. Add `src/recipes/<name>.fixtures.json` and a story
+for each fixture that renders it through `PrintFixtureView`. The recipe joins
+the always-on `staticCss`, `print.css`, and the manifest on its own. The build
+and the "Print/Class manifest" story fail when a print recipe has no fixture,
+or when a fixture uses a class that is not in the manifest.
+
 ## Release Process
 
 This project uses [Auto](https://intuit.github.io/auto/) for automated releases and changelog generation.

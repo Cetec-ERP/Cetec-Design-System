@@ -9,7 +9,7 @@
     "prepare": "npx panda codegen && npx simple-git-hooks",
     "predev": "npm run check:jsdoc",
     "dev": "npx panda --watch & vite",
-    "build": "rm -rf dist && PANDA_STATIC=true npx panda && npx panda spec && npx panda ship --outfile ./panda.buildinfo.json && vite build && node tools/build-fonts.mjs && npm run check:runtime-deps",
+    "build": "rm -rf dist && PANDA_STATIC=true npx panda && npx panda spec && npx panda ship --outfile ./panda.buildinfo.json && vite build && node tools/build-fonts.mjs && node tools/build-print.mjs && npm run check:runtime-deps",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:staged": "lint-staged",
@@ -134,6 +134,9 @@
     "./styles.css": "./dist/styles.css",
     "./reset.css": "./dist/reset.css",
     "./fonts.css": "./dist/fonts.css",
+    "./print.css": "./dist/print.css",
+    "./print-classes.json": "./dist/print-classes.json",
+    "./print-fixtures/*.json": "./dist/print-fixtures/*.json",
     "./panda.buildinfo.json": "./dist/panda.buildinfo.json"
   },
   "repository": {

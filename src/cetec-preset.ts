@@ -1,6 +1,7 @@
 import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
 
+import { scopedPrintReset } from './print/printReset';
 import * as regularRecipes from './recipes/recipes-regular';
 import * as slotRecipes from './recipes/recipes-slot';
 import * as tokens from './styles/primitives';
@@ -118,6 +119,8 @@ export const cetecPreset: Preset = definePreset({
   globalCss: {
     ...pandaBasePresetGlobalCss,
     ...globalCss,
+    // Inside a `cetec-printDoc` root, the print reset replaces the app reset.
+    ...scopedPrintReset,
   },
   conditions: {
     ...pandaBasePresetConditions,

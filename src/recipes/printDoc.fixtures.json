@@ -1,0 +1,19 @@
+{
+  "recipe": "printDoc",
+  "fixtures": [
+    {
+      "name": "normal-ink",
+      "description": "A document in normal ink. The root sets the white sheet, the paper ink, and the body text style. The body text has no classes of its own.",
+      "input": { "ink": "normal" },
+      "root": ["cetec-printDoc"],
+      "html": "<p>Thank you for your order. Goods remain our property until paid in full.</p><p>Questions about this document? Reply to the email it came with.</p>"
+    },
+    {
+      "name": "thermal-ink",
+      "description": "A label in thermal ink. The thermal class goes next to the root class and turns every paper ink solid black.",
+      "input": { "ink": "thermal" },
+      "root": ["cetec-printDoc", "cetec-ink-thermal"],
+      "html": "<p>Handle with care. Keep dry.</p><p>Store at room temperature.</p>"
+    }
+  ]
+}

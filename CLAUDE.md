@@ -121,6 +121,7 @@ Icons are managed as an SVG sprite system:
 - **Output**: `dist/index.js` (main bundle) and `dist/preset.js` (build-time preset)
 - **Types**: Generated via `vite-plugin-dts` to `dist/types/`
 - **Styles**: Prebuilt Panda CSS output ships as `dist/styles.css` (`cetec-design-system/styles.css`); `src/styled-system/` is not distributed
+- **Print kit**: `tools/build-print.mjs` writes `dist/print.css`, `dist/print-classes.json`, and `dist/print-fixtures/` for the Go print helper. Print recipes are listed in `src/print/printRecipes.ts`, and each one needs a fixture file beside it in `src/recipes/`. See the README section "Printed documents"
 - **Externals**: React and React-DOM are peer dependencies (not bundled)
 
 ### Path Aliases

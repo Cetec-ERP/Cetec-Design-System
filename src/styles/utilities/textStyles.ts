@@ -321,6 +321,23 @@ export const textStyles = defineTextStyles({
         color: 'paper.ink',
       },
     },
+    /**
+     * Page numbers, such as "Page 2" or "Page 2 of 3". 7.5 pt in soft ink,
+     * with tabular figures. The Go print helper writes it into an `@page`
+     * margin box from `print-classes.json`, because a margin box cannot carry
+     * a class.
+     */
+    pageFooter: {
+      value: {
+        fontFamily: 'body',
+        fontVariationSettings: fontVariants.body,
+        fontSize: 'print.smallPrint',
+        fontWeight: 'normal',
+        lineHeight: 'tight',
+        fontVariantNumeric: 'tabular-nums',
+        color: 'paper.inkSoft',
+      },
+    },
     /** Grand total. 14 pt mono, so digits line up. */
     total: {
       value: {
