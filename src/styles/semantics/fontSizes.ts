@@ -74,5 +74,7 @@ export const fontSizes = defineSemanticTokens.fontSizes({
     title: { value: '20pt' },
     /** The grand total. */
     total: { value: '14pt' },
+    /** Names in a block, such as the company name in an address. */
+    heading: { value: '11pt' },
   },
 });
