@@ -116,6 +116,20 @@ export const conditions = {
   motionSafe: '@media (prefers-reduced-motion: no-preference)',
   paused: '&:is([data-paused=true])',
   print: '@media print',
+  /**
+   * Inside a printed document. The Go print helper puts the `cetec-printDoc`
+   * class on the document root, the `<html>` element. Recipes use
+   * `_printDoc` for their paper look. Semantic colors reset to their light
+   * values inside this class, so paper stays white in dark mode.
+   */
+  printDoc: '.cetec-printDoc &',
+  /**
+   * Inside a document printed in thermal ink. The Go print helper adds the
+   * `cetec-ink-thermal` class next to `cetec-printDoc` for label printers.
+   * Paper inks turn solid black, tints go away, and rules are at least
+   * 1.5 pt wide.
+   */
+  thermal: '.cetec-ink-thermal &',
   landscape: '@media (orientation: landscape)',
   portrait: '@media (orientation: portrait)',
 

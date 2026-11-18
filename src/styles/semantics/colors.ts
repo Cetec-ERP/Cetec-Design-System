@@ -1360,4 +1360,29 @@ export const colors = defineSemanticTokens.colors({
       },
     },
   },
+  /**
+   * Paper inks for printed documents. Paper is white in both themes, so these
+   * have no dark value. Under the `thermal` condition every ink is solid
+   * black, because thermal label printers print one bit per dot.
+   */
+  paper: {
+    /** The sheet. White in both themes and in thermal ink. */
+    DEFAULT: { value: '{colors.neutral.0}' },
+    /** Main text and strong rules. */
+    ink: {
+      value: { base: '{colors.neutral.100}', _thermal: '{colors.slate.100}' },
+    },
+    /** Labels, secondary text, and the rule under a table header. */
+    inkSoft: {
+      value: { base: '{colors.neutral.70}', _thermal: '{colors.slate.100}' },
+    },
+    /** Hairline rules between rows and sections. */
+    hairline: {
+      value: { base: '{colors.neutralA.30}', _thermal: '{colors.slate.100}' },
+    },
+    /** Negative amounts and overdue values. */
+    inkAlert: {
+      value: { base: '{colors.red.50}', _thermal: '{colors.slate.100}' },
+    },
+  },
 });

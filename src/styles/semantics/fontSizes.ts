@@ -57,4 +57,22 @@ export const fontSizes = defineSemanticTokens.fontSizes({
       value: '{sizes.12}',
     },
   },
+  /**
+   * Type sizes for printed documents, in points. A point is 1/72 inch, so
+   * these sizes hold on any printer.
+   */
+  print: {
+    /** Small caps labels, such as field labels and table headers. */
+    capsLabel: { value: '7pt' },
+    /** Field values. */
+    fieldValue: { value: '9.5pt' },
+    /** Body text and table cells. */
+    body: { value: '8.5pt' },
+    /** Terms, notes, and page numbers. */
+    smallPrint: { value: '7.5pt' },
+    /** The document title. */
+    title: { value: '20pt' },
+    /** The grand total. */
+    total: { value: '14pt' },
+  },
 });
