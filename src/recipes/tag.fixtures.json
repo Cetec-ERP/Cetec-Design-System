@@ -1,0 +1,72 @@
+{
+  "recipe": "tag",
+  "fixtures": [
+    {
+      "name": "tone-neutral",
+      "description": "A tag in the neutral tone. The Go helper maps the neutral tone to the slate hue and the default variant. On paper it prints as an outline in the hue's text color.",
+      "input": {
+        "tone": "neutral",
+        "text": "Draft"
+      },
+      "html": "<span class=\"cetec-tag cetec-tag--size_md cetec-tag--variant_default cetec-tag--hue_slate\">Draft</span>"
+    },
+    {
+      "name": "tone-info",
+      "description": "A tag in the info tone. The Go helper maps the info tone to the blue hue and the default variant. On paper it prints as an outline in the hue's text color.",
+      "input": {
+        "tone": "info",
+        "text": "Revised"
+      },
+      "html": "<span class=\"cetec-tag cetec-tag--size_md cetec-tag--variant_default cetec-tag--hue_blue\">Revised</span>"
+    },
+    {
+      "name": "tone-success",
+      "description": "A tag in the success tone. The Go helper maps the success tone to the green hue and the default variant. On paper it prints as an outline in the hue's text color.",
+      "input": {
+        "tone": "success",
+        "text": "Approved"
+      },
+      "html": "<span class=\"cetec-tag cetec-tag--size_md cetec-tag--variant_default cetec-tag--hue_green\">Approved</span>"
+    },
+    {
+      "name": "tone-warning",
+      "description": "A tag in the warning tone. The Go helper maps the warning tone to the orange hue and the default variant. On paper it prints as an outline in the hue's text color.",
+      "input": {
+        "tone": "warning",
+        "text": "On hold"
+      },
+      "html": "<span class=\"cetec-tag cetec-tag--size_md cetec-tag--variant_default cetec-tag--hue_orange\">On hold</span>"
+    },
+    {
+      "name": "tone-danger",
+      "description": "A tag in the danger tone. The Go helper maps the danger tone to the red hue and the default variant. On paper it prints as an outline in the hue's text color.",
+      "input": {
+        "tone": "danger",
+        "text": "Expedite"
+      },
+      "html": "<span class=\"cetec-tag cetec-tag--size_md cetec-tag--variant_default cetec-tag--hue_red\">Expedite</span>"
+    },
+    {
+      "name": "table-cell",
+      "description": "Tags in table cells use the sm size. The table has no classes of its own here.",
+      "input": {
+        "rows": [
+          {
+            "tone": "danger",
+            "text": "Due"
+          },
+          {
+            "tone": "warning",
+            "text": "Partially paid"
+          },
+          {
+            "tone": "success",
+            "text": "Paid"
+          }
+        ],
+        "size": "sm"
+      },
+      "html": "<table><thead><tr><th>Invoice</th><th>Due date</th><th>Status</th></tr></thead><tbody><tr><td>7716-1</td><td>Jan 14, 2026</td><td><span class=\"cetec-tag cetec-tag--size_sm cetec-tag--variant_default cetec-tag--hue_red\">Due</span></td></tr><tr><td>7731-2</td><td>Jan 21, 2026</td><td><span class=\"cetec-tag cetec-tag--size_sm cetec-tag--variant_default cetec-tag--hue_orange\">Partially paid</span></td></tr><tr><td>7702-1</td><td>Dec 30, 2025</td><td><span class=\"cetec-tag cetec-tag--size_sm cetec-tag--variant_default cetec-tag--hue_green\">Paid</span></td></tr></tbody></table>"
+    }
+  ]
+}
