@@ -26,6 +26,19 @@ export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
     role?: string;
     /** Adds the text to sequential keyboard focus when a composite widget requires it. */
     tabIndex?: number;
+    /**
+     * Keeps the line breaks in the text. Use it for text that comes from a
+     * multi-line field, such as terms or a note.
+     */
+    /** @default false */
+    preserveLines?: TextVariantProps['preserveLines'];
+    /**
+     * A block of words in a document. `note` is body text, `terms` is small
+     * print, `closing` is a closing line in the heading font, and `title` is
+     * a caps heading with a rule under it. Inside a printed document each one
+     * takes its paper look.
+     */
+    variant?: TextVariantProps['variant'];
   };
 
 /**
@@ -35,6 +48,10 @@ export type TextProps = Omit<BoxProps, keyof TextVariantProps> &
  * semantic role; use `Heading` for document headings and `Label` for form
  * labels. Provide `definition` for a short explanation that appears on hover
  * and keyboard focus.
+ *
+ * Use `variant` for a block of words in a document, and `preserveLines` to
+ * keep the line breaks of a multi-line field. In a printed document, under a
+ * `cetec-printDoc` root, text takes the paper look of its variant.
  *
  * @example
  * ```tsx
@@ -58,6 +75,8 @@ export const Text = (props: TextProps) => {
     tabIndex, // tabIndex main use for in list or loop select text using key press focus
     truncate,
     allCaps,
+    preserveLines,
+    variant,
     ...rest
   } = props;
   const [className, otherProps] = splitProps(rest);
@@ -80,6 +99,8 @@ export const Text = (props: TextProps) => {
           weight,
           truncate,
           allCaps,
+          preserveLines,
+          variant,
         }),
         className,
       )}
