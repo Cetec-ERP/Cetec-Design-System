@@ -28,19 +28,54 @@ export type KeyFactProps = Omit<
   KeyFactVariantProps & {
     /** Name of the fact, such as "Owner" or "Due". */
     label: string;
-    /** Value of the fact. A value wider than the space it has truncates and shows the full value in a tooltip. */
+    /**
+     * Value of the fact. A value wider than the space it has truncates and
+     * shows the full value in a tooltip, unless `wrap` is on. In a printed
+     * document the value always wraps.
+     */
     value: string;
     /** Makes the value a link, such as to the related record. Ignored while `editing`. */
     href?: string;
     /**
      * `horizontal` reads "Label: Value" on one line, for a page header aside.
      * `vertical` stacks the label over a larger value, for a facts strip.
+     * `aligned` gives the label a fixed width, so the values of several facts
+     * line up in a column. It stacks the label over the value when the nearest
+     * container is narrower than 15rem. With no container, it does not stack.
      * Takes a conditional value, such as `{ base: 'vertical', md: 'horizontal' }`.
      * A conditional value without `base` starts as `horizontal`.
      *
      * @default 'horizontal'
      */
     layout?: KeyFactVariantProps['layout'];
+    /**
+     * The kind of value. `number` and `currency` use tabular figures, so
+     * digits line up. A `date` does not wrap. `text` and `person` have no look
+     * of their own. The value is shown as given. Format it before you pass it.
+     *
+     * @default 'text'
+     */
+    type?: KeyFactVariantProps['type'];
+    /**
+     * `total` shows a large, bold value, for the last row of a stack of totals.
+     *
+     * @default 'normal'
+     */
+    emphasis?: KeyFactVariantProps['emphasis'];
+    /**
+     * `danger` shows the label and the value in the alert color, such as for a
+     * line warning or retainage.
+     *
+     * @default 'neutral'
+     */
+    tone?: KeyFactVariantProps['tone'];
+    /**
+     * Wraps a long value onto more lines in place of truncating it. Always on
+     * in a printed document.
+     *
+     * @default false
+     */
+    wrap?: KeyFactVariantProps['wrap'];
     /**
      * Replaces the value with a text input labeled by `label`. The input starts
      * with `value`. On its own, `editing` has no save or cancel: put the
@@ -85,7 +120,8 @@ const withBaseLayout = (
  * Shows one short fact about a record as a label and a value.
  *
  * Use up to three horizontal key facts in a page header aside. Use the vertical
- * layout in a strip of facts under the title. A horizontal label ends in the
+ * layout in a strip of facts under the title. Use the aligned layout for a
+ * grid of facts whose values line up. A horizontal label ends in the
  * `keyFactLabel` text from `LocaleProvider` ("Owner:" in English). Set `editing`
  * to change the value in place. With `editMode="confirm"`, the fact gets its
  * own save and cancel buttons.
@@ -101,6 +137,10 @@ export const KeyFact = (props: KeyFactProps) => {
     value,
     href,
     layout,
+    type,
+    emphasis,
+    tone,
+    wrap,
     editing = false,
     editMode = 'input',
     onSave,
@@ -114,7 +154,14 @@ export const KeyFact = (props: KeyFactProps) => {
   const inputId = useId();
   const textRef = useRef<HTMLElement>(null);
   const [truncated, setTruncated] = useState(false);
-  const classes = keyFact({ layout: withBaseLayout(layout), editing });
+  const classes = keyFact({
+    layout: withBaseLayout(layout),
+    editing,
+    type,
+    emphasis,
+    tone,
+    wrap,
+  });
   const [className, otherProps] = splitProps(rest);
   const isLink = Boolean(href);
   const labelText = (
@@ -187,67 +234,68 @@ export const KeyFact = (props: KeyFactProps) => {
       className={cx(classes.root, className)}
       {...otherProps}
     >
-      {editing ? (
-        <>
-          <Box as="label" htmlFor={inputId} className={classes.label}>
-            {labelText}
-          </Box>
-          <Box className={classes.value}>
-            <TextInput
-              name=""
-              size="sm"
-              {...inputProps}
-              {...confirmInputProps}
-              id={inputId}
-            />
-            {confirm && (
-              <Box className={classes.actions}>
-                <IconButton
-                  variant="ghost"
-                  size="sm"
-                  iconName="check"
-                  altText={labels.save}
-                  onClick={save}
-                />
-                <IconButton
-                  variant="ghost"
-                  size="sm"
-                  iconName="x"
-                  altText={labels.cancel}
-                  onClick={cancel}
-                />
-              </Box>
-            )}
-          </Box>
-        </>
-      ) : (
-        <>
-          <Box as="span" className={classes.label}>
-            {labelText}
-          </Box>
-          <Box className={classes.value}>
-            <Tooltip text={value} placement="top" disabled={!truncated}>
-              {href ? (
-                <Link ref={textRef} href={href} className={classes.text}>
-                  {value}
-                </Link>
-              ) : (
-                <Box
-                  as="span"
-                  ref={textRef}
-                  // Focusable while truncated, so keyboard and touch users can
-                  // open the tooltip with the full value.
-                  tabIndex={truncated ? 0 : undefined}
-                  className={classes.text}
-                  color="text"
-                >
-                  {value}
+      <Box className={classes.inner}>
+        {editing ? (
+          <>
+            <Box as="label" htmlFor={inputId} className={classes.label}>
+              {labelText}
+            </Box>
+            <Box className={classes.value}>
+              <TextInput
+                name=""
+                size="sm"
+                {...inputProps}
+                {...confirmInputProps}
+                id={inputId}
+              />
+              {confirm && (
+                <Box className={classes.actions}>
+                  <IconButton
+                    variant="ghost"
+                    size="sm"
+                    iconName="check"
+                    altText={labels.save}
+                    onClick={save}
+                  />
+                  <IconButton
+                    variant="ghost"
+                    size="sm"
+                    iconName="x"
+                    altText={labels.cancel}
+                    onClick={cancel}
+                  />
                 </Box>
               )}
-            </Tooltip>
-          </Box>
-        </>
-      )}
+            </Box>
+          </>
+        ) : (
+          <>
+            <Box as="span" className={classes.label}>
+              {labelText}
+            </Box>
+            <Box className={classes.value}>
+              <Tooltip text={value} placement="top" disabled={!truncated}>
+                {href ? (
+                  <Link ref={textRef} href={href} className={classes.text}>
+                    {value}
+                  </Link>
+                ) : (
+                  <Box
+                    as="span"
+                    ref={textRef}
+                    // Focusable while truncated, so keyboard and touch users can
+                    // open the tooltip with the full value.
+                    tabIndex={truncated ? 0 : undefined}
+                    className={classes.text}
+                  >
+                    {value}
+                  </Box>
+                )}
+              </Tooltip>
+            </Box>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

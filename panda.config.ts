@@ -91,9 +91,13 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
 };
 
 // Print recipes ship every variant, always. Fixture HTML is a string, so
-// Panda cannot extract its classes, and the Go print helper writes them.
+// Panda cannot extract its classes, and the Go print helper writes them. An
+// app recipe in the print kit keeps its overrides, such as responsive layouts.
 const printStaticCss: Record<string, RecipeRule[]> = Object.fromEntries(
-  printRecipeNames.map((name) => [name, ['*'] as unknown as RecipeRule[]]),
+  printRecipeNames.map((name) => [
+    name,
+    [...(recipeOverrides[name] ?? []), '*'] as unknown as RecipeRule[],
+  ]),
 );
 
 const staticCssRecipes: Record<string, RecipeRule[]> = Object.fromEntries(

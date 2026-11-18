@@ -87,9 +87,16 @@ export const printSizeTokens = {
   gridFitColumn: { value: '1.6in' },
 };
 
+/** Fixed sizes of component parts. */
+export const componentSizeTokens = {
+  /** The label width of an `aligned` KeyFact, so values line up. 6 rem. */
+  keyFactLabel: { value: '6rem' },
+};
+
 export const sizes = defineTokens.sizes({
   ...numericSizes,
   ...utilitySizes,
   ...containerSizeTokens,
   ...printSizeTokens,
+  ...componentSizeTokens,
 });

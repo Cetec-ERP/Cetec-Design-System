@@ -17,14 +17,24 @@ const columnCount = async (canvasElement: HTMLElement, fixture: string) => {
     .length;
 };
 
+/** The flex direction of each KeyFact in a fixture story. */
+const factDirections = (canvasElement: HTMLElement, fixture: string) =>
+  [
+    ...canvasElement.querySelectorAll(
+      `[data-fixture="${fixture}"] .cetec-keyFact__inner`,
+    ),
+  ].map((inner) => getComputedStyle(inner).flexDirection);
+
 /**
  * The print grid, the `printGrid` recipe, for the kit element `grid`. It puts
  * any elements side by side. It has no React component. The Go print helper
  * writes the classes from the fixtures.
  *
  * `columns` is `2`, `3`, `4`, or `fit`. `fit` makes as many columns as fit,
- * each at least 1.6 in wide. Each cell is an inline size container, so a part
- * in a narrow cell can change its layout. Each story renders one fixture from
+ * each at least 1.6 in wide. The elements are the cells, with no wrapper.
+ * Each cell is an inline size container, so a part in a narrow cell can change
+ * its layout. An aligned KeyFact stacks its label over its value in a cell
+ * narrower than 15rem. Each story renders one fixture from
  * `src/recipes/printGrid.fixtures.json` on a Letter page with 0.5 in margins,
  * so the content is 7.5 in wide.
  */
@@ -39,7 +49,8 @@ const meta = {
     recipe: 'printGrid',
     fixture: printFixture('printGrid', 'columns-2'),
     paper: 'letter',
-    h: 'xl',
+    h: 'lg',
+    fit: 'width',
   },
   argTypes: {
     paper: {
@@ -60,10 +71,14 @@ export const Columns2: Story = {
   play: async ({ canvasElement }) => {
     await expect(await columnCount(canvasElement, 'columns-2')).toBe(2);
     const cell = canvasElement.querySelector(
-      '[data-fixture="columns-2"] .cetec-printGrid > div',
+      '[data-fixture="columns-2"] .cetec-printGrid > *',
     );
     await expect(getComputedStyle(cell as Element).containerType).toBe(
       'inline-size',
+    );
+    // Cells are wider than 15rem, so labels stay beside values.
+    await expect(factDirections(canvasElement, 'columns-2')).toEqual(
+      Array(4).fill('row'),
     );
   },
 };
@@ -73,6 +88,10 @@ export const Columns3: Story = {
   args: { fixture: printFixture('printGrid', 'columns-3') },
   play: async ({ canvasElement }) => {
     await expect(await columnCount(canvasElement, 'columns-3')).toBe(3);
+    // Cells are narrower than 15rem, so each KeyFact stacks.
+    await expect(factDirections(canvasElement, 'columns-3')).toEqual(
+      Array(6).fill('column'),
+    );
   },
 };
 
@@ -81,6 +100,10 @@ export const Columns4: Story = {
   args: { fixture: printFixture('printGrid', 'columns-4') },
   play: async ({ canvasElement }) => {
     await expect(await columnCount(canvasElement, 'columns-4')).toBe(4);
+    // Cells are narrower than 15rem, so each KeyFact stacks.
+    await expect(factDirections(canvasElement, 'columns-4')).toEqual(
+      Array(4).fill('column'),
+    );
   },
 };
 
