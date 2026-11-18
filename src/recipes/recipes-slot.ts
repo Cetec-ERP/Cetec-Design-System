@@ -43,3 +43,4 @@ export { headerRecipe } from './header';
 export { partyRecipe } from './party';
 export { printSectionRecipe } from './printSection';
 export { printPageBreakRecipe } from './printPageBreak';
+export { printSignLineRecipe } from './printSignLine';

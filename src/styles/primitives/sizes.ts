@@ -101,6 +101,14 @@ export const componentSizeTokens = {
   keyFactLabel: { value: '6rem' },
   /** The longest side of a kit image. 2.4 in. */
   imageMax: { value: '2.4in' },
+  /** The starting width of a signature or name line. 1.3 in. */
+  signField: { value: '1.3in' },
+  /** The narrowest signature or name line. 1 in. */
+  signFieldMin: { value: '1in' },
+  /** The width of a date line. 0.9 in. */
+  signDate: { value: '0.9in' },
+  /** The width of an initials line. 0.5 in. */
+  signInitials: { value: '0.5in' },
 };
 
 export const sizes = defineTokens.sizes({
