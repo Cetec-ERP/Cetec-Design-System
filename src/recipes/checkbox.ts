@@ -1,9 +1,18 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
+/**
+ * The checkbox. In the app it wraps a native input and its icons.
+ *
+ * In a printed document, under a `cetec-printDoc` root, the Go print helper
+ * writes static markup with no input: the `container`, one inlined icon SVG
+ * in the `indicator` slot (`checkbox` for an empty box, `checkbox-checked`
+ * for a ticked one), and the text in the `label` slot. The icon prints in
+ * paper ink, so thermal ink prints it solid black.
+ */
 export const checkboxRecipe = defineSlotRecipe({
   className: 'checkbox',
   jsx: ['Checkbox'],
-  slots: ['container', 'input', 'indicator', 'checkBg'],
+  slots: ['container', 'input', 'indicator', 'checkBg', 'label'],
   base: {
     container: {
       position: 'relative',
@@ -13,6 +22,12 @@ export const checkboxRecipe = defineSlotRecipe({
       alignItems: 'start',
       cursor: 'pointer',
       userSelect: 'none',
+      _printDoc: {
+        alignItems: 'center',
+        columnGap: '4',
+        cursor: 'auto',
+        userSelect: 'auto',
+      },
     },
     input: {
       position: 'absolute',
@@ -86,6 +101,12 @@ export const checkboxRecipe = defineSlotRecipe({
         fill: 'icon.subtlest',
         zIndex: '3',
       },
+      _printDoc: {
+        display: 'block',
+        width: 'paper.tickBox',
+        height: 'paper.tickBox',
+        fill: 'paper.ink',
+      },
     },
     checkBg: {
       position: 'absolute',
@@ -96,6 +117,12 @@ export const checkboxRecipe = defineSlotRecipe({
       fill: 'surface',
       zIndex: 'base',
       pointerEvents: 'none',
+    },
+    label: {
+      color: 'text',
+      _printDoc: {
+        textStyle: 'print.fieldValue',
+      },
     },
   },
 });

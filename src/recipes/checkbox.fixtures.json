@@ -1,0 +1,63 @@
+{
+  "recipe": "checkbox",
+  "fixtures": [
+    {
+      "name": "empty-boxes",
+      "description": "Three empty boxes to tick by hand, as on the Inspection Label. A checkbox with no checked field prints the checkbox icon. Each box sits in its own cell. Here the plain cells stack. Inside a kit grid, the grid puts them in columns.",
+      "input": {
+        "grid": {
+          "columns": 3
+        },
+        "checkboxes": [
+          {
+            "label": "Rework"
+          },
+          {
+            "label": "Use as is"
+          },
+          {
+            "label": "Scrap"
+          }
+        ]
+      },
+      "html": "<div><div><span class=\"cetec-checkbox__container\"><svg class=\"cetec-checkbox__indicator\" data-icon=\"checkbox\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49zm0-1.667h11.666V6.167H6.167z\"/></svg><span class=\"cetec-checkbox__label\">Rework</span></span></div><div><span class=\"cetec-checkbox__container\"><svg class=\"cetec-checkbox__indicator\" data-icon=\"checkbox\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49zm0-1.667h11.666V6.167H6.167z\"/></svg><span class=\"cetec-checkbox__label\">Use as is</span></span></div><div><span class=\"cetec-checkbox__container\"><svg class=\"cetec-checkbox__indicator\" data-icon=\"checkbox\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49zm0-1.667h11.666V6.167H6.167z\"/></svg><span class=\"cetec-checkbox__label\">Scrap</span></span></div></div>"
+    },
+    {
+      "name": "checked-field",
+      "description": "A box ticked from a yes/no field that is true. It prints the checkbox-checked icon. The label carries the meaning.",
+      "input": {
+        "label": "First article",
+        "checked": true
+      },
+      "html": "<span class=\"cetec-checkbox__container\"><svg class=\"cetec-checkbox__indicator\" data-icon=\"checkbox-checked\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m10.833 15.5 5.875-5.875-1.166-1.167-4.709 4.709-2.375-2.375-1.166 1.166zm-4.666 4q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49z\"/></svg><span class=\"cetec-checkbox__label\">First article</span></span>"
+    },
+    {
+      "name": "empty-field",
+      "description": "A box from a yes/no field that is false. It prints the empty checkbox icon.",
+      "input": {
+        "label": "First article",
+        "checked": false
+      },
+      "html": "<span class=\"cetec-checkbox__container\"><svg class=\"cetec-checkbox__indicator\" data-icon=\"checkbox\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49zm0-1.667h11.666V6.167H6.167z\"/></svg><span class=\"cetec-checkbox__label\">First article</span></span>"
+    },
+    {
+      "name": "thermal-ink",
+      "description": "A ticked and an empty box in thermal ink. The icons print solid black.",
+      "input": {
+        "ink": "thermal",
+        "checkboxes": [
+          {
+            "label": "First article",
+            "checked": true
+          },
+          {
+            "label": "Rework",
+            "checked": false
+          }
+        ]
+      },
+      "root": ["cetec-printDoc", "cetec-ink-thermal"],
+      "html": "<div><div><span class=\"cetec-checkbox__container\"><svg class=\"cetec-checkbox__indicator\" data-icon=\"checkbox-checked\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m10.833 15.5 5.875-5.875-1.166-1.167-4.709 4.709-2.375-2.375-1.166 1.166zm-4.666 4q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49z\"/></svg><span class=\"cetec-checkbox__label\">First article</span></span></div><div><span class=\"cetec-checkbox__container\"><svg class=\"cetec-checkbox__indicator\" data-icon=\"checkbox\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6.167 19.5q-.688 0-1.177-.49a1.6 1.6 0 0 1-.49-1.177V6.167q0-.688.49-1.177.489-.49 1.177-.49h11.666q.688 0 1.177.49.49.489.49 1.177v11.666q0 .688-.49 1.177-.489.49-1.177.49zm0-1.667h11.666V6.167H6.167z\"/></svg><span class=\"cetec-checkbox__label\">Rework</span></span></div></div>"
+    }
+  ]
+}
