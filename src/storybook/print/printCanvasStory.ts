@@ -33,6 +33,8 @@ export type CanvasLayoutInput = {
   stock: PageSize;
   /** `paper` or `thermal`. */
   ink: string;
+  /** Printer resolution in dots per inch, when the layout sets one. */
+  dpi?: number;
   /** Turns the whole layout a quarter turn clockwise on the stock. */
   rotate: 0 | 90;
   /** The grid slot positions snap to. */

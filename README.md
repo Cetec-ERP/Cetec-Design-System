@@ -316,6 +316,19 @@ and size as inline values. The classes carry the look, never the position.
 - The MICR slot (`cetec-printSlot__content--micr_true`) sets the locked look.
   The Go print path sets the MICR font.
 
+**Barcodes.** Go encodes the value and writes the bars as an inline SVG with
+the `cetec-barcode__bars` class. The `viewBox` is one unit per module, with
+the quiet zone inside it. The class sets the bar ink and the height. Go sets
+the attributes CSS cannot:
+
+- Code 128: `preserveAspectRatio="none"` and a `width` in inches, the module
+  count times the module width. In a slot, use the widest whole number of
+  printer dots that fits the slot width.
+- QR and Data Matrix: `preserveAspectRatio="xMinYMin meet"`. In a slot, set
+  `width` and `height` to the largest square that fits.
+- When a value cannot be encoded, the preview writes `cetec-barcode__error`
+  with the message instead of the bars. It never changes the value.
+
 **Add a print recipe.** Add its name to `printRecipeNames` in
 `src/print/printRecipes.ts`. Add `src/recipes/<name>.fixtures.json` and a story
 for each fixture that renders it through `PrintFixtureView`. The recipe joins
