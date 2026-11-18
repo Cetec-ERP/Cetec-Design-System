@@ -1,0 +1,42 @@
+{
+  "recipe": "image",
+  "fixtures": [
+    {
+      "name": "part-photo",
+      "description": "A part photo larger than the cap. It scales down to 2.4 in wide and keeps its aspect ratio.",
+      "input": {
+        "src": "line.image_url",
+        "alt": "Part photo"
+      },
+      "html": "<img class=\"cetec-image\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='783' viewBox='0 0 230 150'%3E%3Crect width='230' height='150' fill='%23f4f4f4'/%3E%3Crect x='18' y='20' width='194' height='110' rx='6' fill='%232f6b3f'/%3E%3Cg fill='%23d9c26a'%3E%3Crect x='40' y='38' width='40' height='30' rx='2'/%3E%3Crect x='100' y='44' width='22' height='22'/%3E%3Crect x='138' y='44' width='22' height='22'/%3E%3Crect x='176' y='44' width='16' height='50'/%3E%3C/g%3E%3Cg stroke='%239cc79e' stroke-width='2' fill='none'%3E%3Cpath d='M60 68v30h60'/%3E%3Cpath d='M111 66v24'/%3E%3Cpath d='M149 66v40H90'/%3E%3C/g%3E%3Cg fill='%23222'%3E%3Crect x='40' y='96' width='30' height='18'/%3E%3Crect x='128' y='104' width='34' height='14'/%3E%3C/g%3E%3Ccircle cx='30' cy='32' r='4' fill='%23ccc'/%3E%3Ccircle cx='200' cy='118' r='4' fill='%23ccc'/%3E%3C/svg%3E\" alt=\"Part photo\">"
+    },
+    {
+      "name": "wide-logo",
+      "description": "A wide logo. Its long side is 2.4 in, so it is short.",
+      "input": {
+        "src": "company.logo_url",
+        "alt": "Logo"
+      },
+      "html": "<img class=\"cetec-image\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='200' viewBox='0 0 100 20'%3E%3Crect width='100' height='20' fill='%23ffffff'/%3E%3Ccircle cx='10' cy='10' r='8' fill='%230b5cad'/%3E%3Ccircle cx='10' cy='10' r='4' fill='%23ffffff'/%3E%3Crect x='22' y='5' width='70' height='4' rx='2' fill='%23292a2e'/%3E%3Crect x='22' y='12' width='46' height='3' rx='1.5' fill='%236b6e76'/%3E%3C/svg%3E\" alt=\"Logo\">"
+    },
+    {
+      "name": "tall-photo",
+      "description": "A tall photo. Its long side is the height, so it is 2.4 in high.",
+      "input": {
+        "src": "step.image_url",
+        "alt": "Step photo"
+      },
+      "html": "<img class=\"cetec-image\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='900' viewBox='0 0 60 90'%3E%3Crect width='60' height='90' fill='%23f4f4f4'/%3E%3Crect x='22' y='8' width='16' height='74' rx='3' fill='%238a8f99'/%3E%3Cg fill='%23d9c26a'%3E%3Crect x='18' y='14' width='24' height='6'/%3E%3Crect x='18' y='70' width='24' height='6'/%3E%3C/g%3E%3C/svg%3E\" alt=\"Step photo\">"
+    },
+    {
+      "name": "broken",
+      "description": "The image field has a value, but the file cannot be read. Go writes an empty box with a hairline. It keeps the alt text as the accessible name.",
+      "input": {
+        "src": "line.image_url",
+        "alt": "Part photo",
+        "file": "missing"
+      },
+      "html": "<span class=\"cetec-image cetec-image--broken_true\" role=\"img\" aria-label=\"Part photo\"></span>"
+    }
+  ]
+}

@@ -99,6 +99,8 @@ export const printSizeTokens = {
 export const componentSizeTokens = {
   /** The label width of an `aligned` KeyFact, so values line up. 6 rem. */
   keyFactLabel: { value: '6rem' },
+  /** The longest side of a kit image. 2.4 in. */
+  imageMax: { value: '2.4in' },
 };
 
 export const sizes = defineTokens.sizes({
