@@ -1,0 +1,144 @@
+{
+  "recipe": "printSlot",
+  "fixtures": [
+    {
+      "name": "variants",
+      "description": "Each slot variant on a 4 × 2 in label in normal ink: a default slot, a slot turned 90°, a slot with a top rule, and a slot whose content is too long. The slot clips it and never grows.",
+      "input": {
+        "canvas": "label",
+        "stock": {
+          "width": 4,
+          "height": 2,
+          "unit": "in"
+        },
+        "rotate": 0,
+        "grid": "1/64 in",
+        "ink": "paper",
+        "slots": [
+          {
+            "name": "plain",
+            "x": 0,
+            "y": 0,
+            "width": 2.5,
+            "height": 0.75,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "turned",
+            "x": 2.5,
+            "y": 0,
+            "width": 1.5,
+            "height": 2,
+            "rotate": 90,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "ruled",
+            "x": 0,
+            "y": 0.75,
+            "width": 2.5,
+            "height": 0.5,
+            "rule": true,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "clipped",
+            "x": 0,
+            "y": 1.25,
+            "width": 2.5,
+            "height": 0.75,
+            "rule": true,
+            "holds": ["text"]
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printCanvas__root\" style=\"width:4in;height:2in\"><div class=\"cetec-printCanvas__layer\"><div class=\"cetec-printSlot__root\" data-slot=\"plain\" style=\"left:0in;top:0in;width:2.5in;height:0.75in\"><div class=\"cetec-printSlot__content\"><p>Default slot</p><p><strong>Content inset from the edges</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"turned\" style=\"left:2.5in;top:0in;width:1.5in;height:2in\"><div class=\"cetec-printSlot__content cetec-printSlot__content--rotate_90\"><p>rotate: 90</p><p><strong>Turned a quarter turn clockwise</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"ruled\" style=\"left:0in;top:0.75in;width:2.5in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p>rule: true</p><p><strong>Rule along the top edge</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"clipped\" style=\"left:0in;top:1.25in;width:2.5in;height:0.75in\"><div class=\"cetec-printSlot__content\"><p>Too long for the slot</p><p>Kestrel Robotics, Inc. · Receiving Dock 3 · 88 Foundry Road · Fremont, CA 94538 · Attention: incoming inspection, second shift · Call ahead before delivery · Dock hours 7 AM to 3 PM, Monday to Friday</p></div></div></div></div>"
+    },
+    {
+      "name": "variants-thermal",
+      "description": "The same slots in thermal ink. Text and the top rule are solid black, and the rule is 1.5 pt.",
+      "input": {
+        "canvas": "label",
+        "stock": {
+          "width": 4,
+          "height": 2,
+          "unit": "in"
+        },
+        "rotate": 0,
+        "grid": "1/64 in",
+        "ink": "thermal",
+        "slots": [
+          {
+            "name": "plain",
+            "x": 0,
+            "y": 0,
+            "width": 2.5,
+            "height": 0.75,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "turned",
+            "x": 2.5,
+            "y": 0,
+            "width": 1.5,
+            "height": 2,
+            "rotate": 90,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "ruled",
+            "x": 0,
+            "y": 0.75,
+            "width": 2.5,
+            "height": 0.5,
+            "rule": true,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "clipped",
+            "x": 0,
+            "y": 1.25,
+            "width": 2.5,
+            "height": 0.75,
+            "rule": true,
+            "holds": ["text"]
+          }
+        ]
+      },
+      "root": ["cetec-printDoc", "cetec-ink-thermal"],
+      "html": "<div class=\"cetec-printCanvas__root\" style=\"width:4in;height:2in\"><div class=\"cetec-printCanvas__layer\"><div class=\"cetec-printSlot__root\" data-slot=\"plain\" style=\"left:0in;top:0in;width:2.5in;height:0.75in\"><div class=\"cetec-printSlot__content\"><p>Default slot</p><p><strong>Content inset from the edges</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"turned\" style=\"left:2.5in;top:0in;width:1.5in;height:2in\"><div class=\"cetec-printSlot__content cetec-printSlot__content--rotate_90\"><p>rotate: 90</p><p><strong>Turned a quarter turn clockwise</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"ruled\" style=\"left:0in;top:0.75in;width:2.5in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p>rule: true</p><p><strong>Rule along the top edge</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"clipped\" style=\"left:0in;top:1.25in;width:2.5in;height:0.75in\"><div class=\"cetec-printSlot__content\"><p>Too long for the slot</p><p>Kestrel Robotics, Inc. · Receiving Dock 3 · 88 Foundry Road · Fremont, CA 94538 · Attention: incoming inspection, second shift · Call ahead before delivery · Dock hours 7 AM to 3 PM, Monday to Friday</p></div></div></div></div>"
+    },
+    {
+      "name": "micr",
+      "description": "The locked MICR slot in the clear band at the bottom of a check face. The line is solid black and set from the slot's right edge. The Go print path sets the MICR font.",
+      "input": {
+        "canvas": "check",
+        "stock": {
+          "width": 8.5,
+          "height": 0.625,
+          "unit": "in"
+        },
+        "rotate": 0,
+        "grid": "1/64 in",
+        "micrBand": {
+          "top": 0,
+          "height": 0.625
+        },
+        "ink": "paper",
+        "slots": [
+          {
+            "name": "micr",
+            "x": 1,
+            "y": 0.1875,
+            "width": 5.6875,
+            "height": 0.25,
+            "micr": true,
+            "locked": true,
+            "holds": []
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printCanvas__root\" style=\"width:8.5in;height:0.625in\"><div class=\"cetec-printCanvas__layer\"><div class=\"cetec-printSlot__root\" data-slot=\"micr\" style=\"left:1in;top:0.1875in;width:5.6875in;height:0.25in\"><div class=\"cetec-printSlot__content cetec-printSlot__content--micr_true\">⑈004817⑈ ⑆111000000⑆ 0000441022⑈</div></div></div></div>"
+    }
+  ]
+}
