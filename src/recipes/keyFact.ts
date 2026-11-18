@@ -3,6 +3,7 @@ import { defineSlotRecipe } from '@pandacss/dev';
 import { fontVariants, globalBaseStyles } from '~/styles/utilities';
 
 import { headerMetaStyles } from './header';
+import { totalsRowStyles } from './totals';
 
 /**
  * Matches when the nearest container is narrower than
@@ -98,6 +99,8 @@ const keyFactBase = {
         lineHeight: 'inherit',
       },
     },
+    // Totals values never wrap. After `_printDoc`, so it wins.
+    ...totalsRowStyles.text,
   },
 };
 
@@ -168,8 +171,9 @@ const keyFactVariants = {
      * no container, it does not stack.
      */
     aligned: {
-      root: { display: 'block' },
+      root: { display: 'block', ...totalsRowStyles.root },
       inner: {
+        ...totalsRowStyles.inner,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'baseline',
@@ -189,6 +193,7 @@ const keyFactVariants = {
         color: 'text.subtle',
         _printDoc: { textStyle: 'print.capsLabel' },
         [narrowContainer]: { w: 'auto' },
+        ...totalsRowStyles.label,
       },
       labelWithColon: { display: 'none' },
       labelPlain: { display: 'inline' },
@@ -196,6 +201,7 @@ const keyFactVariants = {
         flex: '1',
         textStyle: 'body.sm',
         _printDoc: { textStyle: 'print.fieldValue' },
+        ...totalsRowStyles.value,
       },
     },
   },
@@ -216,12 +222,17 @@ const keyFactVariants = {
    * The kind of value. `number` and `currency` use tabular figures. A `date`
    * does not wrap. `text` and `person` have no look of their own.
    */
-  // After `wrap`, so a date stays on one line when `wrap` is on.
   type: {
     text: {},
     number: figures,
     currency: figures,
-    date: { text: { whiteSpace: 'nowrap' } },
+    date: {
+      text: {
+        whiteSpace: 'nowrap',
+        // Panda can emit this rule before the `wrap` rule, so beat it here.
+        '&.cetec-keyFact__text--wrap_true': { whiteSpace: 'nowrap' },
+      },
+    },
     person: {},
   },
   /** `total` is the large last row in a stack of totals. */
@@ -231,11 +242,13 @@ const keyFactVariants = {
       label: {
         color: 'text',
         _printDoc: { color: 'paper.ink' },
+        ...totalsRowStyles.totalCell,
       },
       value: {
         textStyle: 'body.lg',
         fontWeight: 'bold',
         _printDoc: { textStyle: 'print.total' },
+        ...totalsRowStyles.totalCell,
       },
     },
   },

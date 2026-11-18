@@ -17,3 +17,4 @@ export { iconRecipe } from './icon';
 export { breakpointIndicatorRecipe } from './breakpointIndicator';
 export { printDocRecipe } from './printDoc';
 export { printGridRecipe } from './printGrid';
+export { totalsRecipe } from './totals';

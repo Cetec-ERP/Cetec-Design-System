@@ -91,6 +91,8 @@ export const printSizeTokens = {
   headerWordmarkMax: { value: '2.5in' },
   /** The height of a badge logo in a document header. 32 pt. */
   headerBadge: { value: '32pt' },
+  /** The widest a stack of totals gets. 3.4 in. */
+  totalsWidth: { value: '3.4in' },
 };
 
 /** Fixed sizes of component parts. */

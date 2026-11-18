@@ -1,0 +1,129 @@
+{
+  "recipe": "totals",
+  "fixtures": [
+    {
+      "name": "usd",
+      "description": "A USD invoice with freight and tax. Nothing is paid yet. The balance due is the total row.",
+      "input": {
+        "key_facts": [
+          {
+            "label": "Subtotal",
+            "value": "$12,840.00",
+            "type": "money"
+          },
+          {
+            "label": "Freight",
+            "value": "$145.00",
+            "type": "money"
+          },
+          {
+            "label": "Sales tax (8.25%)",
+            "value": "$1,059.30",
+            "type": "money"
+          },
+          {
+            "label": "Total",
+            "value": "$14,044.30",
+            "type": "money"
+          },
+          {
+            "label": "Balance due",
+            "value": "$14,044.30",
+            "type": "money",
+            "emphasis": "total"
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-totals\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Subtotal:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Subtotal</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$12,840.00</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Freight:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Freight</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$145.00</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Sales tax (8.25%):</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Sales tax (8.25%)</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$1,059.30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Total:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Total</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$14,044.30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned cetec-keyFact__label--emphasis_total\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Balance due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Balance due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned cetec-keyFact__value--emphasis_total\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$14,044.30</span></div></div></div></div>"
+    },
+    {
+      "name": "german-retainage",
+      "description": "An invoice in the German document format, with retainage after the total. Retainage prints in the alert ink. Go writes the digits and the sign.",
+      "input": {
+        "key_facts": [
+          {
+            "label": "Subtotal",
+            "value": "11.920,00 €",
+            "type": "money"
+          },
+          {
+            "label": "VAT (19%)",
+            "value": "2.264,80 €",
+            "type": "money"
+          },
+          {
+            "label": "Total",
+            "value": "14.184,80 €",
+            "type": "money"
+          },
+          {
+            "label": "Retainage (5%)",
+            "value": "−709,24 €",
+            "type": "money",
+            "tone": "danger"
+          },
+          {
+            "label": "Balance due",
+            "value": "13.475,56 €",
+            "type": "money",
+            "emphasis": "total"
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-totals\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Subtotal:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Subtotal</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">11.920,00 €</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">VAT (19%):</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">VAT (19%)</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">2.264,80 €</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Total:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Total</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">14.184,80 €</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned cetec-keyFact__label--tone_danger\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Retainage (5%):</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Retainage (5%)</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned cetec-keyFact__value--tone_danger\"><span class=\"cetec-keyFact__text cetec-keyFact__text--tone_danger cetec-keyFact__text--type_currency\">−709,24 €</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned cetec-keyFact__label--emphasis_total\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Balance due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Balance due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned cetec-keyFact__value--emphasis_total\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">13.475,56 €</span></div></div></div></div>"
+    },
+    {
+      "name": "check-stub",
+      "description": "One total row, as a check remittance stub prints it.",
+      "input": {
+        "key_facts": [
+          {
+            "label": "Total paid",
+            "value": "$4,612.75",
+            "type": "money",
+            "emphasis": "total"
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-totals\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned cetec-keyFact__label--emphasis_total\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Total paid:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Total paid</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned cetec-keyFact__value--emphasis_total\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$4,612.75</span></div></div></div></div>"
+    },
+    {
+      "name": "next-page",
+      "description": "Totals after content that fills most of a page. The totals do not fit, so they move whole to the next page.",
+      "input": {
+        "before": "17 lines of content",
+        "totals": {
+          "key_facts": [
+            {
+              "label": "Subtotal",
+              "value": "$12,840.00",
+              "type": "money"
+            },
+            {
+              "label": "Freight",
+              "value": "$145.00",
+              "type": "money"
+            },
+            {
+              "label": "Sales tax (8.25%)",
+              "value": "$1,059.30",
+              "type": "money"
+            },
+            {
+              "label": "Total",
+              "value": "$14,044.30",
+              "type": "money"
+            },
+            {
+              "label": "Balance due",
+              "value": "$14,044.30",
+              "type": "money",
+              "emphasis": "total"
+            }
+          ]
+        }
+      },
+      "html": "<p>Line 1. Earlier content stands in for the line table.</p><p>Line 2. Earlier content stands in for the line table.</p><p>Line 3. Earlier content stands in for the line table.</p><p>Line 4. Earlier content stands in for the line table.</p><p>Line 5. Earlier content stands in for the line table.</p><p>Line 6. Earlier content stands in for the line table.</p><p>Line 7. Earlier content stands in for the line table.</p><p>Line 8. Earlier content stands in for the line table.</p><p>Line 9. Earlier content stands in for the line table.</p><p>Line 10. Earlier content stands in for the line table.</p><p>Line 11. Earlier content stands in for the line table.</p><p>Line 12. Earlier content stands in for the line table.</p><p>Line 13. Earlier content stands in for the line table.</p><p>Line 14. Earlier content stands in for the line table.</p><p>Line 15. Earlier content stands in for the line table.</p><p>Line 16. Earlier content stands in for the line table.</p><p>Line 17. Earlier content stands in for the line table.</p><div class=\"cetec-totals\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Subtotal:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Subtotal</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$12,840.00</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Freight:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Freight</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$145.00</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Sales tax (8.25%):</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Sales tax (8.25%)</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$1,059.30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Total:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Total</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$14,044.30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned cetec-keyFact__label--emphasis_total\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Balance due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Balance due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned cetec-keyFact__value--emphasis_total\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_currency\">$14,044.30</span></div></div></div></div>"
+    }
+  ]
+}
