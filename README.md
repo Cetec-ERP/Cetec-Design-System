@@ -289,6 +289,46 @@ which renders the same HTML on a page.
 them can use the `PrintClassManifest` and `PrintFixtureFile` types from
 `cetec-design-system`.
 
+**Canvas layouts.** Checks and labels place kit elements in slots on a
+1/64 in grid. Go writes one `printCanvas` per label or check sheet, with the
+stock size as inline values, and one `printSlot` per slot, with its position
+and size as inline values. The classes carry the look, never the position.
+
+```html
+<div class="cetec-printCanvas__root" style="width:4in;height:6in">
+  <div class="cetec-printCanvas__layer">
+    <div
+      class="cetec-printSlot__root"
+      data-slot="part"
+      style="left:0in;top:0.5in;width:4in;height:0.6875in"
+    >
+      <div class="cetec-printSlot__content">…</div>
+    </div>
+  </div>
+</div>
+```
+
+- A slot clips its content and never grows.
+- `rotate: 90` turns a whole layout (`cetec-printCanvas__layer--rotate_90`) or
+  one slot's content (`cetec-printSlot__content--rotate_90`) a quarter turn
+  clockwise. Slot positions stay in layout space.
+- A repeating label is one canvas per item. Each canvas starts a new page.
+- The MICR slot (`cetec-printSlot__content--micr_true`) sets the locked look.
+  The Go print path sets the MICR font.
+
+**Barcodes.** Go encodes the value and writes the bars as an inline SVG with
+the `cetec-barcode__bars` class. The `viewBox` is one unit per module, with
+the quiet zone inside it. The class sets the bar ink and the height. Go sets
+the attributes CSS cannot:
+
+- Code 128: `preserveAspectRatio="none"` and a `width` in inches, the module
+  count times the module width. In a slot, use the widest whole number of
+  printer dots that fits the slot width.
+- QR and Data Matrix: `preserveAspectRatio="xMinYMin meet"`. In a slot, set
+  `width` and `height` to the largest square that fits.
+- When a value cannot be encoded, the preview writes `cetec-barcode__error`
+  with the message instead of the bars. It never changes the value.
+
 **Add a print recipe.** Add its name to `printRecipeNames` in
 `src/print/printRecipes.ts`. Add `src/recipes/<name>.fixtures.json` and a story
 for each fixture that renders it through `PrintFixtureView`. The recipe joins
