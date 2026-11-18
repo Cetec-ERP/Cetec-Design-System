@@ -35,3 +35,4 @@ export { filterTokenRecipe } from './filterToken';
 export { printPreviewRecipe } from './printPreview';
 export { keyFactRecipe } from './keyFact';
 export { peekBarRecipe } from './peekBar';
+export { printSectionRecipe } from './printSection';
