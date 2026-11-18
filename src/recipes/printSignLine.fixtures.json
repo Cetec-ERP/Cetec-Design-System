@@ -1,0 +1,40 @@
+{
+  "recipe": "printSignLine",
+  "fixtures": [
+    {
+      "name": "name-and-date",
+      "description": "A signature with a printed name and a date line. The name prints on the name line.",
+      "input": {
+        "label": "Approved by",
+        "name": "Tamsin Okoro",
+        "lines": ["name", "date"]
+      },
+      "html": "<div class=\"cetec-printSignLine__root\"><span class=\"cetec-printSignLine__label\">Approved by</span><div class=\"cetec-printSignLine__field\"><div class=\"cetec-printSignLine__line\"></div><span class=\"cetec-printSignLine__caption\">Signature</span></div><div class=\"cetec-printSignLine__field\"><div class=\"cetec-printSignLine__line\"><span class=\"cetec-printSignLine__value\">Tamsin Okoro</span></div><span class=\"cetec-printSignLine__caption\">Name</span></div><div class=\"cetec-printSignLine__field cetec-printSignLine__field--kind_date\"><div class=\"cetec-printSignLine__line\"></div><span class=\"cetec-printSignLine__caption\">Date</span></div></div>"
+    },
+    {
+      "name": "all-lines",
+      "description": "A signature with all three lines, in order: name, date, and initials.",
+      "input": {
+        "label": "Received by",
+        "lines": ["name", "date", "initials"]
+      },
+      "html": "<div class=\"cetec-printSignLine__root\"><span class=\"cetec-printSignLine__label\">Received by</span><div class=\"cetec-printSignLine__field\"><div class=\"cetec-printSignLine__line\"></div><span class=\"cetec-printSignLine__caption\">Signature</span></div><div class=\"cetec-printSignLine__field\"><div class=\"cetec-printSignLine__line\"></div><span class=\"cetec-printSignLine__caption\">Name</span></div><div class=\"cetec-printSignLine__field cetec-printSignLine__field--kind_date\"><div class=\"cetec-printSignLine__line\"></div><span class=\"cetec-printSignLine__caption\">Date</span></div><div class=\"cetec-printSignLine__field cetec-printSignLine__field--kind_initials\"><div class=\"cetec-printSignLine__line\"></div><span class=\"cetec-printSignLine__caption\">Initials</span></div></div>"
+    },
+    {
+      "name": "write-in",
+      "description": "No lines: a write-in field with one rule and no caption.",
+      "input": {
+        "label": "Measured torque (N·m)"
+      },
+      "html": "<div class=\"cetec-printSignLine__root\"><span class=\"cetec-printSignLine__label\">Measured torque (N·m)</span><div class=\"cetec-printSignLine__field\"><div class=\"cetec-printSignLine__line\"></div></div></div>"
+    },
+    {
+      "name": "check-face",
+      "description": "The face of a check: \"Authorized signature\" with no lines. Like any sign line with no lines, it is a write-in field with no caption.",
+      "input": {
+        "label": "Authorized signature"
+      },
+      "html": "<div class=\"cetec-printSignLine__root\"><span class=\"cetec-printSignLine__label\">Authorized signature</span><div class=\"cetec-printSignLine__field\"><div class=\"cetec-printSignLine__line\"></div></div></div>"
+    }
+  ]
+}
