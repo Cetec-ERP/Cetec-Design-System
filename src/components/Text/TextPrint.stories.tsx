@@ -116,6 +116,7 @@ export const TitledNote: Story = {
     await expect(titleStyle.fontSize).toBe('9.33333px');
     await expect(titleStyle.textTransform).toBe('uppercase');
     await expect(titleStyle.borderBottomStyle).toBe('solid');
+    await expect(titleStyle.breakAfter).toBe('avoid');
   },
 };
 

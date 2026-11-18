@@ -74,6 +74,8 @@ const textOnlyVariants = {
         borderBottomColor: 'paper.hairline',
         pb: '4',
         mb: '6',
+        // A title never ends a page alone, away from its text.
+        breakAfter: 'avoid',
       },
     },
   },
