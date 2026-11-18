@@ -2,6 +2,8 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { fontVariants, globalBaseStyles } from '~/styles/utilities';
 
+import { headerMetaStyles } from './header';
+
 /**
  * Matches when the nearest container is narrower than
  * `containerSizes.keyFactStack`. Keep the two widths the same.
@@ -115,6 +117,7 @@ const keyFactVariants = {
         flexDirection: 'row',
         alignItems: 'center',
         gap: '4',
+        ...headerMetaStyles.root,
       },
       inner: { display: 'contents' },
       // A text style sets its own color, so set the label color after it.
@@ -124,6 +127,7 @@ const keyFactVariants = {
         textStyle: 'body.sm',
         color: 'text.subtle',
         _printDoc: { textStyle: 'print.body', color: 'paper.inkSoft' },
+        ...headerMetaStyles.label,
       },
       labelWithColon: { display: 'inline' },
       labelPlain: { display: 'none' },
@@ -131,6 +135,7 @@ const keyFactVariants = {
         flex: 'initial',
         textStyle: 'body.sm',
         _printDoc: { textStyle: 'print.body' },
+        ...headerMetaStyles.value,
       },
     },
     vertical: {

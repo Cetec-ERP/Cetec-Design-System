@@ -85,6 +85,12 @@ export const containerSizeTokens = {
 export const printSizeTokens = {
   /** The narrowest column of a print grid with `columns: fit`. 1.6 in. */
   gridFitColumn: { value: '1.6in' },
+  /** The height of a wordmark logo in a document header. 28 pt. */
+  headerWordmark: { value: '28pt' },
+  /** The widest a wordmark logo gets in a document header. 2.5 in. */
+  headerWordmarkMax: { value: '2.5in' },
+  /** The height of a badge logo in a document header. 32 pt. */
+  headerBadge: { value: '32pt' },
 };
 
 /** Fixed sizes of component parts. */
