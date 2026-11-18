@@ -18,6 +18,8 @@ export const printRecipeNames = [
   'header',
   'party',
   'totals',
+  'text',
+  'divider',
 ] as const;
 
 /** The name of a recipe in the print kit. */
