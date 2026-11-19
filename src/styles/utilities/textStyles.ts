@@ -311,12 +311,12 @@ export const textStyles = defineTextStyles({
         color: 'paper.inkSoft',
       },
     },
-    /** Document title. 20 pt heading. */
+    /** Document title. 20 pt heading, bold. */
     title: {
       value: {
         fontFamily: 'heading',
         fontSize: 'print.title',
-        fontWeight: 'black',
+        fontWeight: 'bold',
         lineHeight: 'tight',
         color: 'paper.ink',
       },

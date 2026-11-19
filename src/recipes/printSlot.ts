@@ -43,8 +43,8 @@ export const printSlotRecipe = defineSlotRecipe({
       w: 'full',
       h: 'full',
       overflow: 'hidden',
-      py: 'print.slotBlock',
-      px: 'print.slotInline',
+      py: 'print.2',
+      px: 'print.6',
     },
   },
   variants: {

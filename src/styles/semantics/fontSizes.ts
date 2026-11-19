@@ -58,27 +58,32 @@ export const fontSizes = defineSemanticTokens.fontSizes({
     },
   },
   /**
-   * Type sizes for printed documents, in points. A point is 1/72 inch, so
-   * these sizes hold on any printer.
+   * The print text scale, in points. A point is 1/72 inch, so these sizes
+   * hold on any printer. Every print text size is one of these eight steps,
+   * from smallest to largest: 7, 7.5, 8.5, 9.5, 11, 14, 17, and 20 pt.
    */
   print: {
-    /** Small caps labels, such as field labels and table headers. */
+    /** 7 pt. Small caps labels, such as field labels and table headers. */
     capsLabel: { value: '7pt' },
-    /** Field values. */
-    fieldValue: { value: '9.5pt' },
-    /** Body text and table cells. */
-    body: { value: '8.5pt' },
-    /** Terms, notes, and page numbers. */
+    /** 7.5 pt. Terms, notes in small print, and page numbers. */
     smallPrint: { value: '7.5pt' },
-    /** The document title. */
-    title: { value: '20pt' },
-    /** The grand total. */
+    /** 8.5 pt. Body text and table cells. The `<body>` of every document. */
+    body: { value: '8.5pt' },
+    /** 9.5 pt. Field values, address lines, and header info rows. */
+    fieldValue: { value: '9.5pt' },
+    /**
+     * 11 pt. A line that leads its block, such as a name in an address or a
+     * value in a canvas slot.
+     */
+    lead: { value: '11pt' },
+    /** 14 pt. The grand total. */
     total: { value: '14pt' },
-    /** A value in a canvas slot, such as a PO on a label. */
-    labelValue: { value: '11pt' },
-    /** A large value in a canvas slot, such as the part number on a label. */
-    labelValueLarge: { value: '17pt' },
-    /** Names in a block, such as the company name in an address. */
-    heading: { value: '11pt' },
+    /**
+     * 17 pt. A value read from a distance, such as the part number on a
+     * label.
+     */
+    display: { value: '17pt' },
+    /** 20 pt. The document title. */
+    title: { value: '20pt' },
   },
 });

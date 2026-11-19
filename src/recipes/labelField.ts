@@ -40,7 +40,7 @@ export const labelFieldRecipe = defineSlotRecipe({
     value: {
       fontFamily: 'mono',
       fontVariant: 'mono',
-      fontSize: 'print.labelValue',
+      fontSize: 'print.lead',
       fontWeight: 'bold',
       lineHeight: 'tight',
       color: 'paper.ink',
@@ -68,7 +68,7 @@ export const labelFieldRecipe = defineSlotRecipe({
       normal: {},
       large: {
         value: {
-          fontSize: 'print.labelValueLarge',
+          fontSize: 'print.display',
           fontWeight: 'black',
         },
       },

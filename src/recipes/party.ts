@@ -52,7 +52,7 @@ export const partyRecipe = defineSlotRecipe({
     attention: addressLine,
     name: {
       fontFamily: 'heading',
-      fontSize: 'print.heading',
+      fontSize: 'print.lead',
       fontWeight: 'bold',
       lineHeight: 'tight',
       color: 'paper.ink',

@@ -37,7 +37,10 @@ type PrintFixtureMarkupProps = {
 /**
  * Renders a fixture's HTML as the Go print helper writes it. The outer `div`
  * stands in for `<html>` and carries the fixture's root classes. The inner
- * `div` stands in for `<body>`. It pads to the page margins, as `@page`
+ * `div` stands in for `<body>`. Go writes no class or style on `<body>`, so
+ * the stand-in carries none either. It is the root's first child, as `<body>`
+ * is, so it takes the same `printDoc` rules: the body text style and the
+ * space between top-level blocks. It pads to the page margins, as `@page`
  * margins do in print. Both are plain elements with no design-system recipe,
  * so only the fixture's classes style the markup.
  */
