@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { IconButton } from '~/components/IconButton';
 import { Menu, type MenuProps } from '~/components/Menu';
@@ -35,7 +35,8 @@ export type SplitButtonMenuProps = Omit<
  *
  * The open state is uncontrolled by default. Pass `open` and `onOpenChange`
  * to control it. While the parent has a `menuDisabledReason`, the menu stays
- * closed.
+ * closed. If the reason arrives while a controlled menu is open, the menu
+ * calls `onOpenChange(false)`, so it stays closed after the reason clears.
  *
  * @example
  * ```tsx
@@ -63,6 +64,13 @@ export const SplitButtonMenu = (props: SplitButtonMenuProps) => {
   }
 
   const isOpen = !menuDisabled && (open ?? uncontrolledOpen);
+
+  // A controlled menu is closed by its owner. Ask for that when a reason
+  // arrives while it is open, so it does not reopen when the reason clears.
+  const closedByReason = menuDisabled && open === true;
+  useEffect(() => {
+    if (closedByReason) onOpenChange?.(false);
+  }, [closedByReason, onOpenChange]);
 
   // The toggle blocks clicks while disabled, but the arrow keys would still
   // ask the menu to open.

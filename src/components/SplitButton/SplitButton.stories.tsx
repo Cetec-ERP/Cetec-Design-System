@@ -5,6 +5,7 @@ import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { HStack, VStack } from '@styled-system/jsx';
 
 import { Box } from '../Box';
+import { Button } from '../Button';
 import { MenuGroup, MenuItem, SubMenu } from '../Menu';
 import { Text } from '../Text';
 
@@ -514,6 +515,71 @@ export const MenuDisabledBehavior: Story = {
     await userEvent.unhover(toggle);
     toggle.blur();
     await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
+  },
+};
+
+const controlledOpenChange = fn();
+
+export const ControlledMenuDisabledBehavior: Story = {
+  name: 'Test: a disabled reason closes a controlled menu',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  // Behavior test only. It ends closed and looks like "Test: menu disabled,
+  // action works".
+  tags: ['!dev', '!autodocs', '!snapshot'],
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    const [locked, setLocked] = useState(false);
+
+    return (
+      <VStack gap="16" alignItems="start">
+        <SplitButton
+          {...args}
+          menuDisabledReason={
+            locked ? 'Another user is moving this job.' : undefined
+          }
+        >
+          Move to next: Packing
+          <SplitButton.Menu
+            open={open}
+            onOpenChange={(nextOpen: boolean) => {
+              controlledOpenChange(nextOpen);
+              setOpen(nextOpen);
+            }}
+          >
+            <MenuItem label="Choose location…" />
+          </SplitButton.Menu>
+        </SplitButton>
+        <Button onClick={() => setLocked((value) => !value)}>
+          Toggle lock
+        </Button>
+      </VStack>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const toggle = canvas.getByRole('button', { name: 'More actions' });
+    const lock = canvas.getByRole('button', { name: 'Toggle lock' });
+    controlledOpenChange.mockClear();
+
+    await userEvent.click(toggle);
+    await body.findByRole('menu');
+    await expect(controlledOpenChange).toHaveBeenLastCalledWith(true);
+
+    // A reason arrives while the menu is open. A DOM click does not send the
+    // pointerdown that would close the menu as an outside press, so only
+    // the reason closes it.
+    lock.click();
+    await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    await expect(controlledOpenChange).toHaveBeenLastCalledWith(false);
+
+    // The owner closed it, so it stays closed when the reason clears.
+    lock.click();
+    await waitFor(() =>
+      expect(toggle).not.toHaveAttribute('aria-disabled', 'true'),
+    );
+    await expect(body.queryByRole('menu')).toBeNull();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   },
 };
 
