@@ -82,12 +82,64 @@ const buttonBaseStyles = {
   },
 };
 
+/**
+ * Background and icon colors of each button variant. The icon is drawn with
+ * a blend mode, so its color depends on the background behind it, and the
+ * two go together. `splitButton` reads this map to draw its divider in the
+ * icon color of its variant.
+ */
+export const buttonVariantColors = {
+  standard: {
+    bg: 'bg.neutral',
+    icon: 'icon.decorative',
+    iconBlend: { base: 'multiply', _dark: 'screen' },
+  },
+  primary: {
+    bg: 'bg.neutral.boldest',
+    icon: 'icon.decorative.inverse',
+    iconBlend: { base: 'screen', _dark: 'multiply' },
+  },
+  hollow: {
+    bg: 'bg.neutral.subtle',
+    icon: 'icon.decorative',
+    iconBlend: { base: 'multiply', _dark: 'screen' },
+  },
+  ghost: {
+    bg: 'bg.neutral.subtle',
+    icon: 'icon.decorative',
+    iconBlend: { base: 'multiply', _dark: 'screen' },
+  },
+  cta: {
+    bg: 'gold.20',
+    icon: 'neutral.50',
+    iconBlend: 'multiply',
+  },
+  // The red background and white label are the same in both themes, so the
+  // icon is too. The inverse icon tokens turn dark in dark mode, and a dark
+  // icon screened on red does not show.
+  danger: {
+    bg: 'red.50',
+    icon: 'neutral.30',
+    iconBlend: 'screen',
+  },
+  selected: {
+    bg: 'bg.selected',
+    icon: 'icon.selected',
+    iconBlend: { base: 'multiply', _dark: 'screen' },
+  },
+  selectedBold: {
+    bg: 'bg.selected.bold',
+    icon: 'icon.decorative.inverse',
+    iconBlend: { base: 'screen', _dark: 'multiply' },
+  },
+} as const;
+
 // Variants only hold color-related styles
 const buttonVariants = {
   variant: {
     standard: {
       container: {
-        bg: 'bg.neutral',
+        bg: buttonVariantColors.standard.bg,
         borderColor: 'transparent',
         [hoverEnabled]: {
           bg: 'bg.neutral.hovered',
@@ -100,15 +152,15 @@ const buttonVariants = {
         color: 'text',
       },
       slot: {
-        fill: 'icon.decorative',
-        mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        fill: buttonVariantColors.standard.icon,
+        mixBlendMode: buttonVariantColors.standard.iconBlend,
         [groupHoverEnabled]: { fill: 'current' },
         [groupActiveEnabled]: { fill: 'current' },
       },
     },
     primary: {
       container: {
-        bg: 'bg.neutral.boldest',
+        bg: buttonVariantColors.primary.bg,
         borderColor: 'transparent',
         [hoverEnabled]: {
           bg: 'bg.neutral.bold.hovered',
@@ -121,18 +173,18 @@ const buttonVariants = {
         color: 'text.inverse',
       },
       slot: {
-        fill: 'icon.decorative.inverse',
-        mixBlendMode: { base: 'screen', _dark: 'multiply' },
+        fill: buttonVariantColors.primary.icon,
+        mixBlendMode: buttonVariantColors.primary.iconBlend,
         [groupHoverEnabled]: { fill: 'icon.decorative.inverse.hovered' },
         [groupActiveEnabled]: { fill: 'icon.decorative.inverse.hovered' },
         _groupDisabled: {
-          fill: 'icon.decorative.inverse',
+          fill: buttonVariantColors.primary.icon,
         },
       },
     },
     hollow: {
       container: {
-        bg: 'bg.neutral.subtle',
+        bg: buttonVariantColors.hollow.bg,
         borderColor: 'border',
         [hoverEnabled]: {
           bg: 'bg.neutral.subtle.hovered',
@@ -145,15 +197,15 @@ const buttonVariants = {
         color: 'text',
       },
       slot: {
-        fill: 'icon.decorative',
-        mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        fill: buttonVariantColors.hollow.icon,
+        mixBlendMode: buttonVariantColors.hollow.iconBlend,
         [groupHoverEnabled]: { fill: 'current' },
         [groupActiveEnabled]: { fill: 'current' },
       },
     },
     ghost: {
       container: {
-        bg: 'bg.neutral.subtle',
+        bg: buttonVariantColors.ghost.bg,
         borderColor: 'transparent',
         [hoverEnabled]: {
           bg: 'bg.neutral.subtle.hovered',
@@ -166,15 +218,15 @@ const buttonVariants = {
         color: 'text',
       },
       slot: {
-        fill: 'icon.decorative',
-        mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        fill: buttonVariantColors.ghost.icon,
+        mixBlendMode: buttonVariantColors.ghost.iconBlend,
         [groupHoverEnabled]: { fill: 'current' },
         [groupActiveEnabled]: { fill: 'current' },
       },
     },
     cta: {
       container: {
-        bg: 'gold.20',
+        bg: buttonVariantColors.cta.bg,
         borderColor: 'transparent',
         [hoverEnabled]: {
           bg: 'gold.15',
@@ -187,8 +239,8 @@ const buttonVariants = {
         color: 'neutral.90',
       },
       slot: {
-        fill: 'neutral.50',
-        mixBlendMode: 'multiply',
+        fill: buttonVariantColors.cta.icon,
+        mixBlendMode: buttonVariantColors.cta.iconBlend,
         [groupHoverEnabled]: { fill: 'current' },
         [groupActiveEnabled]: { fill: 'current' },
         _groupDisabled: {
@@ -198,7 +250,7 @@ const buttonVariants = {
     },
     danger: {
       container: {
-        bg: 'red.50',
+        bg: buttonVariantColors.danger.bg,
         borderColor: 'transparent',
         [hoverEnabled]: {
           bg: 'red.40',
@@ -210,22 +262,19 @@ const buttonVariants = {
       mainContent: {
         color: 'neutral.0',
       },
-      // The red background and white label are the same in both themes, so
-      // the icon is too. The inverse icon tokens turn dark in dark mode, and
-      // a dark icon screened on red does not show.
       slot: {
-        fill: 'neutral.30',
-        mixBlendMode: 'screen',
+        fill: buttonVariantColors.danger.icon,
+        mixBlendMode: buttonVariantColors.danger.iconBlend,
         [groupHoverEnabled]: { fill: 'neutral.0' },
         [groupActiveEnabled]: { fill: 'neutral.0' },
         _groupDisabled: {
-          fill: 'neutral.30',
+          fill: buttonVariantColors.danger.icon,
         },
       },
     },
     selected: {
       container: {
-        bg: 'bg.selected',
+        bg: buttonVariantColors.selected.bg,
         borderColor: 'transparent',
         [hoverEnabled]: {
           bg: 'bg.selected.hovered',
@@ -240,18 +289,18 @@ const buttonVariants = {
         color: 'text.selected',
       },
       slot: {
-        fill: 'icon.selected',
-        mixBlendMode: { base: 'multiply', _dark: 'screen' },
+        fill: buttonVariantColors.selected.icon,
+        mixBlendMode: buttonVariantColors.selected.iconBlend,
         [groupHoverEnabled]: { fill: 'icon.selected' },
         [groupActiveEnabled]: { fill: 'icon.selected' },
         _groupDisabled: {
-          fill: 'icon.selected',
+          fill: buttonVariantColors.selected.icon,
         },
       },
     },
     selectedBold: {
       container: {
-        bg: 'bg.selected.bold',
+        bg: buttonVariantColors.selectedBold.bg,
         borderColor: 'transparent',
         [hoverEnabled]: {
           bg: 'bg.selected.bold.hovered',
@@ -264,12 +313,12 @@ const buttonVariants = {
         color: 'text.inverse',
       },
       slot: {
-        fill: 'icon.decorative.inverse',
-        mixBlendMode: { base: 'screen', _dark: 'multiply' },
+        fill: buttonVariantColors.selectedBold.icon,
+        mixBlendMode: buttonVariantColors.selectedBold.iconBlend,
         [groupHoverEnabled]: { fill: 'icon.decorative.inverse.hovered' },
         [groupActiveEnabled]: { fill: 'icon.decorative.inverse.hovered' },
         _groupDisabled: {
-          fill: 'icon.decorative.inverse',
+          fill: buttonVariantColors.selectedBold.icon,
         },
       },
     },

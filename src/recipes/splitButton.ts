@@ -2,10 +2,12 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
+import { buttonVariantColors } from './button';
+
 // The halves are a `Button` and an `IconButton`, so each keeps the button
 // recipe's colors, sizes, and states. These slots only join them: the inner
 // corners are squared, the inner borders are dropped, and the divider draws
-// the line between them.
+// the line between them in the icon color of the variant.
 const splitButtonBase = {
   root: {
     ...globalBaseStyles,
@@ -41,11 +43,34 @@ const splitButtonBase = {
       },
     },
   },
+  // The icon is blended with the button background, but the divider sits
+  // between the halves, on the page. So the divider paints the button
+  // background and draws the line on top of it with the icon's color and
+  // blend mode. `isolation` keeps the blend inside the divider.
   divider: {
+    position: 'relative',
+    isolation: 'isolate',
     flexShrink: 0,
     alignSelf: 'stretch',
     width: '1',
+    _before: {
+      content: '""',
+      position: 'absolute',
+      inset: '0',
+    },
   },
+};
+
+// The divider of one variant, from that variant's button colors.
+const dividerColors = (variant: keyof typeof buttonVariantColors) => {
+  const { bg, icon, iconBlend } = buttonVariantColors[variant];
+
+  return {
+    divider: {
+      bg,
+      _before: { bg: icon, mixBlendMode: iconBlend },
+    },
+  };
 };
 
 export const splitButtonRecipe = defineSlotRecipe({
@@ -55,23 +80,13 @@ export const splitButtonRecipe = defineSlotRecipe({
   base: splitButtonBase,
   variants: {
     // Matches the `button` recipe variant of the same name. Only the
-    // divider color changes here.
+    // divider changes here: it is drawn in the icon color of the variant.
     variant: {
-      standard: {
-        divider: { bg: 'border' },
-      },
-      primary: {
-        divider: { bg: 'text.inverse', opacity: '0.3' },
-      },
-      cta: {
-        divider: { bg: 'neutral.90', opacity: '0.3' },
-      },
-      hollow: {
-        divider: { bg: 'border' },
-      },
-      danger: {
-        divider: { bg: 'neutral.0', opacity: '0.3' },
-      },
+      standard: dividerColors('standard'),
+      primary: dividerColors('primary'),
+      cta: dividerColors('cta'),
+      hollow: dividerColors('hollow'),
+      danger: dividerColors('danger'),
     },
     // Sizes are applied by the button halves. They are declared here so the
     // `size` prop has the same values as `Button`, without `xl`.
