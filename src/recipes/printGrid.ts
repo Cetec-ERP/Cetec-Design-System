@@ -19,8 +19,8 @@ export const printGridRecipe = defineRecipe({
   jsx: [],
   base: {
     display: 'grid',
-    rowGap: '10',
-    columnGap: '18',
+    rowGap: 'print.8',
+    columnGap: 'print.12',
     '& > *': {
       containerType: 'inline-size',
       minW: '0',

@@ -54,6 +54,7 @@ const textOnlyVariants = {
       _printDoc: {
         textStyle: 'print.fieldValue',
         fontFamily: 'heading',
+        fontSize: 'print.lead',
         fontWeight: 'bold',
       },
     },
@@ -72,8 +73,8 @@ const textOnlyVariants = {
         textStyle: 'print.capsLabel',
         borderBottomWidth: 'paper.rule',
         borderBottomColor: 'paper.hairline',
-        pb: '4',
-        mb: '6',
+        pb: 'print.4',
+        mb: 'print.4',
         // A title never ends a page alone, away from its text.
         breakAfter: 'avoid',
       },

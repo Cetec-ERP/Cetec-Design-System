@@ -22,14 +22,14 @@ export const printSectionRecipe = defineSlotRecipe({
       display: 'block',
       // Space between sections. The first section starts at its own top.
       '&:not(:first-child)': {
-        mt: '20',
+        mt: 'print.16',
       },
     },
     title: {
       display: 'block',
       textStyle: 'print.capsLabel',
-      pb: '5',
-      mb: '5',
+      pb: 'print.4',
+      mb: 'print.4',
       borderBottomWidth: 'paper.rule',
       borderBottomStyle: 'solid',
       borderBottomColor: 'paper.hairline',

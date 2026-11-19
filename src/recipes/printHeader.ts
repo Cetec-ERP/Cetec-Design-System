@@ -1,7 +1,7 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
 /** The meta list of a document header, inside a printed document. */
-const headerMeta = '.cetec-printDoc .cetec-header__meta &';
+const headerMeta = '.cetec-printDoc .cetec-printHeader__meta &';
 
 /**
  * How a KeyFact row looks in the meta list of a header. The KeyFact recipe
@@ -41,12 +41,12 @@ const companyName = {
  * With no logo, the name prints as text. The Go print helper picks the
  * logo shape from the logo's width and height.
  *
- * This recipe has no React component. Its fixture in `header.fixtures.json`
+ * This recipe has no React component. Its fixture in `printHeader.fixtures.json`
  * is the markup the Go helper writes.
  */
 // validate-ignore: recipe-jsx-name-matches-component — print-only recipe with no React component
-export const headerRecipe = defineSlotRecipe({
-  className: 'header',
+export const printHeaderRecipe = defineSlotRecipe({
+  className: 'printHeader',
   jsx: [],
   slots: [
     'root',
@@ -70,8 +70,8 @@ export const headerRecipe = defineSlotRecipe({
     brand: {
       display: 'flex',
       alignItems: 'center',
-      gap: '8',
-      pb: '4',
+      gap: 'print.6',
+      pb: 'print.4',
       borderBottomStyle: 'solid',
       borderBottomWidth: 'paper.rule',
       borderBottomColor: 'paper.hairline',
@@ -85,8 +85,8 @@ export const headerRecipe = defineSlotRecipe({
     record: {
       display: 'flex',
       alignItems: 'flex-start',
-      gap: '20',
-      pt: '12',
+      gap: 'print.16',
+      pt: 'print.8',
     },
     main: {
       flex: '1 1 auto',
@@ -96,7 +96,7 @@ export const headerRecipe = defineSlotRecipe({
       display: 'flex',
       flexWrap: 'wrap',
       alignItems: 'center',
-      gap: '4',
+      gap: 'print.4',
       textStyle: 'print.fieldValue',
       fontWeight: 'bold',
     },
@@ -105,20 +105,20 @@ export const headerRecipe = defineSlotRecipe({
     title: {
       textStyle: 'print.title',
       overflowWrap: 'anywhere',
-      mt: '2',
+      mt: 'print.2',
     },
     sub: {
       textStyle: 'print.fieldValue',
       fontWeight: 'normal',
       color: 'paper.inkSoft',
-      mt: '3',
+      mt: 'print.2',
     },
     meta: {
       flex: '0 0 auto',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-end',
-      gap: '3',
+      gap: 'print.2',
     },
   },
   variants: {

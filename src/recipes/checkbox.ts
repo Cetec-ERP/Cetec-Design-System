@@ -24,7 +24,7 @@ export const checkboxRecipe = defineSlotRecipe({
       userSelect: 'none',
       _printDoc: {
         alignItems: 'center',
-        columnGap: '4',
+        columnGap: 'print.4',
         cursor: 'auto',
         userSelect: 'auto',
       },

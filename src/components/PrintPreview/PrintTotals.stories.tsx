@@ -67,7 +67,7 @@ const TwoPagesMarkup = ({ fixture }: { fixture: PrintFixture }) => {
 };
 
 /**
- * Totals, the `totals` recipe, for the kit element `totals`. It prints the
+ * Totals, the `printTotals` recipe, for the kit element `totals`. It prints the
  * money stack once, after the last line. It has no React component. The Go
  * print helper writes the classes from the fixtures.
  *
@@ -75,7 +75,7 @@ const TwoPagesMarkup = ({ fixture }: { fixture: PrintFixture }) => {
  * right, in two columns, at most 3.4 in wide. Values use tabular figures and
  * never wrap. A total row prints large in full ink with a hairline above it.
  * A danger row prints in the alert ink. The stack is kept together on one
- * page. Each story renders one fixture from `src/recipes/totals.fixtures.json`
+ * page. Each story renders one fixture from `src/recipes/printTotals.fixtures.json`
  * on a Letter page.
  */
 const meta = {
@@ -86,8 +86,8 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
-    recipe: 'totals',
-    fixture: printFixture('totals', 'usd'),
+    recipe: 'printTotals',
+    fixture: printFixture('printTotals', 'usd'),
     paper: 'letter',
     fit: 'width',
     h: 'lg',
@@ -114,7 +114,7 @@ export const Usd: Story = {
   name: 'USD',
   play: async ({ canvasElement }) => {
     const root = canvasElement.querySelector(
-      '[data-fixture="usd"] .cetec-totals',
+      '[data-fixture="usd"] .cetec-printTotals',
     ) as HTMLElement;
     // sizes.totalsWidth is 3.4 in, which is 326.4 px before the preview scale.
     await expect(root.offsetWidth).toBe(326);
@@ -140,7 +140,7 @@ export const Usd: Story = {
  * after the total in the alert ink.
  */
 export const GermanRetainage: Story = {
-  args: { fixture: printFixture('totals', 'german-retainage') },
+  args: { fixture: printFixture('printTotals', 'german-retainage') },
   play: async ({ canvasElement }) => {
     const labels = styles(canvasElement, 'german-retainage', 'label');
     const texts = styles(canvasElement, 'german-retainage', 'text');
@@ -152,7 +152,7 @@ export const GermanRetainage: Story = {
 
 /** Fixture `check-stub`: one total row, as a check remittance stub prints it. */
 export const CheckStub: Story = {
-  args: { fixture: printFixture('totals', 'check-stub') },
+  args: { fixture: printFixture('printTotals', 'check-stub') },
 };
 
 /**
@@ -161,7 +161,7 @@ export const CheckStub: Story = {
  */
 export const GermanRetainageThermal: Story = {
   args: {
-    fixture: printFixture('totals', 'german-retainage'),
+    fixture: printFixture('printTotals', 'german-retainage'),
     thermal: true,
   },
   play: async ({ canvasElement }) => {
@@ -178,7 +178,7 @@ export const GermanRetainageThermal: Story = {
  * the top of page 2. The dashed line is the page edge.
  */
 export const MovesToNextPage: Story = {
-  args: { fixture: printFixture('totals', 'next-page') },
+  args: { fixture: printFixture('printTotals', 'next-page') },
   render: ({ fixture }) => (
     <Box h="lg">
       <PrintPreview fit="width" aria-label={fixture.name}>
@@ -195,7 +195,7 @@ export const MovesToNextPage: Story = {
     const body = canvasElement.querySelector(
       '[data-fixture="next-page"] [data-fixture-body]',
     ) as HTMLElement;
-    const totals = body.querySelector('.cetec-totals') as HTMLElement;
+    const totals = body.querySelector('.cetec-printTotals') as HTMLElement;
     const lines = body.querySelectorAll('p');
     const last = lines[lines.length - 1] as HTMLElement;
     const page = body.getBoundingClientRect();

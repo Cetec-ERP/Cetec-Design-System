@@ -72,8 +72,8 @@ export const fontSizes = defineSemanticTokens.fontSizes({
     /** 9.5 pt. Field values, address lines, and header info rows. */
     fieldValue: { value: '9.5pt' },
     /**
-     * 11 pt. A line that leads its block, such as a name in an address or a
-     * value in a canvas slot.
+     * 11 pt. A line that leads its block: a name in an address, a value in a
+     * canvas slot, or a closing line.
      */
     lead: { value: '11pt' },
     /** 14 pt. The grand total. */

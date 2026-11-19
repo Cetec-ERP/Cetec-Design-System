@@ -147,8 +147,8 @@ export const ClosingLine: Story = {
     const closing = await page.findByText('Thank you for your business.');
     const style = getComputedStyle(closing);
     await expect(style.fontFamily).toMatch(/Ruda/);
-    // print.fieldValue is 9.5 pt, which is 12.67 px.
-    await expect(style.fontSize).toBe('12.6667px');
+    // print.lead is 11 pt, which is 14.67 px.
+    await expect(style.fontSize).toBe('14.6667px');
   },
 };
 

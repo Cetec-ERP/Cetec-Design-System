@@ -22,7 +22,7 @@ export const dividerRecipe = defineRecipe({
       horizontal: {
         width: 'stretch',
         borderTopWidth: 'var(--divider-weight)',
-        _printDoc: { my: '10' },
+        _printDoc: { my: 'print.8' },
       },
       vertical: {
         height: 'stretch',

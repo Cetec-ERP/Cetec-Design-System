@@ -10,18 +10,18 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /** The parties in a fixture story. */
 const parties = (canvasElement: HTMLElement, fixture: string) => [
   ...canvasElement.querySelectorAll<HTMLElement>(
-    `[data-fixture="${fixture}"] .cetec-party__root`,
+    `[data-fixture="${fixture}"] .cetec-printParty__root`,
   ),
 ];
 
 /** The slot names of the lines in a party, in order. */
 const lines = (party: HTMLElement | undefined) =>
   [...(party?.children ?? [])].map((line) =>
-    line.className.replace('cetec-party__', ''),
+    line.className.replace('cetec-printParty__', ''),
   );
 
 /**
- * A party, the `party` recipe, for the kit element `party`. It prints From,
+ * A party, the `printParty` recipe, for the kit element `party`. It prints From,
  * Bill to, Ship to, or Remit to, and is the only element that prints an
  * address. It has no React component. The Go print helper writes the classes
  * from the fixtures.
@@ -30,7 +30,7 @@ const lines = (party: HTMLElement | undefined) =>
  * address, country, and contact. Go skips an empty line. Line breaks in a
  * line print as they are. Inside a print grid, a hairline separates parties
  * side by side. Each story renders one fixture from
- * `src/recipes/party.fixtures.json` on a Letter page.
+ * `src/recipes/printParty.fixtures.json` on a Letter page.
  */
 const meta = {
   title: 'Print/Party',
@@ -40,8 +40,8 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
-    recipe: 'party',
-    fixture: printFixture('party', 'all-lines'),
+    recipe: 'printParty',
+    fixture: printFixture('printParty', 'all-lines'),
     paper: 'letter',
     fit: 'width',
     h: 'lg',
@@ -72,7 +72,7 @@ export const AllLines: Story = {
       'country',
       'contact',
     ]);
-    const address = party?.querySelector('.cetec-party__address');
+    const address = party?.querySelector('.cetec-printParty__address');
     await expect(getComputedStyle(address as Element).whiteSpace).toBe(
       'pre-line',
     );
@@ -81,7 +81,7 @@ export const AllLines: Story = {
 
 /** Fixture `no-attention`: no attention line. */
 export const NoAttention: Story = {
-  args: { fixture: printFixture('party', 'no-attention') },
+  args: { fixture: printFixture('printParty', 'no-attention') },
   play: async ({ canvasElement }) => {
     const [party] = parties(canvasElement, 'no-attention');
     await expect(lines(party)).toEqual(['label', 'name', 'address', 'contact']);
@@ -90,7 +90,7 @@ export const NoAttention: Story = {
 
 /** Fixture `no-contact`: no contact line. */
 export const NoContact: Story = {
-  args: { fixture: printFixture('party', 'no-contact') },
+  args: { fixture: printFixture('printParty', 'no-contact') },
   play: async ({ canvasElement }) => {
     const [party] = parties(canvasElement, 'no-contact');
     await expect(lines(party)).toEqual([
@@ -107,7 +107,7 @@ export const NoContact: Story = {
  * name line, so the remit text prints whole.
  */
 export const RemitNoName: Story = {
-  args: { fixture: printFixture('party', 'remit-no-name') },
+  args: { fixture: printFixture('printParty', 'remit-no-name') },
   play: async ({ canvasElement }) => {
     const [party] = parties(canvasElement, 'remit-no-name');
     await expect(lines(party)).toEqual(['label', 'address']);
@@ -119,7 +119,7 @@ export const RemitNoName: Story = {
  * on a Letter page. A hairline separates parties side by side.
  */
 export const ThreeInGrid: Story = {
-  args: { fixture: printFixture('party', 'three-in-grid') },
+  args: { fixture: printFixture('printParty', 'three-in-grid') },
   play: async ({ canvasElement }) => {
     const styles = parties(canvasElement, 'three-in-grid').map((party) =>
       getComputedStyle(party),
@@ -142,7 +142,7 @@ export const ThreeInGrid: Story = {
 
 /** Fixture `credit-memo`: Bill to and Remit to only. */
 export const CreditMemo: Story = {
-  args: { fixture: printFixture('party', 'credit-memo') },
+  args: { fixture: printFixture('printParty', 'credit-memo') },
   play: async ({ canvasElement }) => {
     await expect(parties(canvasElement, 'credit-memo')).toHaveLength(2);
   },
@@ -153,7 +153,7 @@ export const CreditMemo: Story = {
  * KeyFacts, as the top of an invoice prints them.
  */
 export const WithKeyFacts: Story = {
-  args: { fixture: printFixture('party', 'with-key-facts') },
+  args: { fixture: printFixture('printParty', 'with-key-facts') },
   play: async ({ canvasElement }) => {
     await expect(parties(canvasElement, 'with-key-facts')).toHaveLength(3);
     const facts = canvasElement.querySelectorAll(
@@ -169,7 +169,7 @@ export const WithKeyFacts: Story = {
  */
 export const ThreeInGridThermal: Story = {
   args: {
-    fixture: printFixture('party', 'three-in-grid'),
+    fixture: printFixture('printParty', 'three-in-grid'),
     thermal: true,
     size: pageSizes.label4x6,
     margins: 0.25,

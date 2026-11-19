@@ -2,8 +2,8 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { fontVariants, globalBaseStyles } from '~/styles/utilities';
 
-import { headerMetaStyles } from './header';
-import { totalsRowStyles } from './totals';
+import { headerMetaStyles } from './printHeader';
+import { totalsRowStyles } from './printTotals';
 
 /**
  * Matches when the nearest container is narrower than
@@ -118,8 +118,10 @@ const keyFactVariants = {
       root: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
+        // The label lines up with the first line of the value.
+        alignItems: 'baseline',
         gap: '4',
+        _printDoc: { gap: 'print.4' },
         ...headerMetaStyles.root,
       },
       inner: { display: 'contents' },
@@ -147,6 +149,7 @@ const keyFactVariants = {
         flexDirection: 'column',
         alignItems: 'stretch',
         gap: '2',
+        _printDoc: { gap: 'print.2' },
       },
       inner: { display: 'contents' },
       label: {
@@ -178,10 +181,12 @@ const keyFactVariants = {
         flexDirection: 'row',
         alignItems: 'baseline',
         gap: '8',
+        _printDoc: { gap: 'print.6' },
         [narrowContainer]: {
           flexDirection: 'column',
           alignItems: 'stretch',
           gap: '1',
+          _printDoc: { gap: 'print.2' },
         },
       },
       label: {

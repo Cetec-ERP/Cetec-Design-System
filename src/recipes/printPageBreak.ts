@@ -23,7 +23,7 @@ export const printPageBreakRecipe = defineSlotRecipe({
     root: {
       display: 'block',
       breakAfter: 'page',
-      my: '12',
+      my: 'print.8',
       borderTopWidth: '1',
       borderTopStyle: 'dashed',
       borderTopColor: 'paper.inkSoft',
@@ -34,7 +34,7 @@ export const printPageBreakRecipe = defineSlotRecipe({
     },
     label: {
       display: 'block',
-      pt: '4',
+      pt: 'print.4',
       textStyle: 'print.capsLabel',
       _print: {
         display: 'none',

@@ -1,7 +1,7 @@
 import { defineRecipe } from '@pandacss/dev';
 
 /** The class of the totals root, as the Go print helper writes it. */
-const totalsRoot = '.cetec-totals &';
+const totalsRoot = '.cetec-printTotals &';
 
 /**
  * How a KeyFact row looks inside totals. The KeyFact recipe applies these to
@@ -16,14 +16,14 @@ export const totalsRowStyles = {
     [totalsRoot]: {
       w: 'auto',
       textAlign: 'right',
-      py: '3',
+      py: 'print.2',
     },
   },
   value: {
     [totalsRoot]: {
       justifyContent: 'flex-end',
       textAlign: 'right',
-      py: '3',
+      py: 'print.2',
       color: 'paper.inkSoft',
     },
   },
@@ -43,8 +43,8 @@ export const totalsRowStyles = {
       borderTopStyle: 'solid',
       borderTopWidth: 'paper.rule',
       borderTopColor: 'paper.hairline',
-      mt: '3',
-      pt: '8',
+      mt: 'print.2',
+      pt: 'print.6',
     },
   },
 } as const;
@@ -60,23 +60,23 @@ export const totalsRowStyles = {
  * ink with a hairline above it. A row with `tone="danger"` prints in the
  * alert ink. The stack is kept together on one page.
  *
- * This recipe has no React component. Its fixture in `totals.fixtures.json`
+ * This recipe has no React component. Its fixture in `printTotals.fixtures.json`
  * is the markup the Go print helper writes.
  */
 // validate-ignore: recipe-jsx-name-matches-component — print-only recipe with no React component
-export const totalsRecipe = defineRecipe({
-  className: 'totals',
+export const printTotalsRecipe = defineRecipe({
+  className: 'printTotals',
   jsx: [],
   base: {
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr) auto',
-    columnGap: '16',
+    columnGap: 'print.12',
     alignItems: 'center',
     w: 'full',
     maxW: 'totalsWidth',
     ml: 'auto',
-    mt: '10',
-    pt: '6',
+    mt: 'print.8',
+    pt: 'print.4',
     borderTopStyle: 'solid',
     borderTopWidth: 'paper.rule',
     borderTopColor: 'paper.inkSoft',

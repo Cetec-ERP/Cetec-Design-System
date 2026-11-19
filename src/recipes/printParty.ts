@@ -17,12 +17,12 @@ const addressLine = {
  * helper skips an empty line. Line breaks in a line print as they are. Inside
  * a print grid, a hairline separates parties that sit side by side.
  *
- * This recipe has no React component. Its fixture in `party.fixtures.json` is
+ * This recipe has no React component. Its fixture in `printParty.fixtures.json` is
  * the markup the Go helper writes.
  */
 // validate-ignore: recipe-jsx-name-matches-component — print-only recipe with no React component
-export const partyRecipe = defineSlotRecipe({
-  className: 'party',
+export const printPartyRecipe = defineSlotRecipe({
+  className: 'printParty',
   jsx: [],
   slots: [
     'root',
@@ -42,12 +42,12 @@ export const partyRecipe = defineSlotRecipe({
         borderLeftStyle: 'solid',
         borderLeftWidth: 'paper.rule',
         borderLeftColor: 'paper.hairline',
-        pl: '16',
+        pl: 'print.12',
       },
     },
     label: {
       textStyle: 'print.capsLabel',
-      mb: '4',
+      mb: 'print.4',
     },
     attention: addressLine,
     name: {
@@ -63,7 +63,7 @@ export const partyRecipe = defineSlotRecipe({
       textStyle: 'print.body',
       color: 'paper.inkSoft',
       whiteSpace: 'pre-line',
-      mt: '4',
+      mt: 'print.4',
     },
   },
 });

@@ -278,7 +278,7 @@ export const buildPrintManifest = (): PrintClassManifest => ({
       className: printRootClasses.printDoc,
       element: 'html',
       description:
-        'Every kit document. Sets the paper look and resets semantic colors to light values.',
+        'Every kit document. Sets the paper look and resets semantic colors to light values. <html> keeps the browser text size, <body> takes the 8.5 pt body text style, and each top-level block after the first gets 12 pt above it.',
     },
     thermal: {
       className: printRootClasses.thermal,

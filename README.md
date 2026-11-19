@@ -231,12 +231,50 @@ on `<html>`, not on `<body>`:
 </html>
 ```
 
-- `cetec-printDoc` goes on every kit document. It sets the white sheet, the
-  paper ink, and the body text style.
+- `cetec-printDoc` goes on every kit document. It sets the white sheet and the
+  paper ink. `<html>` keeps the browser text size, so 1 rem is 16 px on paper,
+  as it is on screen. `<body>` takes the body text style, `print.body`
+  (8.5 pt), and each top-level block after the first gets 12 pt above it. Go
+  writes no class or style on `<body>`.
 - `cetec-ink-thermal` goes next to it for thermal label printers. Every paper
   ink turns solid black, and rules are at least 1.5 pt.
 - Go writes the `@page` rule. Paper size is a template setting: `letter`, `A4`,
   or `legal`. The default is `letter`.
+
+**Recipe names.** Every print-only recipe starts with `print`: `printDoc`,
+`printCanvas`, `printSlot`, `printLabelField`, `printGrid`, `printHeader`,
+`printParty`, `printTotals`, `printSection`, `printPageBreak`, and
+`printSignLine`. App recipes with a print look keep their names: `keyFact`,
+`tag`, `text`, `divider`, and `checkbox`. `barcode` and `image` have no prefix,
+because they can also show on screen.
+
+**Print scales.** Print recipes take sizes from two scales in points, so they
+hold on any printer.
+
+| Text size token    | Size   | Used for                                       |
+| ------------------ | ------ | ---------------------------------------------- |
+| `print.capsLabel`  | 7 pt   | Caps labels and table headers                  |
+| `print.smallPrint` | 7.5 pt | Terms, small print, and page numbers           |
+| `print.body`       | 8.5 pt | Body text, table cells, and notes              |
+| `print.fieldValue` | 9.5 pt | Field values, address lines, header info rows  |
+| `print.lead`       | 11 pt  | Names in an address, slot values, closing line |
+| `print.total`      | 14 pt  | The grand total                                |
+| `print.display`    | 17 pt  | A large slot value, such as a part number      |
+| `print.title`      | 20 pt  | The document title                             |
+
+| Spacing token | Size  |
+| ------------- | ----- |
+| `print.2`     | 2 pt  |
+| `print.4`     | 4 pt  |
+| `print.6`     | 6 pt  |
+| `print.8`     | 8 pt  |
+| `print.12`    | 12 pt |
+| `print.16`    | 16 pt |
+| `print.24`    | 24 pt |
+
+Text sizes are `fontSizes` tokens and spacing steps are `spacing` tokens. The
+print text styles (`print.capsLabel`, `print.body`, and the rest) use the text
+sizes. Part sizes in inches, such as a stock width, are not on either scale.
 
 **Read the manifest.** Go reads class names from `print-classes.json` and never
 spells them by hand. The build writes the file from the recipe configs and
@@ -284,6 +322,35 @@ inside `<body>`. A Go test can read the files from
 `node_modules/cetec-design-system/dist/print-fixtures/` and compare its own
 output with `html`. Each fixture also has a story in Storybook under "Print",
 which renders the same HTML on a page.
+
+**What Go must do.** The fixtures are the markup contract. Go also does
+these things:
+
+- Put `cetec-printDoc` and `cetec-ink-thermal` on `<html>`, not `<body>`. Page
+  margin boxes read variables only from `<html>`.
+- Write only classes that are in the manifest.
+- Map kit tones to Tag hues: `neutral` to `slate`, `info` to `blue`, `success`
+  to `green`, `warning` to `orange`, and `danger` to `red`. Use `size_sm` in
+  table cells.
+- Map the kit type `money` to `currency` for every part, such as KeyFact and
+  LabelField.
+- Write the KeyFact `inner` wrapper for every layout.
+- Pick the Text `variant` from the data: a body with a title is a `note` with a
+  `title` above it, a `from:` terms field is `terms`, and a closing comment with
+  no title is `closing`.
+- Write every printed word in the company language: the page footer "Page" and
+  "of", the page-break label, the sign-line captions, the barcode error text,
+  and any hidden checkbox text.
+- Put the sign in a money value, such as `−709,24 €` for retainage.
+- Write the empty `broken` image element (`cetec-image--broken_true`) when it
+  cannot read the file.
+- Encode barcodes with `boombuler/barcode` (`code128`, `qr`, and `datamatrix`)
+  at Cetec-ERP's pinned version. Cetec-ERP vendors only `qr` today. Go writes
+  the `viewBox`, the path, `preserveAspectRatio`, and the width and height. It
+  picks the widest bars for the printer's dpi.
+- On a canvas, write the stock size and slot positions inline in inches,
+  `data-slot` on each slot, and the MICR font and size.
+- Enforce "no page break inside a table or totals" in the kit checker.
 
 **Types.** CSS and JSON files have no declarations. TypeScript code that reads
 them can use the `PrintClassManifest` and `PrintFixtureFile` types from

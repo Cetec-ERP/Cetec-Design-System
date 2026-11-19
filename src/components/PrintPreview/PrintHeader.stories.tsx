@@ -17,7 +17,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 /** The first element of a header slot in a fixture story. */
 const part = (canvasElement: HTMLElement, fixture: string, slot: string) =>
   canvasElement.querySelector<HTMLElement>(
-    `[data-fixture="${fixture}"] .cetec-header__${slot}`,
+    `[data-fixture="${fixture}"] .cetec-printHeader__${slot}`,
   );
 
 /** Two 8.5 × 5.5 in pages side by side, with 0.5 in margins. */
@@ -65,7 +65,7 @@ const TwoPagesMarkup = ({ fixture }: { fixture: PrintFixture }) => {
 };
 
 /**
- * The document header, the `header` recipe, for the kit element `header`.
+ * The document header, the `printHeader` recipe, for the kit element `header`.
  * It has no React component. The Go print helper writes the classes from the
  * fixtures.
  *
@@ -74,7 +74,7 @@ const TwoPagesMarkup = ({ fixture }: { fixture: PrintFixture }) => {
  * KeyFacts use the `horizontal` layout, so labels size themselves and end in
  * a colon. The company name always prints: a wordmark logo carries it, a
  * badge logo prints it beside the badge, and with no logo it prints as text.
- * Each story renders one fixture from `src/recipes/header.fixtures.json` on a
+ * Each story renders one fixture from `src/recipes/printHeader.fixtures.json` on a
  * Letter page.
  */
 const meta = {
@@ -85,8 +85,8 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
-    recipe: 'header',
-    fixture: printFixture('header', 'quote-wordmark'),
+    recipe: 'printHeader',
+    fixture: printFixture('printHeader', 'quote-wordmark'),
     paper: 'letter',
     fit: 'width',
     h: 'lg',
@@ -137,7 +137,7 @@ export const QuoteWordmark: Story = {
  * tag. The company name prints beside the badge.
  */
 export const InvoiceBadge: Story = {
-  args: { fixture: printFixture('header', 'invoice-badge') },
+  args: { fixture: printFixture('printHeader', 'invoice-badge') },
   play: async ({ canvasElement }) => {
     const logo = part(canvasElement, 'invoice-badge', 'logo');
     // sizes.headerBadge is 32 pt, which is 42.67 px.
@@ -153,7 +153,7 @@ export const InvoiceBadge: Story = {
  * The company name prints as text.
  */
 export const CreditMemoNoLogo: Story = {
-  args: { fixture: printFixture('header', 'credit-memo-no-logo') },
+  args: { fixture: printFixture('printHeader', 'credit-memo-no-logo') },
   play: async ({ canvasElement }) => {
     await expect(part(canvasElement, 'credit-memo-no-logo', 'logo')).toBe(null);
     await expect(part(canvasElement, 'credit-memo-no-logo', 'title')).toBe(
@@ -168,7 +168,7 @@ export const CreditMemoNoLogo: Story = {
 
 /** Fixture `long-title`: a long title wraps. The meta list keeps its width. */
 export const LongTitle: Story = {
-  args: { fixture: printFixture('header', 'long-title') },
+  args: { fixture: printFixture('printHeader', 'long-title') },
   play: async ({ canvasElement }) => {
     const title = part(canvasElement, 'long-title', 'title') as HTMLElement;
     const lineHeight = parseFloat(getComputedStyle(title).lineHeight);
@@ -201,7 +201,7 @@ export const QuoteThermal: Story = {
  * starts with content. The dashed line is the page edge.
  */
 export const FirstPageOnly: Story = {
-  args: { fixture: printFixture('header', 'first-page-only') },
+  args: { fixture: printFixture('printHeader', 'first-page-only') },
   render: ({ fixture }) => (
     <Box h="lg">
       <PrintPreview fit="width" aria-label={fixture.name}>
@@ -220,7 +220,7 @@ export const FirstPageOnly: Story = {
     ) as HTMLElement;
     const page = body.getBoundingClientRect();
     const middle = page.left + page.width / 2;
-    const headers = body.querySelectorAll('.cetec-header__root');
+    const headers = body.querySelectorAll('.cetec-printHeader__root');
     await expect(headers).toHaveLength(1);
     const header = (headers[0] as HTMLElement).getBoundingClientRect();
     await expect(header.right).toBeLessThan(middle);
