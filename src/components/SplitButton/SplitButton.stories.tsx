@@ -442,6 +442,12 @@ export const MenuDisabledBehavior: Story = {
   args: {
     menuDisabledReason: 'You need the Inventory role to choose a location.',
   },
+  // Room above for the tooltip, so it does not flip below.
+  render: (args) => (
+    <Box pt="64">
+      <SplitButton {...args} />
+    </Box>
+  ),
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
@@ -472,9 +478,16 @@ export const MenuDisabledBehavior: Story = {
     await expect(body.queryByRole('menu')).toBeNull();
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
-    // The reason shows in the toggle's tooltip.
-    await expect(await body.findByRole('tooltip')).toHaveTextContent(
+    // The reason shows in the toggle's tooltip, above the toggle, on the
+    // same side as the action's reason.
+    const tooltip = await body.findByRole('tooltip');
+    await expect(tooltip).toHaveTextContent(
       'You need the Inventory role to choose a location.',
+    );
+    await waitFor(() =>
+      expect(tooltip.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        toggle.getBoundingClientRect().top,
+      ),
     );
 
     await userEvent.unhover(toggle);

@@ -9,7 +9,7 @@ import {
 import { Box, type BoxProps } from '~/components/Box';
 import { Icon, type IconNamesList } from '~/components/Icon';
 import { Spinner } from '~/components/Spinner';
-import { Tooltip } from '~/components/Tooltip';
+import { Tooltip, type TooltipProps } from '~/components/Tooltip';
 import { useFieldContext } from '~/system/context/FieldContext';
 import { useSlotContext } from '~/system/context/SlotContext';
 import { dsComponent } from '~/utils/dsComponent';
@@ -54,6 +54,14 @@ export type IconButtonProps = Omit<BoxProps, keyof IconButtonVariantProps> &
      */
     disabledReason?: string;
     /**
+     * Preferred side of the tooltip that shows `altText` or the disabled
+     * reason. Use `top` when the button opens something below it, such as a
+     * menu, or sits beside a `Button` whose reason opens above it.
+     *
+     * @default 'bottom'
+     */
+    tooltipPlacement?: TooltipProps['placement'];
+    /**
      * Native button type; ignored when `href` causes the component to render an
      * anchor.
      *
@@ -91,6 +99,7 @@ export const IconButton = (props: IconButtonProps) => {
     invalid: invalidProp,
     disabled: disabledProp,
     disabledReason,
+    tooltipPlacement,
     type = 'button',
     onClick,
     'aria-describedby': ariaDescribedBy,
@@ -117,6 +126,7 @@ export const IconButton = (props: IconButtonProps) => {
   return (
     <Tooltip
       disabled={expanded}
+      placement={tooltipPlacement}
       // With a reason, the label stays visible as the title above it.
       title={hasReason ? altText : undefined}
       text={hasReason ? (disabledReason ?? '') : altText}

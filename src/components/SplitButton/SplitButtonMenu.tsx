@@ -85,6 +85,8 @@ export const SplitButtonMenu = (props: SplitButtonMenuProps) => {
           iconName="caret-down"
           altText={menuLabel ?? labels.moreActions}
           disabledReason={menuDisabledReason}
+          // Above, as the action's reason is, and clear of the menu below.
+          tooltipPlacement="top"
           aria-haspopup="menu"
           className={toggleClassName}
         />
