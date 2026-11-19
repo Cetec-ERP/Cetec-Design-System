@@ -193,6 +193,10 @@ export const Loading: Story = {
  */
 export const MenuOpen: Story = {
   name: 'Menu Open',
+  // Kept off the docs page: the open menu takes focus when the page loads,
+  // so a keyboard user would start inside it. It stays in the sidebar as the
+  // one story that shows the real menu.
+  tags: ['!autodocs'],
   render: () => (
     <Box pb="224">
       <SplitButton variant="primary" menuLabel="More move options">
@@ -269,6 +273,9 @@ const chooseLocation = fn();
 
 export const KeyboardBehavior: Story = {
   name: 'Test: keyboard',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  // Behavior test only. It looks the same as Default.
+  tags: ['!dev', '!autodocs', '!snapshot'],
   render: (args) => (
     <SplitButton {...args}>
       Move to next: Packing
@@ -329,14 +336,13 @@ export const KeyboardBehavior: Story = {
     await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
     await waitFor(() => expect(toggle).toHaveFocus());
     await expect(args.onClick).toHaveBeenCalledTimes(1);
-
-    toggle.blur();
-    await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
   },
 };
 
 export const OpenAndClose: Story = {
   name: 'Test: menu opens and closes',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  tags: ['!dev', '!autodocs'],
   render: (args) => (
     <VStack gap="16" alignItems="start">
       <SplitButton {...args} />
@@ -358,6 +364,14 @@ export const OpenAndClose: Story = {
     const menu = await body.findByRole('menu');
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(args.onClick).not.toHaveBeenCalled();
+
+    // The toggle's tooltip stays closed while the menu is open, even when
+    // the pointer comes back onto the toggle, so it does not cover the menu.
+    await userEvent.unhover(toggle);
+    await userEvent.hover(toggle);
+    // Give a tooltip time to open, so its absence means something.
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await expect(body.queryByRole('tooltip')).toBeNull();
     await waitFor(() =>
       expect(getComputedStyle(caret).transform).toBe(
         'matrix(-1, 0, 0, -1, 0, 0)',
@@ -389,6 +403,7 @@ export const OpenAndClose: Story = {
     await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
     await expect(args.onClick).not.toHaveBeenCalled();
 
+    // End at rest, with no tooltip, for the visual snapshot.
     await userEvent.unhover(toggle);
     toggle.blur();
     await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
@@ -397,6 +412,8 @@ export const OpenAndClose: Story = {
 
 export const ActionDisabledBehavior: Story = {
   name: 'Test: action disabled, menu works',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  tags: ['!dev', '!autodocs'],
   args: { disabledReason: 'This is the last location on the route.' },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
@@ -431,6 +448,7 @@ export const ActionDisabledBehavior: Story = {
     await userEvent.keyboard('{Escape}');
     await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
 
+    // End at rest, with no tooltip, for the visual snapshot.
     await userEvent.unhover(toggle);
     toggle.blur();
     await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
@@ -439,6 +457,8 @@ export const ActionDisabledBehavior: Story = {
 
 export const MenuDisabledBehavior: Story = {
   name: 'Test: menu disabled, action works',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  tags: ['!dev', '!autodocs'],
   args: {
     menuDisabledReason: 'You need the Inventory role to choose a location.',
   },
@@ -490,6 +510,7 @@ export const MenuDisabledBehavior: Story = {
       ),
     );
 
+    // End at rest, with no tooltip, for the visual snapshot.
     await userEvent.unhover(toggle);
     toggle.blur();
     await waitFor(() => expect(body.queryByRole('tooltip')).toBeNull());
@@ -498,6 +519,8 @@ export const MenuDisabledBehavior: Story = {
 
 export const LoadingBehavior: Story = {
   name: 'Test: loading is on the action only',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  tags: ['!dev', '!autodocs'],
   args: { loading: true },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -513,6 +536,9 @@ export const LoadingBehavior: Story = {
 
 export const MenuLabelBehavior: Story = {
   name: 'Test: menuLabel names the toggle',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  // Behavior test only. It looks the same as Default.
+  tags: ['!dev', '!autodocs', '!snapshot'],
   args: { menuLabel: 'More move options' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -528,6 +554,8 @@ export const MenuLabelBehavior: Story = {
 
 export const JoinedShape: Story = {
   name: 'Test: halves share one shape',
+  // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <VStack gap="12" alignItems="start">
       {sizes.flatMap((size) =>
