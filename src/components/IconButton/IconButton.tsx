@@ -109,9 +109,14 @@ export const IconButton = (props: IconButtonProps) => {
     : (disabledProp ?? slotContext?.disabled ?? fieldContext?.disabled);
   const classes = iconButton({ variant, size });
   const [className, otherProps] = splitProps(rest);
+  // A menu trigger gets `aria-expanded` from Menu. While its menu is open,
+  // the tooltip would sit over the menu, so it stays closed.
+  const expanded =
+    rest['aria-expanded'] === true || rest['aria-expanded'] === 'true';
 
   return (
     <Tooltip
+      disabled={expanded}
       // With a reason, the label stays visible as the title above it.
       title={hasReason ? altText : undefined}
       text={hasReason ? (disabledReason ?? '') : altText}
