@@ -91,7 +91,8 @@ const flattenChildren = (children: ReactNode): ReactNode[] =>
  * The first half is a `Button` that runs the main action in one click. The
  * second half is a caret toggle that opens a `Menu` of other ways to do it.
  * Each half can be disabled on its own with a reason: a disabled main action
- * leaves the menu available. Use a plain `Button` when there is one action,
+ * leaves the menu available. The disabled half fades, and the divider stays
+ * at full strength as the edge of the half that is still available. Use a plain `Button` when there is one action,
  * and `Menu` with `trigger={<Button>…</Button>}` when no action is the main
  * one.
  *

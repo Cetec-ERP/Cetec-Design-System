@@ -46,7 +46,9 @@ const splitButtonBase = {
   // The icon is blended with the button background, but the divider sits
   // between the halves, on the page. So the divider paints the button
   // background and draws the line on top of it with the icon's color and
-  // blend mode. `isolation` keeps the blend inside the divider.
+  // blend mode. `isolation` keeps the blend inside the divider. It stays at
+  // full strength next to a disabled or loading half, where it reads as the
+  // edge of the half that is still available.
   divider: {
     position: 'relative',
     isolation: 'isolate',
