@@ -8,6 +8,7 @@ import { Chip } from '../Chip';
 import { CodeBlock } from '../CodeBlock';
 import { DateTimeInput } from '../DateTime';
 import { KeyFact } from '../KeyFact';
+import { MenuItem } from '../Menu';
 import {
   Popover,
   PopoverClose,
@@ -17,6 +18,7 @@ import {
   PopoverTrigger,
 } from '../Popover';
 import { Select, SelectOption } from '../Select';
+import { SplitButton } from '../SplitButton';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -158,6 +160,28 @@ export const KeyFactLabels: Story = {
 
     // French puts a space before the colon. The component must not add its own.
     await expect(canvas.getByText('Responsable :')).toBeInTheDocument();
+  },
+};
+
+export const SplitButtonLabels: Story = {
+  name: 'Split Button Labels',
+  render: () => (
+    <LocaleProvider labels={{ moreActions: 'Más acciones' }}>
+      <SplitButton>
+        Mover al siguiente
+        <SplitButton.Menu>
+          <MenuItem label="Elegir ubicación…" />
+        </SplitButton.Menu>
+      </SplitButton>
+    </LocaleProvider>
+  ),
+  parameters: { controls: { disable: true } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(
+      canvas.getByRole('button', { name: 'Más acciones' }),
+    ).toHaveAttribute('aria-haspopup', 'menu');
   },
 };
 

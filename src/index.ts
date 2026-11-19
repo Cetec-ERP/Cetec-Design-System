@@ -205,6 +205,12 @@ export {
 export { RadioInput, type RadioInputProps } from './components/RadioInput';
 export { Spinner, type SpinnerProps } from './components/Spinner';
 export {
+  SplitButton,
+  SplitButtonMenu,
+  type SplitButtonMenuProps,
+  type SplitButtonProps,
+} from './components/SplitButton';
+export {
   Tab,
   TabPanel,
   Tabs,
