@@ -23,7 +23,9 @@ export const useSplitButtonContext = () => {
   const context = useContext(SplitButtonContext);
 
   if (!context) {
-    throw new Error('SplitButton.Menu must be used inside a SplitButton.');
+    throw new Error(
+      'SplitButton.Menu must be a direct child of SplitButton, not rendered by another component.',
+    );
   }
 
   return context;

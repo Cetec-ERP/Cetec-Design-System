@@ -26,8 +26,9 @@ export type SplitButtonMenuProps = Omit<
  * The menu half of a {@link SplitButton}: a caret toggle that opens a menu of
  * related actions below the button, aligned to its end.
  *
- * Use it as the last child of `SplitButton`, also available as
- * `SplitButton.Menu`. Its children are `MenuItem`, `MenuGroup`, and `SubMenu`.
+ * Use it as the last direct child of `SplitButton`, also available as
+ * `SplitButton.Menu`. Do not wrap it in another component: `SplitButton`
+ * finds it by type, so a wrapped menu is treated as part of the label. Its children are `MenuItem`, `MenuGroup`, and `SubMenu`.
  * The toggle takes its variant, size, accessible name, and disabled reason
  * from the parent `SplitButton`. It has `aria-haspopup="menu"` and
  * `aria-expanded`. Enter, Space, and the arrow keys open the menu. Escape

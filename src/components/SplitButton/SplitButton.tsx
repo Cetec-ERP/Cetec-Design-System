@@ -27,7 +27,9 @@ import { SplitButtonMenu } from './SplitButtonMenu';
 type SplitButtonOwnProps = {
   /**
    * The main action's visible label, followed by one `SplitButton.Menu` that
-   * holds the related actions.
+   * holds the related actions. The menu must be a direct child, or inside a
+   * fragment. A component that renders `SplitButton.Menu` itself is not
+   * found, and its content would land inside the action button.
    */
   children: ReactNode;
   /** Runs when the main action is clicked. Not called while it is disabled. */
@@ -131,7 +133,7 @@ export const SplitButton = (props: SplitButtonProps) => {
 
   if (import.meta.env.DEV && !menu) {
     console.warn(
-      'SplitButton needs a SplitButton.Menu child. Use Button for an action without a menu.',
+      'SplitButton needs a SplitButton.Menu as a direct child. A component that renders SplitButton.Menu is not found. Use Button for an action without a menu.',
     );
   }
 
