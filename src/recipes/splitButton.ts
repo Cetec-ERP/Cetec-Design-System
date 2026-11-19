@@ -27,6 +27,19 @@ const splitButtonBase = {
     borderStartRadius: '0',
     borderInlineStartWidth: '0',
     _focusVisible: { zIndex: 'raised' },
+    // The caret turns over while the menu is open, as the Select caret does.
+    // Menu sets `aria-expanded` on the toggle.
+    _icon: {
+      transitionDuration: 'fast',
+      transitionProperty: 'all',
+      transitionTimingFunction: 'default',
+    },
+    _expanded: {
+      _icon: {
+        transform: 'rotate(-180deg)',
+        transformOrigin: 'center',
+      },
+    },
   },
   divider: {
     flexShrink: 0,

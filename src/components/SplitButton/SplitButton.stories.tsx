@@ -348,11 +348,21 @@ export const OpenAndClose: Story = {
     const body = within(canvasElement.ownerDocument.body);
     const toggle = canvas.getByRole('button', { name: 'More actions' });
 
-    // A click on the toggle opens the menu without running the action.
+    const caret = toggle.querySelector('svg');
+    if (!caret) throw new Error('Missing the caret.');
+    await expect(getComputedStyle(caret).transform).toBe('none');
+
+    // A click on the toggle opens the menu without running the action. The
+    // caret turns over while the menu is open.
     await userEvent.click(toggle);
     const menu = await body.findByRole('menu');
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(args.onClick).not.toHaveBeenCalled();
+    await waitFor(() =>
+      expect(getComputedStyle(caret).transform).toBe(
+        'matrix(-1, 0, 0, -1, 0, 0)',
+      ),
+    );
 
     // The menu opens below the button, aligned to its end.
     const toggleBox = toggle.getBoundingClientRect();
@@ -360,9 +370,10 @@ export const OpenAndClose: Story = {
     await expect(menuBox.top).toBeGreaterThanOrEqual(toggleBox.bottom);
     await expect(Math.round(menuBox.right)).toBe(Math.round(toggleBox.right));
 
-    // A second click closes it.
+    // A second click closes it, and the caret turns back.
     await userEvent.click(toggle);
     await waitFor(() => expect(body.queryByRole('menu')).toBeNull());
+    await waitFor(() => expect(getComputedStyle(caret).transform).toBe('none'));
 
     // A click outside closes it.
     await userEvent.click(toggle);
