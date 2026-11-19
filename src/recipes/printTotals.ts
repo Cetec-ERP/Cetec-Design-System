@@ -81,5 +81,9 @@ export const printTotalsRecipe = defineRecipe({
     borderTopWidth: 'paper.rule',
     borderTopColor: 'paper.inkSoft',
     breakInside: 'avoid',
+    // Totals right after a page break start at the top of their page.
+    '.cetec-printPageBreak__root + &': {
+      mt: '0',
+    },
   },
 });

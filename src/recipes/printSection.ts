@@ -24,6 +24,10 @@ export const printSectionRecipe = defineSlotRecipe({
       '&:not(:first-child)': {
         mt: 'print.16',
       },
+      // A section right after a page break starts at the top of its page.
+      '.cetec-printPageBreak__root + &:not(:first-child)': {
+        mt: '0',
+      },
     },
     title: {
       display: 'block',

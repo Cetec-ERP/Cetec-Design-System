@@ -23,6 +23,9 @@ export const dividerRecipe = defineRecipe({
         width: 'stretch',
         borderTopWidth: 'var(--divider-weight)',
         _printDoc: { my: 'print.8' },
+        // On paper, a divider right after a page break starts at the top of
+        // its page.
+        '.cetec-printDoc .cetec-printPageBreak__root + &': { mt: '0' },
       },
       vertical: {
         height: 'stretch',

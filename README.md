@@ -234,8 +234,9 @@ on `<html>`, not on `<body>`:
 - `cetec-printDoc` goes on every kit document. It sets the white sheet and the
   paper ink. `<html>` keeps the browser text size, so 1 rem is 16 px on paper,
   as it is on screen. `<body>` takes the body text style, `print.body`
-  (8.5 pt), and each top-level block after the first gets 12 pt above it. Go
-  writes no class or style on `<body>`.
+  (8.5 pt), and each top-level block after the first gets 12 pt above it, or
+  its own margin. A block right after a page break, and a canvas, start at 0.
+  Go writes no class or style on `<body>`.
 - `cetec-ink-thermal` goes next to it for thermal label printers. Every paper
   ink turns solid black, and rules are at least 1.5 pt.
 - Go writes the `@page` rule. Paper size is a template setting: `letter`, `A4`,
