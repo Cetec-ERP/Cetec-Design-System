@@ -62,15 +62,16 @@ export const Card = (props: CardProps) => {
         ? ({
             as: 'a',
             href,
-            ...(disabled && {
-              onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
-            }),
+            onClick: disabled
+              ? (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault()
+              : onClick,
           } satisfies BoxProps<'a'>)
         : isInteractive
           ? ({
               as: 'button',
               type: 'button',
               disabled,
+              onClick,
             } satisfies BoxProps<'button'>)
           : ({
               as: 'div',

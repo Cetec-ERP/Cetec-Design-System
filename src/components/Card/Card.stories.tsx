@@ -1,4 +1,4 @@
-import { fn } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { HStack, VStack, Grid, Flex, Wrap } from '@styled-system/jsx';
 
@@ -158,6 +158,32 @@ export const Interactive: Story = {
       </Card>
     </Wrap>
   ),
+};
+
+export const ClickHandler: Story = {
+  name: 'Click Handler',
+  tags: ['!dev', '!autodocs', '!snapshot'],
+  args: { onClick: fn() },
+  render: (args) => (
+    <HStack gap="16" p="16">
+      <Card onClick={args.onClick}>
+        <Text p="16">Enabled card</Text>
+      </Card>
+      <Card onClick={args.onClick} disabled>
+        <Text p="16">Disabled card</Text>
+      </Card>
+    </HStack>
+  ),
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Enabled card' }));
+    await expect(args.onClick).toHaveBeenCalledTimes(1);
+
+    await expect(
+      canvas.getByRole('button', { name: 'Disabled card' }),
+    ).toBeDisabled();
+  },
 };
 
 export const LinkCard: Story = {
