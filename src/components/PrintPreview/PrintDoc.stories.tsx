@@ -12,8 +12,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * Go print helper puts `cetec-printDoc` on the `<html>` element of every kit
  * document and adds `cetec-ink-thermal` for thermal label printers.
  *
- * The root sets the white sheet, the paper ink, and the body text style, so
- * the fixture HTML needs no classes of its own. Each story renders one
+ * The root sets the white sheet and the paper ink. `<html>` keeps the browser
+ * text size, so 1 rem is 16 px, as in the app. `<body>` takes the body text
+ * style, and each top-level block after the first gets 12 pt above it. So the
+ * fixture HTML needs no classes of its own. Each story renders one
  * fixture from `src/recipes/printDoc.fixtures.json`, exactly as stored. The
  * page margins stand in for the `@page` margins Go writes.
  *

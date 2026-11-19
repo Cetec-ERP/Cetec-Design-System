@@ -3,7 +3,7 @@
   "fixtures": [
     {
       "name": "normal-ink",
-      "description": "A document in normal ink. The root sets the white sheet, the paper ink, and the body text style. The body text has no classes of its own.",
+      "description": "A document in normal ink. The root sets the white sheet and the paper ink. The body takes the body text style, and the second paragraph gets 12 pt above it. The body text has no classes of its own.",
       "input": { "ink": "normal" },
       "root": ["cetec-printDoc"],
       "html": "<p>Thank you for your order. Goods remain our property until paid in full.</p><p>Questions about this document? Reply to the email it came with.</p>"

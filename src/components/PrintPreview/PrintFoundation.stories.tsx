@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 import { expect, within } from 'storybook/test';
 
 import { cx } from '@styled-system/css';
-import { Grid, HStack, VStack } from '@styled-system/jsx';
+import { Grid, HStack, styled, VStack } from '@styled-system/jsx';
 
 import { Box, type BoxProps } from '../Box';
 import { Text } from '../Text';
@@ -51,14 +51,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A document root, as the Go print helper writes it. */
+/**
+ * A document root, as the Go print helper writes it. The outer element stands
+ * in for `<html>` and the inner one for `<body>`, which takes the body text
+ * style from the root.
+ */
 const PaperRoot = ({ ink, children }: { ink: Ink; children: ReactNode }) => (
   <Box
     className={cx(printDocClass, ink === 'thermal' && thermalClass)}
     h="full"
     p="24"
   >
-    {children}
+    <styled.div>{children}</styled.div>
   </Box>
 );
 

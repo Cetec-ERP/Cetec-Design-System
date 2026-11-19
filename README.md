@@ -231,12 +231,45 @@ on `<html>`, not on `<body>`:
 </html>
 ```
 
-- `cetec-printDoc` goes on every kit document. It sets the white sheet, the
-  paper ink, and the body text style.
+- `cetec-printDoc` goes on every kit document. It sets the white sheet and the
+  paper ink. `<html>` keeps the browser text size, so 1 rem is 16 px on paper,
+  as it is on screen. `<body>` takes the body text style, `print.body`
+  (8.5 pt), and each top-level block after the first gets 12 pt above it, or
+  its own margin. A block right after a page break, and a canvas, start at 0.
+  Go writes no class or style on `<body>`.
 - `cetec-ink-thermal` goes next to it for thermal label printers. Every paper
   ink turns solid black, and rules are at least 1.5 pt.
 - Go writes the `@page` rule. Paper size is a template setting: `letter`, `A4`,
   or `legal`. The default is `letter`.
+
+**Print scales.** Print recipes take sizes from two scales in points, so they
+hold on any printer.
+
+| Text size token    | Size   | Used for                                       |
+| ------------------ | ------ | ---------------------------------------------- |
+| `print.capsLabel`  | 7 pt   | Caps labels and table headers                  |
+| `print.smallPrint` | 7.5 pt | Terms, small print, and page numbers           |
+| `print.body`       | 8.5 pt | Body text, table cells, and notes              |
+| `print.fieldValue` | 9.5 pt | Field values, address lines, header info rows  |
+| `print.lead`       | 11 pt  | Names in an address, slot values, closing line |
+| `print.total`      | 14 pt  | The grand total                                |
+| `print.display`    | 17 pt  | A large slot value, such as a part number      |
+| `print.title`      | 20 pt  | The document title                             |
+
+| Spacing token | Size  |
+| ------------- | ----- |
+| `print.1`     | 1 pt  |
+| `print.2`     | 2 pt  |
+| `print.4`     | 4 pt  |
+| `print.6`     | 6 pt  |
+| `print.8`     | 8 pt  |
+| `print.12`    | 12 pt |
+| `print.16`    | 16 pt |
+| `print.24`    | 24 pt |
+
+Text sizes are `fontSizes` tokens and spacing steps are `spacing` tokens. The
+print text styles (`print.capsLabel`, `print.body`, and the rest) use the text
+sizes. Part sizes in inches, such as a stock width, are not on either scale.
 
 **Read the manifest.** Go reads class names from `print-classes.json` and never
 spells them by hand. The build writes the file from the recipe configs and
