@@ -136,6 +136,11 @@ export const IconButton = (props: IconButtonProps) => {
             ? (e: MouseEvent<HTMLElement>) => e.preventDefault()
             : onClick
         }
+        // The global disabled style turns off pointer events. With a reason,
+        // the button takes them back, as Button does, so it shows the
+        // not-allowed cursor and receives pointer events itself. The onClick
+        // guard above still blocks clicks.
+        pointerEvents={hasReason ? 'auto' : undefined}
         className={`${cx(classes.container, className)} group`}
         {...(loading && {
           'aria-busy': true,

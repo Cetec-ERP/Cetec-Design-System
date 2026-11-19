@@ -1,4 +1,4 @@
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { Wrap } from '@styled-system/jsx';
 
@@ -102,7 +102,24 @@ export const DisabledReasonBehavior: Story = {
       "Orders with shipments can't be deleted.",
     );
 
-    // Clicks and keyboard activation do nothing.
+    // The button takes pointer events, as Button does, so it shows the
+    // not-allowed cursor and a pointer reaches it. Hover shows the reason,
+    // and a click does nothing.
+    await expect(getComputedStyle(button).pointerEvents).toBe('auto');
+    await expect(getComputedStyle(button).cursor).toBe('not-allowed');
+    await userEvent.hover(button);
+    await expect(
+      await within(document.body).findByRole('tooltip'),
+    ).toHaveTextContent("Orders with shipments can't be deleted.");
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
+    await userEvent.unhover(button);
+    button.blur();
+    await waitFor(() =>
+      expect(within(document.body).queryByRole('tooltip')).toBeNull(),
+    );
+
+    // Keyboard activation does nothing.
     button.focus();
     await userEvent.keyboard('{Enter}');
     await userEvent.keyboard(' ');
