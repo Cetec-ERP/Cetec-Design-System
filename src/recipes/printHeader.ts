@@ -19,7 +19,7 @@ export const headerMetaStyles = {
 const companyName = {
   fontFamily: 'heading',
   fontSize: 'print.total',
-  fontWeight: 'black',
+  fontWeight: 'bold',
   lineHeight: 'tight',
   letterSpacing: 'wide',
   textTransform: 'uppercase',

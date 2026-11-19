@@ -12,6 +12,9 @@ import { defineRecipe } from '@pandacss/dev';
  * on screen. `<body>` carries the body text style, `print.body` (8.5 pt).
  * Each top-level block in `<body>` after the first gets `print.12` (12 pt)
  * above it. A part that sets its own top margin, such as a section, keeps it.
+ * A block right after a page break and a canvas get no top margin, so they
+ * start at the top of their page. A margin after a forced break stays on the
+ * new page, and on label stock it would push the canvas onto the next label.
  *
  * The rules select `<body>` as the root's child, not by its tag name. So a
  * stand-in for `<body>`, such as the `div` in a story, takes the same rules. Add `cetec-ink-thermal` next to it for thermal
@@ -39,6 +42,15 @@ export const printDocRecipe = defineRecipe({
     // a part's own top margin wins.
     ':where(&) > * > * + *': {
       mt: 'print.12',
+    },
+    // A block right after a page break, and each canvas, start at the top of
+    // their page. These come after the rule above and are just as weak, so
+    // they win over it, and a part's own top margin still wins over them.
+    ':where(&) > * > :where(.cetec-printPageBreak__root) + *': {
+      mt: '0',
+    },
+    ':where(&) > * > :where(.cetec-printCanvas__root)': {
+      mt: '0',
     },
   },
 });

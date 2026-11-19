@@ -186,7 +186,7 @@ const keyFactVariants = {
           flexDirection: 'column',
           alignItems: 'stretch',
           gap: '1',
-          _printDoc: { gap: 'print.2' },
+          _printDoc: { gap: 'print.1' },
         },
       },
       label: {

@@ -264,6 +264,7 @@ hold on any printer.
 
 | Spacing token | Size  |
 | ------------- | ----- |
+| `print.1`     | 1 pt  |
 | `print.2`     | 2 pt  |
 | `print.4`     | 4 pt  |
 | `print.6`     | 6 pt  |

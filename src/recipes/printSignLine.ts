@@ -55,8 +55,8 @@ export const printSignLineRecipe = defineSlotRecipe({
     },
     value: {
       position: 'absolute',
-      left: '3',
-      bottom: '3',
+      left: 'print.2',
+      bottom: 'print.2',
       textStyle: 'print.fieldValue',
       whiteSpace: 'nowrap',
     },

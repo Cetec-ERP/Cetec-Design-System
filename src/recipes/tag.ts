@@ -44,7 +44,7 @@ const tagBase = {
   _printDoc: {
     display: 'inline-flex',
     verticalAlign: 'middle',
-    gap: 'print.2',
+    gap: 'print.1',
     fontWeight: 'bold',
     borderWidth: 'paper.hairline',
     borderStyle: 'solid',
@@ -75,7 +75,7 @@ const tagVariant = {
       // For dense rows, such as table cells.
       _printDoc: {
         h: 'auto',
-        py: 'print.2',
+        py: 'print.1',
         px: 'print.4',
         fontSize: 'print.capsLabel',
       },

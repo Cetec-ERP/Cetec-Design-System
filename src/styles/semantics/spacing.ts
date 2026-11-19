@@ -2,8 +2,8 @@ import { defineSemanticTokens } from '@pandacss/dev';
 
 /**
  * The print spacing scale, in points. Print recipes take every gap, margin,
- * and padding of their paper look from these seven steps, so the space
- * holds on any printer: 2, 4, 6, 8, 12, 16, and 24 pt. Each key is its size
+ * and padding of their paper look from these eight steps, so the space
+ * holds on any printer: 1, 2, 4, 6, 8, 12, 16, and 24 pt. Each key is its size
  * in points, so `print.12` is 12 pt.
  *
  * Sizes of a part, such as a logo height or a stock width, are not spacing.
@@ -11,6 +11,8 @@ import { defineSemanticTokens } from '@pandacss/dev';
  */
 export const spacing = defineSemanticTokens.spacing({
   print: {
+    /** 1 pt. The tightest step, for dense parts such as a small tag. */
+    '1': { value: '1pt' },
     /** 2 pt. The inset at the top and bottom of a canvas slot. */
     '2': { value: '2pt' },
     /** 4 pt. */
