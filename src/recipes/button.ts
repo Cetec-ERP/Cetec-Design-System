@@ -10,6 +10,10 @@ const activeEnabled = `&:is(:active, [data-active=true])${enabled}`;
 const groupHoverEnabled = `.group:is(:hover, [data-hover=true])${enabled} &`;
 const groupActiveEnabled = `.group:is(:active, [data-active=true])${enabled} &`;
 
+// How far a disabled or loading button fades. SplitButton dims its divider
+// by the same amount when either half is disabled or loading.
+export const buttonDisabledOpacity = '0.3';
+
 const buttonBaseStyles = {
   container: {
     ...globalBaseStyles,
@@ -48,11 +52,11 @@ const buttonBaseStyles = {
     cursor: 'pointer',
     _disabled: {
       cursor: 'not-allowed',
-      opacity: '0.3',
+      opacity: buttonDisabledOpacity,
     },
     _loading: {
       cursor: 'not-allowed',
-      opacity: '0.3',
+      opacity: buttonDisabledOpacity,
     },
     _focusVisible: {
       outlineColor: 'border.focused',

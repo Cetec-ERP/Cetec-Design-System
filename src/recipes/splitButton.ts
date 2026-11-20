@@ -2,7 +2,7 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 import { globalBaseStyles } from '~/styles/utilities';
 
-import { buttonVariantColors } from './button';
+import { buttonDisabledOpacity, buttonVariantColors } from './button';
 
 // The halves are a `Button` and an `IconButton`, so each keeps the button
 // recipe's colors, sizes, and states. These slots only join them: the inner
@@ -46,9 +46,9 @@ const splitButtonBase = {
   // The icon is blended with the button background, but the divider sits
   // between the halves, on the page. So the divider paints the button
   // background and draws the line on top of it with the icon's color and
-  // blend mode. `isolation` keeps the blend inside the divider. It stays at
-  // full strength next to a disabled or loading half, where it reads as the
-  // edge of the half that is still available.
+  // blend mode. `isolation` keeps the blend inside the divider. While either
+  // half is disabled or loading, SplitButton marks the divider with
+  // `data-disabled` or `data-loading`, and it fades as the button does.
   divider: {
     position: 'relative',
     isolation: 'isolate',
@@ -60,6 +60,8 @@ const splitButtonBase = {
       position: 'absolute',
       inset: '0',
     },
+    _disabled: { opacity: buttonDisabledOpacity },
+    _loading: { opacity: buttonDisabledOpacity },
   },
 };
 

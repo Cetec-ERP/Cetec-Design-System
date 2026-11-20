@@ -272,6 +272,13 @@ export const ExMoveToNext: Story = {
 
 const chooseLocation = fn();
 
+// The divider between the two halves of the split button in `container`.
+const dividerIn = (container: HTMLElement) => {
+  const divider = container.querySelector('[class*="splitButton__divider"]');
+  if (!(divider instanceof HTMLElement)) throw new Error('Missing divider.');
+  return divider;
+};
+
 export const KeyboardBehavior: Story = {
   name: 'Test: keyboard',
   // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
@@ -430,6 +437,12 @@ export const ActionDisabledBehavior: Story = {
     );
     await expect(toggle).not.toHaveAttribute('aria-disabled', 'true');
 
+    // The divider fades with the disabled action.
+    await expect(getComputedStyle(dividerIn(canvasElement)).opacity).toBe(
+      getComputedStyle(action).opacity,
+    );
+    await expect(getComputedStyle(action).opacity).not.toBe('1');
+
     // The action stays in the tab order but does nothing.
     await userEvent.tab();
     await expect(action).toHaveFocus();
@@ -483,6 +496,12 @@ export const MenuDisabledBehavior: Story = {
       'You need the Inventory role to choose a location.',
     );
     await expect(action).not.toHaveAttribute('aria-disabled', 'true');
+
+    // The divider fades with the disabled toggle.
+    await expect(getComputedStyle(dividerIn(canvasElement)).opacity).toBe(
+      getComputedStyle(toggle).opacity,
+    );
+    await expect(getComputedStyle(toggle).opacity).not.toBe('1');
 
     // The action works.
     await userEvent.click(action);
@@ -597,6 +616,12 @@ export const LoadingBehavior: Story = {
 
     await expect(action).toHaveAttribute('aria-busy', 'true');
     await expect(toggle).not.toHaveAttribute('aria-busy');
+
+    // The divider fades with the loading action, as Button does.
+    await expect(getComputedStyle(dividerIn(canvasElement)).opacity).toBe(
+      getComputedStyle(action).opacity,
+    );
+    await expect(getComputedStyle(action).opacity).not.toBe('1');
   },
 };
 
@@ -661,6 +686,9 @@ export const JoinedShape: Story = {
         await expect(toggleStyle.borderBottomLeftRadius).toBe('0px');
         await expect(toggleStyle.borderLeftWidth).toBe('0px');
         await expect(toggleStyle.borderTopRightRadius).not.toBe('0px');
+
+        // With both halves available, the divider is at full strength.
+        await expect(getComputedStyle(dividerIn(root)).opacity).toBe('1');
 
         // Both halves are the same height.
         await expect(toggle.getBoundingClientRect().height).toBe(
