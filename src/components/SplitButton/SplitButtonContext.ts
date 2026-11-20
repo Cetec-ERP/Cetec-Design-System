@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 import type { SplitButtonVariantProps } from '@styled-system/recipes';
 
-/** Values a `SplitButton` passes to its `SplitButton.Menu`. */
+/** Values a `SplitButton` passes to its `SplitButtonMenu`. */
 export type SplitButtonContextValue = {
   variant: SplitButtonVariantProps['variant'];
   size: SplitButtonVariantProps['size'];
@@ -24,7 +24,7 @@ export const useSplitButtonContext = () => {
 
   if (!context) {
     throw new Error(
-      'SplitButton.Menu must be a direct child of SplitButton, not rendered by another component.',
+      'SplitButtonMenu must be a direct child of SplitButton, not rendered by another component.',
     );
   }
 

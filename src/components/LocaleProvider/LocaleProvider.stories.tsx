@@ -18,7 +18,7 @@ import {
   PopoverTrigger,
 } from '../Popover';
 import { Select, SelectOption } from '../Select';
-import { SplitButton } from '../SplitButton';
+import { SplitButton, SplitButtonMenu } from '../SplitButton';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -169,9 +169,9 @@ export const SplitButtonLabels: Story = {
     <LocaleProvider labels={{ moreActions: 'Más acciones' }}>
       <SplitButton>
         Mover al siguiente
-        <SplitButton.Menu>
+        <SplitButtonMenu>
           <MenuItem label="Elegir ubicación…" />
-        </SplitButton.Menu>
+        </SplitButtonMenu>
       </SplitButton>
     </LocaleProvider>
   ),

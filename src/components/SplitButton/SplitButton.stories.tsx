@@ -10,6 +10,7 @@ import { MenuGroup, MenuItem, SubMenu } from '../Menu';
 import { Text } from '../Text';
 
 import { SplitButton } from './SplitButton';
+import { SplitButtonMenu } from './SplitButtonMenu';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -32,10 +33,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
  * ```tsx
  * <SplitButton onClick={moveToNext} menuLabel="More move options">
  *   Move to next: Packing
- *   <SplitButton.Menu>
+ *   <SplitButtonMenu>
  *     <MenuItem label="Choose location…" onClick={chooseLocation} />
  *     <MenuItem label="Partial move…" onClick={partialMove} />
- *   </SplitButton.Menu>
+ *   </SplitButtonMenu>
  * </SplitButton>
  * ```
  */
@@ -67,10 +68,10 @@ const meta = {
     children: (
       <>
         Move to next: Packing
-        <SplitButton.Menu>
+        <SplitButtonMenu>
           <MenuItem label="Choose location…" />
           <MenuItem label="Partial move…" />
-        </SplitButton.Menu>
+        </SplitButtonMenu>
       </>
     ),
   },
@@ -83,10 +84,10 @@ const variants = ['standard', 'primary', 'cta', 'hollow', 'danger'] as const;
 const sizes = ['sm', 'md', 'lg'] as const;
 
 const moveMenu = (
-  <SplitButton.Menu>
+  <SplitButtonMenu>
     <MenuItem label="Choose location…" />
     <MenuItem label="Partial move…" />
-  </SplitButton.Menu>
+  </SplitButtonMenu>
 );
 
 export const Default: Story = {};
@@ -202,7 +203,7 @@ export const MenuOpen: Story = {
     <Box pb="224">
       <SplitButton variant="primary" menuLabel="More move options">
         Move to next: Packing
-        <SplitButton.Menu defaultOpen>
+        <SplitButtonMenu defaultOpen>
           <MenuItem label="Choose location…" />
           <MenuItem label="Partial move…" />
           <MenuGroup label="Undo" divider>
@@ -212,7 +213,7 @@ export const MenuOpen: Story = {
             <MenuItem label="Quality hold" />
             <MenuItem label="Rework" />
           </SubMenu>
-        </SplitButton.Menu>
+        </SplitButtonMenu>
       </SplitButton>
     </Box>
   ),
@@ -254,7 +255,7 @@ export const ExMoveToNext: Story = {
           }
         >
           {next ? `Move to next: ${next}` : 'Move to next'}
-          <SplitButton.Menu>
+          <SplitButtonMenu>
             <MenuItem label="Choose location…" />
             <MenuItem label="Partial move…" />
             <MenuItem
@@ -262,7 +263,7 @@ export const ExMoveToNext: Story = {
               disabled={index === 0}
               onClick={() => setIndex(0)}
             />
-          </SplitButton.Menu>
+          </SplitButtonMenu>
         </SplitButton>
       </VStack>
     );
@@ -287,10 +288,10 @@ export const KeyboardBehavior: Story = {
   render: (args) => (
     <SplitButton {...args}>
       Move to next: Packing
-      <SplitButton.Menu>
+      <SplitButtonMenu>
         <MenuItem label="Choose location…" onClick={chooseLocation} />
         <MenuItem label="Partial move…" />
-      </SplitButton.Menu>
+      </SplitButtonMenu>
     </SplitButton>
   ),
   play: async ({ args, canvasElement }) => {
@@ -558,7 +559,7 @@ export const ControlledMenuDisabledBehavior: Story = {
           }
         >
           Move to next: Packing
-          <SplitButton.Menu
+          <SplitButtonMenu
             open={open}
             onOpenChange={(nextOpen: boolean) => {
               controlledOpenChange(nextOpen);
@@ -566,7 +567,7 @@ export const ControlledMenuDisabledBehavior: Story = {
             }}
           >
             <MenuItem label="Choose location…" />
-          </SplitButton.Menu>
+          </SplitButtonMenu>
         </SplitButton>
         <Button onClick={() => setLocked((value) => !value)}>
           Toggle lock

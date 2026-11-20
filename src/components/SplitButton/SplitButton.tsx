@@ -26,9 +26,9 @@ import { SplitButtonMenu } from './SplitButtonMenu';
 
 type SplitButtonOwnProps = {
   /**
-   * The main action's visible label, followed by one `SplitButton.Menu` that
+   * The main action's visible label, followed by one `SplitButtonMenu` that
    * holds the related actions. The menu must be a direct child, or inside a
-   * fragment. A component that renders `SplitButton.Menu` itself is not
+   * fragment. A component that renders `SplitButtonMenu` itself is not
    * found, and its content would land inside the action button.
    */
   children: ReactNode;
@@ -75,7 +75,7 @@ export type SplitButtonProps = Omit<
 const isSplitButtonMenu = (child: ReactNode) =>
   isValidElement(child) && child.type === SplitButtonMenu;
 
-// Looks inside fragments, so `<>Label<SplitButton.Menu /></>` also works.
+// Looks inside fragments, so `<>Label<SplitButtonMenu /></>` also works.
 const flattenChildren = (children: ReactNode): ReactNode[] =>
   Children.toArray(children).flatMap((child) =>
     isValidElement(child) && child.type === Fragment
@@ -106,10 +106,10 @@ const flattenChildren = (children: ReactNode): ReactNode[] =>
  * ```tsx
  * <SplitButton onClick={moveToNext} menuLabel="More move options">
  *   Move to next: Packing
- *   <SplitButton.Menu>
+ *   <SplitButtonMenu>
  *     <MenuItem label="Choose location…" onClick={chooseLocation} />
  *     <MenuItem label="Partial move…" onClick={partialMove} />
- *   </SplitButton.Menu>
+ *   </SplitButtonMenu>
  * </SplitButton>
  * ```
  */
@@ -134,7 +134,7 @@ export const SplitButton = (props: SplitButtonProps) => {
 
   if (import.meta.env.DEV && !menu) {
     console.warn(
-      'SplitButton needs a SplitButton.Menu as a direct child. A component that renders SplitButton.Menu is not found. Use Button for an action without a menu.',
+      'SplitButton needs a SplitButtonMenu as a direct child. A component that renders SplitButtonMenu is not found. Use Button for an action without a menu.',
     );
   }
 
@@ -185,6 +185,3 @@ export const SplitButton = (props: SplitButtonProps) => {
     </Box>
   );
 };
-
-/** The menu half. Same as {@link SplitButtonMenu}. */
-SplitButton.Menu = SplitButtonMenu;
