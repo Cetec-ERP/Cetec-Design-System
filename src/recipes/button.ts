@@ -210,13 +210,16 @@ const buttonVariants = {
       mainContent: {
         color: 'neutral.0',
       },
+      // The red background and white label are the same in both themes, so
+      // the icon is too. The inverse icon tokens turn dark in dark mode, and
+      // a dark icon screened on red does not show.
       slot: {
-        fill: 'icon.decorative.inverse',
+        fill: 'neutral.30',
         mixBlendMode: 'screen',
-        [groupHoverEnabled]: { fill: 'icon.decorative.inverse.hovered' },
-        [groupActiveEnabled]: { fill: 'icon.decorative.inverse.hovered' },
+        [groupHoverEnabled]: { fill: 'neutral.0' },
+        [groupActiveEnabled]: { fill: 'neutral.0' },
         _groupDisabled: {
-          fill: 'icon.decorative.inverse',
+          fill: 'neutral.30',
         },
       },
     },
