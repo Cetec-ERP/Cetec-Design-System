@@ -364,3 +364,5 @@ type(scope)!: breaking change summary
 **Externals:** React and React-DOM are peer dependencies (not bundled)
 
 **Panda CSS:** Prebuilt output ships as `dist/styles.css`; `src/styled-system/` is not distributed
+
+**Print kit:** `tools/build-print.mjs` writes `dist/print.css`, `dist/print-classes.json`, and `dist/print-fixtures/` for the Go print helper. Print recipes are listed in `src/print/printRecipes.ts`, and each one needs a fixture file beside it in `src/recipes/`. See the README section "Printed documents"

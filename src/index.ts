@@ -194,6 +194,16 @@ export {
   type PrintPreviewProps,
 } from './components/PrintPreview';
 export { pageSizes } from './components/PrintPreview/pageSizes';
+export type {
+  PrintClassManifest,
+  PrintDeclarations,
+  PrintPageFooter,
+  PrintRecipeClasses,
+  PrintRootClass,
+  PrintSlotClasses,
+  PrintVariantClasses,
+} from './print/printManifest';
+export type { PrintFixture, PrintFixtureFile } from './print/printFixtures';
 export {
   Radio,
   RadioGroup,

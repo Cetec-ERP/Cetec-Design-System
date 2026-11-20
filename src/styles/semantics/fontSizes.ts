@@ -57,4 +57,33 @@ export const fontSizes = defineSemanticTokens.fontSizes({
       value: '{sizes.12}',
     },
   },
+  /**
+   * The print text scale, in points. A point is 1/72 inch, so these sizes
+   * hold on any printer. Every print text size is one of these eight steps,
+   * from smallest to largest: 7, 7.5, 8.5, 9.5, 11, 14, 17, and 20 pt.
+   */
+  print: {
+    /** 7 pt. Small caps labels, such as field labels and table headers. */
+    capsLabel: { value: '7pt' },
+    /** 7.5 pt. Terms, notes in small print, and page numbers. */
+    smallPrint: { value: '7.5pt' },
+    /** 8.5 pt. Body text and table cells. The `<body>` of every document. */
+    body: { value: '8.5pt' },
+    /** 9.5 pt. Field values, address lines, and header info rows. */
+    fieldValue: { value: '9.5pt' },
+    /**
+     * 11 pt. A line that leads its block: a name in an address, a value in a
+     * canvas slot, or a closing line.
+     */
+    lead: { value: '11pt' },
+    /** 14 pt. The grand total. */
+    total: { value: '14pt' },
+    /**
+     * 17 pt. A value read from a distance, such as the part number on a
+     * label.
+     */
+    display: { value: '17pt' },
+    /** 20 pt. The document title. */
+    title: { value: '20pt' },
+  },
 });

@@ -104,7 +104,8 @@
     font-size: var(--cetec-font-sizes-20);
   }
 
-  p:not([class*='cetec-']) {
+  /* Print documents keep the print reset, as in print.css. */
+  p:not([class*='cetec-'], .cetec-printDoc *) {
     margin-bottom: 0.5rem;
   }
 
@@ -127,7 +128,8 @@ p + h4 {
   }
 }
 
-p:not([class*='cetec-']) {
+/* Print documents keep the print reset, as in print.css. */
+p:not([class*='cetec-'], .cetec-printDoc *) {
   margin-bottom: 0.5rem;
   max-width: var(--cetec-sizes-prose);
 }

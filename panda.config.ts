@@ -1,6 +1,7 @@
 import { defineConfig } from '@pandacss/dev';
 
 import { cetecPreset } from './src/cetec-preset';
+import { printRecipeNames } from './src/print/printRecipes';
 import * as regularRecipes from './src/recipes/recipes-regular';
 import * as slotRecipes from './src/recipes/recipes-slot';
 
@@ -89,6 +90,12 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   tooltip: [{ size: ['*'], responsive: true }],
 };
 
+// Print recipes ship every variant, always. Fixture HTML is a string, so
+// Panda cannot extract its classes, and the Go print helper writes them.
+const printStaticCss: Record<string, RecipeRule[]> = Object.fromEntries(
+  printRecipeNames.map((name) => [name, ['*'] as unknown as RecipeRule[]]),
+);
+
 const staticCssRecipes: Record<string, RecipeRule[]> = Object.fromEntries(
   recipeNames.map((name) => [name, ['*'] as unknown as RecipeRule[]]),
 );
@@ -149,6 +156,7 @@ export default defineConfig({
       ...(isStatic ? staticCssRecipes : {}),
       // below is static CSS we always want
       ...recipeOverrides,
+      ...printStaticCss,
     },
   },
 });
