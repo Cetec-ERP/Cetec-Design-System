@@ -24,6 +24,25 @@ type Story = StoryObj<typeof meta>;
    menus, or tooltips on load. Open overlays overlap each other and the page,
    and their position changes the visual snapshots. Keep one interactive story
    that opens a real overlay from its trigger.
+6. A behavior test story (named `Test: …`) is hidden from the sidebar and the
+   docs page with `tags: ['!dev', '!autodocs']`, and says so in a comment:
+
+   ```ts
+   export const KeyboardBehavior: Story = {
+     name: 'Test: keyboard',
+     // Test-only: hidden from the sidebar and docs; open by URL or a test runner.
+     tags: ['!dev', '!autodocs'],
+     play: async ({ canvasElement }) => { ... },
+   };
+   ```
+
+   It still runs as a test and still takes a visual snapshot. When it looks
+   the same as another story, also add `'!snapshot'` and name that story in
+   the comment.
+
+7. A story that opens an overlay on load (`defaultOpen`) moves focus into it.
+   Keep it off the docs page with `tags: ['!autodocs']`, so a keyboard user
+   opening the docs does not start inside it.
 
 ## Style Refactor Playbook
 

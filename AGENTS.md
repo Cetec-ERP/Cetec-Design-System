@@ -273,7 +273,7 @@ export const componentRecipe = defineRecipe({
 
 **Theme Conditions:** Use `{ base: 'value', _dark: 'value' }` for theme-aware styles
 
-**Slot Recipes:** For multi-part components (checkbox, radio, tooltip, menu) - must be registered in `panda.config.ts` under `theme.extend.recipes`
+**Slot Recipes:** For multi-part components (checkbox, radio, tooltip, menu) - export them from `src/recipes/recipes-slot.ts`; the preset (`src/cetec-preset.ts`) registers them
 
 ### Naming Conventions
 

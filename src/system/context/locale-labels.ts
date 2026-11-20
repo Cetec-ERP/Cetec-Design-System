@@ -53,6 +53,10 @@ export interface LocaleLabels {
   /** Text of the open-full-page button in `PeekBar`. */
   openFullPage: string;
 
+  // ─── Split button ─────────────────────────────────────────────────────────
+  /** Default accessible name and tooltip of the menu toggle in `SplitButton`. */
+  moreActions: string;
+
   // ─── Selection lists ──────────────────────────────────────────────────────
   /** Default placeholder for `Select` and `Autocomplete`. */
   selectPlaceholder: string;
@@ -209,6 +213,8 @@ export const defaultLocaleLabels: LocaleLabels = {
   previousItem: (noun) => `Previous ${noun.toLowerCase()}`,
   nextItem: (noun) => `Next ${noun.toLowerCase()}`,
   openFullPage: 'Open',
+
+  moreActions: 'More actions',
 
   selectPlaceholder: 'Select...',
   noResults: 'No results found',

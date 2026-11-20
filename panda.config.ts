@@ -67,6 +67,7 @@ const recipeOverrides: Record<string, RecipeRule[]> = {
   ],
   segmentedInputs: [{ size: ['*'], bare: ['*'], responsive: true }],
   spinner: [{ size: ['*'], responsive: true }],
+  splitButton: [{ size: ['*'], variant: ['*'], responsive: true }],
   skeleton: [
     {
       variant: ['*'],
