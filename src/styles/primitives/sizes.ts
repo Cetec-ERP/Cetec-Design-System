@@ -81,8 +81,40 @@ export const containerSizeTokens = {
   '8xl': { value: '90rem' }, // 1440px
 };
 
+/** Sizes for parts of printed documents. Inches hold on any printer. */
+export const printSizeTokens = {
+  /** The narrowest column of a print grid with `columns: fit`. 1.6 in. */
+  gridFitColumn: { value: '1.6in' },
+  /** The height of a wordmark logo in a document header. 28 pt. */
+  headerWordmark: { value: '28pt' },
+  /** The widest a wordmark logo gets in a document header. 2.5 in. */
+  headerWordmarkMax: { value: '2.5in' },
+  /** The height of a badge logo in a document header. 32 pt. */
+  headerBadge: { value: '32pt' },
+  /** The widest a stack of totals gets. 3.4 in. */
+  totalsWidth: { value: '3.4in' },
+  /** The longest side of a kit image. 2.4 in. */
+  imageMax: { value: '2.4in' },
+  /** The starting width of a signature or name line. 1.3 in. */
+  signField: { value: '1.3in' },
+  /** The narrowest signature or name line. 1 in. */
+  signFieldMin: { value: '1in' },
+  /** The width of a date line. 0.9 in. */
+  signDate: { value: '0.9in' },
+  /** The width of an initials line. 0.5 in. */
+  signInitials: { value: '0.5in' },
+};
+
+/** Fixed sizes of component parts. */
+export const componentSizeTokens = {
+  /** The label width of an `aligned` KeyFact, so values line up. 6 rem. */
+  keyFactLabel: { value: '6rem' },
+};
+
 export const sizes = defineTokens.sizes({
   ...numericSizes,
   ...utilitySizes,
   ...containerSizeTokens,
+  ...printSizeTokens,
+  ...componentSizeTokens,
 });

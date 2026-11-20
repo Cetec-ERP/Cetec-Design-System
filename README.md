@@ -242,6 +242,13 @@ on `<html>`, not on `<body>`:
 - Go writes the `@page` rule. Paper size is a template setting: `letter`, `A4`,
   or `legal`. The default is `letter`.
 
+**Recipe names.** Every print-only recipe starts with `print`: `printDoc`,
+`printCanvas`, `printSlot`, `printLabelField`, `printGrid`, `printHeader`,
+`printParty`, `printTotals`, `printSection`, `printPageBreak`, and
+`printSignLine`. App recipes with a print look keep their names: `keyFact`,
+`tag`, `text`, `divider`, and `checkbox`. `barcode` and `image` have no prefix,
+because they can also show on screen.
+
 **Print scales.** Print recipes take sizes from two scales in points, so they
 hold on any printer.
 
@@ -318,9 +325,78 @@ inside `<body>`. A Go test can read the files from
 output with `html`. Each fixture also has a story in Storybook under "Print",
 which renders the same HTML on a page.
 
+**What Go must do.** The fixtures are the markup contract. Go also does
+these things:
+
+- Put `cetec-printDoc` and `cetec-ink-thermal` on `<html>`, not `<body>`. Page
+  margin boxes read variables only from `<html>`.
+- Write only classes that are in the manifest.
+- Map kit tones to Tag hues: `neutral` to `slate`, `info` to `blue`, `success`
+  to `green`, `warning` to `orange`, and `danger` to `red`. Use `size_sm` in
+  table cells.
+- Map the kit type `money` to `currency` for every part, such as KeyFact and
+  LabelField.
+- Write the KeyFact `inner` wrapper for every layout.
+- Pick the Text `variant` from the data: a body with a title is a `note` with a
+  `title` above it, a `from:` terms field is `terms`, and a closing comment with
+  no title is `closing`.
+- Write every printed word in the company language: the page footer "Page" and
+  "of", the page-break label, the sign-line captions, the barcode error text,
+  and any hidden checkbox text.
+- Put the sign in a money value, such as `−709,24 €` for retainage.
+- Write the empty `broken` image element (`cetec-image--broken_true`) when it
+  cannot read the file.
+- Encode barcodes with `boombuler/barcode` (`code128`, `qr`, and `datamatrix`)
+  at Cetec-ERP's pinned version. Cetec-ERP vendors only `qr` today. Go writes
+  the `viewBox`, the path, `preserveAspectRatio`, and the width and height. It
+  picks the widest bars for the printer's dpi.
+- On a canvas, write the stock size and slot positions inline in inches,
+  `data-slot` on each slot, and the MICR font and size.
+- Enforce "no page break inside a table or totals" in the kit checker.
+
 **Types.** CSS and JSON files have no declarations. TypeScript code that reads
 them can use the `PrintClassManifest` and `PrintFixtureFile` types from
 `cetec-design-system`.
+
+**Canvas layouts.** Checks and labels place kit elements in slots on a
+1/64 in grid. Go writes one `printCanvas` per label or check sheet, with the
+stock size as inline values, and one `printSlot` per slot, with its position
+and size as inline values. The classes carry the look, never the position.
+
+```html
+<div class="cetec-printCanvas__root" style="width:4in;height:6in">
+  <div class="cetec-printCanvas__layer">
+    <div
+      class="cetec-printSlot__root"
+      data-slot="part"
+      style="left:0in;top:0.5in;width:4in;height:0.6875in"
+    >
+      <div class="cetec-printSlot__content">…</div>
+    </div>
+  </div>
+</div>
+```
+
+- A slot clips its content and never grows.
+- `rotate: 90` turns a whole layout (`cetec-printCanvas__layer--rotate_90`) or
+  one slot's content (`cetec-printSlot__content--rotate_90`) a quarter turn
+  clockwise. Slot positions stay in layout space.
+- A repeating label is one canvas per item. Each canvas starts a new page.
+- The MICR slot (`cetec-printSlot__content--micr_true`) sets the locked look.
+  The Go print path sets the MICR font.
+
+**Barcodes.** Go encodes the value and writes the bars as an inline SVG with
+the `cetec-barcode__bars` class. The `viewBox` is one unit per module, with
+the quiet zone inside it. The class sets the bar ink and the height. Go sets
+the attributes CSS cannot:
+
+- Code 128: `preserveAspectRatio="none"` and a `width` in inches, the module
+  count times the module width. In a slot, use the widest whole number of
+  printer dots that fits the slot width.
+- QR and Data Matrix: `preserveAspectRatio="xMinYMin meet"`. In a slot, set
+  `width` and `height` to the largest square that fits.
+- When a value cannot be encoded, the preview writes `cetec-barcode__error`
+  with the message instead of the bars. It never changes the value.
 
 **Add a print recipe.** Add its name to `printRecipeNames` in
 `src/print/printRecipes.ts`. Add `src/recipes/<name>.fixtures.json` and a story

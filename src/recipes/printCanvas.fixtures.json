@@ -1,0 +1,367 @@
+{
+  "recipe": "printCanvas",
+  "fixtures": [
+    {
+      "name": "check",
+      "description": "Today's default check on one Letter sheet: a window stub, the check face, and the remittance. Perforations are at 3.5 in and 7 in. The locked MICR slot is the only slot in the clear band, the bottom 5/8 in of the face. Slot content is plain text here. The kit elements in each slot have their own fixtures.",
+      "input": {
+        "canvas": "check",
+        "stock": {
+          "width": 8.5,
+          "height": 11,
+          "unit": "in"
+        },
+        "ink": "paper",
+        "rotate": 0,
+        "grid": "1/64 in",
+        "perforations": [3.5, 7],
+        "micrBand": {
+          "top": 6.375,
+          "height": 0.625
+        },
+        "slots": [
+          {
+            "name": "from",
+            "x": 0.5,
+            "y": 0.375,
+            "width": 3.25,
+            "height": 0.875,
+            "holds": ["party"]
+          },
+          {
+            "name": "ref",
+            "x": 5.75,
+            "y": 0.375,
+            "width": 2.25,
+            "height": 0.75,
+            "holds": ["key_fact", "key_fact"]
+          },
+          {
+            "name": "envelope",
+            "x": 0.875,
+            "y": 1.875,
+            "width": 3.75,
+            "height": 1.125,
+            "holds": ["party"]
+          },
+          {
+            "name": "company",
+            "x": 0.5,
+            "y": 3.75,
+            "width": 3,
+            "height": 0.875,
+            "holds": ["label_field", "text"]
+          },
+          {
+            "name": "bank",
+            "x": 3.75,
+            "y": 3.75,
+            "width": 2.25,
+            "height": 0.625,
+            "holds": ["text"]
+          },
+          {
+            "name": "number",
+            "x": 6.25,
+            "y": 3.6875,
+            "width": 2,
+            "height": 0.4375,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "date",
+            "x": 6.25,
+            "y": 4.1875,
+            "width": 2,
+            "height": 0.4375,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "payee",
+            "x": 0.5,
+            "y": 4.75,
+            "width": 5.5,
+            "height": 0.5,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "amount",
+            "x": 6.25,
+            "y": 4.75,
+            "width": 2,
+            "height": 0.5,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "words",
+            "x": 0.5,
+            "y": 5.3125,
+            "width": 7.75,
+            "height": 0.4375,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "memo",
+            "x": 0.5,
+            "y": 5.8125,
+            "width": 3.5,
+            "height": 0.4375,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "signature",
+            "x": 4.5,
+            "y": 5.75,
+            "width": 3.75,
+            "height": 0.5625,
+            "holds": ["sign_line", "text"]
+          },
+          {
+            "name": "micr",
+            "x": 1,
+            "y": 6.5625,
+            "width": 5.6875,
+            "height": 0.25,
+            "micr": true,
+            "locked": true,
+            "holds": []
+          },
+          {
+            "name": "remittance",
+            "x": 0.5,
+            "y": 7.25,
+            "width": 7.5,
+            "height": 3.5,
+            "holds": ["text", "table", "totals"]
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printCanvas__root\" style=\"width:8.5in;height:11in\"><div class=\"cetec-printCanvas__layer\"><div class=\"cetec-printSlot__root\" data-slot=\"from\" style=\"left:0.5in;top:0.375in;width:3.25in;height:0.875in\"><div class=\"cetec-printSlot__content\"><p>From</p><p><strong>Brightline Electronics, Inc.</strong></p><p>PO Box 4410<br>Round Rock, TX 78680</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"ref\" style=\"left:5.75in;top:0.375in;width:2.25in;height:0.75in\"><div class=\"cetec-printSlot__content\"><p>Check 004817</p><p>Date Nov 17, 2026</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"envelope\" style=\"left:0.875in;top:1.875in;width:3.75in;height:1.125in\"><div class=\"cetec-printSlot__content\"><p>To</p><p><strong>Corbel Metal Finishing LLC</strong></p><p>1820 Kiln Street<br>Pflugerville, TX 78660</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"company\" style=\"left:0.5in;top:3.75in;width:3in;height:0.875in\"><div class=\"cetec-printSlot__content\"><p><strong>Brightline Electronics, Inc.</strong></p><p>PO Box 4410<br>Round Rock, TX 78680</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"bank\" style=\"left:3.75in;top:3.75in;width:2.25in;height:0.625in\"><div class=\"cetec-printSlot__content\"><p>First Texas Commerce Bank<br>Round Rock, TX</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"number\" style=\"left:6.25in;top:3.6875in;width:2in;height:0.4375in\"><div class=\"cetec-printSlot__content\"><p>Check</p><p><strong>004817</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"date\" style=\"left:6.25in;top:4.1875in;width:2in;height:0.4375in\"><div class=\"cetec-printSlot__content\"><p>Date</p><p><strong>Nov 17, 2026</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"payee\" style=\"left:0.5in;top:4.75in;width:5.5in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p>Pay to the order of</p><p><strong>Corbel Metal Finishing LLC</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"amount\" style=\"left:6.25in;top:4.75in;width:2in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p>Amount</p><p><strong>$4,612.75</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"words\" style=\"left:0.5in;top:5.3125in;width:7.75in;height:0.4375in\"><div class=\"cetec-printSlot__content\"><p><strong>Four thousand six hundred twelve and 75/100 dollars</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"memo\" style=\"left:0.5in;top:5.8125in;width:3.5in;height:0.4375in\"><div class=\"cetec-printSlot__content\"><p>Memo</p><p><strong>Invoices 88231, 88247</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"signature\" style=\"left:4.5in;top:5.75in;width:3.75in;height:0.5625in\"><div class=\"cetec-printSlot__content\"><p>Authorized signature</p><p>Void after 90 days</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"micr\" style=\"left:1in;top:6.5625in;width:5.6875in;height:0.25in\"><div class=\"cetec-printSlot__content cetec-printSlot__content--micr_true\">⑈004817⑈ ⑆111000000⑆ 0000441022⑈</div></div><div class=\"cetec-printSlot__root\" data-slot=\"remittance\" style=\"left:0.5in;top:7.25in;width:7.5in;height:3.5in\"><div class=\"cetec-printSlot__content\"><p><strong>Remittance advice</strong></p><p>Check 004817 from Brightline Electronics, Inc.</p><p>Invoice 88231 · PO-5512 · Oct 20, 2026 · $2,950.00 · discount $59.00 · net paid $2,891.00</p><p>Invoice 88247 · PO-5530 · Oct 27, 2026 · $1,756.89 · discount $35.14 · net paid $1,721.75</p><p><strong>Total paid $4,612.75</strong></p></div></div></div></div>"
+    },
+    {
+      "name": "packing-label",
+      "description": "The order line packing label on 4 × 6 in label stock, in thermal ink. Slots with a top rule split the label into sections.",
+      "input": {
+        "canvas": "label",
+        "stock": {
+          "width": 4,
+          "height": 6,
+          "unit": "in"
+        },
+        "ink": "thermal",
+        "rotate": 0,
+        "grid": "1/64 in",
+        "repeat": "off",
+        "slots": [
+          {
+            "name": "customer",
+            "x": 0,
+            "y": 0,
+            "width": 2.75,
+            "height": 0.5,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "printed",
+            "x": 2.75,
+            "y": 0,
+            "width": 1.25,
+            "height": 0.5,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "part",
+            "x": 0,
+            "y": 0.5,
+            "width": 4,
+            "height": 0.6875,
+            "rule": true,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "description",
+            "x": 0,
+            "y": 1.1875,
+            "width": 4,
+            "height": 0.375,
+            "holds": ["text"]
+          },
+          {
+            "name": "facts",
+            "x": 0,
+            "y": 1.5625,
+            "width": 4,
+            "height": 0.5,
+            "holds": ["grid"]
+          },
+          {
+            "name": "part_code",
+            "x": 0,
+            "y": 2.0625,
+            "width": 4,
+            "height": 0.6875,
+            "holds": ["barcode"]
+          },
+          {
+            "name": "skid_code",
+            "x": 0,
+            "y": 2.75,
+            "width": 4,
+            "height": 0.75,
+            "rule": true,
+            "holds": ["barcode"]
+          },
+          {
+            "name": "po",
+            "x": 0,
+            "y": 3.5,
+            "width": 2,
+            "height": 1.125,
+            "rule": true,
+            "holds": ["label_field", "barcode"]
+          },
+          {
+            "name": "qty",
+            "x": 2,
+            "y": 3.5,
+            "width": 2,
+            "height": 1.125,
+            "rule": true,
+            "holds": ["label_field", "barcode"]
+          },
+          {
+            "name": "ship_to",
+            "x": 0,
+            "y": 4.625,
+            "width": 4,
+            "height": 1.375,
+            "rule": true,
+            "holds": ["party"]
+          }
+        ]
+      },
+      "root": ["cetec-printDoc", "cetec-ink-thermal"],
+      "html": "<div class=\"cetec-printCanvas__root\" style=\"width:4in;height:6in\"><div class=\"cetec-printCanvas__layer\"><div class=\"cetec-printSlot__root\" data-slot=\"customer\" style=\"left:0in;top:0in;width:2.75in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p><strong>Kestrel Robotics, Inc.</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"printed\" style=\"left:2.75in;top:0in;width:1.25in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p>Nov 17, 2026</p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"part\" style=\"left:0in;top:0.5in;width:4in;height:0.6875in\"><div class=\"cetec-printSlot__content\"><p>Part</p><p><strong>PCB-ASSY-2041 · Rev C</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"description\" style=\"left:0in;top:1.1875in;width:4in;height:0.375in\"><div class=\"cetec-printSlot__content\"><p>Motor controller board, 48 V, conformal coat</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"facts\" style=\"left:0in;top:1.5625in;width:4in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p>Cust part KR-88120</p><p>Date code 2645</p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"part_code\" style=\"left:0in;top:2.0625in;width:4in;height:0.6875in\"><div class=\"cetec-printSlot__content\"><p>Code 128: PCB-ASSY-2041</p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"skid_code\" style=\"left:0in;top:2.75in;width:4in;height:0.75in\"><div class=\"cetec-printSlot__content\"><p>Code 128: ORDER7731LINE1QTY25</p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"po\" style=\"left:0in;top:3.5in;width:2in;height:1.125in\"><div class=\"cetec-printSlot__content\"><p>PO</p><p><strong>4500-1189</strong></p><p>Code 128: 4500-1189</p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"qty\" style=\"left:2in;top:3.5in;width:2in;height:1.125in\"><div class=\"cetec-printSlot__content\"><p>Ship qty</p><p><strong>25 EA</strong></p><p>Code 128: 25</p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"ship_to\" style=\"left:0in;top:4.625in;width:4in;height:1.375in\"><div class=\"cetec-printSlot__content\"><p>Ship to</p><p>Receiving Dock 3</p><p><strong>Kestrel Robotics, Inc.</strong></p><p>88 Foundry Road<br>Fremont, CA 94538</p></div></div></div></div>"
+    },
+    {
+      "name": "turned-label",
+      "description": "A carton label turned 90°. The stock is 4 × 6 in, so the layout is 6 × 4 in, turned a quarter turn clockwise. The lot slot is also turned 90° inside the layout.",
+      "input": {
+        "canvas": "label",
+        "stock": {
+          "width": 4,
+          "height": 6,
+          "unit": "in"
+        },
+        "ink": "thermal",
+        "rotate": 90,
+        "grid": "1/64 in",
+        "repeat": "off",
+        "slots": [
+          {
+            "name": "part",
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 0.875,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "description",
+            "x": 0,
+            "y": 0.875,
+            "width": 6,
+            "height": 0.5,
+            "holds": ["text"]
+          },
+          {
+            "name": "po",
+            "x": 0,
+            "y": 1.375,
+            "width": 2.75,
+            "height": 0.875,
+            "rule": true,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "qty",
+            "x": 2.75,
+            "y": 1.375,
+            "width": 2.75,
+            "height": 0.875,
+            "rule": true,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "ship_to",
+            "x": 0,
+            "y": 2.25,
+            "width": 5.5,
+            "height": 1.75,
+            "rule": true,
+            "holds": ["party"]
+          },
+          {
+            "name": "lot",
+            "x": 5.5,
+            "y": 1.375,
+            "width": 0.5,
+            "height": 2.625,
+            "rule": true,
+            "rotate": 90,
+            "holds": ["label_field"]
+          }
+        ]
+      },
+      "root": ["cetec-printDoc", "cetec-ink-thermal"],
+      "html": "<div class=\"cetec-printCanvas__root\" style=\"width:4in;height:6in\"><div class=\"cetec-printCanvas__layer cetec-printCanvas__layer--rotate_90\"><div class=\"cetec-printSlot__root\" data-slot=\"part\" style=\"left:0in;top:0in;width:6in;height:0.875in\"><div class=\"cetec-printSlot__content\"><p>Part</p><p><strong>PCB-ASSY-2041 · Rev C</strong></p></div></div><div class=\"cetec-printSlot__root\" data-slot=\"description\" style=\"left:0in;top:0.875in;width:6in;height:0.5in\"><div class=\"cetec-printSlot__content\"><p>Motor controller board, 48 V, conformal coat</p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"po\" style=\"left:0in;top:1.375in;width:2.75in;height:0.875in\"><div class=\"cetec-printSlot__content\"><p>PO</p><p><strong>4500-1189</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"qty\" style=\"left:2.75in;top:1.375in;width:2.75in;height:0.875in\"><div class=\"cetec-printSlot__content\"><p>Carton qty</p><p><strong>25 EA</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"ship_to\" style=\"left:0in;top:2.25in;width:5.5in;height:1.75in\"><div class=\"cetec-printSlot__content\"><p>Ship to</p><p><strong>Kestrel Robotics, Inc.</strong></p><p>88 Foundry Road<br>Fremont, CA 94538</p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"lot\" style=\"left:5.5in;top:1.375in;width:0.5in;height:2.625in\"><div class=\"cetec-printSlot__content cetec-printSlot__content--rotate_90\"><p><strong>Lot 2645-A</strong> · Made in USA</p></div></div></div></div>"
+    },
+    {
+      "name": "serial-labels",
+      "description": "One layout printed once per serial, on 3 × 1 in stock in thermal ink. Go builds the loop and writes one canvas per item. Each canvas starts a new page.",
+      "input": {
+        "canvas": "label",
+        "stock": {
+          "width": 3,
+          "height": 1,
+          "unit": "in"
+        },
+        "ink": "thermal",
+        "rotate": 0,
+        "grid": "1/64 in",
+        "repeat": "serials",
+        "items": ["SN-26450118", "SN-26450119"],
+        "slots": [
+          {
+            "name": "part",
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 0.375,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "serial",
+            "x": 0,
+            "y": 0.375,
+            "width": 1.25,
+            "height": 0.625,
+            "rule": true,
+            "holds": ["label_field"]
+          },
+          {
+            "name": "code",
+            "x": 1.25,
+            "y": 0.375,
+            "width": 1.75,
+            "height": 0.625,
+            "rule": true,
+            "holds": ["barcode"]
+          }
+        ]
+      },
+      "root": ["cetec-printDoc", "cetec-ink-thermal"],
+      "html": "<div class=\"cetec-printCanvas__root\" style=\"width:3in;height:1in\"><div class=\"cetec-printCanvas__layer\"><div class=\"cetec-printSlot__root\" data-slot=\"part\" style=\"left:0in;top:0in;width:3in;height:0.375in\"><div class=\"cetec-printSlot__content\"><p>Part <strong>PCB-ASSY-2041 · Rev C</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"serial\" style=\"left:0in;top:0.375in;width:1.25in;height:0.625in\"><div class=\"cetec-printSlot__content\"><p>Serial</p><p><strong>SN-26450118</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"code\" style=\"left:1.25in;top:0.375in;width:1.75in;height:0.625in\"><div class=\"cetec-printSlot__content\"><p>Code 128: SN-26450118</p></div></div></div></div><div class=\"cetec-printCanvas__root\" style=\"width:3in;height:1in\"><div class=\"cetec-printCanvas__layer\"><div class=\"cetec-printSlot__root\" data-slot=\"part\" style=\"left:0in;top:0in;width:3in;height:0.375in\"><div class=\"cetec-printSlot__content\"><p>Part <strong>PCB-ASSY-2041 · Rev C</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"serial\" style=\"left:0in;top:0.375in;width:1.25in;height:0.625in\"><div class=\"cetec-printSlot__content\"><p>Serial</p><p><strong>SN-26450119</strong></p></div></div><div class=\"cetec-printSlot__root cetec-printSlot__root--rule_true\" data-slot=\"code\" style=\"left:1.25in;top:0.375in;width:1.75in;height:0.625in\"><div class=\"cetec-printSlot__content\"><p>Code 128: SN-26450119</p></div></div></div></div>"
+    }
+  ]
+}

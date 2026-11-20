@@ -20,6 +20,8 @@ const themeVar = ([light, dark]: ThemePair) => ({
  */
 const hueColors = (defaultTreatment: TagTreatment, bold: TagTreatment) => ({
   '--tag-default-color': themeVar(defaultTreatment.color),
+  // On paper, both treatments print as an outline in the light text color.
+  '--tag-print-color': `token(colors.${defaultTreatment.color[0]})`,
   '--tag-default-bg': themeVar(defaultTreatment.bg),
   '--tag-bold-color': themeVar(bold.color),
   '--tag-bold-bg': themeVar(bold.bg),
@@ -37,6 +39,31 @@ const tagBase = {
   fontWeight: 'medium',
   lineHeight: 'tight',
   whiteSpace: 'nowrap',
+  // On paper, a tag is an outline in its own ink, so it survives a print
+  // with no backgrounds. The rule is 0.5 pt, or 1.5 pt in thermal ink.
+  _printDoc: {
+    display: 'inline-flex',
+    verticalAlign: 'middle',
+    gap: 'print.1',
+    fontWeight: 'bold',
+    borderWidth: 'paper.hairline',
+    borderStyle: 'solid',
+    borderColor: 'current',
+  },
+};
+
+/*
+ * Both treatments print the same way. Thermal printers print black only, so
+ * there the text and outline are black and tone comes from the words alone.
+ */
+const printTreatment = {
+  _printDoc: {
+    color: 'var(--tag-print-color)',
+    bg: 'transparent',
+  },
+  _thermal: {
+    color: 'paper.ink',
+  },
 };
 const tagVariant = {
   // Both sizes set every property they change, so a conditional value such
@@ -45,20 +72,35 @@ const tagVariant = {
     sm: {
       h: '16',
       fontSize: '12',
+      // For dense rows, such as table cells.
+      _printDoc: {
+        h: 'auto',
+        py: 'print.1',
+        px: 'print.4',
+        fontSize: 'print.capsLabel',
+      },
     },
     md: {
       h: '20',
       fontSize: '14',
+      _printDoc: {
+        h: 'auto',
+        py: 'print.2',
+        px: 'print.4',
+        fontSize: 'print.smallPrint',
+      },
     },
   },
   variant: {
     default: {
       color: 'var(--tag-default-color)',
       bg: 'var(--tag-default-bg)',
+      ...printTreatment,
     },
     bold: {
       color: 'var(--tag-bold-color)',
       bg: 'var(--tag-bold-bg)',
+      ...printTreatment,
     },
   },
   hue: {

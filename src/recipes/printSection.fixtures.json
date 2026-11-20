@@ -1,0 +1,46 @@
+{
+  "recipe": "printSection",
+  "fixtures": [
+    {
+      "name": "titled",
+      "description": "A section with a title and a table. It may break across pages. The title never ends a page alone.",
+      "input": {
+        "title": "Payments received",
+        "keep": "none"
+      },
+      "html": "<section class=\"cetec-printSection__root\"><h2 class=\"cetec-printSection__title\">Payments received</h2><table><thead><tr><th>Payment</th><th>Date</th><th>Amount</th></tr></thead><tbody><tr><td>4411</td><td>Nov 20, 2026</td><td>$5,000.00</td></tr><tr><td>4436</td><td>Dec 1, 2026</td><td>$2,000.00</td></tr></tbody></table></section>"
+    },
+    {
+      "name": "keep-together",
+      "description": "The same section with keep set to together. It moves to the next page as one unit when it does not fit.",
+      "input": {
+        "title": "Payments received",
+        "keep": "together"
+      },
+      "html": "<section class=\"cetec-printSection__root cetec-printSection__root--keep_together\"><h2 class=\"cetec-printSection__title\">Payments received</h2><table><thead><tr><th>Payment</th><th>Date</th><th>Amount</th></tr></thead><tbody><tr><td>4411</td><td>Nov 20, 2026</td><td>$5,000.00</td></tr><tr><td>4436</td><td>Dec 1, 2026</td><td>$2,000.00</td></tr></tbody></table></section>"
+    },
+    {
+      "name": "untitled",
+      "description": "A section with no title. The Go helper leaves out the title element.",
+      "input": {
+        "keep": "none"
+      },
+      "html": "<section class=\"cetec-printSection__root\"><p>All prices are in US dollars. Taxes are shown on the last page.</p></section>"
+    },
+    {
+      "name": "stacked",
+      "description": "Two sections in a row. Space comes between them, not above the first.",
+      "input": {
+        "sections": [
+          {
+            "title": "Payments received"
+          },
+          {
+            "title": "Progress invoices"
+          }
+        ]
+      },
+      "html": "<section class=\"cetec-printSection__root\"><h2 class=\"cetec-printSection__title\">Payments received</h2><table><thead><tr><th>Payment</th><th>Date</th><th>Amount</th></tr></thead><tbody><tr><td>4411</td><td>Nov 20, 2026</td><td>$5,000.00</td></tr><tr><td>4436</td><td>Dec 1, 2026</td><td>$2,000.00</td></tr></tbody></table></section><section class=\"cetec-printSection__root\"><h2 class=\"cetec-printSection__title\">Progress invoices</h2><table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th></tr></thead><tbody><tr><td>7716-1</td><td>Oct 31, 2026</td><td>$12,400.00</td></tr></tbody></table></section>"
+    }
+  ]
+}

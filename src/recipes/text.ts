@@ -15,6 +15,71 @@ const textBase = {
   margin: '0',
   fontSize: '16',
   maxWidth: 'prose',
+  // On paper, text is body text in paper ink and runs the full width.
+  _printDoc: {
+    textStyle: 'print.body',
+    maxWidth: 'none',
+  },
+};
+
+/**
+ * Variants that only `Text` has. `Link` and `Label` share `textVariants`, so
+ * these stay out of it.
+ */
+const textOnlyVariants = {
+  /** Keeps the line breaks in the text, as a contract text field has them. */
+  preserveLines: {
+    true: {
+      whiteSpace: 'pre-line',
+    },
+  },
+  /**
+   * A block of words in a document: a note, terms, a closing line, or the
+   * title above one of them. Each has a screen look and a paper look.
+   */
+  variant: {
+    note: {
+      color: 'text',
+      _printDoc: { textStyle: 'print.body' },
+    },
+    terms: {
+      fontSize: '12',
+      _printDoc: { textStyle: 'print.smallPrint' },
+    },
+    closing: {
+      fontFamily: 'heading',
+      fontWeight: 'bold',
+      fontSize: '20',
+      color: 'text',
+      _printDoc: {
+        textStyle: 'print.fieldValue',
+        fontFamily: 'heading',
+        fontSize: 'print.lead',
+        fontWeight: 'bold',
+      },
+    },
+    title: {
+      display: 'block',
+      fontSize: '12',
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      letterSpacing: 'widest',
+      borderBottomStyle: 'solid',
+      borderBottomWidth: '1',
+      borderBottomColor: 'border',
+      pb: '4',
+      mb: '8',
+      _printDoc: {
+        textStyle: 'print.capsLabel',
+        borderBottomWidth: 'paper.rule',
+        borderBottomColor: 'paper.hairline',
+        pb: 'print.4',
+        mb: 'print.4',
+        // A title never ends a page alone, away from its text.
+        breakAfter: 'avoid',
+      },
+    },
+  },
 };
 
 type FontSizeKey = keyof typeof fontSizeTokens;
@@ -176,7 +241,7 @@ export const textRecipe = defineRecipe({
   className: 'text',
   jsx: ['Text'],
   base: textBase,
-  variants: textVariants,
+  variants: { ...textVariants, ...textOnlyVariants },
 });
 
 export const headingRecipe = defineRecipe({

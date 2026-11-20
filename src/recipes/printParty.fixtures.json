@@ -1,0 +1,233 @@
+{
+  "recipe": "printParty",
+  "fixtures": [
+    {
+      "name": "all-lines",
+      "description": "All five lines: attention above the name, then the address, the country, and the contact. Line breaks in a line print as they are.",
+      "input": {
+        "label": "Bill to",
+        "from": {
+          "attention": "Accounts Payable",
+          "name": "Kestrel Robotics, Inc.",
+          "address": "2250 Harbor Way, Suite 400\nSan Jose, CA 95134",
+          "country": "United States",
+          "contact": "(408) 555-0186\nap@kestrel.example"
+        }
+      },
+      "html": "<div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Bill to</div><div class=\"cetec-printParty__attention\">Accounts Payable</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">2250 Harbor Way, Suite 400\nSan Jose, CA 95134</div><div class=\"cetec-printParty__country\">United States</div><div class=\"cetec-printParty__contact\">(408) 555-0186\nap@kestrel.example</div></div>"
+    },
+    {
+      "name": "no-attention",
+      "description": "No attention line. Go skips the empty line.",
+      "input": {
+        "label": "Ship to",
+        "from": {
+          "attention": "",
+          "name": "Kestrel Robotics, Inc.",
+          "address": "88 Foundry Road\nFremont, CA 94538",
+          "country": "",
+          "contact": "(510) 555-0144"
+        }
+      },
+      "html": "<div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Ship to</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">88 Foundry Road\nFremont, CA 94538</div><div class=\"cetec-printParty__contact\">(510) 555-0144</div></div>"
+    },
+    {
+      "name": "no-contact",
+      "description": "No contact line.",
+      "input": {
+        "label": "Ship to",
+        "from": {
+          "attention": "Receiving Dock 3",
+          "name": "Kestrel Robotics, Inc.",
+          "address": "88 Foundry Road\nFremont, CA 94538",
+          "country": "",
+          "contact": ""
+        }
+      },
+      "html": "<div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Ship to</div><div class=\"cetec-printParty__attention\">Receiving Dock 3</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">88 Foundry Road\nFremont, CA 94538</div></div>"
+    },
+    {
+      "name": "remit-no-name",
+      "description": "A remit-to with a remit address set. The name line is empty, so the remit text prints whole.",
+      "input": {
+        "label": "Remit to",
+        "from": {
+          "attention": "",
+          "name": "",
+          "address": "Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680",
+          "country": "",
+          "contact": ""
+        }
+      },
+      "html": "<div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Remit to</div><div class=\"cetec-printParty__address\">Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680</div></div>"
+    },
+    {
+      "name": "three-in-grid",
+      "description": "Bill to, Ship to, and Remit to in a 3-column grid. A hairline separates parties side by side.",
+      "input": {
+        "grid": {
+          "columns": 3
+        },
+        "children": [
+          {
+            "party": {
+              "label": "Bill to",
+              "from": {
+                "attention": "Accounts Payable",
+                "name": "Kestrel Robotics, Inc.",
+                "address": "2250 Harbor Way, Suite 400\nSan Jose, CA 95134",
+                "country": "United States",
+                "contact": "(408) 555-0186\nap@kestrel.example"
+              }
+            }
+          },
+          {
+            "party": {
+              "label": "Ship to",
+              "from": {
+                "attention": "Receiving Dock 3",
+                "name": "Kestrel Robotics, Inc.",
+                "address": "88 Foundry Road\nFremont, CA 94538",
+                "country": "",
+                "contact": ""
+              }
+            }
+          },
+          {
+            "party": {
+              "label": "Remit to",
+              "from": {
+                "attention": "",
+                "name": "",
+                "address": "Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680",
+                "country": "",
+                "contact": ""
+              }
+            }
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_3\"><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Bill to</div><div class=\"cetec-printParty__attention\">Accounts Payable</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">2250 Harbor Way, Suite 400\nSan Jose, CA 95134</div><div class=\"cetec-printParty__country\">United States</div><div class=\"cetec-printParty__contact\">(408) 555-0186\nap@kestrel.example</div></div><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Ship to</div><div class=\"cetec-printParty__attention\">Receiving Dock 3</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">88 Foundry Road\nFremont, CA 94538</div></div><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Remit to</div><div class=\"cetec-printParty__address\">Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680</div></div></div>"
+    },
+    {
+      "name": "credit-memo",
+      "description": "A credit memo prints Bill to and Remit to only. The template skips Ship to.",
+      "input": {
+        "grid": {
+          "columns": 3
+        },
+        "children": [
+          {
+            "party": {
+              "label": "Bill to",
+              "from": {
+                "attention": "Accounts Payable",
+                "name": "Kestrel Robotics, Inc.",
+                "address": "2250 Harbor Way, Suite 400\nSan Jose, CA 95134",
+                "country": "United States",
+                "contact": "(408) 555-0186\nap@kestrel.example"
+              }
+            }
+          },
+          {
+            "party": {
+              "label": "Remit to",
+              "from": {
+                "attention": "",
+                "name": "",
+                "address": "Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680",
+                "country": "",
+                "contact": ""
+              }
+            }
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_3\"><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Bill to</div><div class=\"cetec-printParty__attention\">Accounts Payable</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">2250 Harbor Way, Suite 400\nSan Jose, CA 95134</div><div class=\"cetec-printParty__country\">United States</div><div class=\"cetec-printParty__contact\">(408) 555-0186\nap@kestrel.example</div></div><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Remit to</div><div class=\"cetec-printParty__address\">Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680</div></div></div>"
+    },
+    {
+      "name": "with-key-facts",
+      "description": "Parties in a 3-column grid, then a fit grid of KeyFacts, as the top of an invoice prints them.",
+      "input": {
+        "blocks": [
+          {
+            "grid": {
+              "columns": 3
+            },
+            "children": [
+              {
+                "party": {
+                  "label": "Bill to",
+                  "from": {
+                    "attention": "Accounts Payable",
+                    "name": "Kestrel Robotics, Inc.",
+                    "address": "2250 Harbor Way, Suite 400\nSan Jose, CA 95134",
+                    "country": "United States",
+                    "contact": "(408) 555-0186\nap@kestrel.example"
+                  }
+                }
+              },
+              {
+                "party": {
+                  "label": "Ship to",
+                  "from": {
+                    "attention": "Receiving Dock 3",
+                    "name": "Kestrel Robotics, Inc.",
+                    "address": "88 Foundry Road\nFremont, CA 94538",
+                    "country": "",
+                    "contact": ""
+                  }
+                }
+              },
+              {
+                "party": {
+                  "label": "Remit to",
+                  "from": {
+                    "attention": "",
+                    "name": "",
+                    "address": "Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680",
+                    "country": "",
+                    "contact": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "grid": {
+              "columns": "fit"
+            },
+            "children": [
+              {
+                "key_fact": {
+                  "label": "Terms",
+                  "value": "Net 30"
+                }
+              },
+              {
+                "key_fact": {
+                  "label": "Ship via",
+                  "value": "UPS Ground"
+                }
+              },
+              {
+                "key_fact": {
+                  "label": "Due",
+                  "value": "Dec 17, 2026",
+                  "type": "date"
+                }
+              },
+              {
+                "key_fact": {
+                  "label": "Currency",
+                  "value": "USD"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_3\"><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Bill to</div><div class=\"cetec-printParty__attention\">Accounts Payable</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">2250 Harbor Way, Suite 400\nSan Jose, CA 95134</div><div class=\"cetec-printParty__country\">United States</div><div class=\"cetec-printParty__contact\">(408) 555-0186\nap@kestrel.example</div></div><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Ship to</div><div class=\"cetec-printParty__attention\">Receiving Dock 3</div><div class=\"cetec-printParty__name\">Kestrel Robotics, Inc.</div><div class=\"cetec-printParty__address\">88 Foundry Road\nFremont, CA 94538</div></div><div class=\"cetec-printParty__root\"><div class=\"cetec-printParty__label\">Remit to</div><div class=\"cetec-printParty__address\">Brightline Electronics, Inc.\nPO Box 4410\nRound Rock, TX 78680</div></div></div><div class=\"cetec-printGrid cetec-printGrid--columns_fit\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Terms:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Terms</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Net 30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Ship via:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Ship via</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">UPS Ground</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 17, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Currency:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Currency</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">USD</span></div></div></div></div>"
+    }
+  ]
+}

@@ -14,4 +14,6 @@ export const containerSizes = {
   '6xl': '72rem', // 1152px
   '7xl': '80rem', // 1280px
   '8xl': '90rem', // 1440px
+  /** Below this width, an `aligned` KeyFact stacks its label over its value. */
+  keyFactStack: '15rem', // 240px
 };

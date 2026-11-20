@@ -1,0 +1,32 @@
+{
+  "recipe": "text",
+  "fixtures": [
+    {
+      "name": "titled-note",
+      "description": "A note with a title. The title is a caps heading with a hairline under it. The note is body text in paper ink. The kit always keeps line breaks.",
+      "input": {
+        "title": "Note",
+        "body": "Parts ship in ESD bags. Lot traceability on request."
+      },
+      "html": "<h3 class=\"cetec-text cetec-text--variant_title\">Note</h3><p class=\"cetec-text cetec-text--variant_note cetec-text--preserveLines_true\">Parts ship in ESD bags. Lot traceability on request.</p>"
+    },
+    {
+      "name": "terms",
+      "description": "Long terms from a contract text field, with a title. Terms are small print in soft ink. The line break in the field is kept.",
+      "input": { "title": "Terms", "from": "invoice_terms" },
+      "html": "<h3 class=\"cetec-text cetec-text--variant_title\">Terms</h3><p class=\"cetec-text cetec-text--variant_terms cetec-text--preserveLines_true\">Claims must be made within 10 days of receipt. Returns need a return authorization number, and goods must come back in their original packing. Restocking fees apply to goods returned for credit. Seller's only obligation is to repair or replace product proved defective, and seller is not liable for any other loss.\nPrices do not include taxes, duties, or freight unless this document lists them. Late payments carry a charge of 1.5% a month.</p>"
+    },
+    {
+      "name": "closing-line",
+      "description": "A closing line with no title, from a contract text field. It prints in the heading font.",
+      "input": { "from": "default_comment" },
+      "html": "<p class=\"cetec-text cetec-text--variant_closing cetec-text--preserveLines_true\">Thank you for your business.</p>"
+    },
+    {
+      "name": "line-breaks",
+      "description": "Payment instructions with three line breaks. They print on four lines.",
+      "input": { "title": "Payment", "from": "currency.banking_instructions" },
+      "html": "<h3 class=\"cetec-text cetec-text--variant_title\">Payment</h3><p class=\"cetec-text cetec-text--variant_note cetec-text--preserveLines_true\">Pay by wire transfer.\nBank: First Harbor Bank\nAccount: 0000 1234 5678\nReference: the invoice number</p>"
+    }
+  ]
+}

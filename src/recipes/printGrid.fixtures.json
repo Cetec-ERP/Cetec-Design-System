@@ -1,0 +1,167 @@
+{
+  "recipe": "printGrid",
+  "fixtures": [
+    {
+      "name": "columns-2",
+      "description": "Two columns of aligned KeyFacts. On a 7.5 in content width each cell is wider than 15rem, so labels stay beside values.",
+      "input": {
+        "columns": 2,
+        "children": [
+          {
+            "key_fact": {
+              "label": "Terms",
+              "value": "Net 30"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Ship via",
+              "value": "UPS Ground"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Buyer",
+              "value": "Priya Raman",
+              "type": "person"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Due",
+              "value": "Dec 17, 2026",
+              "type": "date"
+            }
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_2\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Terms:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Terms</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Net 30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Ship via:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Ship via</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">UPS Ground</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Buyer:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Buyer</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Priya Raman</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 17, 2026</span></div></div></div></div>"
+    },
+    {
+      "name": "columns-3",
+      "description": "Three columns. On a 7.5 in content width each cell is narrower than 15rem, so each KeyFact stacks its label over its value.",
+      "input": {
+        "columns": 3,
+        "children": [
+          {
+            "key_fact": {
+              "label": "Terms",
+              "value": "Net 30"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Ship via",
+              "value": "UPS Ground"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "FOB",
+              "value": "Origin"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Buyer",
+              "value": "Priya Raman",
+              "type": "person"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Due",
+              "value": "Dec 17, 2026",
+              "type": "date"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Order",
+              "value": "7731"
+            }
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_3\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Terms:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Terms</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Net 30</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Ship via:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Ship via</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">UPS Ground</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">FOB:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">FOB</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Origin</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Buyer:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Buyer</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Priya Raman</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Due:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Due</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 17, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Order:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Order</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">7731</span></div></div></div></div>"
+    },
+    {
+      "name": "columns-4",
+      "description": "Four columns. Each KeyFact stacks.",
+      "input": {
+        "columns": 4,
+        "children": [
+          {
+            "key_fact": {
+              "label": "Customer",
+              "value": "Kestrel Robotics"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "PO",
+              "value": "4500-1189"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Work start",
+              "value": "Nov 18, 2026",
+              "type": "date"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Dock date",
+              "value": "Dec 4, 2026",
+              "type": "date"
+            }
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_4\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Customer:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Customer</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Kestrel Robotics</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">PO:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">PO</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">4500-1189</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Work start:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Work start</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Nov 18, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Dock date:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Dock date</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 4, 2026</span></div></div></div></div>"
+    },
+    {
+      "name": "columns-fit",
+      "description": "As many columns as fit, each at least 1.6 in wide. A 7.5 in content width fits four. The fifth cell starts a new row.",
+      "input": {
+        "columns": "fit",
+        "children": [
+          {
+            "key_fact": {
+              "label": "Customer",
+              "value": "Kestrel Robotics"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "PO",
+              "value": "4500-1189"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Work start",
+              "value": "Nov 18, 2026",
+              "type": "date"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Dock date",
+              "value": "Dec 4, 2026",
+              "type": "date"
+            }
+          },
+          {
+            "key_fact": {
+              "label": "Line",
+              "value": "1 of 3"
+            }
+          }
+        ]
+      },
+      "html": "<div class=\"cetec-printGrid cetec-printGrid--columns_fit\"><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Customer:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Customer</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">Kestrel Robotics</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">PO:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">PO</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">4500-1189</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Work start:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Work start</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Nov 18, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Dock date:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Dock date</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text cetec-keyFact__text--type_date\">Dec 4, 2026</span></div></div></div><div class=\"cetec-keyFact__root cetec-keyFact__root--layout_aligned\"><div class=\"cetec-keyFact__inner cetec-keyFact__inner--layout_aligned\"><span class=\"cetec-keyFact__label cetec-keyFact__label--layout_aligned\"><span class=\"cetec-keyFact__labelWithColon cetec-keyFact__labelWithColon--layout_aligned\">Line:</span><span class=\"cetec-keyFact__labelPlain cetec-keyFact__labelPlain--layout_aligned\">Line</span></span><div class=\"cetec-keyFact__value cetec-keyFact__value--layout_aligned\"><span class=\"cetec-keyFact__text\">1 of 3</span></div></div></div></div>"
+    }
+  ]
+}
