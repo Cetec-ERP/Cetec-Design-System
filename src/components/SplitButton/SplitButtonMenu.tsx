@@ -74,7 +74,9 @@ export const SplitButtonMenu = (props: SplitButtonMenuProps) => {
   }, [closedByReason, onOpenChange]);
 
   // The toggle blocks clicks while disabled, but the arrow keys would still
-  // ask the menu to open.
+  // ask the menu to open. Menu should ignore a trigger with `aria-disabled`
+  // itself (Cetec-ERP/Cetec-Design-System#278). When it does, the
+  // `menuDisabled && nextOpen` check below can be removed.
   const handleOpenChange = (nextOpen: boolean) => {
     if (menuDisabled && nextOpen) return;
     if (open === undefined) setUncontrolledOpen(nextOpen);
