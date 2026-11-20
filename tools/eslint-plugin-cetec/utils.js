@@ -24,7 +24,11 @@ export const hasValidateIgnoreComment = (context, node, ruleName) => {
     const text = comment.value.trim();
 
     // Match: validate-ignore: rule-name-or-names [— optional reason]
-    const match = text.match(/^validate-ignore:\s*(.+?)(?:\s*[—–\-]{1,2}.+)?$/);
+    // The dash before the reason needs a space on each side, so hyphens in
+    // rule names are not read as the start of the reason.
+    const match = text.match(
+      /^validate-ignore:\s*(.+?)(?:\s+[—–-]{1,2}\s.*)?$/,
+    );
     if (!match) return false;
 
     const rules = match[1].trim().split(/\s*,\s*/);

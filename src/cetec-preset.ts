@@ -1,10 +1,12 @@
 import { definePreset, type Preset } from '@pandacss/dev';
 import pandaBasePreset from '@pandacss/preset-base';
 
+import { scopedPrintReset } from './print/printReset';
 import * as regularRecipes from './recipes/recipes-regular';
 import * as slotRecipes from './recipes/recipes-slot';
 import * as tokens from './styles/primitives';
 import * as semanticTokens from './styles/semantics';
+import { withPrintDocReset } from './styles/semantics/printDocReset';
 import { breakpoints } from './styles/utilities/breakpoints';
 import { conditions } from './styles/utilities/conditions';
 import { containerSizes } from './styles/utilities/containerSizes';
@@ -67,9 +69,12 @@ export const cetecPreset: Preset = definePreset({
         ...tokens,
       },
       semanticTokens: {
-        colors: semanticTokens.colors,
+        // Inside `cetec-printDoc`, colors reset to light values (paper).
+        colors: withPrintDocReset(semanticTokens.colors),
+        borderWidths: semanticTokens.borderWidths,
         fontSizes: semanticTokens.fontSizes,
         shadows: semanticTokens.shadows,
+        spacing: semanticTokens.spacing,
         zIndex: semanticTokens.zIndex,
       },
       breakpoints: breakpoints,
@@ -115,6 +120,8 @@ export const cetecPreset: Preset = definePreset({
   globalCss: {
     ...pandaBasePresetGlobalCss,
     ...globalCss,
+    // Inside a `cetec-printDoc` root, the print reset replaces the app reset.
+    ...scopedPrintReset,
   },
   conditions: {
     ...pandaBasePresetConditions,
